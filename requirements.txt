@@ -1,0 +1,6 @@
+python-json-logger
+flask
+flask-sqlalchemy
+marshmallow
+gunicorn
+setuptools_scm
