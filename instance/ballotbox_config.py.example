@@ -4,18 +4,18 @@
 
 DEBUG = False
 
-LOGGER_NAME = 'evalg'
+LOGGER_NAME = 'ballotbox'
 
 LOGGING = {
     'disable_existing_loggers': False,
     'version': 1,
     'loggers': {
         '': {
-            'handlers': ['stream_stderr_simple','file_evalg_json'],
+            'handlers': ['stream_stderr_simple','file_json'],
             'level': 'DEBUG',
         },
-        'evalg': {
-            'handlers': ['stream_stderr_simple', 'file_evalg_json'],
+        'ballotbox': {
+            'handlers': ['stream_stderr_simple', 'file_json'],
             'level': 'DEBUG'
         },
     },
@@ -42,16 +42,16 @@ LOGGING = {
             'stream': 'ext://sys.stderr',
             'filters': ['request_id'],
         },
-        'file_evalg_json': {
+        'file_json': {
             'formatter': 'json',
             'class': 'logging.FileHandler',
-            'filename': 'logs/evalg.log.json',
+            'filename': 'logs/ballotbox.log.json',
             'filters': ['request_id']
         }
     },
     'filters': {
         'request_id': {
-            '()': 'evalg.utils.request_id.RequestIdFilter'
+            '()': 'evalg_common.request_id.RequestIdFilter'
         }
     }
 }

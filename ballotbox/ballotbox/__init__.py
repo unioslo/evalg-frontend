@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-""" The election API. """
+""" The ballotbox API. """
 from flask import g, jsonify, current_app, request
 
 
@@ -10,4 +10,4 @@ def init_app(app):
     def hello():
         """ Says hello. """
         app.logger.info("Saying hello")
-        return "Hello from evalg"
+        return "Hello from ballotbox"

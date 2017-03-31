@@ -4,7 +4,7 @@
 
 DEBUG = False
 
-LOGGER_NAME = 'evalg'
+LOGGER_NAME = 'ballotbox'
 
 LOGGING = {
     'disable_existing_loggers': False,
@@ -14,7 +14,7 @@ LOGGING = {
             'handlers': ['stream_stderr'],
             'level': 'DEBUG',
         },
-        'evalg': {
+        'ballotbox': {
             'handlers': ['stream_stderr'],
             'level': 'DEBUG',
         },

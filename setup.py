@@ -29,43 +29,17 @@ def get_requirements(filename):
 
 def get_packages():
     """ List of (sub)packages to install. """
-    return find_packages('.', include=('evalg', 'evalg.*'))
+    return find_packages('.', include=(
+        'evalg_common', 'evalg_common.*',
+        'evalg', 'evalg.*',
+        'ballotbox', 'ballotbox.*',
+    ))
 
 
 def build_package_data(packages, *include):
     """ Generate a list of package_data to include. """
     for package in packages:
         yield package, list(include)
-
-
-class Tox(TestCommand, object):
-    """ Run tests using Tox.
-
-    From `https://tox.readthedocs.io/en/latest/example/basic.html`
-
-    """
-
-    user_options = [('tox-args=', 'a', "Arguments to pass to tox")]
-
-    def initialize_options(self):
-        """ parse args. """
-        super(Tox, self).initialize_options()
-        self.tox_args = None
-
-    def finalize_options(self):
-        """ setup tests. """
-        super(Tox, self).finalize_options()
-        self.test_args = []
-        self.test_suite = True
-
-    def run_tests(self):
-        """ Run tests. """
-        import tox
-        import shlex
-        args = self.tox_args
-        if args:
-            args = shlex.split(self.tox_args)
-        tox.cmdline(args=args)
 
 
 class PyTest(TestCommand, object):
@@ -123,17 +97,17 @@ def setup_package():
         install_requires=list(
             get_requirements('requirements.txt')),
         tests_require=list(
-            get_requirements('test-requirements.txt')),
+            get_requirements('requirements-test.txt')),
 
         entry_points={
             'console_scripts': [
-                'evalg = evalg.__main__:main'
+                'evalg = evalg.__main__:main',
+                'ballotbox = ballotbox.__main__:main',
             ]
         },
         cmdclass={
             'test': PyTest,
             'pytest': PyTest,
-            'tox': Tox,
         }
     )
 

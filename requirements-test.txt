@@ -1,0 +1,5 @@
+pytest
+pytest-coverage
+pytest-pythonpath
+pytest-watch
+pytest-xdist
