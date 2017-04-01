@@ -1,6 +1,7 @@
 python-json-logger
 flask
 flask-sqlalchemy
+sqlalchemy_utils
 marshmallow
 gunicorn
 setuptools_scm

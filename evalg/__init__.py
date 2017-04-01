@@ -5,6 +5,7 @@ Module for bootstrapping the eValg application.
 
 """
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug.contrib.fixers import ProxyFix
 from setuptools_scm import get_version
 
@@ -90,3 +91,6 @@ wsgi = WsgiApp()
 
 app = wsgi.app
 """ Flask app. """
+
+db = SQLAlchemy(app)
+""" Database. """
