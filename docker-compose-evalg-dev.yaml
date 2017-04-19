@@ -4,14 +4,14 @@ services:
   evalg:
     build:
       context: .
-      dockerfile: Dockerfile-evalg
+      dockerfile: Dockerfile-dev
     networks:
       - evalg-backend
     ports:
       - "5000:5000"
     volumes:
       - .:/usr/src/evalg:z
-      - ./instance:/usr/var/evalg-instance:z
+      - ./instance:/usr/local/var/evalg-instance:z
     working_dir: /usr/src/evalg
     depends_on:
       - db

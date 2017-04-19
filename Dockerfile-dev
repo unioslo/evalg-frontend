@@ -9,6 +9,7 @@ ENV https_proxy="https://updateproxy.uio.no:3128"
 WORKDIR /usr/src/evalg
 
 # deps
+ADD requirements-test.txt /usr/src/evalg
 ADD requirements.txt /usr/src/evalg
 
 # Install build-deps, then install/build deps
@@ -21,6 +22,7 @@ RUN set -ex \
             linux-headers \
             postgresql-dev \
     && pip3 install -U pip \
+    && pip3 install -r /usr/src/evalg/requirements-test.txt \
     && pip3 install -r /usr/src/evalg/requirements.txt \
     && apk del .evalg-build-deps \
     && apk add --no-cache git
@@ -32,10 +34,4 @@ RUN pip3 install /usr/src/evalg
 ENV http_proxy=""
 ENV https_proxy=""
 
-# Setup evalg
-EXPOSE 8000
-
-# ENV FLASK_APP="evalg"
-# RUN flask db migrate ?
-
-CMD ["gunicorn", "-b", "0.0.0.0:8000", "evalg.wsgi"]
+CMD ["python3"]
