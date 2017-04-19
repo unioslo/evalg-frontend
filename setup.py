@@ -99,12 +99,6 @@ def setup_package():
         tests_require=list(
             get_requirements('requirements-test.txt')),
 
-        entry_points={
-            'console_scripts': [
-                'evalg = evalg.__main__:main',
-                'ballotbox = ballotbox.__main__:main',
-            ]
-        },
         cmdclass={
             'test': PyTest,
             'pytest': PyTest,
