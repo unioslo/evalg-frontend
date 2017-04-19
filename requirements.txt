@@ -1,6 +1,8 @@
 python-json-logger
 flask
 flask-sqlalchemy
+flask-migrate
+psycopg2
 sqlalchemy_utils
 marshmallow
 gunicorn

@@ -6,6 +6,7 @@ Module for bootstrapping the eValg application.
 """
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from werkzeug.contrib.fixers import ProxyFix
 from setuptools_scm import get_version
 
@@ -14,8 +15,8 @@ from evalg_common.logging import init_logging
 from evalg_common import request_id
 from evalg_common import cli as common_cli
 
-from . import default_config
-from . import election
+from evalg import default_config
+from evalg.api import election
 
 __VERSION__ = get_version()
 
@@ -94,3 +95,6 @@ app = wsgi.app
 
 db = SQLAlchemy(app)
 """ Database. """
+
+migrate = Migrate(app, db)
+""" Migrations. """

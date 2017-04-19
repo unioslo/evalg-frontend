@@ -5,6 +5,8 @@ Module for bootstrapping the ballotbox application.
 
 """
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from werkzeug.contrib.fixers import ProxyFix
 from setuptools_scm import get_version
 
@@ -12,8 +14,8 @@ from evalg_common.configuration import init_config
 from evalg_common.logging import init_logging
 from evalg_common import request_id
 
-from . import default_config
-from . import ballotbox
+from ballotbox import default_config
+from ballotbox import api
 
 __VERSION__ = get_version()
 
@@ -57,8 +59,8 @@ class WsgiApp(object):
         init_logging(app)
         request_id.init_app(app)
 
-        # Setup modules
-        ballotbox.init_app(app)
+        # Setup API
+        api.init_app(app)
 
         # Add cache headers to all responses
         @app.after_request
@@ -86,3 +88,9 @@ wsgi = WsgiApp()
 
 app = wsgi.app
 """ Flask app. """
+
+db = SQLAlchemy(app)
+""" Database. """
+
+migrate = Migrate(app, db)
+""" Migrations. """
