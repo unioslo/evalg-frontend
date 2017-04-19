@@ -8,7 +8,7 @@ node ('evalg') {
         checkout scm
     }
     stage ('Build test image') {
-        sh "docker build -t 'valg-dev:${image_version}' -f Dockerfile.dev ."
+        sh "docker build -t 'valg-dev:${image_version}' -f Dockerfile-dev ."
     }
     try {
         stage ('Run tests') {
