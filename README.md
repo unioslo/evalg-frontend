@@ -77,6 +77,11 @@ package directory. Override settings defined here by:
 2. Putting a config file path in the environment variables `EVALG_CONFIG` or
    `BALLOTBOX_CONFIG`
 
+## Docker
+
+### Development
+1. Copy `instance/evalg_config.py.example.dev` to `instance/evalg_config.py`.
+2. `docker-compose -f docker-compose-evalg-dev.yaml up`
 
 ## Shell
 

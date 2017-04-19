@@ -1,0 +1,13 @@
+FROM fedora:25
+RUN dnf -y install python3 python3-devel python3-pip git gcc postgresql postgresql-devel redhat-rpm-config
+RUN pip3 install --upgrade pip
+
+WORKDIR /usr/src/evalg
+
+ADD requirements.txt /usr/src/evalg
+RUN pip3 install -r requirements.txt
+
+ADD . /usr/src/evalg
+RUN python3 setup.py install
+
+CMD gunicorn -b 0.0.0.0:8000 evalg:wsgi

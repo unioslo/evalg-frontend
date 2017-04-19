@@ -1,0 +1,38 @@
+version: "2"
+
+services:
+  evalg:
+    build:
+      context: .
+      dockerfile: Dockerfile-evalg
+    networks:
+      - evalg-backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/usr/src/evalg:z
+      - ./instance:/usr/var/evalg-instance:z
+    working_dir: /usr/src/evalg
+    depends_on:
+      - db
+    command: flask run --host 0.0.0.0 --port 5000
+    environment:
+      FLASK_APP: evalg
+      LC_ALL: C.UTF-8
+      LANG: C.UTF-8
+
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile-db
+    networks:
+      - evalg-backend
+    volumes:
+      - ./db/main:/var/lib/postgresql/data:z
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+networks:
+  evalg-backend:
+    driver: bridge
