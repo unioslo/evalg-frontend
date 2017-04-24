@@ -77,13 +77,24 @@ package directory. Override settings defined here by:
 2. Putting a config file path in the environment variables `EVALG_CONFIG` or
    `BALLOTBOX_CONFIG`
 
-## Docker
+## Development environment
+A small development environment can be started with docker. This consists of
+two containers, one for the database and one for the Flask-application.
 
-### Development
+The Flask application auto-reloads its code when you edit files on your docker host.
+
+### Start the development environment
 1. Copy `instance/evalg_config.py.example.dev` to `instance/evalg_config.py`.
 2. `docker-compose -f docker-compose-evalg-dev.yaml up`
 
-## Shell
+### Flask shell
+You can run the flask shell in order to do migrations and run commands defined
+by the application:
+```
+docker exec -it evalg_evalg_1 flask
+```
+
+### Flask Shell
 
 The flask shell command also comes with a shell utility:
 

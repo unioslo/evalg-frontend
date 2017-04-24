@@ -15,8 +15,9 @@ services:
     working_dir: /usr/src/evalg
     depends_on:
       - db
-    command: flask run --host 0.0.0.0 --port 5000
+    command: flask run --host 0.0.0.0 --port 5000 --reload
     environment:
+      PYTHONDONTWRITEBYTECODE: "yes"
       FLASK_APP: evalg
       LC_ALL: C.UTF-8
       LANG: C.UTF-8
