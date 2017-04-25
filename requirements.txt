@@ -2,6 +2,7 @@ python-json-logger
 flask
 flask-sqlalchemy
 flask-migrate
+flask-shell-ipython
 flask-marshmallow
 babel
 marshmallow-sqlalchemy
