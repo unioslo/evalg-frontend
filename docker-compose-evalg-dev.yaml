@@ -5,8 +5,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-dev
-    networks:
-      - evalg-backend
     ports:
       - "5000:5000"
     volumes:
@@ -26,14 +24,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-db
-    networks:
-      - evalg-backend
     volumes:
       - ./db/main:/var/lib/postgresql/data:z
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-
-networks:
-  evalg-backend:
-    driver: bridge
