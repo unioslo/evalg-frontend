@@ -2,6 +2,9 @@ python-json-logger
 flask
 flask-sqlalchemy
 flask-migrate
+flask-marshmallow
+babel
+marshmallow-sqlalchemy
 psycopg2
 sqlalchemy_utils
 marshmallow

@@ -6,6 +6,7 @@ Module for bootstrapping the eValg application.
 """
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from werkzeug.contrib.fixers import ProxyFix
 from setuptools_scm import get_version
@@ -16,7 +17,6 @@ from evalg_common import request_id
 from evalg_common import cli as common_cli
 
 from evalg import default_config
-from evalg.api import election
 
 __VERSION__ = get_version()
 
@@ -29,6 +29,12 @@ through a third party application server like *gunicorn*.
 
 APP_CONFIG_FILE_NAME = 'evalg_config.py'
 """ Config filename in the Flask application instance path. """
+
+db = SQLAlchemy()
+""" Database. """
+
+ma = Marshmallow()
+""" Marshmallow. """
 
 
 class WsgiApp(object):
@@ -63,8 +69,13 @@ class WsgiApp(object):
         init_logging(app)
         request_id.init_app(app)
 
-        # Setup modules
-        election.init_app(app)
+        # Setup db
+        db.init_app(app)
+        ma.init_app(app)
+
+        # Setup API
+        from evalg.api.election import election_bp
+        app.register_blueprint(election_bp)
 
         # Add cache headers to all responses
         @app.after_request
@@ -92,9 +103,6 @@ wsgi = WsgiApp()
 
 app = wsgi.app
 """ Flask app. """
-
-db = SQLAlchemy(app)
-""" Database. """
 
 migrate = Migrate(app, db)
 """ Migrations. """
