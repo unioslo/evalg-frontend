@@ -36,73 +36,55 @@ db = SQLAlchemy()
 ma = Marshmallow()
 """ Marshmallow. """
 
-
-class WsgiApp(object):
-    """ Wsgi app proxy object. """
-
-    @staticmethod
-    def create(config=None, flask_class=Flask):
-        """ Create application.
-
-        :rtype: Flask
-        :return: The assembled and configured Flask application.
-        """
-        # Setup Flask app
-        app = flask_class(__name__,
-                          static_folder=None,
-                          instance_relative_config=True)
-
-        # Setup CLI
-        common_cli.init_app(app)
-
-        init_config(app, config,
-                    environ_name=APP_CONFIG_ENVIRON_NAME,
-                    default_file_name=APP_CONFIG_FILE_NAME,
-                    default_config=default_config)
-
-        if app.config.get('NUMBER_OF_PROXIES', None):
-            app.wsgi_app = ProxyFix(app.wsgi_app,
-                                    num_proxies=app.config.get(
-                                        'NUMBER_OF_PROXIES'))
-
-        # Setup logging
-        init_logging(app)
-        request_id.init_app(app)
-
-        # Setup db
-        db.init_app(app)
-        ma.init_app(app)
-
-        # Setup API
-        from evalg.api.election import election_bp
-        app.register_blueprint(election_bp)
-
-        # Add cache headers to all responses
-        @app.after_request
-        def set_cache_headers(response):
-            response.headers['Pragma'] = 'no-cache'
-            response.headers['Cache-Control'] = 'no-cache'
-            return response
-
-        return app
-
-    @property
-    def app(self):
-        """ Lazily create the application. """
-        if not hasattr(self, '_app'):
-            self._app = self.create()
-        return self._app
-
-    def __call__(self, *args, **kwargs):
-        """ Run the application on a request. """
-        return self.app(*args, **kwargs)
-
-
-wsgi = WsgiApp()
-""" WSGI app. """
-
-app = wsgi.app
-""" Flask app. """
-
-migrate = Migrate(app, db, directory='evalg/migrations')
+migrate = Migrate()
 """ Migrations. """
+
+
+def create_app(config=None, flask_class=Flask):
+    """ Create application.
+
+    :rtype: Flask
+    :return: The assembled and configured Flask application.
+    """
+    # Setup Flask app
+    app = flask_class(__name__,
+                      static_folder=None,
+                      instance_relative_config=True)
+
+    # Setup CLI
+    common_cli.init_app(app)
+
+    init_config(app, config,
+                environ_name=APP_CONFIG_ENVIRON_NAME,
+                default_file_name=APP_CONFIG_FILE_NAME,
+                default_config=default_config)
+
+    if app.config.get('NUMBER_OF_PROXIES', None):
+        app.wsgi_app = ProxyFix(app.wsgi_app,
+                                num_proxies=app.config.get(
+                                    'NUMBER_OF_PROXIES'))
+
+    # Setup logging
+    init_logging(app)
+    request_id.init_app(app)
+
+    # Setup db
+    db.init_app(app)
+    ma.init_app(app)
+    migrate.init_app(app, db, directory='evalg/migrations')
+
+    # Setup API
+    from evalg.api.election import election_bp
+    app.register_blueprint(election_bp)
+
+    # Add cache headers to all responses
+    @app.after_request
+    def set_cache_headers(response):
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Cache-Control'] = 'no-cache'
+        return response
+
+    return app
+
+app = create_app()
+""" Flask app. """
