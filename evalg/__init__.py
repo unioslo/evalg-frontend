@@ -104,5 +104,5 @@ wsgi = WsgiApp()
 app = wsgi.app
 """ Flask app. """
 
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, directory='evalg/migrations')
 """ Migrations. """
