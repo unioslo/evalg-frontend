@@ -17,6 +17,7 @@ from evalg_common import request_id
 from evalg_common import cli as common_cli
 
 from evalg import default_config
+from evalg import cli
 
 __VERSION__ = get_version()
 
@@ -53,6 +54,7 @@ def create_app(config=None, flask_class=Flask):
 
     # Setup CLI
     common_cli.init_app(app)
+    cli.init_app(app)
 
     init_config(app, config,
                 environ_name=APP_CONFIG_ENVIRON_NAME,
