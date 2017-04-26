@@ -86,6 +86,13 @@ The Flask application auto-reloads its code when you edit files on your docker h
 ### Start the development environment
 1. Copy `instance/evalg_config.py.example.dev` to `instance/evalg_config.py`.
 2. `docker-compose -f docker-compose-evalg-dev.yaml up`
+3. Create appropriate database definitions: `docker exec -it evalg_evalg_1 flask db migrate`
+4. Apply said definitions: `docker exec -it evalg_evalg_1 flask db upgrade`
+
+### Alembic migration scripts
+Alembic is used to upgrade the database on changes of the data model. Migration
+data resides in the folder `evalg/migrations`, and can be generated with the
+command `flask db migrate`, and applied with `flask db upgrade`.
 
 ### Flask shell
 You can run the flask shell in order to do migrations and run commands defined
@@ -94,7 +101,13 @@ by the application:
 docker exec -it evalg_evalg_1 flask
 ```
 
-### Flask Shell
+### A Postgres client
+If you should like to use psql:
+```
+docker exec -u postgres -it evalg_db_1 psql
+```
+
+## Flask Shell
 
 The flask shell command also comes with a shell utility:
 
