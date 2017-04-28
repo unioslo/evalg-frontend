@@ -89,6 +89,8 @@ The Flask application auto-reloads its code when you edit files on your docker h
 3. Create appropriate database definitions: `docker exec -it evalg_evalg_1 flask db migrate`
 4. Apply said definitions: `docker exec -it evalg_evalg_1 flask db upgrade`
 
+You can also `docker exec -it evalg_evalg_1 flask db downgrade base` to empty the database.
+
 ### Alembic migration scripts
 Alembic is used to upgrade the database on changes of the data model. Migration
 data resides in the folder `evalg/migrations`, and can be generated with the
