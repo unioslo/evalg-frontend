@@ -89,9 +89,11 @@ def create_app(config=None, flask_class=Flask):
     from evalg import api
     api.init_app(app)
 
-    from evalg.api import election, ou
+    from evalg.api import election, ou, candidate, election_list
     election.init_app(app)
     ou.init_app(app)
+    candidate.init_app(app)
+    election_list.init_app(app)
 
     # Setup CORS
     cors.init_app(app)
