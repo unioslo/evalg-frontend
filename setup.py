@@ -24,6 +24,8 @@ def get_requirements(filename):
         for req_line in reqfile.readlines():
             req_line = req_line.strip()
             if req_line:
+                if req_line.startswith('-'):
+                    continue  # some pip option, hide line from setuptools
                 yield req_line
 
 

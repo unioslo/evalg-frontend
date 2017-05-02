@@ -4,10 +4,10 @@ flask-sqlalchemy
 flask-migrate
 flask-shell-ipython
 flask-marshmallow
-babel
+marshmallow
 marshmallow-sqlalchemy
 psycopg2
 sqlalchemy_utils
-marshmallow
 gunicorn
 setuptools_scm
+-r dependency-links.txt

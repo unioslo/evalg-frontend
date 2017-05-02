@@ -8,6 +8,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
+from flask_apispec.extension import FlaskApiSpec
 from werkzeug.contrib.fixers import ProxyFix
 from setuptools_scm import get_version
 
@@ -39,6 +40,9 @@ ma = Marshmallow()
 
 migrate = Migrate()
 """ Migrations. """
+
+docs = FlaskApiSpec()
+""" API documentation. """
 
 
 def create_app(config=None, flask_class=Flask):
@@ -76,8 +80,9 @@ def create_app(config=None, flask_class=Flask):
     migrate.init_app(app, db, directory='evalg/migrations')
 
     # Setup API
-    from evalg.api.election import election_bp
-    app.register_blueprint(election_bp)
+    docs.init_app(app)
+    from evalg.api import election
+    election.init_app(app)
 
     # Add cache headers to all responses
     @app.after_request
