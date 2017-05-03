@@ -4,6 +4,7 @@
 from flask import Blueprint, request, jsonify, abort, current_app
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with
+from flask_apispec import doc
 from marshmallow import fields
 from evalg import ma, docs
 from evalg.models.election import ElectionGroup, Election, OrganizationalUnit
@@ -22,8 +23,8 @@ class ElectionGroupSchema(ma.ModelSchema):
     ou = fields.Nested(OrganizationalUnitSchema)
 
     _links = ma.Hyperlinks({
-        'self': ma.URLFor('elections.election_groups', eg_id='<id>'),
-        'collection': ma.URLFor('elections.election_groups')
+        'self': ma.URLFor('elections.ElectionGroupDetail', eg_id='<id>'),
+        'collection': ma.URLFor('elections.ElectionGroupList')
     })
 
     class Meta:
@@ -39,19 +40,12 @@ election_group_schema = ElectionGroupSchema()
 election_schema = ElectionSchema()
 
 
-class ElectionGroupResource(MethodResource):
+@doc(tags=['electiongroup'])
+class ElectionGroupDetail(MethodResource):
     """ Election group API. """
-    def get(self, eg_id=None):
-        if eg_id is None:
-            return self.get_list()
-        return self.get_detail(eg_id)
-
-    @marshal_with(ElectionGroupSchema(many=True))
-    def get_list(self):
-        return ElectionGroup.query.all()
-
     @marshal_with(ElectionGroupSchema)
-    def get_detail(self, eg_id):
+    @doc(summary='Get an election group')
+    def get(self, eg_id):
         eg = ElectionGroup.query.get(eg_id)
         if not eg:
             abort(404)
@@ -59,36 +53,59 @@ class ElectionGroupResource(MethodResource):
 
     @use_kwargs(ElectionGroupSchema)
     @marshal_with(ElectionGroupSchema)
-    def post(self, **kwargs):
-        eg_id = kwargs.get('eg_id')
-        if eg_id is None:
-            return self.post_to_list(**kwargs)
-        return self.post_to_detail(eg_id, **kwargs)
-
-    def post_to_list(self, **kwargs):
+    @doc(summary='Partially update an election group')
+    def put(self, eg_id, **kwargs):
+        eg = ElectionGroup.query.get(eg_id)
+        if not eg:
+            abort(404)
         pass
 
-    def post_to_detail(self, eg_id, **kwargs):
+    @use_kwargs(ElectionGroupSchema)
+    @marshal_with(ElectionGroupSchema)
+    @doc(summary='Update an election group')
+    def post(self, eg_id, **kwargs):
+        eg = ElectionGroup.query.get(eg_id)
+        if not eg:
+            abort(404)
         pass
 
-    def put(self, eg_id):
-        pass
-
+    @doc(summary='Delete an election group')
     def delete(self, eg_id):
         pass
 
 
-election_group_view = ElectionGroupResource.as_view('election_groups')
+@doc(tags=['electiongroup'])
+class ElectionGroupList(MethodResource):
+    """ Election group API. """
+    @marshal_with(ElectionGroupSchema(many=True))
+    @doc(summary='List election groups')
+    def get(self):
+        return ElectionGroup.query.all()
+
+    @use_kwargs(ElectionGroupSchema)
+    @marshal_with(ElectionGroupSchema)
+    @doc(summary='Create an election group')
+    def post(self, **kwargs):
+        pass
+
+
 election_bp.add_url_rule('/electiongroups/',
-                         view_func=election_group_view,
+                         view_func=ElectionGroupList,
                          methods=['GET', 'POST'])
 election_bp.add_url_rule('/electiongroups/<uuid:eg_id>',
-                         view_func=election_group_view,
+                         view_func=ElectionGroupDetail,
                          methods=['GET', 'POST', 'PUT', 'DELETE'])
 
 
 def init_app(app):
     app.register_blueprint(election_bp)
-    docs.register(ElectionGroupResource,
-                  endpoint='election_groups',
+    docs.spec.add_tag({
+        'name': 'electiongroup',
+        'description': 'Election group operations'
+    })
+    docs.register(ElectionGroupList,
+                  endpoint='ElectionGroupList',
+                  blueprint='elections')
+    docs.register(ElectionGroupDetail,
+                  endpoint='ElectionGroupDetail',
                   blueprint='elections')

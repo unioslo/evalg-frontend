@@ -91,6 +91,12 @@ def create_app(config=None, flask_class=Flask):
         response.headers['Cache-Control'] = 'no-cache'
         return response
 
+    if app.debug:
+        @app.after_request
+        def allow_any_origin(response):
+            response.headers['Access-Control-Allow-Origin'] = '*'
+            return response
+
     return app
 
 app = create_app()
