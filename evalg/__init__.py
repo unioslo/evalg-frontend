@@ -9,6 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from flask_apispec.extension import FlaskApiSpec
+from flask_cors import CORS
 from werkzeug.contrib.fixers import ProxyFix
 from setuptools_scm import get_version
 
@@ -43,6 +44,9 @@ migrate = Migrate()
 
 docs = FlaskApiSpec()
 """ API documentation. """
+
+cors = CORS()
+""" CORS. """
 
 
 def create_app(config=None, flask_class=Flask):
@@ -81,8 +85,12 @@ def create_app(config=None, flask_class=Flask):
 
     # Setup API
     docs.init_app(app)
-    from evalg.api import election
+    from evalg.api import election, ou
     election.init_app(app)
+    ou.init_app(app)
+
+    # Setup CORS
+    cors.init_app(app)
 
     # Add cache headers to all responses
     @app.after_request
@@ -90,12 +98,6 @@ def create_app(config=None, flask_class=Flask):
         response.headers['Pragma'] = 'no-cache'
         response.headers['Cache-Control'] = 'no-cache'
         return response
-
-    if app.debug:
-        @app.after_request
-        def allow_any_origin(response):
-            response.headers['Access-Control-Allow-Origin'] = '*'
-            return response
 
     return app
 
