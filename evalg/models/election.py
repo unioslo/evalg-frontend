@@ -1,34 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-""" The election models. """
+""" Models for elections. """
+
 import uuid
 from evalg import db
+from evalg.models import Base
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy_utils import UUIDType, URLType
-
-
-class Base(db.Model):
-    __abstract__ = True
-
-    def __repr__(self):
-        return '<{} {}>'.format(self.__class__.__name__,
-                                self.id)
-
-
-class OrganizationalUnit(Base):
-    id = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
-    name = db.Column(JSON, nullable=False)
-    code = db.Column(db.Text, nullable=False)
-    parent = db.relationship('OrganizationalUnit',
-                             backref='children',
-                             remote_side=id)
-    parent_id = db.Column(UUIDType(), db.ForeignKey('organizational_unit.id'))
-
-    def __init__(self, name, code, parent=None):
-        self.name = name
-        self.code = code
-        self.parent = parent
+from evalg.models.ou import OrganizationalUnit
 
 
 class PublicKey(Base):
@@ -55,7 +35,7 @@ class AbstractElection(Base):
 
     @declared_attr
     def ou(self):
-        return db.relationship('OrganizationalUnit')
+        return db.relationship(OrganizationalUnit)
 
     @declared_attr
     def ou_id(self):
@@ -63,7 +43,7 @@ class AbstractElection(Base):
 
     @declared_attr
     def public_key(self):
-        return db.relationship('PublicKey')
+        return db.relationship(PublicKey)
 
     @declared_attr
     def public_key_id(self):
