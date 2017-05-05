@@ -4,6 +4,12 @@
 
 DEBUG = False
 
+LANGUAGES = {
+    'en': 'English',
+    'nb': 'Norwegian (bokmål)',
+    'nn': 'Norwegian (nynorsk)'
+}
+
 LOGGER_NAME = 'evalg'
 
 LOGGING = {

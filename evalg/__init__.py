@@ -85,6 +85,10 @@ def create_app(config=None, flask_class=Flask):
 
     # Setup API
     docs.init_app(app)
+
+    from evalg import api
+    api.init_app(app)
+
     from evalg.api import election, ou
     election.init_app(app)
     ou.init_app(app)

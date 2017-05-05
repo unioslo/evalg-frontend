@@ -17,8 +17,3 @@ class OrganizationalUnit(Base):
                              backref='children',
                              remote_side=id)
     parent_id = db.Column(UUIDType(), db.ForeignKey('organizational_unit.id'))
-
-    def __init__(self, name, code, parent=None):
-        self.name = name
-        self.code = code
-        self.parent = parent
