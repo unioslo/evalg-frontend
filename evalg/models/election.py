@@ -25,7 +25,7 @@ class AbstractElection(Base):
     id = db.Column(UUIDType, default=uuid.uuid4(), primary_key=True)
     start = db.Column(db.DateTime)
     end = db.Column(db.DateTime)
-    title = db.Column(JSON)
+    name = db.Column(JSON)
     description = db.Column(JSON)
     information_url = db.Column(URLType)
     contact = db.Column(db.Text)

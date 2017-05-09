@@ -16,7 +16,7 @@ class AbstractElectionSchema(ma.Schema):
     id = fields.UUID()
     start = fields.DateTime()
     end = fields.DateTime()
-    title = fields.Nested(TranslatedString())
+    name = fields.Nested(TranslatedString())
     description = fields.Nested(TranslatedString())
     information_url = fields.URL(allow_none=True)
     contact = fields.Str()
@@ -105,13 +105,13 @@ class ElectionGroupList(MethodResource):
         return ElectionGroup.query.all()
 
     @use_kwargs(eg_schema)
-    @marshal_with(eg_schema)
+    @marshal_with(eg_schema, code=201)
     @doc(summary='Create an election group')
     def post(self, **kwargs):
         group = ElectionGroup(**kwargs)
         db.session.add(group)
         db.session.commit()
-        return group
+        return group, 201
 
 
 @doc(tags=['election'])

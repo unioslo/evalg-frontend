@@ -22,7 +22,7 @@ class OrganizationalUnitSchema(ma.Schema):
     name = fields.Nested(TranslatedString())
     code = fields.Str()
     parent = fields.UUID(attribute='parent_id', allow_none=True)
-    children = fields.Nested('self', only='id', many=True)
+    children = fields.List(fields.Str())
 
     class Meta:
         strict = True
@@ -79,13 +79,13 @@ class OUList(MethodResource):
         return OrganizationalUnit.query.all()
 
     @use_kwargs(ou_schema)
-    @marshal_with(ou_schema)
+    @marshal_with(ou_schema, code=201)
     @doc(summary='Create an organizational unit')
     def post(self, **kwargs):
         ou = OrganizationalUnit(**kwargs)
         db.session.add(ou)
         db.session.commit()
-        return ou
+        return ou, 201
 
 
 ou_bp.add_url_rule('/ous/',
