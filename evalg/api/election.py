@@ -43,13 +43,15 @@ class ElectionGroupSchema(AbstractElectionSchema):
 
 class ElectionSchema(AbstractElectionSchema):
     _links = ma.Hyperlinks({
-        'self': ma.URLFor('elections.ElectionDetail', eg_id='<id>'),
+        'self': ma.URLFor('elections.ElectionDetail', e_id='<id>'),
         'collection': ma.URLFor('elections.ElectionList'),
-        'group': ma.URLFor('elections.ElectionGroupDetail', eg_id='<group>'),
+        'group': ma.URLFor('elections.ElectionGroupDetail',
+                           eg_id='<group_id>'),
         'ou': ma.URLFor('ous.OUDetail', ou_id='<ou_id>')
     })
 
-    group = fields.UUID(description="Parent election group")
+    group = fields.UUID(attribute='group_id',
+                        description="Parent election group")
 
     class Meta:
         strict = True
@@ -59,7 +61,7 @@ eg_schema = ElectionGroupSchema()
 e_schema = ElectionSchema()
 
 
-@doc(tags=['election'])
+@doc(tags=['electiongroup'])
 class ElectionGroupDetail(MethodResource):
     """ Resource for single election groups. """
     @marshal_with(eg_schema)
@@ -95,10 +97,10 @@ class ElectionGroupDetail(MethodResource):
         return '', 204
 
 
-@doc(tags=['election'])
+@doc(tags=['electiongroup'])
 class ElectionGroupList(MethodResource):
     """ Resource for election group collections. """
-    @use_kwargs({}, locations='query')
+    @use_kwargs({}, locations=['query'])
     @marshal_with(ElectionGroupSchema(many=True))
     @doc(summary='List election groups')
     def get(self):
@@ -153,7 +155,7 @@ class ElectionDetail(MethodResource):
 @doc(tags=['election'])
 class ElectionList(MethodResource):
     """ Resource for election collections. """
-    @use_kwargs({}, locations='query')
+    @use_kwargs({}, locations=['query'])
     @marshal_with(ElectionSchema(many=True))
     @doc(summary='List elections')
     def get(self):
@@ -163,6 +165,7 @@ class ElectionList(MethodResource):
     @marshal_with(e_schema)
     @doc(summary='Create an election')
     def post(self, **kwargs):
+        current_app.logger.debug(kwargs)
         election = Election(**kwargs)
         db.session.add(election)
         db.session.commit()
@@ -189,8 +192,12 @@ election_bp.add_url_rule('/elections/<uuid:e_id>',
 def init_app(app):
     app.register_blueprint(election_bp)
     docs.spec.add_tag({
+        'name': 'electiongroup',
+        'description': 'Election groups'
+    })
+    docs.spec.add_tag({
         'name': 'election',
-        'description': 'Elections and election groups'
+        'description': 'Elections'
     })
     docs.register(ElectionGroupList,
                   endpoint='ElectionGroupList',
