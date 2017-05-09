@@ -12,7 +12,7 @@ from evalg.models.ou import OrganizationalUnit
 
 
 class PublicKey(Base):
-    id = db.Column(UUIDType, default=uuid.uuid4(), primary_key=True)
+    id = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
     fingerprint = db.Column(db.Text)
 
     def __init__(self, fingerprint):
@@ -22,7 +22,7 @@ class PublicKey(Base):
 class AbstractElection(Base):
     __abstract__ = True
 
-    id = db.Column(UUIDType, default=uuid.uuid4(), primary_key=True)
+    id = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
     start = db.Column(db.DateTime)
     end = db.Column(db.DateTime)
     name = db.Column(JSON)
