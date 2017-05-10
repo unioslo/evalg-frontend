@@ -1,5 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from flask import jsonify
-from marshmallow import Schema, ValidationError, fields, pre_load
+from evalg import ma
+from marshmallow import SchemaOpts, ValidationError, fields, validates_schema
 
 
 def handle_unprocessable_entity(err):
@@ -10,12 +13,24 @@ def handle_unprocessable_entity(err):
     }), 422
 
 
-class TranslatedStringSchema(Schema):
-    @pre_load
-    def validate_extra(self, data):
-        for key in data.keys():
-            if key not in self.fields:
-                raise ValidationError('Unsupported language: {}'.format(key))
+class BaseSchemaOpts(SchemaOpts):
+    """ Extra Meta options for BaseSchema. """
+    def __init__(self, meta, **kwargs):
+        SchemaOpts.__init__(self, meta, **kwargs)
+        self.allow_unknown_fields = getattr(meta, 'allow_unknown_fields',
+                                            False)
+
+
+class BaseSchema(ma.Schema):
+    OPTIONS_CLASS = BaseSchemaOpts
+
+    @validates_schema(pass_original=True)
+    def check_unknown_fields(self, data, original_data):
+        if self.opts.allow_unknown_fields:
+            return
+        unknown = set(original_data) - set(self.fields)
+        if unknown:
+            raise ValidationError("Unknown field", unknown)
 
 
 class TranslatedString(object):
@@ -31,7 +46,7 @@ class TranslatedString(object):
     @classmethod
     def configure(cls, app):
         cls.klass = type('TranslatedString',
-                         (TranslatedStringSchema, ),
+                         (BaseSchema, ),
                          cls.translation_fields(app.config['LANGUAGES']))
 
     def __new__(cls, **kwargs):
