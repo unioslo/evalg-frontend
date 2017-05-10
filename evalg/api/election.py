@@ -9,7 +9,7 @@ from evalg import db, ma, docs
 from evalg.api import TranslatedString
 from evalg.models.election import ElectionGroup, Election
 
-election_bp = Blueprint('elections', __name__)
+bp = Blueprint('elections', __name__)
 
 
 class AbstractElectionSchema(ma.Schema):
@@ -172,25 +172,23 @@ class ElectionList(MethodResource):
         return election
 
 
-election_bp.add_url_rule('/electiongroups/',
-                         view_func=ElectionGroupList.as_view(
-                            'ElectionGroupList'),
-                         methods=['GET', 'POST'])
-election_bp.add_url_rule('/electiongroups/<uuid:eg_id>',
-                         view_func=ElectionGroupDetail.as_view(
-                            'ElectionGroupDetail'),
-                         methods=['GET', 'POST', 'PATCH'])
+bp.add_url_rule('/electiongroups/',
+                view_func=ElectionGroupList.as_view('ElectionGroupList'),
+                methods=['GET', 'POST'])
+bp.add_url_rule('/electiongroups/<uuid:eg_id>',
+                view_func=ElectionGroupDetail.as_view('ElectionGroupDetail'),
+                methods=['GET', 'POST', 'PATCH'])
 
-election_bp.add_url_rule('/elections/',
-                         view_func=ElectionList.as_view('ElectionList'),
-                         methods=['GET', 'POST'])
-election_bp.add_url_rule('/elections/<uuid:e_id>',
-                         view_func=ElectionDetail.as_view('ElectionDetail'),
-                         methods=['GET', 'POST', 'PATCH'])
+bp.add_url_rule('/elections/',
+                view_func=ElectionList.as_view('ElectionList'),
+                methods=['GET', 'POST'])
+bp.add_url_rule('/elections/<uuid:e_id>',
+                view_func=ElectionDetail.as_view('ElectionDetail'),
+                methods=['GET', 'POST', 'PATCH'])
 
 
 def init_app(app):
-    app.register_blueprint(election_bp)
+    app.register_blueprint(bp)
     docs.spec.add_tag({
         'name': 'electiongroup',
         'description': 'Election groups'

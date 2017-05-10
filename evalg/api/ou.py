@@ -9,7 +9,7 @@ from evalg import db, ma, docs
 from evalg.api import TranslatedString
 from evalg.models.ou import OrganizationalUnit
 
-ou_bp = Blueprint('ous', __name__)
+bp = Blueprint('ous', __name__)
 
 
 class OrganizationalUnitSchema(ma.Schema):
@@ -22,7 +22,7 @@ class OrganizationalUnitSchema(ma.Schema):
     name = fields.Nested(TranslatedString())
     code = fields.Str()
     parent = fields.UUID(attribute='parent_id', allow_none=True)
-    children = fields.List(fields.Str())
+    children = fields.List(fields.UUID())
 
     class Meta:
         strict = True
@@ -88,16 +88,16 @@ class OUList(MethodResource):
         return ou, 201
 
 
-ou_bp.add_url_rule('/ous/',
-                   view_func=OUList.as_view('OUList'),
-                   methods=['GET', 'POST'])
-ou_bp.add_url_rule('/ous/<uuid:ou_id>',
-                   view_func=OUDetail.as_view('OUDetail'),
-                   methods=['GET', 'POST', 'PATCH'])
+bp.add_url_rule('/ous/',
+                view_func=OUList.as_view('OUList'),
+                methods=['GET', 'POST'])
+bp.add_url_rule('/ous/<uuid:ou_id>',
+                view_func=OUDetail.as_view('OUDetail'),
+                methods=['GET', 'POST', 'PATCH'])
 
 
 def init_app(app):
-    app.register_blueprint(ou_bp)
+    app.register_blueprint(bp)
     docs.spec.add_tag({
         'name': 'ou',
         'description': 'Organizational units'
