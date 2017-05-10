@@ -7,12 +7,13 @@ from flask_apispec import use_kwargs, marshal_with
 from flask_apispec import doc
 from marshmallow import fields
 from evalg import ma, db, docs
+from evalg.api import BaseSchema
 from evalg.models.candidate import Candidate
 
-candidate_bp = Blueprint('candidates', __name__)
+bp = Blueprint('candidates', __name__)
 
 
-class CandidateSchema(ma.Schema):
+class CandidateSchema(BaseSchema):
     id = fields.UUID()
     candidate_name = fields.String()
     list_id = fields.UUID()
@@ -23,21 +24,18 @@ class CandidateSchema(ma.Schema):
     _links = ma.Hyperlinks({
         'election': ma.URLFor('elections.ElectionDetail',
                               e_id='<election_id>'),
-        'election_list': ma.URLFor('lists.ListListAPI', id='<id>')
+        'election_list': ma.URLFor('lists.ElectionListList', id='<id>')
     })
 
     class Meta:
         strict = True
         dump_only = ('id', '_links',)
-#        load_only = ('list_id', 'election_id')
-#        fields = ('id', 'candidate_name', 'data', 'priority', '_links', 'list_id', 'election_id')
-
 
 candidate_schema = CandidateSchema()
 
 
 @doc(tags=['candidate'])
-class CandidateListAPI(MethodResource):
+class CandidateList(MethodResource):
     """ Candidate API. """
     @use_kwargs({}, locations='query')
     @marshal_with(CandidateSchema(many=True))
@@ -56,7 +54,7 @@ class CandidateListAPI(MethodResource):
 
 
 @doc(tags=['candidate'])
-class CandidateAPI(MethodResource):
+class CandidateDetail(MethodResource):
     """ Candidate API. """
     @marshal_with(CandidateSchema())
     @use_kwargs({'id': fields.UUID(description="Candidate identificator")},
@@ -87,25 +85,23 @@ class CandidateAPI(MethodResource):
         return None, 204
 
 
-candidate_bp.add_url_rule(
-    '/candidates/',
-    view_func=CandidateListAPI.as_view('CandidateListAPI'),
-    methods=['GET', 'POST'])
-candidate_bp.add_url_rule(
-    '/candidates/<uuid:id>',
-    view_func=CandidateAPI.as_view('CandidateAPI'),
-    methods=['GET', 'PATCH', 'DELETE'])
+bp.add_url_rule('/candidates/',
+                view_func=CandidateList.as_view('CandidateList'),
+                methods=['GET', 'POST'])
+bp.add_url_rule('/candidates/<uuid:id>',
+                view_func=CandidateDetail.as_view('CandidateDetail'),
+                methods=['GET', 'PATCH', 'DELETE'])
 
 
 def init_app(app):
-    app.register_blueprint(candidate_bp)
+    app.register_blueprint(bp)
     docs.spec.add_tag({
         'name': 'candidate',
         'description': 'Operations on candidates'
     })
-    docs.register(CandidateListAPI,
-                  endpoint='CandidateListAPI',
+    docs.register(CandidateList,
+                  endpoint='CandidateList',
                   blueprint='candidates')
-    docs.register(CandidateAPI,
-                  endpoint='CandidateAPI',
+    docs.register(CandidateDetail,
+                  endpoint='CandidateDetail',
                   blueprint='candidates')

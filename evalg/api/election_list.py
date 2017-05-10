@@ -7,12 +7,13 @@ from flask_apispec import use_kwargs, marshal_with
 from flask_apispec import doc
 from marshmallow import fields
 from evalg import db, ma, docs
+from evalg.api import BaseSchema, TranslatedString
 from evalg.models.election_list import ElectionList
 
-list_bp = Blueprint('lists', __name__)
+bp = Blueprint('lists', __name__)
 
 
-class ListSchema(ma.Schema):
+class ElectionListSchema(BaseSchema):
     id = fields.UUID()
 
     class Meta:
@@ -22,15 +23,15 @@ class ListSchema(ma.Schema):
 
 
 @doc(tags=['list'])
-class ListListAPI(MethodResource):
-    @marshal_with(ListSchema(many=True))
+class ElectionListList(MethodResource):
+    @marshal_with(ElectionListSchema(many=True))
     @use_kwargs({}, locations='query')
     @doc(summary='Get a list of electionlists')
     def get(self):
         return ElectionList.query.all()
 
     @use_kwargs({}, locations="query")
-    @marshal_with(ListSchema(), code=201)
+    @marshal_with(ElectionListSchema(), code=201)
     @doc(summary='Create a election list')
     def post(self):
         l = ElectionList()
@@ -40,16 +41,16 @@ class ListListAPI(MethodResource):
 
 
 @doc(tags=['list'])
-class ListAPI(MethodResource):
+class ElectionListDetail(MethodResource):
     """ Election List API. """
-    @marshal_with(ListSchema)
+    @marshal_with(ElectionListSchema)
     @use_kwargs({}, locations='query')
     @doc(summary='Get a list')
     def get(self, id):
         return ElectionList.query.get(id)
 
-    @marshal_with(ListSchema)
-    @use_kwargs(ListSchema)
+    @marshal_with(ElectionListSchema)
+    @use_kwargs(ElectionListSchema)
     @doc(summary='Partially update a list')
     def patch(self, id=None):
         raise NotImplemented
@@ -57,7 +58,7 @@ class ListAPI(MethodResource):
     def put(self):
         raise NotImplemented
 
-    @marshal_with(ListSchema(), code=204)
+    @marshal_with(ElectionListSchema(), code=204)
     @use_kwargs({},
                 locations='query')
     @doc(summary='Delete a list')
@@ -68,23 +69,23 @@ class ListAPI(MethodResource):
         return '', 204
 
 
-list_bp.add_url_rule('/list/',
-                     view_func=ListListAPI.as_view('ListListAPI'),
-                     methods=['GET', 'POST'])
-list_bp.add_url_rule('/list/<uuid:id>',
-                     view_func=ListAPI.as_view('ListAPI'),
-                     methods=['GET', 'PUT', 'PATCH', 'DELETE'])
+bp.add_url_rule('/list/',
+                view_func=ElectionListList.as_view('ElectionListList'),
+                methods=['GET', 'POST'])
+bp.add_url_rule('/list/<uuid:id>',
+                view_func=ElectionListDetail.as_view('ElectionListDetail'),
+                methods=['GET', 'PUT', 'PATCH', 'DELETE'])
 
 
 def init_app(app):
-    app.register_blueprint(list_bp)
+    app.register_blueprint(bp)
     docs.spec.add_tag({
         'name': 'list',
         'description': 'Operations on election lists'
     })
-    docs.register(ListListAPI,
-                  endpoint='ListListAPI',
+    docs.register(ElectionListList,
+                  endpoint='ElectionListList',
                   blueprint='lists')
-    docs.register(ListAPI,
-                  endpoint='ListAPI',
+    docs.register(ElectionListDetail,
+                  endpoint='ElectionListDetail',
                   blueprint='lists')

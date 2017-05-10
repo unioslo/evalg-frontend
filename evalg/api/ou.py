@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ The election API. """
-from flask import Blueprint, abort
+from flask import Blueprint
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields
 from evalg import db, ma, docs
-from evalg.api import TranslatedString
+from evalg.api import BaseSchema, TranslatedString
 from evalg.models.ou import OrganizationalUnit
 
 bp = Blueprint('ous', __name__)
 
 
-class OrganizationalUnitSchema(ma.Schema):
+class OrganizationalUnitSchema(BaseSchema):
     _links = ma.Hyperlinks({
         'self': ma.URLFor('ous.OUDetail', ou_id='<id>'),
         'collection': ma.URLFor('ous.OUList'),
@@ -22,7 +22,7 @@ class OrganizationalUnitSchema(ma.Schema):
     name = fields.Nested(TranslatedString())
     code = fields.Str()
     parent = fields.UUID(attribute='parent_id', allow_none=True)
-    children = fields.List(fields.UUID())
+    children = fields.List(fields.UUID(attribute='id'))
 
     class Meta:
         strict = True

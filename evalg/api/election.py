@@ -6,13 +6,13 @@ from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields
 from evalg import db, ma, docs
-from evalg.api import TranslatedString
+from evalg.api import BaseSchema, TranslatedString
 from evalg.models.election import ElectionGroup, Election
 
 bp = Blueprint('elections', __name__)
 
 
-class AbstractElectionSchema(ma.Schema):
+class AbstractElectionSchema(BaseSchema):
     id = fields.UUID()
     start = fields.DateTime()
     end = fields.DateTime()
