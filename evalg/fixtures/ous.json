@@ -1,0 +1,13 @@
+[{"model": "evalg.models.ou.OrganizationalUnit",
+  "records": [
+      {"id": "a184e25e-907c-4155-860f-79df898ad51c",
+       "name": "This is my OU there are many like it but this one is mine",
+       "code": "900000"},
+      {"id": "61499710-726d-43ab-b6f7-63138391dd02",
+       "name": "This is the first child OU",
+       "code": "900010",
+       "parent_id": "a184e25e-907c-4155-860f-79df898ad51c"},
+      {"id": "2ec82fd8-da0e-4ad7-b844-76659fa8ce9e",
+       "name": "This is the second child OU",
+       "code": "900011",
+       "parent_id": "61499710-726d-43ab-b6f7-63138391dd02"}]}]

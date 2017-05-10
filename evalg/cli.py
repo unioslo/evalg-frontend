@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ eValg command line interface. """
+import click
+
+from flask.cli import with_appcontext
 
 
 def save_object(obj):
@@ -27,6 +30,18 @@ def shell_context():
     return context
 
 
+@click.command('populate-tables',
+               short_help='Populate tables with example data.')
+@with_appcontext
+def populate_tables():
+    """ Use flask_fixtures to populate tables. """
+    import flask_fixtures
+    from evalg.fixtures import populate_tables
+    flask_fixtures.setup(populate_tables.Populator)
+
+
 def init_app(app):
     """ Add commands and context. """
     app.shell_context_processor(shell_context)
+    app.cli.add_command(populate_tables)
+

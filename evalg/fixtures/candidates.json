@@ -1,0 +1,9 @@
+[{"model": "evalg.models.candidate.Candidate",
+  "records": [
+      {"id": "20f32da2-25d2-43f8-86c9-74d5ac67e58c",
+       "election_id": "af4bd61f-a93d-46d9-a7a3-625d13d8f3dd",
+       "list_id": "e5022518-3891-46b9-8ed3-b9a7fbde4c37",
+       "candidate_name": "Fiske slo",
+       "data": {},
+       "hidden": false,
+       "priority": 0}]}]

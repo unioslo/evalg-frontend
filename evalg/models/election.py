@@ -15,9 +15,6 @@ class PublicKey(Base):
     id = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
     fingerprint = db.Column(db.Text)
 
-    def __init__(self, fingerprint):
-        self.fingerprint = fingerprint
-
 
 class AbstractElection(Base):
     __abstract__ = True

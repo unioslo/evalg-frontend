@@ -3,3 +3,4 @@ pytest-coverage
 pytest-pythonpath
 pytest-watch
 pytest-xdist
+flask-fixtures
