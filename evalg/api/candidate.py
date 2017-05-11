@@ -57,10 +57,10 @@ class CandidateList(MethodResource):
 class CandidateDetail(MethodResource):
     """ Candidate API. """
     @marshal_with(CandidateSchema())
-    @use_kwargs({'id': fields.UUID(description="Candidate identificator")},
+    @use_kwargs({},
                 locations='query')
     @doc(summary='Get a candidate')
-    def get(self):
+    def get(self, id):
         """ List candidates. """
         return Candidate.query.get(id)
 
@@ -75,7 +75,7 @@ class CandidateDetail(MethodResource):
         return c
 
     @marshal_with(None, code=204)
-    @use_kwargs({'id': fields.UUID(description="Candidate identificator")},
+    @use_kwargs({},
                 locations='query')
     @doc(summary='Delete a candidate')
     def delete(self, id):
