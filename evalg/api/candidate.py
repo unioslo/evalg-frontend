@@ -21,7 +21,9 @@ class CandidateSchema(BaseSchema):
     priority = fields.Integer()
 
     _links = ma.Hyperlinks({
-        'election_list': ma.URLFor('lists.ElectionListList', id='<id>')
+        'list': ma.URLFor('lists.ElectionListList', id='<id>'),
+        'cocandidates': ma.URLFor('candidates.CoCandidateCollection',
+                                  id='<id>')
     })
 
     class Meta:
@@ -97,9 +99,6 @@ bp.add_url_rule('/candidates/<uuid:id>',
                 methods=['GET', 'PATCH', 'DELETE'])
 
 
-ccbp = Blueprint('cocandidates', __name__)
-
-
 class CoCandidateSchema(BaseSchema):
     id = fields.UUID()
     candidate_id = fields.UUID()
@@ -173,12 +172,12 @@ class CoCandidateDetail(MethodResource):
         return make_response('', 204)
 
 
-ccbp.add_url_rule('/cocandidates/',
-                  view_func=CoCandidateList.as_view('CoCandidateList'),
-                  methods=['GET', 'POST'])
-ccbp.add_url_rule('/cocandidates/<uuid:id>',
-                  view_func=CoCandidateDetail.as_view('CoCandidateDetail'),
-                  methods=['GET', 'PATCH', 'DELETE'])
+bp.add_url_rule('/cocandidates/',
+                view_func=CoCandidateList.as_view('CoCandidateList'),
+                methods=['GET', 'POST'])
+bp.add_url_rule('/cocandidates/<uuid:id>',
+                view_func=CoCandidateDetail.as_view('CoCandidateDetail'),
+                methods=['GET', 'PATCH', 'DELETE'])
 
 
 @doc(tags=['candidate'])
@@ -191,15 +190,14 @@ class CoCandidateCollection(MethodResource):
         return filter(lambda c: not c.deleted, get_candidate(id).co_candidates)
 
 
-ccbp.add_url_rule('/candidates/<uuid:id>/cocandidates',
-                  view_func=CoCandidateCollection.as_view(
-                      'CoCandidateCollection'),
-                  methods=['GET'])
+bp.add_url_rule('/candidates/<uuid:id>/cocandidates',
+                view_func=CoCandidateCollection.as_view(
+                    'CoCandidateCollection'),
+                methods=['GET'])
 
 
 def init_app(app):
     app.register_blueprint(bp)
-    app.register_blueprint(ccbp)
     docs.spec.add_tag({
         'name': 'candidate',
         'description': 'Operations on candidates'
@@ -212,10 +210,10 @@ def init_app(app):
                   blueprint='candidates')
     docs.register(CoCandidateList,
                   endpoint='CoCandidateList',
-                  blueprint='cocandidates')
+                  blueprint='candidates')
     docs.register(CoCandidateDetail,
                   endpoint='CoCandidateDetail',
-                  blueprint='cocandidates')
+                  blueprint='candidates')
     docs.register(CoCandidateCollection,
                   endpoint='CoCandidateCollection',
-                  blueprint='cocandidates')
+                  blueprint='candidates')

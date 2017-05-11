@@ -22,7 +22,8 @@ class ElectionListSchema(BaseSchema):
 
     _links = ma.Hyperlinks({
         'election': ma.URLFor('elections.ElectionDetail',
-                              e_id='<election_id>')
+                              e_id='<election_id>'),
+        'candidates': ma.URLFor('lists.CandidateCollection', id='<id>')
     })
 
     class Meta:
