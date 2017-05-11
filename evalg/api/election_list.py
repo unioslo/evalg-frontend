@@ -52,11 +52,12 @@ class ElectionListDetail(MethodResource):
     @marshal_with(ElectionListSchema)
     @use_kwargs(ElectionListSchema)
     @doc(summary='Partially update a list')
-    def patch(self, id=None):
-        raise NotImplemented
-
-    def put(self):
-        raise NotImplemented
+    def patch(self, id, **kwargs):
+        l = get_list(id)
+        for k, v in kwargs.items():
+            setattr(l, k, v)
+        db.session.commit()
+        return l
 
     @marshal_with(ElectionListSchema(), code=204)
     @use_kwargs({},
@@ -74,7 +75,7 @@ bp.add_url_rule('/list/',
                 methods=['GET', 'POST'])
 bp.add_url_rule('/list/<uuid:id>',
                 view_func=ElectionListDetail.as_view('ElectionListDetail'),
-                methods=['GET', 'PUT', 'PATCH', 'DELETE'])
+                methods=['GET', 'PATCH', 'DELETE'])
 
 
 def init_app(app):
