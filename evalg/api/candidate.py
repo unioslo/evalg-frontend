@@ -186,6 +186,7 @@ class CoCandidateCollection(MethodResource):
     @marshal_with(CoCandidateSchema(many=True))
     @use_kwargs({},
                 locations='query')
+    @doc(summary='Get a list of associated co candidates')
     def get(self, id):
         return filter(lambda c: not c.deleted, get_candidate(id).co_candidates)
 
