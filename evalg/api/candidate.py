@@ -15,7 +15,7 @@ bp = Blueprint('candidates', __name__)
 
 class CandidateSchema(BaseSchema):
     id = fields.UUID()
-    candidate_name = fields.String()
+    name = fields.String()
     list_id = fields.UUID()
     data = fields.Dict()
     priority = fields.Integer()
@@ -102,7 +102,7 @@ bp.add_url_rule('/candidates/<uuid:id>',
 class CoCandidateSchema(BaseSchema):
     id = fields.UUID()
     candidate_id = fields.UUID()
-    candidate_name = fields.String()
+    name = fields.String()
 
     _links = ma.Hyperlinks({
         'candidate': ma.URLFor('candidates.CandidateDetail',

@@ -17,7 +17,7 @@ class Candidate(db.Model):
     rel_list_id = relationship('ElectionList', back_populates='candidates')
     co_candidates = db.relationship('CoCandidate',
                                     back_populates='rel_candidate_id')
-    candidate_name = db.Column(db.UnicodeText)
+    name = db.Column(db.UnicodeText)
     data = db.Column(JSON)
     deleted = db.Column(db.Boolean, default=False)
     priority = db.Column(db.Integer, default=0)
@@ -28,7 +28,7 @@ class Candidate(db.Model):
 
 class CoCandidate(db.Model):
     id = db.Column(UUIDType, primary_key=True, default=uuid.uuid4)
-    candidate_name = db.Column(db.UnicodeText)
+    name = db.Column(db.UnicodeText)
     candidate_id = db.Column(UUIDType,
                              db.ForeignKey('candidate.id'),
                              nullable=False)
