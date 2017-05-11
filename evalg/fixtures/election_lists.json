@@ -1,2 +1,4 @@
 [{"model": "evalg.models.election_list.ElectionList",
-  "records": [{"id": "e5022518-3891-46b9-8ed3-b9a7fbde4c37"}]}]
+  "records": [
+      {"id": "e5022518-3891-46b9-8ed3-b9a7fbde4c37",
+       "election_id": "af4bd61f-a93d-46d9-a7a3-625d13d8f3dd"}]}]

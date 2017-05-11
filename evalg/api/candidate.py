@@ -17,13 +17,10 @@ class CandidateSchema(BaseSchema):
     id = fields.UUID()
     candidate_name = fields.String()
     list_id = fields.UUID()
-    election_id = fields.UUID()
     data = fields.Dict()
     priority = fields.Integer()
 
     _links = ma.Hyperlinks({
-        'election': ma.URLFor('elections.ElectionDetail',
-                              e_id='<election_id>'),
         'election_list': ma.URLFor('lists.ElectionListList', id='<id>')
     })
 
@@ -37,7 +34,7 @@ candidate_schema = CandidateSchema()
 def get_candidate(id):
     """ Get a candidate from the database. """
     c = Candidate.query.get(id)
-    if c is None or c.hidden:
+    if c is None or c.deleted:
         abort(404)
     else:
         return c
@@ -50,7 +47,7 @@ class CandidateList(MethodResource):
     @marshal_with(CandidateSchema(many=True))
     @doc(summary='Get a list of candidates')
     def get(self):
-        return filter(lambda c: not c.hidden, Candidate.query.all())
+        return filter(lambda c: not c.deleted, Candidate.query.all())
 
     @use_kwargs(CandidateSchema())
     @marshal_with(CandidateSchema(), code=201)
@@ -89,7 +86,7 @@ class CandidateDetail(MethodResource):
     @doc(summary='Delete a candidate')
     def delete(self, id):
         c = get_candidate(id)
-        c.hidden = True
+        c.deleted = True
         db.session.commit()
         return make_response('', 204)
 
