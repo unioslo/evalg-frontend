@@ -15,6 +15,8 @@ class Candidate(db.Model):
                         db.ForeignKey('election_list.id'),
                         nullable=False)
     rel_list_id = relationship('ElectionList', back_populates='candidates')
+    co_candidates = db.relationship('CoCandidate',
+                                    back_populates='rel_candidate_id')
     candidate_name = db.Column(db.UnicodeText)
     data = db.Column(JSON)
     deleted = db.Column(db.Boolean, default=False)
@@ -22,3 +24,17 @@ class Candidate(db.Model):
 
     def __repr__(self):
         return '<Candidate %r>' % self.id
+
+
+class CoCandidate(db.Model):
+    id = db.Column(UUIDType, primary_key=True, default=uuid.uuid4)
+    candidate_name = db.Column(db.UnicodeText)
+    candidate_id = db.Column(UUIDType,
+                             db.ForeignKey('candidate.id'),
+                             nullable=False)
+    rel_candidate_id = relationship('Candidate',
+                                    back_populates='co_candidates')
+    deleted = db.Column(db.Boolean, default=False)
+
+    def __repr__(self):
+        return '<CoCandidate %r>' % self.id

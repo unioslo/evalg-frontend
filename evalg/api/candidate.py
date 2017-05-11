@@ -8,7 +8,7 @@ from flask_apispec import doc
 from marshmallow import fields
 from evalg import ma, db, docs
 from evalg.api import BaseSchema
-from evalg.models.candidate import Candidate
+from evalg.models.candidate import Candidate, CoCandidate
 
 bp = Blueprint('candidates', __name__)
 
@@ -27,8 +27,6 @@ class CandidateSchema(BaseSchema):
     class Meta:
         strict = True
         dump_only = ('id', '_links',)
-
-candidate_schema = CandidateSchema()
 
 
 def get_candidate(id):
@@ -99,8 +97,93 @@ bp.add_url_rule('/candidates/<uuid:id>',
                 methods=['GET', 'PATCH', 'DELETE'])
 
 
+ccbp = Blueprint('cocandidates', __name__)
+
+
+class CoCandidateSchema(BaseSchema):
+    id = fields.UUID()
+    candidate_id = fields.UUID()
+    candidate_name = fields.String()
+
+    _links = ma.Hyperlinks({
+        'candidate': ma.URLFor('candidates.CandidateDetail',
+                               id='<candidate_id>')
+    })
+
+    class Meta:
+        strict = True
+        dump_only = ('id', )
+
+
+def get_cocandidate(id):
+    """ Get a co candidate from the database. """
+    c = CoCandidate.query.get(id)
+    if c is None or c.deleted:
+        abort(404)
+    else:
+        return c
+
+
+@doc(tags=['cocandidate'])
+class CoCandidateList(MethodResource):
+    @use_kwargs({}, locations='query')
+    @marshal_with(CoCandidateSchema(many=True))
+    @doc(summary='Get a list of co candidates')
+    def get(self):
+        return filter(lambda c: not c.deleted, CoCandidate.query.all())
+
+    @use_kwargs(CoCandidateSchema())
+    @marshal_with(CoCandidateSchema(), code=201)
+    @doc(summary='Create a cocandidate')
+    def post(self, **kwargs):
+        c = CoCandidate(**kwargs)
+        db.session.add(c)
+        db.session.commit()
+        return (c, 201)
+
+
+@doc(tags=['cocandidate'])
+class CoCandidateDetail(MethodResource):
+    @marshal_with(CoCandidateSchema())
+    @use_kwargs({},
+                locations='query')
+    @doc(summary='Get a co candidate')
+    def get(self, id):
+        """ Get a co candidate. """
+        return get_cocandidate(id)
+
+    @marshal_with(CoCandidateSchema())
+    @use_kwargs(CoCandidateSchema())
+    @doc(summary='Partially update a co candidate')
+    def patch(self, id, **kwargs):
+        c = get_cocandidate(id)
+        for k, v in kwargs.items():
+            setattr(c, k, v)
+        db.session.commit()
+        return c
+
+    @marshal_with(None, code=204)
+    @use_kwargs({},
+                locations='query')
+    @doc(summary='Delete a co candidate')
+    def delete(self, id):
+        c = get_cocandidate(id)
+        c.deleted = True
+        db.session.commit()
+        return make_response('', 204)
+
+
+ccbp.add_url_rule('/cocandidates/',
+                  view_func=CoCandidateList.as_view('CoCandidateList'),
+                  methods=['GET', 'POST'])
+ccbp.add_url_rule('/cocandidates/<uuid:id>',
+                  view_func=CoCandidateDetail.as_view('CoCandidateDetail'),
+                  methods=['GET', 'PATCH', 'DELETE'])
+
+
 def init_app(app):
     app.register_blueprint(bp)
+    app.register_blueprint(ccbp)
     docs.spec.add_tag({
         'name': 'candidate',
         'description': 'Operations on candidates'
@@ -111,3 +194,9 @@ def init_app(app):
     docs.register(CandidateDetail,
                   endpoint='CandidateDetail',
                   blueprint='candidates')
+    docs.register(CoCandidateList,
+                  endpoint='CoCandidateList',
+                  blueprint='cocandidates')
+    docs.register(CoCandidateDetail,
+                  endpoint='CoCandidateDetail',
+                  blueprint='cocandidates')
