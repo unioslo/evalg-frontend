@@ -92,6 +92,24 @@ bp.add_url_rule('/list/<uuid:id>',
                 methods=['GET', 'PATCH', 'DELETE'])
 
 
+@doc(tags=['list'])
+class CandidateCollection(MethodResource):
+    from evalg.api.candidate import CandidateSchema
+
+    @marshal_with(CandidateSchema(many=True))
+    @use_kwargs({},
+                locations='query')
+    @doc(summary='Get a list of associated candidates')
+    def get(self, id):
+        return filter(lambda c: not c.deleted, get_list(id).candidates)
+
+
+bp.add_url_rule('/list/<uuid:id>/candidates',
+                view_func=CandidateCollection.as_view(
+                    'CandidateCollection'),
+                methods=['GET'])
+
+
 def init_app(app):
     app.register_blueprint(bp)
     docs.spec.add_tag({
@@ -103,4 +121,7 @@ def init_app(app):
                   blueprint='lists')
     docs.register(ElectionListDetail,
                   endpoint='ElectionListDetail',
+                  blueprint='lists')
+    docs.register(CandidateCollection,
+                  endpoint='CandidateCollection',
                   blueprint='lists')
