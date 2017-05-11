@@ -7,7 +7,7 @@ from flask_apispec import use_kwargs, marshal_with
 from flask_apispec import doc
 from marshmallow import fields
 from evalg import db, ma, docs
-from evalg.api import BaseSchema
+from evalg.api import BaseSchema, TranslatedString
 from evalg.models.election_list import ElectionList
 
 bp = Blueprint('lists', __name__)
@@ -15,6 +15,9 @@ bp = Blueprint('lists', __name__)
 
 class ElectionListSchema(BaseSchema):
     id = fields.UUID()
+    name = fields.Nested(TranslatedString())
+    description = fields.Nested(TranslatedString())
+    information_url = fields.URL(allow_none=True)
     election_id = fields.UUID()
 
     _links = ma.Hyperlinks({

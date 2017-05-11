@@ -1,4 +1,7 @@
 [{"model": "evalg.models.election_list.ElectionList",
   "records": [
       {"id": "e5022518-3891-46b9-8ed3-b9a7fbde4c37",
+       "name": {"en": "This is my list…", "nb": "…det er mange som den…", "nn": "…men denne er min"},
+       "description": {"en": "A sample list", "nb": "En listesmaksprøve", "nn": "Ein listesmaksprøve"},
+       "information_url": "https://uio.no",
        "election_id": "af4bd61f-a93d-46d9-a7a3-625d13d8f3dd"}]}]
