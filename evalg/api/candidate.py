@@ -181,6 +181,21 @@ ccbp.add_url_rule('/cocandidates/<uuid:id>',
                   methods=['GET', 'PATCH', 'DELETE'])
 
 
+@doc(tags=['candidate'])
+class CoCandidateCollection(MethodResource):
+    @marshal_with(CoCandidateSchema(many=True))
+    @use_kwargs({},
+                locations='query')
+    def get(self, id):
+        return filter(lambda c: not c.deleted, get_candidate(id).co_candidates)
+
+
+ccbp.add_url_rule('/candidates/<uuid:id>/cocandidates',
+                  view_func=CoCandidateCollection.as_view(
+                      'CoCandidateCollection'),
+                  methods=['GET'])
+
+
 def init_app(app):
     app.register_blueprint(bp)
     app.register_blueprint(ccbp)
@@ -199,4 +214,7 @@ def init_app(app):
                   blueprint='cocandidates')
     docs.register(CoCandidateDetail,
                   endpoint='CoCandidateDetail',
+                  blueprint='cocandidates')
+    docs.register(CoCandidateCollection,
+                  endpoint='CoCandidateCollection',
                   blueprint='cocandidates')
