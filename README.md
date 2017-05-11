@@ -98,6 +98,13 @@ evalg_evalg_1 flask populate-tables`.
 Run the commands `flask db downgrade` and `flask db upgrade` on beforehand if
 you would like to clean before populating.
 
+#### Example data definitions
+In evalg/fixtures, there are located a series of JSON files. These files define
+the example data. These files must be mentioned in an appropriate order in
+evalg/fixtures/populate_tables.py.
+
+See also https://pypi.python.org/pypi/Flask-Fixtures for more details.
+
 ### Alembic migration scripts
 Alembic is used to upgrade the database on changes of the data model. Migration
 data resides in the folder `evalg/migrations`, and can be generated with the
