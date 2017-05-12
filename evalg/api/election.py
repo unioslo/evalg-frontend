@@ -192,6 +192,22 @@ bp.add_url_rule('/elections/<uuid:e_id>',
                 methods=['GET', 'POST', 'PATCH'])
 
 
+@doc(tags=['electiongroup'])
+class ElectionCollection(MethodResource):
+
+    @marshal_with(ElectionSchema(many=True))
+    @use_kwargs({}, locations='query')
+    @doc(summary='Get a list of elections')
+    def get(self, eg_id):
+        return ElectionGroup.query.get_or_404(eg_id).elections
+
+
+bp.add_url_rule('/electiongroups/<uuid:eg_id>/elections',
+                view_func=ElectionCollection.as_view(
+                    'ElectionCollection'),
+                methods=['GET'])
+
+
 @doc(tags=['election'])
 class ListCollection(MethodResource):
     from evalg.api.election_list import ElectionListSchema
@@ -233,5 +249,8 @@ def init_app(app):
                   blueprint='elections')
     docs.register(ListCollection,
                   endpoint="ListCollection",
+                  blueprint="elections")
+    docs.register(ElectionCollection,
+                  endpoint="ElectionCollection",
                   blueprint="elections")
     # docs.spec.definition('ElectionGroup', schema=ElectionGroupSchema)
