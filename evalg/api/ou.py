@@ -104,7 +104,7 @@ bp.add_url_rule('/ous/',
                 methods=['GET', 'POST'])
 bp.add_url_rule('/ous/<uuid:ou_id>',
                 view_func=OUDetail.as_view('OUDetail'),
-                methods=['GET', 'POST', 'PATCH'])
+                methods=['GET', 'POST', 'PATCH', 'DELETE'])
 
 
 def init_app(app):

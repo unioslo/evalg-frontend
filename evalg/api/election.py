@@ -196,14 +196,14 @@ bp.add_url_rule('/electiongroups/',
                 methods=['GET', 'POST'])
 bp.add_url_rule('/electiongroups/<uuid:eg_id>',
                 view_func=ElectionGroupDetail.as_view('ElectionGroupDetail'),
-                methods=['GET', 'POST', 'PATCH'])
+                methods=['GET', 'POST', 'PATCH', 'DELETE'])
 
 bp.add_url_rule('/elections/',
                 view_func=ElectionList.as_view('ElectionList'),
                 methods=['GET', 'POST'])
 bp.add_url_rule('/elections/<uuid:e_id>',
                 view_func=ElectionDetail.as_view('ElectionDetail'),
-                methods=['GET', 'POST', 'PATCH'])
+                methods=['GET', 'POST', 'PATCH', 'DELETE'])
 
 
 @doc(tags=['electiongroup'])
