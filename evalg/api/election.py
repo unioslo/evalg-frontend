@@ -24,7 +24,7 @@ class AbstractElectionSchema(BaseSchema):
     mandate_period_end = fields.DateTime(allow_none=True)
     mandate_type = fields.Nested(TranslatedString())
     ou = fields.UUID(attribute='ou_id')
-    public_key = fields.UUID(allow_none=True)
+    public_key = fields.UUID(allow_none=True, attribute='public_key_id')
 
 
 class ElectionGroupSchema(AbstractElectionSchema):
