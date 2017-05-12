@@ -1,15 +1,29 @@
-[{"model": "evalg.models.candidate.Candidate",
-  "records": [
-      {"id": "20f32da2-25d2-43f8-86c9-74d5ac67e58c",
-       "list_id": "e5022518-3891-46b9-8ed3-b9a7fbde4c37",
-       "name": "Fiske slo",
-       "meta": {},
-       "priority": 0}]},
- {"model": "evalg.models.candidate.CoCandidate",
-  "records": [
-      {"id": "b99591c9-ba8a-4728-8462-6879d4763608",
-       "name": "Sideshow Bob",
-       "candidate_id": "20f32da2-25d2-43f8-86c9-74d5ac67e58c"},
-      {"id": "dc419a92-1d1e-49e2-84bb-040b3bfa62a8",
-       "name": "Frontshow Francis",
-       "candidate_id": "20f32da2-25d2-43f8-86c9-74d5ac67e58c"}]}]
+[
+  {
+    "model": "evalg.models.candidate.Candidate",
+    "records": [
+      {
+        "id": "20f32da2-25d2-43f8-86c9-74d5ac67e58c",
+        "list_id": "e5022518-3891-46b9-8ed3-b9a7fbde4c37",
+        "name": "Fiske slo",
+        "meta": {},
+        "priority": 0
+      }
+    ]
+  },
+  {
+    "model": "evalg.models.candidate.CoCandidate",
+    "records": [
+      {
+        "id": "b99591c9-ba8a-4728-8462-6879d4763608",
+        "name": "Sideshow Bob",
+        "candidate_id": "20f32da2-25d2-43f8-86c9-74d5ac67e58c"
+      },
+      {
+        "id": "dc419a92-1d1e-49e2-84bb-040b3bfa62a8",
+        "name": "Frontshow Francis",
+        "candidate_id": "20f32da2-25d2-43f8-86c9-74d5ac67e58c"
+      }
+    ]
+  }
+]

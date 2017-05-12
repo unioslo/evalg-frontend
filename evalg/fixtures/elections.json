@@ -1,34 +1,109 @@
-[{"model": "evalg.models.election.PublicKey",
-  "records": [
-      {"id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d",
-       "fingerprint": "My fingerprint"}]},
- {"model": "evalg.models.election.ElectionGroup",
-  "records": [
-      {"id": "b5b71046-e191-43d4-9bb6-55a710895288",
-       "start": "2017-09-01T13:37:00Z",
-       "end": "2017-10-01T03:23:12>",
-       "name": {"en": "The mother of all elections"},
-       "description": {"en": "This is my sample election…"},
-       "information_url": "https://uio.no",
-       "contact": "https://uio.no",
-       "mandate_period_start": "2018-01-01T03:17:45Z",
-       "mandate_period_end": "2019-01-01T12:34:54Z",
-       "mandate_type": {"en": "President"},
-       "election_type": "list",
-       "ou_id": "2ec82fd8-da0e-4ad7-b844-76659fa8ce9e",
-       "public_key_id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d"}]},
- {"model": "evalg.models.election.Election",
-  "records": [
-      {"id": "af4bd61f-a93d-46d9-a7a3-625d13d8f3dd",
-       "start": "2017-09-01T08:16:32Z",
-       "end": "2017-10-01T19:00:34Z",
-       "name": {"en": "The mother of all elections"},
-       "description": {"en": "This is my sample election…"},
-       "information_url": "https://uio.no",
-       "contact": "https://uio.no",
-       "mandate_period_start": "2018-01-01T18:04:54Z",
-       "mandate_period_end": "2019-01-01T14:45:34",
-       "mandate_type": {"en": "President"},
-       "ou_id": "2ec82fd8-da0e-4ad7-b844-76659fa8ce9e",
-       "public_key_id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d",
-       "group_id": "b5b71046-e191-43d4-9bb6-55a710895288"}]}]
+[
+  {
+    "model": "evalg.models.election.PublicKey",
+    "records": [
+      {
+        "id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d",
+        "fingerprint": "My fingerprint"
+      }
+    ]
+  },
+  {
+    "model": "evalg.models.election.ElectionGroup",
+    "records": [
+      {
+        "id": "b5b71046-e191-43d4-9bb6-55a710895288",
+        "start": "2017-09-01T13:37:00Z",
+        "end": "2017-10-01T03:23:12>",
+        "name": {
+          "en": "Foo in English",
+          "nb": "Foo på bokmål",
+          "nn": "Foo på nynorsk"
+        },
+        "description": {
+          "en": "This is a description",
+          "nb": "Dette er en beskrivelse",
+          "nn": "Dette er ei beskriving"
+        },
+        "information_url": "https://uio.no",
+        "contact": "noreply@uio.no",
+        "mandate_period_start": "2018-01-01T03:17:45Z",
+        "mandate_period_end": "2019-01-01T12:34:54Z",
+        "mandate_type": {
+          "en": "President",
+          "nb": "President",
+          "nn": "President"
+        },
+        "election_type": "list",
+        "ou_id": "a184e25e-907c-4155-860f-79df898ad51c",
+        "public_key_id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d"
+      },
+      {
+        "id": "2dc010ac-1bf7-4b93-92c8-72fd4e161ed8",
+        "start": "2017-10-10T13:37:00Z",
+        "end": "2017-11-10T03:23:12>",
+        "name": {
+          "en": "Bar in English",
+          "nb": "Bar på bokmål",
+          "nn": "Bar på nynorsk"
+        },
+        "description": {
+          "en": "This is a description. Lorem ipsum.",
+          "nb": "Dette er en beskrivelse. Lorem ipsum.",
+          "nn": "Dette er ei beskriving. Lorem ipsum."
+        },
+        "information_url": "https://uio.no",
+        "contact": "noreply@uio.no",
+        "mandate_period_start": "2018-06-01T03:17:45Z",
+        "mandate_period_end": "2019-06-01T12:34:54Z",
+        "mandate_type": {
+          "en": "Leader",
+          "nb": "Leder",
+          "nn": "Leiar"
+        },
+        "election_type": "preferential",
+        "ou_id": "edf1a6e9-2f9f-46a8-8365-4842199984f4",
+        "public_key_id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d"
+      }
+    ]
+  },
+  {
+    "model": "evalg.models.election.Election",
+    "records": [
+      {
+        "id": "af4bd61f-a93d-46d9-a7a3-625d13d8f3dd",
+        "start": "2017-09-01T08:16:32Z",
+        "end": "2017-10-01T19:00:34Z",
+        "name": {
+          "en": "Foo",
+          "nb": "Foo",
+          "nn": "Foo"
+        },
+        "description": {
+          "en": "This is a description",
+          "nb": "Dette er en beskrivelse",
+          "nn": "Dette er ei beskriving"
+        },
+        "information_url": "https://uio.no",
+        "contact": "noreply@uio.no",
+        "mandate_period_start": "2018-01-01T18:04:54Z",
+        "mandate_period_end": "2019-01-01T14:45:34",
+        "mandate_type": {
+          "en": "President"
+        },
+        "ou_id": "a184e25e-907c-4155-860f-79df898ad51c",
+        "public_key_id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d",
+        "group_id": "b5b71046-e191-43d4-9bb6-55a710895288"
+      },
+      {
+        "id": "d10f90c2-bb14-47de-ace2-79265efcd161",
+        "name": {
+          "en": "Bar",
+          "nb": "Bar",
+          "nn": "Bar"
+        },
+        "group_id": "2dc010ac-1bf7-4b93-92c8-72fd4e161ed8"
+      }
+    ]
+  }
+]

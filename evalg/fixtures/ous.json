@@ -1,13 +1,42 @@
-[{"model": "evalg.models.ou.OrganizationalUnit",
-  "records": [
-      {"id": "a184e25e-907c-4155-860f-79df898ad51c",
-       "name": "This is my OU there are many like it but this one is mine",
-       "code": "900000"},
-      {"id": "61499710-726d-43ab-b6f7-63138391dd02",
-       "name": "This is the first child OU",
-       "code": "900010",
-       "parent_id": "a184e25e-907c-4155-860f-79df898ad51c"},
-      {"id": "2ec82fd8-da0e-4ad7-b844-76659fa8ce9e",
-       "name": "This is the second child OU",
-       "code": "900011",
-       "parent_id": "61499710-726d-43ab-b6f7-63138391dd02"}]}]
+[
+  {
+    "model": "evalg.models.ou.OrganizationalUnit",
+    "records": [
+      {
+        "id": "a184e25e-907c-4155-860f-79df898ad51c",
+        "name": "Foo",
+        "code": "900000"
+      },
+      {
+        "id": "61499710-726d-43ab-b6f7-63138391dd02",
+        "name": "Bar, child of Foo",
+        "code": "900010",
+        "parent_id": "a184e25e-907c-4155-860f-79df898ad51c"
+      },
+      {
+        "id": "e3f26a01-56ff-42c4-a581-5bc942193b2e",
+        "name": "Baz, child of Foo",
+        "code": "900010",
+        "parent_id": "a184e25e-907c-4155-860f-79df898ad51c"
+      },
+      {
+        "id": "3fc2aa46-5ea1-45b2-9ad1-9296210e4f51",
+        "name": "Faz, child of Baz",
+        "code": "900010",
+        "parent_id": "e3f26a01-56ff-42c4-a581-5bc942193b2e"
+      },
+      {
+        "id": "2ec82fd8-da0e-4ad7-b844-76659fa8ce9e",
+        "name": "Bat, child of Bar",
+        "code": "900011",
+        "parent_id": "61499710-726d-43ab-b6f7-63138391dd02"
+      },
+      {
+        "id": "edf1a6e9-2f9f-46a8-8365-4842199984f4",
+        "name": "Batman, child of Bat",
+        "code": "900011",
+        "parent_id": "2ec82fd8-da0e-4ad7-b844-76659fa8ce9e"
+      }
+    ]
+  }
+]
