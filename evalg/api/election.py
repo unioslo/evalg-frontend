@@ -34,7 +34,9 @@ class ElectionGroupSchema(AbstractElectionSchema):
         'ou': ma.URLFor('ous.OUDetail', ou_id='<ou_id>')
     })
 
-    elections = fields.List(fields.UUID(), description="Associated elections")
+    elections = fields.List(fields.UUID(),
+                            attribute='id',
+                            description="Associated elections")
 
     class Meta:
         strict = True
