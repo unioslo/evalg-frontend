@@ -30,6 +30,7 @@ class AbstractElection(Base):
     mandate_period_end = db.Column(db.DateTime)
     mandate_type = db.Column(JSON)
     meta = db.Column(JSON)
+    deleted = db.Column(db.Boolean, default=False)
 
     @declared_attr
     def ou(self):
