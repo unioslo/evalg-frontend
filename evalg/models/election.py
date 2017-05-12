@@ -29,6 +29,7 @@ class AbstractElection(Base):
     mandate_period_start = db.Column(db.DateTime)
     mandate_period_end = db.Column(db.DateTime)
     mandate_type = db.Column(JSON)
+    meta = db.Column(JSON)
 
     @declared_attr
     def ou(self):
@@ -48,7 +49,7 @@ class AbstractElection(Base):
 
 
 class ElectionGroup(AbstractElection):
-    pass
+    election_type = db.Column(db.UnicodeText)
 
 
 class Election(AbstractElection):

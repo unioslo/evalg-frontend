@@ -14,6 +14,7 @@
        "mandate_period_start": "2018-01-01T03:17:45Z",
        "mandate_period_end": "2019-01-01T12:34:54Z",
        "mandate_type": {"en": "President"},
+       "election_type": "list",
        "ou_id": "2ec82fd8-da0e-4ad7-b844-76659fa8ce9e",
        "public_key_id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d"}]},
  {"model": "evalg.models.election.Election",

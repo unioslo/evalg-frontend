@@ -25,6 +25,7 @@ class AbstractElectionSchema(BaseSchema):
     mandate_type = fields.Nested(TranslatedString())
     ou = fields.UUID(attribute='ou_id')
     public_key = fields.UUID(allow_none=True, attribute='public_key_id')
+    meta = fields.Dict()
 
 
 class ElectionGroupSchema(AbstractElectionSchema):
@@ -37,6 +38,7 @@ class ElectionGroupSchema(AbstractElectionSchema):
     elections = fields.List(fields.UUID(),
                             attribute='id',
                             description="Associated elections")
+    election_type = fields.String()
 
     class Meta:
         strict = True
