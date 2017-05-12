@@ -10,6 +10,9 @@ LANGUAGES = {
     'nn': 'Norwegian (nynorsk)'
 }
 
+APISPEC_TITLE = 'evalg'
+APISPEC_VERSION = 'v1'
+
 LOGGER_NAME = 'evalg'
 
 LOGGING = {
