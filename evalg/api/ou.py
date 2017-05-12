@@ -33,8 +33,8 @@ ou_schema = OrganizationalUnitSchema()
 
 
 def get(ou_id):
-    ou = get(ou_id)
-    if ou is None or ou.delete:
+    ou = OrganizationalUnit.query.get_or_404(ou_id)
+    if ou is None or ou.deleted:
         abort(404)
     else:
         return ou
