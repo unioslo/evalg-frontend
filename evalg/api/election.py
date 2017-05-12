@@ -64,6 +64,7 @@ e_schema = ElectionSchema()
 @doc(tags=['electiongroup'])
 class ElectionGroupDetail(MethodResource):
     """ Resource for single election groups. """
+    @use_kwargs({}, locations="query")
     @marshal_with(eg_schema)
     @doc(summary='Get an election group')
     def get(self, eg_id):
@@ -119,6 +120,7 @@ class ElectionGroupList(MethodResource):
 @doc(tags=['election'])
 class ElectionDetail(MethodResource):
     """ Resource for single elections. """
+    @use_kwargs({}, locations="query")
     @marshal_with(e_schema)
     @doc(summary='Get an election')
     def get(self, e_id):
