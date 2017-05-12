@@ -3,7 +3,7 @@
       {"id": "20f32da2-25d2-43f8-86c9-74d5ac67e58c",
        "list_id": "e5022518-3891-46b9-8ed3-b9a7fbde4c37",
        "name": "Fiske slo",
-       "data": {},
+       "meta": {},
        "priority": 0}]},
  {"model": "evalg.models.candidate.CoCandidate",
   "records": [

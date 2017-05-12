@@ -17,7 +17,7 @@ class CandidateSchema(BaseSchema):
     id = fields.UUID()
     name = fields.String()
     list_id = fields.UUID()
-    data = fields.Dict()
+    meta = fields.Dict()
     priority = fields.Integer()
 
     _links = ma.Hyperlinks({
