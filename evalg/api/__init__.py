@@ -59,3 +59,13 @@ def init_app(app):
 
     # Configure languages
     TranslatedString.configure(app)
+
+    # Configure blueprints
+    from evalg.api import (election,
+                           election_list,
+                           ou,
+                           candidate)
+    election.init_app(app)
+    election_list.init_app(app)
+    ou.init_app(app)
+    candidate.init_app(app)
