@@ -55,6 +55,3 @@ class Election(AbstractElection):
     group_id = db.Column(UUIDType, db.ForeignKey('election_group.id'))
     group = db.relationship('ElectionGroup', backref='elections',
                             lazy='joined')
-
-    lists = db.relationship('ElectionList',
-                            back_populates='rel_election_id')

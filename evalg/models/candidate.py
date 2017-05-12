@@ -13,9 +13,7 @@ class Candidate(db.Model):
     list_id = db.Column(UUIDType,
                         db.ForeignKey('election_list.id'),
                         nullable=False)
-    rel_list_id = db.relationship('ElectionList', back_populates='candidates')
-    co_candidates = db.relationship('CoCandidate',
-                                    back_populates='rel_candidate_id')
+    rel_list_id = db.relationship('ElectionList', backref='candidates')
     name = db.Column(db.UnicodeText)
     data = db.Column(JSON)
     deleted = db.Column(db.Boolean, default=False)
@@ -32,7 +30,7 @@ class CoCandidate(db.Model):
                              db.ForeignKey('candidate.id'),
                              nullable=False)
     rel_candidate_id = db.relationship('Candidate',
-                                       back_populates='co_candidates')
+                                       backref='co_candidates')
     deleted = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
