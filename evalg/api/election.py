@@ -47,6 +47,7 @@ class ElectionSchema(AbstractElectionSchema):
         'collection': ma.URLFor('elections.ElectionList'),
         'group': ma.URLFor('elections.ElectionGroupDetail',
                            eg_id='<group_id>'),
+        'lists': ma.URLFor('elections.ListCollection', e_id='<id>'),
         'ou': ma.URLFor('ous.OUDetail', ou_id='<ou_id>')
     })
 
@@ -189,6 +190,23 @@ bp.add_url_rule('/elections/<uuid:e_id>',
                 methods=['GET', 'POST', 'PATCH'])
 
 
+@doc(tags=['election'])
+class ListCollection(MethodResource):
+    from evalg.api.election_list import ElectionListSchema
+
+    @marshal_with(ElectionListSchema(many=True))
+    @use_kwargs({}, locations='query')
+    @doc(summary='Get a list of lists')
+    def get(self, e_id):
+        return Election.query.get_or_404(e_id).lists
+
+
+bp.add_url_rule('/election/<uuid:e_id>/lists',
+                view_func=ListCollection.as_view(
+                    'ListCollection'),
+                methods=['GET'])
+
+
 def init_app(app):
     app.register_blueprint(bp)
     docs.spec.add_tag({
@@ -211,4 +229,7 @@ def init_app(app):
     docs.register(ElectionDetail,
                   endpoint='ElectionDetail',
                   blueprint='elections')
+    docs.register(ListCollection,
+                  endpoint="ListCollection",
+                  blueprint="elections")
     # docs.spec.definition('ElectionGroup', schema=ElectionGroupSchema)

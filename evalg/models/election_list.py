@@ -16,6 +16,7 @@ class ElectionList(db.Model):
     election_id = db.Column(UUIDType,
                             db.ForeignKey('election.id'),
                             nullable=False)
+    rel_election_id = db.relationship('Election', back_populates='lists')
     deleted = db.Column(db.Boolean, default=False)
     candidates = db.relationship('Candidate',
                                  back_populates='rel_list_id')
