@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ The election API. """
-from flask import Blueprint
+from flask import Blueprint, abort, make_response
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields
@@ -32,6 +32,14 @@ class OrganizationalUnitSchema(BaseSchema):
 ou_schema = OrganizationalUnitSchema()
 
 
+def get(ou_id):
+    ou = get(ou_id)
+    if ou is None or ou.delete:
+        abort(404)
+    else:
+        return ou
+
+
 @doc(tags=['ou'])
 class OUDetail(MethodResource):
     """ Resource for single OUs. """
@@ -39,13 +47,13 @@ class OUDetail(MethodResource):
     @marshal_with(ou_schema)
     @doc(summary='Get an organizational unit')
     def get(self, ou_id):
-        return OrganizationalUnit.query.get_or_404(ou_id)
+        return get(ou_id)
 
     @use_kwargs(ou_schema)
     @marshal_with(ou_schema)
     @doc(summary='Update an organizational unit')
     def post(self, ou_id, **kwargs):
-        ou = OrganizationalUnit.query.get_or_404(ou_id)
+        ou = get(ou_id)
         for k, v in kwargs.items():
             setattr(ou, k, v)
         db.session.commit()
@@ -55,18 +63,20 @@ class OUDetail(MethodResource):
     @marshal_with(ou_schema)
     @doc(summary='Partially update an organizational unit')
     def patch(self, ou_id, **kwargs):
-        ou = OrganizationalUnit.query.get_or_404(ou_id)
+        ou = get(ou_id)
         for k, v in kwargs.items():
             setattr(ou, k, v)
         db.session.commit()
         return ou
 
+    @use_kwargs({}, locations="query")
+    @marshal_with(None, code=204)
     @doc(summary='Delete an organizational unit')
     def delete(self, ou_id):
-        ou = OrganizationalUnit.query.get_or_404(ou_id)
-        db.session.delete(ou)
+        ou = get(ou_id)
+        ou.deleted = True
         db.session.commit()
-        return '', 204
+        return make_response('', 204)
 
 
 @doc(tags=['ou'])
@@ -76,7 +86,8 @@ class OUList(MethodResource):
     @marshal_with(OrganizationalUnitSchema(many=True))
     @doc(summary='List organizational units')
     def get(self):
-        return OrganizationalUnit.query.all()
+        return filter(lambda ou: not ou.deleted,
+                      OrganizationalUnit.query.all())
 
     @use_kwargs(ou_schema)
     @marshal_with(ou_schema, code=201)
