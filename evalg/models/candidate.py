@@ -5,7 +5,6 @@ import uuid
 
 from evalg import db
 from sqlalchemy.dialects.postgresql import JSON
-from sqlalchemy.orm import relationship
 from sqlalchemy_utils import UUIDType
 
 
@@ -14,7 +13,7 @@ class Candidate(db.Model):
     list_id = db.Column(UUIDType,
                         db.ForeignKey('election_list.id'),
                         nullable=False)
-    rel_list_id = relationship('ElectionList', back_populates='candidates')
+    rel_list_id = db.relationship('ElectionList', back_populates='candidates')
     co_candidates = db.relationship('CoCandidate',
                                     back_populates='rel_candidate_id')
     name = db.Column(db.UnicodeText)
@@ -32,8 +31,8 @@ class CoCandidate(db.Model):
     candidate_id = db.Column(UUIDType,
                              db.ForeignKey('candidate.id'),
                              nullable=False)
-    rel_candidate_id = relationship('Candidate',
-                                    back_populates='co_candidates')
+    rel_candidate_id = db.relationship('Candidate',
+                                       back_populates='co_candidates')
     deleted = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
