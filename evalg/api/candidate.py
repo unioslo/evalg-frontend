@@ -19,6 +19,7 @@ class CandidateSchema(BaseSchema):
     list_id = fields.UUID()
     meta = fields.Dict()
     priority = fields.Integer()
+    cumulated = fields.Boolean()
 
     _links = ma.Hyperlinks({
         'list': ma.URLFor('lists.ElectionListList', id='<id>'),

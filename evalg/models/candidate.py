@@ -18,6 +18,7 @@ class Candidate(db.Model):
     meta = db.Column(JSON)
     deleted = db.Column(db.Boolean, default=False)
     priority = db.Column(db.Integer, default=0)
+    cumulated = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return '<Candidate %r>' % self.id
