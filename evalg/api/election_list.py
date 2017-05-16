@@ -28,7 +28,7 @@ class ElectionListSchema(BaseSchema):
 
     class Meta:
         strict = True
-        dump_only = ('id', )
+        dump_only = ('id', '_links',)
 
 
 def get_list(id):
