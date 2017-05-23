@@ -86,7 +86,8 @@ The Flask application auto-reloads its code when you edit files on your docker h
 ### Start the development environment
 1. Copy `instance/evalg_config.py.example.dev` to `instance/evalg_config.py`.
 2. `docker-compose -f docker-compose-evalg-dev.yaml up`
-3. Create appropriate database definitions: `docker exec -it evalg_evalg_1 flask db migrate`
+3. Initialize database: `docker exec -it evalg_evalg_1 flask db init`
+3. Create appropriate database definitions (if the model has changed): `docker exec -it evalg_evalg_1 flask db migrate`
 4. Apply said definitions: `docker exec -it evalg_evalg_1 flask db upgrade`
 
 You can also `docker exec -it evalg_evalg_1 flask db downgrade base` to empty the database.
