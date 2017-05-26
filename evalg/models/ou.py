@@ -12,9 +12,6 @@ from sqlalchemy_utils import UUIDType
 class OrganizationalUnit(Base):
     id = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
     name = db.Column(JSON, nullable=False)
-    code = db.Column(db.Text, nullable=False)
+    external_id = db.Column(db.Text, nullable=False, unique=True)
     deleted = db.Column(db.Boolean, default=False)
-    parent = db.relationship('OrganizationalUnit',
-                             backref='children',
-                             remote_side=id)
-    parent_id = db.Column(UUIDType(), db.ForeignKey('organizational_unit.id'))
+    tag = db.Column(db.String, nullable=False)

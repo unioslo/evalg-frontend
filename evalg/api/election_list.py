@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ The List API. """
-from flask import Blueprint, abort, make_response
+from flask import Blueprint, abort, make_response, current_app
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with
 from flask_apispec import doc
@@ -16,7 +16,7 @@ bp = Blueprint('lists', __name__)
 class ElectionListSchema(BaseSchema):
     id = fields.UUID()
     name = fields.Nested(TranslatedString())
-    description = fields.Nested(TranslatedString())
+    description = fields.Nested(TranslatedString(), allow_none=True)
     information_url = fields.URL(allow_none=True)
     election_id = fields.UUID()
 
@@ -28,7 +28,7 @@ class ElectionListSchema(BaseSchema):
 
     class Meta:
         strict = True
-        dump_only = ('id', '_links',)
+        dump_only = ('id', '_links')
 
 
 def get_list(id):
@@ -48,10 +48,12 @@ class ElectionListList(MethodResource):
     def get(self):
         return filter(lambda l: not l.deleted, ElectionList.query.all())
 
-    @use_kwargs({}, locations="query")
+    @use_kwargs(ElectionListSchema())
     @marshal_with(ElectionListSchema(), code=201)
     @doc(summary='Create a election list')
     def post(self, **kwargs):
+        current_app.logger.info('KWARGS')
+        current_app.logger.info(kwargs)
         l = ElectionList(**kwargs)
         db.session.add(l)
         db.session.commit()

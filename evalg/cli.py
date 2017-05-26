@@ -13,6 +13,32 @@ def save_object(obj):
     print("Saved {}".format(obj))
 
 
+def import_ous():
+    """ Use flask_fixtures to populate tables. """
+    import json
+    from evalg.models.ou import OrganizationalUnit
+    from evalg import db
+    f = open('ou_dump.json')
+    ou_dump = json.load(f)
+    for tag in ou_dump:
+        print(tag)
+        for ou in ou_dump[tag]:
+            print(ou)
+            new_ou = OrganizationalUnit()
+            new_ou.name = ou['name']
+            new_ou.external_id = ou['external_id']
+            new_ou.tag = tag
+            db.session.add(new_ou)
+    db.session.commit()
+
+
+def wipe_db():
+    from evalg import db
+    db.drop_all()
+    db.create_all()
+    import_ous()
+
+
 def shell_context():
     """ Shell context. """
     from evalg import db, models
@@ -23,6 +49,7 @@ def shell_context():
         'Election': models.election.Election,
         'ElectionGroup': models.election.ElectionGroup,
         'OU': models.election.OrganizationalUnit,
+        'wipe_db': wipe_db
     }
     print('\nShell context:')
     pprint(context)
@@ -44,4 +71,7 @@ def init_app(app):
     """ Add commands and context. """
     app.shell_context_processor(shell_context)
     app.cli.add_command(populate_tables)
+
+
+
 

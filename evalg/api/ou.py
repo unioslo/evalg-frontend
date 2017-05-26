@@ -20,9 +20,8 @@ class OrganizationalUnitSchema(BaseSchema):
 
     id = fields.UUID()
     name = fields.Nested(TranslatedString())
-    code = fields.Str()
-    parent = fields.UUID(attribute='parent_id', allow_none=True)
-    children = fields.List(fields.UUID(attribute='id'))
+    external_id = fields.Str()
+    tag = fields.Str()
 
     class Meta:
         strict = True

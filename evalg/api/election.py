@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ The election API. """
-from flask import Blueprint, make_response, abort
+from flask import Blueprint, make_response, abort, current_app
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields
@@ -23,7 +23,7 @@ class AbstractElectionSchema(BaseSchema):
     mandate_period_start = fields.DateTime(allow_none=True)
     mandate_period_end = fields.DateTime(allow_none=True)
     mandate_type = fields.Nested(TranslatedString())
-    ou = fields.UUID(attribute='ou_id')
+    ou_id = fields.Str()
     public_key = fields.UUID(allow_none=True, attribute='public_key_id')
     meta = fields.Dict()
 
@@ -35,10 +35,15 @@ class ElectionGroupSchema(AbstractElectionSchema):
         'ou': ma.URLFor('ous.OUDetail', ou_id='<ou_id>')
     })
 
-    elections = fields.List(fields.UUID(),
-                            attribute='id',
+    elections = fields.List(fields.UUID(attribute='id'),
                             description="Associated elections")
-    election_type = fields.String()
+    type = fields.String()
+    has_multiple_elections = fields.Boolean()
+    has_multiple_voting_times = fields.Boolean()
+    has_multiple_mandate_times = fields.Boolean()
+    has_multiple_contact_info = fields.Boolean()
+    has_multiple_info_urls = fields.Boolean()
+    has_gender_quota = fields.Boolean()
 
     class Meta:
         strict = True
@@ -55,12 +60,17 @@ class ElectionSchema(AbstractElectionSchema):
         'ou': ma.URLFor('ous.OUDetail', ou_id='<ou_id>')
     })
 
+    group_id = fields.Str()
+    ou_id = fields.Str()
     group = fields.UUID(attribute='group_id',
                         description="Parent election group")
+    nr_of_candidates = fields.Integer()
+    nr_of_co_candidates = fields.Integer()
+    active = fields.Boolean()
 
     class Meta:
         strict = True
-        dump_only = ('_links', 'id')
+        dump_only = ('_links', 'id', 'ou_id', 'group')
 
 eg_schema = ElectionGroupSchema()
 e_schema = ElectionSchema()
@@ -99,7 +109,10 @@ class ElectionGroupDetail(MethodResource):
     def patch(self, eg_id, **kwargs):
         group = get(ElectionGroup, eg_id)
         for k, v in kwargs.items():
-            setattr(group, k, v)
+            try:
+                setattr(group, k, v)
+            except AttributeError:
+                current_app.logger.warn(k)
         db.session.commit()
         return group
 
@@ -156,9 +169,11 @@ class ElectionDetail(MethodResource):
     @marshal_with(e_schema)
     @doc(summary='Partially update an election')
     def patch(self, e_id, **kwargs):
+        current_app.logger.info(kwargs)
         election = get(Election, e_id)
         for k, v in kwargs.items():
-            setattr(election, k, v)
+            if k not in election.read_only_fields:
+                setattr(election, k, v)
         db.session.commit()
         return election
 
@@ -185,6 +200,7 @@ class ElectionList(MethodResource):
     @marshal_with(e_schema)
     @doc(summary='Create an election')
     def post(self, **kwargs):
+        current_app.logger.info(kwargs)
         election = Election(**kwargs)
         db.session.add(election)
         db.session.commit()
@@ -233,7 +249,7 @@ class ListCollection(MethodResource):
         return get(Election, e_id).lists
 
 
-bp.add_url_rule('/election/<uuid:e_id>/lists',
+bp.add_url_rule('/elections/<uuid:e_id>/lists',
                 view_func=ListCollection.as_view(
                     'ListCollection'),
                 methods=['GET'])
