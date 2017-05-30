@@ -105,8 +105,8 @@ class Role(Base):
     __tablename__ = 'role'
     role = db.Column(db.String, db.ForeignKey('rolelist.role'),
                      primary_key=True)
-    trait = db.relationship('RoleList', foreign_keys=role)
-    roletype = db.Column(db.String(50), db.ForeignKey('rolelist.roletype'))
+    roletype = db.Column(db.String(50), nullable=False)
+    trait = db.relationship('RoleList', foreign_keys=(role, roletype))
     principalid = db.Column(UUIDType, db.ForeignKey('principal.principalid'),
                             primary_key=True)
     principal = db.relationship('Principal', back_populates='roles')
@@ -146,7 +146,7 @@ class OuRole(Role):
     ouid = db.Column(UUIDType, db.ForeignKey('organizational_unit.id'),
                      primary_key=True)
     ou = db.relationship(OrganizationalUnit)
-    principalid = db.Column(db.String, db.ForeignKey('principal.principalid'),
+    principalid = db.Column(UUIDType, db.ForeignKey('principal.principalid'),
                             primary_key=True)
     __mapper_args__ = {
         'polymorphic_identity': 'ourole',
@@ -184,7 +184,7 @@ class ElectionRole(Role):
     role = db.Column(db.String, db.ForeignKey('electionrolelist.role'),
                      primary_key=True)
     electionid = db.Column(db.String, primary_key=True)
-    principalid = db.Column(db.String, db.ForeignKey('principal.principalid'),
+    principalid = db.Column(UUIDType, db.ForeignKey('principal.principalid'),
                             primary_key=True)
     __mapper_args__ = {
         'polymorphic_identity': 'electionrole',
@@ -208,36 +208,36 @@ class Permission(Base):
                             back_populates='perms')
 
 
-def get_principals_for(session, personid, groups=[]):
+def get_principals_for(personid, groups=[]):
     try:
-        p = session.query(PersonPrincipal).filter(
+        p = PersonPrincipal.query.filter(
             PersonPrincipal.personid == personid).one()
     except:
         p = PersonPrincipal(personid=personid)
-        session.add(p)
+        PersonPrincipal.session.add(p)
         rg = []
         for grp in groups:
             try:
-                rg.append(session.query(GroupPrincipal)
+                rg.append(GroupPrincipal.query
                           .filter(GroupPrincipal.groupid == grp).one())
             except:
                 g = GroupPrincipal(groupid=grp)
-                session.add(g)
+                GroupPrincipal.session.add(g)
                 rg.append(g)
     return p, rg
 
 
-def list_roles(session):
+def list_roles():
     """ List all roles. """
-    return session.query(RoleList).all()
+    return RoleList.query.all()
 
 
-def get_role(session, role):
+def get_role(role):
     """ Get role. """
-    return session.query(RoleList).filter(RoleList.role == role).one()
+    return RoleList.query.filter(RoleList.role == role).one()
 
 
-def get_principal(session, principalid):
+def get_principal(principalid, Principal):
     """ Get principal. """
-    return session.query(Principal).filter(
+    return Principal.query.filter(
         Principal.principalid == principalid).one()
