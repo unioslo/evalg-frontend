@@ -5,9 +5,8 @@
 import uuid
 from evalg import db
 from evalg.models import Base
-from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.ext.declarative import declared_attr
-from sqlalchemy_utils import UUIDType, URLType
+from sqlalchemy_utils import UUIDType, URLType, JSONType
 from evalg.models.ou import OrganizationalUnit
 
 
@@ -22,14 +21,14 @@ class AbstractElection(Base):
     id = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
     start = db.Column(db.DateTime)
     end = db.Column(db.DateTime)
-    name = db.Column(JSON)
-    description = db.Column(JSON)
+    name = db.Column(JSONType)
+    description = db.Column(JSONType)
     information_url = db.Column(URLType)
     contact = db.Column(db.Text)
     mandate_period_start = db.Column(db.DateTime)
     mandate_period_end = db.Column(db.DateTime)
-    mandate_type = db.Column(JSON)
-    meta = db.Column(JSON)
+    mandate_type = db.Column(JSONType)
+    meta = db.Column(JSONType)
     deleted = db.Column(db.Boolean, default=False)
 
     @declared_attr
