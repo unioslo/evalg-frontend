@@ -9,6 +9,7 @@ from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy_utils import UUIDType, URLType
 from evalg.models.ou import OrganizationalUnit
+from flask import current_app
 
 
 class PublicKey(Base):
@@ -20,13 +21,13 @@ class AbstractElection(Base):
     __abstract__ = True
 
     id = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
-    start = db.Column(db.DateTime)
-    end = db.Column(db.DateTime)
     name = db.Column(JSON)
     description = db.Column(JSON)
     mandate_type = db.Column(JSON)
     meta = db.Column(JSON)
+    type = db.Column(db.Text)
     deleted = db.Column(db.Boolean, default=False)
+    status = db.Column(db.Text)
 
     @declared_attr
     def public_key(self):
@@ -36,9 +37,15 @@ class AbstractElection(Base):
     def public_key_id(self):
         return db.Column(UUIDType, db.ForeignKey('public_key.id'))
 
+    @property
+    def tz(self):
+        return current_app.config['TZ']
+
 
 class ElectionGroup(AbstractElection):
     type = db.Column(db.UnicodeText)
+    start = db.Column(db.DateTime)
+    end = db.Column(db.DateTime)
     ou_id = db.Column(UUIDType, db.ForeignKey('organizational_unit.id'))
     ou = db.relationship(OrganizationalUnit)
     information_url = db.Column(URLType)
@@ -54,6 +61,8 @@ class ElectionGroup(AbstractElection):
 
 
 class Election(AbstractElection):
+    _start = db.Column(db.DateTime)
+    _end = db.Column(db.DateTime)
     _information_url = db.Column(URLType)
     _contact = db.Column(db.Text)
     _mandate_period_start = db.Column(db.DateTime)
@@ -72,6 +81,30 @@ class Election(AbstractElection):
     @property
     def ou(self):
         return self.group.ou
+
+    @property
+    def list_ids(self):
+        return [l.id for l in self.lists if not l.deleted]
+
+    @property
+    def start(self):
+        if self.group.has_multiple_voting_times:
+            return self._start
+        return self.group.start
+
+    @start.setter
+    def start(self, value):
+        self._start = value
+
+    @property
+    def end(self):
+        if self.group.has_multiple_voting_times:
+            return self._end
+        return self.group.end
+
+    @end.setter
+    def end(self, value):
+        self._end= value
 
     @property
     def information_url(self):

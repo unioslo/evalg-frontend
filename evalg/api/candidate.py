@@ -17,10 +17,12 @@ class CandidateSchema(BaseSchema):
     id = fields.UUID()
     name = fields.String()
     list_id = fields.UUID()
-    meta = fields.Dict()
+    meta = fields.Dict(allow_none=True)
+    information_url = fields.URL(allow_none=True)
     priority = fields.Integer()
     cumulated = fields.Boolean()
-
+    co_candidate_ids = fields.List(fields.UUID(),
+                                   description="Associated co-candidates")
     _links = ma.Hyperlinks({
         'list': ma.URLFor('lists.ElectionListList', id='<id>'),
         'cocandidates': ma.URLFor('candidates.CoCandidateCollection',
@@ -29,7 +31,7 @@ class CandidateSchema(BaseSchema):
 
     class Meta:
         strict = True
-        dump_only = ('id', '_links',)
+        dump_only = ('id', '_links','co_candidate_ids')
 
 
 def get_candidate(id):

@@ -26,6 +26,9 @@ class AbstractElectionSchema(BaseSchema):
     ou_id = fields.Str()
     public_key = fields.UUID(allow_none=True, attribute='public_key_id')
     meta = fields.Dict()
+    type = fields.Str()
+    status = fields.Str()
+    tz = fields.Str()
 
 
 class ElectionGroupSchema(AbstractElectionSchema):
@@ -37,7 +40,6 @@ class ElectionGroupSchema(AbstractElectionSchema):
 
     elections = fields.List(fields.UUID(attribute='id'),
                             description="Associated elections")
-    type = fields.String()
     has_multiple_elections = fields.Boolean()
     has_multiple_voting_times = fields.Boolean()
     has_multiple_mandate_times = fields.Boolean()
@@ -47,7 +49,7 @@ class ElectionGroupSchema(AbstractElectionSchema):
 
     class Meta:
         strict = True
-        dump_only = ('_links', 'id', 'elections')
+        dump_only = ('_links', 'id', 'elections', 'tz', 'status')
 
 
 class ElectionSchema(AbstractElectionSchema):
@@ -59,7 +61,8 @@ class ElectionSchema(AbstractElectionSchema):
         'lists': ma.URLFor('elections.ListCollection', e_id='<id>'),
         'ou': ma.URLFor('ous.OUDetail', ou_id='<ou_id>')
     })
-
+    list_ids = fields.List(fields.UUID(),
+                           description="Associated election lists")
     group_id = fields.Str()
     ou_id = fields.Str()
     group = fields.UUID(attribute='group_id',
@@ -70,7 +73,7 @@ class ElectionSchema(AbstractElectionSchema):
 
     class Meta:
         strict = True
-        dump_only = ('_links', 'id', 'ou_id', 'group')
+        dump_only = ('_links', 'id', 'ou_id', 'group', 'tz', 'list_ids', 'status')
 
 eg_schema = ElectionGroupSchema()
 e_schema = ElectionSchema()
@@ -141,6 +144,7 @@ class ElectionGroupList(MethodResource):
     @doc(summary='Create an election group')
     def post(self, **kwargs):
         group = ElectionGroup(**kwargs)
+        group.status = 'draft'
         db.session.add(group)
         db.session.commit()
         return group, 201
@@ -202,6 +206,7 @@ class ElectionList(MethodResource):
     def post(self, **kwargs):
         current_app.logger.info(kwargs)
         election = Election(**kwargs)
+        election.status = 'draft'
         db.session.add(election)
         db.session.commit()
         return election

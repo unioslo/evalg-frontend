@@ -46,6 +46,8 @@ def shell_context():
     context = {
         'save': save_object,
         'db': db,
+        'Candidate': models.candidate.Candidate,
+        'CoCandidate': models.candidate.CoCandidate,
         'Election': models.election.Election,
         'ElectionGroup': models.election.ElectionGroup,
         'OU': models.election.OrganizationalUnit,

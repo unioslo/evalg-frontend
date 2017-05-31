@@ -19,7 +19,8 @@ class ElectionListSchema(BaseSchema):
     description = fields.Nested(TranslatedString(), allow_none=True)
     information_url = fields.URL(allow_none=True)
     election_id = fields.UUID()
-
+    candidates = fields.List(fields.UUID(attribute='id'),
+                             description="Associated candidates")
     _links = ma.Hyperlinks({
         'election': ma.URLFor('elections.ElectionDetail',
                               e_id='<election_id>'),

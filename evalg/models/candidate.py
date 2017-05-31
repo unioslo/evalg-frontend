@@ -5,7 +5,7 @@ import uuid
 
 from evalg import db
 from sqlalchemy.dialects.postgresql import JSON
-from sqlalchemy_utils import UUIDType
+from sqlalchemy_utils import UUIDType, URLType
 
 
 class Candidate(db.Model):
@@ -16,9 +16,15 @@ class Candidate(db.Model):
     rel_list_id = db.relationship('ElectionList', backref='candidates')
     name = db.Column(db.UnicodeText, nullable=False)
     meta = db.Column(JSON)
+    information_url = db.Column(URLType)
     deleted = db.Column(db.Boolean, default=False)
     priority = db.Column(db.Integer, default=0)
-    cumulated = db.Column(db.Boolean, default=False)
+    pre_cumulated = db.Column(db.Boolean, default=False)
+    user_cumulated = db.Column(db.Boolean, default=False)
+
+    @property
+    def co_candidate_ids(self):
+        return [c.id for c in self.co_candidates if not c.deleted]
 
     def __repr__(self):
         return '<Candidate %r>' % self.id
@@ -30,8 +36,8 @@ class CoCandidate(db.Model):
     candidate_id = db.Column(UUIDType,
                              db.ForeignKey('candidate.id'),
                              nullable=False)
-    rel_candidate_id = db.relationship('Candidate',
-                                       backref='co_candidates')
+    candidate = db.relationship('Candidate',
+                                backref='co_candidates')
     deleted = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
