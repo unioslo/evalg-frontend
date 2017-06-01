@@ -30,7 +30,7 @@ class Voter(db.Model):
     deleted = db.Column(db.Boolean, default=False)
     pollbook_person_id = db.Column(UUIDType)  # TODO
     pollbook_id = db.Column(UUIDType,
-                            db.ForeignKey('polbook.id'),
+                            db.ForeignKey('pollbook.id'),
                             nullable=False)
     voter_status_id = db.Column(UUIDType,
                                 db.ForeignKey('voter_status.id'),
