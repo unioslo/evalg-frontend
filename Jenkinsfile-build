@@ -7,10 +7,11 @@ node ('evalg') {
 
     stage ('Checkout') {
         checkout scm
+        match_v = ~/^v/
         image_version = sh(
             returnStdout: true,
             script: 'git describe --dirty=+ --tags'
-        ).trim() - ~/^v/
+        ).trim() - match_v
     }
     stage ('Build ballotbox image') {
         sh "docker build \
