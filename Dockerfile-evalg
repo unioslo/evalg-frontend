@@ -9,7 +9,7 @@ ENV https_proxy="https://updateproxy.uio.no:3128"
 WORKDIR /usr/src/evalg
 
 # deps
-ADD requirements.txt /usr/src/evalg
+ADD . /usr/src/evalg
 
 # Install build-deps, then install/build deps
 RUN set -ex \
@@ -25,7 +25,6 @@ RUN set -ex \
     && apk del .evalg-build-deps \
     && apk add --no-cache git
 
-ADD . /usr/src/evalg
 RUN pip3 install /usr/src/evalg
 
 # Reset proxy -- we don't want the build image to have these
