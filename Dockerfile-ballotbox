@@ -20,10 +20,12 @@ RUN set -ex \
             musl-dev \
             linux-headers \
             postgresql-dev \
+    && apk add --no-cache --virtual .evalg-deps \
+            git \
+            bash \
     && pip3 install -U pip \
     && pip3 install -r /usr/src/evalg/requirements.txt \
-    && apk del .evalg-build-deps \
-    && apk add --no-cache git
+    && apk del .evalg-build-deps
 
 RUN pip3 install /usr/src/evalg
 
