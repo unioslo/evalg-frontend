@@ -25,9 +25,7 @@ node ('evalg') {
         sh "docker tag '${project}/valg-evalg' '${project}/valg-evalg:${image_version}'"
     }
     stage ('Push images') {
-        sh "docker push '${project}/valg-evalg:${image_version}'"
         sh "docker push '${project}/valg-evalg'"
-        sh "docker push '${project}/valg-ballotbox:${image_version}'"
         sh "docker push '${project}/valg-ballotbox'"
     }
 }
