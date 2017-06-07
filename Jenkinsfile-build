@@ -16,13 +16,13 @@ node ('evalg') {
         sh "docker build \
             -t '${project}/valg-ballotbox' \
             -f Dockerfile-ballotbox ."
-        sh "docker tag '${project}/valg-ballotbox:${image_version}'"
+        sh "docker tag '${project}/valg-ballotbox' '${project}/valg-ballotbox:${image_version}'"
     }
     stage ('Build evalg image') {
         sh "docker build \
             -t '${project}/valg-evalg' \
             -f Dockerfile-evalg ."
-        sh "docker tag '${project}/valg-evalg:${image_version}'"
+        sh "docker tag '${project}/valg-evalg' '${project}/valg-evalg:${image_version}'"
     }
     stage ('Push images') {
         sh "docker push '${project}/valg-evalg:${image_version}'"
