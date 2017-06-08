@@ -100,6 +100,3 @@ def create_app(config=None, flask_class=Flask):
         return response
 
     return app
-
-app = create_app()
-""" Flask app. """
