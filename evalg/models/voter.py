@@ -5,7 +5,8 @@ import uuid
 from sqlalchemy_utils import UUIDType
 
 from evalg import db
-from evalg.models import Base
+from evalg.models.pollbook import PollBook
+PollBook  # Pat my linter
 
 
 class VoterStatus(db.Model):
@@ -30,7 +31,7 @@ class Voter(db.Model):
     deleted = db.Column(db.Boolean, default=False)
     pollbook_person_id = db.Column(UUIDType)  # TODO
     pollbook_id = db.Column(UUIDType,
-                            db.ForeignKey('pollbook.id'),
+                            db.ForeignKey('poll_book.id'),
                             nullable=False)
     voter_status_id = db.Column(UUIDType,
                                 db.ForeignKey('voter_status.id'),
