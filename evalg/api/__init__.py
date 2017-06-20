@@ -64,8 +64,14 @@ def init_app(app):
     from evalg.api import (election,
                            election_list,
                            ou,
-                           candidate)
+                           candidate,
+                           voter,
+                           pollbook,
+                           person)
     election.init_app(app)
     election_list.init_app(app)
     ou.init_app(app)
     candidate.init_app(app)
+    voter.init_app(app)
+    pollbook.init_app(app)
+    person.init_app(app)
