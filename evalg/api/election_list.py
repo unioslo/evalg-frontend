@@ -88,10 +88,10 @@ class ElectionListDetail(MethodResource):
         return make_response('', 204)
 
 
-bp.add_url_rule('/list/',
+bp.add_url_rule('/elections/<uuid:id>/lists/',
                 view_func=ElectionListList.as_view('ElectionListList'),
                 methods=['GET', 'POST'])
-bp.add_url_rule('/list/<uuid:id>',
+bp.add_url_rule('/elections/<uuid:eid>/lists/<uuid:id>',
                 view_func=ElectionListDetail.as_view('ElectionListDetail'),
                 methods=['GET', 'PATCH', 'DELETE'])
 
@@ -108,9 +108,24 @@ class CandidateCollection(MethodResource):
         return filter(lambda c: not c.deleted, get_list(id).candidates)
 
 
-bp.add_url_rule('/list/<uuid:id>/candidates',
+@doc(tags=['list'])
+class ListCandidate(MethodResource):
+    from evalg.api.candidate import CandidateSchema
+
+    @marshal_with(CandidateSchema(many=True))
+    @use_kwargs({},
+                locations='query')
+    @doc(summary='Get a list of associated candidates')
+    def get(self, lid, id):
+        return filter(lambda c: not c.deleted, get_list(id).candidates)
+
+bp.add_url_rule('/elections/<uuid:eid>/lists/<uuid:id>/candidates',
                 view_func=CandidateCollection.as_view(
                     'CandidateCollection'),
+                methods=['GET'])
+bp.add_url_rule('/elections/<uuid:eid>/lists/<uuid:lid>/candidates/<uuid:id>',
+                view_func=CandidateCollection.as_view(
+                    'ListCandidate'),
                 methods=['GET'])
 
 
