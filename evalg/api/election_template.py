@@ -6,9 +6,13 @@ from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with
 from flask_apispec import doc
 from marshmallow import fields
-from evalg import db, docs
-from evalg.api import BaseSchema
+from evalg import docs
+from evalg.api import BaseSchema, add_all_authz
+from evalg.api.election import ElectionGroupSchema
 from evalg.election_template_builder import election_template_builder
+from evalg.metadata import make_group_from_template
+from ..models.ou import OrganizationalUnit
+
 
 bp = Blueprint('electiontemplate', __name__)
 
@@ -16,7 +20,7 @@ add_all_authz(globals())
 
 
 class ElectionTemplateSchema(BaseSchema):
-    elections = fields.Dict()
+    election_types = fields.Dict()
     ou_lists = fields.Dict()
     template_root = fields.Dict()
 

@@ -13,7 +13,6 @@ def build_election_names(ou, name_prefixes):
 
 def election_template_builder():
     ou_tags = tmpl_config.ou_tags
-    name_prefixes = tmpl_config.election_name_prefixes
     ou_lists = dict()
     for tag in ou_tags:
         ou_lists[tag] = list()
@@ -22,9 +21,9 @@ def election_template_builder():
             ou_dict = dict()
             for attr in ['id', 'name', 'tag', 'external_id']:
                 ou_dict[attr] = getattr(ou, attr)
-            ou_dict['election_name_tags'] = build_election_names(ou, name_prefixes)
             ou_lists[ou.tag].append(ou_dict)
     election_template = tmpl_config.election_template
     election_template['ou_lists'] = ou_lists
     election_template['ou_tags'] = ou_lists
+    election_template['election_types'] = tmpl_config.election_types
     return election_template
