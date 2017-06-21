@@ -43,6 +43,27 @@ bp.add_url_rule('/electiontemplate/',
                 methods=['GET'])
 
 
+@doc(tags=['electiontemplate'])
+class ElectionTemplateNewGroup(MethodResource):
+    """ Candidate API. """
+    @use_kwargs({'group': fields.Dict(), 'name': fields.Dict(),
+                 'ouid': fields.UUID()})
+    @marshal_with(ElectionGroupSchema())
+    @doc(summary='Create new elections')
+    def post(self, ouid=None, name=None, group=None):
+        ou = OrganizationalUnit.query.get_or_404(ouid)
+        grp = make_group_from_template(name, group, ou=ou)
+        from evalg import app
+        app.logger.info('Test: %s', grp)
+        return grp
+
+
+bp.add_url_rule('/electiontemplate/newelection/',
+                view_func=ElectionTemplateNewGroup.as_view(
+                    'ElectionTemplateNewGroup'),
+                methods=['POST'])
+
+
 def init_app(app):
     app.register_blueprint(bp)
     docs.spec.add_tag({
@@ -51,4 +72,7 @@ def init_app(app):
     })
     docs.register(ElectionTemplate,
                   endpoint='ElectionTemplate',
+                  blueprint='electiontemplate')
+    docs.register(ElectionTemplateNewGroup,
+                  endpoint='ElectionTemplateNewGroup',
                   blueprint='electiontemplate')

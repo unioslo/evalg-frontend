@@ -1,4 +1,5 @@
 python-json-logger
+python-dateutil
 flask
 flask-cors
 flask-sqlalchemy
