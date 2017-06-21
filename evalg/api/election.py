@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ The election API. """
-from flask import Blueprint, make_response, abort, current_app
+from flask import Blueprint, make_response, abort
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields
@@ -55,16 +55,18 @@ class ElectionGroupSchema(AbstractElectionSchema):
     has_gender_quota = fields.Boolean()
 
     class Meta:
-        strict = True
         dump_only = ('_links', 'id', 'elections', 'tz', 'status')
+
 
 class ElectionSchema(AbstractElectionSchema):
     _links = ma.Hyperlinks({
-        'self': ma.URLFor('elections.ElectionDetail', e_id='<id>'),
-        'collection': ma.URLFor('elections.ElectionList'),
+        'self': ma.URLFor('elections.ElectionDetail', e_id='<id>',
+                          g_id='<group_id>'),
+        'collection': ma.URLFor('elections.ElectionList', g_id='<group_id>'),
         'group': ma.URLFor('elections.ElectionGroupDetail',
                            eg_id='<group_id>'),
-        'lists': ma.URLFor('elections.ListCollection', e_id='<id>'),
+        'lists': ma.URLFor('elections.ListCollection', e_id='<id>',
+                           g_id='<group_id>'),
         'ou': ma.URLFor('ous.OUDetail', ou_id='<ou_id>')
     })
     list_ids = fields.List(fields.UUID(),
@@ -167,7 +169,7 @@ class ElectionDetail(MethodResource):
     @doc(summary='Partially update an election')
     def patch(self, e_id, **kwargs):
         election = get_election(e_id)
-        update_election(election, **kwargs)  #TODO: read only attr
+        update_election(election, **kwargs)
         return election
 
     @marshal_with(None, code=204)
@@ -213,12 +215,6 @@ bp.add_url_rule('/elections/',
 bp.add_url_rule('/electiongroups/<uuid:g_id>/elections/',
                 view_func=ElectionList.as_view('ElectionList'),
                 methods=['GET', 'POST'])
-bp.add_url_rule('/elections/<uuid:e_id>',
-                view_func=ElectionDetail.as_view('ElectionDetailDirect'),
-                methods=['GET', 'POST', 'PATCH', 'DELETE'])
-bp.add_url_rule('/electiongroups/<uuid:g_id>/elections/<uuid:e_id>',
-                view_func=ElectionDetail.as_view('ElectionDetail'),
-                methods=['GET', 'POST', 'PATCH', 'DELETE'])
 bp.add_url_rule('/elections/<uuid:e_id>',
                 view_func=ElectionDetail.as_view('ElectionDetailDirect'),
                 methods=['GET', 'POST', 'PATCH', 'DELETE'])
