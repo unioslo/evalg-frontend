@@ -21,12 +21,28 @@ class AbstractElection(Base):
 
     id = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
     name = db.Column(JSONType)
+    """ Translated name """
+
     description = db.Column(JSONType)
+    """ Translated text """
+
+    type = db.Column(db.UnicodeText)
+    """ Internal use """
+
+    candidate_type = db.Column(db.Text)
+    """ single | single-team | party-list """
+
     mandate_type = db.Column(JSONType)
+    """ Translated HR type """
+
     meta = db.Column(JSONType)
-    type = db.Column(db.Text)
+    """ Template metadata """
+
     deleted = db.Column(db.Boolean, default=False)
+    """ If true, should not see """
+
     status = db.Column(db.Text)
+    """ draft → public → closed """
 
     @declared_attr
     def public_key(self):
@@ -38,20 +54,35 @@ class AbstractElection(Base):
 
     @property
     def tz(self):
+        return 'CET'
         return current_app.config['TZ']
 
 
 class ElectionGroup(AbstractElection):
-    type = db.Column(db.UnicodeText)
     start = db.Column(db.DateTime)
+    """ Start time """
+
     end = db.Column(db.DateTime)
+    """ End time """
+
     ou_id = db.Column(UUIDType, db.ForeignKey('organizational_unit.id'))
     ou = db.relationship(OrganizationalUnit)
+
     information_url = db.Column(URLType)
+    """ URL for voter's help """
+
     contact = db.Column(db.Text)
+    """ Contact point for voters """
+
     mandate_period_start = db.Column(db.DateTime)
     mandate_period_end = db.Column(db.DateTime)
-    has_multiple_elections = db.Column(db.Boolean, default=False)
+    """ Mandate period """
+
+    @property
+    def has_multiple_elections(self):
+        return self.type != 'single-election'
+
+    # Settings for UI. TBD: Make a JSON called ui_settings?
     has_multiple_voting_times = db.Column(db.Boolean, default=False)
     has_multiple_mandate_times = db.Column(db.Boolean, default=False)
     has_multiple_contact_info = db.Column(db.Boolean, default=False)
@@ -60,18 +91,38 @@ class ElectionGroup(AbstractElection):
 
 
 class Election(AbstractElection):
+    sequence = db.Column(db.Text)
+    """ Some ID for the UI """
+
     _start = db.Column(db.DateTime)
     _end = db.Column(db.DateTime)
     _information_url = db.Column(URLType)
     _contact = db.Column(db.Text)
     _mandate_period_start = db.Column(db.DateTime)
     _mandate_period_end = db.Column(db.DateTime)
-    active = db.Column(db.Boolean, default=False)
     group_id = db.Column(UUIDType, db.ForeignKey('election_group.id'))
     group = db.relationship('ElectionGroup', backref='elections',
                             lazy='joined')
+
+    # TODO: Settings dependent on election type, move into JSON field
     nr_of_candidates = db.Column(db.Integer)
     nr_of_co_candidates = db.Column(db.Integer)
+
+    active = db.Column(db.Boolean, default=False)
+    """ Whether election is active.
+    We usually create more elections than needed to make templates consistent.
+    But not all elections should be used. This can improve voter UI, by telling
+    voter that their group does not have an active election. """
+
+    @property
+    def running(self):
+        """ active + public + start < now < end """
+        return True
+        import datetime
+        now = datetime.datetime.now()
+        return (self.active
+                and self.status == 'public'
+                and self.start <= now <= self.end)
 
     @property
     def ou_id(self):
