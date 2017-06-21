@@ -40,8 +40,18 @@ def populate_tables():
     flask_fixtures.setup(populate_tables.Populator)
 
 
+@click.command('create-tables',
+               short_help='Create tables with db.drop_all() and '
+               'db.create_all()')
+@with_appcontext
+def create_tables():
+    from evalg import db
+    db.drop_all()
+    db.create_all()
+
+
 def init_app(app):
     """ Add commands and context. """
     app.shell_context_processor(shell_context)
     app.cli.add_command(populate_tables)
-
+    app.cli.add_command(create_tables)
