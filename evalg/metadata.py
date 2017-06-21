@@ -84,8 +84,11 @@ def list_elections(group=None):
 @eperm('changemetadata')
 def update_election(election, **fields):
     """Update election fields"""
-    for k, v in fields.items:
-        setattr(election, k, v)
+    for k, v in fields.items():
+        if not hasattr(election, k):
+            continue
+        if getattr(election, k) != v:
+            setattr(election, k, v)
     db.session.commit()
     return election
 
@@ -93,8 +96,11 @@ def update_election(election, **fields):
 @eperm('changemetadata')
 def update_group(group, **fields):
     """Update group fields. """
-    for k, v in fields.items:
-        setattr(group, k, v)
+    for k, v in fields.items():
+        if not hasattr(group, k):
+            continue
+        if getattr(group, k) != v:
+            setattr(group, k, v)
     db.session.commit()
     return group
 
