@@ -43,6 +43,7 @@ class AbstractElection(Base):
 
     status = db.Column(db.Text)
     """ draft → public → closed """
+        return db.Column(UUIDType, db.ForeignKey('organizational_unit.id'), nullable=False)
 
     @declared_attr
     def public_key(self):

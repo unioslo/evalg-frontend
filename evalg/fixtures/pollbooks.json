@@ -1,0 +1,23 @@
+[
+  {
+    "model": "evalg.models.pollbook.PollBook",
+    "records": [
+      {
+        "id": "dc382424-e024-42b0-a445-9839269790e4",
+        "name": "My delightful pollbook",
+        "weight": 5,
+        "priority": 10,
+        "deleted": false,
+        "election_id": "af4bd61f-a93d-46d9-a7a3-625d13d8f3dd"
+      },
+      {
+        "id": "c8edc48c-5357-46c5-99ef-42645388ea05",
+        "name": "Ooops! I deleted my pollbook again",
+        "weight": 10,
+        "priority": 6,
+        "deleted": true,
+        "election_id": "d10f90c2-bb14-47de-ace2-79265efcd161"
+      }
+    ]
+  }
+]
