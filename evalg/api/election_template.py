@@ -12,6 +12,8 @@ from evalg.election_template_builder import election_template_builder
 
 bp = Blueprint('electiontemplate', __name__)
 
+add_all_authz(globals())
+
 
 class ElectionTemplateSchema(BaseSchema):
     elections = fields.Dict()

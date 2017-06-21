@@ -107,7 +107,7 @@ def add_authz(module=None, *functions):
             from evalg import app
             app.logger.info('%s(*%s, **%s)', f.__name__, args, kw)
             kw['principals'] = get_principals()
-            f(*args, **kw)
+            return f(*args, **kw)
         return fun
     ret = [authzd(f) for f in functions]
     for f, ff in zip(functions, ret):
@@ -148,4 +148,3 @@ def init_app(app):
     ou.init_app(app)
     election_template.init_app(app)
     candidate.init_app(app)
-    authz.init_app(app)

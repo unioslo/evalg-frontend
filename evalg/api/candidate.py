@@ -17,7 +17,7 @@ bp = Blueprint('candidates', __name__)
 
 
 map(or404, (get_candidate, get_candidates))
-add_all_authz()
+add_all_authz(globals())
 
 
 class CandidateSchema(BaseSchema):

@@ -103,7 +103,7 @@ class Election(AbstractElection):
 
     @end.setter
     def end(self, value):
-        self._end= value
+        self._end = value
 
     @property
     def information_url(self):

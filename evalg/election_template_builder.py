@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 from evalg.models.ou import OrganizationalUnit
 from instance import evalg_template_config as tmpl_config
 

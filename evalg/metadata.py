@@ -9,10 +9,9 @@ from .authorization import check_perms, all_perms, PermissionDenied
 from evalg import db
 
 
-def eperm(arg=0, *permission):
+def eperm(permission, arg=0):
     """Check perms function for election"""
-    for perm in permission:
-        assert perm in all_perms
+    assert permission in all_perms, '{} not valid'.format(permission)
     if isinstance(arg, int):
         def election(args, kw):
             return args[arg]
@@ -22,7 +21,12 @@ def eperm(arg=0, *permission):
 
     def fun(f):
         @wraps(f)
-        def gun(principals=[], *args, **kw):
+        def gun(*args, **kw):
+            if 'principals' in kw:
+                principals = kw['principals']
+                del kw['principals']
+            else:
+                principals = ()
             e = election(args, kw)
             if not check_perms(principals, permission, election=e, ou=e.ou):
                 raise PermissionDenied()
@@ -45,7 +49,7 @@ def rperm(*permission):
                 principals = kw['principals']
                 del kw['principals']
             else:
-                principals = []
+                principals = ()
             ret = f(*args, **kw)
             if ret is not None:
                 if not check_perms(principals, permission, election=ret,
@@ -95,14 +99,14 @@ def update_group(group, **fields):
     return group
 
 
-@eperm('deleteelection')
+@eperm('changemetadata')
 def delete_election(election):
     """Delete election"""
     election.deleted = True
     db.session.commit()
 
 
-@eperm('deleteelection')
+@eperm('changemetadata')
 def delete_group(group):
     """Delete election"""
     group.deleted = True
@@ -111,7 +115,7 @@ def delete_group(group):
 
 def list_groups(running=None):
     """List election groups"""
-    return ElectionGroup.query.filter(ElectionGroup.deleted is False)
+    return ElectionGroup.query.all()
 
 
 @rperm('createelection')
