@@ -45,12 +45,12 @@ class PersonExternalID(db.Model):
     id = db.Column(UUIDType, primary_key=True, default=uuid.uuid4)
     person_id = db.Column(UUIDType, db.ForeignKey('person.id'), nullable=False)
     person_id_type_id = db.Column(
-        UUIDType,
-        db.ForeignKey('person_id_type.id'),
+        db.UnicodeText,
+        db.ForeignKey('person_external_id_type.code'),
         nullable=False)
 
     person = db.relationship('Person', backref='external_ids')
-    person_id_type = db.relationship('PersonExternalIDType')  # no b,ref needed
+    person_id_type = db.relationship('PersonExternalIDType')  # no b.ref needed
 
     def __repr__(self):
         return '<PersonExternalID {id}>'.format(id=self.id)

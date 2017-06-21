@@ -31,8 +31,8 @@ class Voter(db.Model):
     pollbook_id = db.Column(UUIDType,
                             db.ForeignKey('poll_book.id'),
                             nullable=False)
-    voter_status_id = db.Column(UUIDType,
-                                db.ForeignKey('voter_status.id'),
+    voter_status_id = db.Column(db.UnicodeText,
+                                db.ForeignKey('voter_status.code'),
                                 nullable=False)
 
     pollbook = db.relationship(PollBook, backref='voters')
