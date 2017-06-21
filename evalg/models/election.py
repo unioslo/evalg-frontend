@@ -37,7 +37,7 @@ class AbstractElection(Base):
 
     @declared_attr
     def ou_id(self):
-        return db.Column(UUIDType, db.ForeignKey('organizational_unit.id'))
+        return db.Column(UUIDType, db.ForeignKey('organizational_unit.id'), nullable=False)
 
     @declared_attr
     def public_key(self):
