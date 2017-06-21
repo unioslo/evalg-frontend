@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ The election API. """
-from flask import Blueprint, make_response, abort
+from flask import Blueprint, make_response, abort, current_app
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields
@@ -30,9 +30,12 @@ class AbstractElectionSchema(BaseSchema):
     mandate_period_start = fields.DateTime(allow_none=True)
     mandate_period_end = fields.DateTime(allow_none=True)
     mandate_type = fields.Nested(TranslatedString())
-    ou = fields.UUID(attribute='ou_id')
+    ou_id = fields.Str()
     public_key = fields.UUID(allow_none=True, attribute='public_key_id')
     meta = fields.Dict()
+    type = fields.Str()
+    status = fields.Str()
+    tz = fields.Str()
 
 
 class ElectionGroupSchema(AbstractElectionSchema):
@@ -42,11 +45,18 @@ class ElectionGroupSchema(AbstractElectionSchema):
         'ou': ma.URLFor('ous.OUDetail', ou_id='<ou_id>')
     })
 
-    elections = fields.List(fields.UUID(),
-                            attribute='id',
+    elections = fields.List(fields.UUID(attribute='id'),
                             description="Associated elections")
-    election_type = fields.String()
+    has_multiple_elections = fields.Boolean()
+    has_multiple_voting_times = fields.Boolean()
+    has_multiple_mandate_times = fields.Boolean()
+    has_multiple_contact_info = fields.Boolean()
+    has_multiple_info_urls = fields.Boolean()
+    has_gender_quota = fields.Boolean()
 
+    class Meta:
+        strict = True
+        dump_only = ('_links', 'id', 'elections', 'tz', 'status')
 
 class ElectionSchema(AbstractElectionSchema):
     _links = ma.Hyperlinks({
@@ -57,13 +67,19 @@ class ElectionSchema(AbstractElectionSchema):
         'lists': ma.URLFor('elections.ListCollection', e_id='<id>'),
         'ou': ma.URLFor('ous.OUDetail', ou_id='<ou_id>')
     })
-
+    list_ids = fields.List(fields.UUID(),
+                           description="Associated election lists")
+    group_id = fields.Str()
+    ou_id = fields.Str()
     group = fields.UUID(attribute='group_id',
                         description="Parent election group")
+    nr_of_candidates = fields.Integer()
+    nr_of_co_candidates = fields.Integer()
+    active = fields.Boolean()
 
     class Meta:
         strict = True
-        dump_only = ('_links', 'id')
+        dump_only = ('_links', 'id', 'ou_id', 'group', 'tz', 'list_ids', 'status')
 
 eg_schema = ElectionGroupSchema()
 e_schema = ElectionSchema()
@@ -123,6 +139,7 @@ class ElectionGroupList(MethodResource):
     @doc(summary='Create an election group')
     def post(self, **kwargs):
         group = make_group(**kwargs)
+        group.status = 'draft'
         db.session.add(group)
         db.session.commit()
         return group, 201
@@ -150,7 +167,7 @@ class ElectionDetail(MethodResource):
     @doc(summary='Partially update an election')
     def patch(self, e_id, **kwargs):
         election = get_election(e_id)
-        update_election(election, **kwargs)
+        update_election(election, **kwargs)  #TODO: read only attr
         return election
 
     @marshal_with(None, code=204)
@@ -177,6 +194,7 @@ class ElectionList(MethodResource):
     def post(self, g_id=None, **kwargs):
         grp = get_group(g_id) if g_id is not None else None
         election = make_election(group=grp, **kwargs)
+        election.status = 'draft'  # TODO: move to make_election()
         db.session.add(election)
         db.session.commit()
         return election

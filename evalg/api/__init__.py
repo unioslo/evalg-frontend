@@ -142,9 +142,10 @@ def init_app(app):
                            election_list,
                            ou,
                            candidate,
-                           authz)
+                           election_template)
     election.init_app(app)
     election_list.init_app(app)
     ou.init_app(app)
+    election_template.init_app(app)
     candidate.init_app(app)
     authz.init_app(app)
