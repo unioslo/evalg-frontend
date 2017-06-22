@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ The election API. """
-from flask import Blueprint, make_response, abort
+from flask import Blueprint, make_response
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields
@@ -81,18 +81,11 @@ class ElectionSchema(AbstractElectionSchema):
 
     class Meta:
         strict = True
-        dump_only = ('_links', 'id', 'ou_id', 'group', 'tz', 'list_ids', 'status')
+        dump_only = ('_links', 'id', 'ou_id', 'group', 'tz', 'list_ids',
+                     'status')
 
 eg_schema = ElectionGroupSchema()
 e_schema = ElectionSchema()
-
-
-def get(cls, id):
-    e = cls.query.get(id)
-    if e is None or e.deleted:
-        abort(404)
-    else:
-        return e
 
 
 @doc(tags=['electiongroup'])

@@ -1,16 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ The List API. """
-from flask import Blueprint, abort, make_response, current_app
+from flask import Blueprint, make_response
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with
 from flask_apispec import doc
 from marshmallow import fields
 from evalg import db, ma, docs
-from evalg.api import BaseSchema, TranslatedString
-from evalg.models.election_list import ElectionList
+from evalg.candidates import (get_list, get_lists, make_list, update)
+from evalg.metadata import (get_election)
+from evalg.api import BaseSchema, TranslatedString, or404, add_all_authz
 
 bp = Blueprint('lists', __name__)
+
+add_all_authz(globals())
+get_list = or404(get_list)
+get_election = or404(get_election)
 
 
 class ElectionListSchema(BaseSchema):
@@ -32,30 +37,21 @@ class ElectionListSchema(BaseSchema):
         dump_only = ('id', '_links')
 
 
-def get_list(id):
-    """ Get a list from the database. """
-    l = ElectionList.query.get(id)
-    if l is None or l.deleted:
-        abort(404)
-    else:
-        return l
-
-
 @doc(tags=['list'])
 class ElectionListList(MethodResource):
     @marshal_with(ElectionListSchema(many=True))
-    @use_kwargs({}, locations='query')
+    @use_kwargs({'e_id': fields.UUID()}, locations='query')
     @doc(summary='Get a list of electionlists')
-    def get(self):
-        return filter(lambda l: not l.deleted, ElectionList.query.all())
+    def get(self, e_id):
+        e = get_election(e_id)
+        return get_lists(e)
 
     @use_kwargs(ElectionListSchema())
     @marshal_with(ElectionListSchema(), code=201)
     @doc(summary='Create a election list')
-    def post(self, **kwargs):
-        current_app.logger.info('KWARGS')
-        current_app.logger.info(kwargs)
-        l = ElectionList(**kwargs)
+    def post(self, election_id, **kwargs):
+        e = get_election(election_id)
+        l = make_list(e, **kwargs)
         db.session.add(l)
         db.session.commit()
         return (l, 201)
@@ -65,18 +61,17 @@ class ElectionListList(MethodResource):
 class ElectionListDetail(MethodResource):
     """ Election List API. """
     @marshal_with(ElectionListSchema)
-    @use_kwargs({}, locations='query')
+    @use_kwargs({'e_id': fields.UUID()}, locations='query')
     @doc(summary='Get a list')
-    def get(self, id):
-        return get_list(id)
+    def get(self, e_id):
+        return get_list(e_id)
 
     @marshal_with(ElectionListSchema)
     @use_kwargs(ElectionListSchema)
     @doc(summary='Partially update a list')
     def patch(self, id, **kwargs):
         l = get_list(id)
-        for k, v in kwargs.items():
-            setattr(l, k, v)
+        update(l, **kwargs)
         db.session.commit()
         return l
 
@@ -86,15 +81,15 @@ class ElectionListDetail(MethodResource):
     @doc(summary='Delete a list')
     def delete(self, id=None):
         l = get_list(id)
-        l.deleted = True
+        update(l, deleted=True)
         db.session.commit()
         return make_response('', 204)
 
 
-bp.add_url_rule('/elections/<uuid:id>/lists/',
+bp.add_url_rule('/elections/<uuid:e_id>/lists/',
                 view_func=ElectionListList.as_view('ElectionListList'),
                 methods=['GET', 'POST'])
-bp.add_url_rule('/elections/<uuid:eid>/lists/<uuid:id>',
+bp.add_url_rule('/elections/<uuid:e_id>/lists/<uuid:id>',
                 view_func=ElectionListDetail.as_view('ElectionListDetail'),
                 methods=['GET', 'PATCH', 'DELETE'])
 

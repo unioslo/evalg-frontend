@@ -44,6 +44,7 @@ all_permissions = {
     'votefor': "can submit a vote on someone's behalf",
     'approvevote': 'can approve vote submitted on behalf',
     'testelection': 'can run test/demo of voting process',
+    'changepersons': 'can administrate persons',
 }
 """ List over permissions in app. """
 

@@ -8,9 +8,8 @@ from flask_apispec import doc
 from marshmallow import fields
 from evalg import ma, db, docs
 from evalg.candidates import (get_candidate, get_candidates, make_candidate,
-                              get_cocandidate, get_cocandidates)
+                              make_cocandidate, get_cocandidate, update)
 from evalg.api import BaseSchema, add_all_authz, or404
-from evalg.models.candidate import CoCandidate
 from .election import get_election
 
 bp = Blueprint('candidates', __name__)
@@ -38,7 +37,7 @@ class CandidateSchema(BaseSchema):
 
     class Meta:
         strict = True
-        dump_only = ('id', '_links','co_candidate_ids')
+        dump_only = ('id', '_links', 'co_candidate_ids')
 
 
 @doc(tags=['candidate'])
@@ -77,8 +76,7 @@ class CandidateDetail(MethodResource):
     @doc(summary='Partially update a candidate')
     def patch(self, id, g_id=None, e_id=None, **kwargs):
         c = get_candidate(id)
-        for k, v in kwargs.items():
-            setattr(c, k, v)
+        update(c, **kwargs)
         db.session.commit()
         return c
 
@@ -88,7 +86,7 @@ class CandidateDetail(MethodResource):
     @doc(summary='Delete a candidate')
     def delete(self, id, e_id=None, g_id=None):
         c = get_candidate(id)
-        c.deleted = True
+        update(c, deleted=True)
         db.session.commit()
         return make_response('', 204)
 
@@ -139,7 +137,7 @@ class CoCandidateList(MethodResource):
     @doc(summary='Create a cocandidate')
     def post(self, g_id=None, e_id=None, c_id=None, **kwargs):
         cand = get_candidate(c_id)
-        c = CoCandidate(candidate=cand, **kwargs)
+        c = make_cocandidate(candidate=cand, **kwargs)
         db.session.add(c)
         db.session.commit()
         return (c, 201)
@@ -170,7 +168,7 @@ class CoCandidateDetail(MethodResource):
     @doc(summary='Delete a co candidate')
     def delete(self, id):
         c = get_cocandidate(id)
-        c.deleted = True
+        update(c, deleted=True)
         db.session.commit()
         return make_response('', 204)
 

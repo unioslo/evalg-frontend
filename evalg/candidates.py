@@ -95,6 +95,18 @@ def get_lists(election):
     return election.lists
 
 
+def get_list(list_id):
+    """ Return a candidate list. """
+    l = ElectionList.query.get(list_id)
+    return None if l.deleted else l
+
+
+@eperm('changecandidates')
+def make_list(election, **args):
+    """ Make a new list. """
+    return ElectionList(election=election, **args)
+
+
 @singledispatch
 def get_candidates(obj, **kw):
     """ List obj's candidates. """
@@ -140,6 +152,11 @@ def make_candidate(**args):
     db.session.add(c)
     db.session.commit()
     return c
+
+
+@cperm('changecandidates')
+def make_cocandidate(candidate=None, **args):
+    return CoCandidate(candidate=candidate, **args)
 
 
 def get_candidate(cid):
