@@ -13,6 +13,9 @@ class Populator(FixturesMixin):
         'elections.json',
         'election_lists.json',
         'candidates.json',
+        'pollbooks.json',
+        'persons.json',
+        'voters.json',
     ]
 
     app = current_app

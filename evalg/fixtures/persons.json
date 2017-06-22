@@ -1,0 +1,18 @@
+[
+  {
+    "model": "evalg.models.person.Person",
+    "records": [
+      {
+          "id": "98447aeb-81d7-4c39-b070-335087765e3c",
+          "dp_user_id": "my-dataporten-user-id",
+          "email": "e@example.org",
+          "feide_id": "my-feide-id",
+          "first_name": "My first name",
+          "last_name": "My last name",
+          "last_update": "2017-01-01",
+          "nin": "0101101234",
+          "username": "My user name"
+      }
+    ]
+  }
+]

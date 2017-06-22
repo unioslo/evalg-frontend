@@ -27,6 +27,10 @@ LOGGING = {
             'handlers': ['stream_stderr'],
             'level': 'DEBUG',
         },
+        'watchdog': {
+            'handlers': ['stream_stderr'],
+            'level': 'WARNING'
+        }
     },
     'formatters': {
         'default': {
