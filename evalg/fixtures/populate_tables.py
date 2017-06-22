@@ -2,15 +2,18 @@
 # -*- coding: utf-8 -*-
 """ Helper that populates tables with example data. """
 
-from evalg import app, db
-
+from flask import current_app
 from flask_fixtures import FixturesMixin
+from evalg import db
+
 
 class Populator(FixturesMixin):
-    fixtures = ['ous.json',
-                'elections.json',
-                'election_lists.json',
-                'candidates.json',]
+    fixtures = [
+        'ous.json',
+        'elections.json',
+        'election_lists.json',
+        'candidates.json',
+    ]
 
-    app = app
+    app = current_app
     db = db
