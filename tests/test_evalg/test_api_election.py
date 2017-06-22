@@ -18,3 +18,10 @@ def test_post_electiongrouplist(client, fixtured_session):
                       json=data)
     assert res.status_code == 201
     assert res.json.get('ou') == ou_id
+
+
+def test_get_electiongroupdetail(client, fixtured_session):
+    eg_id = 'b5b71046-e191-43d4-9bb6-55a710895288'
+    res = client.get(url_for('elections.ElectionGroupDetail', eg_id=eg_id))
+    assert res.status_code == 200
+    assert res.json.get('name').get('en') == 'Foo in English'
