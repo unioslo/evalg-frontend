@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ Test configuration and common fixtures. """
+import os
 import pytest
 import flask_fixtures
 from flask import Response, json
@@ -35,9 +36,11 @@ class TestClient(FlaskClient):
 @pytest.fixture(scope='session')
 def config():
     """ Application config. """
+    db_path = os.path.join(os.path.dirname(__file__), 'test.db')
     return {
         'TESTING': True,
         'SERVER_NAME': 'evalg.test',
+        'SQLALCHEMY_DATABASE_URI': 'sqlite:///{}'.format(db_path)
     }
 
 
