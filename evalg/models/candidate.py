@@ -4,8 +4,7 @@
 import uuid
 
 from evalg import db
-from sqlalchemy.dialects.postgresql import JSON
-from sqlalchemy_utils import UUIDType
+from sqlalchemy_utils import UUIDType, JSONType
 
 
 class Candidate(db.Model):
@@ -15,7 +14,7 @@ class Candidate(db.Model):
                         nullable=False)
     rel_list_id = db.relationship('ElectionList', backref='candidates')
     name = db.Column(db.UnicodeText, nullable=False)
-    meta = db.Column(JSON)
+    meta = db.Column(JSONType)
     deleted = db.Column(db.Boolean, default=False)
     priority = db.Column(db.Integer, default=0)
     cumulated = db.Column(db.Boolean, default=False)
