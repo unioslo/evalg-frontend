@@ -3,6 +3,7 @@
 
 """Functional API for handling election metadata."""
 
+from flask import current_app
 from functools import wraps
 from .models.election import ElectionGroup, Election
 from .authorization import check_perms, all_perms, PermissionDenied
@@ -145,8 +146,7 @@ def make_group_from_template(name=None, template=None, ou=None, principals=()):
     import functools
 
     if not check_perms(principals, 'createelection', ou=ou):
-        from evalg import app
-        app.logger.info('Testing %s', principals)
+        current_app.logger.info('Testing %s', principals)
         raise PermissionDenied()
 
     grouptype = template['grouptype']

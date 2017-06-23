@@ -109,8 +109,7 @@ def add_authz(module=None, *functions):
     def authzd(f):
         @wraps(f)
         def fun(*args, **kw):
-            from evalg import app
-            app.logger.info('%s(*%s, **%s)', f.__name__, args, kw)
+            current_app.logger.info('%s(*%s, **%s)', f.__name__, args, kw)
             kw['principals'] = get_principals()
             return f(*args, **kw)
         return fun
