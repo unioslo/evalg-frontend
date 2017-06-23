@@ -1,24 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ The person API. """
-from flask import Blueprint, abort, make_response
+from flask import Blueprint, make_response
+
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with
 from flask_apispec import doc
 from marshmallow import fields
 from evalg import db, docs
-from evalg.api import BaseSchema
-from evalg.models.person import Person
+from evalg.api import BaseSchema, or404, add_all_authz
+from evalg.person import (list_persons, make_person, get_person, update_person,
+                          delete_person)
 
 bp = Blueprint('persons', __name__)
-
-
-def get_person(id):
-    p = Person.query.get(id)
-    if p is None:
-        abort(404)
-    else:
-        return p
+add_all_authz(globals())
+get_person = or404(get_person)
 
 
 class PersonSchema(BaseSchema):
@@ -44,13 +40,13 @@ class PersonList(MethodResource):
     @marshal_with(PersonSchema(many=True))
     @doc(summary='Get persons')
     def get(self):
-        return Person.query.all()
+        return list_persons()
 
     @use_kwargs(PersonSchema())
     @marshal_with(PersonSchema(), code=201)
     @doc(summary='Create a person')
     def post(self, **kwargs):
-        p = Person(**kwargs)
+        p = make_person(**kwargs)
         db.session.add(p)
         db.session.commit()
         return (p, 201)
@@ -69,8 +65,7 @@ class PersonDetail(MethodResource):
     @doc(summary='Partially update a person')
     def patch(self, id, **kwargs):
         p = get_person(id)
-        for k, v in kwargs.items():
-            setattr(p, k, v)
+        update_person(p, **kwargs)
         db.session.commit()
         return p
 
@@ -80,7 +75,7 @@ class PersonDetail(MethodResource):
     @doc(summary='Delete a person')
     def delete(self, id):
         p = get_person(id)
-        db.session.delete(p)
+        delete_person(p)
         db.session.commit()
         return make_response('', 204)
 
