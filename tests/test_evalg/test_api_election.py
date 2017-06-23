@@ -13,11 +13,11 @@ def test_get_electiongrouplist(client, fixtured_session):
 
 def test_post_electiongrouplist(client, fixtured_session):
     ou_id = '61499710-726d-43ab-b6f7-63138391dd02'
-    data = {'ou': ou_id}
+    data = {'ou_id': ou_id}
     res = client.post(url_for('elections.ElectionGroupList'),
                       json=data)
     assert res.status_code == 201
-    assert res.json.get('ou') == ou_id
+    assert res.json.get('ou_id') == ou_id
 
 
 def test_get_electiongroupdetail(client, fixtured_session):
