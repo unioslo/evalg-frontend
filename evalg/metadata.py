@@ -62,13 +62,13 @@ def rperm(*permission):
     return fun
 
 
-@rperm('seeelection')
+@rperm('view-election')
 def get_group(eg_id):
     """Look up election group."""
     return ElectionGroup.query.get(eg_id)
 
 
-@rperm('seeelection')
+@rperm('view-election')
 def get_election(e_id):
     """Look up election."""
     return Election.query.get(e_id)
@@ -82,7 +82,7 @@ def list_elections(group=None):
         return group.elections
 
 
-@eperm('changemetadata')
+@eperm('change-election-metadata')
 def update_election(election, **fields):
     """Update election fields"""
     for k, v in fields.items():
@@ -94,7 +94,7 @@ def update_election(election, **fields):
     return election
 
 
-@eperm('changemetadata')
+@eperm('change-election-metadata')
 def update_group(group, **fields):
     """Update group fields. """
     for k, v in fields.items():
@@ -106,14 +106,14 @@ def update_group(group, **fields):
     return group
 
 
-@eperm('changemetadata')
+@eperm('change-election-metadata')
 def delete_election(election):
     """Delete election"""
     election.deleted = True
     db.session.commit()
 
 
-@eperm('changemetadata')
+@eperm('change-election-metadata')
 def delete_group(group):
     """Delete election"""
     group.deleted = True
@@ -125,13 +125,13 @@ def list_groups(running=None):
     return ElectionGroup.query.all()
 
 
-@rperm('createelection')
+@rperm('create-election')
 def make_election(**kw):
     """Create election."""
     return Election(**kw)
 
 
-@rperm('createelection')
+@rperm('create-election')
 def make_group(**kw):
     """Create election group."""
     return ElectionGroup(**kw)

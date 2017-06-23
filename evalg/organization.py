@@ -69,7 +69,7 @@ def list_ous():
     return list(filter(lambda x: not x.deleted, OrganizationalUnit.query.all()))
 
 
-@ouperm('modify-ou')
+@ouperm('change-ou')
 def update_ou(ou, **args):
     """ Update OU. """
     for k, v in args:
@@ -78,7 +78,7 @@ def update_ou(ou, **args):
     return ou
 
 
-@rperm('modify-ou')
+@rperm('change-ou')
 def make_ou(**args):
     """ Create new ou. """
     return OrganizationalUnit(**args)

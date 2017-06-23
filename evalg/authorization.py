@@ -24,6 +24,7 @@ _cp = check_perms
 
 def add_perm(perm, fun):
     assert perm in all_perms, 'Perm {} does not exist'.format(perm)
+
     @wraps(fun)
     def gun(principals=None, *rest, **kw):
         assert principals is not None, "Add authz"
@@ -46,7 +47,7 @@ def get_perms():
     return Permission.query.all()
 
 
-get_principals_for = add_perm('grantroles', get_principals_for)
+get_principals_for = add_perm('grant-role', get_principals_for)
 
 
 def list_ous():
@@ -60,7 +61,7 @@ def list_ous():
 #                                                                get_role))
 
 
-@perm('grantroles')
+@perm('grant-role')
 def make_role(cls, *rest, **kw):
     ret = cls(*rest, **kw)
     cls.session.add(ret)
@@ -68,7 +69,7 @@ def make_role(cls, *rest, **kw):
     return ret
 
 
-@perm('grantroles')
+@perm('grant-role')
 def update_role(role, args):
     for k, v in args.items():
         setattr(role, k, v)
@@ -76,21 +77,21 @@ def update_role(role, args):
     return role
 
 
-@perm('grantroles')
+@perm('grant-role')
 def delete_role(role):
     db.session.delete(role)
     db.session.commit()
     return role
 
 
-@perm('grantroles')
+@perm('grant-role')
 def add_perm_to_role(role, perm):
     role.perms.append(perm)
     db.session.commit()
     return role.perms
 
 
-@perm('grantroles')
+@perm('grant-role')
 def remove_perm_from_role(role, perm):
     role.perms.remove(perm)
     db.session.commit()

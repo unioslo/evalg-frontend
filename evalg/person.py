@@ -32,12 +32,12 @@ def perm(*permission):
     return fun
 
 
-@perm('seeelection', 'grantroles', 'uploadvoters', 'votefor', 'changepersons')
+@perm('view-election', 'grant-role', 'upload-voters', 'vote-for', 'change-person')
 def list_persons():
     return Person.query.all()
 
 
-@perm('changepersons')
+@perm('change-person')
 def make_person(**args):
     return Person(**args)
 
@@ -63,7 +63,7 @@ def _update_person(person, kwargs):
     return person
 
 
-@perm('changepersons')
+@perm('change-person')
 def update_person(person, **updates):
     return _update_person(person, updates)
 
@@ -73,6 +73,6 @@ def update_self(person, **updates):
     return _update_person(person, updates)
 
 
-@perm('changepersons')
+@perm('change-person')
 def delete_person(person):
     db.session.delete(person)

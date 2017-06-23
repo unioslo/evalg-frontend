@@ -101,7 +101,7 @@ def get_list(list_id):
     return None if l.deleted else l
 
 
-@eperm('changecandidates')
+@eperm('change-candidates')
 def make_list(election, **args):
     """ Make a new list. """
     return ElectionList(election=election, **args)
@@ -113,14 +113,14 @@ def get_candidates(obj, **kw):
 
 
 @get_candidates.register(Election)
-@eperm('seeelection')
+@eperm('view-election')
 def get_election_candidates(election):
     """ Accumulate all election's lists' candidates. """
     return election.lists[0].candidates
 
 
 @get_candidates.register(ElectionList)
-@lperm('seeelection')
+@lperm('view-election')
 def get_list_candidates(lst):
     """ Return candidates. """
     return lst.candidates
@@ -132,7 +132,7 @@ def update(obj, **kw):
 
 
 @update.register(ElectionList)
-@lperm('changecandidates')
+@lperm('change-candidates')
 def update_list(lst, **kw):
     for k, v in kw.items():
         setattr(lst, k, v)
@@ -140,13 +140,13 @@ def update_list(lst, **kw):
 
 @update.register(Candidate)
 @update.register(CoCandidate)
-@cperm('changecandidates')
+@cperm('change-candidates')
 def update_candidate(cand, **kw):
     for k, v in kw.items():
         setattr(cand, k, v)
 
 
-@rcperm('changecandidates')
+@rcperm('change-candidates')
 def make_candidate(**args):
     c = Candidate(**args)
     db.session.add(c)
@@ -154,7 +154,7 @@ def make_candidate(**args):
     return c
 
 
-@cperm('changecandidates')
+@cperm('change-candidates')
 def make_cocandidate(candidate=None, **args):
     return CoCandidate(candidate=candidate, **args)
 
