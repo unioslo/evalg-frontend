@@ -145,7 +145,7 @@ def make_group_from_template(name=None, template=None, ou=None, principals=()):
     from collections import defaultdict
     import functools
 
-    if not check_perms(principals, 'createelection', ou=ou):
+    if not check_perms(principals, 'create-election', ou=ou):
         current_app.logger.info('Testing %s', principals)
         raise PermissionDenied()
 
