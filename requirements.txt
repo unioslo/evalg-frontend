@@ -6,10 +6,10 @@ flask-sqlalchemy
 flask-migrate
 flask-shell-ipython
 flask-marshmallow
+flask-apispec
 marshmallow
 marshmallow-sqlalchemy
 psycopg2
 sqlalchemy_utils
 gunicorn
 setuptools_scm
--r dependency-links.txt

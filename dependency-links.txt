@@ -1,1 +1,0 @@
-git+https://bitbucket.usit.uio.no/scm/evalg/flask-apispec.git#egg=flask-apispec-0.4.0.dev0
