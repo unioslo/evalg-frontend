@@ -43,7 +43,6 @@ class AbstractElection(Base):
 
     status = db.Column(db.Text)
     """ draft → public → closed """
-        return db.Column(UUIDType, db.ForeignKey('organizational_unit.id'), nullable=False)
 
     @declared_attr
     def public_key(self):
@@ -66,7 +65,8 @@ class ElectionGroup(AbstractElection):
     end = db.Column(db.DateTime)
     """ End time """
 
-    ou_id = db.Column(UUIDType, db.ForeignKey('organizational_unit.id'))
+    ou_id = db.Column(UUIDType, db.ForeignKey('organizational_unit.id'),
+                      nullable=False)
     ou = db.relationship(OrganizationalUnit)
 
     information_url = db.Column(URLType)
