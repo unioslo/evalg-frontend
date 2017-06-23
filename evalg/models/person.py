@@ -42,15 +42,16 @@ class PersonExternalID(db.Model):
     """
     The person external id model
     """
-    id = db.Column(UUIDType, primary_key=True, default=uuid.uuid4)
     person_id = db.Column(UUIDType, db.ForeignKey('person.id'), nullable=False)
-    person_id_type_id = db.Column(
+    external_id = db.Column(db.UnicodeText, primary_key=True)
+    type_code = db.Column(
         db.UnicodeText,
         db.ForeignKey('person_external_id_type.code'),
-        nullable=False)
+        primary_key=True)
 
     person = db.relationship('Person', backref='external_ids')
-    person_id_type = db.relationship('PersonExternalIDType')  # no b.ref needed
+    id_type = db.relationship('PersonExternalIDType')  # no b.ref needed
 
     def __repr__(self):
-        return '<PersonExternalID {id}>'.format(id=self.id)
+        return '<PersonExternalID {id}.{code}={extid}>'.format(
+            id=self.person_id, code=self.type_code, extid=self.external_id)
