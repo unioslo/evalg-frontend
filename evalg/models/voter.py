@@ -1,17 +1,16 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+""" Models for voters. """
 
 import uuid
-
 from sqlalchemy_utils import UUIDType
-
 from evalg import db
+from evalg.models import Base
 from evalg.models.pollbook import PollBook
 
 
-class VoterStatus(db.Model):
-    """
-    The voter status-code / census-member status-code model
-    """
+class VoterStatus(Base):
+    """ Voter / census member status code model. """
     code = db.Column(db.UnicodeText, primary_key=True)
     description = db.Column(db.UnicodeText)
 
@@ -19,10 +18,8 @@ class VoterStatus(db.Model):
         return '<VoterStatus {code}>'.format(code=self.code)
 
 
-class Voter(db.Model):
-    """
-    The Voter / Census-member model
-    """
+class Voter(Base):
+    """ Voter / census member model."""
     id = db.Column(UUIDType, primary_key=True, default=uuid.uuid4)
     tag = db.Column(db.UnicodeText)
     pollbook_person_id = db.Column(UUIDType,

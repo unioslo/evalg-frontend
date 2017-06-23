@@ -17,6 +17,7 @@ class PublicKey(Base):
 
 
 class AbstractElection(Base):
+    """ Base model for elections and election groups. """
     __abstract__ = True
 
     id = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
@@ -59,6 +60,7 @@ class AbstractElection(Base):
 
 
 class ElectionGroup(AbstractElection):
+    """ Election group. """
     start = db.Column(db.DateTime)
     """ Start time """
 
@@ -68,6 +70,7 @@ class ElectionGroup(AbstractElection):
     ou_id = db.Column(UUIDType, db.ForeignKey('organizational_unit.id'),
                       nullable=False)
     ou = db.relationship(OrganizationalUnit)
+    """ Organizational unit. """
 
     information_url = db.Column(URLType)
     """ URL for voter's help """
@@ -92,6 +95,7 @@ class ElectionGroup(AbstractElection):
 
 
 class Election(AbstractElection):
+    """ Election. """
     sequence = db.Column(db.Text)
     """ Some ID for the UI """
 
@@ -121,9 +125,9 @@ class Election(AbstractElection):
         return True
         import datetime
         now = datetime.datetime.now()
-        return (self.active
-                and self.status == 'public'
-                and self.start <= now <= self.end)
+        return (self.active and
+                self.status == 'public' and
+                self.start <= now <= self.end)
 
     @property
     def ou_id(self):

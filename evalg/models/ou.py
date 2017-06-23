@@ -9,6 +9,7 @@ from sqlalchemy_utils import UUIDType, JSONType
 
 
 class OrganizationalUnit(Base):
+    """ Organizational unit. """
     id = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
     name = db.Column(JSONType, nullable=False)
     external_id = db.Column(db.Text, nullable=False, unique=True)
@@ -21,7 +22,6 @@ class OrganizationalUnit(Base):
 
     def isunder(self, other, acceptsame=True):
         """ Checks if self is a sub ou of other. """
-
         if isinstance(other, OrganizationalUnit):
             other = other.id
         if self.id == other:
@@ -32,17 +32,14 @@ class OrganizationalUnit(Base):
 
     def __lt__(self, other):
         """ Checks if self is a sub ou of other. """
-
         return self.isunder(other, acceptsame=False)
 
     def __le__(self, other):
         """ Checks if self is a sub ou of other. """
-
         return self.isunder(other, acceptsame=True)
 
     def isover(self, other, acceptsame=True):
         """ Checks if other is a sub ou of self. """
-
         if isinstance(other, OrganizationalUnit):
             return other.isunder(self.id)
         return other in self.subous(acceptsame)
@@ -55,7 +52,6 @@ class OrganizationalUnit(Base):
 
     def __eq__(self, other):
         """ Checks for equality between ous. """
-
         return isinstance(other, OrganizationalUnit) and self.id == other.id
 
     def subous(self, includeself=True):

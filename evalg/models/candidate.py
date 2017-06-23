@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-""" The candidate model. """
-import uuid
+""" Models for candidates. """
 
+import uuid
 from evalg import db
+from evalg.models import Base
 from sqlalchemy_utils import UUIDType, URLType, JSONType
 
 
-class Candidate(db.Model):
+class Candidate(Base):
     id = db.Column(UUIDType, primary_key=True, default=uuid.uuid4)
     list_id = db.Column(UUIDType,
                         db.ForeignKey('election_list.id'),
@@ -26,10 +27,10 @@ class Candidate(db.Model):
         return [c.id for c in self.co_candidates if not c.deleted]
 
     def __repr__(self):
-        return '<Candidate %r>' % self.id
+        return '<Candidate {id}>'.format(id=self.id)
 
 
-class CoCandidate(db.Model):
+class CoCandidate(Base):
     id = db.Column(UUIDType, primary_key=True, default=uuid.uuid4)
     name = db.Column(db.UnicodeText)
     candidate_id = db.Column(UUIDType,
@@ -40,4 +41,4 @@ class CoCandidate(db.Model):
     deleted = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
-        return '<CoCandidate %r>' % self.id
+        return '<CoCandidate {id}>'.format(id=self.id)

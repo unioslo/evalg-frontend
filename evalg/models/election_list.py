@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ The candidate model. """
-import uuid
 
+import uuid
 from evalg import db
+from evalg.models import Base
 from sqlalchemy_utils import UUIDType, URLType, JSONType
 
 
-class ElectionList(db.Model):
+class ElectionList(Base):
+    """ List of electable candidates in an election. """
     id = db.Column(UUIDType, primary_key=True, default=uuid.uuid4)
     name = db.Column(JSONType)
     description = db.Column(JSONType)
@@ -19,4 +21,4 @@ class ElectionList(db.Model):
     deleted = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
-        return '<ElectionList %r>' % self.id
+        return '<ElectionList {id}>'.format(id=self.id)

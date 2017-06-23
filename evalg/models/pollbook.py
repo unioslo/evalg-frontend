@@ -1,16 +1,15 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+""" Models for poll books. """
 
 import uuid
-
 from sqlalchemy_utils import UUIDType
-
 from evalg import db
+from evalg.models import Base
 
 
-class PollBook(db.Model):
-    """
-    The Poll-book / Census model
-    """
+class PollBook(Base):
+    """ Poll book / census. """
     __table_args__ = (
         db.UniqueConstraint('name',
                             'election_id',

@@ -1,17 +1,16 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+""" Models for persons. """
 
 import datetime
 import uuid
-
 from sqlalchemy_utils import UUIDType
-
 from evalg import db
+from evalg.models import Base
 
 
-class Person(db.Model):
-    """
-    The person model
-    """
+class Person(Base):
+    """ Person. """
     id = db.Column(UUIDType, primary_key=True, default=uuid.uuid4)
     dp_user_id = db.Column(db.UnicodeText, index=True)
     email = db.Column(db.UnicodeText, index=True)
@@ -27,21 +26,19 @@ class Person(db.Model):
         return '<Person {id}>'.format(id=self.id)
 
 
-class PersonExternalIDType(db.Model):
-    """
-    The Person external id-type model
-    """
+class PersonExternalIDType(Base):
+    """ Person external ID type. """
     code = db.Column(db.UnicodeText, primary_key=True)
     description = db.Column(db.UnicodeText)
 
     def __repr__(self):
-        return '<PersonExternalIDType {id}>'.format(id=self.id)
+        return '<PersonExternalIDType code={code}>'.format(code=self.code)
 
 
-class PersonExternalID(db.Model):
-    """
-    The person external id model
-    """
+class PersonExternalID(Base):
+    """ Person external ID. """
+    __tablename__ = 'person_external_id'
+
     person_id = db.Column(UUIDType, db.ForeignKey('person.id'), nullable=False)
     external_id = db.Column(db.UnicodeText, primary_key=True)
     type_code = db.Column(
