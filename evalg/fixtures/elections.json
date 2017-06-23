@@ -34,7 +34,7 @@
           "nb": "President",
           "nn": "President"
         },
-        "election_type": "list",
+        "type": "list",
         "ou_id": "a184e25e-907c-4155-860f-79df898ad51c",
         "public_key_id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d"
       },
@@ -61,7 +61,7 @@
           "nb": "Leder",
           "nn": "Leiar"
         },
-        "election_type": "preferential",
+        "type": "preferential",
         "ou_id": "edf1a6e9-2f9f-46a8-8365-4842199984f4",
         "public_key_id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d"
       }
@@ -91,19 +91,16 @@
         "mandate_type": {
           "en": "President"
         },
-        "ou_id": "a184e25e-907c-4155-860f-79df898ad51c",
         "public_key_id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d",
         "group_id": "b5b71046-e191-43d4-9bb6-55a710895288"
       },
       {
         "id": "d10f90c2-bb14-47de-ace2-79265efcd161",
-        "ou_id": "a184e25e-907c-4155-860f-79df898ad51c",
         "name": {
           "en": "Bar",
           "nb": "Bar",
           "nn": "Bar"
         },
-        "ou_id": "a184e25e-907c-4155-860f-79df898ad51c",
         "group_id": "2dc010ac-1bf7-4b93-92c8-72fd4e161ed8"
       }
     ]
