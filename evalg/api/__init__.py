@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import inspect
 from functools import wraps
-from flask import jsonify, g, abort
+from flask import jsonify, g, abort, current_app
 from evalg import ma
 import evalg
 from ..authorization import PermissionDenied
@@ -15,6 +15,11 @@ def handle_unprocessable_entity(err):
     return jsonify({
         'messages': messages,
     }), 422
+
+
+def handle_permission_denied(err):
+    current_app.logger.error('Permission denied %s', err)
+    return jsonify(dict(messages='Permission denied')), 403
 
 
 class BaseSchemaOpts(SchemaOpts):
@@ -128,11 +133,7 @@ def add_all_authz(moduleglobals):
 def init_app(app):
     # Error handlers
     app.register_error_handler(422, handle_unprocessable_entity)
-
-    def permissiondenied(err):
-        app.logger.error('Permission denied %s', err)
-        return jsonify(dict(messages='Permission denied')), 403
-    app.register_error_handler(PermissionDenied, permissiondenied)
+    app.register_error_handler(PermissionDenied, handle_permission_denied)
 
     # Configure languages
     TranslatedString.configure(app)
