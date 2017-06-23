@@ -13,7 +13,11 @@ class OrganizationalUnit(Base):
     name = db.Column(JSONType, nullable=False)
     external_id = db.Column(db.Text, nullable=False, unique=True)
     deleted = db.Column(db.Boolean, default=False)
-    tag = db.Column(db.String, nullable=False)
+    tag = db.Column(db.String)
+    parent = db.relationship('OrganizationalUnit',
+                             backref='children',
+                             remote_side=id)
+    parent_id = db.Column(UUIDType(), db.ForeignKey('organizational_unit.id'))
 
     def isunder(self, other, acceptsame=True):
         """ Checks if self is a sub ou of other. """

@@ -62,7 +62,7 @@ gunicorn ballotbox:wsgi
 To run one of the applications using the builtin Flask server:
 
 ```
-export FLASK_APP=evalg  # or ballotbox
+export FLASK_APP=evalg.wsgi  # or ballotbox.wsgi
 flask run
 # see: flask run --help
 ```
@@ -129,7 +129,7 @@ docker exec -u postgres -it evalg_db_1 psql
 The flask shell command also comes with a shell utility:
 
 ```
-FLASK_APP=evalg flask shell
+FLASK_APP=evalg.wsgi flask shell
 ```
 
 See http://flask.pocoo.org/docs/latest/shell/
@@ -139,5 +139,5 @@ See http://flask.pocoo.org/docs/latest/shell/
 This lists all CLI commands an application has to offer:
 
 ```
-FLASK_APP=evalg flask --help
+FLASK_APP=evalg.wsgi flask --help
 ```

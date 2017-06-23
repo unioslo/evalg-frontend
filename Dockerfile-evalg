@@ -36,7 +36,7 @@ ENV https_proxy=""
 # Setup evalg
 EXPOSE 8000
 
-# ENV FLASK_APP="evalg"
+# ENV FLASK_APP="evalg.wsgi"
 # RUN flask db migrate ?
 
 CMD ["gunicorn", "-b", "0.0.0.0:8000", "evalg.wsgi"]
