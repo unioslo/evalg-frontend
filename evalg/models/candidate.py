@@ -14,7 +14,7 @@ class Candidate(db.Model):
                         nullable=False)
     rel_list_id = db.relationship('ElectionList', backref='candidates')
     name = db.Column(db.UnicodeText, nullable=False)
-    meta = db.Column(JSON)
+    meta = db.Column(JSONType)
     information_url = db.Column(URLType)
     deleted = db.Column(db.Boolean, default=False)
     priority = db.Column(db.Integer, default=0)
