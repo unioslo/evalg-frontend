@@ -35,6 +35,7 @@
           "nn": "President"
         },
         "type": "list",
+        "status": "draft",
         "ou_id": "a184e25e-907c-4155-860f-79df898ad51c",
         "public_key_id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d"
       },
@@ -62,6 +63,7 @@
           "nn": "Leiar"
         },
         "type": "preferential",
+        "status": "draft",
         "ou_id": "edf1a6e9-2f9f-46a8-8365-4842199984f4",
         "public_key_id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d"
       }
