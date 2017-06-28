@@ -31,7 +31,6 @@ class ElectionTemplateSchema(BaseSchema):
 @doc(tags=['electiontemplate'])
 class ElectionTemplate(MethodResource):
     """ Candidate API. """
-    @use_kwargs({}, locations='query')
     @marshal_with(ElectionTemplateSchema())
     @doc(summary='Get the election template')
     def get(self):
@@ -46,7 +45,8 @@ bp.add_url_rule('/electiontemplate/',
 @doc(tags=['electiontemplate'])
 class ElectionTemplateNewGroup(MethodResource):
     """ Candidate API. """
-    @use_kwargs({'group': fields.Dict(), 'name': fields.Dict(),
+    @use_kwargs({'group': fields.Dict(),
+                 'name': fields.Dict(),
                  'ouid': fields.UUID()})
     @marshal_with(ElectionGroupSchema())
     @doc(summary='Create new elections')

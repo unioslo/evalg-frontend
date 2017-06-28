@@ -43,7 +43,6 @@ class CandidateSchema(BaseSchema):
 @doc(tags=['candidate'])
 class CandidateList(MethodResource):
     """ Candidate API. """
-    @use_kwargs({}, locations='query')
     @marshal_with(CandidateSchema(many=True))
     @doc(summary='Get a list of candidates')
     def get(self, e_id, g_id=None):
@@ -64,8 +63,6 @@ class CandidateList(MethodResource):
 class CandidateDetail(MethodResource):
     """ Candidate API. """
     @marshal_with(CandidateSchema())
-    @use_kwargs({},
-                locations='query')
     @doc(summary='Get a candidate')
     def get(self, id, e_id=None, g_id=None):
         """ List candidates. """
@@ -81,8 +78,6 @@ class CandidateDetail(MethodResource):
         return c
 
     @marshal_with(None, code=204)
-    @use_kwargs({},
-                locations='query')
     @doc(summary='Delete a candidate')
     def delete(self, id, e_id=None, g_id=None):
         c = get_candidate(id)
@@ -126,7 +121,6 @@ class CoCandidateSchema(BaseSchema):
 
 @doc(tags=['cocandidate'])
 class CoCandidateList(MethodResource):
-    @use_kwargs({}, locations='query')
     @marshal_with(CoCandidateSchema(many=True))
     @doc(summary='Get a list of co candidates')
     def get(self, g_id=None, e_id=None, c_id=None):
@@ -146,8 +140,6 @@ class CoCandidateList(MethodResource):
 @doc(tags=['cocandidate'])
 class CoCandidateDetail(MethodResource):
     @marshal_with(CoCandidateSchema())
-    @use_kwargs({},
-                locations='query')
     @doc(summary='Get a co candidate')
     def get(self, id, g_id=None, e_id=None, c_id=None):
         """ Get a co candidate. """
@@ -163,8 +155,6 @@ class CoCandidateDetail(MethodResource):
         return c
 
     @marshal_with(None, code=204)
-    @use_kwargs({},
-                locations='query')
     @doc(summary='Delete a co candidate')
     def delete(self, id):
         c = get_cocandidate(id)
@@ -196,8 +186,6 @@ bp.add_url_rule('/elections/<uuid:e_id>/candidates/<uuid:c_id_>/cocandidates/'
 @doc(tags=['candidate'])
 class CoCandidateCollection(MethodResource):
     @marshal_with(CoCandidateSchema(many=True))
-    @use_kwargs({},
-                locations='query')
     @doc(summary='Get a list of associated co candidates')
     def get(self, id):
         return filter(lambda c: not c.deleted, get_candidate(id).co_candidates)

@@ -46,7 +46,6 @@ class VoterSchema(BaseSchema):
 
 @doc(tags=['voter'])
 class VoterList(MethodResource):
-    @use_kwargs({}, locations='query')
     @marshal_with(VoterSchema(many=True))
     @doc(summary='Get voters')
     def get(self):
@@ -65,7 +64,6 @@ class VoterList(MethodResource):
 @doc(tags=['voter'])
 class VoterDetail(MethodResource):
     @marshal_with(VoterSchema())
-    @use_kwargs({}, locations='query')
     @doc(summary='Get a voter')
     def get(self, id):
         return get_voter(id)
@@ -81,8 +79,6 @@ class VoterDetail(MethodResource):
         return voter
 
     @marshal_with(None, code=204)
-    @use_kwargs({},
-                locations='query')
     @doc(summary='Delete a voter')
     def delete(self, id):
         voter = get_voter(id)

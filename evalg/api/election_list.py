@@ -76,8 +76,6 @@ class ElectionListDetail(MethodResource):
         return l
 
     @marshal_with(None, code=204)
-    @use_kwargs({},
-                locations='query')
     @doc(summary='Delete a list')
     def delete(self, id=None):
         l = get_list(id)
@@ -99,8 +97,6 @@ class CandidateCollection(MethodResource):
     from evalg.api.candidate import CandidateSchema
 
     @marshal_with(CandidateSchema(many=True))
-    @use_kwargs({},
-                locations='query')
     @doc(summary='Get a list of associated candidates')
     def get(self, id):
         return filter(lambda c: not c.deleted, get_list(id).candidates)
@@ -111,8 +107,6 @@ class ListCandidate(MethodResource):
     from evalg.api.candidate import CandidateSchema
 
     @marshal_with(CandidateSchema(many=True))
-    @use_kwargs({},
-                locations='query')
     @doc(summary='Get a list of associated candidates')
     def get(self, lid, id):
         return filter(lambda c: not c.deleted, get_list(id).candidates)

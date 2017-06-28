@@ -38,7 +38,6 @@ ou_schema = OrganizationalUnitSchema()
 @doc(tags=['ou'])
 class OUDetail(MethodResource):
     """ Resource for single OUs. """
-    @use_kwargs({}, locations=['query'])
     @marshal_with(ou_schema)
     @doc(summary='Get an organizational unit')
     def get(self, ou_id):
@@ -63,7 +62,6 @@ class OUDetail(MethodResource):
         db.session.commit()
         return ou
 
-    @use_kwargs({}, locations="query")
     @marshal_with(None, code=204)
     @doc(summary='Delete an organizational unit')
     def delete(self, ou_id):
@@ -76,7 +74,6 @@ class OUDetail(MethodResource):
 @doc(tags=['ou'])
 class OUList(MethodResource):
     """ Resource for OU collections. """
-    @use_kwargs({}, locations=['query'])
     @marshal_with(OrganizationalUnitSchema(many=True))
     @doc(summary='List organizational units')
     def get(self):

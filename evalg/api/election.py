@@ -91,7 +91,6 @@ e_schema = ElectionSchema()
 @doc(tags=['electiongroup'])
 class ElectionGroupDetail(MethodResource):
     """ Resource for single election groups. """
-    @use_kwargs({}, locations="query")
     @marshal_with(eg_schema)
     @doc(summary='Get an election group')
     def get(self, eg_id):
@@ -112,8 +111,6 @@ class ElectionGroupDetail(MethodResource):
         return update_group(group)
 
     @marshal_with(None, code=204)
-    @use_kwargs({},
-                locations='query')
     @doc(summary='Delete an election group')
     def delete(self, eg_id):
         delete_group(get_group(eg_id))
@@ -123,7 +120,6 @@ class ElectionGroupDetail(MethodResource):
 @doc(tags=['electiongroup'])
 class ElectionGroupList(MethodResource):
     """ Resource for election group collections. """
-    @use_kwargs({}, locations=['query'])
     @marshal_with(ElectionGroupSchema(many=True))
     @doc(summary='List election groups')
     def get(self):
@@ -143,7 +139,6 @@ class ElectionGroupList(MethodResource):
 @doc(tags=['election'])
 class ElectionDetail(MethodResource):
     """ Resource for single elections. """
-    @use_kwargs({}, locations="query")
     @marshal_with(e_schema)
     @doc(summary='Get an election')
     def get(self, e_id):
@@ -166,7 +161,6 @@ class ElectionDetail(MethodResource):
         return election
 
     @marshal_with(None, code=204)
-    @use_kwargs({}, locations="query")
     @doc(summary='Delete an election')
     def delete(self, e_id):
         election = get_election(e_id)
@@ -177,7 +171,6 @@ class ElectionDetail(MethodResource):
 @doc(tags=['election'])
 class ElectionList(MethodResource):
     """ Resource for election collections. """
-    @use_kwargs({}, locations=['query'])
     @marshal_with(ElectionSchema(many=True))
     @doc(summary='List elections')
     def get(self, g_id=None):
@@ -218,9 +211,7 @@ bp.add_url_rule('/electiongroups/<uuid:g_id>/elections/<uuid:e_id>',
 
 @doc(tags=['electiongroup'])
 class ElectionCollection(MethodResource):
-
     @marshal_with(ElectionSchema(many=True))
-    @use_kwargs({}, locations='query')
     @doc(summary='Get a list of elections')
     def get(self, eg_id):
         return get_group(eg_id).elections
@@ -237,7 +228,6 @@ class ListCollection(MethodResource):
     from evalg.api.election_list import ElectionListSchema
 
     @marshal_with(ElectionListSchema(many=True))
-    @use_kwargs({}, locations='query')
     @doc(summary='Get a list of lists')
     def get(self, e_id, g_id=None):
         return get_election(e_id).lists

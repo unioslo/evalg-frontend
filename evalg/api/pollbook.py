@@ -41,7 +41,6 @@ class PollBookSchema(BaseSchema):
 
 @doc(tags=['pollbook'])
 class PollBookList(MethodResource):
-    @use_kwargs({}, locations='query')
     @marshal_with(PollBookSchema(many=True))
     @doc(summary='Get all pollbooks')
     def get(self):
@@ -60,7 +59,6 @@ class PollBookList(MethodResource):
 @doc(tags=['pollbook'])
 class PollBookDetail(MethodResource):
     @marshal_with(PollBookSchema())
-    @use_kwargs({}, locations='query')
     @doc(summary='Get a pollbook')
     def get(self, id):
         return get_pollbook(id)
@@ -76,8 +74,6 @@ class PollBookDetail(MethodResource):
         return p
 
     @marshal_with(None, code=204)
-    @use_kwargs({},
-                locations='query')
     @doc(summary='Delete a pollbook')
     def delete(self, id):
         p = get_pollbook(id)
@@ -99,8 +95,6 @@ class VoterCollection(MethodResource):
     from evalg.api.voter import VoterSchema
 
     @marshal_with(VoterSchema(many=True))
-    @use_kwargs({},
-                locations='query')
     @doc(summary='Get a list of associated voters')
     def get(self, id):
         return get_pollbook(id).voters

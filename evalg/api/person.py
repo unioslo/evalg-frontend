@@ -36,7 +36,6 @@ class PersonSchema(BaseSchema):
 
 @doc(tags=['person'])
 class PersonList(MethodResource):
-    @use_kwargs({}, locations='query')
     @marshal_with(PersonSchema(many=True))
     @doc(summary='Get persons')
     def get(self):
@@ -55,7 +54,6 @@ class PersonList(MethodResource):
 @doc(tags=['person'])
 class PersonDetail(MethodResource):
     @marshal_with(PersonSchema())
-    @use_kwargs({}, locations='query')
     @doc(summary='Get a person')
     def get(self, id):
         return get_person(id)
@@ -70,8 +68,6 @@ class PersonDetail(MethodResource):
         return p
 
     @marshal_with(None, code=204)
-    @use_kwargs({},
-                locations='query')
     @doc(summary='Delete a person')
     def delete(self, id):
         p = get_person(id)
