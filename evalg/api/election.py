@@ -4,7 +4,7 @@
 from flask import Blueprint, make_response
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with, doc
-from marshmallow import fields
+from marshmallow import fields, validates_schema, ValidationError
 from evalg import db, ma, docs
 from evalg.api import BaseSchema, TranslatedString, add_all_authz, or404
 from ..metadata import (get_group, update_election,
@@ -37,6 +37,14 @@ class AbstractElectionSchema(BaseSchema):
     status = fields.Str()
     tz = fields.Str()
 
+    @validates_schema
+    def validate_start_before_end(self, data):
+        if not data['start'] or not data['end']:
+            return
+        if data['start'] > data['end']:
+            raise ValidationError('Start date must be before end date',
+                                  ('start', 'end'))
+
 
 class ElectionGroupSchema(AbstractElectionSchema):
     _links = ma.Hyperlinks({
@@ -55,6 +63,7 @@ class ElectionGroupSchema(AbstractElectionSchema):
     has_gender_quota = fields.Boolean()
 
     class Meta:
+        strict = True
         dump_only = ('_links', 'id', 'elections', 'tz', 'status')
 
 
@@ -103,7 +112,7 @@ class ElectionGroupDetail(MethodResource):
         group = get_group(eg_id)
         return update_group(group, **kwargs)
 
-    @use_kwargs(ElectionGroupSchema(strict=False))
+    @use_kwargs(eg_schema)
     @marshal_with(eg_schema)
     @doc(summary='Partially update an election group')
     def patch(self, eg_id, **kwargs):
@@ -152,7 +161,7 @@ class ElectionDetail(MethodResource):
         update_election(election, **kwargs)  # TODO: Read only attrs
         return election
 
-    @use_kwargs(ElectionSchema(strict=False))
+    @use_kwargs(e_schema)
     @marshal_with(e_schema)
     @doc(summary='Partially update an election')
     def patch(self, e_id, **kwargs):
