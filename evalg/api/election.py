@@ -101,14 +101,14 @@ class ElectionGroupDetail(MethodResource):
     @doc(summary='Update an election group')
     def post(self, eg_id, **kwargs):
         group = get_group(eg_id)
-        return update_group(group)
+        return update_group(group, **kwargs)
 
     @use_kwargs(ElectionGroupSchema(strict=False))
     @marshal_with(eg_schema)
     @doc(summary='Partially update an election group')
     def patch(self, eg_id, **kwargs):
         group = get_group(eg_id)
-        return update_group(group)
+        return update_group(group, **kwargs)
 
     @marshal_with(None, code=204)
     @doc(summary='Delete an election group')
