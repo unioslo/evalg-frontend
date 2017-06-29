@@ -93,6 +93,7 @@
         "mandate_type": {
           "en": "President"
         },
+        "status": "draft",
         "public_key_id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d",
         "group_id": "b5b71046-e191-43d4-9bb6-55a710895288"
       },
@@ -103,6 +104,7 @@
           "nb": "Bar",
           "nn": "Bar"
         },
+        "status": "draft",
         "group_id": "2dc010ac-1bf7-4b93-92c8-72fd4e161ed8"
       }
     ]
