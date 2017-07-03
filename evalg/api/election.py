@@ -39,7 +39,7 @@ class AbstractElectionSchema(BaseSchema):
 
     @validates_schema
     def validate_start_before_end(self, data):
-        if not data['start'] or not data['end']:
+        if not data.get('start') or not data.get('end'):
             return
         if data['start'] > data['end']:
             raise ValidationError('Start date must be before end date',
