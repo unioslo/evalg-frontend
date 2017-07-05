@@ -26,64 +26,54 @@ ForeignKey = db.ForeignKey
 
 class Principal(Base):
     """ Principals. """
-
-    __tablename__ = 'principal'
-    principalid = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
-    principaltype = db.Column(String, nullable=False)
+    principal_id = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
+    principal_type = db.Column(String, nullable=False)
     roles = db.relationship('Role', back_populates='principal')
 
     __mapper_args__ = {
         'polymorphic_identity': 'principal',
-        'polymorphic_on': principaltype,
+        'polymorphic_on': principal_type,
     }
 
 
 class PersonPrincipal(Principal):
     """ Principal based on person/user. """
-
-    __tablename__ = 'personprincipal'
-    principalid = db.Column(UUIDType, db.ForeignKey('principal.principalid'),
-                            default=uuid.uuid4,
-                            primary_key=True)
-    personid = db.Column(String, nullable=False)
+    principal_id = db.Column(UUIDType, db.ForeignKey('principal.principal_id'),
+                             default=uuid.uuid4,
+                             primary_key=True)
+    person_id = db.Column(String, nullable=False)
 
     __mapper_args__ = {
-        'polymorphic_identity': 'personprincipal',
-        'inherit_condition': principalid == Principal.principalid,
+        'polymorphic_identity': 'person_principal',
+        'inherit_condition': principal_id == Principal.principal_id,
     }
 
 
 class GroupPrincipal(Principal):
     """ Principal for group memberships. """
-
-    __tablename__ = 'groupprincipal'
-    principalid = db.Column(UUIDType, db.ForeignKey('principal.principalid'),
-                            default=uuid.uuid4,
-                            primary_key=True)
-    groupid = db.Column(db.String, nullable=False)
+    principal_id = db.Column(UUIDType, db.ForeignKey('principal.principal_id'),
+                             default=uuid.uuid4,
+                             primary_key=True)
+    group_id = db.Column(db.String, nullable=False)
 
     __mapper_args__ = {
-        'polymorphic_identity': 'groupprincipal',
-        'inherit_condition': principalid == Principal.principalid,
+        'polymorphic_identity': 'group_principal',
+        'inherit_condition': principal_id == Principal.principal_id,
     }
 
 
 class RolePermission(Base):
     """ Permissions granted by role. """
-
-    __tablename__ = 'rolepermission'
     code = db.Column(db.String, db.ForeignKey('permission.code'),
                      primary_key=True)
-    role = db.Column(db.String, db.ForeignKey('rolelist.role'),
+    role = db.Column(db.String, db.ForeignKey('role_list.role'),
                      primary_key=True)
 
 
 class RoleList(Base):
     """ List of roles in system. """
-
-    __tablename__ = 'rolelist'
     role = db.Column(db.String, primary_key=True)
-    roletype = db.Column(db.String(50), nullable=False)
+    role_type = db.Column(db.String(50), nullable=False)
     name = db.Column(JSONType, nullable=False)
     perms = db.relationship('Permission',
                             secondary=RolePermission.__table__,
@@ -91,7 +81,7 @@ class RoleList(Base):
 
     __mapper_args__ = {
         'polymorphic_identity': 'role',
-        'polymorphic_on': roletype
+        'polymorphic_on': role_type
     }
 
     def makerole(self, **kw):
@@ -101,19 +91,17 @@ class RoleList(Base):
 
 class Role(Base):
     """ Roles granted to a principal. """
-
-    __tablename__ = 'role'
-    role = db.Column(db.String, db.ForeignKey('rolelist.role'),
+    role = db.Column(db.String, db.ForeignKey('role_list.role'),
                      primary_key=True)
-    roletype = db.Column(db.String(50), nullable=False)
-    trait = db.relationship('RoleList', foreign_keys=(role, roletype))
-    principalid = db.Column(UUIDType, db.ForeignKey('principal.principalid'),
-                            primary_key=True)
+    role_type = db.Column(db.String(50), nullable=False)
+    trait = db.relationship('RoleList', foreign_keys=(role, role_type))
+    principal_id = db.Column(UUIDType, db.ForeignKey('principal.principal_id'),
+                             primary_key=True)
     principal = db.relationship('Principal', back_populates='roles')
 
     __mapper_args__ = {
         'polymorphic_identity': 'role',
-        'polymorphic_on': roletype
+        'polymorphic_on': role_type
     }
 
     def supports(self, perm, **kw):
@@ -122,13 +110,11 @@ class Role(Base):
 
 class OuRoleList(RoleList):
     """ Roles based on OU. """
-
-    __tablename__ = 'ourolelist'
-    role = db.Column(db.String, db.ForeignKey('rolelist.role'),
+    role = db.Column(db.String, db.ForeignKey('role_list.role'),
                      primary_key=True)
 
     __mapper_args__ = {
-        'polymorphic_identity': 'ourole',
+        'polymorphic_identity': 'ou_role',
         'inherit_condition': role == RoleList.role,
     }
 
@@ -139,17 +125,16 @@ class OuRoleList(RoleList):
 
 class OuRole(Role):
     """ Roles granted to principal on OU. """
-
-    __tablename__ = 'ourole'
-    role = db.Column(db.String, db.ForeignKey('ourolelist.role'),
+    role = db.Column(db.String, db.ForeignKey('ou_role_list.role'),
                      primary_key=True)
-    ouid = db.Column(UUIDType, db.ForeignKey('organizational_unit.id'),
+    ou_id = db.Column(UUIDType, db.ForeignKey('organizational_unit.id'),
                      primary_key=True)
     ou = db.relationship(OrganizationalUnit)
-    principalid = db.Column(UUIDType, db.ForeignKey('principal.principalid'),
-                            primary_key=True)
+    principal_id = db.Column(UUIDType, db.ForeignKey('principal.principal_id'),
+                             primary_key=True)
+
     __mapper_args__ = {
-        'polymorphic_identity': 'ourole',
+        'polymorphic_identity': 'ou_role',
         'inherit_condition': role == Role.role,
     }
 
@@ -163,12 +148,10 @@ class OuRole(Role):
 
 class ElectionRoleList(RoleList):
     """ Roles given on election (group). """
-
-    __tablename__ = 'electionrolelist'
-    role = db.Column(String, db.ForeignKey('rolelist.role'), primary_key=True)
+    role = db.Column(String, db.ForeignKey('role_list.role'), primary_key=True)
 
     __mapper_args__ = {
-        'polymorphic_identity': 'electionrole',
+        'polymorphic_identity': 'election_role',
         'inherit_condition': role == RoleList.role,
     }
 
@@ -179,28 +162,25 @@ class ElectionRoleList(RoleList):
 
 class ElectionRole(Role):
     """ Roles granted on election. """
-
-    __tablename__ = 'electionrole'
-    role = db.Column(db.String, db.ForeignKey('electionrolelist.role'),
+    role = db.Column(db.String, db.ForeignKey('election_role_list.role'),
                      primary_key=True)
-    electionid = db.Column(db.String, primary_key=True)
-    principalid = db.Column(UUIDType, db.ForeignKey('principal.principalid'),
-                            primary_key=True)
+    election_id = db.Column(db.String, primary_key=True)
+    principal_id = db.Column(UUIDType, db.ForeignKey('principal.principal_id'),
+                             primary_key=True)
+
     __mapper_args__ = {
-        'polymorphic_identity': 'electionrole',
+        'polymorphic_identity': 'election_role',
         'inherit_condition': role == Role.role,
     }
 
-    def supports(self, perm, electionid=None, **kw):
-        if electionid != self.electionid:  # or electionid == election group
+    def supports(self, perm, election_id=None, **kw):
+        if election_id != self.election_id:  # or election_id == election group
             return False
         return super().supports(perm, **kw)
 
 
 class Permission(Base):
     """Permission."""
-
-    __tablename__ = 'permission'
     code = db.Column(db.String, primary_key=True)
     doc = db.Column(db.String)
     roles = db.relationship('RoleList',
@@ -208,20 +188,20 @@ class Permission(Base):
                             back_populates='perms')
 
 
-def get_principals_for(personid, groups=[]):
+def get_principals_for(person_id, groups=[]):
     try:
         p = PersonPrincipal.query.filter(
-            PersonPrincipal.personid == personid).one()
+            PersonPrincipal.person_id == person_id).one()
     except:
-        p = PersonPrincipal(personid=personid)
+        p = PersonPrincipal(person_id=person_id)
         PersonPrincipal.session.add(p)
         rg = []
         for grp in groups:
             try:
                 rg.append(GroupPrincipal.query
-                          .filter(GroupPrincipal.groupid == grp).one())
+                          .filter(GroupPrincipal.group_id == grp).one())
             except:
-                g = GroupPrincipal(groupid=grp)
+                g = GroupPrincipal(group_id=grp)
                 GroupPrincipal.session.add(g)
                 rg.append(g)
     return p, rg
@@ -237,7 +217,7 @@ def get_role(role):
     return RoleList.query.filter(RoleList.role == role).one()
 
 
-def get_principal(principalid, Principal):
+def get_principal(principal_id, Principal):
     """ Get principal. """
     return Principal.query.filter(
-        Principal.principalid == principalid).one()
+        Principal.principal_id == principal_id).one()
