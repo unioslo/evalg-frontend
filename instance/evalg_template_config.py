@@ -193,9 +193,9 @@ _board = {
 electiongroup_templates = {
     'uio-principal': {
         'name': {
-            'nb': 'Rektor',
-            'nn': 'Rektor',
-            'en': 'Principal'
+            'nb': 'Rektor ved {}',
+            'nn': 'Rektor ved {}',
+            'en': 'Principal at {}'
         },
         'group': _leader,
         'ou_tag': 'root',
@@ -220,9 +220,9 @@ electiongroup_templates = {
     },
     'uio-university-board': {
         'name': {
-            'nb': 'Universitetsstyre',
-            'nn': 'Universitetsstyre',
-            'en': 'University board',
+            'nb': 'Universitetsstyre ved {}',
+            'nn': 'Universitetsstyre ved {}',
+            'en': 'University board at {}',
         },
         'group': _board,
         'ou_tag': 'root',
@@ -247,9 +247,9 @@ electiongroup_templates = {
     },
     'uio-studentparliament': {
         'name': {
-            'nb': 'Studentparlamentet',
-            'nn': 'Studentparlamentet',
-            'en': 'Student parliament',
+            'nb': 'Studentparlament ved {}',
+            'nn': 'Studentparlament ved {}',
+            'en': 'Student parliament at {}',
         },
         'group': _parliament,
         'ou_tag': 'root',
@@ -470,12 +470,6 @@ template_root_node = {
             },
             'settings': {
                 'template': True,
-                # 'type': 'preference-team',
-                # 'has_multiple_elections': False,
-                # 'can_modify_elections': False,
-                # 'team': True,
-                # 'election_name_tag': 'leader',
-                # 'has_multiple_candidate_lists': False
             },
             'next_nodes': [
                 board_leader_node,
@@ -490,12 +484,6 @@ template_root_node = {
             },
             'settings': {
                 'template': True,
-                # 'type': 'preference',
-                # 'has_multiple_elections': True,
-                # 'can_modify_elections': False,
-                # 'election_name_tag': 'board',
-                # 'has_multiple_candidate_lists': True,
-                # 'has_multiple_mandate_times': True
             },
             'next_nodes': [
                 board_node,
@@ -509,33 +497,7 @@ template_root_node = {
                 'nn': 'Studentparlament'
             },
             'settings': electiongroup_templates['uio-studentparliament'],
-            # {
-                # 'type': 'list',
-                # 'has_multiple_elections': False,
-                # 'can_modify_elections': False,
-                # 'ou_tree_level': 1,
-                # 'election_name_tag': 'parliament'
-            # },
         },
-        # {
-        #     'name': {
-        #         'en': 'Other',
-        #         'nb': 'Annet',
-        #         'nn': 'Annet'
-        #     },
-        #     'settings': {
-        #         'election_name_tag': 'other',
-        #         'can_modify_elections': True
-        #     },
-        #     'next_nodes': [
-        #         other_node,
-        #         other_ou_level_node,
-        #         select_ou_node,
-        #         other_multiple_elections_node,
-        #         other_election_group_name
-        #     ]
-        #  }
-
     ]
 }
 

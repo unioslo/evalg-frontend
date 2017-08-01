@@ -36,7 +36,7 @@ def wipe_db():
     from evalg import db
     db.drop_all()
     db.create_all()
-    import_ous()
+    #import_ous()
 
 
 def shell_context():

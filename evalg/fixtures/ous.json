@@ -4,38 +4,57 @@
     "records": [
       {
         "id": "a184e25e-907c-4155-860f-79df898ad51c",
-        "name": "Foo",
-        "external_id": "900000"
+        "name": {
+          "en": "University of Hacking",
+          "nn": "Universitetet for Hacking",
+          "nb": "Universitetet for Hacking"
+        },
+        "external_id": "900000",
+        "tag": "root"
       },
       {
         "id": "61499710-726d-43ab-b6f7-63138391dd02",
-        "name": "Bar, child of Foo",
+        "name": {
+          "en": "Faculty of White-Hat Hacking",
+          "nn": "White-Hat Hacking fakultet",
+          "nb": "White-Hat Hacking fakultet"
+        },
         "external_id": "901000",
-        "parent_id": "a184e25e-907c-4155-860f-79df898ad51c"
+        "parent_id": "a184e25e-907c-4155-860f-79df898ad51c",
+        "tag": "faculty"
       },
       {
         "id": "e3f26a01-56ff-42c4-a581-5bc942193b2e",
-        "name": "Baz, child of Foo",
+        "name": {
+          "en": "Faculty of Black-Hat Hacking",
+          "nn": "Black-Hat Hacking fakultet",
+          "nb": "Black-Hat Hacking fakultet"
+        },
         "external_id": "902000",
-        "parent_id": "a184e25e-907c-4155-860f-79df898ad51c"
+        "parent_id": "a184e25e-907c-4155-860f-79df898ad51c",
+        "tag": "faculty"
       },
       {
         "id": "3fc2aa46-5ea1-45b2-9ad1-9296210e4f51",
-        "name": "Faz, child of Baz",
+        "name": {
+          "en": "Institute of Backdoor Exploiting",
+          "nn": "Institutt for Backdoor Exploiting",
+          "nb": "Institutt for Backdoor Exploiting"
+        },
         "external_id": "902010",
-        "parent_id": "e3f26a01-56ff-42c4-a581-5bc942193b2e"
+        "parent_id": "e3f26a01-56ff-42c4-a581-5bc942193b2e",
+        "tag": "department"
       },
       {
         "id": "2ec82fd8-da0e-4ad7-b844-76659fa8ce9e",
-        "name": "Bat, child of Bar",
+        "name": {
+          "en": "Institute of Whistleblowing",
+          "nn": "Institutt for Whistleblowing",
+          "nb": "Institutt for Whistleblowing"
+        },
         "external_id": "901010",
-        "parent_id": "61499710-726d-43ab-b6f7-63138391dd02"
-      },
-      {
-        "id": "edf1a6e9-2f9f-46a8-8365-4842199984f4",
-        "name": "Batman, child of Bat",
-        "external_id": "901011",
-        "parent_id": "2ec82fd8-da0e-4ad7-b844-76659fa8ce9e"
+        "parent_id": "61499710-726d-43ab-b6f7-63138391dd02",
+        "tag": "department"
       }
     ]
   }

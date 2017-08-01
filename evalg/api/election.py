@@ -24,12 +24,12 @@ class AbstractElectionSchema(BaseSchema):
     start = fields.DateTime()
     end = fields.DateTime()
     name = fields.Nested(TranslatedString())
-    description = fields.Nested(TranslatedString())
+    description = fields.Nested(TranslatedString(), allow_none=True)
     information_url = fields.URL(allow_none=True)
-    contact = fields.Str()
+    contact = fields.Str(allow_none=True)
     mandate_period_start = fields.DateTime(allow_none=True)
     mandate_period_end = fields.DateTime(allow_none=True)
-    mandate_type = fields.Nested(TranslatedString())
+    mandate_type = fields.Nested(TranslatedString(), allow_none=True)
     ou_id = fields.UUID()
     public_key = fields.UUID(allow_none=True, attribute='public_key_id')
     meta = fields.Dict()
@@ -84,8 +84,8 @@ class ElectionSchema(AbstractElectionSchema):
     ou_id = fields.UUID()
     group = fields.UUID(attribute='group_id',
                         description="Parent election group")
-    nr_of_candidates = fields.Integer()
-    nr_of_co_candidates = fields.Integer()
+    nr_of_candidates = fields.Integer(allow_none=True)
+    nr_of_co_candidates = fields.Integer(allow_none=True)
     active = fields.Boolean()
 
     class Meta:

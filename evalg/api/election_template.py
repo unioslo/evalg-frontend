@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ The candidate API. """
-from flask import Blueprint
+from flask import Blueprint, current_app
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with
 from flask_apispec import doc
@@ -53,8 +53,7 @@ class ElectionTemplateNewGroup(MethodResource):
     def post(self, ouid=None, name=None, group=None):
         ou = OrganizationalUnit.query.get_or_404(ouid)
         grp = make_group_from_template(name, group, ou=ou)
-        from evalg import app
-        app.logger.info('Test: %s', grp)
+        current_app.logger.info('Test: %s', grp)
         return grp
 
 

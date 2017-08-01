@@ -209,7 +209,11 @@ def make_group_from_template(name=None, template=None, ou=None, principals=()):
     def common_mandate_period_end():
         return common_date(map(mandate_period_end, elections))
 
-    group = ElectionGroup(name=name,
+    grp_name = dict()
+    for lang in name.keys():
+        grp_name[lang] = name[lang].format(ou.name[lang])
+
+    group = ElectionGroup(name=grp_name,
                           description=None,  # Set this?
                           type=grouptype,
                           candidate_type=common_candidate_type(),
@@ -240,6 +244,7 @@ def make_group_from_template(name=None, template=None, ou=None, principals=()):
         return election
 
     group.elections = list(map(election, elections))
+
     db.session.add(group)
     db.session.commit()
 
