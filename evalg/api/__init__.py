@@ -76,7 +76,7 @@ def get_principals():
             role = evalg.auth.RoleList(role='root', name={'nb': 'superuser'},
                                        perms=evalg.auth.Permission.permissions)
             db.session.add(role)
-            p = evalg.auth.PersonPrincipal(personid='test')
+            p = evalg.auth.PersonPrincipal(person_id='test')
             db.session.add(p)
             db.session.add(evalg.auth.Role(trait=role, principal=p))
             db.session.commit()
