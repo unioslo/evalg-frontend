@@ -6,6 +6,7 @@
 from flask import current_app
 from functools import wraps
 from .models.election import ElectionGroup, Election
+from .models.ou import OrganizationalUnit
 from .authorization import check_perms, all_perms, PermissionDenied
 from evalg import db
 

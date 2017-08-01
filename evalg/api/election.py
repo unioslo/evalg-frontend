@@ -188,8 +188,8 @@ class ElectionList(MethodResource):
     @use_kwargs(e_schema)
     @marshal_with(e_schema)
     @doc(summary='Create an election')
-    def post(self, g_id=None, **kwargs):
-        grp = get_group(g_id) if g_id is not None else None
+    def post(self, group_id=None, **kwargs):
+        grp = get_group(group_id) if group_id is not None else None
         election = make_election(group=grp, **kwargs)
         election.status = 'draft'  # TODO: move to make_election
         db.session.add(election)

@@ -47,11 +47,11 @@ class ElectionTemplateNewGroup(MethodResource):
     """ Candidate API. """
     @use_kwargs({'group': fields.Dict(),
                  'name': fields.Dict(),
-                 'ouid': fields.UUID()})
+                 'ou_id': fields.UUID()})
     @marshal_with(ElectionGroupSchema())
     @doc(summary='Create new elections')
-    def post(self, ouid=None, name=None, group=None):
-        ou = OrganizationalUnit.query.get_or_404(ouid)
+    def post(self, ou_id=None, name=None, group=None):
+        ou = OrganizationalUnit.query.get_or_404(ou_id)
         grp = make_group_from_template(name, group, ou=ou)
         current_app.logger.info('Test: %s', grp)
         return grp
