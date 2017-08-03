@@ -30,8 +30,8 @@ class PollBookSchema(BaseSchema):
 
     _links = ma.Hyperlinks({
         'election': ma.URLFor('elections.ElectionDetail',
-                              e_id='<election_id>',
-                              g_id='<election.group_id>'),
+                              election_id='<election_id>',
+                              group_id='<election.group_id>'),
         'voters': ma.URLFor('pollbooks.VoterCollection', id='<id>')
     })
 
