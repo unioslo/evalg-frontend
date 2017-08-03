@@ -150,7 +150,7 @@ class ElectionDetail(MethodResource):
     """ Resource for single elections. """
     @marshal_with(e_schema)
     @doc(summary='Get an election')
-    def get(self, election_id):
+    def get(self, election_id, group_id=None):
         return get_election(election_id)
 
     @use_kwargs(e_schema)
