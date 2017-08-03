@@ -78,7 +78,7 @@ def get_election(e_id):
 def list_elections(group=None):
     """List all elections or elections in group."""
     if group is None:
-        return Election.query.filter(Election.deleted is False)
+        return Election.query.filter(Election.deleted == False).all()
     else:
         return group.elections
 

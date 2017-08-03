@@ -32,8 +32,8 @@ class AbstractElectionSchema(BaseSchema):
     mandate_type = fields.Nested(TranslatedString(), allow_none=True)
     ou_id = fields.UUID()
     public_key = fields.UUID(allow_none=True, attribute='public_key_id')
-    meta = fields.Dict()
-    type = fields.Str()
+    meta = fields.Dict(allow_none=True)
+    type = fields.Str(allow_none=True)
     status = fields.Str()
     tz = fields.Str()
 
@@ -48,7 +48,7 @@ class AbstractElectionSchema(BaseSchema):
 
 class ElectionGroupSchema(AbstractElectionSchema):
     _links = ma.Hyperlinks({
-        'self': ma.URLFor('elections.ElectionGroupDetail', eg_id='<id>'),
+        'self': ma.URLFor('elections.ElectionGroupDetail', group_id='<id>'),
         'collection': ma.URLFor('elections.ElectionGroupList'),
         'ou': ma.URLFor('ous.OUDetail', ou_id='<ou_id>')
     })
@@ -69,13 +69,13 @@ class ElectionGroupSchema(AbstractElectionSchema):
 
 class ElectionSchema(AbstractElectionSchema):
     _links = ma.Hyperlinks({
-        'self': ma.URLFor('elections.ElectionDetail', e_id='<id>',
-                          g_id='<group_id>'),
-        'collection': ma.URLFor('elections.ElectionList', g_id='<group_id>'),
+        'self': ma.URLFor('elections.ElectionDetail', election_id='<id>',
+                          group_id='<group_id>'),
+        'collection': ma.URLFor('elections.ElectionList', group_id='<group_id>'),
         'group': ma.URLFor('elections.ElectionGroupDetail',
-                           eg_id='<group_id>'),
-        'lists': ma.URLFor('elections.ListCollection', e_id='<id>',
-                           g_id='<group_id>'),
+                           group_id='<group_id>'),
+        'lists': ma.URLFor('elections.ListCollection', election_id='<id>',
+                           group_id='<group_id>'),
         'ou': ma.URLFor('ous.OUDetail', ou_id='<ou_id>')
     })
     list_ids = fields.List(fields.UUID(),
@@ -102,27 +102,27 @@ class ElectionGroupDetail(MethodResource):
     """ Resource for single election groups. """
     @marshal_with(eg_schema)
     @doc(summary='Get an election group')
-    def get(self, eg_id):
-        return get_group(eg_id)
+    def get(self, group_id):
+        return get_group(group_id)
 
     @use_kwargs(eg_schema)
     @marshal_with(eg_schema)
     @doc(summary='Update an election group')
-    def post(self, eg_id, **kwargs):
-        group = get_group(eg_id)
+    def post(self, group_id, **kwargs):
+        group = get_group(group_id)
         return update_group(group, **kwargs)
 
     @use_kwargs(eg_schema)
     @marshal_with(eg_schema)
     @doc(summary='Partially update an election group')
-    def patch(self, eg_id, **kwargs):
-        group = get_group(eg_id)
+    def patch(self, group_id, **kwargs):
+        group = get_group(group_id)
         return update_group(group, **kwargs)
 
     @marshal_with(None, code=204)
     @doc(summary='Delete an election group')
-    def delete(self, eg_id):
-        delete_group(get_group(eg_id))
+    def delete(self, group_id):
+        delete_group(get_group(group_id))
         return make_response('', 204)
 
 
@@ -150,29 +150,29 @@ class ElectionDetail(MethodResource):
     """ Resource for single elections. """
     @marshal_with(e_schema)
     @doc(summary='Get an election')
-    def get(self, e_id):
-        return get_election(e_id)
+    def get(self, election_id):
+        return get_election(election_id)
 
     @use_kwargs(e_schema)
     @marshal_with(e_schema)
     @doc(summary='Update an election')
-    def post(self, e_id, **kwargs):
-        election = get_election(e_id)
+    def post(self, election_id, **kwargs):
+        election = get_election(election_id)
         update_election(election, **kwargs)  # TODO: Read only attrs
         return election
 
     @use_kwargs(e_schema)
     @marshal_with(e_schema)
     @doc(summary='Partially update an election')
-    def patch(self, e_id, **kwargs):
-        election = get_election(e_id)
+    def patch(self, election_id, **kwargs):
+        election = get_election(election_id)
         update_election(election, **kwargs)
         return election
 
     @marshal_with(None, code=204)
     @doc(summary='Delete an election')
-    def delete(self, e_id):
-        election = get_election(e_id)
+    def delete(self, election_id):
+        election = get_election(election_id)
         delete_election(election)
         return make_response('', 204)
 
@@ -182,8 +182,8 @@ class ElectionList(MethodResource):
     """ Resource for election collections. """
     @marshal_with(ElectionSchema(many=True))
     @doc(summary='List elections')
-    def get(self, g_id=None):
-        return list_elections(g_id and get_group(g_id))
+    def get(self, group_id=None):
+        return list_elections(group_id and get_group(group_id))
 
     @use_kwargs(e_schema)
     @marshal_with(e_schema)
@@ -200,20 +200,20 @@ class ElectionList(MethodResource):
 bp.add_url_rule('/electiongroups/',
                 view_func=ElectionGroupList.as_view('ElectionGroupList'),
                 methods=['GET', 'POST'])
-bp.add_url_rule('/electiongroups/<uuid:eg_id>',
+bp.add_url_rule('/electiongroups/<uuid:group_id>',
                 view_func=ElectionGroupDetail.as_view('ElectionGroupDetail'),
                 methods=['GET', 'POST', 'PATCH', 'DELETE'])
 
 bp.add_url_rule('/elections/',
                 view_func=ElectionList.as_view('ElectionListDirect'),
                 methods=['GET', 'POST'])
-bp.add_url_rule('/electiongroups/<uuid:g_id>/elections/',
+bp.add_url_rule('/electiongroups/<uuid:group_id>/elections',
                 view_func=ElectionList.as_view('ElectionList'),
                 methods=['GET', 'POST'])
-bp.add_url_rule('/elections/<uuid:e_id>',
+bp.add_url_rule('/elections/<uuid:election_id>',
                 view_func=ElectionDetail.as_view('ElectionDetailDirect'),
                 methods=['GET', 'POST', 'PATCH', 'DELETE'])
-bp.add_url_rule('/electiongroups/<uuid:g_id>/elections/<uuid:e_id>',
+bp.add_url_rule('/electiongroups/<uuid:group_id>/elections/<uuid:election_id>',
                 view_func=ElectionDetail.as_view('ElectionDetail'),
                 methods=['GET', 'POST', 'PATCH', 'DELETE'])
 
@@ -222,11 +222,11 @@ bp.add_url_rule('/electiongroups/<uuid:g_id>/elections/<uuid:e_id>',
 class ElectionCollection(MethodResource):
     @marshal_with(ElectionSchema(many=True))
     @doc(summary='Get a list of elections')
-    def get(self, eg_id):
-        return get_group(eg_id).elections
+    def get(self, group_id):
+        return get_group(group_id).elections
 
 
-bp.add_url_rule('/electiongroups/<uuid:eg_id>/elections',
+bp.add_url_rule('/electiongroups/<uuid:group_id>/elections',
                 view_func=ElectionCollection.as_view(
                     'ElectionCollection'),
                 methods=['GET'])
@@ -238,15 +238,15 @@ class ListCollection(MethodResource):
 
     @marshal_with(ElectionListSchema(many=True))
     @doc(summary='Get a list of lists')
-    def get(self, e_id, g_id=None):
-        return get_election(e_id).lists
+    def get(self, election_id, group_id=None):
+        return get_election(election_id).lists
 
 
-bp.add_url_rule('/elections/<uuid:e_id>/lists',
+bp.add_url_rule('/elections/<uuid:election_id>/lists',
                 view_func=ListCollection.as_view(
                     'ListCollectionDirect'),
                 methods=['GET'])
-bp.add_url_rule('/electiongroups/<uuid:g_id>/elections/<uuid:e_id>/lists',
+bp.add_url_rule('/electiongroups/<uuid:group_id>/elections/<uuid:election_id>/lists',
                 view_func=ListCollection.as_view(
                     'ListCollection'),
                 methods=['GET'])
@@ -280,4 +280,5 @@ def init_app(app):
     docs.register(ElectionCollection,
                   endpoint="ElectionCollection",
                   blueprint="elections")
-    # docs.spec.definition('ElectionGroup', schema=ElectionGroupSchema)
+    docs.spec.definition('ElectionGroup', schema=ElectionGroupSchema)
+
