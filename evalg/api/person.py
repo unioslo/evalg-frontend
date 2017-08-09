@@ -35,7 +35,7 @@ class PersonSchema(BaseSchema):
 
 
 @doc(tags=['person'])
-class PersonList(MethodResource):
+class PersonCollection(MethodResource):
     @marshal_with(PersonSchema(many=True))
     @doc(summary='Get persons')
     def get(self):
@@ -77,7 +77,7 @@ class PersonDetail(MethodResource):
 
 
 bp.add_url_rule('/persons/',
-                view_func=PersonList.as_view('PersonList'),
+                view_func=PersonCollection.as_view('PersonCollection'),
                 methods=['GET', 'POST'])
 bp.add_url_rule('/persons/<uuid:id>',
                 view_func=PersonDetail.as_view('PersonDetail'),
@@ -89,8 +89,8 @@ def init_app(app):
     docs.spec.add_tag({
         'name': 'person',
         'decription': 'Operations on persons'})
-    docs.register(PersonList,
-                  endpoint='PersonList',
+    docs.register(PersonCollection,
+                  endpoint='PersonCollection',
                   blueprint='persons')
     docs.register(PersonDetail,
                   endpoint='PersonDetail',

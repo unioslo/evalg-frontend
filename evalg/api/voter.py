@@ -45,7 +45,7 @@ class VoterSchema(BaseSchema):
 
 
 @doc(tags=['voter'])
-class VoterList(MethodResource):
+class VoterCollection(MethodResource):
     @marshal_with(VoterSchema(many=True))
     @doc(summary='Get voters')
     def get(self):
@@ -88,7 +88,7 @@ class VoterDetail(MethodResource):
 
 
 bp.add_url_rule('/voters/',
-                view_func=VoterList.as_view('VoterList'),
+                view_func=VoterCollection.as_view('VoterCollection'),
                 methods=['GET', 'POST'])
 bp.add_url_rule('/voters/<uuid:id>',
                 view_func=VoterDetail.as_view('VoterDetail'),
@@ -100,8 +100,8 @@ def init_app(app):
     docs.spec.add_tag({
         'name': 'voter',
         'decription': 'Operations on voters'})
-    docs.register(VoterList,
-                  endpoint='VoterList',
+    docs.register(VoterCollection,
+                  endpoint='VoterCollection',
                   blueprint='voters')
     docs.register(VoterDetail,
                   endpoint='VoterDetail',

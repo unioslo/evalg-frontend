@@ -49,7 +49,7 @@ class AbstractElectionSchema(BaseSchema):
 class ElectionGroupSchema(AbstractElectionSchema):
     _links = ma.Hyperlinks({
         'self': ma.URLFor('elections.ElectionGroupDetail', group_id='<id>'),
-        'collection': ma.URLFor('elections.ElectionGroupList'),
+        'collection': ma.URLFor('elections.ElectionGroupCollection'),
         'ou': ma.URLFor('ous.OUDetail', ou_id='<ou_id>')
     })
 
@@ -71,10 +71,11 @@ class ElectionSchema(AbstractElectionSchema):
     _links = ma.Hyperlinks({
         'self': ma.URLFor('elections.ElectionDetail', election_id='<id>',
                           group_id='<group_id>'),
-        'collection': ma.URLFor('elections.ElectionList', group_id='<group_id>'),
+        'collection': ma.URLFor('elections.ElectionCollection',
+                                group_id='<group_id>'),
         'group': ma.URLFor('elections.ElectionGroupDetail',
                            group_id='<group_id>'),
-        'lists': ma.URLFor('elections.ListCollection', election_id='<id>',
+        'lists': ma.URLFor('elections.ElectionListCollection', election_id='<id>',
                            group_id='<group_id>'),
         'ou': ma.URLFor('ous.OUDetail', ou_id='<ou_id>')
     })
@@ -127,7 +128,7 @@ class ElectionGroupDetail(MethodResource):
 
 
 @doc(tags=['electiongroup'])
-class ElectionGroupList(MethodResource):
+class ElectionGroupCollection(MethodResource):
     """ Resource for election group collections. """
     @marshal_with(ElectionGroupSchema(many=True))
     @doc(summary='List election groups')
@@ -178,7 +179,7 @@ class ElectionDetail(MethodResource):
 
 
 @doc(tags=['election'])
-class ElectionList(MethodResource):
+class ElectionCollection(MethodResource):
     """ Resource for election collections. """
     @marshal_with(ElectionSchema(many=True))
     @doc(summary='List elections')
@@ -198,17 +199,17 @@ class ElectionList(MethodResource):
 
 
 bp.add_url_rule('/electiongroups/',
-                view_func=ElectionGroupList.as_view('ElectionGroupList'),
+                view_func=ElectionGroupCollection.as_view('ElectionGroupCollection'),
                 methods=['GET', 'POST'])
 bp.add_url_rule('/electiongroups/<uuid:group_id>',
                 view_func=ElectionGroupDetail.as_view('ElectionGroupDetail'),
                 methods=['GET', 'POST', 'PATCH', 'DELETE'])
 
 bp.add_url_rule('/elections/',
-                view_func=ElectionList.as_view('ElectionListDirect'),
+                view_func=ElectionCollection.as_view('ElectionCollectionDirect'),
                 methods=['GET', 'POST'])
-bp.add_url_rule('/electiongroups/<uuid:group_id>/elections',
-                view_func=ElectionList.as_view('ElectionList'),
+bp.add_url_rule('/electiongroups/<uuid:group_id>/elections/',
+                view_func=ElectionCollection.as_view('ElectionCollection'),
                 methods=['GET', 'POST'])
 bp.add_url_rule('/elections/<uuid:election_id>',
                 view_func=ElectionDetail.as_view('ElectionDetailDirect'),
@@ -218,22 +219,8 @@ bp.add_url_rule('/electiongroups/<uuid:group_id>/elections/<uuid:election_id>',
                 methods=['GET', 'POST', 'PATCH', 'DELETE'])
 
 
-@doc(tags=['electiongroup'])
-class ElectionCollection(MethodResource):
-    @marshal_with(ElectionSchema(many=True))
-    @doc(summary='Get a list of elections')
-    def get(self, group_id):
-        return get_group(group_id).elections
-
-
-bp.add_url_rule('/electiongroups/<uuid:group_id>/elections',
-                view_func=ElectionCollection.as_view(
-                    'ElectionCollection'),
-                methods=['GET'])
-
-
 @doc(tags=['election'])
-class ListCollection(MethodResource):
+class ElectionListCollection(MethodResource):
     from evalg.api.election_list import ElectionListSchema
 
     @marshal_with(ElectionListSchema(many=True))
@@ -242,13 +229,13 @@ class ListCollection(MethodResource):
         return get_election(election_id).lists
 
 
-bp.add_url_rule('/elections/<uuid:election_id>/lists',
-                view_func=ListCollection.as_view(
-                    'ListCollectionDirect'),
+bp.add_url_rule('/elections/<uuid:election_id>/lists/',
+                view_func=ElectionListCollection.as_view(
+                    'EllectionListCollectionDirect'),
                 methods=['GET'])
-bp.add_url_rule('/electiongroups/<uuid:group_id>/elections/<uuid:election_id>/lists',
-                view_func=ListCollection.as_view(
-                    'ListCollection'),
+bp.add_url_rule('/electiongroups/<uuid:group_id>/elections/<uuid:election_id>/lists/',
+                view_func=ElectionListCollection.as_view(
+                    'ElectionListCollection'),
                 methods=['GET'])
 
 
@@ -262,23 +249,19 @@ def init_app(app):
         'name': 'election',
         'description': 'Elections'
     })
-    docs.register(ElectionGroupList,
-                  endpoint='ElectionGroupList',
+    docs.register(ElectionGroupCollection,
+                  endpoint='ElectionGroupCollection',
                   blueprint='elections')
     docs.register(ElectionGroupDetail,
                   endpoint='ElectionGroupDetail',
                   blueprint='elections')
-    docs.register(ElectionList,
-                  endpoint='ElectionList',
+    docs.register(ElectionCollection,
+                  endpoint='ElectionCollection',
                   blueprint='elections')
     docs.register(ElectionDetail,
                   endpoint='ElectionDetail',
                   blueprint='elections')
-    docs.register(ListCollection,
-                  endpoint="ListCollection",
-                  blueprint="elections")
-    docs.register(ElectionCollection,
-                  endpoint="ElectionCollection",
+    docs.register(ElectionListCollection,
+                  endpoint="ElectionListCollection",
                   blueprint="elections")
     docs.spec.definition('ElectionGroup', schema=ElectionGroupSchema)
-

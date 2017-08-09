@@ -38,17 +38,17 @@ class ElectionListSchema(BaseSchema):
 
 
 @doc(tags=['list'])
-class ElectionListList(MethodResource):
+class ElectionListCollection(MethodResource):
     @marshal_with(ElectionListSchema(many=True))
     @use_kwargs({'e_id': fields.UUID()}, locations='query')
-    @doc(summary='Get a list of electionlists')
+    @doc(summary='Get a list of election lists')
     def get(self, e_id):
         e = get_election(e_id)
         return get_lists(e)
 
     @use_kwargs(ElectionListSchema())
     @marshal_with(ElectionListSchema(), code=201)
-    @doc(summary='Create a election list')
+    @doc(summary='Create an election list')
     def post(self, election_id, **kwargs):
         e = get_election(election_id)
         l = make_list(e, **kwargs)
@@ -85,7 +85,7 @@ class ElectionListDetail(MethodResource):
 
 
 bp.add_url_rule('/elections/<uuid:e_id>/lists/',
-                view_func=ElectionListList.as_view('ElectionListList'),
+                view_func=ElectionListCollection.as_view('ElectionListCollection'),
                 methods=['GET', 'POST'])
 bp.add_url_rule('/elections/<uuid:e_id>/lists/<uuid:id>',
                 view_func=ElectionListDetail.as_view('ElectionListDetail'),
@@ -111,7 +111,7 @@ class ListCandidate(MethodResource):
     def get(self, lid, id):
         return filter(lambda c: not c.deleted, get_list(id).candidates)
 
-bp.add_url_rule('/elections/<uuid:eid>/lists/<uuid:id>/candidates',
+bp.add_url_rule('/elections/<uuid:eid>/lists/<uuid:id>/candidates/',
                 view_func=CandidateCollection.as_view(
                     'CandidateCollection'),
                 methods=['GET'])
@@ -127,8 +127,8 @@ def init_app(app):
         'name': 'list',
         'description': 'Operations on election lists'
     })
-    docs.register(ElectionListList,
-                  endpoint='ElectionListList',
+    docs.register(ElectionListCollection,
+                  endpoint='ElectionListCollection',
                   blueprint='lists')
     docs.register(ElectionListDetail,
                   endpoint='ElectionListDetail',

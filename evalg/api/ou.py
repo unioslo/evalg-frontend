@@ -19,7 +19,7 @@ get_ou = or404(get_ou)
 class OrganizationalUnitSchema(BaseSchema):
     _links = ma.Hyperlinks({
         'self': ma.URLFor('ous.OUDetail', ou_id='<id>'),
-        'collection': ma.URLFor('ous.OUList'),
+        'collection': ma.URLFor('ous.OUCollection'),
     })
 
     id = fields.UUID()
@@ -72,7 +72,7 @@ class OUDetail(MethodResource):
 
 
 @doc(tags=['ou'])
-class OUList(MethodResource):
+class OUCollection(MethodResource):
     """ Resource for OU collections. """
     @marshal_with(OrganizationalUnitSchema(many=True))
     @doc(summary='List organizational units')
@@ -90,7 +90,7 @@ class OUList(MethodResource):
 
 
 bp.add_url_rule('/ous/',
-                view_func=OUList.as_view('OUList'),
+                view_func=OUCollection.as_view('OUCollection'),
                 methods=['GET', 'POST'])
 bp.add_url_rule('/ous/<uuid:ou_id>',
                 view_func=OUDetail.as_view('OUDetail'),
@@ -103,5 +103,5 @@ def init_app(app):
         'name': 'ou',
         'description': 'Organizational units'
     })
-    docs.register(OUList, endpoint='OUList', blueprint='ous')
+    docs.register(OUCollection, endpoint='OUCollection', blueprint='ous')
     docs.register(OUDetail, endpoint='OUDetail', blueprint='ous')

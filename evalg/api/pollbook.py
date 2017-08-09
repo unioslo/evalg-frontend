@@ -41,7 +41,7 @@ class PollBookSchema(BaseSchema):
 
 
 @doc(tags=['pollbook'])
-class PollBookList(MethodResource):
+class PollBookCollection(MethodResource):
     @marshal_with(PollBookSchema(many=True))
     @doc(summary='Get all pollbooks')
     def get(self):
@@ -84,7 +84,7 @@ class PollBookDetail(MethodResource):
 
 
 bp.add_url_rule('/pollbooks/',
-                view_func=PollBookList.as_view('PollBookList'),
+                view_func=PollBookCollection.as_view('PollBookCollection'),
                 methods=['GET', 'POST'])
 bp.add_url_rule('/pollbooks/<uuid:id>',
                 view_func=PollBookDetail.as_view('PollBookDetail'),
@@ -100,7 +100,7 @@ class VoterCollection(MethodResource):
     def get(self, id):
         return get_pollbook(id).voters
 
-bp.add_url_rule('/pollbooks/<uuid:id>/voters',
+bp.add_url_rule('/pollbooks/<uuid:id>/voters/',
                 view_func=VoterCollection.as_view('VoterCollection'),
                 methods=['GET'])
 
@@ -110,8 +110,8 @@ def init_app(app):
     docs.spec.add_tag({
         'name': 'pollbook',
         'decription': 'Operations on pollbooks'})
-    docs.register(PollBookList,
-                  endpoint='PollBookList',
+    docs.register(PollBookCollection,
+                  endpoint='PollBookCollection',
                   blueprint='pollbooks')
     docs.register(PollBookDetail,
                   endpoint='PollBookDetail',

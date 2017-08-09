@@ -30,7 +30,7 @@ class CandidateSchema(BaseSchema):
     co_candidate_ids = fields.List(fields.UUID(),
                                    description="Associated co-candidates")
     _links = ma.Hyperlinks({
-        'list': ma.URLFor('lists.ElectionListList', id='<id>'),
+        'list': ma.URLFor('lists.ElectionListCollection', id='<id>'),
         'cocandidates': ma.URLFor('candidates.CoCandidateCollection',
                                   id='<id>')
     })
@@ -41,7 +41,7 @@ class CandidateSchema(BaseSchema):
 
 
 @doc(tags=['candidate'])
-class CandidateList(MethodResource):
+class CandidateCollection(MethodResource):
     """ Candidate API. """
     @marshal_with(CandidateSchema(many=True))
     @doc(summary='Get a list of candidates')
@@ -87,10 +87,10 @@ class CandidateDetail(MethodResource):
 
 
 bp.add_url_rule('/elections/<uuid:e_id>/candidates/',
-                view_func=CandidateList.as_view('CandidateListDirect'),
+                view_func=CandidateCollection.as_view('CandidateCollectionDirect'),
                 methods=['GET', 'POST'])
 bp.add_url_rule('/electiongroups/<uuid:g_id>/elections/<uuid:e_id>/candidates/',
-                view_func=CandidateList.as_view('CandidateList'),
+                view_func=CandidateCollection.as_view('CandidateCollection'),
                 methods=['GET', 'POST'])
 bp.add_url_rule('/elections/<uuid:e_id>/candidates/<uuid:id>',
                 view_func=CandidateDetail.as_view('CandidateDetailDirect'),
@@ -120,7 +120,7 @@ class CoCandidateSchema(BaseSchema):
 
 
 @doc(tags=['cocandidate'])
-class CoCandidateList(MethodResource):
+class CoCandidateCollection(MethodResource):
     @marshal_with(CoCandidateSchema(many=True))
     @doc(summary='Get a list of co candidates')
     def get(self, g_id=None, e_id=None, c_id=None):
@@ -165,13 +165,13 @@ class CoCandidateDetail(MethodResource):
 
 bp.add_url_rule('/electiongroups/<uuid:g_id>/elections/<uuid:e_id>'
                 '/candidates/<uuid:c_id>/cocandidates/',
-                view_func=CoCandidateList.as_view('CoCandidateList'),
+                view_func=CoCandidateCollection.as_view('CoCandidateCollection'),
                 methods=['GET', 'POST'])
 bp.add_url_rule('/elections/<uuid:e_id>/candidates/<uuid:c_id>/cocandidates/',
-                view_func=CoCandidateList.as_view('CoCandidateListDirect'),
+                view_func=CoCandidateCollection.as_view('CoCandidateCollectionDirect'),
                 methods=['GET', 'POST'])
 bp.add_url_rule('/candidates/<uuid:c_id>/cocandidates/',
-                view_func=CoCandidateList.as_view('CoCandidateListCandidate'),
+                view_func=CoCandidateCollection.as_view('CoCandidateCollectionCandidate'),
                 methods=['GET', 'POST'])
 bp.add_url_rule('/electiongroups/<uuid:g_id>/elections/<uuid:e_id>'
                 '/candidates/<uuid:c_id_>/cocandidates/<uuid:id>',
@@ -197,14 +197,14 @@ def init_app(app):
         'name': 'candidate',
         'description': 'Operations on candidates'
     })
-    docs.register(CandidateList,
-                  endpoint='CandidateList',
+    docs.register(CandidateCollection,
+                  endpoint='CandidateCollection',
                   blueprint='candidates')
     docs.register(CandidateDetail,
                   endpoint='CandidateDetail',
                   blueprint='candidates')
-    docs.register(CoCandidateList,
-                  endpoint='CoCandidateList',
+    docs.register(CoCandidateCollection,
+                  endpoint='CoCandidateCollection',
                   blueprint='candidates')
     docs.register(CoCandidateDetail,
                   endpoint='CoCandidateDetail',
