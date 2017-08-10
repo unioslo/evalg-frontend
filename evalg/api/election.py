@@ -6,7 +6,7 @@ from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields, validates_schema, ValidationError
 from evalg import db, ma, docs
-from evalg.api import BaseSchema, TranslatedString, add_all_authz, or404
+from evalg.api import BaseSchema, TranslatedString, add_all_authz
 from ..metadata import (get_group, update_election,
                         update_group, get_election, delete_group,
                         delete_election, list_groups, list_elections,
@@ -16,7 +16,6 @@ bp = Blueprint('elections', __name__)
 
 
 add_all_authz(globals())
-map(or404, (get_election, get_group))
 
 
 class AbstractElectionSchema(BaseSchema):

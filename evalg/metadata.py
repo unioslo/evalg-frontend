@@ -7,6 +7,7 @@ from flask import current_app
 from functools import wraps
 from .models.election import ElectionGroup, Election
 from .models.ou import OrganizationalUnit
+from .api import NotFoundError
 from .authorization import check_perms, all_perms, PermissionDenied
 from evalg import db
 
@@ -64,15 +65,25 @@ def rperm(*permission):
 
 
 @rperm('view-election')
-def get_group(eg_id):
+def get_group(group_id):
     """Look up election group."""
-    return ElectionGroup.query.get(eg_id)
+    group = ElectionGroup.query.get(group_id)
+    if group is None:
+        raise NotFoundError(
+            details="No such election group with id={uuid}".format(
+                uuid=group_id))
+    return group
 
 
 @rperm('view-election')
-def get_election(e_id):
+def get_election(election_id):
     """Look up election."""
-    return Election.query.get(e_id)
+    election = Election.query.get(election_id)
+    if election is None:
+        raise NotFoundError(
+            details="No such election with id={uuid}".format(
+                uuid=election_id))
+    return election
 
 
 def list_elections(group=None):

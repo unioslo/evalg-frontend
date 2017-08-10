@@ -9,13 +9,11 @@ from marshmallow import fields
 from evalg import db, ma, docs
 from evalg.candidates import (get_list, get_lists, make_list, update)
 from evalg.metadata import (get_election)
-from evalg.api import BaseSchema, TranslatedString, or404, add_all_authz
+from evalg.api import BaseSchema, TranslatedString, add_all_authz
 
 bp = Blueprint('lists', __name__)
 
 add_all_authz(globals())
-get_list = or404(get_list)
-get_election = or404(get_election)
 
 
 class ElectionListSchema(BaseSchema):

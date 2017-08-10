@@ -6,6 +6,7 @@
 from functools import singledispatch, wraps
 from evalg import db
 from .authorization import check_perms, all_perms, PermissionDenied
+from .api import NotFoundError
 from .metadata import eperm
 from .models.candidate import Candidate, CoCandidate
 from .models.election import Election
@@ -98,7 +99,11 @@ def get_lists(election):
 def get_list(list_id):
     """ Return a candidate list. """
     l = ElectionList.query.get(list_id)
-    return None if l.deleted else l
+    if l is None or l.deleted:
+        raise NotFoundError(
+            details="No such candidate list with id={uuid}".format(
+                uuid=list_id))
+    return l
 
 
 @eperm('change-candidates')
@@ -159,20 +164,24 @@ def make_cocandidate(candidate=None, **args):
     return CoCandidate(candidate=candidate, **args)
 
 
-def get_candidate(cid):
+def get_candidate(candidate_id):
     """ Get candidate. """
-    c = Candidate.query.get(cid)
-    if c is None or c.deleted:
-        return None
-    return c
+    candidate = Candidate.query.get(candidate_id)
+    if candidate is None or candidate.deleted:
+        raise NotFoundError(
+            details="No such candidate with id={uuid}".format(
+                uuid=candidate_id))
+    return candidate_id
 
 
-def get_cocandidate(cid):
+def get_cocandidate(cocandidate_id):
     """ Get cocandidate. """
-    c = CoCandidate.query.get(cid)
-    if c is None or c.deleted:
-        return None
-    return c
+    cocandidate = CoCandidate.query.get(cocandidate_id)
+    if cocandidate is None or cocandidate.deleted:
+        raise NotFoundError(
+            details="No such cocandidate with id={uuid}".format(
+                uuid=cocandidate_id))
+    return cocandidate
 
 
 def get_cocandidates(candidate):

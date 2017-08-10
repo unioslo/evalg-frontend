@@ -9,13 +9,12 @@ from marshmallow import fields
 from evalg import ma, db, docs
 from evalg.candidates import (get_candidate, get_candidates, make_candidate,
                               make_cocandidate, get_cocandidate, update)
-from evalg.api import BaseSchema, add_all_authz, or404
+from evalg.api import BaseSchema, add_all_authz
 from .election import get_election
 
 bp = Blueprint('candidates', __name__)
 
 
-map(or404, (get_candidate, get_candidates))
 add_all_authz(globals())
 
 

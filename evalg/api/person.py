@@ -8,13 +8,12 @@ from flask_apispec import use_kwargs, marshal_with
 from flask_apispec import doc
 from marshmallow import fields
 from evalg import db, docs
-from evalg.api import BaseSchema, or404, add_all_authz
+from evalg.api import BaseSchema, add_all_authz
 from evalg.person import (list_persons, make_person, get_person, update_person,
                           delete_person)
 
 bp = Blueprint('persons', __name__)
 add_all_authz(globals())
-get_person = or404(get_person)
 
 
 class PersonSchema(BaseSchema):
@@ -55,23 +54,23 @@ class PersonCollection(MethodResource):
 class PersonDetail(MethodResource):
     @marshal_with(PersonSchema())
     @doc(summary='Get a person')
-    def get(self, id):
-        return get_person(id)
+    def get(self, person_id):
+        return get_person(person_id)
 
     @marshal_with(PersonSchema())
     @use_kwargs(PersonSchema())
     @doc(summary='Partially update a person')
-    def patch(self, id, **kwargs):
-        p = get_person(id)
-        update_person(p, **kwargs)
+    def patch(self, person_id, **kwargs):
+        person = get_person(person_id)
+        update_person(person, **kwargs)
         db.session.commit()
-        return p
+        return person
 
     @marshal_with(None, code=204)
     @doc(summary='Delete a person')
-    def delete(self, id):
-        p = get_person(id)
-        delete_person(p)
+    def delete(self, person_id):
+        person = get_person(person_id)
+        delete_person(person)
         db.session.commit()
         return make_response('', 204)
 
@@ -79,7 +78,7 @@ class PersonDetail(MethodResource):
 bp.add_url_rule('/persons/',
                 view_func=PersonCollection.as_view('PersonCollection'),
                 methods=['GET', 'POST'])
-bp.add_url_rule('/persons/<uuid:id>',
+bp.add_url_rule('/persons/<uuid:person_id>',
                 view_func=PersonDetail.as_view('PersonDetail'),
                 methods=['GET', 'PATCH', 'DELETE'])
 

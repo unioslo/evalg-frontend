@@ -36,7 +36,7 @@ class VoterSchema(BaseSchema):
 
     _links = ma.Hyperlinks({
         'pollbook': ma.URLFor('pollbooks.PollBookDetail', id='<pollbook_id>'),
-        'person': ma.URLFor('persons.PersonDetail', id='<pollbook_person_id>')
+        'person': ma.URLFor('persons.PersonDetail', person_id='<pollbook_person_id>')
     })
 
     class Meta:

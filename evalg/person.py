@@ -7,6 +7,7 @@ from functools import wraps
 from collections import defaultdict
 from evalg import db
 from .models.person import Person, PersonExternalID
+from .api import NotFoundError
 from .authorization import check_perms, all_perms, PermissionDenied
 
 
@@ -42,8 +43,13 @@ def make_person(**args):
     return Person(**args)
 
 
-def get_person(pid):
-    return Person.query.get(pid)
+def get_person(person_id):
+    person = Person.query.get(person_id)
+    if person is None:
+        raise NotFoundError(
+            details="No such person with id={uuid}".format(
+                uuid=person_id))
+    return person
 
 
 def _update_person(person, kwargs):

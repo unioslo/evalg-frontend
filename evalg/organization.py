@@ -5,6 +5,7 @@
 
 from functools import wraps
 from .models.ou import OrganizationalUnit
+from .api import NotFoundError
 from .authorization import check_perms, all_perms, PermissionDenied
 
 
@@ -61,7 +62,12 @@ def rperm(*permission):
 
 def get_ou(ou_id):
     """ Get Ou """
-    return OrganizationalUnit.query.get(ou_id)
+    ou = OrganizationalUnit.query.get(ou_id)
+    if ou is None or ou.deleted:
+        raise NotFoundError(
+            details="No such organizational unit with id={uuid}".format(
+                uuid=ou_id))
+    return ou
 
 
 def list_ous():

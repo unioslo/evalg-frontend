@@ -13,10 +13,11 @@ from .models.authorization import (Permission,
                                    get_role,
                                    get_principal)
 from .auth import check_perms, all_permissions
+from .apierror import ApiError
 
 
-class PermissionDenied(RuntimeError):
-    pass
+class PermissionDenied(ApiError):
+    code = 401
 
 all_perms = set(all_permissions.keys())
 _cp = check_perms

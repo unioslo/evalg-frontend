@@ -2,11 +2,22 @@
 # -*- coding: utf-8 -*-
 import inspect
 from functools import wraps
-from flask import jsonify, g, abort, current_app
-from evalg import ma
-import evalg
-from ..authorization import PermissionDenied
+from flask import jsonify, g
+from .. import ma, apierror
+from ..apierror import ApiError
 from marshmallow import SchemaOpts, ValidationError, fields, validates_schema
+
+
+class NotFoundError(ApiError):
+    code = 404
+    error_type = 'not-found'
+
+
+def handle_endpoint_not_found(err):
+    return jsonify({
+        'error': 'not-found',
+        'details': 'No matching endpoint'
+    }), 404
 
 
 def handle_unprocessable_entity(err):
@@ -15,11 +26,6 @@ def handle_unprocessable_entity(err):
     return jsonify({
         'messages': messages,
     }), 422
-
-
-def handle_permission_denied(err):
-    current_app.logger.error('Permission denied %s', err)
-    return jsonify(dict(messages='Permission denied')), 403
 
 
 class BaseSchemaOpts(SchemaOpts):
@@ -86,24 +92,6 @@ def get_principals():
     return g.principals
 
 
-def or404(fun, module=None):
-    """Replaces fun, so that fun(x) is replaced by abort(404) when None.
-
-    >>> f(x)
-    >>> or404(f, globals())
-    >>> f(x)
-    => abort(404)
-    """
-    @wraps(fun)
-    def f(arg):
-        obj = fun(arg)
-        return abort(404) if obj is None else obj
-    if hasattr(fun, 'is_protected'):
-        f.is_protected = fun.is_protected
-    setattr(module if module is not None else inspect.getmodule(fun),
-            fun.__name__, f)
-
-
 def add_authz(module=None, *functions):
     """ Replace functions with a function where principals is set. """
     def authzd(f):
@@ -131,21 +119,22 @@ def add_all_authz(moduleglobals):
 
 def init_app(app):
     # Error handlers
+    apierror.init_app(app)
     app.register_error_handler(422, handle_unprocessable_entity)
-    app.register_error_handler(PermissionDenied, handle_permission_denied)
+    app.register_error_handler(404, handle_endpoint_not_found)
 
     # Configure languages
     TranslatedString.configure(app)
 
     # Configure blueprints
-    from evalg.api import (election,
-                           election_list,
-                           ou,
-                           candidate,
-                           election_template,
-                           voter,
-                           pollbook,
-                           person)
+    from . import (election,
+                   election_list,
+                   ou,
+                   candidate,
+                   election_template,
+                   voter,
+                   pollbook,
+                   person)
     election.init_app(app)
     election_list.init_app(app)
     ou.init_app(app)

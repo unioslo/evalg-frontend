@@ -8,12 +8,11 @@ from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields
 from evalg import db, ma, docs
-from evalg.api import BaseSchema, TranslatedString, or404, add_all_authz
+from evalg.api import BaseSchema, TranslatedString, add_all_authz
 from evalg.organization import (get_ou, update_ou, make_ou, list_ous)
 
 bp = Blueprint('ous', __name__)
 add_all_authz(globals())
-get_ou = or404(get_ou)
 
 
 class OrganizationalUnitSchema(BaseSchema):
