@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import inspect
 from functools import wraps
-from flask import jsonify, g
+from flask import jsonify, g, current_app
 from .. import ma, apierror
 from ..apierror import ApiError
 from marshmallow import SchemaOpts, ValidationError, fields, validates_schema
