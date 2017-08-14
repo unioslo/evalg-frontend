@@ -93,6 +93,15 @@ class ElectionSchema(AbstractElectionSchema):
         dump_only = ('_links', 'id', 'ou_id', 'group', 'tz', 'list_ids',
                      'status')
 
+
+class ElectionPollbooksSchema(BaseSchema):
+    pollbooks = fields.List(fields.UUID(attribute='id'))
+
+    class Meta:
+        strict = True
+        dump_only = ('pollbooks')
+
+
 eg_schema = ElectionGroupSchema()
 e_schema = ElectionSchema()
 
@@ -238,6 +247,19 @@ bp.add_url_rule('/electiongroups/<uuid:group_id>/elections/<uuid:election_id>/li
                 methods=['GET'])
 
 
+@doc(tags=['election'])
+class ElectionPollbooks(MethodResource):
+    @marshal_with(ElectionPollbooksSchema())
+    @doc(summary='Get associated pollbooks')
+    def get(self, election_id):
+        return {'pollbooks': get_election(election_id).pollbooks}
+
+bp.add_url_rule('/elections/<uuid:election_id>/pollbooks/',
+                view_func=ElectionPollbooks.as_view(
+                    'ElectionPollbooks'),
+                methods=['GET'])
+
+
 def init_app(app):
     app.register_blueprint(bp)
     docs.spec.add_tag({
@@ -262,5 +284,8 @@ def init_app(app):
                   blueprint='elections')
     docs.register(ElectionListCollection,
                   endpoint="ElectionListCollection",
+                  blueprint="elections")
+    docs.register(ElectionPollbooks,
+                  endpoint="ElectionPollbooks",
                   blueprint="elections")
     docs.spec.definition('ElectionGroup', schema=ElectionGroupSchema)
