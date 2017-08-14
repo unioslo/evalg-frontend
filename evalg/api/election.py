@@ -87,11 +87,12 @@ class ElectionSchema(AbstractElectionSchema):
     nr_of_candidates = fields.Integer(allow_none=True)
     nr_of_co_candidates = fields.Integer(allow_none=True)
     active = fields.Boolean()
+    pollbook_ids = fields.List(fields.UUID)
 
     class Meta:
         strict = True
         dump_only = ('_links', 'id', 'ou_id', 'group', 'tz', 'list_ids',
-                     'status')
+                     'status', 'pollbook_ids')
 
 
 class ElectionPollbooksSchema(BaseSchema):

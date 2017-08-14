@@ -142,6 +142,10 @@ class Election(AbstractElection):
         return [l.id for l in self.lists if not l.deleted]
 
     @property
+    def pollbook_ids(self):
+        return [p.id for p in self.pollbooks if not p.deleted]
+
+    @property
     def start(self):
         if self.group.has_multiple_voting_times:
             return self._start
