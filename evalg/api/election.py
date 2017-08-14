@@ -214,15 +214,12 @@ bp.add_url_rule('/electiongroups/<uuid:group_id>',
                 methods=['GET', 'POST', 'PATCH', 'DELETE'])
 
 bp.add_url_rule('/elections/',
-                view_func=ElectionCollection.as_view('ElectionCollectionDirect'),
-                methods=['GET', 'POST'])
-bp.add_url_rule('/electiongroups/<uuid:group_id>/elections/',
                 view_func=ElectionCollection.as_view('ElectionCollection'),
                 methods=['GET', 'POST'])
+bp.add_url_rule('/electiongroups/<uuid:group_id>/elections/',
+                view_func=ElectionCollection.as_view('ElectionGroupElectionCollection'),
+                methods=['GET', 'POST'])
 bp.add_url_rule('/elections/<uuid:election_id>',
-                view_func=ElectionDetail.as_view('ElectionDetailDirect'),
-                methods=['GET', 'POST', 'PATCH', 'DELETE'])
-bp.add_url_rule('/electiongroups/<uuid:group_id>/elections/<uuid:election_id>',
                 view_func=ElectionDetail.as_view('ElectionDetail'),
                 methods=['GET', 'POST', 'PATCH', 'DELETE'])
 
@@ -238,10 +235,6 @@ class ElectionListCollection(MethodResource):
 
 
 bp.add_url_rule('/elections/<uuid:election_id>/lists/',
-                view_func=ElectionListCollection.as_view(
-                    'EllectionListCollectionDirect'),
-                methods=['GET'])
-bp.add_url_rule('/electiongroups/<uuid:group_id>/elections/<uuid:election_id>/lists/',
                 view_func=ElectionListCollection.as_view(
                     'ElectionListCollection'),
                 methods=['GET'])
