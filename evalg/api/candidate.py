@@ -31,7 +31,7 @@ class CandidateSchema(BaseSchema):
     _links = ma.Hyperlinks({
         'list': ma.URLFor('lists.ElectionListCollection', id='<id>'),
         'cocandidates': ma.URLFor('candidates.CoCandidateCollection',
-                                  id='<id>')
+                                  candidate_id='<id>')
     })
 
     class Meta:
@@ -44,18 +44,18 @@ class CandidateCollection(MethodResource):
     """ Candidate API. """
     @marshal_with(CandidateSchema(many=True))
     @doc(summary='Get a list of candidates')
-    def get(self, e_id, g_id=None):
-        e = get_election(e_id)
-        return get_candidates(e)
+    def get(self, election_id):
+        election = get_election(election_id)
+        return get_candidates(election)
 
     @use_kwargs(CandidateSchema())
     @marshal_with(CandidateSchema(), code=201)
     @doc(summary='Create a candidate list')
-    def post(self, g_id=None, **kwargs):
-        c = make_candidate(**kwargs)
-        db.session.add(c)
+    def post(self, **kwargs):
+        candidate = make_candidate(**kwargs)
+        db.session.add(candidate)
         db.session.commit()
-        return (c, 201)
+        return (candidate, 201)
 
 
 @doc(tags=['candidate'])
@@ -63,43 +63,32 @@ class CandidateDetail(MethodResource):
     """ Candidate API. """
     @marshal_with(CandidateSchema())
     @doc(summary='Get a candidate')
-    def get(self, id, e_id=None, g_id=None):
-        """ List candidates. """
-        return get_candidate(id)
+    def get(self, candidate_id):
+        return get_candidate(candidate_id)
 
     @marshal_with(CandidateSchema())
     @use_kwargs(CandidateSchema())
     @doc(summary='Partially update a candidate')
-    def patch(self, id, g_id=None, e_id=None, **kwargs):
-        c = get_candidate(id)
-        update(c, **kwargs)
+    def patch(self, candidate_id, **kwargs):
+        candidate = get_candidate(candidate_id)
+        update(candidate, **kwargs)
         db.session.commit()
-        return c
+        return candidate
 
     @marshal_with(None, code=204)
     @doc(summary='Delete a candidate')
-    def delete(self, id, e_id=None, g_id=None):
-        c = get_candidate(id)
-        update(c, deleted=True)
+    def delete(self, candidate_id):
+        candidate = get_candidate(candidate_id)
+        update(candidate, deleted=True)
         db.session.commit()
         return make_response('', 204)
 
 
-bp.add_url_rule('/elections/<uuid:e_id>/candidates/',
-                view_func=CandidateCollection.as_view('CandidateCollectionDirect'),
-                methods=['GET', 'POST'])
-bp.add_url_rule('/electiongroups/<uuid:g_id>/elections/<uuid:e_id>/candidates/',
+bp.add_url_rule('/elections/<uuid:election_id>/candidates/',
                 view_func=CandidateCollection.as_view('CandidateCollection'),
                 methods=['GET', 'POST'])
-bp.add_url_rule('/elections/<uuid:e_id>/candidates/<uuid:id>',
-                view_func=CandidateDetail.as_view('CandidateDetailDirect'),
-                methods=['GET', 'PATCH', 'DELETE'])
-bp.add_url_rule('/electiongroups/<uuid:g_id>/elections/<uuid:e_id>'
-                '/candidates/<uuid:id>',
+bp.add_url_rule('/candidates/<uuid:candidate_id>',
                 view_func=CandidateDetail.as_view('CandidateDetail'),
-                methods=['GET', 'PATCH', 'DELETE'])
-bp.add_url_rule('/candidates/<uuid:id>',
-                view_func=CandidateDetail.as_view('CandidateDetailCandidate'),
                 methods=['GET', 'PATCH', 'DELETE'])
 
 
@@ -110,26 +99,28 @@ class CoCandidateSchema(BaseSchema):
 
     _links = ma.Hyperlinks({
         'candidate': ma.URLFor('candidates.CandidateDetail',
-                               id='<candidate_id>')
+                               candidate_id='<candidate_id>')
     })
 
     class Meta:
         strict = True
-        dump_only = ('id', )
+        dump_only = ('id', '_links')
 
 
 @doc(tags=['cocandidate'])
 class CoCandidateCollection(MethodResource):
     @marshal_with(CoCandidateSchema(many=True))
-    @doc(summary='Get a list of co candidates')
-    def get(self, g_id=None, e_id=None, c_id=None):
-        return get_candidate(c_id).cocandidates
+    @doc(summary='Get a list of associated co-candidates')
+    def get(self, candidate_id):
+        candidate = get_candidate(candidate_id)
+        return filter(lambda co: not co.deleted,
+                      get_candidate(candidate).co_candidates)
 
     @use_kwargs(CoCandidateSchema())
     @marshal_with(CoCandidateSchema(), code=201)
-    @doc(summary='Create a cocandidate')
-    def post(self, g_id=None, e_id=None, c_id=None, **kwargs):
-        cand = get_candidate(c_id)
+    @doc(summary='Create a co-candidate')
+    def post(self, candidate_id, **kwargs):
+        cand = get_candidate(candidate_id)
         c = make_cocandidate(candidate=cand, **kwargs)
         db.session.add(c)
         db.session.commit()
@@ -139,22 +130,22 @@ class CoCandidateCollection(MethodResource):
 @doc(tags=['cocandidate'])
 class CoCandidateDetail(MethodResource):
     @marshal_with(CoCandidateSchema())
-    @doc(summary='Get a co candidate')
-    def get(self, id, g_id=None, e_id=None, c_id=None):
+    @doc(summary='Get a co-candidate')
+    def get(self, candidate_id, cocandidate_id):
         """ Get a co candidate. """
-        return get_cocandidate(id)
+        return get_cocandidate(cocandidate_id)
 
     @marshal_with(CoCandidateSchema())
     @use_kwargs(CoCandidateSchema())
-    @doc(summary='Partially update a co candidate')
-    def patch(self, id, g_id=None, e_id=None, c_id=None, **kwargs):
+    @doc(summary='Partially update a co-candidate')
+    def patch(self, candidate_id, cocandidate_id, **kwargs):
         c = get_cocandidate(id)
         update(c, **kwargs)
         db.session.commit()
         return c
 
     @marshal_with(None, code=204)
-    @doc(summary='Delete a co candidate')
+    @doc(summary='Delete a co-candidate')
     def delete(self, id):
         c = get_cocandidate(id)
         update(c, deleted=True)
@@ -162,32 +153,14 @@ class CoCandidateDetail(MethodResource):
         return make_response('', 204)
 
 
-bp.add_url_rule('/electiongroups/<uuid:g_id>/elections/<uuid:e_id>'
-                '/candidates/<uuid:c_id>/cocandidates/',
-                view_func=CoCandidateCollection.as_view('CoCandidateCollection'),
-                methods=['GET', 'POST'])
-bp.add_url_rule('/elections/<uuid:e_id>/candidates/<uuid:c_id>/cocandidates/',
-                view_func=CoCandidateCollection.as_view('CoCandidateCollectionDirect'),
-                methods=['GET', 'POST'])
-bp.add_url_rule('/candidates/<uuid:c_id>/cocandidates/',
-                view_func=CoCandidateCollection.as_view('CoCandidateCollectionCandidate'),
-                methods=['GET', 'POST'])
-bp.add_url_rule('/electiongroups/<uuid:g_id>/elections/<uuid:e_id>'
-                '/candidates/<uuid:c_id_>/cocandidates/<uuid:id>',
-                view_func=CoCandidateDetail.as_view('CoCandidateDetail'),
-                methods=['GET', 'PATCH', 'DELETE'])
-bp.add_url_rule('/elections/<uuid:e_id>/candidates/<uuid:c_id_>/cocandidates/'
-                '<uuid:id>',
-                view_func=CoCandidateDetail.as_view('CoCandidateDetailDirect'),
-                methods=['GET', 'PATCH', 'DELETE'])
-
-
-@doc(tags=['candidate'])
-class CoCandidateCollection(MethodResource):
-    @marshal_with(CoCandidateSchema(many=True))
-    @doc(summary='Get a list of associated co candidates')
-    def get(self, id):
-        return filter(lambda c: not c.deleted, get_candidate(id).co_candidates)
+bp.add_url_rule(
+    '/candidates/<uuid:candidate_id>/cocandidates/',
+    view_func=CoCandidateCollection.as_view('CoCandidateCollection'),
+    methods=['GET', 'POST'])
+bp.add_url_rule(
+    '/candidates/<uuid:candidate_id>/cocandidates/<uuid:cocandidate_id>',
+    view_func=CoCandidateDetail.as_view('CoCandidateDetail'),
+    methods=['GET', 'PATCH', 'DELETE'])
 
 
 def init_app(app):

@@ -44,8 +44,8 @@ class PersonCollection(MethodResource):
     @marshal_with(PersonSchema(), code=201)
     @doc(summary='Create a person')
     def post(self, **kwargs):
-        p = make_person(**kwargs)
-        db.session.add(p)
+        person = make_person(**kwargs)
+        db.session.add(person)
         db.session.commit()
         return (p, 201)
 

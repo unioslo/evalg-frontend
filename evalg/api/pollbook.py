@@ -32,7 +32,7 @@ class PollBookSchema(BaseSchema):
         'election': ma.URLFor('elections.ElectionDetail',
                               election_id='<election_id>',
                               group_id='<election.group_id>'),
-        'voters': ma.URLFor('pollbooks.VoterCollection', id='<id>')
+        'voters': ma.URLFor('pollbooks.VoterCollection', pollbook_id='<id>')
     })
 
     class Meta:
@@ -51,34 +51,34 @@ class PollBookCollection(MethodResource):
     @marshal_with(PollBookSchema(), code=201)
     @doc(summary='Create a pollbook')
     def post(self, **kwargs):
-        p = PollBook(**kwargs)
-        db.session.add(p)
+        poll = PollBook(**kwargs)
+        db.session.add(poll)
         db.session.commit()
-        return (p, 201)
+        return (poll, 201)
 
 
 @doc(tags=['pollbook'])
 class PollBookDetail(MethodResource):
     @marshal_with(PollBookSchema())
     @doc(summary='Get a pollbook')
-    def get(self, id):
-        return get_pollbook(id)
+    def get(self, pollbook_id):
+        return get_pollbook(pollbook_id)
 
     @marshal_with(PollBookSchema())
     @use_kwargs(PollBookSchema())
     @doc(summary='Partially update a pollbook')
-    def patch(self, id, **kwargs):
-        p = get_pollbook(id)
+    def patch(self, pollbook_id, **kwargs):
+        poll = get_pollbook(pollbook_id)
         for k, v in kwargs.items():
-            setattr(p, k, v)
+            setattr(poll, k, v)
         db.session.commit()
-        return p
+        return poll
 
     @marshal_with(None, code=204)
     @doc(summary='Delete a pollbook')
-    def delete(self, id):
-        p = get_pollbook(id)
-        p.deleted = True
+    def delete(self, pollbook_id):
+        poll = get_pollbook(pollbook_id)
+        poll.deleted = True
         db.session.commit()
         return make_response('', 204)
 
@@ -86,7 +86,7 @@ class PollBookDetail(MethodResource):
 bp.add_url_rule('/pollbooks/',
                 view_func=PollBookCollection.as_view('PollBookCollection'),
                 methods=['GET', 'POST'])
-bp.add_url_rule('/pollbooks/<uuid:id>',
+bp.add_url_rule('/pollbooks/<uuid:pollbook_id>',
                 view_func=PollBookDetail.as_view('PollBookDetail'),
                 methods=['GET', 'PATCH', 'DELETE'])
 
@@ -97,10 +97,10 @@ class VoterCollection(MethodResource):
 
     @marshal_with(VoterSchema(many=True))
     @doc(summary='Get a list of associated voters')
-    def get(self, id):
-        return get_pollbook(id).voters
+    def get(self, pollbook_id):
+        return get_pollbook(pollbook_id).voters
 
-bp.add_url_rule('/pollbooks/<uuid:id>/voters/',
+bp.add_url_rule('/pollbooks/<uuid:pollbook_id>/voters/',
                 view_func=VoterCollection.as_view('VoterCollection'),
                 methods=['GET'])
 

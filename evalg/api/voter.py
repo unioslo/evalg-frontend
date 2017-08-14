@@ -35,7 +35,7 @@ class VoterSchema(BaseSchema):
     voter_status_id = fields.String()
 
     _links = ma.Hyperlinks({
-        'pollbook': ma.URLFor('pollbooks.PollBookDetail', id='<pollbook_id>'),
+        'pollbook': ma.URLFor('pollbooks.PollBookDetail', pollbook_id='<pollbook_id>'),
         'person': ma.URLFor('persons.PersonDetail', person_id='<pollbook_person_id>')
     })
 
@@ -55,24 +55,24 @@ class VoterCollection(MethodResource):
     @marshal_with(VoterSchema(), code=201)
     @doc(summary='Create a voter')
     def post(self, **kwargs):
-        v = Voter(**kwargs)
-        db.session.add(v)
+        voter = Voter(**kwargs)
+        db.session.add(voter)
         db.session.commit()
-        return (v, 201)
+        return (voter, 201)
 
 
 @doc(tags=['voter'])
 class VoterDetail(MethodResource):
     @marshal_with(VoterSchema())
     @doc(summary='Get a voter')
-    def get(self, id):
-        return get_voter(id)
+    def get(self, voter_id):
+        return get_voter(voter_id)
 
     @marshal_with(VoterSchema())
     @use_kwargs(VoterSchema())
     @doc(summary='Partially update a voter')
-    def patch(self, id, **kwargs):
-        voter = get_voter(id)
+    def patch(self, voter_id, **kwargs):
+        voter = get_voter(voter_id)
         for k, v in kwargs.items():
             setattr(voter, k, v)
         db.session.commit()
@@ -80,8 +80,8 @@ class VoterDetail(MethodResource):
 
     @marshal_with(None, code=204)
     @doc(summary='Delete a voter')
-    def delete(self, id):
-        voter = get_voter(id)
+    def delete(self, voter_id):
+        voter = get_voter(voter_id)
         db.session.delete(voter)
         db.session.commit()
         return make_response('', 204)
@@ -90,7 +90,7 @@ class VoterDetail(MethodResource):
 bp.add_url_rule('/voters/',
                 view_func=VoterCollection.as_view('VoterCollection'),
                 methods=['GET', 'POST'])
-bp.add_url_rule('/voters/<uuid:id>',
+bp.add_url_rule('/voters/<uuid:voter_id>',
                 view_func=VoterDetail.as_view('VoterDetail'),
                 methods=['GET', 'PATCH', 'DELETE'])
 
