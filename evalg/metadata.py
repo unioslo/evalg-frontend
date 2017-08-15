@@ -89,7 +89,7 @@ def get_election(election_id):
 def list_elections(group=None):
     """List all elections or elections in group."""
     if group is None:
-        return Election.query.filter(Election.deleted == False).all()
+        return Election.query.filter(Election.deleted_at.is_(None)).all()
     else:
         return group.elections
 
@@ -121,14 +121,14 @@ def update_group(group, **fields):
 @eperm('change-election-metadata')
 def delete_election(election):
     """Delete election"""
-    election.deleted = True
+    election.delete()
     db.session.commit()
 
 
 @eperm('change-election-metadata')
 def delete_group(group):
     """Delete election"""
-    group.deleted = True
+    group.delete()
     db.session.commit()
 
 
@@ -230,8 +230,6 @@ def make_group_from_template(name=None, template=None, ou=None, principals=()):
                           type=grouptype,
                           candidate_type=common_candidate_type(),
                           meta=template,
-                          deleted=False,
-                          status='draft',
                           start=default_start(),
                           end=default_end(),
                           ou=ou,

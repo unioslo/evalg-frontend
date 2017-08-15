@@ -3,9 +3,12 @@
 """ Models for elections. """
 
 import uuid
+from datetime import datetime
 from evalg import db
 from evalg.models import Base
+from sqlalchemy.sql import func, case, and_
 from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy_utils import UUIDType, URLType, JSONType
 from evalg.models.ou import OrganizationalUnit
 from flask import current_app
@@ -39,11 +42,52 @@ class AbstractElection(Base):
     meta = db.Column(JSONType)
     """ Template metadata """
 
-    deleted = db.Column(db.Boolean, default=False)
-    """ If true, should not see """
+    announced_at = db.Column(db.DateTime)
+    """ Announced if set """
 
-    status = db.Column(db.Text)
-    """ draft → public → closed """
+    published_at = db.Column(db.DateTime)
+    """ Published if set """
+
+    cancelled_at = db.Column(db.DateTime)
+    """ Cancelled if set """
+
+    deleted_at = db.Column(db.DateTime)
+    """ Deleted if set """
+
+    def delete(self):
+        """ Mark as deleted. """
+        self.deleted_at = datetime.utcnow()
+
+    @property
+    def deleted(self):
+        return self.deleted_at is not None
+
+    @hybrid_property
+    def status(self):
+        """ draft → announced → published → ongoing/closed/cancelled """
+        if self.cancelled_at:
+            return 'cancelled'
+        if self.published_at:
+            if self.end <= datetime.utcnow():
+                return 'closed'
+            if self.start > datetime.utcnow():
+                return 'ongoing'
+            return 'published'
+        if self.announced_at:
+            return 'announced'
+        return 'draft'
+
+    @status.expression
+    def status(cls):
+        return case([
+            (cls.cancelled_at.isnot(None), 'cancelled'),
+            (and_(cls.published_at.isnot(None),
+                  cls.end <= func.now()), 'closed'),
+            (and_(cls.published_at.isnot(None),
+                  cls.start < func.now()), 'ongoing'),
+            (cls.published_at.isnot(None), 'published'),
+            (cls.announced_at.isnot(None), 'announced')],
+            else_='draft')
 
     @declared_attr
     def public_key(self):
@@ -118,16 +162,6 @@ class Election(AbstractElection):
     We usually create more elections than needed to make templates consistent.
     But not all elections should be used. This can improve voter UI, by telling
     voter that their group does not have an active election. """
-
-    @property
-    def running(self):
-        """ active + public + start < now < end """
-        return True
-        import datetime
-        now = datetime.datetime.now()
-        return (self.active and
-                self.status == 'public' and
-                self.start <= now <= self.end)
 
     @property
     def ou_id(self):
