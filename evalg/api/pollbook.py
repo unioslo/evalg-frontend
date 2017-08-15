@@ -7,7 +7,7 @@ from flask_apispec import use_kwargs, marshal_with
 from flask_apispec import doc
 from marshmallow import fields
 from evalg import ma, db, docs
-from evalg.api import BaseSchema
+from evalg.api import BaseSchema, TranslatedString
 from evalg.models.pollbook import PollBook
 
 bp = Blueprint('pollbooks', __name__)
@@ -23,7 +23,7 @@ def get_pollbook(id):
 
 class PollBookSchema(BaseSchema):
     id = fields.UUID()
-    name = fields.String()
+    name = fields.Nested(TranslatedString())
     weight = fields.Integer()
     priority = fields.Integer()
     election_id = fields.UUID()
