@@ -42,6 +42,52 @@ class AbstractElection(Base):
     meta = db.Column(JSONType)
     """ Template metadata """
 
+    @declared_attr
+    def public_key(self):
+        return db.relationship(PublicKey)
+
+    @declared_attr
+    def public_key_id(self):
+        return db.Column(UUIDType, db.ForeignKey('public_key.id'))
+
+    @property
+    def tz(self):
+        return 'CET'
+        return current_app.config['TZ']
+
+
+class ElectionGroup(AbstractElection):
+    ou_id = db.Column(UUIDType, db.ForeignKey('organizational_unit.id'),
+                      nullable=False)
+    ou = db.relationship(OrganizationalUnit)
+    """ Organizational unit. """
+
+    @property
+    def has_multiple_elections(self):
+        return self.type != 'single-election'
+
+
+class Election(AbstractElection):
+    """ Election. """
+    sequence = db.Column(db.Text)
+    """ Some ID for the UI """
+
+    start = db.Column(db.DateTime)
+    end = db.Column(db.DateTime)
+    information_url = db.Column(URLType)
+    contact = db.Column(db.Text)
+    mandate_period_start = db.Column(db.DateTime)
+    mandate_period_end = db.Column(db.DateTime)
+    group_id = db.Column(UUIDType, db.ForeignKey('election_group.id'))
+    group = db.relationship('ElectionGroup', backref='elections',
+                            lazy='joined')
+
+    active = db.Column(db.Boolean, default=False)
+    """ Whether election is active.
+    We usually create more elections than needed to make templates consistent.
+    But not all elections should be used. This can improve voter UI, by telling
+    voter that their group does not have an active election. """
+
     announced_at = db.Column(db.DateTime)
     """ Announced if set """
 
@@ -96,52 +142,6 @@ class AbstractElection(Base):
             (cls.published_at.isnot(None), 'published'),
             (cls.announced_at.isnot(None), 'announced')],
             else_='draft')
-
-    @declared_attr
-    def public_key(self):
-        return db.relationship(PublicKey)
-
-    @declared_attr
-    def public_key_id(self):
-        return db.Column(UUIDType, db.ForeignKey('public_key.id'))
-
-    @property
-    def tz(self):
-        return 'CET'
-        return current_app.config['TZ']
-
-
-class ElectionGroup(AbstractElection):
-    ou_id = db.Column(UUIDType, db.ForeignKey('organizational_unit.id'),
-                      nullable=False)
-    ou = db.relationship(OrganizationalUnit)
-    """ Organizational unit. """
-
-    @property
-    def has_multiple_elections(self):
-        return self.type != 'single-election'
-
-
-class Election(AbstractElection):
-    """ Election. """
-    sequence = db.Column(db.Text)
-    """ Some ID for the UI """
-
-    start = db.Column(db.DateTime)
-    end = db.Column(db.DateTime)
-    information_url = db.Column(URLType)
-    contact = db.Column(db.Text)
-    mandate_period_start = db.Column(db.DateTime)
-    mandate_period_end = db.Column(db.DateTime)
-    group_id = db.Column(UUIDType, db.ForeignKey('election_group.id'))
-    group = db.relationship('ElectionGroup', backref='elections',
-                            lazy='joined')
-
-    active = db.Column(db.Boolean, default=False)
-    """ Whether election is active.
-    We usually create more elections than needed to make templates consistent.
-    But not all elections should be used. This can improve voter UI, by telling
-    voter that their group does not have an active election. """
 
     @property
     def ou_id(self):
