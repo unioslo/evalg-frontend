@@ -35,10 +35,14 @@ class PersonSchema(BaseSchema):
 
 @doc(tags=['person'])
 class PersonCollection(MethodResource):
+    @use_kwargs({'nin': fields.Str()}, locations=['query'])
     @marshal_with(PersonSchema(many=True))
-    @doc(summary='Get persons')
-    def get(self):
-        return list_persons()
+    @doc(summary='Get persons', nin=None)
+    def get(self, nin=None):
+        if nin:
+            return list_persons(nin=nin) 
+        else:
+            return list_persons()
 
     @use_kwargs(PersonSchema())
     @marshal_with(PersonSchema(), code=201)
