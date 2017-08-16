@@ -62,6 +62,21 @@ class ElectionGroup(AbstractElection):
     ou = db.relationship(OrganizationalUnit)
     """ Organizational unit. """
 
+    @hybrid_property
+    def status(self):
+        statuses = db.session.query(Election.status).filter(Election.group == self).distinct().all()
+        statuses = list(map(lambda x: x.status, statuses))
+        if len(statuses) == 0:
+            return 'draft'
+        elif len(statuses) == 1:
+            return statuses.pop()
+        return 'multipleStatuses'
+
+    # @status.expression
+    # def status(cls):
+    #     # TODO: make expression
+    #     return ''
+
     @property
     def has_multiple_elections(self):
         return self.type != 'single-election'

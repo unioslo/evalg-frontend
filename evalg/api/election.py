@@ -4,7 +4,7 @@
 from flask import Blueprint, make_response, current_app
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with, doc
-from marshmallow import fields, validates_schema, ValidationError
+from marshmallow import fields
 from evalg import db, ma, docs
 from evalg.api import BaseSchema, TranslatedString, add_all_authz
 from ..metadata import (get_group, update_election, publish_election,
@@ -29,14 +29,6 @@ class AbstractElectionSchema(BaseSchema):
     status = fields.Str()
     tz = fields.Str()
 
-    @validates_schema
-    def validate_start_before_end(self, data):
-        if not data.get('start') or not data.get('end'):
-            return
-        if data['start'] > data['end']:
-            raise ValidationError('Start date must be before end date',
-                                  ['start', 'end'])
-
 
 class ElectionGroupSchema(AbstractElectionSchema):
     _links = ma.Hyperlinks({
@@ -55,13 +47,15 @@ class ElectionGroupSchema(AbstractElectionSchema):
 
 class ElectionSchema(AbstractElectionSchema):
     _links = ma.Hyperlinks({
-        'self': ma.URLFor('elections.ElectionDetail', election_id='<id>',
+        'self': ma.URLFor('elections.ElectionDetail',
+                          election_id='<id>',
                           group_id='<group_id>'),
         'collection': ma.URLFor('elections.ElectionCollection',
                                 group_id='<group_id>'),
         'group': ma.URLFor('elections.ElectionGroupDetail',
                            group_id='<group_id>'),
-        'lists': ma.URLFor('elections.ElectionListCollection', election_id='<id>',
+        'lists': ma.URLFor('elections.ElectionListCollection',
+                           election_id='<id>',
                            group_id='<group_id>'),
         'ou': ma.URLFor('ous.OUDetail', ou_id='<ou_id>')
     })
@@ -69,6 +63,7 @@ class ElectionSchema(AbstractElectionSchema):
     end = fields.DateTime()
     information_url = fields.URL(allow_none=True)
     contact = fields.Str(allow_none=True)
+    status = fields.Str()
     mandate_period_start = fields.DateTime(allow_none=True)
     mandate_period_end = fields.DateTime(allow_none=True)
 

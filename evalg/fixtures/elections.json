@@ -73,6 +73,30 @@
         "group_id": "b5b71046-e191-43d4-9bb6-55a710895288"
       },
       {
+        "id": "285b0050-ab52-4ead-986e-9acfc0b3c91a",
+        "start": "2017-09-02T09:00:00Z",
+        "end": "2017-10-02T09:00:00Z",
+        "name": {
+          "en": "Foo two",
+          "nb": "Foo to",
+          "nn": "Foo to"
+        },
+        "description": {
+          "en": "This is a description",
+          "nb": "Dette er en beskrivelse",
+          "nn": "Dette er ei beskriving"
+        },
+        "information_url": "https://uio.no",
+        "contact": "noreply@uio.no",
+        "mandate_period_start": "2018-01-01T18:04:54Z",
+        "mandate_period_end": "2019-01-01T14:45:34",
+        "mandate_type": {
+          "en": "President"
+        },
+        "public_key_id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d",
+        "group_id": "b5b71046-e191-43d4-9bb6-55a710895288"
+      },
+      {
         "id": "d10f90c2-bb14-47de-ace2-79265efcd161",
         "name": {
           "en": "Bar",
