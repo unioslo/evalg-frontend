@@ -231,6 +231,11 @@ def make_group_from_template(template_name, ou, principals=()):
                           description=None,  # Set this?
                           type=group_type,
                           meta=metadata,
+<<<<<<< HEAD
+=======
+                          deleted=False,
+                          status='draft',
+>>>>>>> 341ea58aee2840734daaf0572f5202fbbdefec41
                           ou=ou)
 
     def make_candidate_list(c):

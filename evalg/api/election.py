@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ The election API. """
-from flask import Blueprint, make_response
+from flask import Blueprint, make_response, current_app
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields, validates_schema, ValidationError
@@ -35,7 +35,7 @@ class AbstractElectionSchema(BaseSchema):
             return
         if data['start'] > data['end']:
             raise ValidationError('Start date must be before end date',
-                                  ('start', 'end'))
+                                  ['start', 'end'])
 
 
 class ElectionGroupSchema(AbstractElectionSchema):
@@ -78,8 +78,6 @@ class ElectionSchema(AbstractElectionSchema):
                      description="Associated OU")
     group = fields.UUID(attribute='group_id',
                         description="Parent election group")
-    nr_of_candidates = fields.Integer(allow_none=True)
-    nr_of_co_candidates = fields.Integer(allow_none=True)
     active = fields.Boolean()
     pollbook_ids = fields.List(fields.UUID)
 
@@ -120,6 +118,8 @@ class ElectionGroupDetail(MethodResource):
     @marshal_with(eg_schema)
     @doc(summary='Partially update an election group')
     def patch(self, group_id, **kwargs):
+        current_app.logger.info('UPDATE RECEIVED')
+        current_app.logger.info(kwargs)
         group = get_group(group_id)
         return update_group(group, **kwargs)
 

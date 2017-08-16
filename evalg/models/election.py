@@ -154,4 +154,3 @@ class Election(AbstractElection):
     @property
     def list_ids(self):
         return [l.id for l in self.lists if not l.deleted]
-
