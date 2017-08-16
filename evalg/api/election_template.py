@@ -45,14 +45,12 @@ bp.add_url_rule('/electiontemplate/',
 @doc(tags=['electiontemplate'])
 class ElectionTemplateNewGroup(MethodResource):
     """ Candidate API. """
-    @use_kwargs({'group': fields.Dict(),
-                 'name': fields.Dict(),
+    @use_kwargs({'template_name': fields.String(),
                  'ou_id': fields.UUID()})
-    @marshal_with(ElectionGroupSchema())
     @doc(summary='Create new elections')
-    def post(self, ou_id=None, name=None, group=None):
+    def post(self, ou_id=None, template_name=None):
         ou = OrganizationalUnit.query.get_or_404(ou_id)
-        grp = make_group_from_template(name, group, ou=ou)
+        grp = make_group_from_template(template_name, ou)
         current_app.logger.info('Test: %s', grp)
         return grp
 

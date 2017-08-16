@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ The election API. """
-from flask import Blueprint, make_response
+from flask import Blueprint, make_response, current_app
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields, validates_schema, ValidationError
@@ -20,16 +20,9 @@ add_all_authz(globals())
 
 class AbstractElectionSchema(BaseSchema):
     id = fields.UUID()
-    start = fields.DateTime()
-    end = fields.DateTime()
     name = fields.Nested(TranslatedString())
     description = fields.Nested(TranslatedString(), allow_none=True)
-    information_url = fields.URL(allow_none=True)
-    contact = fields.Str(allow_none=True)
-    mandate_period_start = fields.DateTime(allow_none=True)
-    mandate_period_end = fields.DateTime(allow_none=True)
     mandate_type = fields.Nested(TranslatedString(), allow_none=True)
-    ou_id = fields.UUID()
     public_key = fields.UUID(allow_none=True, attribute='public_key_id')
     meta = fields.Dict(allow_none=True)
     type = fields.Str(allow_none=True)
@@ -42,7 +35,7 @@ class AbstractElectionSchema(BaseSchema):
             return
         if data['start'] > data['end']:
             raise ValidationError('Start date must be before end date',
-                                  ('start', 'end'))
+                                  ['start', 'end'])
 
 
 class ElectionGroupSchema(AbstractElectionSchema):
@@ -54,12 +47,6 @@ class ElectionGroupSchema(AbstractElectionSchema):
 
     elections = fields.List(fields.UUID(attribute='id'),
                             description="Associated elections")
-    has_multiple_elections = fields.Boolean()
-    has_multiple_voting_times = fields.Boolean()
-    has_multiple_mandate_times = fields.Boolean()
-    has_multiple_contact_info = fields.Boolean()
-    has_multiple_info_urls = fields.Boolean()
-    has_gender_quota = fields.Boolean()
 
     class Meta:
         strict = True
@@ -78,19 +65,24 @@ class ElectionSchema(AbstractElectionSchema):
                            group_id='<group_id>'),
         'ou': ma.URLFor('ous.OUDetail', ou_id='<ou_id>')
     })
-    list_ids = fields.List(fields.UUID(),
-                           description="Associated election lists")
-    group_id = fields.Str()
-    ou_id = fields.UUID()
+    start = fields.DateTime()
+    end = fields.DateTime()
+    information_url = fields.URL(allow_none=True)
+    contact = fields.Str(allow_none=True)
+    mandate_period_start = fields.DateTime(allow_none=True)
+    mandate_period_end = fields.DateTime(allow_none=True)
+
+    lists = fields.List(fields.UUID(attribute='id'),
+                        description="Associated election lists")
+    ou = fields.UUID(attribute='ou_id',
+                     description="Associated OU")
     group = fields.UUID(attribute='group_id',
                         description="Parent election group")
-    nr_of_candidates = fields.Integer(allow_none=True)
-    nr_of_co_candidates = fields.Integer(allow_none=True)
     active = fields.Boolean()
 
     class Meta:
         strict = True
-        dump_only = ('_links', 'id', 'ou_id', 'group', 'tz', 'list_ids',
+        dump_only = ('_links', 'id', 'ou_id', 'group', 'tz', 'lists',
                      'status')
 
 eg_schema = ElectionGroupSchema()
@@ -116,6 +108,8 @@ class ElectionGroupDetail(MethodResource):
     @marshal_with(eg_schema)
     @doc(summary='Partially update an election group')
     def patch(self, group_id, **kwargs):
+        current_app.logger.info('UPDATE RECEIVED')
+        current_app.logger.info(kwargs)
         group = get_group(group_id)
         return update_group(group, **kwargs)
 

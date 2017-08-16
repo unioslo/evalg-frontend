@@ -6,6 +6,7 @@
 from flask import current_app
 from functools import wraps
 from .models.election import ElectionGroup, Election
+from .models.election_list import ElectionList
 from .models.ou import OrganizationalUnit
 from .api import NotFoundError
 from .authorization import check_perms, all_perms, PermissionDenied
@@ -149,25 +150,27 @@ def make_group(**kw):
     return ElectionGroup(**kw)
 
 
-def make_group_from_template(name=None, template=None, ou=None, principals=()):
+def make_group_from_template(template_name, ou, principals=()):
     """Create election with elections from template"""
-    from instance.evalg_template_config import election_types
+    current_app.logger.info('MAKE', template_name, ou)
+    from instance.evalg_template_config import election_templates
     import datetime
     from dateutil.relativedelta import relativedelta
-    from collections import defaultdict
     import functools
 
     if not check_perms(principals, 'create-election', ou=ou):
         current_app.logger.info('Testing %s', principals)
         raise PermissionDenied()
-
-    grouptype = template['grouptype']
-    elections = template['elections']
+    template = election_templates[template_name]
+    name = template['name']
+    group_type = template['settings']['group_type']
+    elections = template['settings']['elections']
+    metadata = template['settings']['rule_set']
 
     now = datetime.datetime.now()
 
     def candidate_type(e):
-        return election_types[e['rules']]['candidate-type']
+        return metadata['candidate-type']
 
     def common_candidate_type():
         return functools.reduce(lambda x, y: x if x == y else None,
@@ -183,7 +186,7 @@ def make_group_from_template(name=None, template=None, ou=None, principals=()):
             (now + datetime.timedelta(days=7)).date(), datetime.time(12, 0))
 
     def mandate_period_start(e):
-        start = e['mandate-period'].get('start', '01-01')
+        start = e['mandate_period'].get('start', '01-01')
         lst = start.split('-')
         month = int(lst[0], base=10)
         if len(lst) == 1:
@@ -198,7 +201,7 @@ def make_group_from_template(name=None, template=None, ou=None, principals=()):
 
     def mandate_period_end(e):
         start = mandate_period_start(e)
-        length = e['mandate-period'].get('length')
+        length = e['mandate_period'].get('length')
         if length is None:
             return None
         l = length.split()
@@ -207,59 +210,41 @@ def make_group_from_template(name=None, template=None, ou=None, principals=()):
         kw = dict(y='years', m='months', d='days')[unit]
         return start + relativedelta(**{kw: size})
 
-    def common_date(dates):
-        counts = defaultdict(int)
-        for d in dates:
-            counts[d] += 1
-        for date, count in sorted(counts.items(), key=lambda x: x[1]):
-            return date
-        return None
-
-    def common_mandate_period_start():
-        return common_date(map(mandate_period_start, elections))
-
-    def common_mandate_period_end():
-        return common_date(map(mandate_period_end, elections))
-
     grp_name = dict()
     for lang in name.keys():
         grp_name[lang] = name[lang].format(ou.name[lang])
 
     group = ElectionGroup(name=grp_name,
                           description=None,  # Set this?
-                          type=grouptype,
-                          candidate_type=common_candidate_type(),
-                          meta=template,
+                          type=group_type,
+                          meta=metadata,
                           deleted=False,
                           status='draft',
-                          start=default_start(),
-                          end=default_end(),
-                          ou=ou,
-                          information_url=None,
-                          contact=None,
-                          mandate_period_start=common_mandate_period_start(),
-                          mandate_period_end=common_mandate_period_end())
+                          ou=ou)
 
-    def election(e):
-        candtype = (candidate_type(e)
-                    if common_candidate_type() is None
-                    else None)
+    def make_candidate_list(c):
+        cand_list = ElectionList(name=c['name'])
+        return cand_list
+
+    def make_election(e):
         election = Election(name=e['name'],
                             sequence=e['sequence'],
                             group=group,
-                            _mandate_period_start=mandate_period_start(e),
-                            _mandate_period_end=mandate_period_end(e),
-                            type=e['rules'],
-                            candidate_type=candtype,
-                            meta=e,
-                            status=None)
+                            start=default_start(),
+                            end=default_end(),
+                            mandate_period_start=mandate_period_start(e),
+                            mandate_period_end=mandate_period_end(e),
+                            candidate_type=metadata['candidate_type'],
+                            meta=metadata,
+                            active=group_type == 'single_election',
+                            status='draft')
+        election.lists = list(map(make_candidate_list, e['voter_groups']))
         return election
 
-    group.elections = list(map(election, elections))
+    group.elections = list(map(make_election, elections))
 
     db.session.add(group)
     db.session.commit()
-
     return group
 
 make_group_from_template.is_protected = True

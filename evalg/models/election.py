@@ -60,38 +60,20 @@ class AbstractElection(Base):
 
 
 class ElectionGroup(AbstractElection):
-    """ Election group. """
-    start = db.Column(db.DateTime)
-    """ Start time """
-
-    end = db.Column(db.DateTime)
-    """ End time """
-
     ou_id = db.Column(UUIDType, db.ForeignKey('organizational_unit.id'),
                       nullable=False)
     ou = db.relationship(OrganizationalUnit)
-    """ Organizational unit. """
-
-    information_url = db.Column(URLType)
-    """ URL for voter's help """
-
-    contact = db.Column(db.Text)
-    """ Contact point for voters """
-
-    mandate_period_start = db.Column(db.DateTime)
-    mandate_period_end = db.Column(db.DateTime)
-    """ Mandate period """
 
     @property
     def has_multiple_elections(self):
         return self.type != 'single-election'
 
     # Settings for UI. TBD: Make a JSON called ui_settings?
-    has_multiple_voting_times = db.Column(db.Boolean, default=False)
-    has_multiple_mandate_times = db.Column(db.Boolean, default=False)
-    has_multiple_contact_info = db.Column(db.Boolean, default=False)
-    has_multiple_info_urls = db.Column(db.Boolean, default=False)
-    has_gender_quota = db.Column(db.Boolean, default=False)
+    #has_multiple_voting_times = db.Column(db.Boolean, default=False)
+    #has_multiple_mandate_times = db.Column(db.Boolean, default=False)
+    #has_multiple_contact_info = db.Column(db.Boolean, default=False)
+    #has_multiple_info_urls = db.Column(db.Boolean, default=False)
+    #has_gender_quota = db.Column(db.Boolean, default=False)
 
 
 class Election(AbstractElection):
@@ -99,19 +81,15 @@ class Election(AbstractElection):
     sequence = db.Column(db.Text)
     """ Some ID for the UI """
 
-    _start = db.Column(db.DateTime)
-    _end = db.Column(db.DateTime)
-    _information_url = db.Column(URLType)
-    _contact = db.Column(db.Text)
-    _mandate_period_start = db.Column(db.DateTime)
-    _mandate_period_end = db.Column(db.DateTime)
+    start = db.Column(db.DateTime)
+    end = db.Column(db.DateTime)
+    information_url = db.Column(URLType)
+    contact = db.Column(db.Text)
+    mandate_period_start = db.Column(db.DateTime)
+    mandate_period_end = db.Column(db.DateTime)
     group_id = db.Column(UUIDType, db.ForeignKey('election_group.id'))
     group = db.relationship('ElectionGroup', backref='elections',
                             lazy='joined')
-
-    # TODO: Settings dependent on election type, move into JSON field
-    nr_of_candidates = db.Column(db.Integer)
-    nr_of_co_candidates = db.Column(db.Integer)
 
     active = db.Column(db.Boolean, default=False)
     """ Whether election is active.
@@ -141,66 +119,3 @@ class Election(AbstractElection):
     def list_ids(self):
         return [l.id for l in self.lists if not l.deleted]
 
-    @property
-    def start(self):
-        if self.group.has_multiple_voting_times:
-            return self._start
-        return self.group.start
-
-    @start.setter
-    def start(self, value):
-        self._start = value
-
-    @property
-    def end(self):
-        if self.group.has_multiple_voting_times:
-            return self._end
-        return self.group.end
-
-    @end.setter
-    def end(self, value):
-        self._end = value
-
-    @property
-    def information_url(self):
-        if self.group.has_multiple_info_urls:
-            return self._information_url
-        return self.group.information_url
-
-    @information_url.setter
-    def information_url(self, value):
-        self._information_url = value
-
-    @property
-    def contact(self):
-        if self.group.has_multiple_contact_info:
-            return self._contact
-        return self.group.contact
-
-    @contact.setter
-    def contact(self, value):
-        self._contact = value
-
-    @property
-    def mandate_period_start(self):
-        if self.group.has_multiple_mandate_times:
-            return self._mandate_period_start
-        return self.group.mandate_period_start
-
-    @mandate_period_start.setter
-    def mandate_period_start(self, value):
-        self._mandate_period_start = value
-
-    @property
-    def mandate_period_end(self):
-        if self.group.has_multiple_mandate_times:
-            return self._mandate_period_end
-        return self.group.mandate_period_end
-
-    @mandate_period_end.setter
-    def mandate_period_end(self, value):
-        self._mandate_period_end = value
-
-    @property
-    def read_only_fields(self):
-        return ['ou', 'ou_id']
