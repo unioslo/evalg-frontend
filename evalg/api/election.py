@@ -149,7 +149,6 @@ class ElectionGroupCollection(MethodResource):
     @doc(summary='Create an election group')
     def post(self, **kwargs):
         group = make_group(**kwargs)
-        group.status = 'draft'  # TODO: move to make_group
         db.session.add(group)
         db.session.commit()
         return group, 201
@@ -201,7 +200,6 @@ class ElectionCollection(MethodResource):
     def post(self, group_id=None, **kwargs):
         grp = get_group(group_id) if group_id is not None else None
         election = make_election(group=grp, **kwargs)
-        election.status = 'draft'  # TODO: move to make_election
         db.session.add(election)
         db.session.commit()
         return election
