@@ -13,6 +13,11 @@ class NotFoundError(ApiError):
     error_type = 'not-found'
 
 
+class BadRequest(ApiError):
+    code = 400
+    error_type = 'bad-request'
+
+
 def handle_endpoint_not_found(err):
     return jsonify({
         'error': 'not-found',

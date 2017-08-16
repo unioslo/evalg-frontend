@@ -62,6 +62,14 @@ class AbstractElection(Base):
     def deleted(self):
         return self.deleted_at is not None
 
+    def publish(self):
+        """ Mark as published. """
+        self.published_at = datetime.utcnow()
+
+    @hybrid_property
+    def published(self):
+        return self.published_at is not None
+
     @hybrid_property
     def status(self):
         """ draft → announced → published → ongoing/closed/cancelled """
@@ -238,7 +246,3 @@ class Election(AbstractElection):
     @mandate_period_end.setter
     def mandate_period_end(self, value):
         self._mandate_period_end = value
-
-    @property
-    def read_only_fields(self):
-        return ['ou', 'ou_id']

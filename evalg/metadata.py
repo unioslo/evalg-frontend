@@ -6,8 +6,7 @@
 from flask import current_app
 from functools import wraps
 from .models.election import ElectionGroup, Election
-from .models.ou import OrganizationalUnit
-from .api import NotFoundError
+from .api import NotFoundError, BadRequest
 from .authorization import check_perms, all_perms, PermissionDenied
 from evalg import db
 
@@ -102,6 +101,20 @@ def update_election(election, **fields):
             continue
         if getattr(election, k) != v:
             setattr(election, k, v)
+    db.session.commit()
+    return election
+
+
+@eperm('publish-election')
+def publish_election(election, **fields):
+    """Publish an election."""
+    if election.published:
+        raise BadRequest(details='already-published')
+    if not election.start or not election.end:
+        raise BadRequest(details='missing-start-or-end')
+    if election.start > election.end:
+        raise BadRequest(details='start-must-be-before-end')
+    election.publish()
     db.session.commit()
     return election
 

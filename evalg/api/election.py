@@ -7,7 +7,7 @@ from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields, validates_schema, ValidationError
 from evalg import db, ma, docs
 from evalg.api import BaseSchema, TranslatedString, add_all_authz
-from ..metadata import (get_group, update_election,
+from ..metadata import (get_group, update_election, publish_election,
                         update_group, get_election, delete_group,
                         delete_election, list_groups, list_elections,
                         make_group, make_election)
@@ -224,6 +224,22 @@ bp.add_url_rule('/elections/<uuid:election_id>',
 
 
 @doc(tags=['election'])
+class ElectionPublish(MethodResource):
+    """ Resource for publishing an election. """
+    @marshal_with(e_schema)
+    @doc(summary='Publish an election')
+    def post(self, election_id):
+        election = get_election(election_id)
+        publish_election(election)
+        return election
+
+
+bp.add_url_rule('/elections/<uuid:election_id>/publish',
+                view_func=ElectionPublish.as_view('ElectionPublish'),
+                methods=['POST', ])
+
+
+@doc(tags=['election'])
 class ElectionListCollection(MethodResource):
     from evalg.api.election_list import ElectionListSchema
 
@@ -273,6 +289,9 @@ def init_app(app):
                   blueprint='elections')
     docs.register(ElectionDetail,
                   endpoint='ElectionDetail',
+                  blueprint='elections')
+    docs.register(ElectionPublish,
+                  endpoint='ElectionPublish',
                   blueprint='elections')
     docs.register(ElectionListCollection,
                   endpoint="ElectionListCollection",
