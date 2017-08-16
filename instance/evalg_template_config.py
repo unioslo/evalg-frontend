@@ -1,262 +1,264 @@
-# coding: utf-8
+# coding: utf_8
 
 ou_tags = ['root', 'faculty', 'department']
 """ The possible ou tags in use. """
 
-election_types = {
+###
+# ELECTION RULESETS
+# The rulesets used by the various supported election types should
+# be defined here.
+###
+election_rule_sets = {
     # TBD: Versioning?
     # 'Preferansevalg' by UiO rules (normal)
-    'uio-stv': {
+    # TODO: How should we define single/multiple candidate lists?
+    'uio_stv': {
         # Candidate is person, no co candidate
-        'candidate-type': 'single',
+        'candidate_type': 'single',
         # which metadata to collect:
         # number of seats, number of subs, and gender for affirmative action
-        'metadata': {'seats': 1, 'substitutes': 2, 'candidate-gender': True},
-        'ballot-rules': {
+        'metadata': {'seats': 1, 'substitutes': 2, 'candidate_gender': True},
+        'ballot_rules': {
             # should rank the candidates
-            'voting': 'rank-candidates',
+            'voting': 'rank_candidates',
             # no constraints in number of votes
             'votes': 'all',
         },
-        'counting-rules': {
-            'method': 'uio-stv',
-            'affirmative-action': ['gender-40'],
+        'counting_rules': {
+            'method': 'uio_stv',
+            'affirmative_action': ['gender_40'],
         },
     },
-    'uio-stv-teams': {
-        'candidate-type': 'single-team',
+    'uio_stv_teams': {
+        'candidate_type': 'single_team',
         'metadata': {'seats': 1},
-        'ballot-rules': {
-            'voting': 'rank-candidates',
+        'ballot_rules': {
+            'voting': 'rank_candidates',
             'votes': 'all',
         },
-        'counting-rules': {
-            'method': 'uio-stv',
+        'counting_rules': {
+            'method': 'uio_stv',
         },
     },
-    'uio-sp-list': {
-        'candidate-type': 'party-list',
+    'uio_sp_list': {
+        'candidate_type': 'party_list',
         'metadata': {'seats': 30},
-        'ballot-rules': {
-            'delete-candidate': True,
+        'ballot_rules': {
+            'delete_candidate': True,
             'cumulate': True,
-            'alter-priority': True,
-            'number-of-votes': 'seats',
-            'other-list-candidate-votes': True
+            'alter_priority': True,
+            'number_of_votes': 'seats',
+            'other_list_candidate_votes': True
         },
-        'counting-rules': {
-            'method': 'sainte-lague',
-            'first-divisor': '1',
+        'counting_rules': {
+            'method': 'sainte_lague',
+            'first_divisor': '1',
             'precumulate': 1,
-            'list-votes': 'seats',
-            'other-list-candidate-votes': True
+            'list_votes': 'seats',
+            'other_list_candidate_votes': True
         }
     },
 }
 
-_leader = {
-    'grouptype': 'single-election',
-    'elections': [{
-        'sequence': 'all',
-        'rules': 'uio-stv-teams',
-        'name': None,
-        'mandate-period': {'length': '4 y', 'start': '01-01'},
-        'votergroups': [
-            {
-                'name': {
-                    'nb': 'Vitenskapelig ansatte',
-                    'nn': 'Vitskapeleg tilsette',
-                    'en': 'Academic staff',
-                },
-                'weight': 53,
-            },
-            {
-                'name': {
-                    'nb': 'Teknisk/administrativt ansatte',
-                    'nn': 'Teknisk/administrativt tilsette',
-                    'en': 'Technical and administrative staff',
-                },
-                'weight': 22,
-            },
-            {
-                'name': {
-                    'nb': 'Studenter',
-                    'nn': 'Studentar',
-                    'en': 'Students',
-                },
-                'weight': 25,
-            }
-        ],
-    }]
+###
+# GROUP NAMES
+# Common names of groups in the organization.
+# Sometimes we want separate elections for these groups if they are
+# voting for representatives only from their own group, and sometimes we want
+# to represent them as separate censuses in the same election, if their votes
+# carry separate weights.
+###
+grp_names = {
+    'tech_adm_staff': {
+        'nb': 'Teknisk/administrativt ansatte',
+        'nn': 'Teknisk/administrativt tilsette',
+        'en': 'Technical and administrative staff',
+    },
+    'academic_staff': {
+        'nb': 'Vitenskapelig ansatte',
+        'nn': 'Vitskapeleg tilsette',
+        'en': 'Academic staff',
+    },
+    'tmp_academic_staff': {
+        'nb': 'Midlertidig vitenskapelige ansatte',
+        'nn': 'Mellombels vitskapeleg tilsette',
+        'en': 'Temporary academic staff',
+    },
+    'students': {
+        'nb': 'Studenter',
+        'nn': 'Studentar',
+        'en': 'Students',
+    }
 }
 
-_parliament = {
-    'grouptype': 'single-election',
-    'elections': [{
-        'sequence': 'all',
-        'rules': 'uio-sp-list',
-        'name': None,
-        'mandate-period': {'length': '1 y', 'start': '07-01'},
-        'votergroups': [
-            {
-                'name': {
-                    'nb': 'Studenter',
-                    'nn': 'Studentar',
-                    'en': 'Students',
-                },
-                'weight': 100,
-            }
-        ],
-    }]
-}
 
-_board = {
-    'grouptype': 'simultaneous-elections',
-    'elections': [
-        {
-            'sequence': 'permanent-academic-staff',
-            'rules': 'uio-stv',
-            'mandate-period': {'length': '4 y', 'start': '01-01'},
-            'name': {
-                'nb': 'Fast vitenskapelig ansatte',
-                'nn': 'Fast vitskapeleg tilsette',
-                'en': 'Permanent academic staff',
-            },
-            'votergroups': [{
-                'name': {
-                    'nb': 'Fast vitenskapelig ansatte',
-                    'nn': 'Fast vitskapeleg tilsette',
-                    'en': 'Permanent academic staff',
-                },
-                'weight': 100,
-            }],
-        },
-        {
-            'sequence': 'temp-academic-staff',
-            'rules': 'uio-stv',
-            'mandate-period': {'length': '1 y', 'start': '01-01'},
-            'name': {
-                'nb': 'Midlertidig vitenskapelige ansatte',
-                'nn': 'Mellombels vitskapeleg tilsette',
-                'en': 'Temporary academic staff',
-            },
-            'votergroups': [{
-                'name': {
-                    'nb': 'Midlertidig vitenskapelige ansatte',
-                    'nn': 'Mellombels vitskapeleg tilsette',
-                    'en': 'Temporary academic staff',
-                },
-                'weight': 100,
-            }],
-        },
-        {
-            'sequence': 'tech-adm-staff',
-            'rules': 'uio-stv',
-            'mandate-period': {'length': '4 y', 'start': '01-01'},
-            'name': {
-                'nb': 'Teknisk/administrativt ansatte',
-                'nn': 'Teknisk/administrativt tilsette',
-                'en': 'Technical and administrative staff',
-            },
-            'votergroups': [{
-                'name': {
-                    'nb': 'Midlertidig vitenskapelige ansatte',
-                    'nn': 'Mellombels vitskapeleg tilsette',
-                    'en': 'Temporary academic staff',
-                },
-                'weight': 100,
-            }],
-        },
-        {
-            'sequence': 'students',
-            'rules': 'uio-stv',
-            'mandate-period': {'length': '1 y', 'start': '01-01'},
-            'name': {
-                'nb': 'Studenter',
-                'nn': 'Studentar',
-                'en': 'Students',
-            },
-            'votergroups': [
+###
+# ELECTION TYPES
+# The various types of elections that are supported.
+###
+election_types = {
+    'board_leader': {
+        'group_type': 'single_election',
+        'rule_set': election_rule_sets['uio_stv_teams'],
+        'elections': [{
+            'sequence': 'all',
+            'name': None,
+            'mandate_period': {'length': '4 y', 'start': '01-01'},
+            'voter_groups': [
                 {
-                    'name': {
-                        'nb': 'Studenter',
-                        'nn': 'Studentar',
-                        'en': 'Students',
-                    },
-                    'weight': 100,
+                    'name': grp_names['academic_staff'],
+                    'weight': 53,
                 },
+                {
+                    'name': grp_names['tech_adm_staff'],
+                    'weight': 22,
+                },
+                {
+                    'name': grp_names['students'],
+                    'weight': 25,
+                }
             ],
-        },
-    ]
+        }]
+    },
+    'board': {
+        'group_type': 'multiple_elections',
+        'rule_set': election_rule_sets['uio_stv'],
+        'elections': [
+            {
+                'sequence': 'permanent_academic_staff',
+                'mandate_period': {'length': '4 y', 'start': '01-01'},
+                'name': grp_names['academic_staff'],
+                'voter_groups': [{
+                    'name': grp_names['academic_staff'],
+                    'weight': 100,
+                }],
+            },
+            {
+                'sequence': 'temp_academic_staff',
+                'mandate_period': {'length': '1 y', 'start': '01-01'},
+                'name': grp_names['tmp_academic_staff'],
+                'voter_groups': [{
+                    'name': grp_names['tmp_academic_staff'],
+                    'weight': 100,
+                }],
+            },
+            {
+                'sequence': 'tech_adm_staff',
+                'mandate_period': {'length': '4 y', 'start': '01-01'},
+                'name': grp_names['tech_adm_staff'],
+                'voter_groups': [{
+                    'name': grp_names['tech_adm_staff'],
+                    'weight': 100,
+                }],
+            },
+            {
+                'sequence': 'students',
+                'mandate_period': {'length': '1 y', 'start': '01-01'},
+                'name': grp_names['students'],
+                'voter_groups': [
+                    {
+                        'name': grp_names['students'],
+                        'weight': 100,
+                    },
+                ],
+            },
+        ]
+    },
+    'parliament': {
+        'group_type': 'single_election',
+        'rule_set': election_rule_sets['uio_sp_list'],
+        'elections': [{
+            'sequence': 'all',
+            'name': None,
+            'mandate_period': {'length': '1 y', 'start': '07_01'},
+            'voter_groups': [
+                {
+                    'name': grp_names['students'],
+                    'weight': 100,
+                }
+            ],
+        }]
+    },
 }
 
-electiongroup_templates = {
-    'uio-principal': {
+###
+# ELECTION TEMPLATES
+# These are the defined templates.
+# They should contain a dict <name> with the predefined name, which will
+# get the OU_name injected when generating a new election, as well as
+# a reference to the type of election.
+###
+election_templates = {
+    'uio_principal': {
         'name': {
             'nb': 'Rektor ved {}',
             'nn': 'Rektor ved {}',
             'en': 'Principal at {}'
         },
-        'group': _leader,
-        'ou_tag': 'root',
+        'settings': election_types['board_leader'],
     },
-    'uio-dean': {
+    'uio_dean': {
         'name': {
             'nb': 'Dekanat ved {}',
             'nn': 'Dekanat ved {}',
             'en': 'Dean at {}'
         },
-        'group': _leader,
-        'ou_tag': 'faculty',
+        'settings': election_types['board_leader'],
     },
-    'uio-department-leader': {
+    'uio_department_leader': {
         'name': {
             'nb': 'Instituttledelse ved {}',
             'nn': 'Instituttleiar ved {}',
             'en': 'Department leader at {}'
         },
-        'group': _leader,
-        'ou_tag': 'department',
+        'settings': election_types['board_leader'],
     },
-    'uio-university-board': {
+    'uio_university_board': {
         'name': {
             'nb': 'Universitetsstyre ved {}',
             'nn': 'Universitetsstyre ved {}',
             'en': 'University board at {}',
         },
-        'group': _board,
-        'ou_tag': 'root',
+        'settings': election_types['board'],
     },
-    'uio-faculty-board': {
+    'uio_faculty_board': {
         'name': {
             'nb': 'Fakultetsstyre ved {}',
             'nn': 'Fakultetsstyre ved {}',
             'en': 'Faculty board at {}',
         },
-        'group': _board,
-        'ou_tag': 'faculty',
+        'settings': election_types['board'],
     },
-    'uio-department-board': {
+    'uio_department_board': {
         'name': {
             'nb': 'Instituttstyre ved {}',
             'nn': 'Instituttstyre ved {}',
             'en': 'Department board at {}',
         },
-        'group': _board,
-        'ou_tag': 'department',
+        'settings': election_types['board'],
     },
-    'uio-studentparliament': {
+    'uio_student_parliament': {
         'name': {
             'nb': 'Studentparlament ved {}',
             'nn': 'Studentparlament ved {}',
             'en': 'Student parliament at {}',
         },
-        'group': _parliament,
-        'ou_tag': 'root',
-        'template': True,
+        'settings': election_types['parliament'],
     },
 }
 
+
+###
+# UI TEMPLATE TREE SETTINGS
+# These are various options that will be sent to the front_end.
+# The options are rendered as a tree of choices, with a root node.
+# In the root node, there can be any given number of initial options
+# available, with each option containing an entry <next_nodes> that
+# defines the following options to display.
+# Every branch in the tree should generate the necessary settings in order
+# to determine which type of election should be created, and in which OU
+# the election is linked to.
+###
 select_ou_node = {
     'name': {
         'nb': 'Valgkrets',
@@ -264,38 +266,6 @@ select_ou_node = {
         'en': 'Constituency'
     },
     'search_in_ou_tree': True
-}
-
-other_multiple_elections_node = {
-    'name': {
-        'nb': 'Flere velgergrupper?',
-        'nn': 'Flere velgergrupper?',
-        'en': 'Multiple voter groups?'
-    },
-    'options': [
-        {
-            'name': {
-                'en': 'Yes',
-                'nb': 'Ja',
-                'nn': 'Ja'
-
-            },
-            'settings': {
-                'has_multiple_elections': True
-            },
-        },
-        {
-            'name': {
-                'en': 'No',
-                'nb': 'Nei',
-                'nn': 'Nei'
-            },
-            'settings': {
-                'has_multiple_elections': False
-            },
-        }
-
-    ]
 }
 
 board_leader_node = {
@@ -311,7 +281,10 @@ board_leader_node = {
                 'nn': 'Rektorat',
                 'en': 'Principal'
             },
-            'settings': electiongroup_templates['uio-principal'],
+            'settings': {
+                'ou_tag': 'root',
+                'template_name': 'uio_principal'
+            }
         },
         {
             'name': {
@@ -319,7 +292,10 @@ board_leader_node = {
                 'nn': 'Dekanat',
                 'en': 'Dean',
             },
-            'settings': electiongroup_templates['uio-dean'],
+            'settings': {
+                'ou_tag': 'faculty',
+                'template_name': 'uio_dean'
+            }
         },
         {
             'name': {
@@ -327,7 +303,10 @@ board_leader_node = {
                 'nn': 'Instituttledelse',
                 'en': 'Institute leader',
             },
-            'settings': electiongroup_templates['uio-department-leader'],
+            'settings': {
+                'ou_tag': 'department',
+                'template_name': 'uio_department_leader'
+            }
         },
     ]
 }
@@ -335,6 +314,7 @@ board_leader_node = {
 board_node = {
     'name': {
         'nb': 'Valg av',
+        'nn': 'Valg av',
         'en': 'What to elect'
     },
     'options': [
@@ -344,7 +324,10 @@ board_node = {
                 'nn': 'Universitetsstyre',
                 'en': 'University Board'
             },
-            'settings': electiongroup_templates['uio-university-board'],
+            'settings': {
+                'ou_tag': 'root',
+                'template_name': 'uio_university_board'
+            }
         },
         {
             'name': {
@@ -352,7 +335,10 @@ board_node = {
                 'nn': 'Fakultetsstyre',
                 'en': 'Faculty Board',
             },
-            'settings': electiongroup_templates['uio-faculty-board'],
+            'settings': {
+                'ou_tag': 'faculty',
+                'template_name': 'uio_faculty_board'
+            }
         },
         {
             'name': {
@@ -360,102 +346,15 @@ board_node = {
                 'nn': 'Instituttstyre',
                 'en': 'Institute Board',
             },
-            'settings': electiongroup_templates['uio-department-board'],
+            'settings': {
+                'ou_tag': 'department',
+                'template_name': 'uio_department_board'
+            }
         },
     ]
 }
 
-other_ou_level_node = {
-    'name': {
-        'nb': 'Velg organisasjonsnivå',
-        'en': 'Choose organization level'
-    },
-    'options': [
-        {
-            'name': {
-                'en': 'University of Oslo',
-                'nb': 'Universitetet i Oslo',
-                'nn': 'Universitetet i Oslo'
-            },
-            'settings': {
-                'ou_tag': 'root'
-            },
-        },
-        {
-            'name': {
-                'en': 'Faculty',
-                'nb': 'Fakultet',
-                'nn': 'Fakultet'
-            },
-            'settings': {
-                'ou_tag': 'faculty'
-            },
-        },
-        {
-            'name': {
-                'en': 'Institute',
-                'nb': 'Institutt',
-                'nn': 'Institutt'
-            },
-            'settings': {
-                'ou_tree_level': 'department'
-            },
-        },
-    ],
-    'select_ou_level': True
-}
-
-other_node = {
-    'name': {
-        'nb': 'Valgtype',
-        'nn': 'Valgtype',
-        'en': 'Election type'
-    },
-    'options': [
-        {
-            'name': {
-                'en': 'Preference election',
-                'nb': 'Preferansevalg',
-                'nn': 'Preferansevalg'
-            },
-            'settings': {
-                'type': 'preference',
-            },
-        },
-        {
-            'name': {
-                'en': 'List election',
-                'nb': 'Listevalg',
-                'nn': 'Listevalg'
-            },
-            'settings': {
-                'type': 'list',
-            },
-        },
-        {
-            'name': {
-                'en': 'Poll',
-                'nb': 'Avstemning',
-                'nn': 'Avstemning'
-            },
-            'settings': {
-                'type': 'poll',
-            },
-        },
-
-    ]
-}
-
-other_election_group_name = {
-    'name': {
-        'nb': 'Valgnavn',
-        'nn': 'Valgnavn',
-        'en': 'Election name'
-    },
-    'set_election_name': True
-}
-
-template_root_node = {
+root_node = {
     'name': {
         'nb': 'Valgordning',
         'nn': 'Valgordning',
@@ -496,11 +395,137 @@ template_root_node = {
                 'nb': 'Studentparlament',
                 'nn': 'Studentparlament'
             },
-            'settings': electiongroup_templates['uio-studentparliament'],
+            'settings': {
+                'template': True,
+                'ou_tag': 'root',
+                'template_name': 'uio_student_parliament'
+            }
         },
     ]
 }
 
-election_template = {
-    'template_root': template_root_node,
-}
+
+# TODO: Implement support for generating elections not defined
+# in templates.
+#
+#other_multiple_elections_node = {
+#    'name': {
+#        'nb': 'Flere velgergrupper?',
+#        'nn': 'Flere velgergrupper?',
+#        'en': 'Multiple voter groups?'
+#    },
+#    'options': [
+#        {
+#            'name': {
+#                'en': 'Yes',
+#                'nb': 'Ja',
+#                'nn': 'Ja'
+#
+#            },
+#            'settings': {
+#                'has_multiple_elections': True
+#            },
+#        },
+#        {
+#            'name': {
+#                'en': 'No',
+#                'nb': 'Nei',
+#                'nn': 'Nei'
+#            },
+#            'settings': {
+#                'has_multiple_elections': False
+#            },
+#        }
+#
+#    ]
+#}
+#
+#other_ou_level_node = {
+#    'name': {
+#        'nb': 'Velg organisasjonsnivå',
+#        'en': 'Choose organization level'
+#    },
+#    'options': [
+#        {
+#            'name': {
+#                'en': 'University of Oslo',
+#                'nb': 'Universitetet i Oslo',
+#                'nn': 'Universitetet i Oslo'
+#            },
+#            'settings': {
+#                'ou_tag': 'root'
+#            },
+#        },
+#        {
+#            'name': {
+#                'en': 'Faculty',
+#                'nb': 'Fakultet',
+#                'nn': 'Fakultet'
+#            },
+#            'settings': {
+#                'ou_tag': 'faculty'
+#            },
+#        },
+#        {
+#            'name': {
+#                'en': 'Institute',
+#                'nb': 'Institutt',
+#                'nn': 'Institutt'
+#            },
+#            'settings': {
+#                'ou_tag': 'department'
+#            },
+#        },
+#    ],
+#    'select_ou_level': True
+#}
+#
+#other_node = {
+#    'name': {
+#        'nb': 'Valgtype',
+#        'nn': 'Valgtype',
+#        'en': 'Election type'
+#    },
+#    'options': [
+#        {
+#            'name': {
+#                'en': 'Preference election',
+#                'nb': 'Preferansevalg',
+#                'nn': 'Preferansevalg'
+#            },
+#            'settings': {
+#                'type': 'preference',
+#            },
+#        },
+#        {
+#            'name': {
+#                'en': 'List election',
+#                'nb': 'Listevalg',
+#                'nn': 'Listevalg'
+#            },
+#            'settings': {
+#                'type': 'list',
+#            },
+#        },
+#        {
+#            'name': {
+#                'en': 'Poll',
+#                'nb': 'Avstemning',
+#                'nn': 'Avstemning'
+#            },
+#            'settings': {
+#                'type': 'poll',
+#            },
+#        },
+#
+#    ]
+#}
+#
+#other_election_group_name = {
+#    'name': {
+#        'nb': 'Valgnavn',
+#        'nn': 'Valgnavn',
+#        'en': 'Election name'
+#    },
+#    'set_election_name': True
+#}

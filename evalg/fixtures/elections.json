@@ -13,8 +13,6 @@
     "records": [
       {
         "id": "b5b71046-e191-43d4-9bb6-55a710895288",
-        "start": "2017-09-01T13:37:00Z",
-        "end": "2017-10-01T03:23:12Z",
         "name": {
           "en": "Foo in English",
           "nb": "Foo på bokmål",
@@ -25,23 +23,12 @@
           "nb": "Dette er en beskrivelse",
           "nn": "Dette er ei beskriving"
         },
-        "information_url": "https://uio.no",
-        "contact": "noreply@uio.no",
-        "mandate_period_start": "2018-01-01T03:17:45Z",
-        "mandate_period_end": "2019-01-01T12:34:54Z",
-        "mandate_type": {
-          "en": "President",
-          "nb": "President",
-          "nn": "President"
-        },
         "type": "list",
         "ou_id": "a184e25e-907c-4155-860f-79df898ad51c",
         "public_key_id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d"
       },
       {
         "id": "2dc010ac-1bf7-4b93-92c8-72fd4e161ed8",
-        "start": "2017-10-10T13:37:00Z",
-        "end": "2017-11-10T03:23:12Z",
         "name": {
           "en": "Bar in English",
           "nb": "Bar på bokmål",
@@ -51,15 +38,6 @@
           "en": "This is a description. Lorem ipsum.",
           "nb": "Dette er en beskrivelse. Lorem ipsum.",
           "nn": "Dette er ei beskriving. Lorem ipsum."
-        },
-        "information_url": "https://uio.no",
-        "contact": "noreply@uio.no",
-        "mandate_period_start": "2018-06-01T03:17:45Z",
-        "mandate_period_end": "2019-06-01T12:34:54Z",
-        "mandate_type": {
-          "en": "Leader",
-          "nb": "Leder",
-          "nn": "Leiar"
         },
         "type": "preferential",
         "ou_id": "3fc2aa46-5ea1-45b2-9ad1-9296210e4f51",
