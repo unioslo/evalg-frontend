@@ -74,7 +74,8 @@ class ElectionSchema(AbstractElectionSchema):
     group = fields.UUID(attribute='group_id',
                         description="Parent election group")
     active = fields.Boolean()
-    pollbook_ids = fields.List(fields.UUID)
+    pollbooks = fields.List(fields.UUID(attribute='id'),
+                            description="Associated pollbooks")
 
     class Meta:
         strict = True
