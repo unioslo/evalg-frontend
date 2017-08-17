@@ -48,8 +48,8 @@ class ElectionSchema(AbstractElectionSchema):
     mandate_period_start = fields.DateTime(allow_none=True)
     mandate_period_end = fields.DateTime(allow_none=True)
 
-    lists = fields.List(fields.UUID(attribute='id'),
-                        description="Associated election lists")
+    list_ids = fields.List(fields.UUID(),
+                        description="UUIDs of associated election lists")
     ou_id = fields.UUID(attribute='ou_id',
                         description="Associated OU")
     group_id = fields.UUID(attribute='group_id',
@@ -60,7 +60,7 @@ class ElectionSchema(AbstractElectionSchema):
 
     class Meta:
         strict = True
-        dump_only = ('id', 'ou', 'group', 'tz', 'lists',
+        dump_only = ('id', 'ou', 'group', 'tz', 'list_ids',
                      'status', 'pollbooks')
 
 

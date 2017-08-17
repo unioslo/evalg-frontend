@@ -27,6 +27,7 @@ class ElectionListSchema(BaseSchema):
     election_id = fields.UUID()
     candidates = fields.List(fields.UUID(attribute='id'),
                              description="Associated candidates")
+    candidate_ids = fields.List(fields.UUID())
 
     class Meta:
         strict = True

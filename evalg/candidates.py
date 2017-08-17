@@ -8,7 +8,7 @@ from evalg import db
 from .authorization import check_perms, all_perms, PermissionDenied
 from .api import NotFoundError
 from .metadata import eperm
-from .models.candidate import Candidate, CoCandidate
+from .models.candidate import Candidate
 from .models.election import Election
 from .models.election_list import ElectionList
 
@@ -51,8 +51,8 @@ def cperm(arg=0, *permission):
         def election(args, kw):
             c = kw[arg]
             if isinstance(c, Candidate):
-                return c.election
-            return c.candidate.election
+                return c.list.election
+            return c.candidate.list.election
 
     def fun(f):
         @wraps(f)
@@ -74,7 +74,7 @@ def rcperm(*permission):
 
     def election(c):
         if isinstance(c, Candidate):
-            return c.election
+            return c.list.election
         return c.candidate.election
 
     def fun(f):
@@ -84,7 +84,7 @@ def rcperm(*permission):
             e = election(ret)
             if not check_perms(principals, permission, election=e, ou=e.ou):
                 raise PermissionDenied()
-            return
+            return ret
 
         gun.is_protected = True
         return gun
@@ -144,8 +144,6 @@ def update_list(lst, **kw):
 
 
 @update.register(Candidate)
-@update.register(CoCandidate)
-@cperm('change-candidates')
 def update_candidate(cand, **kw):
     for k, v in kw.items():
         setattr(cand, k, v)
@@ -159,33 +157,12 @@ def make_candidate(**args):
     return c
 
 
-@cperm('change-candidates')
-def make_cocandidate(candidate=None, **args):
-    return CoCandidate(candidate=candidate, **args)
-
-
 def get_candidate(candidate_id):
     """ Get candidate. """
     candidate = Candidate.query.get(candidate_id)
     if candidate is None or candidate.deleted:
         raise NotFoundError(
             details="No such candidate with id={uuid}".format(
-                uuid=candidate_id))
-    return candidate_id
-
-
-def get_cocandidate(cocandidate_id):
-    """ Get cocandidate. """
-    cocandidate = CoCandidate.query.get(cocandidate_id)
-    if cocandidate is None or cocandidate.deleted:
-        raise NotFoundError(
-            details="No such cocandidate with id={uuid}".format(
-                uuid=cocandidate_id))
-    return cocandidate
-
-
-def get_cocandidates(candidate=None):
-    """ Get candidate's cocandidates."""
-    if candidate is None:
-        return CoCandidate.query.all()
-    return candidate.co_candidates
+                uuid=candidate_id)
+        )
+    return candidate

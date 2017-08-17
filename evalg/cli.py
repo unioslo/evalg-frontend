@@ -34,9 +34,11 @@ def import_ous():
 
 def wipe_db():
     from evalg import db
+    import flask_fixtures
+    from evalg.fixtures import populate_tables
     db.drop_all()
     db.create_all()
-    #import_ous()
+    flask_fixtures.setup(populate_tables.Populator)
 
 
 def shell_context():
@@ -47,9 +49,9 @@ def shell_context():
         'save': save_object,
         'db': db,
         'Candidate': models.candidate.Candidate,
-        'CoCandidate': models.candidate.CoCandidate,
         'Election': models.election.Election,
         'ElectionGroup': models.election.ElectionGroup,
+        'ElectionList': models.election_list.ElectionList,
         'OU': models.election.OrganizationalUnit,
         'wipe_db': wipe_db
     }
