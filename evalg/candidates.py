@@ -184,6 +184,8 @@ def get_cocandidate(cocandidate_id):
     return cocandidate
 
 
-def get_cocandidates(candidate):
+def get_cocandidates(candidate=None):
     """ Get candidate's cocandidates."""
-    return candidate.cocan
+    if candidate is None:
+        return CoCandidate.query.all()
+    return candidate.co_candidates

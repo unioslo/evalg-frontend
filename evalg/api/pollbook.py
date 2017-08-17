@@ -28,13 +28,6 @@ class PollBookSchema(BaseSchema):
     priority = fields.Integer()
     election_id = fields.UUID()
 
-    _links = ma.Hyperlinks({
-        'election': ma.URLFor('elections.ElectionDetail',
-                              election_id='<election_id>',
-                              group_id='<election.group_id>'),
-        'voters': ma.URLFor('pollbooks.VoterCollection', pollbook_id='<id>')
-    })
-
     class Meta:
         strict = True
         dump_only = ('id', '_links',)
