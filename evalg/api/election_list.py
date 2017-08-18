@@ -6,7 +6,7 @@ from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with
 from flask_apispec import doc
 from marshmallow import fields
-from evalg import db, ma, docs
+from evalg import db, docs
 from evalg.candidates import (get_list, get_lists, make_list, update,
                               get_candidate)
 from evalg.metadata import (get_election)
@@ -27,30 +27,20 @@ class ElectionListSchema(BaseSchema):
     election_id = fields.UUID()
     candidates = fields.List(fields.UUID(attribute='id'),
                              description="Associated candidates")
-    _links = ma.Hyperlinks({
-        'election': ma.URLFor('elections.ElectionDetail',
-                              election_id='<election_id>'),
-        'candidates': ma.URLFor('lists.ListCandidateCollection',
-                                candidate_id='<id>')
-    })
+    candidate_ids = fields.List(fields.UUID())
 
     class Meta:
         strict = True
-        dump_only = ('id', '_links')
+        dump_only = ('id',)
 
 
 @doc(tags=['list'])
-class ElectionListCollection(MethodResource):
-    @marshal_with(ElectionListSchema(many=True))
-    @doc(summary='Get a list of election lists')
-    def get(self, election_id):
-        election = get_election(election_id)
-        return get_lists(election)
-
+class ElectionList(MethodResource):
     @use_kwargs(ElectionListSchema())
     @marshal_with(ElectionListSchema(), code=201)
     @doc(summary='Create an election list')
-    def post(self, election_id, **kwargs):
+    def post(self, **kwargs):
+        election_id = kwargs.get('election_id', None)
         election = get_election(election_id)
         li = make_list(election, **kwargs)
         db.session.add(li)
@@ -65,6 +55,17 @@ class ElectionListDetail(MethodResource):
     @doc(summary='Get a list')
     def get(self, list_id):
         return get_list(list_id)
+
+    @use_kwargs(ElectionListSchema())
+    @marshal_with(ElectionListSchema(), code=201)
+    @doc(summary='Create an election list')
+    def post(self, **kwargs):
+        election_id = kwargs.get('election_id')
+        election = get_election(election_id)
+        li = make_list(election, **kwargs)
+        db.session.add(li)
+        db.session.commit(li)
+        return (li, 201)
 
     @marshal_with(ElectionListSchema)
     @use_kwargs(ElectionListSchema)
@@ -92,14 +93,13 @@ class ListCandidateCollection(MethodResource):
         candidates = get_list(list_id).candidates
         return filter(lambda c: not c.deleted, candidates)
 
-
-bp.add_url_rule('/elections/<uuid:election_id>/lists/',
-                view_func=ElectionListCollection.as_view('ElectionListCollection'),
-                methods=['GET', 'POST'])
-bp.add_url_rule('/elections/<uuid:election_id>/lists/<uuid:list_id>',
+bp.add_url_rule('/lists/',
+                view_func=ElectionList.as_view('ElectionList'),
+                methods=['POST'])
+bp.add_url_rule('/lists/<uuid:list_id>',
                 view_func=ElectionListDetail.as_view('ElectionListDetail'),
                 methods=['GET', 'PATCH', 'DELETE'])
-bp.add_url_rule('/elections/<uuid:election_id>/lists/<uuid:list_id>/candidates/',
+bp.add_url_rule('/lists/<uuid:list_id>/candidates/',
                 view_func=ListCandidateCollection.as_view(
                     'ListCandidateCollection'),
                 methods=['GET'])
@@ -111,9 +111,6 @@ def init_app(app):
         'name': 'list',
         'description': 'Operations on election lists'
     })
-    docs.register(ElectionListCollection,
-                  endpoint='ElectionListCollection',
-                  blueprint='lists')
     docs.register(ElectionListDetail,
                   endpoint='ElectionListDetail',
                   blueprint='lists')

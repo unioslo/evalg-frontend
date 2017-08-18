@@ -77,10 +77,6 @@ class ElectionGroup(AbstractElection):
     #     # TODO: make expression
     #     return ''
 
-    @property
-    def has_multiple_elections(self):
-        return self.type != 'single-election'
-
 
 class Election(AbstractElection):
     """ Election. """

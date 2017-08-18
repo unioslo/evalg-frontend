@@ -47,6 +47,7 @@ class ElectionTemplateNewGroup(MethodResource):
     """ Candidate API. """
     @use_kwargs({'template_name': fields.String(),
                  'ou_id': fields.UUID()})
+    @marshal_with(ElectionGroupSchema())
     @doc(summary='Create new elections')
     def post(self, ou_id=None, template_name=None):
         ou = OrganizationalUnit.query.get_or_404(ou_id)

@@ -34,14 +34,9 @@ class VoterSchema(BaseSchema):
     pollbook_id = fields.UUID()
     voter_status_id = fields.String()
 
-    _links = ma.Hyperlinks({
-        'pollbook': ma.URLFor('pollbooks.PollBookDetail', pollbook_id='<pollbook_id>'),
-        'person': ma.URLFor('persons.PersonDetail', person_id='<pollbook_person_id>')
-    })
-
     class Meta:
         strict = True
-        dump_only = ('id', '_links', 'voter_status')
+        dump_only = ('id', 'voter_status')
 
 
 @doc(tags=['voter'])

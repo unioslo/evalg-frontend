@@ -17,8 +17,12 @@ class ElectionList(Base):
     election_id = db.Column(UUIDType,
                             db.ForeignKey('election.id'),
                             nullable=False)
-    rel_election_id = db.relationship('Election', backref='lists')
+    election = db.relationship('Election', backref='lists')
     deleted = db.Column(db.Boolean, default=False)
+
+    @property
+    def candidate_ids(self):
+        return [c.id for c in self.candidates if not c.deleted]
 
     def __repr__(self):
         return '<ElectionList {id}>'.format(id=self.id)
