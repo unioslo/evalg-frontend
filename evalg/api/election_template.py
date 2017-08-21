@@ -9,7 +9,7 @@ from marshmallow import fields
 from evalg import docs
 from evalg.api import BaseSchema, add_all_authz
 from evalg.api.election import ElectionGroupSchema
-from evalg.election_template_builder import election_template_builder
+from evalg.election_templates import election_template_builder
 from evalg.metadata import make_group_from_template
 from ..models.ou import OrganizationalUnit
 

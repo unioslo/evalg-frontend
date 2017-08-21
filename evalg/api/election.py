@@ -32,7 +32,7 @@ class AbstractElectionSchema(BaseSchema):
 
 class ElectionGroupSchema(AbstractElectionSchema):
     elections = fields.List(fields.UUID(attribute='id'),
-                            description="Associated elections")
+                            description="UUIDs of associated elections")
 
     class Meta:
         strict = True
@@ -48,7 +48,7 @@ class ElectionSchema(AbstractElectionSchema):
     mandate_period_start = fields.DateTime(allow_none=True)
     mandate_period_end = fields.DateTime(allow_none=True)
 
-    list_ids = fields.List(fields.UUID(),
+    lists = fields.List(fields.UUID(attribute='id'),
                         description="UUIDs of associated election lists")
     ou_id = fields.UUID(attribute='ou_id',
                         description="Associated OU")

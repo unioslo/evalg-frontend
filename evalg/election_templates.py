@@ -3,14 +3,6 @@ from evalg.models.ou import OrganizationalUnit
 from instance import evalg_template_config as tmpl_config
 
 
-def build_election_names(ou, name_prefixes):
-    names = name_prefixes[ou.tag]
-    for tag in names:
-        for lang in names[tag]:
-            names[tag][lang] = names[tag][lang].format(ou.name[lang])
-    return names
-
-
 def election_template_builder():
     ou_tags = tmpl_config.ou_tags
     ou_lists = dict()

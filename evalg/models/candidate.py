@@ -17,7 +17,6 @@ class Candidate(Base):
     name = db.Column(db.UnicodeText, nullable=False)
     meta = db.Column(JSONType)
     information_url = db.Column(URLType)
-    deleted = db.Column(db.Boolean, default=False)
     priority = db.Column(db.Integer, default=0)
     pre_cumulated = db.Column(db.Boolean, default=False)
     user_cumulated = db.Column(db.Boolean, default=False)

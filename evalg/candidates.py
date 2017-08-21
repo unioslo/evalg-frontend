@@ -99,7 +99,7 @@ def get_lists(election):
 def get_list(list_id):
     """ Return a candidate list. """
     l = ElectionList.query.get(list_id)
-    if l is None or l.deleted:
+    if l is None:
         raise NotFoundError(
             details="No such candidate list with id={uuid}".format(
                 uuid=list_id))
