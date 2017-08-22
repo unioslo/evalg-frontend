@@ -160,7 +160,7 @@ def make_candidate(**args):
 def get_candidate(candidate_id):
     """ Get candidate. """
     candidate = Candidate.query.get(candidate_id)
-    if candidate is None or candidate.deleted:
+    if candidate is None:
         raise NotFoundError(
             details="No such candidate with id={uuid}".format(
                 uuid=candidate_id)
