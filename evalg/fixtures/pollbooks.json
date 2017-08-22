@@ -11,7 +11,6 @@
         },
         "weight": 5,
         "priority": 10,
-        "deleted": false,
         "election_id": "af4bd61f-a93d-46d9-a7a3-625d13d8f3dd"
       },
       {
@@ -23,19 +22,17 @@
         },
         "weight": 5,
         "priority": 10,
-        "deleted": false,
         "election_id": "af4bd61f-a93d-46d9-a7a3-625d13d8f3dd"
       },
       {
         "id": "c8edc48c-5357-46c5-99ef-42645388ea05",
         "name": {
-          "en": "Ooops! I deleted my pollbook again",
-          "nb": "Oisann! Jeg slettet min stemmebok igjen",
-          "nn": "Oisann! Eg sletta mi stemmebok igjen"
+          "en": "The third book of polls",
+          "nb": "Den tredje stemmebok",
+          "nn": "Den tredje stemmeboka"
         },
         "weight": 10,
         "priority": 6,
-        "deleted": true,
         "election_id": "d10f90c2-bb14-47de-ace2-79265efcd161"
       }
     ]

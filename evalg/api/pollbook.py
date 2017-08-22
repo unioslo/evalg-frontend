@@ -6,7 +6,7 @@ from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with
 from flask_apispec import doc
 from marshmallow import fields
-from evalg import ma, db, docs
+from evalg import db, docs
 from evalg.api import BaseSchema, TranslatedString
 from evalg.models.pollbook import PollBook
 
@@ -15,7 +15,7 @@ bp = Blueprint('pollbooks', __name__)
 
 def get_pollbook(id):
     p = PollBook.query.get(id)
-    if p is None or p.deleted:
+    if p is None:
         abort(404)
     else:
         return p
@@ -38,7 +38,7 @@ class PollBookCollection(MethodResource):
     @marshal_with(PollBookSchema(many=True))
     @doc(summary='Get all pollbooks')
     def get(self):
-        return filter(lambda p: not p.deleted, PollBook.query.all())
+        return PollBook.query.all()
 
     @use_kwargs(PollBookSchema())
     @marshal_with(PollBookSchema(), code=201)
@@ -70,8 +70,7 @@ class PollBookDetail(MethodResource):
     @marshal_with(None, code=204)
     @doc(summary='Delete a pollbook')
     def delete(self, pollbook_id):
-        poll = get_pollbook(pollbook_id)
-        poll.deleted = True
+        db.session.delete(get_pollbook(pollbook_id))
         db.session.commit()
         return make_response('', 204)
 
