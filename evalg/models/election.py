@@ -62,10 +62,6 @@ class ElectionGroup(AbstractElection):
     ou = db.relationship(OrganizationalUnit)
     """ Organizational unit. """
 
-    @property
-    def election_ids(self):
-        return [e.id for e in self.elections if not e.deleted]
-
     @hybrid_property
     def status(self):
         statuses = db.session.query(Election.status).filter(Election.group == self).distinct().all()
