@@ -14,7 +14,6 @@ class PollBook(Base):
     name = db.Column(JSONType)
     weight = db.Column(db.Integer, nullable=False, default=1)
     priority = db.Column(db.Integer, nullable=False, default=0)
-    deleted = db.Column(db.Boolean, default=False)
     election_id = db.Column(UUIDType,
                             db.ForeignKey('election.id'),
                             nullable=False)

@@ -32,7 +32,7 @@ class AbstractElectionSchema(BaseSchema):
 
 class ElectionGroupSchema(AbstractElectionSchema):
     elections = fields.List(fields.UUID(attribute='id'),
-                            description="Associated elections")
+                            description="UUIDs of associated elections")
 
     class Meta:
         strict = True
@@ -40,15 +40,14 @@ class ElectionGroupSchema(AbstractElectionSchema):
 
 
 class ElectionSchema(AbstractElectionSchema):
-    start = fields.DateTime()
-    end = fields.DateTime()
-    information_url = fields.URL(allow_none=True)
-    contact = fields.Str(allow_none=True)
-    status = fields.Str()
+    start = fields.DateTime(allow_none=True)
+    end = fields.DateTime(allow_none=True)
     mandate_period_start = fields.DateTime(allow_none=True)
     mandate_period_end = fields.DateTime(allow_none=True)
-
-    list_ids = fields.List(fields.UUID(),
+    contact = fields.Str(allow_none=True)
+    information_url = fields.URL(allow_none=True)
+    status = fields.Str()
+    lists = fields.List(fields.UUID(attribute='id'),
                         description="UUIDs of associated election lists")
     ou_id = fields.UUID(attribute='ou_id',
                         description="Associated OU")
@@ -60,7 +59,7 @@ class ElectionSchema(AbstractElectionSchema):
 
     class Meta:
         strict = True
-        dump_only = ('id', 'ou', 'group', 'tz', 'list_ids',
+        dump_only = ('id', 'ou', 'group', 'tz', 'lists',
                      'status', 'pollbooks')
 
 
@@ -106,8 +105,6 @@ class ElectionGroupDetail(MethodResource):
     @marshal_with(eg_schema)
     @doc(summary='Partially update an election group')
     def patch(self, group_id, **kwargs):
-        current_app.logger.info('UPDATE RECEIVED')
-        current_app.logger.info(kwargs)
         group = get_group(group_id)
         return update_group(group, **kwargs)
 

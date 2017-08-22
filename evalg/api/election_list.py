@@ -90,8 +90,7 @@ class ListCandidateCollection(MethodResource):
     @marshal_with(CandidateSchema(many=True))
     @doc(summary='Get a list of associated candidates')
     def get(self, list_id):
-        candidates = get_list(list_id).candidates
-        return filter(lambda c: not c.deleted, candidates)
+        return get_list(list_id).candidates
 
 bp.add_url_rule('/lists/',
                 view_func=ElectionList.as_view('ElectionList'),

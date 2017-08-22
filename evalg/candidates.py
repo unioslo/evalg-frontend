@@ -99,7 +99,7 @@ def get_lists(election):
 def get_list(list_id):
     """ Return a candidate list. """
     l = ElectionList.query.get(list_id)
-    if l is None or l.deleted:
+    if l is None:
         raise NotFoundError(
             details="No such candidate list with id={uuid}".format(
                 uuid=list_id))
@@ -160,7 +160,7 @@ def make_candidate(**args):
 def get_candidate(candidate_id):
     """ Get candidate. """
     candidate = Candidate.query.get(candidate_id)
-    if candidate is None or candidate.deleted:
+    if candidate is None:
         raise NotFoundError(
             details="No such candidate with id={uuid}".format(
                 uuid=candidate_id)

@@ -60,7 +60,7 @@ class CandidateDetail(MethodResource):
     @doc(summary='Delete a candidate')
     def delete(self, candidate_id):
         candidate = get_candidate(candidate_id)
-        update(candidate, deleted=True)
+        db.session.delete(candidate)
         db.session.commit()
         return make_response('', 204)
 
