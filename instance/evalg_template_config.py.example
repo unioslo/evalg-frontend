@@ -8,6 +8,7 @@ ou_tags = ['root', 'faculty', 'department']
 # The rulesets used by the various supported election types should
 # be defined here.
 ###
+
 election_rule_sets = {
     # TBD: Versioning?
     # 'Preferansevalg' by UiO rules (normal)
@@ -17,7 +18,9 @@ election_rule_sets = {
         'candidate_type': 'single',
         # which metadata to collect:
         # number of seats, number of subs, and gender for affirmative action
-        'metadata': {'seats': 1, 'substitutes': 2, 'candidate_gender': True},
+        'candidate_rules': {'seats': 1,
+                            'substitutes': 2,
+                            'candidate_gender': True},
         'ballot_rules': {
             # should rank the candidates
             'voting': 'rank_candidates',
@@ -31,7 +34,7 @@ election_rule_sets = {
     },
     'uio_stv_teams': {
         'candidate_type': 'single_team',
-        'metadata': {'seats': 1},
+        'candidate_rules': {'seats': 1},
         'ballot_rules': {
             'voting': 'rank_candidates',
             'votes': 'all',
@@ -42,7 +45,7 @@ election_rule_sets = {
     },
     'uio_sp_list': {
         'candidate_type': 'party_list',
-        'metadata': {'seats': 30},
+        'candidate_rules': {'seats': 30},
         'ballot_rules': {
             'delete_candidate': True,
             'cumulate': True,
@@ -59,7 +62,6 @@ election_rule_sets = {
         }
     },
 }
-
 ###
 # GROUP NAMES
 # Common names of groups in the organization.

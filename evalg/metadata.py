@@ -238,7 +238,11 @@ def make_group_from_template(template_name, ou, principals=()):
         return cand_list
 
     def make_election(e):
-        election = Election(name=e['name'],
+        if group_type == 'single_election':
+            name = group.name
+        else:
+            name = e['name']
+        election = Election(name=name,
                             sequence=e['sequence'],
                             group=group,
                             start=default_start(),
