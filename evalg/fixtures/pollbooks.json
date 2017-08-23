@@ -11,7 +11,6 @@
         },
         "weight": 5,
         "priority": 10,
-        "deleted": false,
         "election_id": "af4bd61f-a93d-46d9-a7a3-625d13d8f3dd"
       },
       {
@@ -23,7 +22,6 @@
         },
         "weight": 5,
         "priority": 10,
-        "deleted": false,
         "election_id": "af4bd61f-a93d-46d9-a7a3-625d13d8f3dd"
       },
       {
@@ -35,7 +33,6 @@
         },
         "weight": 10,
         "priority": 6,
-        "deleted": true,
         "election_id": "d10f90c2-bb14-47de-ace2-79265efcd161"
       }
     ]
