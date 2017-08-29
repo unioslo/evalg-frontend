@@ -52,7 +52,7 @@ class AbstractElection(Base):
 
     @property
     def tz(self):
-        return 'CET'
+        return 'UTC'
         return current_app.config['TZ']
 
 
