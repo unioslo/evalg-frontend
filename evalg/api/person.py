@@ -51,7 +51,7 @@ class PersonCollection(MethodResource):
         person = make_person(**kwargs)
         db.session.add(person)
         db.session.commit()
-        return (p, 201)
+        return (person, 201)
 
 
 @doc(tags=['person'])
