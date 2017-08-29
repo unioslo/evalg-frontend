@@ -34,11 +34,8 @@ def perm(*permission):
 
 
 @perm('view-election', 'grant-role', 'upload-voters', 'vote-for', 'change-person')
-def list_persons(nin=None):
-    if nin:
-        return Person.query.filter(Person.nin == nin)
-    else:
-        return Person.query.all()
+def list_persons(**kw):
+    return Person.query.filter_by(**kw)
 
 
 @perm('change-person')
