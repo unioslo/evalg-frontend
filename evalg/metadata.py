@@ -6,6 +6,7 @@
 from flask import current_app
 from functools import wraps
 from .models.election import ElectionGroup, Election
+from .models.pollbook import PollBook
 from .models.election_list import ElectionList
 from .api import NotFoundError, BadRequest
 from .authorization import check_perms, all_perms, PermissionDenied
@@ -237,6 +238,9 @@ def make_group_from_template(template_name, ou, principals=()):
         cand_list = ElectionList(name=c['name'])
         return cand_list
 
+    def make_pollbook(kw):
+        return PollBook(**kw)
+
     def make_election(e):
         if group_type == 'single_election':
             name = group.name
@@ -253,6 +257,7 @@ def make_group_from_template(template_name, ou, principals=()):
                             meta=metadata,
                             active=group_type == 'single_election',)
         election.lists = list(map(make_candidate_list, e['voter_groups']))
+        election.pollbooks = list(map(make_pollbook, e['voter_groups']))
         return election
 
     group.elections = list(map(make_election, elections))
