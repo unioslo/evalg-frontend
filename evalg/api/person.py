@@ -35,14 +35,10 @@ class PersonSchema(BaseSchema):
 
 @doc(tags=['person'])
 class PersonCollection(MethodResource):
-    @use_kwargs({'nin': fields.Str()}, locations=['query'])
     @marshal_with(PersonSchema(many=True))
-    @doc(summary='Get persons', nin=None)
-    def get(self, nin=None):
-        if nin:
-            return list_persons(nin=nin) 
-        else:
-            return list_persons()
+    @doc(summary='Get persons')
+    def get(self):
+        return list_persons()
 
     @use_kwargs(PersonSchema())
     @marshal_with(PersonSchema(), code=201)
@@ -87,6 +83,23 @@ bp.add_url_rule('/persons/<uuid:person_id>',
                 methods=['GET', 'PATCH', 'DELETE'])
 
 
+@doc(tags=['person'])
+class PersonSearch(MethodResource):
+    @use_kwargs({'nin': fields.Str(),
+                 'first_name': fields.Str(),
+                 'last_name': fields.Str(),
+                 'username': fields.Str()}, locations=['query'])
+    @marshal_with(PersonSchema(many=True))
+    @doc(summary='Search for persons')
+    def get(self, **kw):
+        return list_persons(**kw)
+
+
+bp.add_url_rule('/persons/search/',
+                view_func=PersonSearch.as_view('PersonSearch'),
+                methods=['GET'])
+
+
 def init_app(app):
     app.register_blueprint(bp)
     docs.spec.add_tag({
@@ -97,4 +110,7 @@ def init_app(app):
                   blueprint='persons')
     docs.register(PersonDetail,
                   endpoint='PersonDetail',
+                  blueprint='persons')
+    docs.register(PersonSearch,
+                  endpoint='PersonSearch',
                   blueprint='persons')
