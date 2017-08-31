@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import inspect
 from functools import wraps
-from flask import jsonify, g, current_app
+from flask import jsonify, g
 from .. import ma, apierror
 from ..apierror import ApiError
 from marshmallow import SchemaOpts, ValidationError, fields, validates_schema
@@ -139,7 +139,8 @@ def init_app(app):
                    election_template,
                    voter,
                    pollbook,
-                   person)
+                   person,
+                   authz)
     election.init_app(app)
     election_list.init_app(app)
     ou.init_app(app)
@@ -148,3 +149,4 @@ def init_app(app):
     voter.init_app(app)
     pollbook.init_app(app)
     person.init_app(app)
+    authz.init_app(app)
