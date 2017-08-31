@@ -8,10 +8,9 @@ from functools import wraps
 from evalg import db
 from .models.ou import OrganizationalUnit
 from .models.authorization import (Permission,
-                                   get_principals_for,
-                                   list_roles,
-                                   get_role,
-                                   get_principal)
+                                   ElectionRole,
+                                   RoleList,
+                                   get_principals_for)
 from .auth import check_perms, all_permissions
 from .apierror import ApiError
 
@@ -57,11 +56,6 @@ def list_ous():
     return OrganizationalUnit.query.all()
 
 
-# get_principal, list_roles, get_role = (add_perm((), x) for x in (get_principal,
-#                                                                list_roles,
-#                                                                get_role))
-
-
 @perm('grant-role')
 def make_role(cls, *rest, **kw):
     ret = cls(*rest, **kw)
@@ -101,3 +95,12 @@ def remove_perm_from_role(role, perm):
 
 def list_perms():
     return Permission.query.all()
+
+
+def list_roles():
+    return RoleList.query.all()
+
+
+def list_election_roles(election):
+    return ElectionRole.query.filter(ElectionRole.election_id ==
+                                     election.election_id)
