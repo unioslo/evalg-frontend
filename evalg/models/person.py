@@ -21,6 +21,7 @@ class Person(Base):
     # National Identity Number
     nin = db.Column(db.UnicodeText, index=True, nullable=False)
     username = db.Column(db.UnicodeText)
+    principal = db.relationship('PersonPrincipal')
 
     def __repr__(self):
         return '<Person {id}>'.format(id=self.id)
