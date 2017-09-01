@@ -41,7 +41,10 @@ class PersonPrincipal(Principal):
     principal_id = db.Column(UUIDType, db.ForeignKey('principal.principal_id'),
                              default=uuid.uuid4,
                              primary_key=True)
-    person_id = db.Column(String, nullable=False)
+    person_id = db.Column(UUIDType,
+                          db.ForeignKey('person.id'),
+                          nullable=False)
+    person = db.relationship('Person', back_populates='principal')
 
     __mapper_args__ = {
         'polymorphic_identity': 'person_principal',
@@ -91,12 +94,12 @@ class RoleList(Base):
 
 class Role(Base):
     """ Roles granted to a principal. """
-    role = db.Column(db.String, db.ForeignKey('role_list.role'),
-                     primary_key=True)
+    grant_id = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
+    role = db.Column(db.String, db.ForeignKey('role_list.role'), nullable=False)
     role_type = db.Column(db.String(50), nullable=False)
     trait = db.relationship('RoleList', foreign_keys=(role, role_type))
     principal_id = db.Column(UUIDType, db.ForeignKey('principal.principal_id'),
-                             primary_key=True)
+                             nullable=False)
     principal = db.relationship('Principal', back_populates='roles')
 
     __mapper_args__ = {
@@ -125,17 +128,20 @@ class OuRoleList(RoleList):
 
 class OuRole(Role):
     """ Roles granted to principal on OU. """
+    grant_id = db.Column(UUIDType, db.ForeignKey('role.grant_id'),
+                         default=uuid.uuid4, primary_key=True)
     role = db.Column(db.String, db.ForeignKey('ou_role_list.role'),
-                     primary_key=True)
+                     nullable=False)
     ou_id = db.Column(UUIDType, db.ForeignKey('organizational_unit.id'),
-                     primary_key=True)
+                      nullable=False)
     ou = db.relationship(OrganizationalUnit)
     principal_id = db.Column(UUIDType, db.ForeignKey('principal.principal_id'),
-                             primary_key=True)
+                             nullable=False)
+
+    db.UniqueConstraint('role', 'ou_id', 'principal_id')
 
     __mapper_args__ = {
         'polymorphic_identity': 'ou_role',
-        'inherit_condition': role == Role.role,
     }
 
     def supports(self, perm, ou=None, **kw):
@@ -162,15 +168,18 @@ class ElectionRoleList(RoleList):
 
 class ElectionRole(Role):
     """ Roles granted on election. """
+    grant_id = db.Column(UUIDType, db.ForeignKey('role.grant_id'),
+                         default=uuid.uuid4, primary_key=True)
     role = db.Column(db.String, db.ForeignKey('election_role_list.role'),
-                     primary_key=True)
-    election_id = db.Column(db.String, primary_key=True)
+                     nullable=False)
+    election_id = db.Column(db.String, nullable=False)
     principal_id = db.Column(UUIDType, db.ForeignKey('principal.principal_id'),
-                             primary_key=True)
+                             nullable=False)
+
+    db.UniqueConstraint('role', 'election_id', 'principal_id')
 
     __mapper_args__ = {
         'polymorphic_identity': 'election_role',
-        'inherit_condition': role == Role.role,
     }
 
     def supports(self, perm, election_id=None, **kw):
