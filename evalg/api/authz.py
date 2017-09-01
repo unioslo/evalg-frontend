@@ -12,8 +12,9 @@ from evalg.api import TranslatedString, get_principals, add_all_authz
 from evalg.models.authorization import (RoleList, OuRoleList, ElectionRoleList,
                                         Permission)
 from ..authorization import (list_perms, list_roles, make_role, update_role,
-                             delete_role, add_perm_to_role,
+                             delete_role, add_perm_to_role, get_principal,
                              remove_perm_from_role)
+from .person import PersonSchema
 
 add_all_authz(globals())
 
@@ -68,6 +69,11 @@ class RoleSchema(ma.Schema):
 class PrincipalSchema(ma.Schema):
     principal_id = fields.Str()
     principal_type = fields.Str()
+
+
+class PersonPrincipalSchema(PrincipalSchema):
+    person_id = fields.Str()
+    person = fields.Nested(PersonSchema())
 
 
 class UserRoleSchema(ma.Schema):
@@ -232,6 +238,20 @@ auth_bp.add_url_rule('/auth/user/<uuid:personid>/roles/elections/'
                      '<uuid:electionid>/<role>',
                      view_func=UserRolesElection.as_view('UserRolesElection'),
                      methods=['GET', 'POST'])
+
+
+@doc(tags=['auth'])
+class PersonPrincipalDetail(MethodResource):
+    """List of user's roles"""
+    @dec(PersonPrincipalSchema(), summary="Get principal")
+    def get(self, principal_id):
+        return get_principal(principal_id)
+
+
+auth_bp.add_url_rule('/auth/principals/person/<uuid:principal_id>/',
+                     view_func=PersonPrincipalDetail.as_view(
+                         'PersonPrincipalDetail'),
+                     methods=['GET'])
 
 
 def init_app(app):

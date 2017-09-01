@@ -9,6 +9,7 @@ from evalg import db
 from .models.ou import OrganizationalUnit
 from .models.authorization import (Permission,
                                    ElectionRole,
+                                   Principal,
                                    RoleList,
                                    get_principals_for)
 from .auth import check_perms, all_permissions
@@ -102,5 +103,8 @@ def list_roles():
 
 
 def list_election_roles(election):
-    return ElectionRole.query.filter(ElectionRole.election_id ==
-                                     election.election_id)
+    return ElectionRole.query.filter(ElectionRole.election_id == election.id)
+
+
+def get_principal(principal_id):
+    return Principal.query.get(principal_id)

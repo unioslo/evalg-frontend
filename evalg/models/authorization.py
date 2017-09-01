@@ -172,7 +172,7 @@ class ElectionRole(Role):
                          default=uuid.uuid4, primary_key=True)
     role = db.Column(db.String, db.ForeignKey('election_role_list.role'),
                      nullable=False)
-    election_id = db.Column(db.String, nullable=False)
+    election_id = db.Column(UUIDType, nullable=False)
     principal_id = db.Column(UUIDType, db.ForeignKey('principal.principal_id'),
                              nullable=False)
 
