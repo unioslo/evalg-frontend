@@ -1,16 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ The election API. """
-from flask import Blueprint, make_response, current_app
+from flask import Blueprint, make_response
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields
-from evalg import db, ma, docs
+from evalg import db, docs
 from evalg.api import BaseSchema, TranslatedString, add_all_authz
 from ..metadata import (get_group, update_election, publish_election,
                         update_group, get_election, delete_group,
                         delete_election, list_groups, list_elections,
                         make_group, make_election)
+from ..authorization import list_election_roles
 
 bp = Blueprint('elections', __name__)
 
@@ -71,6 +72,12 @@ class ElectionPollbooksSchema(BaseSchema):
         dump_only = ('pollbooks')
 
 
+class ElectionRoleSchema(BaseSchema):
+    role = fields.Str()
+    principal_type = fields.Str(attribute='principal.principal_type')
+    principal = fields.UUID(attribute='principal.principal_id')
+
+
 eg_schema = ElectionGroupSchema()
 e_schema = ElectionSchema()
 
@@ -123,8 +130,18 @@ class ElectionGroupElectionCollection(MethodResource):
     def get(self, group_id):
         return list_elections(get_group(group_id))
 
+
+@doc(tags=['election'])
+class GroupRoleCollection(MethodResource):
+    @marshal_with(ElectionRoleSchema(many=True))
+    @doc(summary='Get roles set on election')
+    def get(self, group_id):
+        return list_election_roles(get_group(group_id))
+
+
 bp.add_url_rule('/electiongroups/',
-                view_func=ElectionGroupCollection.as_view('ElectionGroupCollection'),
+                view_func=ElectionGroupCollection.as_view(
+                    'ElectionGroupCollection'),
                 methods=['GET', 'POST'])
 bp.add_url_rule('/electiongroups/<uuid:group_id>',
                 view_func=ElectionGroupDetail.as_view('ElectionGroupDetail'),
@@ -133,6 +150,9 @@ bp.add_url_rule('/electiongroups/<uuid:group_id>/elections/',
                 view_func=ElectionGroupElectionCollection.as_view(
                     'ElectionGroupElectionCollection'
                 ),
+                methods=['GET'])
+bp.add_url_rule('/electiongroups/<uuid:group_id>/permissions/',
+                view_func=GroupRoleCollection.as_view('GroupRoleCollection'),
                 methods=['GET'])
 
 
@@ -207,6 +227,15 @@ class ElectionPollbooks(MethodResource):
     def get(self, election_id):
         return {'pollbooks': get_election(election_id).pollbooks}
 
+
+@doc(tags=['election'])
+class ElectionRoleCollection(MethodResource):
+    @marshal_with(ElectionRoleSchema(many=True))
+    @doc(summary='Get roles set on election')
+    def get(self, election_id):
+        return list_election_roles(get_election(election_id))
+
+
 bp.add_url_rule('/elections/',
                 view_func=ElectionCollection.as_view('ElectionCollection'),
                 methods=['GET', 'POST'])
@@ -224,6 +253,10 @@ bp.add_url_rule('/elections/<uuid:election_id>/publish',
 bp.add_url_rule('/elections/<uuid:election_id>/lists/',
                 view_func=ElectionListCollection.as_view(
                     'ElectionListCollection'),
+                methods=['GET'])
+bp.add_url_rule('/elections/<uuid:election_id>/permissions/',
+                view_func=ElectionRoleCollection.as_view(
+                    'ElectionRoleCollection'),
                 methods=['GET'])
 
 
@@ -258,4 +291,10 @@ def init_app(app):
     docs.register(ElectionPollbooks,
                   endpoint="ElectionPollbooks",
                   blueprint="elections")
+    docs.register(GroupRoleCollection,
+                  endpoint='GroupRoleCollection',
+                  blueprint='elections')
+    docs.register(ElectionRoleCollection,
+                  endpoint='ElectionRoleCollection',
+                  blueprint='elections')
     docs.spec.definition('ElectionGroup', schema=ElectionGroupSchema)
