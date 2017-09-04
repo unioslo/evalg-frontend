@@ -6,7 +6,6 @@ import uuid
 from sqlalchemy_utils import UUIDType
 from evalg import db
 from evalg.models import Base
-from evalg.models.pollbook import PollBook
 
 
 class VoterStatus(Base):
@@ -32,7 +31,7 @@ class Voter(Base):
                                 db.ForeignKey('voter_status.code'),
                                 nullable=False)
 
-    pollbook = db.relationship(PollBook, backref='voters')
+    pollbook = db.relationship('PollBook', back_populates='voters')
     voter_status = db.relationship('VoterStatus')  # no bakref needed
 
     def __repr__(self):

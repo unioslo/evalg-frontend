@@ -13,7 +13,8 @@ class Candidate(Base):
     list_id = db.Column(UUIDType,
                         db.ForeignKey('election_list.id'),
                         nullable=False)
-    list = db.relationship('ElectionList', backref='candidates')
+    list = db.relationship('ElectionList', back_populates='candidates',
+                           lazy='joined')
     name = db.Column(db.UnicodeText, nullable=False)
     meta = db.Column(JSONType)
     information_url = db.Column(URLType)

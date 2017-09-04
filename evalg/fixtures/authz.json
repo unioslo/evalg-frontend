@@ -410,20 +410,19 @@
                 "role": "election-admin",
                 "role_type": "election_role",
                 "principal_id": "072e4d7d-6e2a-4ece-b294-1900af547d95",
-                "election_id": "b5b71046-e191-43d4-9bb6-55a710895288"
-            },
-            {
-                "role": "election-admin",
-                "role_type": "election_role",
-                "principal_id": "072e4d7d-6e2a-4ece-b294-1900af547d95",
-                "election_id": "2dc010ac-1bf7-4b93-92c8-72fd4e161ed8"
-            },
-            {
-                "role": "election-admin",
-                "role_type": "election_role",
-                "principal_id": "072e4d7d-6e2a-4ece-b294-1900af547d95",
                 "election_id": "af4bd61f-a93d-46d9-a7a3-625d13d8f3dd"
             }
         ]
-    }
+    },
+  {
+    "model": "evalg.models.authorization.ElectionGroupRole",
+    "records": [
+      {
+        "role": "election-admin",
+        "role_type": "election_group_role",
+        "principal_id": "072e4d7d-6e2a-4ece-b294-1900af547d95",
+        "group_id": "b5b71046-e191-43d4-9bb6-55a710895288"
+      }
+    ]
+  }
 ]
