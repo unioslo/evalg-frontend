@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ The election API. """
-from flask import Blueprint, make_response
+from flask import Blueprint, make_response, current_app
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields
@@ -12,7 +12,7 @@ from ..metadata import (get_group, update_election, publish_election,
                         delete_election, list_groups, list_elections,
                         make_group, make_election)
 from ..authorization import (list_election_roles, get_role, grant_role,
-                             get_grant, delete_grant)
+                             get_grant, delete_grant, list_election_group_roles)
 from ..models.authorization import ElectionRoleList
 
 bp = Blueprint('elections', __name__)
@@ -79,6 +79,9 @@ class ElectionRoleSchema(BaseSchema):
     principal_type = fields.Str(attribute='principal.principal_type')
     principal = fields.UUID(attribute='principal.principal_id')
 
+    class Meta:
+        strict = True
+
 
 eg_schema = ElectionGroupSchema()
 e_schema = ElectionSchema()
@@ -138,17 +141,18 @@ class GroupRoleCollection(MethodResource):
     @marshal_with(ElectionRoleSchema(many=True))
     @doc(summary='Get roles set on election')
     def get(self, group_id):
-        return list_election_roles(get_group(group_id))
+        return list_election_group_roles(get_group(group_id))
 
     @marshal_with(ElectionRoleSchema(many=True))
+    @use_kwargs(ElectionRoleSchema())
     @doc(summary='Set role on election')
     def patch(self, group_id, role=None, principal_type=None, principal=None):
         grp = get_group(group_id)
         lst = get_role(role)
-        if not isinstance(role, ElectionRoleList):
+        if not isinstance(lst, ElectionRoleList):
             raise BadRequest('given role is not an election role')
-        grant_role(lst, election_id=grp.id, principal_id=principal)
-        return list_election_roles(grp)
+        grant_role(lst, group_id=grp.id, principal_id=principal['principal_id'])
+        return list_election_group_roles(grp)
 
 
 @doc(tags=['electiongroup'])
@@ -156,17 +160,18 @@ class GroupRoleDetail(MethodResource):
     @marshal_with(ElectionRoleSchema())
     @doc(summary='Get roles set on election')
     def get(self, group_id, role, principal_type, principal):
-        return get_grant(get_role(role), principal_type=principal_type,
-                         principal=principal, election_id=group_id)
+        return get_grant(role, principal_type=principal_type,
+                         principal_id=principal, group_id=group_id)
 
     @marshal_with(ElectionRoleSchema())
     @doc(summary='Set role on election')
     def put(self, group_id, role, principal_type, principal):
         grp = get_group(group_id)
         lst = get_role(role)
-        if not isinstance(role, ElectionRoleList):
+        if not isinstance(lst, ElectionRoleList):
             raise BadRequest('given role is not an election role')
-        return grant_role(lst, election_id=grp.id, principal_id=principal)
+        return grant_role(lst, group_id=grp.id,
+                          principal_id=principal)
 
     @marshal_with(None, code=204)
     @doc(summary='Set role on election')
@@ -176,7 +181,7 @@ class GroupRoleDetail(MethodResource):
         if not isinstance(lst, ElectionRoleList):
             raise BadRequest('given role is not an election role')
         grant = get_grant(lst, principal_type=principal_type,
-                          election_id=grp.id, principal_id=principal)
+                          group_id=grp.id, principal_id=principal)
         delete_grant(grant)
         return make_response('', 204)
 
@@ -282,13 +287,15 @@ class ElectionRoleCollection(MethodResource):
         return list_election_roles(get_election(election_id))
 
     @marshal_with(ElectionRoleSchema(many=True))
+    @use_kwargs(ElectionRoleSchema())
     @doc(summary='Set role on election')
     def patch(self, election_id, role=None,
               principal_type=None, principal=None):
         lst = get_role(role)
-        if not isinstance(role, ElectionRoleList):
+        if not isinstance(lst, ElectionRoleList):
             raise BadRequest('given role is not an election role')
-        grant_role(lst, election_id=election_id, principal_id=principal)
+        grant_role(lst, election_id=election_id,
+                   principal_id=principal['principal_id'])
         return list_election_roles(get_election(election_id))
 
 
@@ -298,26 +305,27 @@ class ElectionRoleDetail(MethodResource):
     @doc(summary='Get roles set on election')
     def get(self, election_id, role, principal_type, principal):
         return get_grant(get_role(role), principal_type=principal_type,
-                         principal=principal, election_id=election_id)
+                         principal_id=principal, election_id=election_id)
 
     @marshal_with(ElectionRoleSchema())
     @doc(summary='Set role on election')
-    def put(self, group_id, role, principal_type, principal):
-        grp = get_group(group_id)
+    def put(self, election_id, role, principal_type, principal):
+        e = get_election(election_id)
         lst = get_role(role)
-        if not isinstance(role, ElectionRoleList):
+        if not isinstance(lst, ElectionRoleList):
             raise BadRequest('given role is not an election role')
-        return grant_role(lst, election_id=grp.id, principal_id=principal)
+        return grant_role(lst, election_id=e.id, principal_id=principal)
 
     @marshal_with(None, code=204)
     @doc(summary='Set role on election')
-    def delete(self, group_id, role=None, principal_type=None, principal=None):
-        grp = get_group(group_id)
+    def delete(self, election_id, role=None, principal_type=None,
+               principal=None):
+        e = get_election(election_id)
         lst = get_role(role)
         if not isinstance(lst, ElectionRoleList):
             raise BadRequest('given role is not an election role')
         grant = get_grant(lst, principal_type=principal_type,
-                          election_id=grp.id, principal_id=principal)
+                          election_id=e.id, principal_id=principal)
         delete_grant(grant)
         return make_response('', 204)
 
