@@ -47,7 +47,7 @@ class PersonPrincipal(Principal):
     person = db.relationship('Person', back_populates='principal')
 
     __mapper_args__ = {
-        'polymorphic_identity': 'person_principal',
+        'polymorphic_identity': 'person-principal',
         'inherit_condition': principal_id == Principal.principal_id,
     }
 
@@ -60,7 +60,7 @@ class GroupPrincipal(Principal):
     group_id = db.Column(db.String, nullable=False)
 
     __mapper_args__ = {
-        'polymorphic_identity': 'group_principal',
+        'polymorphic_identity': 'group-principal',
         'inherit_condition': principal_id == Principal.principal_id,
     }
 
@@ -127,7 +127,7 @@ class OuRole(Role):
     db.UniqueConstraint('role', 'ou_id', 'principal_id')
 
     __mapper_args__ = {
-        'polymorphic_identity': 'ou_role',
+        'polymorphic_identity': 'ou-role',
     }
 
     def supports(self, perm, ou=None, **kw):
@@ -145,7 +145,7 @@ class OuRoleList(RoleList):
     role_class = OuRole
 
     __mapper_args__ = {
-        'polymorphic_identity': 'ou_role',
+        'polymorphic_identity': 'ou-role',
         'inherit_condition': role == RoleList.role,
     }
 
@@ -163,7 +163,7 @@ class ElectionRole(Role):
     db.UniqueConstraint('role', 'election_id', 'principal_id')
 
     __mapper_args__ = {
-        'polymorphic_identity': 'election_role',
+        'polymorphic_identity': 'election-role',
     }
 
     def supports(self, perm, election_id=None, **kw):
@@ -178,7 +178,7 @@ class ElectionRoleList(RoleList):
     role_class = ElectionRole
 
     __mapper_args__ = {
-        'polymorphic_identity': 'election_role',
+        'polymorphic_identity': 'election-role',
         'inherit_condition': role == RoleList.role,
     }
 
