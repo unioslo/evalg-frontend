@@ -13,6 +13,13 @@ def save_object(obj):
     print("Saved {}".format(obj))
 
 
+def show_query(query):
+    from sqlalchemy.dialects import postgresql
+    compiled = query.statement.compile(dialect=postgresql.dialect(),
+                                       compile_kwargs={'literal_binds': True})
+    print(str(compiled))
+
+
 def import_ous():
     """ Use flask_fixtures to populate tables. """
     import json
@@ -47,6 +54,7 @@ def shell_context():
     from pprint import pprint
     context = {
         'save': save_object,
+        'show_query': show_query,
         'db': db,
         'Candidate': models.candidate.Candidate,
         'Election': models.election.Election,
