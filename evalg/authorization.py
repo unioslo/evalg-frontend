@@ -27,7 +27,8 @@ def add_perm(perm, fun):
     assert perm in all_perms, 'Perm {} does not exist'.format(perm)
 
     @wraps(fun)
-    def gun(principals=None, *rest, **kw):
+    def gun(*rest, **kw):
+        principals = kw.pop('principals', None)
         assert principals is not None, "Add authz"
         if not check_perms(principals, (perm, )):
             raise PermissionDenied()
