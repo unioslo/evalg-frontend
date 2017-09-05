@@ -6,12 +6,14 @@ from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields
 from evalg import db, docs
-from evalg.api import BaseSchema, TranslatedString, add_all_authz
+from evalg.api import BaseSchema, TranslatedString, add_all_authz, BadRequest
 from ..metadata import (get_group, update_election, publish_election,
                         update_group, get_election, delete_group,
                         delete_election, list_groups, list_elections,
                         make_group, make_election)
-from ..authorization import list_election_roles
+from ..authorization import (list_election_roles, get_role, grant_role,
+                             get_grant, delete_grant)
+from ..models.authorization import ElectionRoleList
 
 bp = Blueprint('elections', __name__)
 
@@ -131,12 +133,52 @@ class ElectionGroupElectionCollection(MethodResource):
         return list_elections(get_group(group_id))
 
 
-@doc(tags=['election'])
+@doc(tags=['electiongroup'])
 class GroupRoleCollection(MethodResource):
     @marshal_with(ElectionRoleSchema(many=True))
     @doc(summary='Get roles set on election')
     def get(self, group_id):
         return list_election_roles(get_group(group_id))
+
+    @marshal_with(ElectionRoleSchema(many=True))
+    @doc(summary='Set role on election')
+    def patch(self, group_id, role=None, principal_type=None, principal=None):
+        grp = get_group(group_id)
+        lst = get_role(role)
+        if not isinstance(role, ElectionRoleList):
+            raise BadRequest('given role is not an election role')
+        grant_role(lst, election_id=grp.id, principal_id=principal)
+        return list_election_roles(grp)
+
+
+@doc(tags=['electiongroup'])
+class GroupRoleDetail(MethodResource):
+    @marshal_with(ElectionRoleSchema())
+    @doc(summary='Get roles set on election')
+    def get(self, group_id, role, principal_type, principal):
+        return get_grant(get_role(role), principal_type=principal_type,
+                         principal=principal, election_id=group_id)
+
+    @marshal_with(ElectionRoleSchema())
+    @doc(summary='Set role on election')
+    def put(self, group_id, role, principal_type, principal):
+        grp = get_group(group_id)
+        lst = get_role(role)
+        if not isinstance(role, ElectionRoleList):
+            raise BadRequest('given role is not an election role')
+        return grant_role(lst, election_id=grp.id, principal_id=principal)
+
+    @marshal_with(None, code=204)
+    @doc(summary='Set role on election')
+    def delete(self, group_id, role=None, principal_type=None, principal=None):
+        grp = get_group(group_id)
+        lst = get_role(role)
+        if not isinstance(lst, ElectionRoleList):
+            raise BadRequest('given role is not an election role')
+        grant = get_grant(lst, principal_type=principal_type,
+                          election_id=grp.id, principal_id=principal)
+        delete_grant(grant)
+        return make_response('', 204)
 
 
 bp.add_url_rule('/electiongroups/',
@@ -153,7 +195,11 @@ bp.add_url_rule('/electiongroups/<uuid:group_id>/elections/',
                 methods=['GET'])
 bp.add_url_rule('/electiongroups/<uuid:group_id>/permissions/',
                 view_func=GroupRoleCollection.as_view('GroupRoleCollection'),
-                methods=['GET'])
+                methods=['GET', 'PATCH'])
+bp.add_url_rule('/electiongroups/<uuid:group_id>/permissions/roles/<role>/'
+                '<principal_type>/<uuid:principal>',
+                view_func=GroupRoleDetail.as_view('GroupRoleDetail'),
+                methods=['GET', 'PUT', 'DELETE'])
 
 
 @doc(tags=['election'])
@@ -235,6 +281,46 @@ class ElectionRoleCollection(MethodResource):
     def get(self, election_id):
         return list_election_roles(get_election(election_id))
 
+    @marshal_with(ElectionRoleSchema(many=True))
+    @doc(summary='Set role on election')
+    def patch(self, election_id, role=None,
+              principal_type=None, principal=None):
+        lst = get_role(role)
+        if not isinstance(role, ElectionRoleList):
+            raise BadRequest('given role is not an election role')
+        grant_role(lst, election_id=election_id, principal_id=principal)
+        return list_election_roles(get_election(election_id))
+
+
+@doc(tags=['election'])
+class ElectionRoleDetail(MethodResource):
+    @marshal_with(ElectionRoleSchema())
+    @doc(summary='Get roles set on election')
+    def get(self, election_id, role, principal_type, principal):
+        return get_grant(get_role(role), principal_type=principal_type,
+                         principal=principal, election_id=election_id)
+
+    @marshal_with(ElectionRoleSchema())
+    @doc(summary='Set role on election')
+    def put(self, group_id, role, principal_type, principal):
+        grp = get_group(group_id)
+        lst = get_role(role)
+        if not isinstance(role, ElectionRoleList):
+            raise BadRequest('given role is not an election role')
+        return grant_role(lst, election_id=grp.id, principal_id=principal)
+
+    @marshal_with(None, code=204)
+    @doc(summary='Set role on election')
+    def delete(self, group_id, role=None, principal_type=None, principal=None):
+        grp = get_group(group_id)
+        lst = get_role(role)
+        if not isinstance(lst, ElectionRoleList):
+            raise BadRequest('given role is not an election role')
+        grant = get_grant(lst, principal_type=principal_type,
+                          election_id=grp.id, principal_id=principal)
+        delete_grant(grant)
+        return make_response('', 204)
+
 
 bp.add_url_rule('/elections/',
                 view_func=ElectionCollection.as_view('ElectionCollection'),
@@ -257,7 +343,11 @@ bp.add_url_rule('/elections/<uuid:election_id>/lists/',
 bp.add_url_rule('/elections/<uuid:election_id>/permissions/',
                 view_func=ElectionRoleCollection.as_view(
                     'ElectionRoleCollection'),
-                methods=['GET'])
+                methods=['GET', 'PATCH', 'DELETE'])
+bp.add_url_rule('/elections/<uuid:election_id>/permissions/roles/<role>/'
+                '<principal_type>/<uuid:principal>',
+                view_func=ElectionRoleDetail.as_view('ElectionRoleDetail'),
+                methods=['GET', 'PUT', 'DELETE'])
 
 
 def init_app(app):
@@ -294,7 +384,13 @@ def init_app(app):
     docs.register(GroupRoleCollection,
                   endpoint='GroupRoleCollection',
                   blueprint='elections')
+    docs.register(GroupRoleDetail,
+                  endpoint='GroupRoleDetail',
+                  blueprint='elections')
     docs.register(ElectionRoleCollection,
                   endpoint='ElectionRoleCollection',
+                  blueprint='elections')
+    docs.register(ElectionRoleDetail,
+                  endpoint='ElectionRoleDetail',
                   blueprint='elections')
     docs.spec.definition('ElectionGroup', schema=ElectionGroupSchema)
