@@ -235,15 +235,15 @@ def get_principals_for(person_id, groups=[]):
     except:
         p = PersonPrincipal(person_id=person_id)
         PersonPrincipal.session.add(p)
-        rg = []
-        for grp in groups:
-            try:
-                rg.append(GroupPrincipal.query
-                          .filter(GroupPrincipal.group_id == grp).one())
-            except:
-                g = GroupPrincipal(group_id=grp)
-                GroupPrincipal.session.add(g)
-                rg.append(g)
+    rg = []
+    for grp in groups:
+        try:
+            rg.append(GroupPrincipal.query
+                      .filter(GroupPrincipal.group_id == grp).one())
+        except:
+            g = GroupPrincipal(group_id=grp)
+            GroupPrincipal.session.add(g)
+            rg.append(g)
     return p, rg
 
 

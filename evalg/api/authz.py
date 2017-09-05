@@ -13,7 +13,7 @@ from evalg.models.authorization import (RoleList, OuRoleList, ElectionRoleList,
                                         Permission)
 from ..authorization import (list_perms, list_roles, make_role, update_role,
                              delete_role, add_perm_to_role, get_principal,
-                             remove_perm_from_role)
+                             remove_perm_from_role, get_principals_for)
 from .person import PersonSchema
 
 add_all_authz(globals())
@@ -70,8 +70,17 @@ class PrincipalSchema(ma.Schema):
 
 
 class PersonPrincipalSchema(PrincipalSchema):
-    person_id = fields.Str()
+    person_id = fields.UUID()
     person = fields.Nested(PersonSchema())
+
+
+class GroupPrincipalSchema(PrincipalSchema):
+    group_id = fields.Str()
+
+
+class UserPrincipalsSchema(ma.Schema):
+    person = fields.Nested(PersonPrincipalSchema())
+    groups = fields.List(fields.Nested(GroupPrincipalSchema()))
 
 
 class UserRoleSchema(ma.Schema):
@@ -176,7 +185,7 @@ auth_bp.add_url_rule('/auth/roles/<role>/perms/<perm>',
 class UserRoles(MethodResource):
     """List of user's roles"""
     @dec(RoleSchema(many=True), summary="List user's roles")
-    def get(self, personid):
+    def get(self, person_id):
         princs = get_principals()
         roles = set()
         for p in princs:
@@ -185,7 +194,7 @@ class UserRoles(MethodResource):
 
     @dec(RoleSchema(many=True), args={'role': fields.Str()},
          summary="Add role to user")
-    def post(self, personid, role):
+    def post(self, person_id, role):
         pass
 
 
@@ -193,7 +202,7 @@ class UserRoles(MethodResource):
 class UserRolesOu(MethodResource):
     """List of user's roles"""
     @dec(RoleSchema(many=True), summary="List user's roles")
-    def get(self, personid, ouid):
+    def get(self, person_id, ouid):
         princs = get_principals()
         roles = set()
         for p in princs:
@@ -203,7 +212,7 @@ class UserRolesOu(MethodResource):
 
     @dec(RoleSchema(many=True), args={'role': fields.Str()},
          summary="Add role to user")
-    def post(self, personid, ouid, role):
+    def post(self, person_id, ouid, role):
         pass
 
 
@@ -211,31 +220,48 @@ class UserRolesOu(MethodResource):
 class UserRolesElection(MethodResource):
     """List of user's roles"""
     @dec(RoleSchema(many=True), summary="List user's roles")
-    def get(self, personid, electionid):
+    def get(self, person_id, election_id):
         princs = get_principals()
         roles = set()
         for p in princs:
             [roles.add(x) for x in p.roles
-             if isinstance(x.trait, ElectionRoleList) and x.electionid ==
-             electionid]
+             if isinstance(x.trait, ElectionRoleList) and x.election_id ==
+             election_id]
         return roles
 
     @dec(RoleSchema(many=True), args={'role': fields.Str()},
          summary="Add role to user")
-    def post(self, personid, ouid, role):
+    def post(self, person_id, election_id, role):
         pass
 
-auth_bp.add_url_rule('/auth/user/<uuid:personid>/roles/all/',
+auth_bp.add_url_rule('/auth/user/<uuid:person_id>/roles/all/',
                      view_func=UserRoles.as_view('UserRoles'),
                      methods=['GET', 'POST'])
-auth_bp.add_url_rule('/auth/user/<uuid:personid>/roles/ous/'
+auth_bp.add_url_rule('/auth/user/<uuid:person_id>/roles/ous/'
                      '<uuid:ouid>/<role>',
                      view_func=UserRolesOu.as_view('UserRolesOu'),
                      methods=['GET', 'POST'])
-auth_bp.add_url_rule('/auth/user/<uuid:personid>/roles/elections/'
-                     '<uuid:electionid>/<role>',
+auth_bp.add_url_rule('/auth/user/<uuid:person_id>/roles/elections/'
+                     '<uuid:election_id>/<role>',
                      view_func=UserRolesElection.as_view('UserRolesElection'),
                      methods=['GET', 'POST'])
+
+
+@doc(tags=['auth'])
+class PersonPrincipalCollection(MethodResource):
+    """Get users principals"""
+    @dec(UserPrincipalsSchema(),
+         summary="List principals")
+    def get(self, person_id):
+        return dict(zip(('person', 'groups'),
+                        get_principals_for(person_id, groups=[
+                            # TODO: Get groups from dataporten
+                        ])))
+
+auth_bp.add_url_rule('/auth/user/<uuid:person_id>/principals/',
+                     view_func=PersonPrincipalCollection.as_view(
+                         'PersonPrincipalCollection'),
+                     methods=['GET'])
 
 
 @doc(tags=['auth'])
@@ -259,5 +285,6 @@ def init_app(app):
         'description': 'Authorization'
     })
     for x in [PermsList, RolesList, RoleDetail, RolePermsList, UserRoles,
-              UserRolesOu, UserRolesElection]:
+              UserRolesOu, UserRolesElection, PersonPrincipalDetail,
+              PersonPrincipalCollection]:
         docs.register(x, endpoint=x.__name__, blueprint='auth')
