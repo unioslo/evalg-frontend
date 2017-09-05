@@ -12,7 +12,6 @@ Basic idea:
 * When doing a task, a permission is checked.
 """
 
-
 import uuid
 from evalg import db
 from evalg.models import Base
@@ -26,8 +25,8 @@ ForeignKey = db.ForeignKey
 
 class Principal(Base):
     """ Principals. """
-    principal_id = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
-    principal_type = db.Column(String, nullable=False)
+    principal_id = Column(UUIDType, default=uuid.uuid4, primary_key=True)
+    principal_type = Column(String, nullable=False)
     roles = db.relationship('Role', back_populates='principal')
 
     __mapper_args__ = {
@@ -38,45 +37,65 @@ class Principal(Base):
 
 class PersonPrincipal(Principal):
     """ Principal based on person/user. """
-    principal_id = db.Column(UUIDType, db.ForeignKey('principal.principal_id'),
-                             default=uuid.uuid4,
-                             primary_key=True)
-    person_id = db.Column(UUIDType,
-                          db.ForeignKey('person.id'),
-                          nullable=False)
-    person = db.relationship('Person', back_populates='principal')
+    principal_id = Column(UUIDType, ForeignKey('principal.principal_id'),
+                          default=uuid.uuid4,
+                          primary_key=True)
+    person_id = Column(UUIDType,
+                       ForeignKey('person.id'),
+                       nullable=False)
+    person = db.relationship('Person', back_populates='principals')
 
     __mapper_args__ = {
-        'polymorphic_identity': 'person_principal',
+        'polymorphic_identity': 'person-principal',
         'inherit_condition': principal_id == Principal.principal_id,
     }
 
 
 class GroupPrincipal(Principal):
     """ Principal for group memberships. """
-    principal_id = db.Column(UUIDType, db.ForeignKey('principal.principal_id'),
-                             default=uuid.uuid4,
-                             primary_key=True)
-    group_id = db.Column(db.String, nullable=False)
+    principal_id = Column(UUIDType, ForeignKey('principal.principal_id'),
+                          default=uuid.uuid4,
+                          primary_key=True)
+    group_id = Column(String, nullable=False)
 
     __mapper_args__ = {
-        'polymorphic_identity': 'group_principal',
+        'polymorphic_identity': 'group-principal',
         'inherit_condition': principal_id == Principal.principal_id,
     }
 
 
 class RolePermission(Base):
     """ Permissions granted by role. """
-    code = db.Column(db.String, db.ForeignKey('permission.code'),
-                     primary_key=True)
-    role = db.Column(db.String, db.ForeignKey('role_list.role'),
-                     primary_key=True)
+    code = Column(String, ForeignKey('permission.code'),
+                  primary_key=True)
+    role = Column(String, ForeignKey('role_list.role'),
+                  primary_key=True)
+
+
+class Role(Base):
+    """ Roles granted to a principal. """
+    grant_id = Column(UUIDType, default=uuid.uuid4, primary_key=True)
+    role = Column(String, ForeignKey('role_list.role'), nullable=False)
+    role_type = Column(String(50), nullable=False)
+    trait = db.relationship('RoleList', foreign_keys=(role, role_type))
+    principal_id = Column(UUIDType, ForeignKey('principal.principal_id'),
+                          nullable=False)
+    principal = db.relationship('Principal', back_populates='roles')
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'role',
+        'polymorphic_on': role_type
+    }
+
+    def supports(self, perm, **kw):
+        return perm in (x.code for x in self.trait.perms)
 
 
 class RoleList(Base):
     """ List of roles in system. """
-    role = db.Column(db.String, primary_key=True)
-    role_type = db.Column(db.String(50), nullable=False)
+    role = Column(String, primary_key=True)
+    role_type = Column(String(50), nullable=False)
+    role_class = Role
     name = db.Column(JSONType, nullable=False)
     perms = db.relationship('Permission',
                             secondary=RolePermission.__table__,
@@ -89,59 +108,28 @@ class RoleList(Base):
 
     def makerole(self, **kw):
         """Get a matching role."""
-        return Role(trait=self, **kw)
-
-
-class Role(Base):
-    """ Roles granted to a principal. """
-    grant_id = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
-    role = db.Column(db.String, db.ForeignKey('role_list.role'), nullable=False)
-    role_type = db.Column(db.String(50), nullable=False)
-    trait = db.relationship('RoleList', foreign_keys=(role, role_type))
-    principal_id = db.Column(UUIDType, db.ForeignKey('principal.principal_id'),
-                             nullable=False)
-    principal = db.relationship('Principal', back_populates='roles')
-
-    __mapper_args__ = {
-        'polymorphic_identity': 'role',
-        'polymorphic_on': role_type
-    }
-
-    def supports(self, perm, **kw):
-        return perm in (x.code for x in self.trait.perms)
-
-
-class OuRoleList(RoleList):
-    """ Roles based on OU. """
-    role = db.Column(db.String, db.ForeignKey('role_list.role'),
-                     primary_key=True)
-
-    __mapper_args__ = {
-        'polymorphic_identity': 'ou_role',
-        'inherit_condition': role == RoleList.role,
-    }
-
-    def makerole(self, **kw):
-        """Get a matching role."""
-        return OuRole(trait=self, **kw)
+        return self.role_class(trait=self, **kw)
 
 
 class OuRole(Role):
     """ Roles granted to principal on OU. """
-    grant_id = db.Column(UUIDType, db.ForeignKey('role.grant_id'),
-                         default=uuid.uuid4, primary_key=True)
-    role = db.Column(db.String, db.ForeignKey('ou_role_list.role'),
-                     nullable=False)
-    ou_id = db.Column(UUIDType, db.ForeignKey('organizational_unit.id'),
-                      nullable=False)
+    grant_id = Column(UUIDType, ForeignKey('role.grant_id'),
+                      default=uuid.uuid4, primary_key=True)
+    role = Column(String, ForeignKey('ou_role_list.role'),
+                  nullable=False)
+    ou_id = Column(UUIDType, ForeignKey('organizational_unit.id'),
+                   nullable=False)
     ou = db.relationship(OrganizationalUnit)
-    principal_id = db.Column(UUIDType, db.ForeignKey('principal.principal_id'),
-                             nullable=False)
+    principal_id = Column(UUIDType, ForeignKey('principal.principal_id'),
+                          nullable=False)
+    principal = db.relationship('Principal', back_populates='roles')
 
-    db.UniqueConstraint('role', 'ou_id', 'principal_id')
+    __table_args__ = (
+        db.UniqueConstraint('role', 'ou_id', 'principal_id'),
+    )
 
     __mapper_args__ = {
-        'polymorphic_identity': 'ou_role',
+        'polymorphic_identity': 'ou-role',
     }
 
     def supports(self, perm, ou=None, **kw):
@@ -152,46 +140,89 @@ class OuRole(Role):
         return super().supports(perm, **kw)
 
 
-class ElectionRoleList(RoleList):
-    """ Roles given on election (group). """
-    role = db.Column(String, db.ForeignKey('role_list.role'), primary_key=True)
+class OuRoleList(RoleList):
+    """ Roles based on OU. """
+    role = Column(String, ForeignKey('role_list.role'), primary_key=True)
+    role_class = OuRole
 
     __mapper_args__ = {
-        'polymorphic_identity': 'election_role',
+        'polymorphic_identity': 'ou-role',
         'inherit_condition': role == RoleList.role,
     }
-
-    def makerole(self, **kw):
-        """Get a matching role."""
-        return ElectionRole(trait=self, **kw)
 
 
 class ElectionRole(Role):
     """ Roles granted on election. """
-    grant_id = db.Column(UUIDType, db.ForeignKey('role.grant_id'),
-                         default=uuid.uuid4, primary_key=True)
-    role = db.Column(db.String, db.ForeignKey('election_role_list.role'),
-                     nullable=False)
-    election_id = db.Column(UUIDType, nullable=False)
-    principal_id = db.Column(UUIDType, db.ForeignKey('principal.principal_id'),
-                             nullable=False)
+    grant_id = Column(UUIDType, ForeignKey('role.grant_id'),
+                      default=uuid.uuid4, primary_key=True)
+    role = Column(String, ForeignKey('election_role_list.role'),
+                  nullable=False)
+    election_id = Column(UUIDType, ForeignKey('election.id'), nullable=False)
+    election = db.relationship('Election', backref='roles', lazy='joined')
+    principal_id = Column(UUIDType, ForeignKey('principal.principal_id'),
+                          nullable=False)
+    principal = db.relationship('Principal', back_populates='roles')
 
-    db.UniqueConstraint('role', 'election_id', 'principal_id')
+    __table_args__ = (
+        db.UniqueConstraint('role', 'election_id', 'principal_id'),
+    )
 
     __mapper_args__ = {
-        'polymorphic_identity': 'election_role',
+        'polymorphic_identity': 'election-role',
     }
 
     def supports(self, perm, election_id=None, **kw):
-        if election_id != self.election_id:  # or election_id == election group
+        if election_id != self.election_id:
+            return False
+        return super().supports(perm, **kw)
+
+
+class ElectionRoleList(RoleList):
+    """ Roles given on election (group). """
+    role = Column(String, ForeignKey('role_list.role'), primary_key=True)
+    role_class = ElectionRole
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'election-role',
+        'inherit_condition': role == RoleList.role,
+    }
+
+    def makerole(self, **kw):
+        """Override to handle group role vs. election roles."""
+        return (ElectionGroupRole if 'group_id' in kw
+                else self.role_class)(trait=self, **kw)
+
+
+class ElectionGroupRole(Role):
+    """ Roles granted on election. """
+    grant_id = Column(UUIDType, ForeignKey('role.grant_id'),
+                      default=uuid.uuid4, primary_key=True)
+    role = Column(String, ForeignKey('election_role_list.role'),
+                  nullable=False)
+    group_id = Column(UUIDType, ForeignKey('election_group.id'))
+    group = db.relationship('ElectionGroup', backref='roles', lazy='joined')
+    principal_id = Column(UUIDType, ForeignKey('principal.principal_id'),
+                          nullable=False)
+    principal = db.relationship('Principal', back_populates='roles')
+
+    __table_args__ = (
+        db.UniqueConstraint('role', 'group_id', 'principal_id'),
+    )
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'election-group-role',
+    }
+
+    def supports(self, perm, group_id=None, **kw):
+        if group_id != self.group_id:
             return False
         return super().supports(perm, **kw)
 
 
 class Permission(Base):
     """Permission."""
-    code = db.Column(db.String, primary_key=True)
-    doc = db.Column(db.String)
+    code = Column(String, primary_key=True)
+    doc = Column(String)
     roles = db.relationship('RoleList',
                             secondary=RolePermission.__table__,
                             back_populates='perms')

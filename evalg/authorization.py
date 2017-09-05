@@ -9,6 +9,7 @@ from evalg import db
 from .models.ou import OrganizationalUnit
 from .models.authorization import (Permission,
                                    ElectionRole,
+                                   ElectionGroupRole,
                                    Principal,
                                    RoleList,
                                    get_principals_for)
@@ -94,6 +95,31 @@ def remove_perm_from_role(role, perm):
     return True
 
 
+@perm('grant-role')
+def grant_role(role_list, **kw):
+    ret = role_list.makerole(**kw)
+    db.session.add(ret)
+    db.session.commit()
+    return ret
+
+
+@perm('grant-role')
+def get_grant(role, principal_type, principal_id, **kw):
+    role = get_role(role) if isinstance(role, str) else role
+    c = role.role_class
+    if c is ElectionRole and 'group_id' in kw:
+        c = ElectionGroupRole
+    more = [getattr(c, k) == v for k, v in kw.items()]
+    return c.query.filter(c.trait == role, c.principal_id == principal_id,
+                          *more).one()
+
+
+@perm('grant-role')
+def delete_grant(grant):
+    db.session.delete(grant)
+    db.session.commit()
+
+
 def list_perms():
     return Permission.query.all()
 
@@ -106,5 +132,14 @@ def list_election_roles(election):
     return ElectionRole.query.filter(ElectionRole.election_id == election.id)
 
 
+def list_election_group_roles(group):
+    return ElectionGroupRole.query.filter(
+        ElectionGroupRole.group_id == group.id)
+
+
 def get_principal(principal_id):
     return Principal.query.get(principal_id)
+
+
+def get_role(role):
+    return RoleList.query.get(role)

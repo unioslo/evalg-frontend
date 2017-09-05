@@ -51,15 +51,13 @@ auth_bp.add_url_rule('/auth/perms/', view_func=PermsList.as_view('PermsList'),
 
 
 class RoleSchema(ma.Schema):
-    _links = ma.Hyperlinks({
-        'self': ma.URLFor('auth.RoleDetail', role='<role>'),
-        'collection': ma.URLFor('auth.RolesList'),
-    })
-
     role = fields.Str()
     role_type = fields.Str()
     name = fields.Nested(TranslatedString())
     perms = fields.List(fields.Nested(Perm()))
+    election_id = fields.UUID(allow_none=True)
+    group_id = fields.UUID(allow_none=True)
+    ou_id = fields.UUID(allow_none=True)
 
     class Meta:
         strict = False

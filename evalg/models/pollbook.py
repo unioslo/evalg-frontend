@@ -17,8 +17,9 @@ class PollBook(Base):
     election_id = db.Column(UUIDType,
                             db.ForeignKey('election.id'),
                             nullable=False)
-
-    election = db.relationship('Election', backref='pollbooks')
+    election = db.relationship('Election', back_populates='pollbooks',
+                               lazy='joined')
+    voters = db.relationship('Voter')
 
     def __repr__(self):
         return '<PollBook {id}>'.format(id=self.id)
