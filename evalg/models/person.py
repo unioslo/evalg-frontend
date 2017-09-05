@@ -21,7 +21,8 @@ class Person(Base):
     # National Identity Number
     nin = db.Column(db.UnicodeText, index=True, nullable=False)
     username = db.Column(db.UnicodeText)
-    principal = db.relationship('PersonPrincipal')
+    principals = db.relationship('PersonPrincipal')
+    external_ids = db.relationship('PersonExternalID', back_populates='person')
 
     def __repr__(self):
         return '<Person {id}>'.format(id=self.id)
@@ -47,7 +48,7 @@ class PersonExternalID(Base):
         db.ForeignKey('person_external_id_type.code'),
         primary_key=True)
 
-    person = db.relationship('Person', backref='external_ids')
+    person = db.relationship('Person', back_populates='external_ids')
     id_type = db.relationship('PersonExternalIDType')  # no b.ref needed
 
     def __repr__(self):

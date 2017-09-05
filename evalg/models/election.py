@@ -60,6 +60,7 @@ class ElectionGroup(AbstractElection):
     ou_id = db.Column(UUIDType, db.ForeignKey('organizational_unit.id'),
                       nullable=False)
     ou = db.relationship(OrganizationalUnit)
+    elections = db.relationship('Election')
     """ Organizational unit. """
 
     @hybrid_property
@@ -90,8 +91,10 @@ class Election(AbstractElection):
     mandate_period_start = db.Column(db.DateTime)
     mandate_period_end = db.Column(db.DateTime)
     group_id = db.Column(UUIDType, db.ForeignKey('election_group.id'))
-    group = db.relationship('ElectionGroup', backref='elections',
+    group = db.relationship('ElectionGroup', back_populates='elections',
                             lazy='joined')
+    lists = db.relationship('ElectionList')
+    pollbooks = db.relationship('PollBook')
 
     active = db.Column(db.Boolean, default=False)
     """ Whether election is active.
