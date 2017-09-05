@@ -7,11 +7,23 @@
           "dp_user_id": "my-dataporten-user-id",
           "email": "e@example.org",
           "feide_id": "my-feide-id",
-          "first_name": "My first name",
-          "last_name": "My last name",
+          "first_name": "Zaphod",
+          "last_name": "Beeblebrox",
           "last_update": "2017-01-01",
           "nin": "0101101234",
           "username": "My user name"
+      },
+      ,
+      {
+        "id": "ba8bd95a-86ea-4158-be62-7e9a29bddd5d",
+        "dp_user_id": "my-dataporten-user-id",
+        "email": "e@example.org",
+        "feide_id": "my-feide-id",
+        "first_name": "Arthur",
+        "last_name": "Dent",
+        "last_update": "2017-01-01",
+        "nin": "0101101235",
+        "username": "My user name"
       }
     ]
   }

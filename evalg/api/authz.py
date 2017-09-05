@@ -53,8 +53,8 @@ auth_bp.add_url_rule('/auth/perms/', view_func=PermsList.as_view('PermsList'),
 class RoleSchema(ma.Schema):
     role = fields.Str()
     role_type = fields.Str()
-    name = fields.Nested(TranslatedString())
-    perms = fields.List(fields.Nested(Perm()))
+    #name = fields.Nested(TranslatedString())
+    #perms = fields.List(fields.Nested(Perm()))
     election_id = fields.UUID(allow_none=True)
     group_id = fields.UUID(allow_none=True)
     ou_id = fields.UUID(allow_none=True)
@@ -67,6 +67,14 @@ class RoleSchema(ma.Schema):
 class PrincipalSchema(ma.Schema):
     principal_id = fields.Str()
     principal_type = fields.Str()
+    person_id = fields.Str(allow_none=True)
+    person = fields.Nested(PersonSchema(), allow_none=True)
+    group_id = fields.Str(allow_none=True)
+    # TODO: Add group entity when model is ready
+
+class ElectionGroupRoleSchema(RoleSchema):
+    principal_id = fields.Str()
+    principal = fields.Nested(PrincipalSchema())
 
 
 class PersonPrincipalSchema(PrincipalSchema):
