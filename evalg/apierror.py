@@ -82,7 +82,7 @@ def list_error_types():
     return list(sorted(ApiError.subtypes(), key=lambda e: e.error_type))
 
 
-signal_api_error = blinker.signal('pofh.api-error')
+signal_api_error = blinker.signal('evalg.api-error')
 """ ApiError signal.
 
 This signal is sent from the default error handler.
