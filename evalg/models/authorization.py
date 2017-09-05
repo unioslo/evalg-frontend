@@ -73,25 +73,6 @@ class RolePermission(Base):
                      primary_key=True)
 
 
-class RoleList(Base):
-    """ List of roles in system. """
-    role = db.Column(db.String, primary_key=True)
-    role_type = db.Column(db.String(50), nullable=False)
-    name = db.Column(JSONType, nullable=False)
-    perms = db.relationship('Permission',
-                            secondary=RolePermission.__table__,
-                            back_populates='roles')
-
-    __mapper_args__ = {
-        'polymorphic_identity': 'role',
-        'polymorphic_on': role_type
-    }
-
-    def makerole(self, **kw):
-        """Get a matching role."""
-        return Role(trait=self, **kw)
-
-
 class Role(Base):
     """ Roles granted to a principal. """
     grant_id = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
@@ -111,19 +92,24 @@ class Role(Base):
         return perm in (x.code for x in self.trait.perms)
 
 
-class OuRoleList(RoleList):
-    """ Roles based on OU. """
-    role = db.Column(db.String, db.ForeignKey('role_list.role'),
-                     primary_key=True)
+class RoleList(Base):
+    """ List of roles in system. """
+    role = db.Column(db.String, primary_key=True)
+    role_type = db.Column(db.String(50), nullable=False)
+    role_class = Role
+    name = db.Column(JSONType, nullable=False)
+    perms = db.relationship('Permission',
+                            secondary=RolePermission.__table__,
+                            back_populates='roles')
 
     __mapper_args__ = {
-        'polymorphic_identity': 'ou_role',
-        'inherit_condition': role == RoleList.role,
+        'polymorphic_identity': 'role',
+        'polymorphic_on': role_type
     }
 
     def makerole(self, **kw):
         """Get a matching role."""
-        return OuRole(trait=self, **kw)
+        return self.role_class(trait=self, **kw)
 
 
 class OuRole(Role):
@@ -152,18 +138,16 @@ class OuRole(Role):
         return super().supports(perm, **kw)
 
 
-class ElectionRoleList(RoleList):
-    """ Roles given on election (group). """
-    role = db.Column(String, db.ForeignKey('role_list.role'), primary_key=True)
+class OuRoleList(RoleList):
+    """ Roles based on OU. """
+    role = db.Column(db.String, db.ForeignKey('role_list.role'),
+                     primary_key=True)
+    role_class = OuRole
 
     __mapper_args__ = {
-        'polymorphic_identity': 'election_role',
+        'polymorphic_identity': 'ou_role',
         'inherit_condition': role == RoleList.role,
     }
-
-    def makerole(self, **kw):
-        """Get a matching role."""
-        return ElectionRole(trait=self, **kw)
 
 
 class ElectionRole(Role):
@@ -186,6 +170,17 @@ class ElectionRole(Role):
         if election_id != self.election_id:  # or election_id == election group
             return False
         return super().supports(perm, **kw)
+
+
+class ElectionRoleList(RoleList):
+    """ Roles given on election (group). """
+    role = db.Column(String, db.ForeignKey('role_list.role'), primary_key=True)
+    role_class = ElectionRole
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'election_role',
+        'inherit_condition': role == RoleList.role,
+    }
 
 
 class Permission(Base):
