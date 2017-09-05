@@ -102,7 +102,7 @@ class RoleList(Base):
                             back_populates='roles')
 
     __mapper_args__ = {
-        'polymorphic_identity': 'role',
+        'polymorphic_identity': 'role-list',
         'polymorphic_on': role_type
     }
 
@@ -146,7 +146,7 @@ class OuRoleList(RoleList):
     role_class = OuRole
 
     __mapper_args__ = {
-        'polymorphic_identity': 'ou-role',
+        'polymorphic_identity': 'ou-role-list',
         'inherit_condition': role == RoleList.role,
     }
 
@@ -183,7 +183,7 @@ class ElectionRoleList(RoleList):
     role_class = ElectionRole
 
     __mapper_args__ = {
-        'polymorphic_identity': 'election-role',
+        'polymorphic_identity': 'election-role-list',
         'inherit_condition': role == RoleList.role,
     }
 

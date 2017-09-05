@@ -3,14 +3,16 @@
 
 """ Authorization API. """
 
-from flask import Blueprint
+from flask import Blueprint,  make_response
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields
-from evalg import ma, docs
-from evalg.api import TranslatedString, get_principals, add_all_authz
+from evalg import ma, docs, db
+from evalg.api import TranslatedString, get_principals, add_all_authz, BaseSchema
+from evalg.models.person import Person
 from evalg.models.authorization import (RoleList, OuRoleList, ElectionRoleList,
-                                        Permission)
+                                        ElectionGroupRole, Permission,
+                                        PersonPrincipal)
 from ..authorization import (list_perms, list_roles, make_role, update_role,
                              delete_role, add_perm_to_role, get_principal,
                              remove_perm_from_role, get_principals_for)
@@ -50,19 +52,20 @@ auth_bp.add_url_rule('/auth/perms/', view_func=PermsList.as_view('PermsList'),
                      methods=['GET'])
 
 
-class RoleSchema(ma.Schema):
-    role = fields.Str()
-    role_type = fields.Str()
+class RoleSchema(BaseSchema):
+    grant_id = fields.UUID()
+    role = fields.Str(allow_none=True)
+    role_type = fields.Str(allow_none=True)
     #name = fields.Nested(TranslatedString())
     #perms = fields.List(fields.Nested(Perm()))
     election_id = fields.UUID(allow_none=True)
+    person_id = fields.UUID(allow_none=True)
     group_id = fields.UUID(allow_none=True)
     ou_id = fields.UUID(allow_none=True)
 
     class Meta:
         strict = False
-        dump_only = ('_links', )
-
+        dump_only = ('grant_id', 'role_type')
 
 class PrincipalSchema(ma.Schema):
     principal_id = fields.Str()
@@ -285,6 +288,50 @@ auth_bp.add_url_rule('/auth/principals/person/<uuid:principal_id>/',
                          'PersonPrincipalDetail'),
                      methods=['GET'])
 
+@doc(tags=['auth'])
+class ElectionGroupRoleCollection(MethodResource):
+    @dec(ElectionGroupRoleSchema(), summary="Create an ElectionGroupRole",
+         locations=None, args=RoleSchema())
+    def post(self, person_id, group_id, role):
+        principal = None
+        if person_id:
+            principals = Person.query.get(person_id).principals
+            for pr in principals:
+                if isinstance(pr, PersonPrincipal):
+                    principal = pr
+        if principal is None:
+            principal = PersonPrincipal(person_id=person_id)
+            db.session.add(principal)
+        el_grp_role = ElectionGroupRole(principal=principal,
+                                        role=role,
+                                        group_id=group_id)
+        db.session.add(el_grp_role)
+        db.session.commit()
+        return el_grp_role, 201
+
+auth_bp.add_url_rule('/electiongrouproles/',
+                     view_func=ElectionGroupRoleCollection.as_view(
+                         'ElectionGroupRoleCollection'
+                     ),
+                     methods=['POST'])
+
+@doc(tags=['auth'])
+class ElectionGroupRoleDetail(MethodResource):
+    """List of user's roles"""
+    @dec(RoleSchema(), summary="Delete ElectionGroupRole")
+    def delete(self, role_id):
+        # TODO: Move to business logic layer
+        role = ElectionGroupRole.query.get(role_id)
+        db.session.delete(role)
+        db.session.commit()
+        return make_response('', 204)
+
+
+auth_bp.add_url_rule('/electiongrouproles/<uuid:role_id>/',
+                     view_func=ElectionGroupRoleDetail.as_view(
+                         'ElectionGroupRoleDetail'),
+                     methods=['DELETE'])
+
 
 def init_app(app):
     app.register_blueprint(auth_bp)
@@ -294,5 +341,6 @@ def init_app(app):
     })
     for x in [PermsList, RolesList, RoleDetail, RolePermsList, UserRoles,
               UserRolesOu, UserRolesElection, PersonPrincipalDetail,
-              PersonPrincipalCollection]:
+              PersonPrincipalCollection, ElectionGroupRoleDetail,
+              ElectionGroupRoleCollection]:
         docs.register(x, endpoint=x.__name__, blueprint='auth')

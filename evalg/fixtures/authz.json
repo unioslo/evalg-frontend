@@ -397,7 +397,7 @@
     "records": [
       {
         "role": "admin",
-        "role_type": "ou_role",
+        "role_type": "ou-role",
         "principal_id": "59e41439-43f5-48ad-a825-b8b21c5896d7",
         "ou_id": "a184e25e-907c-4155-860f-79df898ad51c"
       }
@@ -408,7 +408,7 @@
     "records": [
       {
         "role": "election-admin",
-        "role_type": "election_role",
+        "role_type": "election-role",
         "principal_id": "072e4d7d-6e2a-4ece-b294-1900af547d95",
         "election_id": "af4bd61f-a93d-46d9-a7a3-625d13d8f3dd"
       }
@@ -425,7 +425,7 @@
       },
       {
         "role": "election-admin",
-        "role_type": "election_group_role",
+        "role_type": "election-group-role",
         "principal_id": "e3a36a08-5104-44e8-96df-3a5bce40a816",
         "group_id": "b5b71046-e191-43d4-9bb6-55a710895288"
       }
