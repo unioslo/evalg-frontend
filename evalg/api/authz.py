@@ -7,13 +7,10 @@ from flask import Blueprint,  make_response
 from flask_apispec.views import MethodResource
 from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields
-from evalg import ma, docs, db
-from evalg.api import TranslatedString, get_principals, add_all_authz, BaseSchema
-from evalg.models.person import Person
-from evalg.models.group import Group
+from evalg import ma, docs
+from evalg.api import get_principals, add_all_authz, BaseSchema
 from evalg.models.authorization import (RoleList, OuRoleList, ElectionRoleList,
-                                        ElectionGroupRole, Permission,
-                                        PersonPrincipal, GroupPrincipal)
+                                        Permission)
 from ..authorization import (list_perms, list_roles, make_role, update_role,
                              delete_role, add_perm_to_role, get_principal,
                              remove_perm_from_role, get_principals_for,
