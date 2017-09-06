@@ -17,11 +17,11 @@
     "records": [
       {
         "principal_id": "ee75b35b-b378-4d67-a04f-9fe4f3c3a236",
-        "group_id": "sysadmins"
+        "group_id": "d74e9652-a5e4-412b-9e9b-c41459e956bc"
       },
       {
         "principal_id": "59e41439-43f5-48ad-a825-b8b21c5896d7",
-        "group_id": "local-admins"
+        "group_id": "8c408673-27d5-410e-ba9d-b33471850477"
       }
     ]
   },

@@ -31,7 +31,6 @@ def perm(*permission):
 
         gun.is_protected = True
         return gun
-
     return fun
 
 
