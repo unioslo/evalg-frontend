@@ -107,18 +107,82 @@ def update_election(election, **fields):
     return election
 
 
-@eperm('publish-election')
-def publish_election(election, **fields):
-    """Publish an election."""
-    if election.published:
-        raise BadRequest(details='already-published')
-    if not election.start or not election.end:
-        raise BadRequest(details='missing-start-or-end')
-    if election.start > election.end:
-        raise BadRequest(details='start-must-be-before-end')
-    election.publish()
+@eperm('announce-election')
+def announce_group(group, **fields):
+    """Announce an election group."""
+    blockers = group_announcement_blockers(group)
+    if blockers:
+        raise BadRequest(details=blockers[0])
+    group.announce()
     db.session.commit()
-    return election
+    return group
+
+
+@eperm('announce-election')
+def unannounce_group(group, **fields):
+    """Unannounce an election group."""
+    group.unannounce()
+    db.session.commit()
+    return group
+
+
+def group_announcement_blockers(group):
+    """Check whether an election group can be announced."""
+    blockers = []
+    if group.announced:
+        blockers.append('already-announced')
+    for election in group.elections:
+        if election.active:
+            if missing_start_or_end(election):
+                blockers.append('missing-start-or-end')
+            if start_after_end(election):
+                blockers.append('start-must-be-before-end')
+    return blockers
+
+
+@eperm('publish-election')
+def publish_group(group, **fields):
+    """Publish an election group."""
+    blockers = group_publication_blockers(group)
+    if blockers:
+        raise BadRequest(details=blockers[0])
+    group.publish()
+    db.session.commit()
+    return group
+
+
+@eperm('publish-election')
+def unpublish_group(group, **fields):
+    """Unpublish an election group."""
+    group.unpublish()
+    db.session.commit()
+    return group
+
+
+def group_publication_blockers(group):
+    """Check whether an election group can be published."""
+    blockers = []
+    if group.published:
+        blockers.append('already-published')
+    if not group.public_key:
+        blockers.append('missing-key')
+    for election in group.elections:
+        if election.active:
+            if missing_start_or_end(election):
+                blockers.append('missing-start-or-end')
+            if start_after_end(election):
+                blockers.append('start-must-be-before-end')
+    return blockers
+
+
+def missing_start_or_end(election):
+    return not election.start or not election.end
+
+
+def start_after_end(election):
+    if missing_start_or_end(election):
+        return False
+    return election.start > election.end
 
 
 @eperm('change-election-metadata')

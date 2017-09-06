@@ -6,17 +6,11 @@ import uuid
 from datetime import datetime
 from evalg import db
 from evalg.models import Base
-from sqlalchemy.sql import func, case, and_
-from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy.sql import select, func, case, and_
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy_utils import UUIDType, URLType, JSONType
 from evalg.models.ou import OrganizationalUnit
 from flask import current_app
-
-
-class PublicKey(Base):
-    id = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
-    fingerprint = db.Column(db.Text)
 
 
 class AbstractElection(Base):
@@ -42,14 +36,6 @@ class AbstractElection(Base):
     meta = db.Column(JSONType)
     """ Template metadata """
 
-    @declared_attr
-    def public_key(self):
-        return db.relationship(PublicKey)
-
-    @declared_attr
-    def public_key_id(self):
-        return db.Column(UUIDType, db.ForeignKey('public_key.id'))
-
     @property
     def tz(self):
         return 'UTC'
@@ -63,13 +49,67 @@ class ElectionGroup(AbstractElection):
     elections = db.relationship('Election')
     """ Organizational unit. """
 
+    public_key = db.Column(db.Text)
+    """ Public election key """
+
+    announced_at = db.Column(db.DateTime)
+    """ Announced if set """
+
+    published_at = db.Column(db.DateTime)
+    """ Published if set """
+
+    cancelled_at = db.Column(db.DateTime)
+    """ Cancelled if set """
+
+    deleted_at = db.Column(db.DateTime)
+    """ Deleted if set """
+
+    def announce(self):
+        """ Mark as announced. """
+        self.announced_at = datetime.utcnow()
+
+    def unannounce(self):
+        """ Mark as unannounced. """
+        self.announced_at = None
+
+    @hybrid_property
+    def announced(self):
+        return self.announced_at is not None
+
+    def publish(self):
+        """ Mark as published. """
+        self.published_at = datetime.utcnow()
+
+    def unpublish(self):
+        """ Mark as unpublished. """
+        self.published_at = None
+
+    @hybrid_property
+    def published(self):
+        return self.published_at is not None
+
+    def cancel(self):
+        """ Mark as cancelled. """
+        self.cancelled_at = datetime.utcnow()
+
+    @hybrid_property
+    def cancelled(self):
+        return self.cancelled_at is not None
+
+    def delete(self):
+        """ Mark as deleted. """
+        self.deleted_at = datetime.utcnow()
+
+    @hybrid_property
+    def deleted(self):
+        return self.deleted_at is not None
+
     @hybrid_property
     def status(self):
-        statuses = db.session.query(Election.status).filter(Election.group == self).distinct().all()
-        statuses = list(map(lambda x: x.status, statuses))
-        if len(statuses) == 0:
+        statuses = set(list(map(lambda x: x.status, self.elections)))
+        if not statuses:
             return 'draft'
-        elif len(statuses) == 1:
+        if len(statuses) == 1:
             return statuses.pop()
         return 'multipleStatuses'
 
@@ -102,46 +142,45 @@ class Election(AbstractElection):
     But not all elections should be used. This can improve voter UI, by telling
     voter that their group does not have an active election. """
 
-    announced_at = db.Column(db.DateTime)
-    """ Announced if set """
+    @hybrid_property
+    def announced_at(self):
+        return self.group.announced_at
 
-    published_at = db.Column(db.DateTime)
-    """ Published if set """
-
-    cancelled_at = db.Column(db.DateTime)
-    """ Cancelled if set """
-
-    deleted_at = db.Column(db.DateTime)
-    """ Deleted if set """
-
-    def delete(self):
-        """ Mark as deleted. """
-        self.deleted_at = datetime.utcnow()
-
-    @property
-    def deleted(self):
-        return self.deleted_at is not None
-
-    def publish(self):
-        """ Mark as published. """
-        self.published_at = datetime.utcnow()
+    @announced_at.expression
+    def announced_at(cls):
+        return select([ElectionGroup.announced_at]).where(
+            cls.group_id == ElectionGroup.id).as_scalar()
 
     @hybrid_property
-    def published(self):
-        return self.published_at is not None
+    def published_at(self):
+        return self.group.published_at
+
+    @published_at.expression
+    def announced_at(cls):
+        return select([ElectionGroup.published_at]).where(
+            cls.group_id == ElectionGroup.id).as_scalar()
+
+    @hybrid_property
+    def cancelled_at(self):
+        return self.group.cancelled_at
+
+    @cancelled_at.expression
+    def cancelled_at(cls):
+        return select([ElectionGroup.cancelled_at]).where(
+            cls.group_id == ElectionGroup.id).as_scalar()
 
     @hybrid_property
     def status(self):
         """ draft → announced → published → ongoing/closed/cancelled """
-        if self.cancelled_at:
+        if self.group.cancelled_at:
             return 'cancelled'
-        if self.published_at:
+        if self.group.published_at:
             if self.end <= datetime.utcnow():
                 return 'closed'
-            if self.start > datetime.utcnow():
+            if self.start < datetime.utcnow():
                 return 'ongoing'
             return 'published'
-        if self.announced_at:
+        if self.group.announced_at:
             return 'announced'
         return 'draft'
 
