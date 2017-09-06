@@ -10,13 +10,17 @@ from marshmallow import fields
 from evalg import ma, docs, db
 from evalg.api import TranslatedString, get_principals, add_all_authz, BaseSchema
 from evalg.models.person import Person
+from evalg.models.group import Group
 from evalg.models.authorization import (RoleList, OuRoleList, ElectionRoleList,
                                         ElectionGroupRole, Permission,
-                                        PersonPrincipal)
+                                        PersonPrincipal, GroupPrincipal)
 from ..authorization import (list_perms, list_roles, make_role, update_role,
                              delete_role, add_perm_to_role, get_principal,
-                             remove_perm_from_role, get_principals_for)
+                             remove_perm_from_role, get_principals_for,
+                             make_election_group_role,
+                             delete_election_group_role)
 from .person import PersonSchema
+from .group import GroupSchema
 
 add_all_authz(globals())
 
@@ -60,6 +64,7 @@ class RoleSchema(BaseSchema):
     #perms = fields.List(fields.Nested(Perm()))
     election_id = fields.UUID(allow_none=True)
     person_id = fields.UUID(allow_none=True)
+    election_group_id = fields.UUID(allow_none=True)
     group_id = fields.UUID(allow_none=True)
     ou_id = fields.UUID(allow_none=True)
 
@@ -73,7 +78,7 @@ class PrincipalSchema(ma.Schema):
     person_id = fields.Str(allow_none=True)
     person = fields.Nested(PersonSchema(), allow_none=True)
     group_id = fields.Str(allow_none=True)
-    # TODO: Add group entity when model is ready
+    group = fields.Nested(GroupSchema(), allow_none=True)
 
 class ElectionGroupRoleSchema(RoleSchema):
     principal_id = fields.Str()
@@ -292,21 +297,11 @@ auth_bp.add_url_rule('/auth/principals/person/<uuid:principal_id>/',
 class ElectionGroupRoleCollection(MethodResource):
     @dec(ElectionGroupRoleSchema(), summary="Create an ElectionGroupRole",
          locations=None, args=RoleSchema())
-    def post(self, person_id, group_id, role):
-        principal = None
-        if person_id:
-            principals = Person.query.get(person_id).principals
-            for pr in principals:
-                if isinstance(pr, PersonPrincipal):
-                    principal = pr
-        if principal is None:
-            principal = PersonPrincipal(person_id=person_id)
-            db.session.add(principal)
-        el_grp_role = ElectionGroupRole(principal=principal,
-                                        role=role,
-                                        group_id=group_id)
-        db.session.add(el_grp_role)
-        db.session.commit()
+    def post(self, election_group_id, role, person_id=None, group_id=None):
+        el_grp_role = make_election_group_role(election_group_id,
+                                               role,
+                                               person_id,
+                                               group_id)
         return el_grp_role, 201
 
 auth_bp.add_url_rule('/electiongrouproles/',
@@ -320,10 +315,7 @@ class ElectionGroupRoleDetail(MethodResource):
     """List of user's roles"""
     @dec(RoleSchema(), summary="Delete ElectionGroupRole")
     def delete(self, role_id):
-        # TODO: Move to business logic layer
-        role = ElectionGroupRole.query.get(role_id)
-        db.session.delete(role)
-        db.session.commit()
+        delete_election_group_role(role_id)
         return make_response('', 204)
 
 

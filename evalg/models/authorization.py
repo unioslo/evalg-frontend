@@ -56,7 +56,8 @@ class GroupPrincipal(Principal):
     principal_id = Column(UUIDType, ForeignKey('principal.principal_id'),
                           default=uuid.uuid4,
                           primary_key=True)
-    group_id = Column(String, nullable=False)
+    group_id = Column(UUIDType, ForeignKey('group.id'), nullable=False)
+    group = db.relationship('Group', back_populates='principals')
 
     __mapper_args__ = {
         'polymorphic_identity': 'group-principal',

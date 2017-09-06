@@ -45,7 +45,7 @@ def search_person(filter):
     return Person.query.filter(func.lower(Person.first_name).like(f) |
                                func.lower(Person.last_name).like(f) |
                                func.lower(Person.username).like(f) |
-                               func.lower(Person.nin).like(f))
+                               func.lower(Person.nin).like(f)).all()
 
 @perm('change-person')
 def make_person(**args):

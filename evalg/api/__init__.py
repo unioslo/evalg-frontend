@@ -140,6 +140,7 @@ def init_app(app):
                    voter,
                    pollbook,
                    person,
+                   group,
                    authz)
     election.init_app(app)
     election_list.init_app(app)
@@ -149,4 +150,5 @@ def init_app(app):
     voter.init_app(app)
     pollbook.init_app(app)
     person.init_app(app)
+    group.init_app(app)
     authz.init_app(app)
