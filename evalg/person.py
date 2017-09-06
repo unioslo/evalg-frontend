@@ -5,7 +5,7 @@
 
 from functools import wraps
 from collections import defaultdict
-from sqlalchemy import func
+from sqlalchemy import func, or_
 from evalg import db
 from .models.person import Person, PersonExternalID
 from .api import NotFoundError
@@ -31,6 +31,7 @@ def perm(*permission):
 
         gun.is_protected = True
         return gun
+
     return fun
 
 
@@ -38,14 +39,19 @@ def perm(*permission):
 def list_persons(**kw):
     return Person.query.filter_by(**kw)
 
-def search_person(filter):
+
+def search_person(filter_string):
     """ Look for persons that match a filter-string on one of
     the relevant attributes"""
-    f = '%' + filter.lower() + '%'
-    return Person.query.filter(func.lower(Person.first_name).like(f) |
-                               func.lower(Person.last_name).like(f) |
-                               func.lower(Person.username).like(f) |
-                               func.lower(Person.nin).like(f))
+    filter_lc = filter_string.lower()
+    split_filters = list(map(lambda f: '%' + f + '%', filter_lc.split(' ')))
+    split_filters.append('%' + filter_lc + '%')
+    return Person.query.filter(
+        or_(*[func.lower(Person.first_name).like(f) for f in split_filters]) |
+        or_(*[func.lower(Person.last_name).like(f) for f in split_filters]) |
+        func.lower(Person.username).like(filter_lc) |
+        func.lower(Person.nin).like(filter_lc)).all()
+
 
 @perm('change-person')
 def make_person(**args):
