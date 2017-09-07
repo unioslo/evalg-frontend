@@ -8,10 +8,14 @@ from marshmallow import fields
 from evalg import db, docs
 from evalg.api import BaseSchema, TranslatedString, add_all_authz, BadRequest
 from evalg.api.authz import ElectionGroupRoleSchema
-from ..metadata import (get_group, update_election, publish_election,
+from ..metadata import (get_group, update_election,
+                        announce_group, unannounce_group,
+                        publish_group, unpublish_group,
                         update_group, get_election, delete_group,
                         delete_election, list_groups, list_elections,
-                        make_group, make_election)
+                        make_group, make_election,
+                        group_announcement_blockers,
+                        group_publication_blockers)
 from ..authorization import (list_election_roles, get_role, grant_role,
                              get_grant, delete_grant, list_election_group_roles)
 from ..models.authorization import ElectionRoleList
@@ -27,7 +31,6 @@ class AbstractElectionSchema(BaseSchema):
     name = fields.Nested(TranslatedString())
     description = fields.Nested(TranslatedString(), allow_none=True)
     mandate_type = fields.Nested(TranslatedString(), allow_none=True)
-    public_key = fields.UUID(allow_none=True, attribute='public_key_id')
     meta = fields.Dict(allow_none=True)
     type = fields.Str(allow_none=True)
     status = fields.Str()
@@ -38,9 +41,19 @@ class ElectionGroupSchema(AbstractElectionSchema):
     elections = fields.List(fields.UUID(attribute='id'),
                             description="UUIDs of associated elections")
     roles = fields.Nested(ElectionGroupRoleSchema(), many=True)
+    public_key = fields.Str(description="Public election key")
+    announced = fields.Boolean(description="Marked as announced")
+    published = fields.Boolean(description="Marked as published")
+    announcement_blockers = fields.Function(
+        serialize=group_announcement_blockers)
+    publication_blockers = fields.Function(
+        serialize=group_publication_blockers)
+
     class Meta:
         strict = True
-        dump_only = ('id', 'elections', 'tz', 'status', 'roles')
+        dump_only = ('id', 'elections', 'tz', 'status', 'roles',
+                     'announced', 'published',
+                     'announcement_blockers', 'publication_blockers')
 
 
 class ElectionSchema(AbstractElectionSchema):
@@ -128,6 +141,42 @@ class ElectionGroupDetail(MethodResource):
         return make_response('', 204)
 
 
+@doc(tags=['electiongroup'])
+class ElectionGroupAnnounce(MethodResource):
+    """ Resource for announcing an election. """
+    @marshal_with(eg_schema)
+    @doc(summary='Announce an election group')
+    def post(self, group_id):
+        group = get_group(group_id)
+        announce_group(group)
+        return group
+
+    @marshal_with(eg_schema)
+    @doc(summary='Unannounce an election group')
+    def delete(self, group_id):
+        group = get_group(group_id)
+        unannounce_group(group)
+        return group
+
+
+@doc(tags=['electiongroup'])
+class ElectionGroupPublish(MethodResource):
+    """ Resource for publishing an election. """
+    @marshal_with(eg_schema)
+    @doc(summary='Publish an election group')
+    def post(self, group_id):
+        group = get_group(group_id)
+        publish_group(group)
+        return group
+
+    @marshal_with(eg_schema)
+    @doc(summary='Unpublish an election group')
+    def delete(self, group_id):
+        group = get_group(group_id)
+        unpublish_group(group)
+        return group
+
+
 @doc(tags=['election'])
 class ElectionGroupElectionCollection(MethodResource):
     """ Resource for getting elections associated with an election group. """
@@ -196,9 +245,16 @@ bp.add_url_rule('/electiongroups/<uuid:group_id>',
                 methods=['GET', 'PATCH', 'DELETE'])
 bp.add_url_rule('/electiongroups/<uuid:group_id>/elections/',
                 view_func=ElectionGroupElectionCollection.as_view(
-                    'ElectionGroupElectionCollection'
-                ),
+                    'ElectionGroupElectionCollection'),
                 methods=['GET'])
+bp.add_url_rule('/electiongroups/<uuid:group_id>/announce',
+                view_func=ElectionGroupAnnounce.as_view(
+                    'ElectionGroupAnnounce'),
+                methods=['POST', 'DELETE'])
+bp.add_url_rule('/electiongroups/<uuid:group_id>/publish',
+                view_func=ElectionGroupPublish.as_view(
+                    'ElectionGroupPublish'),
+                methods=['POST', 'DELETE'])
 bp.add_url_rule('/electiongroups/<uuid:group_id>/permissions/',
                 view_func=GroupRoleCollection.as_view('GroupRoleCollection'),
                 methods=['GET', 'PATCH'])
@@ -249,17 +305,6 @@ class ElectionDetail(MethodResource):
         election = get_election(election_id)
         delete_election(election)
         return make_response('', 204)
-
-
-@doc(tags=['election'])
-class ElectionPublish(MethodResource):
-    """ Resource for publishing an election. """
-    @marshal_with(e_schema)
-    @doc(summary='Publish an election')
-    def post(self, election_id):
-        election = get_election(election_id)
-        publish_election(election)
-        return election
 
 
 @doc(tags=['election'])
@@ -342,9 +387,6 @@ bp.add_url_rule('/elections/<uuid:election_id>/pollbooks/',
                 view_func=ElectionPollbooks.as_view(
                     'ElectionPollbooks'),
                 methods=['GET'])
-bp.add_url_rule('/elections/<uuid:election_id>/publish',
-                view_func=ElectionPublish.as_view('ElectionPublish'),
-                methods=['POST', ])
 bp.add_url_rule('/elections/<uuid:election_id>/lists/',
                 view_func=ElectionListCollection.as_view(
                     'ElectionListCollection'),
@@ -381,8 +423,11 @@ def init_app(app):
     docs.register(ElectionDetail,
                   endpoint='ElectionDetail',
                   blueprint='elections')
-    docs.register(ElectionPublish,
-                  endpoint='ElectionPublish',
+    docs.register(ElectionGroupAnnounce,
+                  endpoint='ElectionGroupAnnounce',
+                  blueprint='elections')
+    docs.register(ElectionGroupPublish,
+                  endpoint='ElectionGroupPublish',
                   blueprint='elections')
     docs.register(ElectionListCollection,
                   endpoint="ElectionListCollection",

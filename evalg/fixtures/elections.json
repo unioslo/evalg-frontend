@@ -1,14 +1,5 @@
 [
   {
-    "model": "evalg.models.election.PublicKey",
-    "records": [
-      {
-        "id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d",
-        "fingerprint": "My fingerprint"
-      }
-    ]
-  },
-  {
     "model": "evalg.models.election.ElectionGroup",
     "records": [
       {
@@ -24,8 +15,7 @@
           "nn": "Dette er ei beskriving"
         },
         "type": "list",
-        "ou_id": "a184e25e-907c-4155-860f-79df898ad51c",
-        "public_key_id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d"
+        "ou_id": "a184e25e-907c-4155-860f-79df898ad51c"
       },
       {
         "id": "2dc010ac-1bf7-4b93-92c8-72fd4e161ed8",
@@ -40,8 +30,7 @@
           "nn": "Dette er ei beskriving. Lorem ipsum."
         },
         "type": "preferential",
-        "ou_id": "3fc2aa46-5ea1-45b2-9ad1-9296210e4f51",
-        "public_key_id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d"
+        "ou_id": "3fc2aa46-5ea1-45b2-9ad1-9296210e4f51"
       }
     ]
   },
@@ -69,7 +58,6 @@
         "mandate_type": {
           "en": "President"
         },
-        "public_key_id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d",
         "group_id": "b5b71046-e191-43d4-9bb6-55a710895288"
       },
       {
@@ -93,7 +81,6 @@
         "mandate_type": {
           "en": "President"
         },
-        "public_key_id": "bccb7eae-3c0f-4e69-b8c1-a0d4c73e3d1d",
         "group_id": "b5b71046-e191-43d4-9bb6-55a710895288"
       },
       {

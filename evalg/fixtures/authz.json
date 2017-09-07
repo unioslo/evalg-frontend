@@ -80,6 +80,18 @@
         "doc": "can approve created election"
       },
       {
+        "code": "announce-election",
+        "doc": "can announce an election"
+      },
+      {
+        "code": "publish-election",
+        "doc": "can publish an election"
+      },
+      {
+        "code": "cancel-election",
+        "doc": "can cancel an election"
+      },
+      {
         "code": "view-election",
         "doc": "show properties about given election?"
       },
@@ -144,14 +156,6 @@
         "doc": "can remove voters"
       },
       {
-        "code": "make-public",
-        "doc": "can change status to public"
-      },
-      {
-        "code": "make-closed",
-        "doc": "can change status to closed"
-      },
-      {
         "code": "make-appeal",
         "doc": "can change status to appeal"
       },
@@ -186,6 +190,18 @@
       },
       {
         "code": "approve-election",
+        "role": "sysadmin"
+      },
+      {
+        "code": "announce-election",
+        "role": "sysadmin"
+      },
+      {
+        "code": "publish-election",
+        "role": "sysadmin"
+      },
+      {
+        "code": "cancel-election",
         "role": "sysadmin"
       },
       {
@@ -253,14 +269,6 @@
         "role": "sysadmin"
       },
       {
-        "code": "make-public",
-        "role": "sysadmin"
-      },
-      {
-        "code": "make-closed",
-        "role": "sysadmin"
-      },
-      {
         "code": "make-appeal",
         "role": "sysadmin"
       },
@@ -289,6 +297,18 @@
         "role": "admin"
       },
       {
+        "code": "announce-election",
+        "role": "admin"
+      },
+      {
+        "code": "publish-election",
+        "role": "admin"
+      },
+      {
+        "code": "cancel-election",
+        "role": "admin"
+      },
+      {
         "code": "view-election",
         "role": "admin"
       },
@@ -311,6 +331,18 @@
       {
         "code": "view-election",
         "role": "election-admin"
+      },
+      {
+          "code": "announce-election",
+          "role": "election-admin"
+      },
+      {
+          "code": "publish-election",
+          "role": "election-admin"
+      },
+      {
+          "code": "cancel-election",
+          "role": "election-admin"
       },
       {
         "code": "test-election",
@@ -362,14 +394,6 @@
       },
       {
         "code": "remove-voters",
-        "role": "election-admin"
-      },
-      {
-        "code": "make-public",
-        "role": "election-admin"
-      },
-      {
-        "code": "make-closed",
         "role": "election-admin"
       },
       {
