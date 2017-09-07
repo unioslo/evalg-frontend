@@ -42,8 +42,8 @@ class ElectionGroupSchema(AbstractElectionSchema):
                             description="UUIDs of associated elections")
     roles = fields.Nested(ElectionGroupRoleSchema(), many=True)
     public_key = fields.Str(description="Public election key")
-    announced = fields.Boolean(description="Marked as announced?")
-    published = fields.Boolean(description="Marked as published?")
+    announced = fields.Boolean(description="Marked as announced")
+    published = fields.Boolean(description="Marked as published")
     announcement_blockers = fields.Function(
         serialize=group_announcement_blockers)
     publication_blockers = fields.Function(
