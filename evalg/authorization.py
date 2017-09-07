@@ -7,10 +7,14 @@
 from functools import wraps
 from evalg import db
 from .models.ou import OrganizationalUnit
+from .models.group import Group
+from .models.person import Person
 from .models.authorization import (Permission,
                                    ElectionRole,
                                    ElectionGroupRole,
                                    Principal,
+                                   PersonPrincipal,
+                                   GroupPrincipal,
                                    RoleList,
                                    get_principals_for)
 from .auth import check_perms, all_permissions
@@ -137,6 +141,34 @@ def list_election_group_roles(group):
     return ElectionGroupRole.query.filter(
         ElectionGroupRole.group_id == group.id)
 
+def make_election_group_role(election_group_id, role,
+                             person_id=None, group_id=None):
+    principal = None
+    if person_id is not None:
+        principals = Person.query.get(person_id).principals
+        for pr in principals:
+            if isinstance(pr, PersonPrincipal):
+                principal = pr
+        if principal is None:
+            principal = PersonPrincipal(person_id=person_id)
+
+    elif group_id is not None:
+        principals = Group.query.get(group_id).principals
+        for pr in principals:
+            if isinstance(pr, GroupPrincipal):
+                principal = pr
+        if principal is None:
+            principal = GroupPrincipal(group_id=group_id)
+    el_grp_role = ElectionGroupRole(principal=principal,
+                                    role=role,
+                                    group_id=election_group_id)
+    db.session.add(el_grp_role)
+    db.session.commit()
+
+def delete_election_group_role(role_id):
+    role = ElectionGroupRole.query.get(role_id)
+    db.session.delete(role)
+    db.session.commit()
 
 def get_principal(principal_id):
     return Principal.query.get(principal_id)

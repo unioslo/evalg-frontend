@@ -10,7 +10,7 @@ from marshmallow import fields
 from evalg import db, docs
 from evalg.api import BaseSchema, add_all_authz
 from evalg.person import (list_persons, make_person, get_person, update_person,
-                          delete_person)
+                          delete_person, search_person)
 
 bp = Blueprint('persons', __name__)
 add_all_authz(globals())
@@ -85,14 +85,11 @@ bp.add_url_rule('/persons/<uuid:person_id>',
 
 @doc(tags=['person'])
 class PersonSearch(MethodResource):
-    @use_kwargs({'nin': fields.Str(),
-                 'first_name': fields.Str(),
-                 'last_name': fields.Str(),
-                 'username': fields.Str()}, locations=['query'])
+    @use_kwargs({'filter': fields.Str()}, locations=['query'])
     @marshal_with(PersonSchema(many=True))
     @doc(summary='Search for persons')
-    def get(self, **kw):
-        return list_persons(**kw)
+    def get(self, filter):
+        return search_person(filter)
 
 
 bp.add_url_rule('/persons/search/',
@@ -104,7 +101,7 @@ def init_app(app):
     app.register_blueprint(bp)
     docs.spec.add_tag({
         'name': 'person',
-        'decription': 'Operations on persons'})
+        'description': 'Operations on persons'})
     docs.register(PersonCollection,
                   endpoint='PersonCollection',
                   blueprint='persons')

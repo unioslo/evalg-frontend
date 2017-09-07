@@ -56,7 +56,8 @@ class GroupPrincipal(Principal):
     principal_id = Column(UUIDType, ForeignKey('principal.principal_id'),
                           default=uuid.uuid4,
                           primary_key=True)
-    group_id = Column(String, nullable=False)
+    group_id = Column(UUIDType, ForeignKey('group.id'), nullable=False)
+    group = db.relationship('Group', back_populates='principals')
 
     __mapper_args__ = {
         'polymorphic_identity': 'group-principal',
@@ -102,7 +103,7 @@ class RoleList(Base):
                             back_populates='roles')
 
     __mapper_args__ = {
-        'polymorphic_identity': 'role',
+        'polymorphic_identity': 'role-list',
         'polymorphic_on': role_type
     }
 
@@ -146,7 +147,7 @@ class OuRoleList(RoleList):
     role_class = OuRole
 
     __mapper_args__ = {
-        'polymorphic_identity': 'ou-role',
+        'polymorphic_identity': 'ou-role-list',
         'inherit_condition': role == RoleList.role,
     }
 
@@ -183,7 +184,7 @@ class ElectionRoleList(RoleList):
     role_class = ElectionRole
 
     __mapper_args__ = {
-        'polymorphic_identity': 'election-role',
+        'polymorphic_identity': 'election-role-list',
         'inherit_condition': role == RoleList.role,
     }
 

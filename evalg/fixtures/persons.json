@@ -7,11 +7,66 @@
           "dp_user_id": "my-dataporten-user-id",
           "email": "e@example.org",
           "feide_id": "my-feide-id",
-          "first_name": "My first name",
-          "last_name": "My last name",
+          "first_name": "Zaphod",
+          "last_name": "Beeblebrox",
           "last_update": "2017-01-01",
           "nin": "0101101234",
-          "username": "My user name"
+          "username": "zaphod"
+      },
+      {
+        "id": "ba8bd95a-86ea-4158-be62-7e9a29bddd5d",
+        "dp_user_id": "my-dataporten-user-id",
+        "email": "e@example.org",
+        "feide_id": "my-feide-id",
+        "first_name": "Arthur",
+        "last_name": "Dent",
+        "last_update": "2017-01-01",
+        "nin": "0101101235",
+        "username": "arthur"
+      },
+      {
+        "id": "d8b77f79-452f-4e24-98ce-e361bb5dfd16",
+        "dp_user_id": "my-dataporten-user-id",
+        "email": "e@example.org",
+        "feide_id": "my-feide-id",
+        "first_name": "Ford",
+        "last_name": "Prefect",
+        "last_update": "2017-01-01",
+        "nin": "0101101236",
+        "username": "ford"
+      },
+      {
+        "id": "85a36970-24b2-440f-94c2-b1b6729260ab",
+        "dp_user_id": "my-dataporten-user-id",
+        "email": "e@example.org",
+        "feide_id": "my-feide-id",
+        "first_name": "Deep",
+        "last_name": "Thought",
+        "last_update": "2017-01-01",
+        "nin": "0101101237",
+        "username": "deep"
+      },
+      {
+        "id": "78936fb7-ca62-4341-a9a2-535d47435026",
+        "dp_user_id": "my-dataporten-user-id",
+        "email": "e@example.org",
+        "feide_id": "my-feide-id",
+        "first_name": "Marvin",
+        "last_name": "The Paranoid Android",
+        "last_update": "2017-01-01",
+        "nin": "0101101238",
+        "username": "marvin"
+      },
+      {
+        "id": "dc8670dc-b57c-40fd-8084-cdb3146bcb0f",
+        "dp_user_id": "my-dataporten-user-id",
+        "email": "e@example.org",
+        "feide_id": "my-feide-id",
+        "first_name": "Elvis",
+        "last_name": "Presley",
+        "last_update": "2017-01-01",
+        "nin": "0101101239",
+        "username": "elvis"
       }
     ]
   }

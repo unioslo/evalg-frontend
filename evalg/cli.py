@@ -53,8 +53,12 @@ def shell_context():
         'ElectionGroup': models.election.ElectionGroup,
         'ElectionList': models.election_list.ElectionList,
         'ElectionRole': models.authorization.ElectionRole,
+        'ElectionGroupRole': models.authorization.ElectionGroupRole,
+        'Group': models.group.Group,
         'Person': models.person.Person,
         'Principal': models.authorization.Principal,
+        'PersonPrincipal': models.authorization.PersonPrincipal,
+        'GroupPrincipal': models.authorization.GroupPrincipal,
         'Role': models.authorization.Role,
         'OU': models.election.OrganizationalUnit,
         'wipe_db': wipe_db

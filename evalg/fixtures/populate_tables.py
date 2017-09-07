@@ -15,6 +15,7 @@ class Populator(FixturesMixin):
         'candidates.json',
         'pollbooks.json',
         'persons.json',
+        'groups.json',
         'voters.json',
         'authz.json',
     ]

@@ -1,419 +1,419 @@
 [
-    {
-        "model": "evalg.models.authorization.PersonPrincipal",
-        "records": [
-            {
-                "principal_id": "072e4d7d-6e2a-4ece-b294-1900af547d95",
-                "person_id": "98447aeb-81d7-4c39-b070-335087765e3c"
-            }
-        ]
-    },
-    {
-        "model": "evalg.models.authorization.GroupPrincipal",
-        "records": [
-            {
-                "principal_id": "ee75b35b-b378-4d67-a04f-9fe4f3c3a236",
-                "group_id": "sysadmins"
-            },
-            {
-                "principal_id": "59e41439-43f5-48ad-a825-b8b21c5896d7",
-                "group_id": "local-admins"
-            }
-        ]
-    },
-    {
-        "model": "evalg.models.authorization.RoleList",
-        "records": [
-            {
-                "role": "sysadmin",
-                "name": {
-                    "en": "System administrator (all privileges)",
-                    "nb": "Systemadministrator (alle tilganger)",
-                    "nn": "Systemadministrator (alle tilgongar)"
-                }
-            }
-        ]
-    },
-    {
-        "model": "evalg.models.authorization.OuRoleList",
-        "records": [
-            {
-                "role": "admin",
-                "name": {
-                    "en": "Local administrator",
-                    "nb": "Lokal administrator",
-                    "nn": "Lokal administrator"
-                }
-            }
-        ]
-    },
-    {
-        "model": "evalg.models.authorization.ElectionRoleList",
-        "records": [
-            {
-                "role": "election-admin",
-                "name": {
-                    "en": "Election admin",
-                    "nb": "Valgadministrator",
-                    "nn": "Valadministrator"
-                }
-            }
-        ]
-    },
-    {
-        "model": "evalg.models.authorization.Permission",
-        "records": [
-            {
-                "code": "motd",
-                "doc": "can set or delete system motd"
-            },
-            {
-                "code": "create-election",
-                "doc": "can create a new election at OU"
-            },
-            {
-                "code": "approve-election",
-                "doc": "can approve created election"
-            },
-            {
-                "code": "view-election",
-                "doc": "show properties about given election?"
-            },
-            {
-                "code": "test-election",
-                "doc": "can run test/demo of voting process"
-            },
-            {
-                "code": "count-election",
-                "doc": "can start counting election"
-            },
-            {
-                "code": "change-election-start",
-                "doc": "can change start time for election"
-            },
-            {
-                "code": "change-election-end",
-                "doc": "can change end time for election"
-            },
-            {
-                "code": "change-election-metadata",
-                "doc": "can change metadata for election"
-            },
-            {
-                "code": "change-election-info",
-                "doc": "can change info (i.e. info for voter) for election"
-            },
-            {
-                "code": "super-change-settings",
-                "doc": "can force change metadata"
-            },
-            {
-                "code": "grant-role",
-                "doc": "can grant people roles"
-            },
-            {
-                "code": "change-candidates",
-                "doc": "can add, remove or change candidate info"
-            },
-            {
-                "code": "upload-voters",
-                "doc": "can add voters from file"
-            },
-            {
-                "code": "add-voters",
-                "doc": "can add voter manually"
-            },
-            {
-                "code": "search-voters",
-                "doc": "can see list of voters"
-            },
-            {
-                "code": "view-votes",
-                "doc": "can see who submitted votes"
-            },
-            {
-                "code": "view-non-registered-voters",
-                "doc": "can see votes submitted from unregistered voter"
-            },
-            {
-                "code": "remove-voters",
-                "doc": "can remove voters"
-            },
-            {
-                "code": "make-public",
-                "doc": "can change status to public"
-            },
-            {
-                "code": "make-closed",
-                "doc": "can change status to closed"
-            },
-            {
-                "code": "make-appeal",
-                "doc": "can change status to appeal"
-            },
-            {
-                "code": "vote-for",
-                "doc": "can submit a vote on someone's behalf"
-            },
-            {
-                "code": "approve-vote-for",
-                "doc": "can approve vote submitted on behalf"
-            },
-            {
-                "code": "change-person",
-                "doc": "can administrate persons"
-            },
-            {
-                "code": "change-ou",
-                "doc": "can modify organizational units"
-            }
-        ]
-    },
-    {
-        "model": "evalg.models.authorization.RolePermission",
-        "records": [
-            {
-                "code": "motd",
-                "role": "sysadmin"
-            },
-            {
-                "code": "create-election",
-                "role": "sysadmin"
-            },
-            {
-                "code": "approve-election",
-                "role": "sysadmin"
-            },
-            {
-                "code": "view-election",
-                "role": "sysadmin"
-            },
-            {
-                "code": "test-election",
-                "role": "sysadmin"
-            },
-            {
-                "code": "count-election",
-                "role": "sysadmin"
-            },
-            {
-                "code": "change-election-start",
-                "role": "sysadmin"
-            },
-            {
-                "code": "change-election-end",
-                "role": "sysadmin"
-            },
-            {
-                "code": "change-election-metadata",
-                "role": "sysadmin"
-            },
-            {
-                "code": "change-election-info",
-                "role": "sysadmin"
-            },
-            {
-                "code": "super-change-settings",
-                "role": "sysadmin"
-            },
-            {
-                "code": "grant-role",
-                "role": "sysadmin"
-            },
-            {
-                "code": "change-candidates",
-                "role": "sysadmin"
-            },
-            {
-                "code": "upload-voters",
-                "role": "sysadmin"
-            },
-            {
-                "code": "add-voters",
-                "role": "sysadmin"
-            },
-            {
-                "code": "search-voters",
-                "role": "sysadmin"
-            },
-            {
-                "code": "view-votes",
-                "role": "sysadmin"
-            },
-            {
-                "code": "view-non-registered-voters",
-                "role": "sysadmin"
-            },
-            {
-                "code": "remove-voters",
-                "role": "sysadmin"
-            },
-            {
-                "code": "make-public",
-                "role": "sysadmin"
-            },
-            {
-                "code": "make-closed",
-                "role": "sysadmin"
-            },
-            {
-                "code": "make-appeal",
-                "role": "sysadmin"
-            },
-            {
-                "code": "vote-for",
-                "role": "sysadmin"
-            },
-            {
-                "code": "approve-vote-for",
-                "role": "sysadmin"
-            },
-            {
-                "code": "change-person",
-                "role": "sysadmin"
-            },
-            {
-                "code": "change-ou",
-                "role": "sysadmin"
-            },
-
-
-            {
-                "code": "create-election",
-                "role": "admin"
-            },
-            {
-                "code": "approve-election",
-                "role": "admin"
-            },
-            {
-                "code": "view-election",
-                "role": "admin"
-            },
-            {
-                "code": "grant-role",
-                "role": "admin"
-            },
-            {
-                "code": "upload-voters",
-                "role": "admin"
-            },
-            {
-                "code": "search-voters",
-                "role": "admin"
-            },
-            {
-                "code": "change-person",
-                "role": "admin"
-            },
-
-
-            {
-                "code": "view-election",
-                "role": "election-admin"
-            },
-            {
-                "code": "test-election",
-                "role": "election-admin"
-            },
-            {
-                "code": "count-election",
-                "role": "election-admin"
-            },
-            {
-                "code": "change-election-start",
-                "role": "election-admin"
-            },
-            {
-                "code": "change-election-end",
-                "role": "election-admin"
-            },
-            {
-                "code": "change-election-metadata",
-                "role": "election-admin"
-            },
-            {
-                "code": "change-election-info",
-                "role": "election-admin"
-            },
-            {
-                "code": "change-candidates",
-                "role": "election-admin"
-            },
-            {
-                "code": "upload-voters",
-                "role": "election-admin"
-            },
-            {
-                "code": "add-voters",
-                "role": "election-admin"
-            },
-            {
-                "code": "search-voters",
-                "role": "election-admin"
-            },
-            {
-                "code": "view-votes",
-                "role": "election-admin"
-            },
-            {
-                "code": "view-non-registered-voters",
-                "role": "election-admin"
-            },
-            {
-                "code": "remove-voters",
-                "role": "election-admin"
-            },
-            {
-                "code": "make-public",
-                "role": "election-admin"
-            },
-            {
-                "code": "make-closed",
-                "role": "election-admin"
-            },
-            {
-                "code": "vote-for",
-                "role": "election-admin"
-            },
-            {
-                "code": "approve-vote-for",
-                "role": "election-admin"
-            }
-        ]
-    },
-    {
-        "model": "evalg.models.authorization.Role",
-        "records": [
-            {
-                "role": "sysadmin",
-                "role_type": "role",
-                "principal_id": "ee75b35b-b378-4d67-a04f-9fe4f3c3a236"
-            }
-        ]
-    },
-    {
-        "model": "evalg.models.authorization.OuRole",
-        "records": [
-            {
-                "role": "admin",
-                "role_type": "ou-role",
-                "principal_id": "59e41439-43f5-48ad-a825-b8b21c5896d7",
-                "ou_id": "a184e25e-907c-4155-860f-79df898ad51c"
-            }
-        ]
-    },
-    {
-        "model": "evalg.models.authorization.ElectionRole",
-        "records": [
-            {
-                "role": "election-admin",
-                "role_type": "election-role",
-                "principal_id": "072e4d7d-6e2a-4ece-b294-1900af547d95",
-                "election_id": "af4bd61f-a93d-46d9-a7a3-625d13d8f3dd"
-            }
-        ]
-    },
+  {
+    "model": "evalg.models.authorization.PersonPrincipal",
+    "records": [
+      {
+        "principal_id": "072e4d7d-6e2a-4ece-b294-1900af547d95",
+        "person_id": "98447aeb-81d7-4c39-b070-335087765e3c"
+      },
+      {
+        "principal_id": "e3a36a08-5104-44e8-96df-3a5bce40a816",
+        "person_id": "ba8bd95a-86ea-4158-be62-7e9a29bddd5d"
+      }
+    ]
+  },
+  {
+    "model": "evalg.models.authorization.GroupPrincipal",
+    "records": [
+      {
+        "principal_id": "ee75b35b-b378-4d67-a04f-9fe4f3c3a236",
+        "group_id": "d74e9652-a5e4-412b-9e9b-c41459e956bc"
+      },
+      {
+        "principal_id": "59e41439-43f5-48ad-a825-b8b21c5896d7",
+        "group_id": "8c408673-27d5-410e-ba9d-b33471850477"
+      }
+    ]
+  },
+  {
+    "model": "evalg.models.authorization.RoleList",
+    "records": [
+      {
+        "role": "sysadmin",
+        "name": {
+          "en": "System administrator (all privileges)",
+          "nb": "Systemadministrator (alle tilganger)",
+          "nn": "Systemadministrator (alle tilgongar)"
+        }
+      }
+    ]
+  },
+  {
+    "model": "evalg.models.authorization.OuRoleList",
+    "records": [
+      {
+        "role": "admin",
+        "name": {
+          "en": "Local administrator",
+          "nb": "Lokal administrator",
+          "nn": "Lokal administrator"
+        }
+      }
+    ]
+  },
+  {
+    "model": "evalg.models.authorization.ElectionRoleList",
+    "records": [
+      {
+        "role": "election-admin",
+        "name": {
+          "en": "Election admin",
+          "nb": "Valgadministrator",
+          "nn": "Valadministrator"
+        }
+      }
+    ]
+  },
+  {
+    "model": "evalg.models.authorization.Permission",
+    "records": [
+      {
+        "code": "motd",
+        "doc": "can set or delete system motd"
+      },
+      {
+        "code": "create-election",
+        "doc": "can create a new election at OU"
+      },
+      {
+        "code": "approve-election",
+        "doc": "can approve created election"
+      },
+      {
+        "code": "view-election",
+        "doc": "show properties about given election?"
+      },
+      {
+        "code": "test-election",
+        "doc": "can run test/demo of voting process"
+      },
+      {
+        "code": "count-election",
+        "doc": "can start counting election"
+      },
+      {
+        "code": "change-election-start",
+        "doc": "can change start time for election"
+      },
+      {
+        "code": "change-election-end",
+        "doc": "can change end time for election"
+      },
+      {
+        "code": "change-election-metadata",
+        "doc": "can change metadata for election"
+      },
+      {
+        "code": "change-election-info",
+        "doc": "can change info (i.e. info for voter) for election"
+      },
+      {
+        "code": "super-change-settings",
+        "doc": "can force change metadata"
+      },
+      {
+        "code": "grant-role",
+        "doc": "can grant people roles"
+      },
+      {
+        "code": "change-candidates",
+        "doc": "can add, remove or change candidate info"
+      },
+      {
+        "code": "upload-voters",
+        "doc": "can add voters from file"
+      },
+      {
+        "code": "add-voters",
+        "doc": "can add voter manually"
+      },
+      {
+        "code": "search-voters",
+        "doc": "can see list of voters"
+      },
+      {
+        "code": "view-votes",
+        "doc": "can see who submitted votes"
+      },
+      {
+        "code": "view-non-registered-voters",
+        "doc": "can see votes submitted from unregistered voter"
+      },
+      {
+        "code": "remove-voters",
+        "doc": "can remove voters"
+      },
+      {
+        "code": "make-public",
+        "doc": "can change status to public"
+      },
+      {
+        "code": "make-closed",
+        "doc": "can change status to closed"
+      },
+      {
+        "code": "make-appeal",
+        "doc": "can change status to appeal"
+      },
+      {
+        "code": "vote-for",
+        "doc": "can submit a vote on someone's behalf"
+      },
+      {
+        "code": "approve-vote-for",
+        "doc": "can approve vote submitted on behalf"
+      },
+      {
+        "code": "change-person",
+        "doc": "can administrate persons"
+      },
+      {
+        "code": "change-ou",
+        "doc": "can modify organizational units"
+      }
+    ]
+  },
+  {
+    "model": "evalg.models.authorization.RolePermission",
+    "records": [
+      {
+        "code": "motd",
+        "role": "sysadmin"
+      },
+      {
+        "code": "create-election",
+        "role": "sysadmin"
+      },
+      {
+        "code": "approve-election",
+        "role": "sysadmin"
+      },
+      {
+        "code": "view-election",
+        "role": "sysadmin"
+      },
+      {
+        "code": "test-election",
+        "role": "sysadmin"
+      },
+      {
+        "code": "count-election",
+        "role": "sysadmin"
+      },
+      {
+        "code": "change-election-start",
+        "role": "sysadmin"
+      },
+      {
+        "code": "change-election-end",
+        "role": "sysadmin"
+      },
+      {
+        "code": "change-election-metadata",
+        "role": "sysadmin"
+      },
+      {
+        "code": "change-election-info",
+        "role": "sysadmin"
+      },
+      {
+        "code": "super-change-settings",
+        "role": "sysadmin"
+      },
+      {
+        "code": "grant-role",
+        "role": "sysadmin"
+      },
+      {
+        "code": "change-candidates",
+        "role": "sysadmin"
+      },
+      {
+        "code": "upload-voters",
+        "role": "sysadmin"
+      },
+      {
+        "code": "add-voters",
+        "role": "sysadmin"
+      },
+      {
+        "code": "search-voters",
+        "role": "sysadmin"
+      },
+      {
+        "code": "view-votes",
+        "role": "sysadmin"
+      },
+      {
+        "code": "view-non-registered-voters",
+        "role": "sysadmin"
+      },
+      {
+        "code": "remove-voters",
+        "role": "sysadmin"
+      },
+      {
+        "code": "make-public",
+        "role": "sysadmin"
+      },
+      {
+        "code": "make-closed",
+        "role": "sysadmin"
+      },
+      {
+        "code": "make-appeal",
+        "role": "sysadmin"
+      },
+      {
+        "code": "vote-for",
+        "role": "sysadmin"
+      },
+      {
+        "code": "approve-vote-for",
+        "role": "sysadmin"
+      },
+      {
+        "code": "change-person",
+        "role": "sysadmin"
+      },
+      {
+        "code": "change-ou",
+        "role": "sysadmin"
+      },
+      {
+        "code": "create-election",
+        "role": "admin"
+      },
+      {
+        "code": "approve-election",
+        "role": "admin"
+      },
+      {
+        "code": "view-election",
+        "role": "admin"
+      },
+      {
+        "code": "grant-role",
+        "role": "admin"
+      },
+      {
+        "code": "upload-voters",
+        "role": "admin"
+      },
+      {
+        "code": "search-voters",
+        "role": "admin"
+      },
+      {
+        "code": "change-person",
+        "role": "admin"
+      },
+      {
+        "code": "view-election",
+        "role": "election-admin"
+      },
+      {
+        "code": "test-election",
+        "role": "election-admin"
+      },
+      {
+        "code": "count-election",
+        "role": "election-admin"
+      },
+      {
+        "code": "change-election-start",
+        "role": "election-admin"
+      },
+      {
+        "code": "change-election-end",
+        "role": "election-admin"
+      },
+      {
+        "code": "change-election-metadata",
+        "role": "election-admin"
+      },
+      {
+        "code": "change-election-info",
+        "role": "election-admin"
+      },
+      {
+        "code": "change-candidates",
+        "role": "election-admin"
+      },
+      {
+        "code": "upload-voters",
+        "role": "election-admin"
+      },
+      {
+        "code": "add-voters",
+        "role": "election-admin"
+      },
+      {
+        "code": "search-voters",
+        "role": "election-admin"
+      },
+      {
+        "code": "view-votes",
+        "role": "election-admin"
+      },
+      {
+        "code": "view-non-registered-voters",
+        "role": "election-admin"
+      },
+      {
+        "code": "remove-voters",
+        "role": "election-admin"
+      },
+      {
+        "code": "make-public",
+        "role": "election-admin"
+      },
+      {
+        "code": "make-closed",
+        "role": "election-admin"
+      },
+      {
+        "code": "vote-for",
+        "role": "election-admin"
+      },
+      {
+        "code": "approve-vote-for",
+        "role": "election-admin"
+      }
+    ]
+  },
+  {
+    "model": "evalg.models.authorization.Role",
+    "records": [
+      {
+        "role": "sysadmin",
+        "role_type": "role",
+        "principal_id": "ee75b35b-b378-4d67-a04f-9fe4f3c3a236"
+      }
+    ]
+  },
+  {
+    "model": "evalg.models.authorization.OuRole",
+    "records": [
+      {
+        "role": "admin",
+        "role_type": "ou-role",
+        "principal_id": "59e41439-43f5-48ad-a825-b8b21c5896d7",
+        "ou_id": "a184e25e-907c-4155-860f-79df898ad51c"
+      }
+    ]
+  },
+  {
+    "model": "evalg.models.authorization.ElectionRole",
+    "records": [
+      {
+        "role": "election-admin",
+        "role_type": "election-role",
+        "principal_id": "072e4d7d-6e2a-4ece-b294-1900af547d95",
+        "election_id": "af4bd61f-a93d-46d9-a7a3-625d13d8f3dd"
+      }
+    ]
+  },
   {
     "model": "evalg.models.authorization.ElectionGroupRole",
     "records": [
@@ -421,6 +421,12 @@
         "role": "election-admin",
         "role_type": "election-group-role",
         "principal_id": "072e4d7d-6e2a-4ece-b294-1900af547d95",
+        "group_id": "b5b71046-e191-43d4-9bb6-55a710895288"
+      },
+      {
+        "role": "election-admin",
+        "role_type": "election-group-role",
+        "principal_id": "e3a36a08-5104-44e8-96df-3a5bce40a816",
         "group_id": "b5b71046-e191-43d4-9bb6-55a710895288"
       }
     ]

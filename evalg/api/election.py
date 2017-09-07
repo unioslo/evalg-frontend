@@ -7,6 +7,7 @@ from flask_apispec import use_kwargs, marshal_with, doc
 from marshmallow import fields
 from evalg import db, docs
 from evalg.api import BaseSchema, TranslatedString, add_all_authz, BadRequest
+from evalg.api.authz import ElectionGroupRoleSchema
 from ..metadata import (get_group, update_election, publish_election,
                         update_group, get_election, delete_group,
                         delete_election, list_groups, list_elections,
@@ -36,10 +37,10 @@ class AbstractElectionSchema(BaseSchema):
 class ElectionGroupSchema(AbstractElectionSchema):
     elections = fields.List(fields.UUID(attribute='id'),
                             description="UUIDs of associated elections")
-
+    roles = fields.Nested(ElectionGroupRoleSchema(), many=True)
     class Meta:
         strict = True
-        dump_only = ('id', 'elections', 'tz', 'status')
+        dump_only = ('id', 'elections', 'tz', 'status', 'roles')
 
 
 class ElectionSchema(AbstractElectionSchema):
