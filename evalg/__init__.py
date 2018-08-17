@@ -89,6 +89,9 @@ def create_app(config=None, flask_class=Flask):
     from evalg import api
     api.init_app(app)
 
+    from evalg import graphql
+    graphql.init_app(app)
+
     # Setup CORS
     cors.init_app(app)
 
