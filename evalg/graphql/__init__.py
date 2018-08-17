@@ -1,5 +1,4 @@
 import graphene
-from flask import request, current_app
 from flask_graphql import GraphQLView
 from graphene.types.generic import GenericScalar
 from graphene import relay, String, Argument
@@ -75,7 +74,6 @@ class Query(graphene.ObjectType):
     elections = graphene.List(Election)
 
     def resolve_elections(self, info):
-        current_app.logger.info(request)
         return ElectionModel.query.all()
 
     election = graphene.Field(Election,
@@ -145,6 +143,11 @@ schema = graphene.Schema(query=Query)
 
 def init_app(app):
     from evalg.graphql.middleware import timing_middleware, auth_middleware
+
+    middleware = [timing_middleware]
+    if app.config.get('AUTH_ENABLED'):
+        middleware.append(auth_middleware)
+
     app.add_url_rule(
         '/graphql',
         view_func=GraphQLView.as_view(
@@ -152,5 +155,5 @@ def init_app(app):
             schema=schema,
             batch=True,
             graphiql=True,
-            middleware=[timing_middleware]
+            middleware=middleware
         ))
