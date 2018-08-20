@@ -15,6 +15,7 @@ from evalg.models.candidate import Candidate as CandidateModel
 from evalg.models.person import Person as PersonModel
 from evalg.models.pollbook import PollBook as PollBookModel
 from evalg.models.voter import Voter as VoterModel
+from evalg.election_templates import election_template_builder
 
 
 @convert_sqlalchemy_type.register(URLType)
@@ -30,7 +31,7 @@ def convert_json_to_generic_scalar(type, column, registry=None):
 
 
 @convert_sqlalchemy_type.register(UUIDType)
-def convert_uuid_to_string(type, column, registry=None):
+def convert_uuid_type_to_string(type, column, registry=None):
     return String(description=get_column_doc(column),
                   required=not(is_column_nullable(column)))
 
@@ -81,6 +82,17 @@ class Query(graphene.ObjectType):
 
     def resolve_election(self, info, **args):
         return ElectionModel.query.get(args.get('id'))
+
+    election_groups = graphene.List(ElectionGroup)
+
+    def resolve_election_groups(self, info):
+        return ElectionGroupModel.query.all()
+
+    election_group = graphene.Field(ElectionGroup,
+                                    id=Argument(graphene.String, required=True))
+
+    def resolve_election_group(self, info, **args):
+        return ElectionGroupModel.query.get(args.get('id'))
 
     election_lists = graphene.List(ElectionList)
 
@@ -136,6 +148,11 @@ class Query(graphene.ObjectType):
 
     def resolve_voter(self, info, **args):
         return VoterModel.query.get(args.get('id'))
+
+    election_template = graphene.Field(GenericScalar)
+
+    def resolve_election_template(self, info, **args):
+        return election_template_builder()
 
 
 schema = graphene.Schema(query=Query)
