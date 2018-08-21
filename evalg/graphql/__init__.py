@@ -1,4 +1,5 @@
 import graphene
+import re
 from flask_graphql import GraphQLView
 from graphene.types.generic import GenericScalar
 from graphene import relay, String, Argument
@@ -152,7 +153,26 @@ class Query(graphene.ObjectType):
     election_template = graphene.Field(GenericScalar)
 
     def resolve_election_template(self, info, **args):
-        return election_template_builder()
+        template = election_template_builder()
+        under_pat = re.compile(r'_([a-z])')
+
+        def underscore_to_camel(name):
+            from flask import current_app
+            current_app.logger.info(name)
+            return under_pat.sub(lambda x: x.group(1).upper(), name)
+
+        def convert_json(d, convert):
+            new_d = {}
+            for k, v in d.items():
+                if isinstance(v, dict):
+                    new_d[convert(k)] = convert_json(v, convert)
+                elif isinstance(v, list):
+                    camed_cased_list = [convert_json(elem, convert) for elem in v]
+                    new_d[convert(k)] = camed_cased_list
+                else:
+                    new_d[convert(k)] = v
+            return new_d
+        return convert_json(template, underscore_to_camel)
 
 
 schema = graphene.Schema(query=Query)
