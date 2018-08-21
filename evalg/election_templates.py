@@ -12,7 +12,10 @@ def election_template_builder():
         if ou.tag in ou_tags:
             ou_dict = dict()
             for attr in ['id', 'name', 'tag', 'external_id']:
-                ou_dict[attr] = str(getattr(ou, attr))
+                if attr != 'name':
+                    ou_dict[attr] = str(getattr(ou, attr))
+                else:
+                    ou_dict[attr] = getattr(ou, attr)
             ou_lists[ou.tag].append(ou_dict)
     election_template = dict()
     election_template['template_root'] = tmpl_config.root_node
