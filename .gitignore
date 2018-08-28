@@ -35,3 +35,4 @@ MANIFEST
 # other stuff
 .filebeat
 instance/*.py
+db

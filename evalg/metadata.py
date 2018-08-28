@@ -236,7 +236,8 @@ def make_group_from_template(template_name, ou, principals=()):
     from dateutil.relativedelta import relativedelta
     import functools
 
-    if not check_perms(principals, 'create-election', ou=ou):
+    if current_app.config['AUTH_ENABLED'] and not \
+            check_perms(principals, 'create-election', ou=ou):
         current_app.logger.info('Testing %s', principals)
         raise PermissionDenied()
     template = election_templates[template_name]
@@ -329,5 +330,6 @@ def make_group_from_template(template_name, ou, principals=()):
     db.session.add(group)
     db.session.commit()
     return group
+
 
 make_group_from_template.is_protected = True
