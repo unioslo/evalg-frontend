@@ -33,7 +33,7 @@ class Query(graphene.ObjectType):
         return ElectionGroup.get_query(info).all()
 
     election_group = graphene.Field(ElectionGroup,
-                                    id=Argument(graphene.String, required=True))
+                                    id=Argument(graphene.UUID, required=True))
 
     def resolve_election_group(self, info, **args):
         return ElectionGroup.get_query(info).get(args.get('id'))

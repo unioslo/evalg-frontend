@@ -172,7 +172,7 @@ election_types = {
         'elections': [{
             'sequence': 'all',
             'name': None,
-            'mandate_period': {'length': '1 y', 'start': '07_01'},
+            'mandate_period': {'length': '1 y', 'start': '07-01'},
             'voter_groups': [
                 {
                     'name': grp_names['students'],

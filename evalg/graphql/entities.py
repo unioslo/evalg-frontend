@@ -1,4 +1,4 @@
-from graphene import String
+from graphene import String, Field
 from graphene.types.generic import GenericScalar
 from graphene_sqlalchemy import SQLAlchemyObjectType
 from graphene_sqlalchemy.converter import (convert_sqlalchemy_type,
@@ -6,6 +6,16 @@ from graphene_sqlalchemy.converter import (convert_sqlalchemy_type,
                                            is_column_nullable)
 from sqlalchemy_utils import URLType, JSONType, UUIDType
 
+from evalg.models.authorization import (
+    Principal as PrincipalModel,
+    PersonPrincipal as PersonPrincipalModel,
+    GroupPrincipal as GroupPrincipalModel,
+    OuRole as OuRoleModel,
+    OuRoleList as OuRoleListModel,
+    ElectionRole as ElectionRoleModel,
+    ElectionRoleList as ElectionRoleListModel,
+    ElectionGroupRole as ElectionGroupRoleModel
+)
 from evalg.models.election import (Election as ElectionModel,
                                    ElectionGroup as ElectionGroupModel)
 from evalg.models.election_list import ElectionList as ElectionListModel
@@ -13,6 +23,7 @@ from evalg.models.candidate import Candidate as CandidateModel
 from evalg.models.person import Person as PersonModel
 from evalg.models.pollbook import PollBook as PollBookModel
 from evalg.models.voter import Voter as VoterModel
+from evalg.models.group import Group as GroupModel
 
 
 @convert_sqlalchemy_type.register(URLType)
@@ -58,6 +69,11 @@ class Person(SQLAlchemyObjectType):
         model = PersonModel
 
 
+class Group(SQLAlchemyObjectType):
+    class Meta:
+        model = GroupModel
+
+
 class PollBook(SQLAlchemyObjectType):
     class Meta:
         model = PollBookModel
@@ -66,3 +82,41 @@ class PollBook(SQLAlchemyObjectType):
 class Voter(SQLAlchemyObjectType):
     class Meta:
         model = VoterModel
+
+
+class PersonPrincipal(SQLAlchemyObjectType):
+    class Meta:
+        model = PersonPrincipalModel
+
+
+class GroupPrincipal(SQLAlchemyObjectType):
+    class Meta:
+        model = GroupPrincipalModel
+
+
+class Principal(SQLAlchemyObjectType):
+    class Meta:
+        model = PrincipalModel
+
+    person = Field(Person)
+    group = Field(Group)
+
+    #def resolve_person(self, info):
+    #    from flask import current_app
+    #    current_app.logger.info(info)
+    #    return None
+
+
+class ElectionRole(SQLAlchemyObjectType):
+    class Meta:
+        model = ElectionRoleModel
+
+
+class ElectionRoleList(SQLAlchemyObjectType):
+    class Meta:
+        model = ElectionRoleListModel
+
+
+class ElectionGroupRole(SQLAlchemyObjectType):
+    class Meta:
+        model = ElectionGroupRoleModel
