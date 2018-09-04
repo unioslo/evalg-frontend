@@ -112,6 +112,7 @@
         "id": "7c0cd9eb-ffbe-4b14-8f17-abc5171f90bf",
         "start": "2018-08-29T08:00:00",
         "end": "2018-09-05T12:00:00",
+        "active": true,
         "name": {
           "nb": "Rektor ved Universitetet for Hacking",
           "nn": "Rektor ved Universitetet for Hacking",
@@ -127,12 +128,31 @@
       },
       {
         "id": "cb832894-5cda-418a-9310-1f47551ce893",
+        "active": true,
         "start": "2018-08-29T08:00:00",
         "end": "2018-09-05T12:00:00",
         "name": {
           "nb": "Vitenskapelig ansatte",
           "nn": "Vitskapeleg tilsette",
           "en": "Academic staff"
+        },
+        "meta": {
+          "ballot_rules": {
+            "votes": "all",
+            "voting": "rank_candidates"
+          },
+          "candidate_rules": {
+            "candidate_gender": true,
+            "seats": 1,
+            "substitutes": 2
+          },
+          "candidate_type": "single",
+          "counting_rules": {
+            "affirmative_action": [
+              "gender_40"
+            ],
+            "method": "uio_stv"
+          }
         },
         "description": null,
         "information_url": null,
@@ -144,12 +164,31 @@
       },
       {
         "id": "f30bfd8e-27c2-43b3-af99-d0bdc8649d82",
+        "active": true,
         "start": "2018-08-29T08:00:00",
         "end": "2018-09-05T12:00:00",
         "name": {
           "nb": "Midlertidig vitenskapelige ansatte",
           "nn": "Mellombels vitskapeleg tilsette",
           "en": "Temporary academic staff"
+        },
+        "meta": {
+          "ballot_rules": {
+            "votes": "all",
+            "voting": "rank_candidates"
+          },
+          "candidate_rules": {
+            "candidate_gender": true,
+            "seats": 1,
+            "substitutes": 2
+          },
+          "candidate_type": "single",
+          "counting_rules": {
+            "affirmative_action": [
+              "gender_40"
+            ],
+            "method": "uio_stv"
+          }
         },
         "description": null,
         "information_url": null,
@@ -161,12 +200,31 @@
       },
       {
         "id": "ed174958-4bd8-434e-b7a1-76ac6fe60918",
+        "active": true,
         "start": "2018-08-29T08:00:00",
         "end": "2018-09-05T12:00:00",
         "name": {
           "nb": "Teknisk/administrativt ansatte",
           "nn": "Teknisk/administrativt tilsette",
           "en": "Technical and administrative staff"
+        },
+        "meta": {
+          "ballot_rules": {
+            "votes": "all",
+            "voting": "rank_candidates"
+          },
+          "candidate_rules": {
+            "candidate_gender": true,
+            "seats": 1,
+            "substitutes": 2
+          },
+          "candidate_type": "single",
+          "counting_rules": {
+            "affirmative_action": [
+              "gender_40"
+            ],
+            "method": "uio_stv"
+          }
         },
         "description": null,
         "information_url": null,
@@ -178,12 +236,31 @@
       },
       {
         "id": "a3f0e207-3ca1-4781-a4ea-8d42446a415c",
+        "active": true,
         "start": "2018-08-29T08:00:00",
         "end": "2018-09-05T12:00:00",
         "name": {
           "nb": "Studenter",
           "nn": "Studentar",
           "en": "Students"
+        },
+        "meta": {
+          "ballot_rules": {
+            "votes": "all",
+            "voting": "rank_candidates"
+          },
+          "candidate_rules": {
+            "candidate_gender": true,
+            "seats": 1,
+            "substitutes": 2
+          },
+          "candidate_type": "single",
+          "counting_rules": {
+            "affirmative_action": [
+              "gender_40"
+            ],
+            "method": "uio_stv"
+          }
         },
         "description": null,
         "information_url": null,
