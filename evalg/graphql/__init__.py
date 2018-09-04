@@ -13,6 +13,7 @@ from evalg.graphql.entities import (Election,
                                     Voter)
 from evalg.election_templates import election_template_builder
 from evalg.graphql.mutations import (CreateNewElectionGroup)
+from evalg.graphql.utils import convert_json
 
 
 class Query(graphene.ObjectType):
@@ -22,7 +23,7 @@ class Query(graphene.ObjectType):
         return Election.get_query(info).all()
 
     election = graphene.Field(Election,
-                              id=Argument(graphene.String, required=True))
+                              id=Argument(graphene.UUID, required=True))
 
     def resolve_election(self, info, **args):
         return Election.get_query(info).get(args.get('id'))
@@ -44,7 +45,7 @@ class Query(graphene.ObjectType):
         return ElectionList.get_query.all()
 
     election_list = graphene.Field(ElectionList,
-                                   id=Argument(graphene.String, required=True))
+                                   id=Argument(graphene.UUID, required=True))
 
     def resolve_election_list(self, info, **args):
         return ElectionList.get_query(info).get(args.get('id'))
@@ -55,7 +56,7 @@ class Query(graphene.ObjectType):
         return Candidate.get_query(info).all()
 
     candidate = graphene.Field(Candidate,
-                               id=Argument(graphene.String, required=True))
+                               id=Argument(graphene.UUID, required=True))
 
     def resolve_candidate(self, info, **args):
         return Candidate.get_query(info).get(args.get('id'))
@@ -66,7 +67,7 @@ class Query(graphene.ObjectType):
         return Person.get_query(info).all()
 
     person = graphene.Field(Person,
-                            id=Argument(graphene.String, required=True))
+                            id=Argument(graphene.UUID, required=True))
 
     def resolve_person(self, info, **args):
         return Person.get_query(info).get(args.get('id'))
@@ -77,7 +78,7 @@ class Query(graphene.ObjectType):
         return PollBook.get_query(info).all()
 
     pollbook = graphene.Field(PollBook,
-                              id=Argument(graphene.String, required=True))
+                              id=Argument(graphene.UUID, required=True))
 
     def resolve_pollbook(self, info, **args):
         return PollBook.get_query(info).get(args.get('id'))
@@ -88,7 +89,7 @@ class Query(graphene.ObjectType):
         return Voter.get_query(info).all()
 
     voter = graphene.Field(Voter,
-                           id=Argument(graphene.String, required=True))
+                           id=Argument(graphene.UUID, required=True))
 
     def resolve_voter(self, info, **args):
         return Voter.get_query(info).get(args.get('id'))
@@ -97,25 +98,7 @@ class Query(graphene.ObjectType):
 
     def resolve_election_template(self, info, **args):
         template = election_template_builder()
-        under_pat = re.compile(r'_([a-z])')
-
-        def underscore_to_camel(name):
-            from flask import current_app
-            current_app.logger.info(name)
-            return under_pat.sub(lambda x: x.group(1).upper(), name)
-
-        def convert_json(d, convert):
-            new_d = {}
-            for k, v in d.items():
-                if isinstance(v, dict):
-                    new_d[convert(k)] = convert_json(v, convert)
-                elif isinstance(v, list):
-                    camed_cased_list = [convert_json(elem, convert) for elem in v]
-                    new_d[convert(k)] = camed_cased_list
-                else:
-                    new_d[convert(k)] = v
-            return new_d
-        return convert_json(template, underscore_to_camel)
+        return convert_json(template)
 
 
 class Mutations(graphene.ObjectType):

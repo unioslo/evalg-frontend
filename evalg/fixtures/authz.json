@@ -434,7 +434,7 @@
         "role": "election-admin",
         "role_type": "election-role",
         "principal_id": "072e4d7d-6e2a-4ece-b294-1900af547d95",
-        "election_id": "af4bd61f-a93d-46d9-a7a3-625d13d8f3dd"
+        "election_id": "7625e92b-c31c-4289-bd8e-dac7e60833ce"
       }
     ]
   },
@@ -445,13 +445,13 @@
         "role": "election-admin",
         "role_type": "election-group-role",
         "principal_id": "072e4d7d-6e2a-4ece-b294-1900af547d95",
-        "group_id": "b5b71046-e191-43d4-9bb6-55a710895288"
+        "group_id": "61c4df2d-f676-4b1f-8ce9-b0caceed1b09"
       },
       {
         "role": "election-admin",
         "role_type": "election-group-role",
         "principal_id": "e3a36a08-5104-44e8-96df-3a5bce40a816",
-        "group_id": "b5b71046-e191-43d4-9bb6-55a710895288"
+        "group_id": "61c4df2d-f676-4b1f-8ce9-b0caceed1b09"
       }
     ]
   }

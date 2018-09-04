@@ -4,7 +4,7 @@
 Module for bootstrapping the eValg application.
 
 """
-from flask import Flask
+from flask import Flask, json
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
@@ -21,6 +21,20 @@ from evalg_common import cli as common_cli
 from evalg import default_config
 from evalg import cli
 
+
+class HackSQLAlchemy(SQLAlchemy):
+    """ Ugly way to get SQLAlchemy engine to pass the Flask JSON serializer
+    to `create_engine`.
+
+    See https://github.com/mitsuhiko/flask-sqlalchemy/pull/67/files
+
+    """
+
+    def apply_driver_hacks(self, app, info, options):
+        options.update(json_serializer=json.dumps)
+        super(HackSQLAlchemy, self).apply_driver_hacks(app, info, options)
+
+
 __VERSION__ = get_version()
 
 APP_CONFIG_ENVIRON_NAME = 'EVALG_CONFIG'
@@ -33,7 +47,7 @@ through a third party application server like *gunicorn*.
 APP_CONFIG_FILE_NAME = 'evalg_config.py'
 """ Config filename in the Flask application instance path. """
 
-db = SQLAlchemy()
+db = HackSQLAlchemy()
 """ Database. """
 
 ma = Marshmallow()

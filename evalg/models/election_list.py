@@ -17,7 +17,9 @@ class ElectionList(Base):
     election_id = db.Column(UUIDType,
                             db.ForeignKey('election.id'),
                             nullable=False)
-    election = db.relationship('Election')
+    election = db.relationship('Election',
+                               back_populates='lists',
+                               lazy='joined')
     candidates = db.relationship('Candidate')
 
     def __repr__(self):

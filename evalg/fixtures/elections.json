@@ -3,33 +3,87 @@
     "model": "evalg.models.election.ElectionGroup",
     "records": [
       {
-        "id": "b5b71046-e191-43d4-9bb6-55a710895288",
+        "id": "61c4df2d-f676-4b1f-8ce9-b0caceed1b09",
         "name": {
-          "en": "Foo in English",
-          "nb": "Foo på bokmål",
-          "nn": "Foo på nynorsk"
+          "nb": "Universitetsstyre ved Universitetet for Hacking",
+          "nn": "Universitetsstyre ved Universitetet for Hacking",
+          "en": "University board at University of Hacking"
         },
-        "description": {
-          "en": "This is a description",
-          "nb": "Dette er en beskrivelse",
-          "nn": "Dette er ei beskriving"
+        "meta": {
+          "candidate_type": "single",
+          "candidate_rules": {
+            "seats": 1,
+            "substitutes": 2,
+            "candidateGender": true
+          },
+          "ballot_rules": {
+            "voting": "rank_candidates",
+            "votes": "all"
+          },
+          "counting_rules": {
+            "method": "uio_stv",
+            "affirmativeAction": [
+              "gender_40"
+            ]
+          }
         },
-        "type": "list",
-        "ou_id": "a184e25e-907c-4155-860f-79df898ad51c"
+        "type": "multiple_elections",
+        "description": null,
+        "ou_id": "3fc2aa46-5ea1-45b2-9ad1-9296210e4f51"
       },
       {
-        "id": "2dc010ac-1bf7-4b93-92c8-72fd4e161ed8",
+        "id": "aafef259-39ac-478d-909b-e72c0ce2d397",
         "name": {
-          "en": "Bar in English",
-          "nb": "Bar på bokmål",
-          "nn": "Bar på nynorsk"
+          "nb": "Rektor ved Universitetet for Hacking",
+          "nn": "Rektor ved Universitetet for Hacking",
+          "en": "Principal at University of Hacking"
         },
-        "description": {
-          "en": "This is a description. Lorem ipsum.",
-          "nb": "Dette er en beskrivelse. Lorem ipsum.",
-          "nn": "Dette er ei beskriving. Lorem ipsum."
+        "meta": {
+          "candidate_type": "single_team",
+          "candidate_rules": {
+            "seats": 1
+          },
+          "ballot_rules": {
+            "voting": "rank_candidates",
+            "votes": "all"
+          },
+          "counting_rules": {
+            "method": "uio_stv"
+          }
         },
-        "type": "preferential",
+        "type": "single_election",
+        "description": null,
+        "ou_id": "3fc2aa46-5ea1-45b2-9ad1-9296210e4f51"
+      },
+      {
+        "id": "729bf1a5-6f68-4ed5-bdc2-8cf51ccf5389",
+        "name": {
+          "nb": "Studentparlament ved Universitetet for Hacking",
+          "nn": "Studentparlament ved Universitetet for Hacking",
+          "en": "Student parliament at University of Hacking"
+        },
+        "meta": {
+          "candidate_type": "party_list",
+          "candidate_rules": {
+            "seats": 30
+          },
+          "ballot_rules": {
+            "delete_candidate": true,
+            "cumulate": true,
+            "alter_priority": true,
+            "number_of_votes": "seats",
+            "other_list_candidate_votes": true
+          },
+          "counting_rules": {
+            "method": "sainte_lague",
+            "first_divisor": "1",
+            "precumulate": 1,
+            "list_votes": "seats",
+            "other_list_candidate_votes": true
+          }
+        },
+        "type": "single_election",
+        "description": null,
         "ou_id": "3fc2aa46-5ea1-45b2-9ad1-9296210e4f51"
       }
     ]
@@ -38,59 +92,106 @@
     "model": "evalg.models.election.Election",
     "records": [
       {
-        "id": "af4bd61f-a93d-46d9-a7a3-625d13d8f3dd",
-        "start": "2017-09-01T08:16:32Z",
-        "end": "2017-10-01T19:00:34Z",
+        "id": "7625e92b-c31c-4289-bd8e-dac7e60833ce",
+        "start": "2018-08-30T08:00:00",
+        "end": "2018-09-06T12:00:00",
         "name": {
-          "en": "Foo",
-          "nb": "Foo",
-          "nn": "Foo"
+          "nb": "Studentparlament ved Universitetet for Hacking",
+          "nn": "Studentparlament ved Universitetet for Hacking",
+          "en": "Student parliament at University of Hacking"
         },
-        "description": {
-          "en": "This is a description",
-          "nb": "Dette er en beskrivelse",
-          "nn": "Dette er ei beskriving"
-        },
-        "information_url": "https://uio.no",
-        "contact": "noreply@uio.no",
-        "mandate_period_start": "2018-01-01T18:04:54Z",
-        "mandate_period_end": "2019-01-01T14:45:34",
-        "mandate_type": {
-          "en": "President"
-        },
-        "group_id": "b5b71046-e191-43d4-9bb6-55a710895288"
+        "description": null,
+        "information_url": null,
+        "contact": null,
+        "mandate_period_start": "2019-07-01T00:00:00",
+        "mandate_period_end": "2020-07-01T00:00:00",
+        "mandate_type": null,
+        "group_id": "729bf1a5-6f68-4ed5-bdc2-8cf51ccf5389"
       },
       {
-        "id": "285b0050-ab52-4ead-986e-9acfc0b3c91a",
-        "start": "2017-09-02T09:00:00Z",
-        "end": "2017-10-02T09:00:00Z",
+        "id": "7c0cd9eb-ffbe-4b14-8f17-abc5171f90bf",
+        "start": "2018-08-29T08:00:00",
+        "end": "2018-09-05T12:00:00",
         "name": {
-          "en": "Foo two",
-          "nb": "Foo to",
-          "nn": "Foo to"
+          "nb": "Rektor ved Universitetet for Hacking",
+          "nn": "Rektor ved Universitetet for Hacking",
+          "en": "Principal at University of Hacking"
         },
-        "description": {
-          "en": "This is a description",
-          "nb": "Dette er en beskrivelse",
-          "nn": "Dette er ei beskriving"
-        },
-        "information_url": "https://uio.no",
-        "contact": "noreply@uio.no",
-        "mandate_period_start": "2018-01-01T18:04:54Z",
-        "mandate_period_end": "2019-01-01T14:45:34",
-        "mandate_type": {
-          "en": "President"
-        },
-        "group_id": "b5b71046-e191-43d4-9bb6-55a710895288"
+        "description": null,
+        "information_url": null,
+        "contact": null,
+        "mandate_period_start": "2019-01-01T00:00:00",
+        "mandate_period_end": "2023-01-01T00:00:00",
+        "mandate_type": null,
+        "group_id": "aafef259-39ac-478d-909b-e72c0ce2d397"
       },
       {
-        "id": "d10f90c2-bb14-47de-ace2-79265efcd161",
+        "id": "cb832894-5cda-418a-9310-1f47551ce893",
+        "start": "2018-08-29T08:00:00",
+        "end": "2018-09-05T12:00:00",
         "name": {
-          "en": "Bar",
-          "nb": "Bar",
-          "nn": "Bar"
+          "nb": "Vitenskapelig ansatte",
+          "nn": "Vitskapeleg tilsette",
+          "en": "Academic staff"
         },
-        "group_id": "2dc010ac-1bf7-4b93-92c8-72fd4e161ed8"
+        "description": null,
+        "information_url": null,
+        "contact": null,
+        "mandate_period_start": "2019-01-01T00:00:00",
+        "mandate_period_end": "2023-01-01T00:00:00",
+        "mandate_type": null,
+        "group_id": "61c4df2d-f676-4b1f-8ce9-b0caceed1b09"
+      },
+      {
+        "id": "f30bfd8e-27c2-43b3-af99-d0bdc8649d82",
+        "start": "2018-08-29T08:00:00",
+        "end": "2018-09-05T12:00:00",
+        "name": {
+          "nb": "Midlertidig vitenskapelige ansatte",
+          "nn": "Mellombels vitskapeleg tilsette",
+          "en": "Temporary academic staff"
+        },
+        "description": null,
+        "information_url": null,
+        "contact": null,
+        "mandate_period_start": "2019-01-01T00:00:00",
+        "mandate_period_end": "2020-01-01T00:00:00",
+        "mandate_type": null,
+        "group_id": "61c4df2d-f676-4b1f-8ce9-b0caceed1b09"
+      },
+      {
+        "id": "ed174958-4bd8-434e-b7a1-76ac6fe60918",
+        "start": "2018-08-29T08:00:00",
+        "end": "2018-09-05T12:00:00",
+        "name": {
+          "nb": "Teknisk/administrativt ansatte",
+          "nn": "Teknisk/administrativt tilsette",
+          "en": "Technical and administrative staff"
+        },
+        "description": null,
+        "information_url": null,
+        "contact": null,
+        "mandate_period_start": "2019-01-01T00:00:00",
+        "mandate_period_end": "2023-01-01T00:00:00",
+        "mandate_type": null,
+        "group_id": "61c4df2d-f676-4b1f-8ce9-b0caceed1b09"
+      },
+      {
+        "id": "a3f0e207-3ca1-4781-a4ea-8d42446a415c",
+        "start": "2018-08-29T08:00:00",
+        "end": "2018-09-05T12:00:00",
+        "name": {
+          "nb": "Studenter",
+          "nn": "Studentar",
+          "en": "Students"
+        },
+        "description": null,
+        "information_url": null,
+        "contact": null,
+        "mandate_period_start": "2019-01-01T00:00:00",
+        "mandate_period_end": "2020-01-01T00:00:00",
+        "mandate_type": null,
+        "group_id": "61c4df2d-f676-4b1f-8ce9-b0caceed1b09"
       }
     ]
   }
