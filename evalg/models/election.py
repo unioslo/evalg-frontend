@@ -9,6 +9,7 @@ from evalg.models import Base
 from sqlalchemy.sql import select, func, case, and_
 from sqlalchemy.orm import backref
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy_json import NestedMutableJson
 from sqlalchemy_utils import UUIDType, URLType, JSONType
 from evalg.models.ou import OrganizationalUnit
 from flask import current_app
@@ -34,7 +35,7 @@ class AbstractElection(Base):
     mandate_type = db.Column(JSONType)
     """ Translated HR type """
 
-    meta = db.Column(JSONType)
+    meta = db.Column(NestedMutableJson)
     """ Template metadata """
 
     @property

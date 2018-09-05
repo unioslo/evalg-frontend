@@ -12,7 +12,8 @@ from evalg.graphql.entities import (Election,
                                     PollBook,
                                     Voter)
 from evalg.election_templates import election_template_builder
-from evalg.graphql.mutations import (CreateNewElectionGroup)
+from evalg.graphql.mutations import (CreateNewElectionGroup,
+                                     UpdateBaseSettings)
 from evalg.graphql.utils import convert_json
 
 
@@ -103,6 +104,7 @@ class Query(graphene.ObjectType):
 
 class Mutations(graphene.ObjectType):
     create_new_election_group = CreateNewElectionGroup.Field()
+    update_base_settings = UpdateBaseSettings.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutations, types=[ElectionGroup])
@@ -124,3 +126,4 @@ def init_app(app):
             graphiql=True,
             middleware=middleware
         ))
+

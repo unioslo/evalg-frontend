@@ -11,6 +11,7 @@ marshmallow
 marshmallow-sqlalchemy
 psycopg2
 sqlalchemy_utils
+sqlalchemy-json
 gunicorn
 setuptools_scm
 blinker

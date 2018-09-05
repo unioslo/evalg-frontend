@@ -14,7 +14,7 @@
           "candidate_rules": {
             "seats": 1,
             "substitutes": 2,
-            "candidateGender": true
+            "candidate_gender": true
           },
           "ballot_rules": {
             "voting": "rank_candidates",
@@ -22,7 +22,7 @@
           },
           "counting_rules": {
             "method": "uio_stv",
-            "affirmativeAction": [
+            "affirmative_action": [
               "gender_40"
             ]
           }
