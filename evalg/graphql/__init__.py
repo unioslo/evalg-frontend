@@ -12,9 +12,7 @@ from evalg.graphql.entities import (Election,
                                     PollBook,
                                     Voter)
 from evalg.election_templates import election_template_builder
-from evalg.graphql.mutations import (CreateNewElectionGroup,
-                                     UpdateBaseSettings,
-                                     UpdateVotingPeriods)
+from evalg.graphql.mutations import Mutations
 from evalg.graphql.utils import convert_json
 
 
@@ -101,12 +99,6 @@ class Query(graphene.ObjectType):
     def resolve_election_template(self, info, **args):
         template = election_template_builder()
         return convert_json(template)
-
-
-class Mutations(graphene.ObjectType):
-    create_new_election_group = CreateNewElectionGroup.Field()
-    update_base_settings = UpdateBaseSettings.Field()
-    update_voting_periods = UpdateVotingPeriods.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutations, types=[ElectionGroup])

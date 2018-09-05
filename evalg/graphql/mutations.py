@@ -37,7 +37,6 @@ class ElectionBaseSettingsInput(graphene.InputObjectType):
     seats = graphene.Int(required=True)
     substitutes = graphene.Int(required=True)
     active = graphene.Boolean(required=True)
-    name = GenericScalar()
 
 
 class UpdateBaseSettings(graphene.Mutation):
@@ -67,7 +66,6 @@ class ElectionVotingPeriodInput(graphene.InputObjectType):
     id = graphene.UUID(required=True)
     start = graphene.DateTime(required=True)
     end = graphene.DateTime(required=True)
-    name = GenericScalar()
 
 
 class UpdateVotingPeriods(graphene.Mutation):
@@ -78,18 +76,53 @@ class UpdateVotingPeriods(graphene.Mutation):
     ok = graphene.Boolean()
 
     def mutate(self, info, **args):
-        elecs = args.get('elections')
+        elections = args.get('elections')
         if not args.get('has_multiple_times'):
-            for e in elecs:
+            for e in elections:
                 election = ElectionModel.query.get(e['id'])
-                election.start = elecs[0].start
-                election.end = elecs[0].end
+                election.start = elections[0].start
+                election.end = elections[0].end
                 db.session.add(election)
         else:
-            for e in elecs:
+            for e in elections:
                 election = ElectionModel.query.get(e['id'])
                 election.start = e.start
                 election.end = e.end
                 db.session.add(election)
         db.session.commit()
         return UpdateVotingPeriods(ok=True)
+
+
+class ElectionVoterInfoInput(graphene.InputObjectType):
+    id = graphene.UUID(required=True)
+    mandate_period_start = graphene.DateTime(required=True)
+    mandate_period_end = graphene.DateTime(required=True)
+    contact = graphene.String()
+    information_url = graphene.String()
+
+
+class UpdateVoterInfo(graphene.Mutation):
+    class Input:
+        elections = graphene.List(ElectionVoterInfoInput, required=True)
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, **args):
+        elections = args.get('elections')
+        for e in elections:
+            election = ElectionModel.query.get(e['id'])
+            election.mandate_period_start = e.mandate_period_start
+            election.mandate_period_end = e.mandate_period_end
+            election.contact = e.contact
+            election.information_url = e.information_url
+            db.session.add(election)
+
+        db.session.commit()
+        return UpdateVoterInfo(ok=True)
+
+
+class Mutations(graphene.ObjectType):
+    create_new_election_group = CreateNewElectionGroup.Field()
+    update_base_settings = UpdateBaseSettings.Field()
+    update_voting_periods = UpdateVotingPeriods.Field()
+    update_voter_info = UpdateVoterInfo.Field()
