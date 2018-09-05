@@ -28,7 +28,6 @@ class CreateNewElectionGroup(graphene.Mutation):
     def mutate(self, info, ou_id, template, template_name):
         ou = OrganizationalUnit.query.get(ou_id)
         election_group = make_group_from_template(template_name, ou)
-        current_app.logger.info('Test: %s', election_group)
         ok = True
         return CreateNewElectionGroup(election_group=election_group, ok=ok)
 
@@ -50,7 +49,6 @@ class UpdateBaseSettings(graphene.Mutation):
     ok = graphene.Boolean()
 
     def mutate(self, info, **args):
-        current_app.logger.info(args.get('has_gender_quota'))
         el_grp = ElectionGroupModel.query.get(args.get('id'))
         el_grp.meta['candidate_rules']['candidate_gender'] =\
             args.get('has_gender_quota')
@@ -59,8 +57,39 @@ class UpdateBaseSettings(graphene.Mutation):
             election = ElectionModel.query.get(e['id'])
             election.meta['candidate_rules']['seats'] = e.seats
             election.meta['candidate_rules']['substitutes'] = e.substitutes
+            election.active = e.active
             db.session.add(election)
         db.session.commit()
-        new_el_grp = ElectionGroup.get_query(info).get(args.get('id'))
-        current_app.logger.info(new_el_grp.meta)
         return UpdateBaseSettings(ok=True)
+
+
+class ElectionVotingPeriodInput(graphene.InputObjectType):
+    id = graphene.UUID(required=True)
+    start = graphene.DateTime(required=True)
+    end = graphene.DateTime(required=True)
+    name = GenericScalar()
+
+
+class UpdateVotingPeriods(graphene.Mutation):
+    class Input:
+        elections = graphene.List(ElectionVotingPeriodInput, required=True)
+        has_multiple_times = graphene.Boolean(required=True)
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, **args):
+        elecs = args.get('elections')
+        if not args.get('has_multiple_times'):
+            for e in elecs:
+                election = ElectionModel.query.get(e['id'])
+                election.start = elecs[0].start
+                election.end = elecs[0].end
+                db.session.add(election)
+        else:
+            for e in elecs:
+                election = ElectionModel.query.get(e['id'])
+                election.start = e.start
+                election.end = e.end
+                db.session.add(election)
+        db.session.commit()
+        return UpdateVotingPeriods(ok=True)
