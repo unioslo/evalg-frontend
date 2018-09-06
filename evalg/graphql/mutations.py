@@ -7,6 +7,9 @@ from evalg.metadata import make_group_from_template
 from evalg.models.ou import OrganizationalUnit
 from evalg.models.election import (Election as ElectionModel,
                                    ElectionGroup as ElectionGroupModel)
+from evalg.models.authorization import (PersonPrincipal,
+                                        GroupPrincipal,
+                                        ElectionGroupRole)
 from evalg.graphql.entities import (Election,
                                     ElectionGroup,
                                     ElectionList,
@@ -121,8 +124,45 @@ class UpdateVoterInfo(graphene.Mutation):
         return UpdateVoterInfo(ok=True)
 
 
+class AddAdmin(graphene.Mutation):
+    class Input:
+        admin_id = graphene.UUID(required=True)
+        el_grp_id = graphene.UUID(required=True)
+        type = graphene.String(required=True)
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, **args):
+        if args.get('type') == 'person':
+            principal = PersonPrincipal(person_id=args.get('admin_id'))
+        else:
+            principal = GroupPrincipal(group_id=args.get('admin_id'))
+        role = ElectionGroupRole(role='election-admin',
+                                 principal=principal,
+                                 group_id=args.get('el_grp_id'))
+        db.session.add(role)
+        db.session.commit()
+        return AddAdmin(ok=True)
+
+
+class RemoveAdmin(graphene.Mutation):
+    class Input:
+        grant_id = graphene.UUID(required=True)
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, **args):
+        role = ElectionGroupRole.query.get(args.get('grant_id'))
+        db.session.delete(role)
+        db.session.commit()
+        return AddAdmin(ok=True)
+
+
 class Mutations(graphene.ObjectType):
     create_new_election_group = CreateNewElectionGroup.Field()
     update_base_settings = UpdateBaseSettings.Field()
     update_voting_periods = UpdateVotingPeriods.Field()
     update_voter_info = UpdateVoterInfo.Field()
+    add_admin = AddAdmin.Field()
+    remove_admin = RemoveAdmin.Field()
+

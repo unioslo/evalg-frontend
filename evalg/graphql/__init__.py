@@ -2,18 +2,21 @@ import graphene
 import re
 from flask_graphql import GraphQLView
 from graphene.types.generic import GenericScalar
-from graphene import String, Argument
+from graphene import Argument
 
 from evalg.graphql.entities import (Election,
                                     ElectionGroup,
                                     ElectionList,
                                     Candidate,
+                                    Group,
                                     Person,
                                     PollBook,
                                     Voter)
 from evalg.election_templates import election_template_builder
 from evalg.graphql.mutations import Mutations
 from evalg.graphql.utils import convert_json
+from evalg.group import search_group
+from evalg.person import search_person
 
 
 class Query(graphene.ObjectType):
@@ -99,6 +102,18 @@ class Query(graphene.ObjectType):
     def resolve_election_template(self, info, **args):
         template = election_template_builder()
         return convert_json(template)
+
+    search_persons = graphene.List(Person,
+                                   val=Argument(graphene.String, required=True))
+
+    def resolve_search_persons(self, info, **args):
+        return search_person(args.get('val'))
+
+    search_groups = graphene.List(Group,
+                                  val=Argument(graphene.String, required=True))
+
+    def resolve_search_groups(self, info, **args):
+        return search_group(args.get('val'))
 
 
 schema = graphene.Schema(query=Query, mutation=Mutations, types=[ElectionGroup])
