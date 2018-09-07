@@ -10,6 +10,7 @@ from evalg.models.election import (Election as ElectionModel,
 from evalg.models.authorization import (PersonPrincipal,
                                         GroupPrincipal,
                                         ElectionGroupRole)
+from evalg.models.candidate import (Candidate as CandidateModel)
 from evalg.graphql.entities import (Election,
                                     ElectionGroup,
                                     ElectionList,
@@ -158,6 +159,40 @@ class RemoveAdmin(graphene.Mutation):
         return AddAdmin(ok=True)
 
 
+class UpdatePrefElecCandidate(graphene.Mutation):
+    class Input:
+        id = graphene.UUID(required=True)
+        name = graphene.String(required=True)
+        gender = graphene.String(required=True)
+        list_id = graphene.UUID(required=True)
+        information_url = graphene.String()
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, **args):
+        candidate = CandidateModel.query.get(args.get('id'))
+        candidate.name = args.get('name')
+        candidate.meta['gender'] = args.get('gender')
+        candidate.list_id = args.get('list_id')
+        candidate.information_url = args.get('information_url')
+        db.session.add(candidate)
+        db.session.commit()
+        return UpdatePrefElecCandidate(ok=True)
+
+
+class DeleteCandidate(graphene.Mutation):
+    class Input:
+        id = graphene.UUID(required=True)
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, **args):
+        candidate = CandidateModel.query.get(args.get('id'))
+        db.session.delete(candidate)
+        db.session.commit()
+        return DeleteCandidate(ok=True)
+
+
 class Mutations(graphene.ObjectType):
     create_new_election_group = CreateNewElectionGroup.Field()
     update_base_settings = UpdateBaseSettings.Field()
@@ -165,4 +200,6 @@ class Mutations(graphene.ObjectType):
     update_voter_info = UpdateVoterInfo.Field()
     add_admin = AddAdmin.Field()
     remove_admin = RemoveAdmin.Field()
+    update_pref_elec_candidate = UpdatePrefElecCandidate.Field()
+    delete_candidate = DeleteCandidate.Field()
 

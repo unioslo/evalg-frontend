@@ -20,10 +20,10 @@ class AbstractElection(Base):
     __abstract__ = True
 
     id = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
-    name = db.Column(JSONType)
+    name = db.Column(NestedMutableJson)
     """ Translated name """
 
-    description = db.Column(JSONType)
+    description = db.Column(NestedMutableJson)
     """ Translated text """
 
     type = db.Column(db.UnicodeText)
@@ -32,7 +32,7 @@ class AbstractElection(Base):
     candidate_type = db.Column(db.Text)
     """ single | single-team | party-list """
 
-    mandate_type = db.Column(JSONType)
+    mandate_type = db.Column(NestedMutableJson)
     """ Translated HR type """
 
     meta = db.Column(NestedMutableJson)
