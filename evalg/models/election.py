@@ -9,7 +9,7 @@ from evalg.models import Base
 from sqlalchemy.sql import select, func, case, and_
 from sqlalchemy.orm import backref
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy_json import NestedMutableJson
+from sqlalchemy_json import NestedMutableJson, MutableJson
 from sqlalchemy_utils import UUIDType, URLType, JSONType
 from evalg.models.ou import OrganizationalUnit
 from flask import current_app
@@ -20,10 +20,10 @@ class AbstractElection(Base):
     __abstract__ = True
 
     id = db.Column(UUIDType, default=uuid.uuid4, primary_key=True)
-    name = db.Column(NestedMutableJson)
+    name = db.Column(MutableJson)
     """ Translated name """
 
-    description = db.Column(NestedMutableJson)
+    description = db.Column(MutableJson)
     """ Translated text """
 
     type = db.Column(db.UnicodeText)
@@ -32,7 +32,7 @@ class AbstractElection(Base):
     candidate_type = db.Column(db.Text)
     """ single | single-team | party-list """
 
-    mandate_type = db.Column(NestedMutableJson)
+    mandate_type = db.Column(MutableJson)
     """ Translated HR type """
 
     meta = db.Column(NestedMutableJson)

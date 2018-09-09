@@ -159,6 +159,26 @@ class RemoveAdmin(graphene.Mutation):
         return AddAdmin(ok=True)
 
 
+class AddPrefElecCandidate(graphene.Mutation):
+    class Input:
+        name = graphene.String(required=True)
+        gender = graphene.String(required=True)
+        list_id = graphene.UUID(required=True)
+        information_url = graphene.String()
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, **args):
+        meta = {'gender': args.get('gender')}
+        candidate = CandidateModel(name=args.get('name'),
+                                   meta=meta,
+                                   list_id=args.get('list_id'),
+                                   information_url=args.get('information_url'))
+        db.session.add(candidate)
+        db.session.commit()
+        return AddPrefElecCandidate(ok=True)
+
+
 class UpdatePrefElecCandidate(graphene.Mutation):
     class Input:
         id = graphene.UUID(required=True)
@@ -202,4 +222,5 @@ class Mutations(graphene.ObjectType):
     remove_admin = RemoveAdmin.Field()
     update_pref_elec_candidate = UpdatePrefElecCandidate.Field()
     delete_candidate = DeleteCandidate.Field()
+    add_pref_elec_candidate = AddPrefElecCandidate.Field()
 
