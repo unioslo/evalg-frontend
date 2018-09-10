@@ -1,4 +1,4 @@
-from graphene import String, Field
+from graphene import String, Field, List
 from graphene.types.generic import GenericScalar
 from graphene_sqlalchemy import SQLAlchemyObjectType
 from graphene_sqlalchemy.converter import (convert_sqlalchemy_type,
@@ -53,15 +53,6 @@ class Candidate(SQLAlchemyObjectType):
         return convert_json(self.meta)
 
 
-class Election(SQLAlchemyObjectType):
-    class Meta:
-        model = ElectionModel
-
-    def resolve_meta(self, info):
-        if self.meta is None:
-            return None
-        return convert_json(self.meta)
-
 
 class ElectionGroup(SQLAlchemyObjectType):
     class Meta:
@@ -89,6 +80,17 @@ class Group(SQLAlchemyObjectType):
 class PollBook(SQLAlchemyObjectType):
     class Meta:
         model = PollBookModel
+
+class Election(SQLAlchemyObjectType):
+    class Meta:
+        model = ElectionModel
+
+    def resolve_meta(self, info):
+        if self.meta is None:
+            return None
+        return convert_json(self.meta)
+
+    pollbooks = List(PollBook)
 
 
 class Voter(SQLAlchemyObjectType):
