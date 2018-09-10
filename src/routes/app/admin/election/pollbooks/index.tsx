@@ -22,10 +22,8 @@ import { Trans, translate } from 'react-i18next';
 
 // import AddPersonModal from './components/AddPersonModal';
 
-
-
 const electionGroupQuery = gql`
-  query electionGroup($id: UUID!) {
+  query electionGroupVoters($id: UUID!) {
     electionGroup(id: $id) {
       id
       name
@@ -34,7 +32,53 @@ const electionGroupQuery = gql`
       candidateType
       mandateType
       meta
+      ouId
+      publicKey
+      announcedAt
+      publishedAt
+      cancelledAt
+      deletedAt
+      status
+      cancelled
+      announced
+      published
+      deleted
       elections {
+        id
+        name
+        description
+        type
+        candidateType
+        mandateType
+        meta
+        sequence
+        start
+        end
+        informationUrl
+        contact
+        mandatePeriodStart
+        mandatePeriodEnd
+        groupId
+        active
+        status
+        publishedAt
+        cancelledAt
+        lists {
+          id
+          name
+          description
+          informationUrl
+          candidates {
+            id
+            name
+            meta
+            informationUrl
+            priority
+            preCumulated
+            userCumulated
+            listId
+          }
+        }
         pollbooks {
           id
           name

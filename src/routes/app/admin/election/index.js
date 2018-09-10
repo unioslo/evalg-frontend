@@ -8,7 +8,7 @@ import { translate } from 'react-i18next';
 import ElectionNavBar from './components/ElectionNavBar';
 import InfoPage from './info';
 import CandidatesPage from './candidates';
-import PollbooksPage from './pollbooks/index';
+import PollbooksPage from './pollbooks';
 //import StatusPage from './status';
 import Loading from 'components/loading';
 
