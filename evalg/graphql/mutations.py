@@ -200,6 +200,51 @@ class UpdatePrefElecCandidate(graphene.Mutation):
         return UpdatePrefElecCandidate(ok=True)
 
 
+class CoCandidatesInput(graphene.InputObjectType):
+    name = graphene.String(required=True)
+
+
+class AddTeamPrefElecCandidate(graphene.Mutation):
+    class Input:
+        name = graphene.String(required=True)
+        co_candidates = graphene.List(CoCandidatesInput, required=True)
+        list_id = graphene.UUID(required=True)
+        information_url = graphene.String()
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, **args):
+        meta = {'co_candidates': args.get('co_candidates')}
+        candidate = CandidateModel(name=args.get('name'),
+                                   meta=meta,
+                                   list_id=args.get('list_id'),
+                                   information_url=args.get('information_url'))
+        db.session.add(candidate)
+        db.session.commit()
+        return AddTeamPrefElecCandidate(ok=True)
+
+
+class UpdateTeamPrefElecCandidate(graphene.Mutation):
+    class Input:
+        id = graphene.UUID(required=True)
+        name = graphene.String(required=True)
+        co_candidates = graphene.List(CoCandidatesInput, required=True)
+        list_id = graphene.UUID(required=True)
+        information_url = graphene.String()
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, **args):
+        candidate = CandidateModel.query.get(args.get('id'))
+        candidate.name = args.get('name')
+        candidate.meta['co_candidates'] = args.get('co_candidates')
+        candidate.list_id = args.get('list_id')
+        candidate.information_url = args.get('information_url')
+        db.session.add(candidate)
+        db.session.commit()
+        return UpdateTeamPrefElecCandidate(ok=True)
+
+
 class DeleteCandidate(graphene.Mutation):
     class Input:
         id = graphene.UUID(required=True)
@@ -221,6 +266,8 @@ class Mutations(graphene.ObjectType):
     add_admin = AddAdmin.Field()
     remove_admin = RemoveAdmin.Field()
     update_pref_elec_candidate = UpdatePrefElecCandidate.Field()
-    delete_candidate = DeleteCandidate.Field()
     add_pref_elec_candidate = AddPrefElecCandidate.Field()
+    update_team_pref_elec_candidate = UpdateTeamPrefElecCandidate.Field()
+    add_team_pref_elec_candidate = AddTeamPrefElecCandidate.Field()
+    delete_candidate = DeleteCandidate.Field()
 

@@ -1,4 +1,4 @@
-from graphene import String, Field, List
+from graphene import String, Field
 from graphene.types.generic import GenericScalar
 from graphene_sqlalchemy import SQLAlchemyObjectType
 from graphene_sqlalchemy.converter import (convert_sqlalchemy_type,
@@ -10,8 +10,6 @@ from evalg.models.authorization import (
     Principal as PrincipalModel,
     PersonPrincipal as PersonPrincipalModel,
     GroupPrincipal as GroupPrincipalModel,
-    OuRole as OuRoleModel,
-    OuRoleList as OuRoleListModel,
     ElectionRole as ElectionRoleModel,
     ElectionRoleList as ElectionRoleListModel,
     ElectionGroupRole as ElectionGroupRoleModel
@@ -24,7 +22,7 @@ from evalg.models.person import Person as PersonModel
 from evalg.models.pollbook import PollBook as PollBookModel
 from evalg.models.voter import Voter as VoterModel
 from evalg.models.group import Group as GroupModel
-from evalg.graphql.utils import convert_json, underscore_to_camel
+from evalg.utils import convert_json
 
 
 @convert_sqlalchemy_type.register(URLType)
@@ -48,6 +46,11 @@ def convert_uuid_type_to_string(type, column, registry=None):
 class Candidate(SQLAlchemyObjectType):
     class Meta:
         model = CandidateModel
+
+    def resolve_meta(self, info):
+        if self.meta is None:
+            return None
+        return convert_json(self.meta)
 
 
 class Election(SQLAlchemyObjectType):

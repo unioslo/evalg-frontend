@@ -13,6 +13,7 @@ from flask_cors import CORS
 from werkzeug.contrib.fixers import ProxyFix
 from setuptools_scm import get_version
 
+from evalg.utils import convert_json
 from evalg_common.configuration import init_config
 from evalg_common.logging import init_logging
 from evalg_common import request_id
@@ -29,7 +30,6 @@ class HackSQLAlchemy(SQLAlchemy):
     See https://github.com/mitsuhiko/flask-sqlalchemy/pull/67/files
 
     """
-
     def apply_driver_hacks(self, app, info, options):
         options.update(json_serializer=json.dumps)
         super(HackSQLAlchemy, self).apply_driver_hacks(app, info, options)

@@ -1,5 +1,4 @@
 import graphene
-import re
 from flask_graphql import GraphQLView
 from graphene.types.generic import GenericScalar
 from graphene import Argument
@@ -14,7 +13,7 @@ from evalg.graphql.entities import (Election,
                                     Voter)
 from evalg.election_templates import election_template_builder
 from evalg.graphql.mutations import Mutations
-from evalg.graphql.utils import convert_json
+from evalg.utils import convert_json
 from evalg.group import search_group
 from evalg.person import search_person
 
