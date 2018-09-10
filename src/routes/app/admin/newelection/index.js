@@ -3,7 +3,8 @@ import * as React from 'react';
 import { Query, graphql, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Page, PageSection } from 'components/page';
+import Page from 'components/page/Page';
+import { PageSection } from 'components/page';
 import NewElectionForm from './components/NewElectionForm';
 import { Trans } from 'react-i18next';;
 import { translate } from 'react-i18next';

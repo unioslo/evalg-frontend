@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { translate, Trans } from 'react-i18next';
 
-import { Page } from 'components/page';
+import Page from 'components/page/Page';
 import PrefElecCandTable from './components/PrefElecCandTable';
 import PrefTeamElecCandTable from './components/PrefTeamElecCandTable';
 

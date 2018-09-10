@@ -8,7 +8,7 @@ import { translate } from 'react-i18next';
 import ElectionNavBar from './components/ElectionNavBar';
 import InfoPage from './info';
 import CandidatesPage from './candidates';
-//import PollbooksPage from './pollbooks';
+import PollbooksPage from './pollbooks/index';
 //import StatusPage from './status';
 import Loading from 'components/loading';
 
@@ -71,15 +71,6 @@ const electionGroupQuery = gql`
             listId
           }
         }
-        pollbooks {
-          id
-          name
-          weight
-          priority
-          voters {
-            
-          }
-        }
       }
       roles {
         role
@@ -102,6 +93,7 @@ const electionGroupQuery = gql`
     }
   }
 `;
+
 
 type Props = {
   children?: React$Element<any>,
@@ -143,12 +135,11 @@ const AdminElection = (props: Props) => (
               lang={lang}
               {...routeProps} />
           } />
-          {/* <Route path="/admin/elections/:groupId/pollbooks" render={(routeProps) =>
+          <Route path="/admin/elections/:groupId/pollbooks" render={(routeProps) =>
             <PollbooksPage
-              electionGroup={electionGroup}
-              lang={lang}
+              groupId={props.match.params.groupId}
               {...routeProps} />
-          } /> */}
+          } />
           {/* <Route path="/admin/elections/:groupId/status" render={(routeProps) =>
             <StatusPage
               electionGroup={electionGroup}

@@ -1,31 +1,30 @@
-/* @flow */
-import * as React from 'react';
 import classNames from 'classnames';
+import * as React from 'react';
 import injectSheet from 'react-jss';
 
 import ActionText from 'components/actiontext';
 import { Trans } from 'react-i18next';;
 import Text from 'components/text';
 
-type Props = {
-  children?: ReactChildren,
-  header?: string | ReactChildren,
+interface IProps {
+  children?: React.ReactNode,
+  classes: any,
+  header?: React.ReactNode,
   active?: boolean,
-  setActive?: Function,
+  setActive?: () => void,
   noBorder?: boolean,
   noBtmPadding?: boolean,
-  desc?: ReactElement | string,
-  classes: Object
+  desc?: React.ReactNode
 }
 
-const styles = theme => ({
+const styles = (theme: any) => ({
   section: {
+    color: theme.colors.greyishBrown,
     padding: `2rem ${theme.contentHorPadding} 2rem`,
     [`@media (min-width: ${theme.breakpoints.lg})`]: {
+      borderBottom: `10px solid ${theme.contentSectionBorderColor}`,
       padding: `4rem ${theme.contentHorMdPadding} 4rem`,
-      borderBottom: `10px solid ${theme.contentSectionBorderColor}`
     },
-    color: theme.colors.greyishBrown
   },
   noBorder: {
     border: 0
@@ -42,6 +41,7 @@ const styles = theme => ({
       marginTop: 0
     }
   },
+
   topHeader: {
     color: theme.colors.greyishBrown,
     fontSize: '2.4rem',
@@ -69,7 +69,7 @@ const styles = theme => ({
   }
 });
 
-const PageSection = (props: Props) => {
+const PageSection: React.SFC<IProps> = (props) => {
   const {
     header, active, setActive, noBorder, noBtmPadding, desc, classes
   } = props;
@@ -92,7 +92,7 @@ const PageSection = (props: Props) => {
           }
           {!active && setActive &&
             <div className={classes.topAction}>
-              <ActionText action={setActive} bottom>
+              <ActionText action={setActive} bottom={true}>
                 <Trans>general.edit</Trans>
               </ActionText>
             </div>
@@ -111,14 +111,13 @@ const PageSection = (props: Props) => {
 
 const StyledSection = injectSheet(styles)(PageSection);
 
-type SubProps = {
-  children?: ReactChildren,
-  header: ReactElement,
+interface ISubProps {
+  classes: any,
+  header: React.ReactNode,
   notBoldHeader?: boolean,
-  classes: Object
 };
 
-const PageSubSection = (props: SubProps) => {
+const PageSubSection: React.SFC<ISubProps> = (props) => {
   const { classes } = props;
   const headerClassNames = classNames({
     [classes.subSectionHeader]: true,

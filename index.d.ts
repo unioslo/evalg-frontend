@@ -1,6 +1,11 @@
+type JSSProps = {
+  classes: any
+}
+
 interface IReactJSS {
   ThemeProvider: any,
-  default: (styles: object) => (c: JSX.Element | React.SFC) => JSX.Element
+  default: (styles: object) =>
+    (c: React.ComponentType)
 }
 
 declare module 'react-jss' {
@@ -17,6 +22,27 @@ interface NameFields {
 type ElectionStatusType = "closed" | "published" | "draft" | "announced" |
   "ongoing" | "cancelled" | "multipleStatuses"
 
+interface IPerson {
+  id: string,
+  firstName: string,
+  lastName: string,
+  nin: string
+}
+
+interface IVoter {
+  id: string,
+  person: IPerson,
+  pollbookId: string
+}
+
+interface IPollBook {
+  id: string,
+  name: NameFields,
+  weight: number,
+  priority: number,
+  voters: IVoter[]
+}
+
 type Election = {
   id: number,
   name: NameFields,
@@ -25,7 +51,7 @@ type Election = {
   votesOutsideCensus: number,
   totalVotes: number,
   status: ElectionStatusType,
-  pollbooks: Array<string>,
+  pollbooks: IPollBook[],
   meta: object,
   active: boolean,
   mandatePeriodStart: string,
@@ -51,7 +77,7 @@ interface ElectionGroup {
   hasMultipleVotingTimes: boolean,
   hasMultipleElections: boolean,
   canModifyElections: boolean,
-  elections: Array<Election>,
+  elections: Election[],
   status: ElectionStatusType,
   hasGenderQuota: boolean,
   hasMultipleContactInfo: boolean,

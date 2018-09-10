@@ -2,7 +2,8 @@
 import * as React from 'react';
 
 import { translate, Trans } from 'react-i18next';
-import { Page, PageSection } from 'components/page';
+import Page from 'components/page/Page';
+import { PageSection } from 'components/page';
 import Text from 'components/text';
 import BaseElectionSettingsSection from './components/BaseElectionSettingsSection';
 import VotingPeriodSection from './components/VotingPeriodSection';
@@ -64,54 +65,54 @@ class InfoPage extends React.Component<Props, State> {
     const { activeSection } = this.state;
     const activeElections = elections.filter(e => e.active);
     return (
-      <Page header={ <Trans>election.electionInfo</Trans> }>
+      <Page header={<Trans>election.electionInfo</Trans>}>
 
         <PageSection header={<Trans>election.electionType</Trans>} >
-          <Text>{ electionGroup.name[lang] }</Text>
+          <Text>{electionGroup.name[lang]}</Text>
         </PageSection>
 
         {electionGroup.type === 'multiple_elections' &&
-        <BaseElectionSettingsSection
-          setActive={ this.setActive.bind(this, 'baseElectionSettings') }
-          active={ activeSection === 'baseElectionSettings' }
-          submitAction={ this.handleUpdate }
-          closeAction={ this.setActive.bind(this, 'none') }
-          electionGroup={ electionGroup }
-          elections={ elections }
-        />
+          <BaseElectionSettingsSection
+            setActive={this.setActive.bind(this, 'baseElectionSettings')}
+            active={activeSection === 'baseElectionSettings'}
+            submitAction={this.handleUpdate}
+            closeAction={this.setActive.bind(this, 'none')}
+            electionGroup={electionGroup}
+            elections={elections}
+          />
         }
         <VotingPeriodSection
           setActive={this.setActive.bind(this, 'votingPeriod')}
           active={activeSection === 'votingPeriod'}
-          submitAction={ this.handleUpdate }
-          closeAction={ this.setActive.bind(this, 'none') }
-          electionGroup={ electionGroup }
-          elections={ activeElections }
+          submitAction={this.handleUpdate}
+          closeAction={this.setActive.bind(this, 'none')}
+          electionGroup={electionGroup}
+          elections={activeElections}
         />
 
         <VoterInfoSection
           setActive={this.setActive.bind(this, 'voterInfo')}
           active={activeSection === 'voterInfo'}
-          submitAction={ this.handleUpdate }
-          closeAction={ this.setActive.bind(this, 'none') }
-          electionGroup={ electionGroup }
-          elections={ activeElections }
+          submitAction={this.handleUpdate}
+          closeAction={this.setActive.bind(this, 'none')}
+          electionGroup={electionGroup}
+          elections={activeElections}
         />
         <AdminRolesSection
           setActive={this.setActive.bind(this, 'adminRoles')}
           active={activeSection === 'adminRoles'}
-          electionGroup={ electionGroup }
-          closeAction={ this.setActive.bind(this, 'none') }
+          electionGroup={electionGroup}
+          closeAction={this.setActive.bind(this, 'none')}
         />
 
         <ButtonContainer alignRight topMargin>
           <Button
             text={<span>
-                    <Trans>election.goTo</Trans>&nbsp;
+              <Trans>election.goTo</Trans>&nbsp;
                     <Trans>election.candidates</Trans>
-                  </span>}
+            </span>}
             action={() => history.push(`/admin/elections/${id}/candidates`)}
-            disabled={ elections.filter(e => e.active).length === 0 }
+            disabled={elections.filter(e => e.active).length === 0}
             iconRight="mainArrow"
           />
         </ButtonContainer>

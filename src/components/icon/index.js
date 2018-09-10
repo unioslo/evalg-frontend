@@ -187,7 +187,7 @@ const Icon = (props: Props) => {
     [classes.marginRight]: props.marginRight
   });
   return (
-    <div className={ classNames }>
+    <div className={ cls }>
       {icon}
     </div>
   )
