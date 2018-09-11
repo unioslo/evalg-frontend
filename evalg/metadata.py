@@ -32,7 +32,11 @@ def eperm(permission, arg=0):
             else:
                 principals = ()
             e = election(args, kw)
-            if not check_perms(principals, permission, election=e, ou=e.ou):
+            if current_app.config['AUTH_ENABLED'] \
+                    and not check_perms(principals,
+                                        permission,
+                                        election=e,
+                                        ou=e.ou):
                 raise PermissionDenied()
             return f(*args, **kw)
 

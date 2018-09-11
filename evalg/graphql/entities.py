@@ -1,4 +1,4 @@
-from graphene import String, Field, List
+from graphene import String, Field, List, Boolean
 from graphene.types.generic import GenericScalar
 from graphene_sqlalchemy import SQLAlchemyObjectType
 from graphene_sqlalchemy.converter import (convert_sqlalchemy_type,
@@ -14,6 +14,8 @@ from evalg.models.authorization import (
     ElectionRoleList as ElectionRoleListModel,
     ElectionGroupRole as ElectionGroupRoleModel
 )
+from evalg.metadata import (group_announcement_blockers,
+                            group_publication_blockers)
 from evalg.models.election import (Election as ElectionModel,
                                    ElectionGroup as ElectionGroupModel)
 from evalg.models.election_list import ElectionList as ElectionListModel
@@ -53,13 +55,23 @@ class Candidate(SQLAlchemyObjectType):
         return convert_json(self.meta)
 
 
-
 class ElectionGroup(SQLAlchemyObjectType):
     class Meta:
         model = ElectionGroupModel
 
     def resolve_meta(self, info):
         return convert_json(self.meta)
+
+    announcement_blockers = List(String)
+    publication_blockers = List(String)
+    published = Boolean()
+    announced = Boolean()
+
+    def resolve_announcement_blockers(self, info):
+        return group_announcement_blockers(self)
+
+    def resolve_publication_blockers(self, info):
+        return group_publication_blockers(self)
 
 
 class ElectionList(SQLAlchemyObjectType):

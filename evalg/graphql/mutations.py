@@ -11,6 +11,10 @@ from evalg.models.authorization import (PersonPrincipal,
                                         GroupPrincipal,
                                         ElectionGroupRole)
 from evalg.models.candidate import (Candidate as CandidateModel)
+from evalg.metadata import (announce_group,
+                            unannounce_group,
+                            publish_group,
+                            unpublish_group)
 from evalg.graphql.entities import (Election,
                                     ElectionGroup,
                                     ElectionList,
@@ -258,6 +262,54 @@ class DeleteCandidate(graphene.Mutation):
         return DeleteCandidate(ok=True)
 
 
+class PublishElectionGroup(graphene.Mutation):
+    class Input:
+        id = graphene.UUID(required=True)
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, **args):
+        el_grp = ElectionGroupModel.query.get(args.get('id'))
+        publish_group(el_grp)
+        return PublishElectionGroup(ok=True)
+
+
+class UnpublishElectionGroup(graphene.Mutation):
+    class Input:
+        id = graphene.UUID(required=True)
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, **args):
+        el_grp = ElectionGroupModel.query.get(args.get('id'))
+        unpublish_group(el_grp)
+        return UnpublishElectionGroup(ok=True)
+
+
+class AnnounceElectionGroup(graphene.Mutation):
+    class Input:
+        id = graphene.UUID(required=True)
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, **args):
+        el_grp = ElectionGroupModel.query.get(args.get('id'))
+        announce_group(el_grp)
+        return AnnounceElectionGroup(ok=True)
+
+
+class UnannounceElectionGroup(graphene.Mutation):
+    class Input:
+        id = graphene.UUID(required=True)
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, **args):
+        el_grp = ElectionGroupModel.query.get(args.get('id'))
+        unannounce_group(el_grp)
+        return UnannounceElectionGroup(ok=True)
+
+
 class Mutations(graphene.ObjectType):
     create_new_election_group = CreateNewElectionGroup.Field()
     update_base_settings = UpdateBaseSettings.Field()
@@ -270,4 +322,6 @@ class Mutations(graphene.ObjectType):
     update_team_pref_elec_candidate = UpdateTeamPrefElecCandidate.Field()
     add_team_pref_elec_candidate = AddTeamPrefElecCandidate.Field()
     delete_candidate = DeleteCandidate.Field()
+    publish_election_group = PublishElectionGroup.Field()
+    unpublish_election_group = UnpublishElectionGroup.Field()
 
