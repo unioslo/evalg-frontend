@@ -38,6 +38,7 @@ const renderCloseButton = (action: Function) => (
 
 type Props = {
   electionGroup: ElectionGroup,
+  createAction: Function
 }
 
 type State = {
@@ -80,12 +81,10 @@ class CreateElectionKey extends React.Component {
     });
   };
   handleKeySave() {
-    const groupPayload = Object.assign(
-      {},
-      { ...this.props.electionGroup },
-      { publicKey: this.state.publicKey }
+    this.props.createAction(
+      this.props.electionGroup.id,
+      this.state.publicKey
     );
-    console.error('UPDATE');
     this.closeSaveKeyModal();
   }
   render() {

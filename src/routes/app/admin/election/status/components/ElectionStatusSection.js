@@ -27,6 +27,22 @@ const unpublishElectionGroup = gql`
   }
 `;
 
+const announceElectionGroup = gql`
+  mutation AnnounceElectionGroup($id: UUID!) {
+    announceElectionGroup(id: $id) {
+      ok
+    }
+  }
+`;
+
+const unannounceElectionGroup = gql`
+  mutation UnannounceElectionGroup($id: UUID!) {
+    unannounceElectionGroup(id: $id) {
+      ok
+    }
+  }
+`;
+
 type Props = {
   electionGroup: ElectionGroup,
   i18n: Object
@@ -93,37 +109,65 @@ class ElectionStatusSection extends React.Component<Props> {
         {electionGroup.status === 'multipleStatuses' ?
           this.renderMultipleStatuses() : null}
 
-        <InfoList>
-          {!electionGroup.published && !publishable ?
-            <InfoListItem bulleted key="draft-not-ready">
-              <Trans>election.statusDraftNotReady</Trans>
-            </InfoListItem> : null
-          }
-          {!electionGroup.published && publishable &&
-            <InfoListItem bulleted key="draft-ready">
-              <Trans>election.statusDraftReady</Trans>
-            </InfoListItem>
-          }
-          {!electionGroup.published && !electionGroup.announced &&
-            <InfoListItem bulleted key="can-announce">
-              <Trans>election.statusCanAnnounce</Trans>
-              &nbsp; &nbsp;
-            <AnnounceElectionGroup electionGroup={electionGroup} />
-            </InfoListItem>
-          }
-          {!electionGroup.published && electionGroup.announced &&
-            <InfoListItem bulleted key="is-announced">
-              <Trans>election.statusIsAnnounced</Trans>
-              &nbsp; &nbsp;
-            <AnnounceElectionGroup electionGroup={electionGroup} />
-            </InfoListItem>
-          }
-          {electionGroup.published && electionGroup.status === 'published' &&
-            <InfoListItem bulleted key="published-and-ready">
-              <Trans>election.statusOpensAutomatically</Trans>
-            </InfoListItem>
-          }
-        </InfoList>
+        <Mutation
+          mutation={unannounceElectionGroup}
+          refetchQueries={() => ['electionGroup']}>
+          {(unannounceGroup) => (
+            <Mutation
+              mutation={announceElectionGroup}
+              refetchQueries={() => ['electionGroup']}>
+              {(announceGroup) => (
+                <InfoList>
+                  {!electionGroup.published && !publishable ?
+                    <InfoListItem bulleted key="draft-not-ready">
+                      <Trans>election.statusDraftNotReady</Trans>
+                    </InfoListItem> : null
+                  }
+                  {!electionGroup.published && publishable ?
+                    <InfoListItem bulleted key="draft-ready">
+                      <Trans>election.statusDraftReady</Trans>
+                    </InfoListItem> : null
+                  }
+                  {!electionGroup.published && !electionGroup.announced ?
+                    <InfoListItem bulleted key="can-announce">
+                      <Trans>election.statusCanAnnounce</Trans>
+                      &nbsp; &nbsp;
+                    <AnnounceElectionGroup
+                        electionGroup={electionGroup}
+                        announceAction={(id) =>
+                          announceGroup({ variables: { id } }
+                          )}
+                        unannounceAction={(id) =>
+                          unannounceGroup({ variables: { id } }
+                          )}
+                      />
+                    </InfoListItem> : null
+                  }
+                  {!electionGroup.published && electionGroup.announced ?
+                    <InfoListItem bulleted key="is-announced">
+                      <Trans>election.statusIsAnnounced</Trans>
+                      &nbsp; &nbsp;
+                    <AnnounceElectionGroup
+                        electionGroup={electionGroup}
+                        announceAction={(id) =>
+                          announceGroup({ variables: { id } }
+                          )}
+                        unannounceAction={(id) =>
+                          unannounceGroup({ variables: { id } }
+                          )}
+                      />
+                    </InfoListItem> : null
+                  }
+                  {electionGroup.published && electionGroup.status === 'published' ?
+                    <InfoListItem bulleted key="published-and-ready">
+                      <Trans>election.statusOpensAutomatically</Trans>
+                    </InfoListItem> : null
+                  }
+                </InfoList>
+              )}
+            </Mutation>
+          )}
+        </Mutation>
 
         {!electionGroup.published && !publishable ?
           this.renderPublicationBlockers() : null}

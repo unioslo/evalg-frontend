@@ -36,6 +36,8 @@ const renderCancelButton = (action: Function) => (
 
 type Props = {
   electionGroup: ElectionGroup,
+  announceAction: Function,
+  unannounceAction: Function
 };
 
 type State = {
@@ -46,9 +48,7 @@ type State = {
 };
 
 
-class AnnounceElectionGroup extends React.Component {
-  state: State;
-
+class AnnounceElectionGroup extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -70,9 +70,7 @@ class AnnounceElectionGroup extends React.Component {
     this.setState({ showConfirmAnnounceModal: false })
   }
   handleAnnounce() {
-    this.props.announceElectionGroup(this.props.electionGroup.id).then(
-      () => this.props.getAdminElectionGroupElections(this.props.electionGroup.id)
-    );
+    this.props.announceAction(this.props.electionGroup.id);
     this.setState({
       showAnnounceModal: true,
       showConfirmAnnounceModal: false
@@ -119,9 +117,7 @@ class AnnounceElectionGroup extends React.Component {
     this.setState({ showConfirmUnannounceModal: false })
   }
   handleUnannounce() {
-    this.props.unannounceElectionGroup(this.props.electionGroup.id).then(
-      () => this.props.getAdminElectionGroupElections(this.props.electionGroup.id)
-    );
+    this.props.unannounceAction(this.props.electionGroup.id);
     this.setState({
       showUnannounceModal: true,
       showConfirmUnannounceModal: false
