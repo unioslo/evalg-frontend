@@ -1,6 +1,5 @@
 /* @flow */
 import * as React from 'react';
-import { initialize } from 'redux-form';
 import { Link } from 'react-router-dom';
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";

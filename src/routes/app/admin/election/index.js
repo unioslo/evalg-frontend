@@ -9,7 +9,7 @@ import ElectionNavBar from './components/ElectionNavBar';
 import InfoPage from './info';
 import CandidatesPage from './candidates';
 import PollbooksPage from './pollbooks';
-//import StatusPage from './status';
+import StatusPage from './status';
 import Loading from 'components/loading';
 
 import { findObjIndex } from 'utils';
@@ -34,7 +34,10 @@ const electionGroupQuery = gql`
       cancelled
       announced
       published
+      announced
       deleted
+      announcementBlockers
+      publicationBlockers
       elections {
         id
         name
@@ -140,12 +143,12 @@ const AdminElection = (props: Props) => (
               groupId={props.match.params.groupId}
               {...routeProps} />
           } />
-          {/* <Route path="/admin/elections/:groupId/status" render={(routeProps) =>
+          <Route path="/admin/elections/:groupId/status" render={(routeProps) =>
             <StatusPage
               electionGroup={electionGroup}
               lang={lang}
               {...routeProps} />
-          } /> */}
+          } />
         </div>
       )
     }}

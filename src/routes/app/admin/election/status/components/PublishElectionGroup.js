@@ -1,6 +1,5 @@
 /* @flow */
 import * as React from 'react';
-import { connect } from 'react-redux';
 
 import Text from 'components/text';
 import { Trans } from 'react-i18next';
@@ -45,7 +44,8 @@ const renderCancelButton = (action: Function) => (
 
 type Props = {
   electionGroup: ElectionGroup,
-  lang: string
+  publishAction: Function,
+  unpublishAction: Function
 }
 
 type State = {
@@ -54,8 +54,7 @@ type State = {
 }
 
 
-class PublishElectionGroup extends React.Component {
-  state: State;
+class PublishElectionGroup extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
@@ -74,14 +73,11 @@ class PublishElectionGroup extends React.Component {
   }
 
   handlePublish() {
-    this.props.publishElectionGroup(this.props.electionGroup.id).then(
-      () => this.props.getAdminElectionGroupElections(this.props.electionGroup.id)
-    );
+    this.props.publishAction(this.props.electionGroup.id);
     this.closePublishModal();
   }
 
   renderPublish() {
-    // const { electionGroup, lang } = this.props;
     return (
       <div>
         <ButtonContainer alignLeft smlTopMargin>
@@ -113,14 +109,11 @@ class PublishElectionGroup extends React.Component {
   }
 
   handleUnpublish() {
-    this.props.unpublishElectionGroup(this.props.electionGroup.id).then(
-      () => this.props.getAdminElectionGroupElections(this.props.electionGroup.id)
-    );
+    this.props.unpublishAction(this.props.electionGroup.id);
     this.closeUnpublishModal();
   }
 
   renderUnpublish() {
-    // const { electionGroup, lang } = this.props;
     return (
       <div>
         <ButtonContainer alignLeft smlTopMargin>
@@ -154,13 +147,5 @@ class PublishElectionGroup extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    lang: state.i18n.lang
-  }
-};
 
-export default connect(mapStateToProps, {
-  publishElectionGroup, unpublishElectionGroup,
-  getAdminElectionGroupElections
-})(PublishElectionGroup);
+export default PublishElectionGroup;

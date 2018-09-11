@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+
 import { Trans, translate } from 'react-i18next';
 
 import { Date, Time } from 'components/i18n';

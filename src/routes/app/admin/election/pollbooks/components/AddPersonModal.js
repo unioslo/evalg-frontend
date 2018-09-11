@@ -1,7 +1,7 @@
 /* @flow */
 import * as React from 'react';
 import { reduxForm, Field, FieldArray, formValueSelector, arrayPush } from 'redux-form';
-import { connect } from 'react-redux';
+
 
 import Modal from 'components/modal/Modal';
 import { Trans, translate } from 'react-i18next';

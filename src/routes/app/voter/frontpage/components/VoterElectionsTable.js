@@ -1,6 +1,6 @@
 /* @flow */
 import * as React from 'react';
-import { connect } from 'react-redux';
+
 import { Trans, translate } from 'react-i18next';
 
 import Text from 'components/text';

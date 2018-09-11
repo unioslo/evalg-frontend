@@ -1,6 +1,5 @@
 /* @flow */
 import * as React from 'react';
-import { connect } from 'react-redux';
 
 import Text from 'components/text';
 import Link from 'components/link';
@@ -11,7 +10,6 @@ import CreateElectionKey from './CreateElectionKey';
 
 type Props = {
   electionGroup: ElectionGroup,
-  lang: string,
 };
 
 class ElectionKeySection extends React.Component<Props> {
@@ -53,10 +51,4 @@ class ElectionKeySection extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    lang: state.i18n.lang
-  }
-};
-
-export default connect(mapStateToProps)(ElectionKeySection);
+export default ElectionKeySection;

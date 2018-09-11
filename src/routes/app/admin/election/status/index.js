@@ -1,6 +1,5 @@
 /* @flow */
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { Trans } from 'react-i18next';
 
 import { Page } from 'components/page';
@@ -9,20 +8,17 @@ import VotesSection from './components/VotesSection';
 import ElectionKeySection from './components/ElectionKeySection';
 import CountVotesSection from './components/CountVotesSection';
 
+
 type Props = {
-  children?: React$Element<any>,
   electionGroup: ElectionGroup,
-  handleUpdate: Function,
 };
 
 class StatusPage extends React.Component<Props> {
 
   render() {
-    const {
-      electionGroup,
-      handleUpdate } = this.props;
+    const { electionGroup } = this.props;
     return (
-      <Page header={<Trans>election.electionStatus" </Trans>}>
+      <Page header={<Trans>election.electionStatus</Trans>}>
         <ElectionStatusSection
           electionGroup={electionGroup}
         />

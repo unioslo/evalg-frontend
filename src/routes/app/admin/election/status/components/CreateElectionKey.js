@@ -1,6 +1,6 @@
 /* @flow */
 import * as React from 'react';
-import { connect } from 'react-redux';
+
 import { Trans } from 'react-i18next';
 
 import { getCryptoEngine } from 'cryptoEngines';
@@ -83,10 +83,10 @@ class CreateElectionKey extends React.Component {
     const groupPayload = Object.assign(
       {},
       { ...this.props.electionGroup },
-      { publicKey: this.state.publicKey });
-    this.props.updateElectionGroup(groupPayload).then(
-      this.closeSaveKeyModal()
+      { publicKey: this.state.publicKey }
     );
+    console.error('UPDATE');
+    this.closeSaveKeyModal();
   }
   render() {
     return (

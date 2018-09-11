@@ -1,6 +1,6 @@
 /* @flow */
 import * as React from 'react';
-import { connect } from 'react-redux';
+
 
 import { Date } from 'components/i18n';
 import { Trans, translate } from 'react-i18next';

@@ -1,6 +1,5 @@
 /* @flow */
 import * as React from 'react';
-import { connect } from 'react-redux';
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 
@@ -22,7 +21,7 @@ const buildInitialValues = (elecs: Array<Election>) => {
   if (elecs.length > 1) {
     for (let i = 0; i < elecs.length - 1; i++) {
       if (elecs[i].mandatePeriodStart !== elecs[i + 1].mandatePeriodStart ||
-          elecs[i].mandatePeriodEnd !== elecs[i + 1].mandatePeriodEnd) {
+        elecs[i].mandatePeriodEnd !== elecs[i + 1].mandatePeriodEnd) {
         hasMultipleMandateTimes = true;
         break;
       }
@@ -46,9 +45,9 @@ const buildInitialValues = (elecs: Array<Election>) => {
       }
     }
   }
-  return { 
-    elections, 
-    hasMultipleMandateTimes, 
+  return {
+    elections,
+    hasMultipleMandateTimes,
     hasMultipleContactInfo,
     hasMultipleInfoUrls
   };
@@ -56,8 +55,8 @@ const buildInitialValues = (elecs: Array<Election>) => {
 
 const buildPayload = (values) => {
   const {
-    hasMultipleContactInfo, 
-    hasMultipleInfoUrls, 
+    hasMultipleContactInfo,
+    hasMultipleInfoUrls,
     hasMultipleMandateTimes,
     elections
   } = values;
@@ -66,17 +65,17 @@ const buildPayload = (values) => {
     elections: elections.map(e => ({
       id: e.id,
       mandatePeriodStart: hasMultipleMandateTimes ?
-                          e.mandatePeriodStart : 
-                          elections[0].mandatePeriodStart,
+        e.mandatePeriodStart :
+        elections[0].mandatePeriodStart,
       mandatePeriodEnd: hasMultipleMandateTimes ?
-                        e.mandatePeriodEnd : 
-                        elections[0].mandatePeriodEnd,
-      contact: hasMultipleContactInfo ? 
-               e.contact : 
-               elections[0].contact,
-      informationUrl: hasMultipleInfoUrls ? 
-                      e.informationUrl : 
-                      elections[0].informationUrl
+        e.mandatePeriodEnd :
+        elections[0].mandatePeriodEnd,
+      contact: hasMultipleContactInfo ?
+        e.contact :
+        elections[0].contact,
+      informationUrl: hasMultipleInfoUrls ?
+        e.informationUrl :
+        elections[0].informationUrl
     })),
   })
 };
@@ -109,10 +108,10 @@ class VoterInfoSection extends React.Component<Props> {
         <Mutation
           mutation={updateVoterInfo}
           refetchQueries={() => ['electionGroup']}>
-          {(mutation, {data}) => (
+          {(mutation, { data }) => (
             <VoterInfoForm
               handleSubmit={(values) => {
-                mutation({variables: buildPayload(values)});
+                mutation({ variables: buildPayload(values) });
                 closeAction();
               }}
               closeAction={closeAction}

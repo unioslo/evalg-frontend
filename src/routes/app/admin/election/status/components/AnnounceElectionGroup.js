@@ -1,6 +1,6 @@
 /* @flow */
 import * as React from 'react';
-import { connect } from 'react-redux';
+
 import { Trans } from 'react-i18next';
 
 import Modal from 'components/modal';
