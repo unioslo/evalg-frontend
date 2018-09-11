@@ -123,7 +123,9 @@ const census = {
   addPersonModalHeader: 'Add persons to the census',
   addTo: 'Add',
   addPersonInputPlaceholder: 'Enter username, name or social security number',
-  addPersonHelpText: 'You can also add multiple persons, separated by a comma'
+  addPersonHelpText: 'You can also add multiple persons, separated by a comma',
+  deletePersonModalTitle: 'Confirm deletion',
+  deletePersonModalText: 'Are you sure you want to delete {{personName}} from “{{pollbookName}}”?'
 };
 
 const formErrors = {

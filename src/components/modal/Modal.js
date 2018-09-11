@@ -1,34 +1,91 @@
 /* @flow */
 import * as React from 'react';
+import injectSheet from 'react-jss';
 
 import { ButtonContainer } from '../button';
 import CloseIcon from './icons/CloseIcon';
 
+
+const styles = theme => ({
+  modal: {
+    zIndex: 9001,
+    backgroundColor: 'white',
+    margin: '0 auto',
+    maxWidth: '90%',
+    position: 'fixed'
+  },
+  h1: {
+    fontSize: '3.6rem',
+    fontWeight: 'normal',
+    lineHeight: '4.5rem',
+    color: theme.colors.greyishBrown
+  },
+  content: {
+    lineHeight: '4.5rem',
+    padding: '1rem 4rem 4rem 4rem'
+  },
+  buttons: {
+    diplay: 'flex',
+    justifyContent: 'flex-end',
+    padding: '2.5rem 3rem 3rem 3rem'
+  },
+  buttonContainer: {marginLeft: '2rem'},
+  separator: {
+    width: '100%',
+    height: '0.3rem',
+    border: '0.1rem',
+    borderColor: theme.colors.darkWhite,
+    'border-style': 'solid'
+  },
+  overlay: {
+    position: 'fixed',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(223, 221, 221, 0.9)',
+    overflow: 'visible',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+    closeIcon: {
+     width: '100%',
+    paddingTop: '2.2rem',
+    paddingRight: '2.2rem',
+    display: 'flex',
+    justifyContent: 'flex-end',
+    cursor: 'pointer'
+  },
+});
+
 type Props = {
-  children?: ReactChildren,
+  children?: React.Node,
   closeAction: Function,
   buttons: Array<ReactElement>,
   header: ReactElement | string,
-  hideButtonSeparator?: bool
+  hideButtonSeparator?: bool,
+  classes: Object
 }
 
 const Modal = (props: Props) => {
+  const {classes} = props;
   return (
-    <div className="modal--overlay">
-      <div className="modal">
-        <div className="modal--close-icon">
+    <div className={classes.overlay}>
+      <div className={classes.modal}>
+        <div className={classes.closeIcon}>
           <CloseIcon closeAction={props.closeAction} />
         </div>
-        <div className="modal--content">
-          <h1 className="modal--content--header">
+        <div className={classes.content}>
+          <h1 className={classes.h1}>
             {props.header}
           </h1>
           {props.children}
         </div>
         {(props.hideButtonSeparator === 'undefined' || !props.hideButtonSeparator) &&
           <div>
-            <div className="modal--separator" />
-            <div className="modal--buttons">
+            <div className={classes.separator} />
+            <div className={classes.buttons}>
               <ButtonContainer noTopMargin>
                 {props.buttons}
               </ButtonContainer>
@@ -40,4 +97,4 @@ const Modal = (props: Props) => {
   )
 };
 
-export default Modal;
+export default injectSheet(styles)(Modal);

@@ -126,7 +126,9 @@ const census = {
   addPersonModalHeader: 'Legg til personer i manntallet',
   addTo: 'Legg til',
   addPersonInputPlaceholder: 'Skriv inn brukernavn, navn eller fødselsnummer',
-  addPersonHelpText: 'Du kan også legge inn flere personer separert med komma'
+  addPersonHelpText: 'Du kan også legge inn flere personer separert med komma',
+  deletePersonModalTitle: 'Bekreft sletting',
+  deletePersonModalText: 'Er du sikker på at du vil slette {{personName}} fra «{{pollbookName}}»?'
 };
 
 
