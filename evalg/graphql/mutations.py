@@ -310,6 +310,21 @@ class UnannounceElectionGroup(graphene.Mutation):
         return UnannounceElectionGroup(ok=True)
 
 
+class CreateElectionGroupKey(graphene.Mutation):
+    class Input:
+        id = graphene.UUID(required=True)
+        key = graphene.String(required=True)
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, **args):
+        el_grp = ElectionGroupModel.query.get(args.get('id'))
+        el_grp.public_key = args.get('key')
+        db.session.add(el_grp)
+        db.session.commit()
+        return CreateElectionGroupKey(ok=True)
+
+
 class Mutations(graphene.ObjectType):
     create_new_election_group = CreateNewElectionGroup.Field()
     update_base_settings = UpdateBaseSettings.Field()
@@ -324,4 +339,8 @@ class Mutations(graphene.ObjectType):
     delete_candidate = DeleteCandidate.Field()
     publish_election_group = PublishElectionGroup.Field()
     unpublish_election_group = UnpublishElectionGroup.Field()
+    announce_election_group = AnnounceElectionGroup.Field()
+    unannounce_election_group = UnannounceElectionGroup.Field()
+    create_election_group_key = CreateElectionGroupKey.Field()
+
 
