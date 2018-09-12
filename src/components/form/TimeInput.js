@@ -16,7 +16,7 @@ const styles = theme => ({
     position: 'relative',
   },
   timeInput: {
-    background: 'url("clock.svg") no-repeat 90% 50%',
+    background: 'url("/clock.svg") no-repeat 90% 50%',
     backgroundSize: '16px 16px'
   },
   timePicker: {

@@ -10,6 +10,7 @@ type Props = {
   actionTextOnHover?: boolean,
   noHoverBg?: boolean,
   tall?: boolean,
+  verticalPadding?: boolean,
   classes: Object
 }
 
@@ -47,6 +48,12 @@ const styles = theme => ({
   },
   thickBorder: {
     borderBottom: `3px solid ${theme.tableThickBorderColor}`
+  },
+  verticalPadding: {
+    '& > td': {
+      'padding-top': '2rem',
+      'padding-bottom': '2rem'
+    }
   }
 });
 
@@ -58,6 +65,7 @@ const TableRow = (props: Props) => {
     [classes.noHoverBg]: props.noHoverBg,
     [classes.thickBorder]: props.thickBorder,
     [classes.actionTextOnHover]: props.actionTextOnHover,
+    [classes.verticalPadding]: props.verticalPadding,
     [classes.tall]: props.tall
   });
   return (

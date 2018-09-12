@@ -15,6 +15,11 @@ interface NameFields {
   en: string
 }
 
+interface DropDownOption {
+  name: string,
+  value: any
+}
+
 type ElectionStatusType = "closed" | "published" | "draft" | "announced" |
   "ongoing" | "cancelled" | "multipleStatuses"
 

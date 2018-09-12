@@ -19,7 +19,7 @@ const styles = theme => ({
     color: theme.colors.greyishBrown,
     paddingLeft: theme.formFieldHorizontalPadding,
     paddingTop: '0.4rem',
-    background: 'url("kalender.svg") no-repeat right 1.3rem top 50%',
+    background: 'url("/kalender.svg") no-repeat right 1.3rem top 50%',
     backgroundSize: '19px 18px',
     borderColor: theme.formFieldBorderColor,
     transition: `${theme.borderColor} ${theme.formFieldFocusTransition}`,

@@ -6,6 +6,7 @@ import injectSheet from 'react-jss';
 
 import DropDownBase from 'components/baseComponents/DropDownBase';
 import TextInput from './TextInput';
+import { FieldRenderProps } from 'react-final-form';
 
 type DropDownOption = {
   name: string,
@@ -84,7 +85,7 @@ const styles = theme => ({
     }
   },
   input: {
-    background: 'url("dropdownarrow.svg") no-repeat right 13px top 50%',
+    background: 'url("/dropdownarrow.svg") no-repeat right 13px top 50%',
     backgroundSize: '14px 9px'
   }
 })
@@ -222,7 +223,7 @@ type RFProps = {
 
 const StyledDropDown = injectSheet(styles)(DropDown);
 
-const DropDownRF = (props: RFProps) => {
+const DropDownRF: React.SFC<RFProps, FieldRenderProps> = (props: RFProps) => {
   const { input, ...remainingProps } = props;
   return (
     <StyledDropDown
