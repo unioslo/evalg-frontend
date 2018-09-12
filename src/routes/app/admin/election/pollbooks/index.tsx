@@ -255,7 +255,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                     {voters.map((voter, index) => {
                       if (voter.id === this.state.updateVoterId) {
                         return (
-                          <TableRow key={index}>
+                          <TableRow key={index} verticalPadding={true}>
                             <TableCell>
                               <Text>
                                 {voter.person.firstName + ' ' + voter.person.lastName}
