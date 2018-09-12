@@ -69,6 +69,7 @@ def shell_context():
         'GroupPrincipal': models.authorization.GroupPrincipal,
         'Role': models.authorization.Role,
         'OU': models.election.OrganizationalUnit,
+        'Voter': models.voter.Voter,
         'wipe_db': wipe_db
     }
     print('\nShell context:')
