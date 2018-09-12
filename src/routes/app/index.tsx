@@ -8,7 +8,7 @@ import Footer from './components/Footer';
 import Header from './components/Header';
 
 import Admin from './admin';
-// import Voter from './voter';
+import Voter from './voter';
 // import Login from './login';
 
 const dummyLogout = () => {
@@ -34,7 +34,7 @@ const App: React.SFC<IProps> = ({ classes }) => (
     <Content>
       {/* <Route path="/login" component={Login} /> */}
       <Route path="/admin" component={Admin} />
-      {/* <Route path="/voter" component={Voter} /> */}
+      <Route path="/voter" component={Voter} />
     </Content>
     <Footer />
   </div>

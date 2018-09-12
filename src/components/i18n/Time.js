@@ -15,7 +15,7 @@ const prefixes = {
 const getTime = (dateTime) => dateTime.substring(11, 16);
 
 const Time = (props: Props) => {
-  if (props.dateTime === null) { return 'Not set' };
+  if (!props.dateTime) { return 'Not set' };
   const time = getTime(props.dateTime);
   const lang = props.i18n.language;
   const hrMinValues = time.split(':');

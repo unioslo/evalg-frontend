@@ -1,9 +1,9 @@
 /* @flow */
-import * as React from 'react';
 import classNames from 'classnames';
+import * as React from 'react';
 import injectSheet from 'react-jss';
 
-const styles = theme => ({
+const styles: StyleSheet = (theme) => ({
   actionText: {
     '&:hover': {
       cursor: 'pointer',
@@ -18,14 +18,14 @@ const styles = theme => ({
   }
 })
 
-type Props = {
-  action?: Function,
-  children?: React$Element<any>,
+interface IProps {
+  action?: () => void,
+  children?: React.ReactNode,
   bottom?: boolean,
-  classes: Object
+  classes: any
 }
 
-const ActionText = (props: Props) => {
+const ActionText: React.SFC<IProps> = props => {
   const { classes } = props;
   const cls = classNames({
     [classes.actionText]: true,

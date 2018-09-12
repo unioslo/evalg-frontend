@@ -1,6 +1,5 @@
 export default {
   general: {
-    __typename: 'AppTexts',
     yes: 'Yes',
     no: 'No',
     of: 'of',
@@ -32,7 +31,6 @@ export default {
     add: 'Add'
   },
   election: {
-    __typename: 'AppTexts',
     election: 'Election',
     elections: 'Elections',
     opens: 'Opens',
@@ -61,7 +59,6 @@ export default {
     votes: 'Votes',
   },
   electionStatus: {
-    __typename: 'AppTexts',
     draft: 'Draft',
     announced: 'Draft (announced)',
     published: 'Ready',

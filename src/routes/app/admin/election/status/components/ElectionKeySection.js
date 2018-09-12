@@ -29,7 +29,7 @@ class ElectionKeySection extends React.Component<Props> {
 
     return (
       <PageSection header={<Trans>election.electionKey</Trans>}>
-        {!hasKey &&
+        {!hasKey ?
           <div>
             <Text>
               <Trans>election.electionKeyMissing</Trans>
@@ -46,8 +46,7 @@ class ElectionKeySection extends React.Component<Props> {
                 />
               )}
             </Mutation>
-          </div>}
-        {hasKey &&
+          </div> :
           <div>
             <Text>
               <Trans>election.electionKeyExists</Trans>

@@ -1,6 +1,5 @@
 export default {
   general: {
-    __typename: 'AppTexts',
     yes: 'Ja',
     no: 'Nei',
     of: 'av',
@@ -32,7 +31,6 @@ export default {
     add: 'Legg til'
   },
   election: {
-    __typename: 'AppTexts',
     election: 'Valg',
     elections: 'Valg',
     opens: 'Åpnes',
@@ -61,7 +59,6 @@ export default {
     valueNotSet: 'ikke satt',
   },
   electionStatus: {
-    __typename: 'AppTexts',
     draft: 'Utkast',
     announced: 'Utkast (annonsert)',
     published: 'Klart',

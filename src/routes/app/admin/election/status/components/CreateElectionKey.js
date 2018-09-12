@@ -18,15 +18,6 @@ const renderSaveButton = (action: Function) => (
   />
 );
 
-//const renderCancelButton = (action: Function) => (
-//  <Button
-//    key="cancel"
-//    text={ <Trans>general.cancel</Trans> }
-//    action={ action }
-//    secondary
-//  />
-//);
-
 const renderCloseButton = (action: Function) => (
   <Button
     key="finished"

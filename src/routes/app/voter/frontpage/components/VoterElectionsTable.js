@@ -6,7 +6,7 @@ import { Trans, translate } from 'react-i18next';
 import Text from 'components/text';
 import { Date, Time } from 'components/i18n';
 import Button from 'components/button';
-
+import Link from 'components/link';
 import {
   Table,
   TableHeader,
@@ -19,14 +19,13 @@ import {
 
 type Props = {
   electionGroups: Array<ElectionGroup>,
-  elections: Object,
   noElectionsText: ReactElement,
   i18n: Object
 }
 
 const VoterElectionsTable = (props: Props) => {
   const lang = props.i18n.language;
-  const { electionGroups, elections, i18n, noElectionsText } = props;
+  const { electionGroups, i18n, noElectionsText } = props;
   return (
     <Table>
       <TableHeader key="thead">
@@ -53,7 +52,7 @@ const VoterElectionsTable = (props: Props) => {
           </TableRow>
         }
         {electionGroups.map((group, index) => {
-          const election = elections[group.elections[0]];
+          const election = group.elections[0];
           const canVote = true;
           const hasVoted = false;
           return (
@@ -62,12 +61,12 @@ const VoterElectionsTable = (props: Props) => {
                 <Text>{group.name[lang]}</Text>
               </TableCell>
               <TableCell>
-                <Text><Date date={election.startDate} /></Text>
-                <Text size="small"><Time time={election.startTime} /></Text>
+                <Text><Date dateTime={election.start} /></Text>
+                <Text size="small"><Time dateTime={election.startTime} /></Text>
               </TableCell>
               <TableCell>
-                <Text><Date date={election.endDate} /></Text>
-                <Text size="small"><Time time={election.endTime} /></Text>
+                <Text><Date dateTime={election.end} /></Text>
+                <Text size="small"><Time dateTime={election.end} /></Text>
               </TableCell>
               <TableCell>
                 <Text>
@@ -79,12 +78,11 @@ const VoterElectionsTable = (props: Props) => {
               </TableCell>
               <TableCell noPadding>
                 {!hasVoted ?
-                  <Button primary text={<Trans>election.voteNow</Trans>}
-                    wide
-                    action={() => console.error('NEW VOTE')}
-                  /> :
-                  <Button secondary text={<Trans>election.changeVote</Trans>}
-                    wide
+                  <Link to={`/voter/elections/${election.id}/vote`}>
+                    <Trans>election.voteNow</Trans>&nbsp;
+                  </Link> :
+                  <Button secondary={true} text={<Trans>election.changeVote</Trans>}
+                    wide={true}
                     action={() => console.error('CHANGE VOTE')}
                   />
                 }

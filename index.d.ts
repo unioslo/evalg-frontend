@@ -2,15 +2,11 @@ type JSSProps = {
   classes: any
 }
 
-interface IReactJSS {
-  ThemeProvider: any,
-  default: (styles: object) =>
-    (c: React.ComponentType)
-}
-
 declare module 'react-jss' {
-  var _a: IReactJSS;
-  export = _a;
+  export const ThemeProvider: any
+
+  function injectSheet(styles: any): (component: any) => any
+  export default injectSheet;
 }
 
 interface NameFields {
@@ -43,6 +39,26 @@ interface IPollBook {
   voters: IVoter[]
 }
 
+type Candidate = {
+  id: string,
+  name: string,
+  listId: string,
+  informationUrl: string,
+  priority: number,
+  preCumulated: boolean,
+  meta: {
+    coCandidates?: Array<string>
+  }
+}
+
+type ElectionList = {
+  id: string,
+  name: NameFields,
+  description: NameFields,
+  informationUrl: string,
+  candidates: Candidate[]
+}
+
 type Election = {
   id: number,
   name: NameFields,
@@ -59,7 +75,7 @@ type Election = {
   contact: string,
   informationUrl: string,
   tz: string,
-  lists: Array<string>,
+  lists: ElectionList[],
 }
 
 

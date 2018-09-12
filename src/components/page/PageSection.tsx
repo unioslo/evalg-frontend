@@ -18,14 +18,6 @@ interface IProps {
 }
 
 const styles = (theme: any) => ({
-  section: {
-    color: theme.colors.greyishBrown,
-    padding: `2rem ${theme.contentHorPadding} 2rem`,
-    [`@media (min-width: ${theme.breakpoints.lg})`]: {
-      borderBottom: `10px solid ${theme.contentSectionBorderColor}`,
-      padding: `4rem ${theme.contentHorMdPadding} 4rem`,
-    },
-  },
   noBorder: {
     border: 0
   },
@@ -35,27 +27,13 @@ const styles = (theme: any) => ({
   noTopPadding: {
     paddingTop: 0
   },
-  top: {
-    marginBottom: '3rem',
-    '& + p, & + $subSection': {
-      marginTop: 0
-    }
-  },
-
-  topHeader: {
+  section: {
     color: theme.colors.greyishBrown,
-    fontSize: '2.4rem',
-    fontWeight: 'bold',
-    alignItems: 'baseline',
-    display: 'inline-block',
-    marginRight: '2rem',
-  },
-  topAction: {
-    display: 'inline-block',
-  },
-  topDescription: {
-    display: 'block',
-    margin: '3rem 0 3rem',
+    padding: `2rem ${theme.contentHorPadding} 2rem`,
+    [`@media (min-width: ${theme.breakpoints.lg})`]: {
+      borderBottom: `10px solid ${theme.contentSectionBorderColor}`,
+      padding: `4rem ${theme.contentHorMdPadding} 4rem`,
+    },
   },
   subSection: {
     marginTop: '3rem',
@@ -66,7 +44,28 @@ const styles = (theme: any) => ({
   },
   subSectionHeaderRegular: {
     fontWeight: 'normal'
-  }
+  },
+  top: {
+    '& + p, & + $subSection': {
+      marginTop: 0
+    },
+    marginBottom: '3rem',
+  },
+  topAction: {
+    display: 'inline-block',
+  },
+  topDescription: {
+    display: 'block',
+    margin: '3rem 0 3rem',
+  },
+  topHeader: {
+    alignItems: 'baseline',
+    color: theme.colors.greyishBrown,
+    display: 'inline-block',
+    fontSize: '2.4rem',
+    fontWeight: 'bold',
+    marginRight: '2rem',
+  },
 });
 
 const PageSection: React.SFC<IProps> = (props) => {

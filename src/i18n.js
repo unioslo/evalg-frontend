@@ -1,15 +1,15 @@
 import i18n from "i18next";
-import adminEn from 'text/admin-en';
-import adminNb from 'text/admin-nb';
+import textsEn from 'text/en';
+import textsNb from 'text/nb';
 
 i18n.init({
   // we init with resources
   resources: {
     en: {
-      translations: adminEn
+      translations: textsEn
     },
     nb: {
-      translations: adminNb
+      translations: textsNb
     }
   },
   fallbackLng: "en",

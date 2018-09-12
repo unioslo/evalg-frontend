@@ -1,6 +1,6 @@
 /* @flow */
 import * as React from 'react';
-import { isObjEmpty } from 'utils/helpers';
+import arrayMutators from 'final-form-arrays';
 import { Field, Form } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
 
@@ -156,6 +156,7 @@ class VoterInfoForm extends React.Component<Props> {
         onSubmit={this.props.handleSubmit}
         validate={validate(lang)}
         initialValues={initialValues}
+        mutators={arrayMutators}
         render={(formProps: Object) => {
           const {
             handleSubmit, reset, submitting, pristine, values, invalid,
@@ -262,14 +263,15 @@ class VoterInfoForm extends React.Component<Props> {
                     </FormFieldGroup>
                   }
 
-                  {errors._error.mandateDates.map((error) => {
-                    const { msg, index } = error;
-                    if (visited[`elections[${index}].mandatePeriodStart`] ||
-                      visited[`elections[${index}].mandatePeriodEnd`]) {
-                      return <FormErrorMsg key={index} msg={error.msg} />;
-                    }
-                    return null;
-                  })}
+                  {errors._error ?
+                    errors._error.mandateDates.map((error) => {
+                      const { msg, index } = error;
+                      if (visited[`elections[${index}].mandatePeriodStart`] ||
+                        visited[`elections[${index}].mandatePeriodEnd`]) {
+                        return <FormErrorMsg key={index} msg={error.msg} />;
+                      }
+                      return null;
+                    }) : null}
                 </PageSubSection>
 
                 <PageSubSection header={<Trans>election.voterContactInfo</Trans>}>
@@ -341,13 +343,14 @@ class VoterInfoForm extends React.Component<Props> {
                       />
                     </FormField>
                   }
-                  {errors._error.contact.map((error) => {
-                    const { msg, index } = error;
-                    if (touched[`elections[${index}].contact`]) {
-                      return <FormErrorMsg key={index} msg={msg} />;
-                    }
-                    return null;
-                  })}
+                  {errors._error ?
+                    errors._error.contact.map((error) => {
+                      const { msg, index } = error;
+                      if (touched[`elections[${index}].contact`]) {
+                        return <FormErrorMsg key={index} msg={msg} />;
+                      }
+                      return null;
+                    }) : null}
                 </PageSubSection>
 
                 <PageSubSection header={<Trans>election.voterInfoUrl</Trans>}>
@@ -420,13 +423,14 @@ class VoterInfoForm extends React.Component<Props> {
                       />
                     </FormField>
                   }
-                  {errors._error.informationUrl.map((error) => {
-                    const { msg, index } = error;
-                    if (touched[`elections[${index}].informationUrl`]) {
-                      return <FormErrorMsg key={index} msg={error.msg} />;
-                    }
-                    return null;
-                  })}
+                  {errors._error ?
+                    errors._error.informationUrl.map((error) => {
+                      const { msg, index } = error;
+                      if (touched[`elections[${index}].informationUrl`]) {
+                        return <FormErrorMsg key={index} msg={error.msg} />;
+                      }
+                      return null;
+                    }) : null}
                 </PageSubSection>
 
                 <FormButtons

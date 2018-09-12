@@ -16,11 +16,9 @@ type State = {
 
 type Props = {
   electionGroups: Array<ElectionGroup>,
-  elections: Object
 }
 
-class VoterElections extends React.Component {
-  state: State;
+class VoterElections extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { screenSize: "sm", electionStatusFilter: 'ongoing' };
@@ -84,8 +82,8 @@ class VoterElections extends React.Component {
               active={this.state.electionStatusFilter === 'closed'}
             />
           </TabSelector>
-          <VoterElectionsTable electionGroups={groups}
-            elections={elections}
+          <VoterElectionsTable
+            electionGroups={groups}
             noElectionsText={noElectionsText}
           />
         </div>
@@ -119,8 +117,8 @@ class VoterElections extends React.Component {
             <Trans>electionStatus.closedElections</Trans>
           </MobileDropdownItem>
         </MobileDropDown>
-        <VoterElectionsList electionGroups={groups}
-          elections={elections}
+        <VoterElectionsList
+          electionGroups={groups}
           noElectionsText={noElectionsText}
         />
       </div>
