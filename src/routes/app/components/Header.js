@@ -21,7 +21,7 @@ const styles = theme => ({
     backgroundColor: theme.colors.black
   },
   logo: {
-    background: 'url("uio-app-logo-nb.png") left center no-repeat',
+    background: 'url("/uio-app-logo-nb.png") left center no-repeat',
     height: '4rem'
   },
   mainWrapper: {

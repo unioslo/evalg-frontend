@@ -85,7 +85,7 @@ const styles = theme => ({
     }
   },
   input: {
-    background: 'url("dropdownarrow.svg") no-repeat right 13px top 50%',
+    background: 'url("/dropdownarrow.svg") no-repeat right 13px top 50%',
     backgroundSize: '14px 9px'
   }
 })
