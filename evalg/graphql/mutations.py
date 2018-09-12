@@ -1,5 +1,4 @@
 import graphene
-from flask import current_app
 from graphene.types.generic import GenericScalar
 
 from evalg import db
