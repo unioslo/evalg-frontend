@@ -117,6 +117,19 @@ class UpdateVoterPollBook(graphene.Mutation):
         return UpdateVoterPollBook(ok=True)
 
 
+class DeleteVoter(graphene.Mutation):
+    class Input:
+        id = graphene.UUID(required=True)
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, **kwargs):
+        voter = VoterModel.query.get(kwargs.get('id'))
+        db.session.delete(voter)
+        db.session.commit()
+        return DeleteVoter(ok=True)
+
+
 class ElectionVoterInfoInput(graphene.InputObjectType):
     id = graphene.UUID(required=True)
     mandate_period_start = graphene.DateTime(required=True)
@@ -359,3 +372,4 @@ class Mutations(graphene.ObjectType):
     unannounce_election_group = UnannounceElectionGroup.Field()
     create_election_group_key = CreateElectionGroupKey.Field()
     update_voter_pollbook = UpdateVoterPollBook.Field()
+    delete_voter = DeleteVoter.Field()
