@@ -178,9 +178,9 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       pollBookId: '',
-      voterId: '',
+      showDeleteVoter: false,
       updateVoterId: '',
-      showDeleteVoter: false
+      voterId: ''
     };
     this.closeUpdateVoterForm = this.closeUpdateVoterForm.bind(this);
     this.showDeleteConfirmation = this.showDeleteConfirmation.bind(this);
