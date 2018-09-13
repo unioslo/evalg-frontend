@@ -2,7 +2,7 @@
 
 import generalText from './general.en';
 
-const { election, ...restGeneral} = generalText;
+const { election, ...restGeneral } = generalText;
 
 const electionAdmin = {
   votesOutsideCensus: 'Votes outside census',
@@ -109,7 +109,7 @@ const electionAdmin = {
 
 const prefElec = {
   candPageDesc: 'Here you can add candidates that are electable for the various voter groups.{nl}' +
-                'The election must have at least as many candidates per voter group as stated in {{infoLink}}.'
+    'The election must have at least as many candidates per voter group as stated in {{infoLink}}.'
 };
 
 const census = {
@@ -118,7 +118,7 @@ const census = {
   group: 'Group',
   person: 'Person',
   addPerson: 'Add person',
-  addPersons: 'Add persons in',
+  addPersons: 'Add persons in {{pollbookName}}',
   deleteCensus: 'Delete census',
   addPersonModalHeader: 'Add persons to the census',
   addTo: 'Add',

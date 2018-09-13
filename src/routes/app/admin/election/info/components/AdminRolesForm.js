@@ -9,7 +9,7 @@ import { PageSubSection } from 'components/page';
 import Text from 'components/text';
 import { Trans } from 'react-i18next';
 import { Button, ButtonContainer } from 'components/button';
-import AutoCompleteDropDown from './AutoCompleteDropDown';
+import AutoCompleteDropDown from '../../components/AutoCompleteDropDown';
 
 const styles = theme => ({
   form: {
