@@ -8,6 +8,8 @@ export default {
     addTo: 'Legg til',
     censusPageDesc: 'Her kan du opprette og administrere manntall.',
     deleteCensus: 'Slett manntall',
+    deletePersonModalText: 'Er du sikker på at du vil slette {{personName}} fra «{{pollbookName}}»?',
+    deletePersonModalTitle: 'Bekreft sletting',
     group: 'Gruppe',
     person: 'Person',
     uploadCensusFile: 'Last opp manntallsfil'
