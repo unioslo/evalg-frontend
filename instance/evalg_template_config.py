@@ -51,7 +51,8 @@ election_rule_sets = {
             'cumulate': True,
             'alter_priority': True,
             'number_of_votes': 'seats',
-            'other_list_candidate_votes': True
+            'other_list_candidate_votes': True,
+            'voting': 'list'
         },
         'counting_rules': {
             'method': 'sainte_lague',

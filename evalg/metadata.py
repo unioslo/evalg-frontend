@@ -317,7 +317,7 @@ def make_group_from_template(template_name, ou, principals=()):
             name = e['name']
         election = Election(name=name,
                             sequence=e['sequence'],
-                            group=group,
+                            election_group=group,
                             start=default_start(),
                             end=default_end(),
                             mandate_period_start=mandate_period_start(e),

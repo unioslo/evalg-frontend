@@ -132,7 +132,7 @@ class Election(AbstractElection):
     mandate_period_start = db.Column(db.DateTime)
     mandate_period_end = db.Column(db.DateTime)
     group_id = db.Column(UUIDType, db.ForeignKey('election_group.id'))
-    group = db.relationship('ElectionGroup', back_populates='elections',
+    election_group = db.relationship('ElectionGroup', back_populates='elections',
                             lazy='joined')
     lists = db.relationship('ElectionList')
     pollbooks = db.relationship('PollBook')
@@ -173,15 +173,15 @@ class Election(AbstractElection):
     @hybrid_property
     def status(self):
         """ draft → announced → published → ongoing/closed/cancelled """
-        if self.group.cancelled_at:
+        if self.election_group.cancelled_at:
             return 'cancelled'
-        if self.group.published_at:
+        if self.election_group.published_at:
             if self.end <= datetime.utcnow():
                 return 'closed'
             if self.start < datetime.utcnow():
                 return 'ongoing'
             return 'published'
-        if self.group.announced_at:
+        if self.election_group.announced_at:
             return 'announced'
         return 'draft'
 
