@@ -1,7 +1,7 @@
 import * as React from 'react';
 // import injectSheet from 'react-jss'
 
-import { Candidate, SelectedPrefElecCandidate } from './components/Candidate';
+import PrefElecMobile from './components/PrefElecMobile';
 
 function shuffleArray<T>(array: T[]): T[] {
   const emptyArray: T[] = [];
@@ -14,6 +14,18 @@ function shuffleArray<T>(array: T[]): T[] {
   }
   return shuffledArray;
 }
+
+
+function moveArrayItem(arr: any[], oldIndex: number, newIndex: number) {
+  if (newIndex >= arr.length) {
+    let k = newIndex - arr.length + 1;
+    while (k--) {
+      arr.push(undefined);
+    }
+  }
+  arr.splice(newIndex, 0, arr.splice(oldIndex, 1)[0]);
+  return arr;
+};
 
 interface IProps {
   election: Election
@@ -32,6 +44,7 @@ class PrefElecBallot extends React.Component<IProps, IState> {
       shuffledCandidates: shuffleArray(props.election.lists[0].candidates)
     };
     this.addCandidate = this.addCandidate.bind(this);
+    this.moveCandidate = this.moveCandidate.bind(this);
     this.removeCandidate = this.removeCandidate.bind(this);
   }
   public render() {
@@ -39,26 +52,13 @@ class PrefElecBallot extends React.Component<IProps, IState> {
       this.state.selectedCandidates.indexOf(c) === -1
     )
     return (
-      <div>
-        <ul>
-          {this.state.selectedCandidates.map((c, index) => (
-            <SelectedPrefElecCandidate
-              key={index}
-              candidate={c}
-              selectAction={this.removeCandidate}
-            />
-          ))}
-        </ul>
-        <ul>
-          {unselectedCandidates.map((c, index) => (
-            <Candidate
-              key={index}
-              candidate={c}
-              selectAction={this.addCandidate}
-            />
-          ))}
-        </ul>
-      </div>
+      <PrefElecMobile
+        selectedCandidates={this.state.selectedCandidates}
+        unselectedCandidates={unselectedCandidates}
+        addCandidate={this.addCandidate}
+        removeCandidate={this.removeCandidate}
+        moveCandidate={this.moveCandidate}
+      />
     )
   }
   private addCandidate(candidate: Candidate) {
@@ -73,6 +73,14 @@ class PrefElecBallot extends React.Component<IProps, IState> {
       c !== candidate
     );
     this.setState({ selectedCandidates });
+  }
+  private moveCandidate(oldIndex: number, newIndex: number) {
+    const emptyArray: Candidate[] = [];
+    const arrayCopy: Candidate[] = emptyArray.concat(
+      this.state.selectedCandidates
+    );
+    moveArrayItem(arrayCopy, oldIndex, newIndex);
+    this.setState({ selectedCandidates: arrayCopy })
   }
 }
 

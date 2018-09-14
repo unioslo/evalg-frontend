@@ -9,13 +9,13 @@ import VoterElectionsTable from './VoterElectionsTable';
 import { MobileDropDown, MobileDropdownItem } from 'components/dropdownMenu';
 import { TabSelector, Tab } from "./TabSelector";
 
+type Props = {
+  electionGroups: Array<ElectionGroup>,
+}
+
 type State = {
   screenSize: "sm" | "md" | "lg",
   electionStatusFilter: string
-}
-
-type Props = {
-  electionGroups: Array<ElectionGroup>,
 }
 
 class VoterElections extends React.Component<Props, State> {

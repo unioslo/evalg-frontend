@@ -12,7 +12,7 @@ const styles = theme => ({
     fill: theme.colors.lightBlueGray
   },
   icon: {
-    fill: theme.colors.darkTurquoise
+    fill: theme.colors.lightTurquoise
   },
   text: {
     fill: theme.colors.greyishBrown,

@@ -1,6 +1,6 @@
 /* @flow */
 import * as React from 'react';
-import { Trans } from 'react-i18next';
+import { Trans, translate } from 'react-i18next';
 
 import TableRow from 'components/table/TableRow';
 import TableCell from 'components/table/TableCell';
@@ -17,13 +17,11 @@ type Props = {
   elGrp: ElectionGroup,
   selected?: boolean,
   selectAction: Function,
+  i18n: Object
 };
 
 class ElGrpTableRow extends React.Component<Props> {
-  props: Props;
-
   render() {
-    const lang = 'nb';
     const { elGrp } = this.props;
     let totalVotes = 0;
     let totalVotesOutsideCensus = 0;
@@ -39,7 +37,7 @@ class ElGrpTableRow extends React.Component<Props> {
       totalVotes = 0;
       totalVotesOutsideCensus = 0;
     });
-
+    const lang = this.props.i18n.language;
     const sharedStartTime = equalValues(elections, ['startDate', 'startTime']);
     const sharedEndTime = equalValues(elections, ['endDate', 'endTime']);
     const sharedStatus = equalValues(elections, ['status']);
@@ -103,4 +101,4 @@ class ElGrpTableRow extends React.Component<Props> {
   }
 }
 
-export default ElGrpTableRow;
+export default translate()(ElGrpTableRow);

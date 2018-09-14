@@ -3,17 +3,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
 
-type Props = {
-  to: string,
-  external?: boolean,
-  children?: ReactChildren,
-  marginRight?: boolean,
-  classes: Object
-}
-
 const styles = theme => ({
   link: {
-    fontSize: '1.6rem',
     display: 'inline-flex',
     alignItems: 'center'
   },
@@ -29,6 +20,14 @@ const styles = theme => ({
     marginRight: '3rem'
   }
 })
+
+type Props = {
+  to: string,
+  external?: boolean,
+  children?: ReactChildren,
+  marginRight?: boolean,
+  classes: Object,
+}
 
 const Link = (props: Props) => {
   const { to, external, children, marginRight, classes } = props;

@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import * as React from 'react';
 import { Query } from 'react-apollo';
 
+// import { getScreenSize, mediaQueryLg, mediaQueryMd, } from "utils/responsive";
 import PrefElecBallot from './PrefElecBallot';
 
 const getElectionVotingData = gql`

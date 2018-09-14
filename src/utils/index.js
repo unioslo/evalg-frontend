@@ -18,20 +18,8 @@ const timeFromDT = (dateTime: string) => dateTime.substring(11, 16);
 const DTFromDateAndTime = (date: string, time: string) =>
   `${date}T${time}`;
 
-const shuffleArray = <T>(array: T[]) => {
-  const shuffledArray = [].concat(array);
-  for (let i = shuffledArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-  const temp = shuffledArray[i];
-  shuffledArray[i] = shuffledArray[j];
-  shuffledArray[j] = temp;
-}
-return shuffleArray;
-}
-
-
 export {
-    objPropsToArray,
+  objPropsToArray,
   isObjEmpty,
   isObject,
   makeElObj,
@@ -44,6 +32,5 @@ export {
   objsEqual,
   dateFromDT,
   timeFromDT,
-  DTFromDateAndTime,
-  shuffleArray
+  DTFromDateAndTime
 }

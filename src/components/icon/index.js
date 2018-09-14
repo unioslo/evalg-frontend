@@ -78,6 +78,16 @@ const getIcon = (type: string, classes: Object) => {
           </g>
         </svg>
       );
+    case 'addCircle':
+      return (
+        <svg width="42px" height="42px" viewBox="0 0 42 42">
+          <g stroke="none" strokeWidth="1" fill="none">
+            <circle stroke="#8ECED9" strokeWidth="2" cx="21" cy="21" r="20" />
+            <rect fill="#8ECED9" x="18.538743" y="7.5649828" width="5.25" height="26.0562731" />
+            <rect fill="#8ECED9" x="8.14" y="17.9749828" height="5.25" width="26.0562731" />
+          </g>
+      </svg>
+      );
     case 'clipboard':
       return (
         <svg viewBox="0 0 1000 1000" className={classes.clipBoard}>
@@ -149,6 +159,12 @@ const styles = theme => ({
   dropDownArrowPolygon: {
     fill: theme.dropdownArrowColor,
   },
+  plusCircle: {
+    stroke: theme.colors.lightTurquoise
+  },
+  plusCircleIcon: {
+    fill: theme.colors.white
+  },
   plusSignBg: {
     width: '20px',
     height: '20px',
@@ -176,6 +192,7 @@ const styles = theme => ({
 type Props = {
   type: string,
   marginRight?: boolean,
+  onClick?: Function,
   classes: Object
 }
 
@@ -187,7 +204,7 @@ const Icon = (props: Props) => {
     [classes.marginRight]: props.marginRight
   });
   return (
-    <div className={ cls }>
+    <div className={ cls } onClick={props.onClick}>
       {icon}
     </div>
   )
