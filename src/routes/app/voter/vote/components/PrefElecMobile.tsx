@@ -168,8 +168,8 @@ const SelectedCandidate: React.SFC<ISelectedCandProps> = props => {
       <svg width="42px" height="42px" viewBox="0 0 50 50">
         <g stroke="none" strokeWidth="1" fill="none">
           <circle className={classes.rankIcon} cx="25" cy="25" r="25" />
-          <text fontSize="24" fontWeight="bold" fill="#FFF">
-            <tspan x="19" y="33">{props.rankNr}</tspan>
+          <text x="50%" y="33px" fontSize="24" fontWeight="bold" fill="#FFF" textAnchor="middle">
+            {props.rankNr}
           </text>
         </g>
       </svg>

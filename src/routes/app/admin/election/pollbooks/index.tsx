@@ -11,7 +11,6 @@ import { DropDownRF, FormButtons } from 'components/form';
 import { ConfirmModal } from 'components/modal';
 import { Page, PageSection } from 'components/page';
 
-
 import {
   Table,
   TableBody,
@@ -120,6 +119,7 @@ const electionGroupQuery = gql`
 `;
 
 const refetchQueries = () => ['electionGroupVoters'];
+
 interface IUpdateVoterForm {
   submitAction: (o: object) => void,
   closeAction: () => void,
