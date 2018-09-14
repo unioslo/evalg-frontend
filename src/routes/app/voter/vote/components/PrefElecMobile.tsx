@@ -13,10 +13,13 @@ const styles = (theme: any) => ({
     alignItems: 'center',
     borderBottom: "1px solid #CCC",
     display: 'flex',
-    padding: '1rem 0',
+    padding: '0.6rem 0',
   },
   listItemSelect: {
-
+    alignItems: 'flex-end',
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'flex-end'
   },
   listItemSubText: {
     fontSize: '1.2rem',
@@ -54,6 +57,7 @@ class PrefElecMobile extends React.Component<IProps, IState> {
     this.promoteSelectedCandidate = this.promoteSelectedCandidate.bind(this);
     this.demoteSelectedCandidate = this.demoteSelectedCandidate.bind(this);
     this.selectCandidate = this.selectCandidate.bind(this);
+    this.deselectCandidate = this.deselectCandidate.bind(this);
     this.removeCandidate = this.removeCandidate.bind(this);
   }
 
@@ -63,16 +67,22 @@ class PrefElecMobile extends React.Component<IProps, IState> {
     return (
       <div>
         <ul>
-          {selectedCandidates.map((c, index) => (
-            <SelectedCandidate
-              key={index}
-              active={index === this.state.activeCandIndex}
-              candidate={c}
-              classes={classes}
-              rankNr={index + 1}
-              selectAction={this.selectCandidate.bind(this, index)}
-            />
-          ))}
+          {selectedCandidates.map((c, index) => {
+            let selectAction = this.selectCandidate.bind(this, index)
+            if (this.state.activeCandIndex === index) {
+              selectAction = this.deselectCandidate
+            }
+            return (
+              <SelectedCandidate
+                key={index}
+                active={index === this.state.activeCandIndex}
+                candidate={c}
+                classes={classes}
+                rankNr={index + 1}
+                selectAction={selectAction}
+              />
+            )
+          })}
         </ul>
         <ul>
           {unselectedCandidates.map((c, index) => (
@@ -103,6 +113,10 @@ class PrefElecMobile extends React.Component<IProps, IState> {
 
   private selectCandidate(index: number) {
     this.setState({ activeCandIndex: index });
+  }
+
+  private deselectCandidate() {
+    this.setState({ activeCandIndex: -1 })
   }
 
   private promoteSelectedCandidate() {
@@ -183,8 +197,33 @@ const SelectedCandidate: React.SFC<ISelectedCandProps> = props => {
           </Link>
         </div>
       </div>
-      <div onClick={props.selectAction}>Select</div>
-    </li>
+      <div onClick={props.selectAction} className={classes.listItemSelect}>
+        {props.active ?
+          <svg width="51px" height="46px" viewBox="0 0 51 62" version="1.1">
+            <g stroke="none" strokeWidth="1" fill="none">
+              <g id="Group">
+                <rect fill="#D5EBEF" x="0" y="0" width="51" height="62" rx="8" />
+                <g transform="translate(12.000000, 17.000000)">
+                  <circle stroke="#8ECED9" strokeWidth="3" cx="14" cy="14" r="12.5" />
+                  <circle fill="#2294A8" cx="14" cy="14" r="5" />
+                </g>
+              </g>
+            </g>
+          </svg> :
+          <svg width="51px" height="46px" viewBox="0 0 51 62" version="1.1">
+            <g stroke="none" strokeWidth="1" fill="none">
+              <g id="Group">
+                <rect fill="#F9F4FA" x="0" y="0" width="51" height="62" rx="8" />
+                <g transform="translate(12.000000, 17.000000)">
+                  <circle stroke="#8ECED9" strokeWidth="3" cx="14" cy="14" r="12.5" />
+
+                </g>
+              </g>
+            </g>
+          </svg>
+        }
+      </div>
+    </li >
   )
 }
 

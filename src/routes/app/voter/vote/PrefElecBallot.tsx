@@ -62,13 +62,11 @@ class PrefElecBallot extends React.Component<IProps, IState> {
     )
   }
   private addCandidate(candidate: Candidate) {
-    console.error('ADD', candidate);
     this.setState({
       selectedCandidates: this.state.selectedCandidates.concat([candidate]),
     });
   }
   private removeCandidate(candidate: Candidate) {
-    console.error('REMOVE', candidate);
     const selectedCandidates = this.state.selectedCandidates.filter(c =>
       c !== candidate
     );
