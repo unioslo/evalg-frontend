@@ -8,6 +8,8 @@ export default {
     addTo: 'Add',
     censusPageDesc: 'Here you can create and administer censuses.',
     deleteCensus: 'Delete census',
+    deletePersonModalText: 'Are you sure you want to delete {{personName}} from “{{pollbookName}}”?',
+    deletePersonModalTitle: 'Confirm deletion',
     group: 'Group',
     person: 'Person',
     uploadCensusFile: 'Upload census file',
