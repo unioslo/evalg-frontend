@@ -16,7 +16,7 @@ const styles = theme => ({
     }
   },
   arrowIcon: {
-    fill: theme.dropdownArrowColor
+    fill: theme.dropDownArrowColor
   }
 })
 

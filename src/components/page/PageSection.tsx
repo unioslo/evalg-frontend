@@ -56,7 +56,9 @@ const styles = (theme: any) => ({
   },
   topDescription: {
     display: 'block',
-    margin: '3rem 0 3rem',
+    [theme.breakpoints.mdQuery]: {
+      margin: '3rem 0 3rem',
+    }
   },
   topHeader: {
     alignItems: 'baseline',

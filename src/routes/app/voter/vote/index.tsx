@@ -36,6 +36,7 @@ interface IProps {
   electionId: string
 }
 
+
 const VotingPage: React.SFC<IProps> = (props) => {
   return (
     <Query
@@ -45,13 +46,19 @@ const VotingPage: React.SFC<IProps> = (props) => {
         if (loading || error) {
           return null;
         }
-        const { election } = data;
+        const election: Election = data.election;
         const { candidateType } = election.meta;
         const { voting } = election.meta.ballotRules;
+        const electionName = election.electionGroup ?
+          election.electionGroup.name :
+          { en: '', nb: '', nn: '' };
         if (voting === 'rank_candidates') {
           if (candidateType === 'single') {
             return (
-              <PrefElecBallot election={election} />
+              <PrefElecBallot
+                election={election}
+                electionName={electionName}
+              />
             )
           }
           else if (candidateType === 'single_team') {

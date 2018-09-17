@@ -22,6 +22,7 @@ class VoterElections extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { screenSize: "sm", electionStatusFilter: 'ongoing' };
+    this.setScreenSize = this.setScreenSize.bind(this);
   }
   componentDidMount() {
     mediaQueryMd.addListener(this.setScreenSize.bind(this));

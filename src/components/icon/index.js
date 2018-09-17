@@ -157,7 +157,7 @@ const styles = theme => ({
     height: '9px',
   },
   dropDownArrowPolygon: {
-    fill: theme.dropdownArrowColor,
+    fill: theme.dropDownArrowColor,
   },
   plusCircle: {
     stroke: theme.colors.lightTurquoise

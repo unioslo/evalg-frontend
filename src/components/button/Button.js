@@ -3,17 +3,6 @@ import classNames from 'classnames';
 import Icon from '../icon';
 import injectSheet from 'react-jss';
 
-type Props = {
-  action: Function,
-  secondary?: boolean,
-  disabled?: boolean,
-  iconLeft?: string,
-  iconRight?: string,
-  wide?: boolean,
-  text: string | ReactElement,
-  classes: Object
-}
-
 const OSXUserAgent = window.navigator.userAgent.includes('OS X');
 
 const styles = theme => ({
@@ -25,15 +14,15 @@ const styles = theme => ({
     borderRadius: '0.4rem',
     cursor: 'pointer',
     display: 'flex',
-    fontSize: '2rem',
+    //fontSize: '1.4rem',
     //height: '6rem',
     lineHeight: 1.1,
-    padding: '1.9rem 4rem',
+    padding: '1.5rem 2rem',
     transition: 'background 100ms ease-in',
-    [`media (min-width: ${theme.breakpoints.lg})`]: {
+    [theme.breakpoints.mdQuery]: {
       fontSize: '1.8rem',
       height: '5rem',
-      padding: '2rem 1.5rem',
+      //padding: '2rem 1.5rem',
     },
   },
   wide: {
@@ -48,6 +37,9 @@ const styles = theme => ({
     background: theme.secondaryBtnBgColor,
     borderColor: theme.secondaryBtnBorderColor,
     color: theme.secondaryBtnColor,
+  },
+  smallText: {
+    fontSize: '1.4rem'
   },
   disabled: {
     '&$primary': {
@@ -68,6 +60,18 @@ const styles = theme => ({
   },
 });
 
+type Props = {
+  action: Function,
+  secondary?: boolean,
+  disabled?: boolean,
+  iconLeft?: string,
+  iconRight?: string,
+  smallText?: boolean,
+  wide?: boolean,
+  text: string | ReactElement,
+  classes: Object
+}
+
 const Button = (props: Props) => {
   const { classes } = props;
   const btnClassNames = classNames({
@@ -76,6 +80,7 @@ const Button = (props: Props) => {
     [classes.disabled]: props.disabled,
     [classes.primary]: !props.secondary,
     [classes.secondary]: props.secondary,
+    [classes.smallText]: props.smallText,
     [classes.wide]: props.wide
   });
 

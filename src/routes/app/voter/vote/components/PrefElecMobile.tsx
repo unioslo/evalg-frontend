@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Trans } from 'react-i18next';
 import injectSheet from 'react-jss';
 
+import { Button, ButtonContainer } from 'components/button';
 import Icon from 'components/icon';
 import Link from 'components/link';
 import CandidateButtonBar from './CandidateButtonBar';
@@ -66,6 +67,17 @@ class PrefElecMobile extends React.Component<IProps, IState> {
 
     return (
       <div>
+        <ButtonContainer noTopMargin={true}>
+          <Link to="/voter">
+            <Button
+              text={<Trans>general.back</Trans>}
+              secondary={true}
+            />
+          </Link>
+          <Button
+            text={<Trans>election.showBallot</Trans>}
+          />
+        </ButtonContainer>
         <ul>
           {selectedCandidates.map((c, index) => {
             let selectAction = this.selectCandidate.bind(this, index)

@@ -1,7 +1,14 @@
 import * as React from 'react';
+import { translate } from 'react-i18next';
+import { TranslateHocProps } from 'react-i18next/src/translate';
 // import injectSheet from 'react-jss'
 
+
+import { Page, } from 'components/page'
+
 import PrefElecMobile from './components/PrefElecMobile';
+
+
 
 function shuffleArray<T>(array: T[]): T[] {
   const emptyArray: T[] = [];
@@ -15,7 +22,6 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffledArray;
 }
 
-
 function moveArrayItem(arr: any[], oldIndex: number, newIndex: number) {
   if (newIndex >= arr.length) {
     let k = newIndex - arr.length + 1;
@@ -27,8 +33,9 @@ function moveArrayItem(arr: any[], oldIndex: number, newIndex: number) {
   return arr;
 };
 
-interface IProps {
-  election: Election
+interface IProps extends TranslateHocProps {
+  election: Election,
+  electionName: NameFields
 }
 
 interface IState {
@@ -51,14 +58,21 @@ class PrefElecBallot extends React.Component<IProps, IState> {
     const unselectedCandidates = this.state.shuffledCandidates.filter(c =>
       this.state.selectedCandidates.indexOf(c) === -1
     )
+    const { i18n } = this.props;
+    let lang = 'nb';
+    if (i18n && i18n.language) {
+      lang = i18n.language;
+    }
     return (
-      <PrefElecMobile
-        selectedCandidates={this.state.selectedCandidates}
-        unselectedCandidates={unselectedCandidates}
-        addCandidate={this.addCandidate}
-        removeCandidate={this.removeCandidate}
-        moveCandidate={this.moveCandidate}
-      />
+      <Page header={this.props.electionName[lang]}>
+        <PrefElecMobile
+          selectedCandidates={this.state.selectedCandidates}
+          unselectedCandidates={unselectedCandidates}
+          addCandidate={this.addCandidate}
+          removeCandidate={this.removeCandidate}
+          moveCandidate={this.moveCandidate}
+        />
+      </Page >
     )
   }
   private addCandidate(candidate: Candidate) {
@@ -82,4 +96,4 @@ class PrefElecBallot extends React.Component<IProps, IState> {
   }
 }
 
-export default PrefElecBallot;
+export default translate()(PrefElecBallot);

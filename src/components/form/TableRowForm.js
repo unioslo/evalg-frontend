@@ -1,27 +1,45 @@
 import * as React from 'react';
+import injectSheet from 'react-jss';
+
+const styles = theme => ({
+  form: {
+    padding: '3rem 0'
+  },
+  fields: {
+    display: 'flex'
+  }
+})
 
 type Props = {
   children?: ReactChildren,
-  header?: ReactElement | string
+  header?: ReactElement | string,
+  classes: Object
 }
 
-export const TableRowFormFields = (props: Props) => {
+const TableRowFormFields = (props: Props) => {
   return (
-    <div className="tablerowform--fields">
+    <div className={props.classes.fields}>
       {props.children}
     </div>
   );
 };
 
+const StyledFields = injectSheet(styles)(TableRowFormFields);
 
-export const TableRowForm = (props: Props) => {
+const TableRowForm = (props: Props) => {
   return (
-    <div className="tablerowform">
+    <div className={props.classes.form}>
       {props.header &&
-        <h3><b>{ props.header }</b></h3>
+        <h3><b>{props.header}</b></h3>
       }
       {props.children}
     </div>
   );
 };
 
+const StyledForm = injectSheet(styles)(TableRowForm);
+
+export {
+  StyledFields as TableRowFormFields,
+  StyledForm as TableRowForm
+};

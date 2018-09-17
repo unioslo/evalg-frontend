@@ -13,7 +13,7 @@ const styles = theme => ({
     margin: '0 auto',
     maxWidth: theme.appMaxWidth,
     padding: `0 ${theme.horizontalPadding}`,
-    [`@media (min-width: ${theme.breakpoints.lg})`]: {
+    [theme.breakpoints.mdQuery]: {
       padding: `0 ${theme.horizontalMdPadding}`
     },
   },
@@ -32,8 +32,8 @@ const styles = theme => ({
     maxWidth: theme.appMaxWidth,
     height: '12rem',
     padding: `2.5rem ${theme.horizontalPadding} 3rem ${theme.horizontalPadding}`,
-    [`@media (min-width: ${theme.breakpoints.lg})`]: {
-      padding: `2.5rem ${theme.horizontalMdPadding} 3rem ${theme.horizonalMdPadding}`
+    [theme.breakpoints.mdQuery]: {
+      padding: `2.5rem ${theme.horizontalMdPadding} 3rem ${theme.horizontalMdPadding}`
     },
   },
   mainRow: {
@@ -49,7 +49,7 @@ const styles = theme => ({
     lineHeight: '1.5',
     color: theme.colors.eggWhite,
     marginTop: '0.5rem',
-    [`@media (min-width: ${theme.breakpoints.lg})`]: {
+    [theme.breakpoints.mdQuery]: {
       fontSize: '2rem'
     },
   },

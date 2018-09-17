@@ -9,11 +9,12 @@ interface IProps {
 const styles = (theme: any) => ({
   header: {
     color: theme.contentPageHeaderColor,
+    fontSize: '3rem',
     fontWeight: 'bold',
-    margin: 0,
-    [`media (min-width: ${theme.breakpoints.lg})`]: {
+    margin: `0rem ${theme.contentHorPadding} 0 ${theme.contentHorPadding}`,
+    [theme.breakpoints.mdQuery]: {
       fontWeight: 'normal',
-      margin: `4rem ${theme.contentHorMdPadding} 0 ${theme.contentHorMdPadding}`
+      margin: `4rem ${theme.contentHorMdPadding} 0 ${theme.contentHorMdPadding}`,
     }
   }
 })
@@ -28,4 +29,3 @@ const Page: React.SFC<IProps> = (props) => (
 const StyledPage: any = injectSheet(styles)(Page);
 
 export default StyledPage;
-

@@ -20,16 +20,14 @@ const styles = theme => ({
   container: {
     maxWidth: theme.appMaxWidth,
     flex: '1',
-    padding: '4rem $contentContainerHorPadding',
-  },
-  [`@media (min-width: ${theme.breakpoints.lg})`]: {
-    container: {
+    padding: `4rem ${theme.contentContainerHorPadding}`,
+    [theme.breakpoints.mdQuery]: {
       padding: `4rem ${theme.contentContainerMdHorPadding}`
     }
-  }
+  },
 });
 
-const Content = ({classes, children} : Props) => {
+const Content = ({ classes, children }: Props) => {
   return (
     <div className={classes.wrapper}>
       <div className={classes.container}>

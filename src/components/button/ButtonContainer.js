@@ -14,11 +14,12 @@ type Props = {
 const styles = theme => ({
   btnContainer: {
     marginTop: '2rem',
-    [`media (min-width: ${theme.breakpoints.lg})`]: {
+    [`@media (min-width: ${theme.breakpoints.md})`]: {
+      justifyContent: 'flex-end',
       marginTop: '4rem',
     },
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     '& > button': {
       marginRight: '2rem',
     },

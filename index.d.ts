@@ -73,7 +73,13 @@ type Election = {
   totalVotes: number,
   status: ElectionStatusType,
   pollbooks: IPollBook[],
-  meta: object,
+  meta: {
+    candidateType: string,
+    ballotRules: {
+      voting: string
+    }
+  },
+  electionGroup?: ElectionGroup,
   active: boolean,
   mandatePeriodStart: string,
   mandatePeriodEnd: string,

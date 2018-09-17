@@ -1,13 +1,31 @@
 import * as React from 'react';
 import { Trans, translate } from 'react-i18next';
+import injectSheet from 'react-jss';
 
 import Button, { ButtonContainer } from 'components/button';
 import { Date, Time } from 'components/i18n';
 import Link from 'components/link';
 
+const styles = theme => ({
+  list: {
+    width: '100%',
+    listStyleType: 'none',
+    fontSize: '1.7rem',
+    borderTop: `3px solid ${theme.colors.lightBlueGray}`,
+    lineHeight: 1.6,
+    marginTop: '2rem',
+  },
+  listItem: {
+    borderBottom: `3px solid ${theme.colors.lightBlueGray}`,
+    paddingTop: '1.5rem',
+    paddingBottom: '3rem',
+  }
+});
+
 type ListItemProps = {
   electionGroup: ElectionGroup,
-  lang: string
+  lang: string,
+  classes: Object
 }
 
 const VoterElectionsListItem = (props: ListItemProps) => {
@@ -19,7 +37,7 @@ const VoterElectionsListItem = (props: ListItemProps) => {
   const hasVoted = false;
 
   return (
-    <li className="voterelectionslist--item">
+    <li className={props.classes.listItem}>
       <h3><b>{electionGroup.name[lang]}</b></h3>
       <div className="voterelectionslist--item--infosection">
         <div>
@@ -40,14 +58,17 @@ const VoterElectionsListItem = (props: ListItemProps) => {
         </div>
       </div>
       <ButtonContainer alignLeft>
-        {!hasVoted ?
-          <Link to={`/voter/elections/${election.id}/vote`}>
-            <Trans>election.voteNow</Trans>&nbsp;
-          </Link> :
-          <Button secondary text={<Trans>election.changeVote</Trans>}
-            action={() => console.error('CHANGE VOTE')}
-          />
-        }
+        <Link to={`/voter/elections/${election.id}/vote`}>
+          {!hasVoted ?
+            <Button
+              text={<Trans>election.voteNow</Trans>}
+            /> :
+            <Button
+              secondary={true}
+              text={<Trans>election.changeVote</Trans>}
+            />
+          }
+        </Link>
       </ButtonContainer>
     </li>
   )
@@ -56,11 +77,12 @@ const VoterElectionsListItem = (props: ListItemProps) => {
 type ListProps = {
   electionGroups: Array<ElectionGroup>,
   noElectionsText: ReactElement,
-  i18n: object
+  i18n: object,
+  classes: Object
 }
 
 const VoterElectionsList = (props: ListProps) => {
-  const { electionGroups, elections, noElectionsText } = props;
+  const { electionGroups, elections, noElectionsText, classes } = props;
   const lang = props.i18n.language;
   if (electionGroups.length === 0) {
     return (
@@ -68,9 +90,10 @@ const VoterElectionsList = (props: ListProps) => {
     )
   }
   return (
-    <ul className="voterelectionslist">
+    <ul className={classes.list}>
       {electionGroups.map((group, index) =>
         <VoterElectionsListItem
+          classes={classes}
           electionGroup={group}
           lang={props.i18n.language}
           key={index}
@@ -80,4 +103,4 @@ const VoterElectionsList = (props: ListProps) => {
   )
 };
 
-export default translate()(VoterElectionsList);
+export default injectSheet(styles)(translate()(VoterElectionsList));
