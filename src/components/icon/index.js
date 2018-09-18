@@ -115,6 +115,15 @@ const getIcon = (type: string, classes: Object) => {
           </g>
         </svg>
       );
+    case 'help':
+      return (
+        <svg width="28px" height="28px" viewBox="0 0 28 28">
+          <circle stroke="#2294A8" strokeWidth="3" fill="#FFFFFF" cx="14" cy="14" r="12.5" />
+          <text fontSize="20" fontWeight="bold" fill="#2294A8">
+            <tspan x="8" y="21">?</tspan>
+          </text>
+        </svg>
+      )
     default:
       if (process.NODE_ENV !== 'production') {
         console.error(`Icon not found: ${ type }`);

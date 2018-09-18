@@ -6,10 +6,24 @@ import injectSheet from 'react-jss';
 import { Button, ButtonContainer } from 'components/button';
 import Icon from 'components/icon';
 import Link from 'components/link';
-import CandidateButtonBar from './CandidateButtonBar';
+import { PageSection } from 'components/page';
+import CandidateButtonBar from 'routes/app/voter/vote/components/CandidateButtonBar';
+import HelpSubSection from 'routes/app/voter/vote/components/HelpSubSection';
+import MandatePeriodText from 'routes/app/voter/vote/components/MandatePeriodText';
+
 // import Text from 'components/text';
 
+const helpTextTags = [
+  'voter.prefElecRankCandidatesShort',
+  'voter.prefElecNrOfCandidates',
+  'voter.prefElecOnlySelectedGetVote',
+  'voter.canVoteBlank',
+]
+
 const styles = (theme: any) => ({
+  candidateList: {
+    marginTop: '2rem'
+  },
   listItem: {
     alignItems: 'center',
     borderBottom: "1px solid #CCC",
@@ -34,8 +48,7 @@ const styles = (theme: any) => ({
   },
   rankIcon: {
     fill: theme.colors.darkTurquoise
-  }
-
+  },
 })
 
 interface IProps {
@@ -43,8 +56,10 @@ interface IProps {
   unselectedCandidates: Candidate[]
   moveCandidate: (oldIndex: number, newIndex: number) => void
   removeCandidate: (c: Candidate) => void,
-  addCandidate: (c: Candidate) => void
+  addCandidate: (c: Candidate) => void,
+  election: Election,
   classes: any
+  reviewAction: () => void
 }
 
 interface IState {
@@ -63,63 +78,76 @@ class PrefElecMobile extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { selectedCandidates, unselectedCandidates, classes } = this.props;
-
-    return (
-      <div>
-        <ButtonContainer noTopMargin={true}>
-          <Link to="/voter">
-            <Button
-              text={<Trans>general.back</Trans>}
-              secondary={true}
-            />
-          </Link>
+    const {
+      selectedCandidates, unselectedCandidates, classes, election
+    } = this.props;
+    const canSubmit = selectedCandidates.length > 0
+    const ballotActions =
+      <ButtonContainer>
+        <Link to="/voter">
           <Button
-            text={<Trans>election.showBallot</Trans>}
+            text={<Trans>general.back</Trans>}
+            secondary={true}
           />
-        </ButtonContainer>
-        <ul>
-          {selectedCandidates.map((c, index) => {
-            let selectAction = this.selectCandidate.bind(this, index)
-            if (this.state.activeCandIndex === index) {
-              selectAction = this.deselectCandidate
-            }
-            return (
-              <SelectedCandidate
+        </Link>
+        <Button
+          text={<Trans>election.showBallot</Trans>}
+          disabled={!canSubmit}
+          action={this.props.reviewAction}
+        />
+      </ButtonContainer>
+    return (
+      <PageSection>
+        <MandatePeriodText election={election} />
+        <HelpSubSection
+          header="Velg kandidater"
+          helpTextTags={helpTextTags}>
+          {ballotActions}
+          <ul className={classes.candidateList}>
+            {selectedCandidates.map((c, index) => {
+              let selectAction = this.selectCandidate.bind(this, index)
+              if (this.state.activeCandIndex === index) {
+                selectAction = this.deselectCandidate
+              }
+              return (
+                <SelectedCandidate
+                  key={index}
+                  active={index === this.state.activeCandIndex}
+                  candidate={c}
+                  classes={classes}
+                  rankNr={index + 1}
+                  selectAction={selectAction}
+                />
+              )
+            })}
+          </ul>
+          <ul>
+            {unselectedCandidates.map((c, index) => (
+              <UnselectedCandidate
                 key={index}
-                active={index === this.state.activeCandIndex}
                 candidate={c}
                 classes={classes}
-                rankNr={index + 1}
-                selectAction={selectAction}
+                addAction={this.props.addCandidate}
               />
-            )
-          })}
-        </ul>
-        <ul>
-          {unselectedCandidates.map((c, index) => (
-            <UnselectedCandidate
-              key={index}
-              candidate={c}
-              classes={classes}
-              addAction={this.props.addCandidate}
-            />
-          ))}
-        </ul>
-        {this.state.activeCandIndex !== -1 ?
-          <CandidateButtonBar
-            upAction={this.promoteSelectedCandidate}
-            downAction={this.demoteSelectedCandidate}
-            removeAction={this.removeCandidate}
-            removeText={<Trans>general.remove</Trans>}
-            upDisabled={this.state.activeCandIndex === 0}
-            downDisabled={
-              this.state.activeCandIndex ===
-              this.props.selectedCandidates.length - 1
-            }
-          /> : null
-        }
-      </div>
+            ))}
+          </ul>
+          {ballotActions}
+          {this.state.activeCandIndex !== -1 ?
+            <CandidateButtonBar
+              upAction={this.promoteSelectedCandidate}
+              downAction={this.demoteSelectedCandidate}
+              removeAction={this.removeCandidate}
+              removeText={<Trans>general.remove</Trans>}
+              upDisabled={this.state.activeCandIndex === 0}
+              downDisabled={
+                this.state.activeCandIndex ===
+                this.props.selectedCandidates.length - 1
+              }
+            /> : null
+          }
+        </HelpSubSection>
+
+      </PageSection>
     )
   }
 
@@ -170,7 +198,7 @@ const UnselectedCandidate: React.SFC<ICandidateProps> = props => {
           {props.candidate.name}
         </div>
         <div className={classes.listItemSubText}>
-          <Link to={props.candidate.informationUrl}>
+          <Link to={props.candidate.informationUrl} external={true}>
             Mer om kandidaten
           </Link>
         </div>
@@ -204,7 +232,7 @@ const SelectedCandidate: React.SFC<ISelectedCandProps> = props => {
           {props.candidate.name}
         </div>
         <div className={classes.listItemSubText}>
-          <Link to={props.candidate.informationUrl}>
+          <Link to={props.candidate.informationUrl} external={true}>
             Mer om kandidaten
           </Link>
         </div>

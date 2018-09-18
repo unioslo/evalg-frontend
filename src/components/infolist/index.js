@@ -22,7 +22,9 @@ const styles = theme => ({
   },
   infoListItemBulleted: {
     background: 'url("/listmarker.svg") no-repeat left 10px',
-    marginLeft: '1.6rem',
+    [theme.breakpoints.mdQuery]: {
+      marginLeft: '1.6rem',
+    },
     paddingLeft: '1.3rem',
     marginTop: '0.3rem',
   }

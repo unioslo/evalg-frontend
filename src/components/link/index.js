@@ -13,7 +13,7 @@ const styles = theme => ({
     composes: '$link'
   },
   external: {
-    color: theme.blueish,
+    color: theme.colors.blueish,
     composes: '$link'
   },
   marginRight: {

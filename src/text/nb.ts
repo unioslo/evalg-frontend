@@ -27,6 +27,7 @@ export default {
     announceElectionInfoOne: 'Valget og stemmeperioden for valget vil bli synlig på forsiden hos velgerne.',
     announceElectionInfoTwo: 'Merk at valget ikke kan starte før det oppfyller minimumskravene og publisering er godkjent av valgansvarlig.',
     announceElectionReadMore: 'Les mer om synliggjøring av valget',
+    ballot: 'Stemmeseddel',
     blockerMissingKey: 'Opptellingsnøkkel',
     blockerStartBeforeEnd: 'Starttid må være før sluttid',
     blockerUnknown: 'Noe uventet er galt',
@@ -100,6 +101,7 @@ export default {
     published: 'Publisert',
     quotas: 'Kvotering',
     remove: 'Fjern',
+    reviewBallot: 'Se over stemmeseddelen din nedenfor. Bekreft deretter stemmen, eller gå tilbake for å gjøre endringer.',
     selectLevel: 'Valg av',
     selectParish: 'Valgkrets',
     selectType: 'Velg valgordning',
@@ -199,5 +201,13 @@ export default {
   prefElec: {
     candPageDesc: 'Her legger du til kandidater som stiller for de ulike velgergruppene.<0></0>' +
       'Valget må ha minimum like mange kandidater per gruppe som angitt under <1>valginnstillinger</1>.',
+  },
+  voter: {
+    canVoteBlank: 'Det er også mulig å stemme blankt.',
+    prefElecNrOfCandidates: 'Du kan stemme på så mange kandidater du vil.',
+    prefElecOnlySelectedGetVote: 'Det er bare kandidatene du markererer som får en stemme.',
+    prefElecRankCandidates: 'Ranger kandidaten du foretrekker mest som nummer 1 (ditt førstevalg). Hvis denne kandidaten ikke får nok stemmer totalt sett, vil stemmen du ga vedkommende overføres til den du eventuelt har rangert som nummber 2, og så videre.',
+    prefElecRankCandidatesShort: 'Du rangerer kandidatene ved å trykke på dem i prioritert rekkefølge. Rekkefølgen kan gjøres om på underveis.',
+    reviewBallot: 'Se over stemmeseddelen din nedenfor. Bekreft deretter stemmen, eller gå tilbake for å gjøre endringer.'
   }
 }

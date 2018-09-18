@@ -14,7 +14,7 @@ type Props = {
 const styles = theme => ({
   btnContainer: {
     marginTop: '2rem',
-    [`@media (min-width: ${theme.breakpoints.md})`]: {
+    [theme.breakpoints.mdQuery]: {
       justifyContent: 'flex-end',
       marginTop: '4rem',
     },
@@ -31,7 +31,10 @@ const styles = theme => ({
     justifyContent: 'flex-start'
   },
   smallTopMargin: {
-    marginTop: '2rem',
+    marginTop: '1rem',
+    [theme.breakpoints.mdQuery]: {
+      marginTop: '2rem'
+    }
   },
   noTopMargin: {
     marginTop: 0

@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import * as React from 'react';
+import { Trans } from 'react-i18next';;
 import injectSheet from 'react-jss';
 
 import ActionText from 'components/actiontext';
-import { Trans } from 'react-i18next';;
 import Text from 'components/text';
 
 interface IProps {
@@ -29,8 +29,8 @@ const styles = (theme: any) => ({
   },
   section: {
     color: theme.colors.greyishBrown,
-    padding: `2rem ${theme.contentHorPadding} 2rem`,
-    [`@media (min-width: ${theme.breakpoints.lg})`]: {
+    padding: `${theme.contentVertPadding} ${theme.contentHorPadding}`,
+    [`@media (min-width: ${theme.breakpoints.md})`]: {
       borderBottom: `10px solid ${theme.contentSectionBorderColor}`,
       padding: `4rem ${theme.contentHorMdPadding} 4rem`,
     },
@@ -38,10 +38,7 @@ const styles = (theme: any) => ({
   subSection: {
     marginTop: '3rem',
   },
-  subSectionHeader: {
-    fontWeight: 'bold',
-    marginBottom: '1rem',
-  },
+  subSectionHeader: theme.subSectionHeader,
   subSectionHeaderRegular: {
     fontWeight: 'normal'
   },
@@ -116,6 +113,7 @@ interface ISubProps {
   classes: any,
   header: React.ReactNode,
   notBoldHeader?: boolean,
+  customHeader?: boolean
 };
 
 const PageSubSection: React.SFC<ISubProps> = (props) => {
@@ -126,7 +124,10 @@ const PageSubSection: React.SFC<ISubProps> = (props) => {
   });
   return (
     <div className={classes.subSection}>
-      <h3 className={headerClassNames}>{props.header}</h3>
+      {props.customHeader ?
+        props.header :
+        <h3 className={headerClassNames}>{props.header}</h3>
+      }
       {props.children}
     </div>
   );

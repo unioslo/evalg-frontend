@@ -15,7 +15,6 @@ const renderVotingPage = ({ match }: any) => {
   )
 }
 
-
 const VoterRoute: React.SFC = () => {
   const userRoles: string[] = [];
   if (authEnabled && (!userRoles || userRoles.indexOf('voter') === -1)) {
@@ -24,10 +23,10 @@ const VoterRoute: React.SFC = () => {
     );
   }
   return (
-    <div>
+    <>
       <Route exact={true} path="/voter" component={VoterFrontPage} />
       <Route path="/voter/elections/:electionId/vote" render={renderVotingPage} />
-    </div>
+    </>
   )
 }
 

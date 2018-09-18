@@ -27,6 +27,7 @@ export default {
     announceElectionInfoOne: 'The election and voting period will be visible on the voters front page.',
     announceElectionInfoTwo: 'Note that the election cannot start before it meets the minimum requirements and is approved by the election owner.',
     announceElectionReadMore: 'Read more about making an election visible',
+    ballot: 'Ballot',
     blockerMissingKey: 'Election key',
     blockerStartBeforeEnd: 'Start time must be before end time',
     blockerUnknown: 'Something unexpected is wrong',
@@ -100,6 +101,7 @@ export default {
     published: 'Published',
     quotas: 'Quotas',
     remove: 'Remove',
+    reviewBallot: 'Review your ballot below. Then either submit your vote, or go back to make changes.',
     selectLevel: 'Election of',
     selectParish: 'Parish',
     selectType: 'Choose election type',
@@ -198,5 +200,13 @@ export default {
   prefElec: {
     candPageDesc: 'Here you can add candidates that are electable for the various voter groups.{nl}' +
       'The election must have at least as many candidates per voter group as stated in {{infoLink}}.'
+  },
+  voter: {
+    canVoteBlank: 'You may also submit a blank vote.',
+    prefElecNrOfCandidates: 'You can vote on as many of the listed candidates as you prefer.',
+    prefElecOnlySelectedGetVote: 'It is only the candidates you select that will receive a vote.',
+    prefElecRankCandidates: "Rank the candidates in prioritized order. If a candidate you have selected doesn't receive enough total votes in the election, your vote for that candidate will be transferred to the next candidate on your ballot.",
+    prefElecRankCandidatesShort: 'Rank the candidates as preferred by selection them in the preferred order. You may change the order of already selected candidates as you go along.',
+    reviewBallot: 'Review your ballot below, then confirm your vote or go back to make changes.'
   }
 }

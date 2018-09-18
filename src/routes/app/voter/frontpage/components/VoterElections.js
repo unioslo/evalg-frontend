@@ -63,7 +63,7 @@ class VoterElections extends React.Component<Props, State> {
       noElectionsText = <Trans>general.noClosedElections</Trans>;
     }
 
-    if (this.state.screenSize === 'lg') {
+    if (['md', 'lg'].indexOf(this.state.screenSize) !== -1) {
       return (
         <div>
           <TabSelector>

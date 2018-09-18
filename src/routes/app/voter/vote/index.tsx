@@ -3,13 +3,15 @@ import * as React from 'react';
 import { Query } from 'react-apollo';
 
 // import { getScreenSize, mediaQueryLg, mediaQueryMd, } from "utils/responsive";
-import PrefElecBallot from './PrefElecBallot';
+import PrefElec from './PrefElec';
 
 const getElectionVotingData = gql`
   query Election($id: UUID!) {
     election(id: $id) {
       id
       meta
+      mandatePeriodStart
+      mandatePeriodEnd
       electionGroup {
         name
       }
@@ -55,7 +57,7 @@ const VotingPage: React.SFC<IProps> = (props) => {
         if (voting === 'rank_candidates') {
           if (candidateType === 'single') {
             return (
-              <PrefElecBallot
+              <PrefElec
                 election={election}
                 electionName={electionName}
               />
