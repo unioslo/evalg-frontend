@@ -27,6 +27,9 @@ const styles = theme => ({
     },
     paddingLeft: '1.3rem',
     marginTop: '0.3rem',
+  },
+  noLeftMargin: {
+    marginLeft: 0
   }
 })
 
@@ -49,7 +52,8 @@ type ListItemProps = {
   children?: ReactChildren,
   smallText?: boolean,
   bulleted?: boolean,
-  classes: Object
+  classes: Object,
+  noLeftMargin?: boolean
 }
 
 const InfoListItem = (props: ListItemProps) => {
@@ -57,7 +61,8 @@ const InfoListItem = (props: ListItemProps) => {
   const cls = classNames({
     [classes.infoListItem]: true,
     [classes.infoListItemBulleted]: props.bulleted,
-    [classes.infoListItemSmallText]: props.smallText
+    [classes.infoListItemSmallText]: props.smallText,
+    [classes.noLeftMargin]: props.noLeftMargin
   });
   return (
     <li className={cls}>

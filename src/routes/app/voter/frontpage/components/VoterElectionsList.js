@@ -39,7 +39,7 @@ const VoterElectionsListItem = (props: ListItemProps) => {
   return (
     <li className={props.classes.listItem}>
       <h3><b>{electionGroup.name[lang]}</b></h3>
-      <div className="voterelectionslist--item--infosection">
+      <div>
         <div>
           <Trans>election.opens</Trans>:&nbsp;
           <Date dateTime={election.start} />&nbsp;

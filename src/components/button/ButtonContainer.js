@@ -20,15 +20,20 @@ const styles = theme => ({
     },
     display: 'flex',
     justifyContent: 'space-between',
-    '& > button': {
-      marginRight: '2rem',
+    '& > *': {
+      [theme.breakpoints.mdQuery]: {
+        marginRight: '2rem',
+      },
+      marginRight: '1rem',
     },
-    '& > button:last-child': {
+    '& > *:last-child': {
       marginRight: 0
     },
   },
   alignLeft: {
-    justifyContent: 'flex-start'
+    [theme.breakpoints.mdQuery]: {
+      justifyContent: 'flex-start'
+    }
   },
   smallTopMargin: {
     marginTop: '1rem',

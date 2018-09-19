@@ -1,4 +1,7 @@
 export default {
+  candidate: {
+    infoLinkText: 'More about the candidate'
+  },
   census: {
     addPerson: 'Add person',
     addPersonHelpText: 'You can also add multiple persons, separated by a comma',
@@ -203,10 +206,11 @@ export default {
   },
   voter: {
     canVoteBlank: 'You may also submit a blank vote.',
+    prefElecDesc: 'Select the candidates you would like to include in your vote, in prioritized order.',
     prefElecNrOfCandidates: 'You can vote on as many of the listed candidates as you prefer.',
     prefElecOnlySelectedGetVote: 'It is only the candidates you select that will receive a vote.',
     prefElecRankCandidates: "Rank the candidates in prioritized order. If a candidate you have selected doesn't receive enough total votes in the election, your vote for that candidate will be transferred to the next candidate on your ballot.",
     prefElecRankCandidatesShort: 'Rank the candidates as preferred by selection them in the preferred order. You may change the order of already selected candidates as you go along.',
     reviewBallot: 'Review your ballot below, then confirm your vote or go back to make changes.'
-  }
+  },
 }

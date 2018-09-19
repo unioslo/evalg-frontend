@@ -62,13 +62,13 @@ const VoterElectionsTable = (props: Props) => {
               </TableCell>
               <TableCell>
                 <Text><Date dateTime={election.start} /></Text>
-                <Text size="small"><Time dateTime={election.startTime} /></Text>
+                <Text size="small"><Time dateTime={election.start} /></Text>
               </TableCell>
               <TableCell>
                 <Text><Date dateTime={election.end} /></Text>
                 <Text size="small"><Time dateTime={election.end} /></Text>
               </TableCell>
-              <TableCell>
+              <TableCell alignCenter={true}>
                 <Text>
                   {canVote ?
                     <Trans>general.yes</Trans> :

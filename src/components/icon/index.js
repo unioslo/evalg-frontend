@@ -3,7 +3,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
 
-const getIcon = (type: string, classes: Object) => {
+const getIcon = (type: string, classes: Object, customClass: string) => {
   switch (type) {
     case 'forwardArrow':
       return (
@@ -39,19 +39,45 @@ const getIcon = (type: string, classes: Object) => {
       );
     case 'downArrow':
       return (
-        <svg className={classes.dropDownArrow}
+        <svg height="25px" viewBox="0 0 11 17">
+          <g stroke="none" strokeWidth="1" fill="none">
+            <g className={classes[customClass]}>
+              <polygon
+                transform="translate(5.499927, 8.204959) rotate(180.000000) translate(-5.499927, -8.204959)"
+                points="0 5.49956341 0.851348133 6.35091154 4.59000344 3.77139947 4.59000344 16.4099172 6.40912338 16.4099172 6.40912338 3.77139947 10.1477787 6.35091154 10.9998545 5.49956341 5.49956341 6.82121026e-13"
+              />
+            </g>
+          </g>
+        </svg>
+      )
+
+    case 'upArrow':
+      return (
+        <svg height="25px" viewBox="0 0 11 17">
+          <g stroke="none" strokeWidth="1" fill="none">
+            <g className={classes[customClass]}>
+              <polygon
+                points="0 5.49956341 0.851348133 6.35091154 4.59000344 3.77139947 4.59000344 16.4099172 6.40912338 16.4099172 6.40912338 3.77139947 10.1477787 6.35091154 10.9998545 5.49956341 5.49956341 -2.27373675e-13"
+              />
+            </g>
+          </g>
+        </svg>
+      )
+    case 'downArrowSmall':
+      return (
+        <svg className={classes.arrowSmall}
              viewBox="0 0 14 9">
-          <polygon className={classes.dropDownArrowPolygon}
+          <polygon className={classes.arrowSmallPolygon}
                    points="11.584641 0.0 6.717411 4.79573
                              1.923157 0.0 0.0 1.92242 6.717411
                              8.63983 13.507061 1.92316"/>
         </svg>
       );
-    case 'upArrow':
+    case 'upArrowSmall':
       return (
-        <svg className={classes.dropDownArrow}
+        <svg className={classes.arrowSmall}
              viewBox="0 0 14 9">
-          <polygon className={classes.dropDownArrowPolygon}
+          <polygon className={classes.arrowSmallPolygon}
                    transform="rotate(180) translate(-14 -9)"
                    points="11.584641 0.0 6.717411 4.79573
                              1.923157 0.0 0.0 1.92242 6.717411
@@ -135,8 +161,10 @@ const getIcon = (type: string, classes: Object) => {
 };
 
 const styles = theme => ({
-  iconcontainer: {
-    display: 'inline-block'
+  iconContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center'
   },
   marginRight: {
     marginRight: '0.8rem'
@@ -161,11 +189,11 @@ const styles = theme => ({
     height: '16px',
     fill: theme.mainArrowColor
   },
-  dropDownArrow: {
+  arrowSmall: {
     width: '14px',
     height: '9px',
   },
-  dropDownArrowPolygon: {
+  arrowSmallPolygon: {
     fill: theme.dropDownArrowColor,
   },
   plusCircle: {
@@ -195,6 +223,15 @@ const styles = theme => ({
     fill: theme.colors.white,
     position: 'relative',
     top: '-7px',
+  },
+  white: {
+    fill: theme.colors.whiteGray
+  },
+  gray: {
+    fill: '#6EAEBB'
+  },
+  teal: {
+    fill: theme.colors.darkTurquoise
   }
 })
 
@@ -202,12 +239,13 @@ type Props = {
   type: string,
   marginRight?: boolean,
   onClick?: Function,
-  classes: Object
+  classes: Object,
+  customClass?: string
 }
 
 const Icon = (props: Props) => {
-  const { type, classes } = props;
-  const icon = getIcon(type, classes);
+  const { type, classes, customClass } = props;
+  const icon = getIcon(type, classes, customClass);
   const cls = classNames({
     [classes.iconContainer]: true,
     [classes.marginRight]: props.marginRight

@@ -48,6 +48,7 @@ type Candidate = {
   id: string,
   name: string,
   listId: string,
+  list: ElectionList
   informationUrl: string,
   priority: number,
   preCumulated: boolean,

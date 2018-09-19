@@ -6,7 +6,7 @@ import { I18nextProvider } from "react-i18next";
 import { ThemeProvider } from 'react-jss';
 import { BrowserRouter } from 'react-router-dom';
 
-
+import { ScreenSizeProvider } from 'providers/ScreenSize';
 import i18n from './i18n';
 import App from './routes/app';
 import theme from './theme';
@@ -21,7 +21,9 @@ const appRoot = () => {
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <I18nextProvider i18n={i18n} initialLanguage='nb'>
-            <App />
+            <ScreenSizeProvider>
+              <App />
+            </ScreenSizeProvider>
           </I18nextProvider>
         </BrowserRouter>
       </ThemeProvider>

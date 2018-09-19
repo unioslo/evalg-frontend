@@ -6,8 +6,8 @@ import { TranslateHocProps } from 'react-i18next/src/translate';
 
 import { Page, } from 'components/page'
 
+import PrefElecBallot from './components/PrefElecBallot';
 import PrefElecReview from './components/PrefElecReview';
-import PrefElecVoteMobile from './components/PrefElecVoteMobile';
 
 
 function shuffleArray<T>(array: T[]): T[] {
@@ -46,7 +46,7 @@ interface IState {
   reviewingBallot: boolean
 }
 
-class PrefElecBallot extends React.Component<IProps, IState> {
+class PrefElec extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -78,7 +78,7 @@ class PrefElecBallot extends React.Component<IProps, IState> {
             submitAction={dummySubmit}
 
           /> :
-          <PrefElecVoteMobile
+          <PrefElecBallot
             selectedCandidates={this.state.selectedCandidates}
             unselectedCandidates={unselectedCandidates}
             addCandidate={this.addCandidate}
@@ -115,4 +115,4 @@ class PrefElecBallot extends React.Component<IProps, IState> {
   }
 }
 
-export default translate()(PrefElecBallot);
+export default translate()(PrefElec);

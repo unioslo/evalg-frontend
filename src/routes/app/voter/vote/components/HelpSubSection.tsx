@@ -12,6 +12,9 @@ const styles = (theme: any) => ({
     alignItems: 'center',
     display: 'flex',
   },
+  helpTexts: {
+    marginTop: '2rem'
+  },
   iconContainer: {
     marginBottom: '1rem',
     marginLeft: '1rem',
@@ -22,6 +25,7 @@ interface IHelpSubProps {
   classes: any,
   header: React.ReactNode
   helpTextTags: string[]
+  desc: React.ReactNode
 }
 
 interface IHelpSubState {
@@ -48,14 +52,17 @@ class HelpSubSection extends React.Component<IHelpSubProps, IHelpSubState> {
     )
     return (
       <PageSubSection header={<Header />} customHeader={true}>
+        {this.props.desc}
         {this.state.showHelpTexts ?
-          <InfoList>
-            {this.props.helpTextTags.map((text, index) => (
-              <InfoListItem key={index} bulleted={true}>
-                <Trans>{text}</Trans>
-              </InfoListItem>
-            ))}
-          </InfoList> : null
+          <div className={classes.helpTexts}>
+            <InfoList>
+              {this.props.helpTextTags.map((text, index) => (
+                <InfoListItem key={index} bulleted={true} noLeftMargin={true}>
+                  <Trans>{text}</Trans>
+                </InfoListItem>
+              ))}
+            </InfoList>
+          </div> : null
         }
         {this.props.children}
       </PageSubSection>

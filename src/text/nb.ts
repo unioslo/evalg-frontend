@@ -1,4 +1,7 @@
 export default {
+  candidate: {
+    infoLinkText: 'Mer om kandidaten'
+  },
   census: {
     addPerson: 'Legg til person',
     addPersonHelpText: 'Du kan også legge inn flere personer separert med komma',
@@ -204,6 +207,7 @@ export default {
   },
   voter: {
     canVoteBlank: 'Det er også mulig å stemme blankt.',
+    prefElecDesc: 'Marker hvilke kandidater du vil stemme på, i prioritert rekkefølge.',
     prefElecNrOfCandidates: 'Du kan stemme på så mange kandidater du vil.',
     prefElecOnlySelectedGetVote: 'Det er bare kandidatene du markererer som får en stemme.',
     prefElecRankCandidates: 'Ranger kandidaten du foretrekker mest som nummer 1 (ditt førstevalg). Hvis denne kandidaten ikke får nok stemmer totalt sett, vil stemmen du ga vedkommende overføres til den du eventuelt har rangert som nummber 2, og så videre.',

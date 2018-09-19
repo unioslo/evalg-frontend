@@ -1,6 +1,8 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
+import Icon from 'components/icon';
+
 const styles = (theme: any) => ({
   actionButton: {
     composes: '$button',
@@ -54,38 +56,21 @@ interface IProps {
 
 const CandidateButtonBar: React.SFC<IProps> = props => {
   const { classes: cls } = props;
-  const upArrowClass = props.upDisabled ? cls.arrowDisabled : cls.arrow
-  const downArrowClass = props.downDisabled ? cls.arrowDisabled : cls.arrow
+  const upArrowClass = props.upDisabled ? 'gray' : 'white'
+  const downArrowClass = props.downDisabled ? 'gray' : 'white'
   return (
     <div className={cls.buttonBar}>
       <button
         disabled={props.upDisabled}
         className={cls.arrowButton}
         onClick={props.upAction}>
-        <svg height="25px" viewBox="0 0 11 17">
-          <g stroke="none" strokeWidth="1" fill="none">
-            <g className={upArrowClass}>
-              <polygon
-                points="0 5.49956341 0.851348133 6.35091154 4.59000344 3.77139947 4.59000344 16.4099172 6.40912338 16.4099172 6.40912338 3.77139947 10.1477787 6.35091154 10.9998545 5.49956341 5.49956341 -2.27373675e-13"
-              />
-            </g>
-          </g>
-        </svg>
+        <Icon type="upArrow" customClass={upArrowClass} />
       </button>
       <button
         className={cls.arrowButton}
         disabled={props.downDisabled}
         onClick={props.downAction}>
-        <svg height="25px" viewBox="0 0 11 17">
-          <g stroke="none" strokeWidth="1" fill="none">
-            <g className={downArrowClass}>
-              <polygon
-                transform="translate(5.499927, 8.204959) rotate(180.000000) translate(-5.499927, -8.204959)"
-                points="0 5.49956341 0.851348133 6.35091154 4.59000344 3.77139947 4.59000344 16.4099172 6.40912338 16.4099172 6.40912338 3.77139947 10.1477787 6.35091154 10.9998545 5.49956341 5.49956341 6.82121026e-13"
-              />
-            </g>
-          </g>
-        </svg>
+        <Icon type="downArrow" customClass={downArrowClass} />
       </button>
       {props.cumulateAction ?
         <button

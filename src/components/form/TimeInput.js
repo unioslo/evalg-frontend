@@ -68,7 +68,11 @@ const styles = theme => ({
     top: '-3.5rem',
   },
   timePickerIcon: {
-    cursor: 'pointer'
+    alignItems: 'center',
+    cursor: 'pointer',
+    display: 'flex',
+    height: '1.8rem',
+    justifyContent: 'center'
   }
 })
 
@@ -266,7 +270,7 @@ class TimeInput extends React.Component<Props, State> {
                 <div className={classes.timePickerInputContainer}>
                   <div className={classes.timePickerIcon}
                     onClick={this.incrementHourValue} >
-                    <Icon type="upArrow" />
+                    <Icon type="upArrowSmall" onClick={this.incrementHourValue} />
                   </div>
                   <input
                     type="text"
@@ -277,14 +281,14 @@ class TimeInput extends React.Component<Props, State> {
                   />
                   <div className={classes.timePickerIcon}
                     onClick={this.decrementHourValue} >
-                    <Icon type="downArrow" />
+                    <Icon type="downArrowSmall" />
                   </div>
                 </div>
                 <div className={classes.timePickerSeparator}>:</div>
                 <div className={classes.timePickerInputContainer}>
                   <div className={classes.timePickerIcon}
                     onClick={this.incrementMinuteValue} >
-                    <Icon type="upArrow" />
+                    <Icon type="upArrowSmall" />
                   </div>
                   <input
                     type="text"
@@ -295,7 +299,7 @@ class TimeInput extends React.Component<Props, State> {
                   />
                   <div className={classes.timePickerIcon}
                     onClick={this.decrementMinuteValue} >
-                    <Icon type="downArrow" />
+                    <Icon type="downArrowSmall" />
                   </div>
                 </div>
               </div>
