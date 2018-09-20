@@ -50,23 +50,23 @@ const styles = theme => ({
     borderRadius: '0.3rem',
   },
   listItem: {
-      lineHeight: 2,
-      borderTop: `1px solid ${theme.formFieldBorderColor}`,
-      padding: '0 1rem',
-      minWidth: '20rem',
-      '&:first-child': {
-        borderTop: 0
-      },
-      '&:hover': {
-        background: theme.colors.lightBlueGray,
-        cursor: 'pointer'
-      }
+    lineHeight: 2,
+    borderTop: `1px solid ${theme.formFieldBorderColor}`,
+    padding: '0 1rem',
+    minWidth: '20rem',
+    '&:first-child': {
+      borderTop: 0
+    },
+    '&:hover': {
+      background: theme.colors.lightBlueGray,
+      cursor: 'pointer'
     }
+  }
 })
 
 const filterObjects = (objects: Array<Object>,
-                       filter: string,
-                       filterOn: Array<string>) => {
+  filter: string,
+  filterOn: Array<string>) => {
   // We don't want to return anything if the user hasn't typed in a filter yet.
   if (filter === '') {
     return [];
@@ -103,11 +103,11 @@ class AutoCompleteDropDown extends DropDownBase {
   props: Props;
 
   componentWillReceiveProps(newProps: Props) {
-    this.setState({ open: newProps.objects.length > 0 && !!this.props.userInput})
+    this.setState({ open: newProps.objects.length > 0 && !!this.props.userInput })
   }
 
   handleSelect(obj: Object) {
-    this.setState({ selected: obj});
+    this.setState({ selected: obj });
   }
 
   handleOnChange(e: any) {
@@ -131,23 +131,23 @@ class AutoCompleteDropDown extends DropDownBase {
     return (
       <div className={classes.autoCompleteDropDown}>
         <input type="text"
-               className={classes.input}
-               value={ selected ? objRenderer(selected) : userInput }
-               onChange={ this.handleOnChange.bind(this) } />
+          className={classes.input}
+          value={selected ? objRenderer(selected) : userInput}
+          onChange={this.handleOnChange.bind(this)} />
         <button
-          onClick={ this.handleButtonClick.bind(this) }
+          onClick={this.handleButtonClick.bind(this)}
           className={classes.button}
           disabled={!this.state.selected}>
-          { buttonText }
+          {buttonText}
         </button>
         {!this.state.selected && this.state.open &&
           <ul className={classes.list}>
             {this.props.objects.map((obj, index) => {
               return (
                 <li key={index}
-                    className={classes.listItem}
-                    onClick={ this.handleSelect.bind(this, obj) }>
-                  { objRenderer(obj) }
+                  className={classes.listItem}
+                  onClick={this.handleSelect.bind(this, obj)}>
+                  {objRenderer(obj)}
                 </li>
               )
             })}

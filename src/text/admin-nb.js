@@ -1,6 +1,6 @@
 import generalText from './general.nb';
 
-const { election, ...restGeneral} = generalText;
+const { election, ...restGeneral } = generalText;
 
 const electionAdmin = {
   votesOutsideCensus: 'Stemmer utenfor manntallet',
@@ -106,7 +106,7 @@ const electionAdmin = {
 
 const prefElec = {
   candPageDesc: 'Her legger du til kandidater som stiller for de ulike velgergruppene.<0></0>' +
-                'Valget må ha minimum like mange kandidater per gruppe som angitt under <1>valginnstillinger</1>.',
+    'Valget må ha minimum like mange kandidater per gruppe som angitt under <1>valginnstillinger</1>.',
 };
 
 const formErrors = {
@@ -121,7 +121,7 @@ const census = {
   group: 'Gruppe',
   person: 'Person',
   addPerson: 'Legg til person',
-  addPersons: 'Legg til personer i',
+  addPersons: 'Legg til personer i {{pollbookName}}',
   deleteCensus: 'Slett manntall',
   addPersonModalHeader: 'Legg til personer i manntallet',
   addTo: 'Legg til',
@@ -133,7 +133,7 @@ const census = {
 
 
 export default {
-  election: Object.assign({}, {...election, ...electionAdmin}),
+  election: Object.assign({}, { ...election, ...electionAdmin }),
   ...restGeneral,
   i18n: {
     __typename: 'AppTexts',
