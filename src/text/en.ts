@@ -13,8 +13,11 @@ export default {
     deleteCensus: 'Delete census',
     deletePersonConfirmationModalText: 'Are you sure you want to delete {{personName}} from “{{pollbookName}}”?',
     deletePersonConfirmationModalTitle: 'Confirm deletion',
+    deletePollbookConfirmationModalText: "Are you sure you want to delete the pollbook “{{pollbookName}}” ({{num}} {{of}})?",
+    deletePollbookConfirmationModalTitle: "Confirm deleteion",
     group: 'Group',
     person: 'Person',
+    persons: 'Persons',
     uploadCensusFile: 'Upload census file',
   },
   election: {

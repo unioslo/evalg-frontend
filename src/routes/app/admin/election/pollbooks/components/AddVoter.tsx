@@ -38,6 +38,7 @@ const searchPersonsQuery = gql`
 interface IProps {
   closeAction: () => void,
   submitAction: (values: any) => void,
+  deletePollbookAction: () => void,
   initialValues: any,
   pollbook: IPollBook,
   i18n: any,
@@ -119,12 +120,12 @@ class AddVoter extends React.Component<IProps, Istate> {
     const { pristine, valid, handleSubmit, values } = formProps;
     const {
       closeAction,
+      deletePollbookAction,
       i18n: { language: lang },
       classes
     } = this.props;
 
     const renderPerson = (obj: IPerson) => [obj.firstName, obj.lastName].join(' ');
-    const slettMantall = (o: any) => { console.error("LOLTRAIN", o) };
     return (
       <ApolloConsumer>
         {client => {
@@ -179,7 +180,7 @@ class AddVoter extends React.Component<IProps, Istate> {
                         saveAction={handleSubmit}
                         closeAction={closeAction}
                         submitDisabled={pristine || !valid}
-                        entityAction={slettMantall}
+                        entityAction={deletePollbookAction}
                         entityText={<Trans>census.deleteCensus</Trans>}
                       />
                     </div>

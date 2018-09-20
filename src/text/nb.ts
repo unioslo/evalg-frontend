@@ -13,8 +13,11 @@ export default {
     deleteCensus: 'Slett manntall',
     deletePersonConfirmationModalText: 'Er du sikker på at du vil slette {{personName}} fra «{{pollbookName}}»?',
     deletePersonConfirmationModalTitle: 'Bekreft sletting',
+    deletePollbookConfirmationModalText: "Er du sikker på at du vil slette velgergruppen «{{pollbookName}}» ({{num}} {{of}})?",
+    deletePollbookConfirmationModalTitle: "Bekreft sletting",
     group: 'Gruppe',
     person: 'Person',
+    persons: 'Personer',
     uploadCensusFile: 'Last opp manntallsfil'
   },
   election: {

@@ -41,6 +41,14 @@ const deleteVoter = gql`
   }
 `;
 
+const deletePollbook = gql`
+mutation DeletePollBook($id: UUID!) {
+  deletePollbook(id: $id) {
+    ok
+  }
+}
+`;
+
 const electionGroupQuery = gql`
   query electionGroupVoters($id: UUID!) {
     electionGroup(id: $id) {
@@ -183,6 +191,7 @@ interface IState {
   pollBookId: string,
   voterId: string,
   updateVoterId: string,
+  showDeletePollbook: boolean,
   showDeleteVoter: boolean,
   showAddVoter: string
 };
@@ -193,13 +202,16 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
     this.state = {
       pollBookId: '',
       showAddVoter: '',
+      showDeletePollbook: false,
       showDeleteVoter: false,
       updateVoterId: '',
       voterId: ''
     };
     this.closeUpdateVoterForm = this.closeUpdateVoterForm.bind(this);
-    this.showDeleteConfirmation = this.showDeleteConfirmation.bind(this);
-    this.hideDeleteConfirmation = this.hideDeleteConfirmation.bind(this);
+    this.showDeletePersonConfirmation = this.showDeletePersonConfirmation.bind(this);
+    this.hideDeletePersonConfirmation = this.hideDeletePersonConfirmation.bind(this);
+    this.showDeletePollbookConfirmation = this.showDeletePollbookConfirmation.bind(this);
+    this.hideDeletePollbookConfirmation = this.hideDeletePollbookConfirmation.bind(this);
     this.closeNewVoterForm = this.closeNewVoterForm.bind(this);
   }
 
@@ -268,27 +280,61 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                           <Mutation
                             mutation={addVoter}
                             refetchQueries={refetchQueries}>
-                            {(add) => {
-                              const addAndClose = (values: any) => {
-                                values.persons.map((person: IPerson) =>
-                                  add(
-                                    {
-                                      variables: {
-                                        personId: person.id,
-                                        pollbookId: this.state.showAddVoter
-                                      }
-                                    }));
-                                this.closeNewVoterForm();
-                              };
-                              return (
-                                <AddVoter
-                                  closeAction={this.closeNewVoterForm}
-                                  submitAction={addAndClose}
-                                  pollbook={pollBookDict[this.state.showAddVoter]}
-                                  initialValues={{}}
-                                />
-                              )
-                            }}
+                            {(add) => (
+                              <>
+                                <Mutation
+                                  mutation={deletePollbook}
+                                  refetchQueries={refetchQueries}>
+                                  {(del) => {
+                                    const addAndClose = (values: any) => {
+                                      values.persons.map((person: IPerson) =>
+                                        add(
+                                          {
+                                            variables: {
+                                              personId: person.id,
+                                              pollbookId: this.state.showAddVoter
+                                            }
+                                          }));
+                                      this.closeNewVoterForm();
+                                    };
+                                    const deletePollbookAndClose = () => {
+                                      del({ variables: { id: this.state.showAddVoter } });
+                                      this.closeNewVoterForm();
+                                    };
+                                    return (
+                                      <>
+                                        <AddVoter
+                                          closeAction={this.closeNewVoterForm}
+                                          submitAction={addAndClose}
+                                          deletePollbookAction={this.showDeletePollbookConfirmation}
+                                          pollbook={pollBookDict[this.state.showAddVoter]}
+                                          initialValues={{}}
+                                        />
+                                        {this.state.showDeletePollbook ?
+                                          <ConfirmModal
+                                            confirmAction={deletePollbookAndClose}
+                                            closeAction={this.hideDeletePollbookConfirmation}
+                                            header={<Trans>census.deletePollbookConfirmationModalTitle</Trans>}
+                                            body={
+                                              <Trans values={{
+                                                num: pollBookDict[this.state.showAddVoter].voters.length,
+                                                of: t(pollBookDict[this.state.showAddVoter].voters.length === 1 ?
+                                                  "census.person" : "census.persons").toLowerCase(),
+                                                pollbookName: pollBookDict[this.state.showAddVoter].name[lang],
+                                              }}>census.deletePollbookConfirmationModalText</Trans>
+                                            }
+                                            confirmText={<Trans>general.delete</Trans>}
+                                            closeText={<Trans>general.cancel</Trans>}
+                                          />
+                                          : null}
+                                      </>
+                                    )
+                                  }
+                                  }
+                                </Mutation>
+                              </>
+                            )
+                            }
                           </Mutation>
                         </TableCell>
                       </TableRow>
@@ -318,7 +364,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                                       submitAction={update}
                                       closeAction={this.closeUpdateVoterForm}
                                       options={pollBookOptions}
-                                      deleteAction={this.showDeleteConfirmation}
+                                      deleteAction={this.showDeletePersonConfirmation}
                                     />
                                   )
                                 }}
@@ -330,12 +376,12 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                                   {(delet) => {
                                     const deleteAndClose = () => {
                                       delet({ variables: { id: voter.id } });
-                                      this.hideDeleteConfirmation();
+                                      this.hideDeletePersonConfirmation();
                                     };
                                     return (
                                       <ConfirmModal
                                         confirmAction={deleteAndClose}
-                                        closeAction={this.hideDeleteConfirmation}
+                                        closeAction={this.hideDeletePersonConfirmation}
                                         header={
                                           <Trans>census.deletePersonConfirmationModalTitle</Trans>
                                         }
@@ -400,14 +446,21 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
     this.setState({ showAddVoter: "" });
   }
 
-  private showDeleteConfirmation() {
+  private showDeletePersonConfirmation() {
     this.setState({ showDeleteVoter: true });
   }
 
-  private hideDeleteConfirmation() {
+  private hideDeletePersonConfirmation() {
     this.setState({ showDeleteVoter: false });
   }
 
+  private showDeletePollbookConfirmation() {
+    this.setState({ showDeletePollbook: true });
+  }
+
+  private hideDeletePollbookConfirmation() {
+    this.setState({ showDeletePollbook: false });
+  }
   private showUpdateVoterForm(voterId: string) {
     this.setState({ updateVoterId: voterId })
   }
