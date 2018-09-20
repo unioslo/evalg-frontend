@@ -12,6 +12,7 @@ from evalg.models.authorization import (PersonPrincipal,
 from evalg.models.candidate import (Candidate as CandidateModel)
 from evalg.models.voter import Voter as VoterModel
 from evalg.models.voter import VoterStatus as VoterStatusModel
+from evalg.models.pollbook import PollBook as PollBookModel
 from evalg.metadata import (announce_group,
                             unannounce_group,
                             publish_group,
@@ -145,6 +146,21 @@ class DeleteVoter(graphene.Mutation):
         db.session.delete(voter)
         db.session.commit()
         return DeleteVoter(ok=True)
+
+
+class DeletePollBook(graphene.Mutation):
+    class Input:
+        id = graphene.UUID(required=True)
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, **kwargs):
+        pollbook = PollBookModel.query.get(kwargs.get('id'))
+        for voter in pollbook.voters:
+            db.session.delete(voter)
+        db.session.delete(pollbook)
+        db.session.commit()
+        return DeletePollBook(ok=True)
 
 
 class ElectionVoterInfoInput(graphene.InputObjectType):
@@ -391,3 +407,4 @@ class Mutations(graphene.ObjectType):
     add_voter = AddVoter.Field()
     update_voter_pollbook = UpdateVoterPollBook.Field()
     delete_voter = DeleteVoter.Field()
+    delete_pollbook = DeletePollBook.Field()
