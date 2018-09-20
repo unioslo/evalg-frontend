@@ -5,6 +5,7 @@ import injectSheet from 'react-jss';
 import Icon from 'components/icon';
 import { InfoList, InfoListItem } from 'components/infolist'
 import { PageSubSection } from 'components/page';
+import { ScreenSizeConsumer } from 'providers/ScreenSize';
 
 const styles = (theme: any) => ({
   header: theme.subSectionHeader,
@@ -16,6 +17,7 @@ const styles = (theme: any) => ({
     marginTop: '2rem'
   },
   iconContainer: {
+    cursor: 'pointer',
     marginBottom: '1rem',
     marginLeft: '1rem',
   }
@@ -41,31 +43,41 @@ class HelpSubSection extends React.Component<IHelpSubProps, IHelpSubState> {
   }
 
   public render() {
-    const { classes } = this.props;
-    const Header = () => (
-      <div className={classes.headerContainer}>
-        <h3 className={classes.header}>{this.props.header}</h3>
-        <div className={classes.iconContainer}>
-          <Icon type="help" onClick={this.toggleShowHelpTexts} />
-        </div>
-      </div>
-    )
     return (
-      <PageSubSection header={<Header />} customHeader={true}>
-        {this.props.desc}
-        {this.state.showHelpTexts ?
-          <div className={classes.helpTexts}>
-            <InfoList>
-              {this.props.helpTextTags.map((text, index) => (
-                <InfoListItem key={index} bulleted={true} noLeftMargin={true}>
-                  <Trans>{text}</Trans>
-                </InfoListItem>
-              ))}
-            </InfoList>
-          </div> : null
-        }
-        {this.props.children}
-      </PageSubSection>
+      <ScreenSizeConsumer>
+        {({ screenSize }) => {
+          const { classes } = this.props;
+          const Header = () => (
+            <div className={classes.headerContainer}>
+              <h3 className={classes.header}>{this.props.header}</h3>
+              <div className={classes.iconContainer}>
+                <Icon
+                  type="help"
+                  onClick={this.toggleShowHelpTexts}
+                  custom={screenSize !== 'sm' ? 'small' : false}
+                />
+              </div>
+            </div>
+          )
+          return (
+            <PageSubSection header={<Header />} customHeader={true}>
+              {this.props.desc}
+              {this.state.showHelpTexts ?
+                <div className={classes.helpTexts}>
+                  <InfoList>
+                    {this.props.helpTextTags.map((text, index) => (
+                      <InfoListItem key={index} bulleted={true} noLeftMargin={true}>
+                        <Trans>{text}</Trans>
+                      </InfoListItem>
+                    ))}
+                  </InfoList>
+                </div> : null
+              }
+              {this.props.children}
+            </PageSubSection>
+          )
+        }}
+      </ScreenSizeConsumer>
     )
   }
 

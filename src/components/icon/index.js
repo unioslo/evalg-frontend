@@ -3,7 +3,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
 
-const getIcon = (type: string, classes: Object, customClass: string) => {
+const getIcon = (type: string, classes: Object, custom: any) => {
   switch (type) {
     case 'forwardArrow':
       return (
@@ -41,7 +41,7 @@ const getIcon = (type: string, classes: Object, customClass: string) => {
       return (
         <svg height="25px" viewBox="0 0 11 17">
           <g stroke="none" strokeWidth="1" fill="none">
-            <g className={classes[customClass]}>
+            <g className={classes[custom]}>
               <polygon
                 transform="translate(5.499927, 8.204959) rotate(180.000000) translate(-5.499927, -8.204959)"
                 points="0 5.49956341 0.851348133 6.35091154 4.59000344 3.77139947 4.59000344 16.4099172 6.40912338 16.4099172 6.40912338 3.77139947 10.1477787 6.35091154 10.9998545 5.49956341 5.49956341 6.82121026e-13"
@@ -55,7 +55,7 @@ const getIcon = (type: string, classes: Object, customClass: string) => {
       return (
         <svg height="25px" viewBox="0 0 11 17">
           <g stroke="none" strokeWidth="1" fill="none">
-            <g className={classes[customClass]}>
+            <g className={classes[custom]}>
               <polygon
                 points="0 5.49956341 0.851348133 6.35091154 4.59000344 3.77139947 4.59000344 16.4099172 6.40912338 16.4099172 6.40912338 3.77139947 10.1477787 6.35091154 10.9998545 5.49956341 5.49956341 -2.27373675e-13"
               />
@@ -105,8 +105,12 @@ const getIcon = (type: string, classes: Object, customClass: string) => {
         </svg>
       );
     case 'addCircle':
+      const addCircleCls = classNames({
+        [classes.addCircle]: true,
+        [classes.smallCircle]: custom
+      });
       return (
-        <svg width="42px" height="42px" viewBox="0 0 42 42">
+        <svg className={addCircleCls} viewBox="0 0 42 42">
           <g stroke="none" strokeWidth="1" fill="none">
             <circle stroke="#8ECED9" strokeWidth="2" cx="21" cy="21" r="20" />
             <rect fill="#8ECED9" x="18.538743" y="7.5649828" width="5.25" height="26.0562731" />
@@ -130,6 +134,37 @@ const getIcon = (type: string, classes: Object, customClass: string) => {
           </g>
         </svg>
       );
+    case 'rankCircle':
+      const rankCircle = classNames({
+        [classes.rankCircle]: true,
+        [classes.smallCircle]: custom.small
+      })
+      return (
+        <svg className={rankCircle} viewBox="0 0 50 50">
+          <g stroke="none" strokeWidth="1" fill="none">
+            <circle className={classes.rankCircleFill} cx="25" cy="25" r="25" />
+            <text x="50%" y="33px" fontSize="24" fontWeight="bold" fill="#FFF" textAnchor="middle">
+              {custom.nr}
+            </text>
+          </g>
+        </svg>
+      )
+    case 'remove':
+      const removeCls = classNames({
+        [classes.remove]: !custom.small,
+        [classes.removeSmall]: custom.small
+      });
+      const removeStrokeCls = classNames({
+        [classes.tealStroke]: custom.color === 'teal',
+        [classes.whiteStroke]: custom.color === 'white',
+      });
+      return (
+        <svg className={removeCls} viewBox="0 0 12 12" >
+          <g className={removeStrokeCls} strokeWidth="1" fill="none">
+            <path d="M8.56910219,6 L11.1742662,8.60516397 C11.6206374,9.05153521 11.6253777,9.77104099 11.1784699,10.2179488 L10.2179488,11.1784699 C9.7716987,11.62472 9.05549904,11.6246012 8.60516397,11.1742662 L6,8.56910219 L3.39483603,11.1742662 C2.94846479,11.6206374 2.22895901,11.6253777 1.78205121,11.1784699 L0.821530097,10.2179488 C0.375280002,9.7716987 0.375398769,9.05549904 0.825733841,8.60516397 L3.43089781,6 L0.825733841,3.39483603 C0.379362596,2.94846479 0.374622298,2.22895901 0.821530098,1.78205121 L1.78205121,0.821530098 C2.2283013,0.375280002 2.94450096,0.375398769 3.39483603,0.825733841 L6,3.43089781 L8.60516397,0.825733841 C9.05153521,0.379362596 9.77104099,0.374622298 10.2179488,0.821530098 L11.1784699,1.78205121 C11.62472,2.2283013 11.6246012,2.94450096 11.1742662,3.39483603 L8.56910219,6 Z" />
+          </g>
+        </svg>
+      )
     case 'save':
       return (
         <svg viewBox="0 0 96 96" className={classes.save}>
@@ -141,9 +176,31 @@ const getIcon = (type: string, classes: Object, customClass: string) => {
           </g>
         </svg>
       );
-    case 'help':
+
+    case 'star': {
+      const starCls = classNames({
+        [classes.star]: !custom.small,
+        [classes.starSmall]: custom.small
+      });
+      const starStrokeCls = classNames({
+        [classes.tealStroke]: custom.color === 'teal',
+        [classes.whiteStroke]: custom.color === 'white',
+      });
       return (
-        <svg width="28px" height="28px" viewBox="0 0 28 28">
+        <svg className={starCls} viewBox="0 0 21 22">
+          <g className={starStrokeCls} transform="translate(1.000000, 1.000000)" strokeWidth="2" fill="none">
+            <path d="M18.9416641,7.51645348 C18.8036172,7.08224572 18.4386094,6.76383681 17.99775,6.69250593 L12.9765547,5.88191396 L10.5732031,0.694337816 C10.3766719,0.270298503 9.95882031,0 9.5,0 C9.04103125,0 8.62317969,0.270298503 8.42664844,0.694337816 L6.02329688,5.88191396 L1.00225,6.69250593 C0.560945312,6.76383681 0.196234375,7.08224572 0.0581875,7.51645348 C0.019,7.63968895 0,7.76626332 0,7.89192708 C0,8.20897008 0.121421875,8.51903175 0.347789063,8.75047769 L4.05471875,12.5405757 L2.99160937,17.9740157 C2.9010625,18.43797 3.08215625,18.9137621 3.45607031,19.1928631 C3.66358594,19.3476663 3.90939844,19.4262821 4.15654687,19.4262821 C4.35426563,19.4262821 4.55272656,19.3757434 4.73278125,19.2734518 L9.5,16.565762 L14.2670703,19.2734518 C14.447125,19.3757434 14.6457344,19.4262821 14.84375,19.4262821 C15.0904531,19.4262821 15.3362656,19.3476663 15.5437812,19.1928631 C15.9175469,18.9137621 16.0989375,18.43797 16.0080938,17.9740157 L14.9451328,12.5405757 L18.6520625,8.75047769 C18.8784297,8.51903175 19,8.20897008 19,7.89192708 C19,7.76626332 18.9808516,7.63968895 18.9416641,7.51645348" />
+          </g>
+        </svg>
+      )
+    }
+    case 'help':
+      const helpCls = classNames({
+        [classes.help]: !custom,
+        [classes.helpSmall]: custom
+      });
+      return (
+        <svg className={helpCls} viewBox="0 0 28 28">
           <circle stroke="#2294A8" strokeWidth="3" fill="#FFFFFF" cx="14" cy="14" r="12.5" />
           <text fontSize="20" fontWeight="bold" fill="#2294A8">
             <tspan x="8" y="21">?</tspan>
@@ -161,6 +218,24 @@ const getIcon = (type: string, classes: Object, customClass: string) => {
 };
 
 const styles = theme => ({
+  addCircle: {
+    height: '42px',
+    width: '42px'
+  },
+  arrowSmall: {
+    width: '14px',
+    height: '9px',
+  },
+  arrowSmallPolygon: {
+    fill: theme.dropDownArrowColor,
+  },
+  clipBoard: {
+    height: '22px',
+    width: '22px',
+    fill: theme.colors.white,
+    position: 'relative',
+    top: '-3px'
+  },
   iconContainer: {
     alignItems: 'center',
     display: 'flex',
@@ -184,17 +259,18 @@ const styles = theme => ({
     height: '12px',
     fill: theme.backArrowColor
   },
+  help: {
+    height: '28px',
+    width: '28px'
+  },
+  helpSmall: {
+    height: '20px',
+    width: '20px'
+  },
   mainArrow: {
     width: '16px',
     height: '16px',
     fill: theme.mainArrowColor
-  },
-  arrowSmall: {
-    width: '14px',
-    height: '9px',
-  },
-  arrowSmallPolygon: {
-    fill: theme.dropDownArrowColor,
   },
   plusCircle: {
     stroke: theme.colors.lightTurquoise
@@ -210,12 +286,11 @@ const styles = theme => ({
   plusSignIcon: {
     fill: theme.colors.darkTurquoise
   },
-  clipBoard: {
-    height: '22px',
-    width: '22px',
-    fill: theme.colors.white,
-    position: 'relative',
-    top: '-3px'
+  remove: {
+    height: '25px'
+  },
+  removeSmall: {
+    height: '14px'
   },
   save: {
     height: '31px',
@@ -223,6 +298,12 @@ const styles = theme => ({
     fill: theme.colors.white,
     position: 'relative',
     top: '-7px',
+  },
+  star: {
+    height: '22px',
+  },
+  starSmall: {
+    height: '16px !important'
   },
   white: {
     fill: theme.colors.whiteGray
@@ -232,20 +313,45 @@ const styles = theme => ({
   },
   teal: {
     fill: theme.colors.darkTurquoise
-  }
+  },
+  smallCircle: {
+    height: '28px !important',
+    width: '28px !important'
+  },
+  smallIcon: {
+    height: '14px !important',
+    width: '16px !important',
+  },
+  rankCircle: {
+    height: '42px',
+    width: '42px',
+  },
+  rankCircleFill: {
+    fill: theme.colors.darkTurquoise,
+  },
+  tealStroke: {
+    stroke: theme.colors.darkTurquoise
+  },
+  whiteStroke: {
+    stroke: theme.colors.whiteGray
+  },
+  grayStroke: {
+    stroke: '#6EAEBB'
+  },
 })
+
 
 type Props = {
   type: string,
   marginRight?: boolean,
   onClick?: Function,
   classes: Object,
-  customClass?: string
+  custom?: any
 }
 
 const Icon = (props: Props) => {
-  const { type, classes, customClass } = props;
-  const icon = getIcon(type, classes, customClass);
+  const { type, classes, custom } = props;
+  const icon = getIcon(type, classes, custom);
   const cls = classNames({
     [classes.iconContainer]: true,
     [classes.marginRight]: props.marginRight

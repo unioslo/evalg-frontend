@@ -207,6 +207,7 @@ export default {
   },
   voter: {
     canVoteBlank: 'Det er også mulig å stemme blankt.',
+    cumulate: 'Ekstra stemme',
     prefElecDesc: 'Marker hvilke kandidater du vil stemme på, i prioritert rekkefølge.',
     prefElecNrOfCandidates: 'Du kan stemme på så mange kandidater du vil.',
     prefElecOnlySelectedGetVote: 'Det er bare kandidatene du markererer som får en stemme.',

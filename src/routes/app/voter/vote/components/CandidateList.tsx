@@ -7,21 +7,32 @@ import Link from 'components/link';
 import injectSheet from 'react-jss';
 
 const styles = (theme: any) => ({
+  button: {
+    alignSelf: 'center',
+    cursor: 'pointer',
+    justifySelf: 'center',
+  },
   buttonCumulate: {
+    composes: '$button $buttonText',
     gridArea: 'cumulate',
-    justifySelf: 'center'
   },
   buttonDownArrow: {
+    composes: '$button',
     gridArea: 'downArrow',
-    justifySelf: 'center'
   },
   buttonRemove: {
+    composes: '$button $buttonText',
     gridArea: 'remove',
-    justifySelf: 'center'
+  },
+  buttonText: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'space-evenly',
+    width: '100%'
   },
   buttonUpArrow: {
+    composes: '$button',
     gridArea: 'upArrow',
-    justifySelf: 'center'
   },
   candidateInfo: {
     fontSize: '1.8rem',
@@ -49,9 +60,6 @@ const styles = (theme: any) => ({
     borderBottom: "1px solid #CCC",
     display: 'flex',
     padding: '0.75rem 0',
-  },
-  rankIcon: {
-    fill: theme.colors.darkTurquoise
   },
   toggleSelectIcon: {
     alignItems: 'flex-end',
@@ -129,6 +137,7 @@ const HOCCandidateInfo = injectSheet(styles)(translate()(CandidateInfo));
 interface IRankProps {
   classes: any
   rankNr: number
+  small?: boolean
 }
 
 const RankIcon: React.SFC<IRankProps> = props => (
@@ -196,28 +205,30 @@ interface IButtonProps {
 
 const UpArrow: React.SFC<IButtonProps> = props =>
   <div className={props.classes.buttonUpArrow}>
-    <Icon type="upArrow" customClass="teal" onClick={props.onClick} />
+    <Icon type="upArrow" custom="teal" onClick={props.onClick} />
   </div>
 
 const HOCUpArrow = injectSheet(styles)(UpArrow);
 
 const DownArrow: React.SFC<IButtonProps> = props =>
   <div className={props.classes.buttonDownArrow}>
-    <Icon type="downArrow" customClass="teal" onClick={props.onClick} />
+    <Icon type="downArrow" custom="teal" onClick={props.onClick} />
   </div>
 
 const HOCDownArrow = injectSheet(styles)(DownArrow);
 
 const CumulateButton: React.SFC<IButtonProps & TranslateHocProps> = props =>
   <div className={props.classes.buttonCumulate} onClick={props.onClick}>
-    Cumulate!
+    <Icon type="star" custom={{ color: 'teal', small: true }} />
+    <Trans>voter.cumulate</Trans>
   </div>;
 
 const HOCCumulateButton = injectSheet(styles)(translate()(CumulateButton));
 
 const RemoveButton: React.SFC<IButtonProps & TranslateHocProps> = props =>
   <div className={props.classes.buttonRemove} onClick={props.onClick}>
-    Remove!
+    <Icon type="remove" custom={{ color: 'teal', small: true }} />
+    <Trans>general.remove</Trans>
   </div>;
 
 const HOCRemoveButton = injectSheet(styles)(translate()(RemoveButton));

@@ -206,6 +206,7 @@ export default {
   },
   voter: {
     canVoteBlank: 'You may also submit a blank vote.',
+    cumulate: 'Extra vote',
     prefElecDesc: 'Select the candidates you would like to include in your vote, in prioritized order.',
     prefElecNrOfCandidates: 'You can vote on as many of the listed candidates as you prefer.',
     prefElecOnlySelectedGetVote: 'It is only the candidates you select that will receive a vote.',

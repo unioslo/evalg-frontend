@@ -14,7 +14,6 @@ import {
   CandidateListItem,
   DownArrow,
   ListItemDesktopButtons,
-  RankIcon,
   RemoveButton,
   ToggleSelectIcon,
   UpArrow
@@ -103,7 +102,13 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                       this.props.removeCandidate(c);
                     return (
                       <CandidateListItem key={`selected-${index}`}>
-                        <RankIcon rankNr={index + 1} />
+                        <Icon
+                          type="rankCircle"
+                          custom={{
+                            nr: index + 1,
+                            small: screenSize !== 'sm'
+                          }}
+                        />
                         <CandidateInfo
                           candidate={c}
                           infoUrl={true}
@@ -128,7 +133,11 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                   })}
                   {unselectedCandidates.map((c, index) => (
                     <CandidateListItem key={`unselected-${index}`}>
-                      <Icon type="addCircle" onClick={this.props.addCandidate.bind(this, c)} />
+                      <Icon
+                        type="addCircle"
+                        custom={screenSize !== 'sm' ? "small" : false}
+                        onClick={this.props.addCandidate.bind(this, c)}
+                      />
                       <CandidateInfo
                         candidate={c}
                         infoUrl={true}
