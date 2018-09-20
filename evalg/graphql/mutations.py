@@ -11,6 +11,7 @@ from evalg.models.authorization import (PersonPrincipal,
                                         ElectionGroupRole)
 from evalg.models.candidate import (Candidate as CandidateModel)
 from evalg.models.voter import Voter as VoterModel
+from evalg.models.voter import VoterStatus as VoterStatusModel
 from evalg.metadata import (announce_group,
                             unannounce_group,
                             publish_group,
@@ -99,6 +100,23 @@ class UpdateVotingPeriods(graphene.Mutation):
                 db.session.add(election)
         db.session.commit()
         return UpdateVotingPeriods(ok=True)
+
+
+class AddVoter(graphene.Mutation):
+    class Input:
+        person_id = graphene.UUID(required=True)
+        pollbook_id = graphene.UUID(required=True)
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, **kwargs):
+        voter = VoterModel()
+        voter.person_id = kwargs.get('person_id')
+        voter.pollbook_id = kwargs.get('pollbook_id')
+        voter.voter_status = VoterStatusModel.query.get('added')
+        db.session.add(voter)
+        db.session.commit()
+        return AddVoter(ok=True)
 
 
 class UpdateVoterPollBook(graphene.Mutation):
@@ -370,5 +388,6 @@ class Mutations(graphene.ObjectType):
     announce_election_group = AnnounceElectionGroup.Field()
     unannounce_election_group = UnannounceElectionGroup.Field()
     create_election_group_key = CreateElectionGroupKey.Field()
+    add_voter = AddVoter.Field()
     update_voter_pollbook = UpdateVoterPollBook.Field()
     delete_voter = DeleteVoter.Field()
