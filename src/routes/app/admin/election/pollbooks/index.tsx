@@ -233,7 +233,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                 <ElectionButton hoverText={<Trans>census.addPerson</Trans>}
                   name={pollbook.name[lang]}
                   key={`${index}${i}`}
-                  count={0}
+                  count={pollbook.voters.length}
                   minCount={false}
                   action={this.showNewVoterForm.bind(this, pollbook.id)}
                 />
