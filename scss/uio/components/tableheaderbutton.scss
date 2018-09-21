@@ -1,0 +1,20 @@
+@import "../settings"
+
+.tableheaderbutton {
+  background: theme.tableHeaderBg
+  border: '0.0rem',
+  color: theme.tableHeaderTextColor
+  fontSize: '1.6rem',
+  lineHeight: '5.5rem',
+  cursor: pointer
+  display: flex
+  alignItems: center
+
+  &-block {
+    display: 'inline-block',
+  }
+
+  &--text {
+    marginLeft: '0.8rem',
+  }
+}

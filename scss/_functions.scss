@@ -1,0 +1,20 @@
+@function _buildIcon(theme.icon, theme.width, theme.height) {
+  theme.icon: '%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%22#{theme.width}%22%20height%3D%22#{theme.height}%22%3E#{theme.icon}%3C%2Fsvg%3E'
+  @return theme.icon
+}
+
+@function _buildPolygon(theme.path, theme.color) {
+  theme.icon: '%3Cpolygon%20fill%3D%22#{theme.color}%22%20points%3D%22#{theme.path}%22%20%2F%3E'
+  @return theme.icon
+}
+
+@function icon(theme.icon-name, theme.color, theme.width, theme.height) {
+  theme.icons: (
+    dropdownarrow: _buildPolygon(
+      "11.584641 0.0 6.717411 4.79573 1.923157 0.0 0.0 1.92242 6.717411 8.63983 13.507061 1.92316",
+      theme.color
+    )
+  )
+  theme.icon: _buildIcon(map-get(theme.icons, theme.icon-name), theme.width, theme.height)
+  @return url("data:image/svg+xmlcharset=utf8,#{theme.icon}")
+}

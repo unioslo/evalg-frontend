@@ -1,0 +1,47 @@
+@import "../../settings"
+@import '../../../functions'
+
+.candidate-form {
+  marginTop: '3rem',
+}
+
+.candidate-form-title {
+  fontSize: '2rem',
+  lineHeight: 1.45
+  marginTop: '3rem',
+  color: theme.contentPageHeaderColor
+}
+
+.candidate-form-add-candidate {
+  fontSize: '1.6rem',
+  color:theme.actionTextColor
+  lineHeight: 1.62
+}
+
+.candidate-form-remove-candidate {
+  fontSize: '1.6rem',
+  color:theme.actionTextColor
+  paddingLeft: '2rem',
+  lineHeight: 1.62
+}
+
+.candidate-form-component-Left {
+  display: 'inline-block',
+  verticalAlign: top
+}
+
+.candidate-form-component-Right {
+  display: 'inline-block',
+  verticalAlign: top
+}
+
+.candidate-form-name-input-field {
+  width: '36rem',
+  &-Left {
+    marginRight: '5rem',
+  }
+}
+
+.candidate-form-url-input-field {
+  width: '27rem',
+}

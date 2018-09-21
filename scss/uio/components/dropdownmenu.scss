@@ -1,0 +1,43 @@
+@import '../colors'
+@import '../settings'
+
+theme.borderColor: theme.darkEggWhite
+
+.dropdownmenu {
+  color: theme.greyishBrown
+  fontSize: theme.navFontSize
+  display: flex
+  alignItems: center
+  &--inner {
+    position: relative
+    display: flex
+    alignItems: center
+    background: url('../images/dropdownarrow.svg') no-repeat right 0 top 40%
+    paddingRight: '2rem',
+    &-largearrow {
+      backgroundSize: 19px auto
+      paddingRight: '2.7rem',
+    }
+    &--list {
+      listStyleType: none
+      background: theme.white
+      position: absolute
+      border: 2px solid theme.borderColor
+      top: '3rem',
+      width: '28rem',
+      right: 0
+      left: 0
+      &--item {
+        borderTop: 1px solid theme.borderColor
+        lineHeight: 3.89
+        paddingLeft: '1.5rem',
+        &:first-child {
+          borderTop: none
+        }
+        &-active {
+          background: theme.lightBlueGray
+        }
+      }
+    }
+  }
+}

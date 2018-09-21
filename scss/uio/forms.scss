@@ -1,0 +1,11 @@
+.form {
+  &--buttongroup {
+    textAlign: right
+    & > * {
+      marginRight: '2rem',
+    }
+    & > *:last-child {
+      marginRight: 0
+    }
+  }
+}

@@ -1,0 +1,82 @@
+@import "../settings"
+
+.iconcontainer {
+  display: 'inline-block',
+  &-marginright {
+    marginRight: '0.8rem',
+  }
+}
+
+.forwardarrow {
+  width: 22px
+  height: 22px
+  &--circle {
+    fill: theme.forwardArrowColorBg
+  }
+  &--arrow {
+    fill: theme.forwardArrowColor
+  }
+}
+
+.backarrow {
+  width: 17px
+  height: 12px
+  fill: theme.backArrowColor
+}
+
+.mainarrow {
+  width: 16px
+  height: 16px
+  fill: theme.mainArrowColor
+}
+
+.dropdownarrowicon {
+  fill: theme.dropdownArrowColor
+}
+
+.electionstatusicon {
+  marginRight: '0.8rem',
+  &-active {
+    fill: theme.electionStatusActiveColor
+  }
+  &-closed {
+    fill: theme.electionStatusClosedColor
+  }
+  &-draft {
+    fill: theme.electionStatusDraftColor
+  }
+}
+
+.downarrow {
+  width: 14px
+  height: 9px
+  &--polygon {
+    fill: theme.dropdownArrowColor
+  }
+}
+
+.uparrow {
+  width: 14px
+  height: 9px
+  &--polygon {
+    fill: theme.dropdownArrowColor
+  }
+}
+
+.icon {
+  &--clipboard, &--save {
+    height: 22px
+    width: 22px
+    fill: white
+    position: relative
+    top: -3px
+  }
+
+  &--save {
+    height: 31px
+    width: 31px
+    fill: white
+    position: relative
+    top: -7px
+  }
+}

@@ -1,0 +1,62 @@
+@import '../../settings'
+
+theme.dropDownWidth: '22.3rem',
+theme.dropDownWidthLarge: theme.formFieldLargeWidth
+theme.dropDownListMaxHeight: '30.2rem',
+
+.dropdown {
+  position: relative
+  width: theme.dropDownWidth
+  fontSize: theme.formFieldFontSize
+  color: theme.formFieldTextColor
+  background: theme.white
+  &:hover {
+    cursor: pointer
+  }
+  &-large {
+    width: theme.dropDownWidthLarge
+  }
+  &--list {
+    position: absolute
+    top: '9.6rem',
+    borderRadius: theme.formFieldBorderRadius
+    listStyleType: none
+    minWidth: theme.dropDownWidth
+    maxHeight: theme.dropDownListMaxHeight
+    zIndex: 100
+    background: theme.white
+    border: theme.formFieldBorder
+    borderColor: theme.formFieldBorderColor
+
+    &-nolabel {
+      top: '4.6rem',
+    }
+
+    &-scroll {
+      overflowY: scroll
+    }
+    &-large {
+      width: theme.dropDownWidthLarge
+    }
+    &--item {
+      borderBottom: 0.1rem solid theme.formFieldBorderColor
+      padding: 0.7rem theme.formFieldHorizontalPadding
+      minHeight: '3rem',
+      &:hover {
+        background: theme.lightBlueGray
+        cursor: pointer
+      }
+      &:last-child {
+        borderBottom: 0
+      }
+    }
+  }
+  &--input {
+    background: url('../../images/dropdownarrow.svg') no-repeat right 13px top 50%
+    backgroundSize: 14px 9px
+  }
+}
+
+.dropdownarrow--polygon {
+  fill: red
+}

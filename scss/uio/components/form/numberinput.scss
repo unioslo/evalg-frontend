@@ -1,0 +1,12 @@
+.numberinput {
+  height: '3.5rem',
+  width: '5.3rem',
+  border: theme.formFieldBorder theme.formFieldBorderColor
+  borderRadius: theme.formFieldBorderRadius
+  textAlign: center
+  fontSize: '1.6rem',
+  color: theme.greyishBrown
+  &:disabled {
+    background: theme.mediumWhite
+  }
+}

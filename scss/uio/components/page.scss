@@ -1,0 +1,70 @@
+@import "../settings"
+@import "../responsive"
+
+.page {
+  &--header {
+    color: theme.contentPageHeaderColor
+    margin: 0
+    fontWeight: bold
+    [`media (min-width: ${theme.breakpoints.lg})]`: {
+      margin: 4rem theme.contentHorMdPadding 0 theme.contentHorMdPadding
+      fontWeight: normal
+    }
+  }
+  &--section {
+    padding: 2rem theme.contentHorPadding '2rem',
+    [`media (min-width: ${theme.breakpoints.lg})]`: {
+      padding: 4rem theme.contentHorMdPadding '4rem',
+      borderBottom: 10px solid theme.contentSectionBorderColor
+    }
+    color: theme.greyishBrown
+
+    &-noborder {
+      border: 0
+    }
+
+    &-nobtmpadding {
+      paddingBottom: 0
+    }
+
+    &-notoppadding {
+      paddingTop: 0
+    }
+
+    &-Top {
+      marginBottom: '3rem',
+
+      & + p, & + .page--section--subsection {
+        marginTop: 0
+      }
+
+      &--header {
+        color: theme.greyishBrown
+        fontSize: '2.4rem',
+        fontWeight: bold
+        alignItems: baseline
+        display: 'inline-block',
+        marginRight: '2rem',
+      }
+      &--action {
+        display: 'inline-block',
+      }
+      &--description {
+        display: block
+        margin: 3rem 0 '3rem',
+      }
+    }
+
+    &--subsection {
+      marginTop: '3rem',
+
+      &--header {
+        fontWeight: bold
+        marginBottom: '1rem',
+        &-regular {
+          fontWeight: normal
+        }
+      }
+    }
+  }
+}

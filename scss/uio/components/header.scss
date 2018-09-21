@@ -1,0 +1,51 @@
+@import "../settings"
+@import '../responsive'
+
+.header {
+  &--logo-bar {
+    &--wrapper {
+      backgroundColor: theme.black
+    }
+    margin: 0 auto
+    maxWidth: theme.appMaxWidth
+    padding: 0 theme.horizontalPadding
+    [`media (min-width: ${theme.breakpoints.lg})]`: {
+      padding: 0 theme.horizontalMdPadding
+    }
+    &-logo {
+      background: url('../images/uio-app-logo-nb.png') left center no-repeat
+      height: '4rem',
+    }
+  }
+  &--main {
+    &--wrapper {
+      backgroundColor: theme.headerMainAreaColor
+    }
+    margin: 0 auto
+    maxWidth: theme.appMaxWidth
+    height: '12rem',
+    padding: 2.5rem theme.horizontalPadding 3rem theme.horizontalPadding
+
+    [`media (min-width: ${theme.breakpoints.lg})]`: {
+      padding: 2.5rem theme.horizontalMdPadding 3rem theme.horizontalMdPadding
+    }
+
+    &--row {
+      display: flex
+      justifyContent: space-between
+    }
+  }
+  &--title {
+    fontWeight: bold
+    color: theme.white
+  }
+  &--desc {
+    fontSize: '1.7rem',
+    [`media (min-width: ${theme.breakpoints.lg})]`: {
+      fontSize: '2rem',
+    }
+    lineHeight: 1.5
+    color: theme.eggWhite
+    marginTop: '0.5rem',
+  }
+}

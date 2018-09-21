@@ -1,0 +1,16 @@
+@import '../colors'
+
+.link {
+  &-internal {
+    color: theme.darkTurquoise
+    fontSize: '1.6rem',
+    display: inline-flex
+    alignItems: center
+  }
+  &-external {
+    color: theme.blueish
+  }
+  &-marginright {
+    marginRight: '3rem',
+  }
+}

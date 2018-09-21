@@ -1,0 +1,31 @@
+@import "../settings"
+
+.electionnavbar {
+  display: flex
+  justifyContent: center
+  &--rectangle {
+    fill: theme.adminNavBarColor
+  }
+  &--sectiondesc {
+    fontSize: '1.6rem',
+    fill: theme.adminNavBarSectionDescTextColor
+  }
+  &--sectionnumber {
+    fontSize: '2.4rem',
+    fontWeight: bold
+    &-active {
+      fill: theme.adminNavBarSectionTextColorActive
+    }
+    &-inactive {
+      fill: theme.adminNavBarSectionTextColorInactive
+    }
+  }
+  &--sectioncircle {
+    &-active {
+      fill: theme.adminNavBarSectionCircleColorActive
+    }
+    &-inactive {
+      fill: theme.adminNavBarSectionCircleColorInactive
+    }
+  }
+}

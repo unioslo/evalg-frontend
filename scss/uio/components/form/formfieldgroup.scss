@@ -1,0 +1,21 @@
+@import '../../settings'
+
+.formfieldgroup {
+  marginTop: '2rem',
+
+  &:first-child {
+    marginTop: 0
+  }
+  &-inline {
+    display: 'inline-block',
+  }
+  &-flex {
+    display: flex
+  }
+  &-flexgrow {
+    flexGrow: 1
+  }
+  &-notopmargin {
+    marginTop: 0
+  }
+}

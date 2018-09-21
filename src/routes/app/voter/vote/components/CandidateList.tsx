@@ -48,7 +48,7 @@ const styles = (theme: any) => ({
   desktopButtons: {
     display: 'grid',
     gridTemplateAreas: `'upArrow . downArrow . cumulate . remove .'`,
-    gridTemplateColumns: '20px 50px 20px 50px 140px 50px 70px 35px'
+    gridTemplateColumns: '2rem 5rem 2rem 5rem 14rem 5rem 7rem 3.5rem'
   },
   desktopButtonsContainer: {
     display: 'flex',

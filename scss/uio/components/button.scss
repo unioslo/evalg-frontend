@@ -1,0 +1,102 @@
+@import '../colors'
+@import "../settings"
+@import '../responsive'
+
+btnHorPadding: '4rem',
+btnVerPadding: '1.9rem',
+btnPadding: theme.btnVerPadding theme.btnHorPadding
+btnHorMdPadding: '2rem',
+btnVerMdPadding: '1.5rem',
+btnMdPadding: theme.btnVerMdPadding theme.btnHorMdPadding
+btnFontSize: '2rem',
+btnMdFontSize: '1.8rem',
+btnDefBorderRadius: '0.4rem',
+btnHeight: '6rem',
+btnMdHeight: '5rem',
+btnDefDisabledColor: theme.blueGreyish
+btnDefDisabledTextColor: theme.white
+btnBorderWidth: '0.3rem',
+primaryBtnColor: theme.white
+primaryBtnBgColor: theme.darkTurquoise
+primaryBtnBorderColor: theme.transparent
+secondaryBtnColor: theme.darkBlueGreen
+secondaryBtnBgColor: theme.white
+secondaryBtnBorderColor: theme.lightTurquoise
+nextBtnColor: theme.white
+nextBtnBgColor: theme.darkTurquoise
+nextBtnBorderColor: theme.transparent
+
+.button {
+  display: flex
+  borderRadius: theme.btnDefBorderRadius
+  fontSize: theme.btnFontSize
+  height: theme.btnHeight
+  padding: theme.btnPadding
+  cursor: pointer
+  border: theme.btnBorderWidth solid
+  transition: background 100ms ease-in
+  lineHeight: 1.1
+  [`media (min-width: ${theme.breakpoints.lg})]`: {
+    fontSize: theme.btnMdFontSize
+    padding: theme.btnMdPadding
+    height: theme.btnMdHeight
+  }
+  &:only-child, &:last-child {
+    marginRight: 0
+  }
+  &-wide {
+    padding: theme.btnVerMdPadding theme.btnHorPadding
+  }
+  &-primary {
+    background: theme.primaryBtnBgColor
+    borderColor: theme.primaryBtnBorderColor
+    color: theme.primaryBtnColor
+  }
+  &-secondary {
+    background: theme.secondaryBtnBgColor
+    borderColor: theme.secondaryBtnBorderColor
+    color: theme.secondaryBtnColor
+  }
+  &-disabled {
+    &.button-primary {
+      background: theme.btnDefDisabledColor
+    }
+    borderColor: theme.btnDefDisabledColor
+    color: theme.btnDefDisabledTextColor
+    cursor: not-allowed
+  }
+  &-osx {
+    paddingTop: calc(#{theme.btnVerMdPadding - theme.btnBorderWidth})
+  }
+  &--icon {
+    marginLeft: '2rem',
+    &-smlmargin {
+      marginLeft: '1rem',
+    }
+  }
+}
+
+.buttoncontainer {
+  marginTop: '2rem',
+  [`media (min-width: ${theme.breakpoints.lg})]`: {
+    marginTop: '4rem',
+  }
+  display: flex
+  justifyContent: flex-end
+
+  & > button {
+    marginRight: '2rem',
+  }
+  & > button:last-child {
+    marginRight: 0
+  }
+  & alignleft {
+    justifyContent: flex-start
+  }
+  &-smalltopmargin {
+    marginTop: '2rem',
+  }
+  &-notopmargin {
+    marginTop: 0
+  }
+}

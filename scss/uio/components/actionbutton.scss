@@ -1,0 +1,16 @@
+@import "../colors"
+
+.actionbutton {
+  &--bg {
+    fill: theme.lightBlueGray
+  }
+  &--icon {
+    fill: theme.darkTurquoise
+  }
+  &--text {
+    fill: theme.greyishBrown
+    fontSize: '2rem',
+    textDecoration: underline
+    textDecorationColor: theme.darkTurquoise
+  }
+}

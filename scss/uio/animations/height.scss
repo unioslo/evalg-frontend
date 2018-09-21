@@ -1,0 +1,17 @@
+.height-enter {
+  transform: scale(0.9)
+}
+
+.height-enter.height-enter-active {
+  transform: scale(1)
+  transition: transform 300ms ease-in
+}
+
+.height-leave {
+  transform: scale(1)
+}
+
+.height-leave.height-leave-active {
+  transform: scale(0.9)
+  transition: transform 300ms ease-in
+}

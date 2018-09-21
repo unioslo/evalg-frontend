@@ -1,0 +1,17 @@
+.fade-in-and-out-enter {
+  opacity: 0.01
+}
+
+.fade-in-and-out-enter.fade-in-and-out-enter-active {
+  opacity: 1
+  transition: opacity 200ms ease-in
+}
+
+.fade-in-and-out-leave {
+  opacity: 1
+}
+
+.fade-in-and-out-leave.fade-in-and-out-leave-active {
+  opacity: 0.01
+  transition: opacity 200ms ease-in
+}
