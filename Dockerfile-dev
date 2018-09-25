@@ -28,6 +28,3 @@ RUN set -ex \
 # Install app
 ADD . /usr/src/evalg
 RUN pip3 install --editable /usr/src/evalg
-
-# Temporary patch until graphene fixes proper typemapping-handling of related sqlalchemy-models
-COPY ./typemap.py /usr/local/lib/python3.7/site-packages/graphene/types/typemap.py
