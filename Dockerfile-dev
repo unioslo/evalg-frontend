@@ -2,10 +2,6 @@ FROM library/python:3-alpine
 
 MAINTAINER USITINT <uav-int@usit.uio.no>
 
-# Proxy for updates during build
-ENV http_proxy="http://updateproxy.uio.no:3128"
-ENV https_proxy="https://updateproxy.uio.no:3128"
-
 WORKDIR /usr/src/evalg
 
 # Add dependencies
@@ -32,7 +28,3 @@ RUN set -ex \
 # Install app
 ADD . /usr/src/evalg
 RUN pip3 install --editable /usr/src/evalg
-
-# Reset proxy -- we don't want the build image to have these
-ENV http_proxy=""
-ENV https_proxy=""

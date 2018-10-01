@@ -4,7 +4,7 @@
 Module for bootstrapping the eValg application.
 
 """
-from flask import Flask
+from flask import Flask, json
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
@@ -13,6 +13,7 @@ from flask_cors import CORS
 from werkzeug.contrib.fixers import ProxyFix
 from setuptools_scm import get_version
 
+from evalg.utils import convert_json
 from evalg_common.configuration import init_config
 from evalg_common.logging import init_logging
 from evalg_common import request_id
@@ -20,6 +21,19 @@ from evalg_common import cli as common_cli
 
 from evalg import default_config
 from evalg import cli
+
+
+class HackSQLAlchemy(SQLAlchemy):
+    """ Ugly way to get SQLAlchemy engine to pass the Flask JSON serializer
+    to `create_engine`.
+
+    See https://github.com/mitsuhiko/flask-sqlalchemy/pull/67/files
+
+    """
+    def apply_driver_hacks(self, app, info, options):
+        options.update(json_serializer=json.dumps)
+        super(HackSQLAlchemy, self).apply_driver_hacks(app, info, options)
+
 
 __VERSION__ = get_version()
 
@@ -33,7 +47,7 @@ through a third party application server like *gunicorn*.
 APP_CONFIG_FILE_NAME = 'evalg_config.py'
 """ Config filename in the Flask application instance path. """
 
-db = SQLAlchemy()
+db = HackSQLAlchemy()
 """ Database. """
 
 ma = Marshmallow()
@@ -88,6 +102,9 @@ def create_app(config=None, flask_class=Flask):
 
     from evalg import api
     api.init_app(app)
+
+    from evalg import graphql
+    graphql.init_app(app)
 
     # Setup CORS
     cors.init_app(app)

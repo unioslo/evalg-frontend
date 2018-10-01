@@ -69,6 +69,7 @@ class RoleSchema(BaseSchema):
         strict = False
         dump_only = ('grant_id', 'role_type')
 
+
 class PrincipalSchema(ma.Schema):
     principal_id = fields.Str()
     principal_type = fields.Str()
@@ -76,6 +77,7 @@ class PrincipalSchema(ma.Schema):
     person = fields.Nested(PersonSchema(), allow_none=True)
     group_id = fields.Str(allow_none=True)
     group = fields.Nested(GroupSchema(), allow_none=True)
+
 
 class ElectionGroupRoleSchema(RoleSchema):
     principal_id = fields.Str()

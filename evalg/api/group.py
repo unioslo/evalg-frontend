@@ -27,7 +27,6 @@ class GroupSchema(BaseSchema):
         dump_only = ('id', )
 
 
-
 @doc(tags=['group'])
 class GroupSearch(MethodResource):
     @use_kwargs({'filter': fields.Str()}, locations=['query'])

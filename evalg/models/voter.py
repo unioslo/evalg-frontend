@@ -21,17 +21,17 @@ class Voter(Base):
     """ Voter / census member model."""
     id = db.Column(UUIDType, primary_key=True, default=uuid.uuid4)
     tag = db.Column(db.UnicodeText)
-    pollbook_person_id = db.Column(UUIDType,
-                                   db.ForeignKey('person.id'),
-                                   nullable=False)
+    person_id = db.Column(UUIDType,
+                          db.ForeignKey('person.id'),
+                          nullable=False)
+    person = db.relationship('Person')
     pollbook_id = db.Column(UUIDType,
                             db.ForeignKey('poll_book.id'),
                             nullable=False)
+    pollbook = db.relationship('PollBook', back_populates='voters')
     voter_status_id = db.Column(db.UnicodeText,
                                 db.ForeignKey('voter_status.code'),
                                 nullable=False)
-
-    pollbook = db.relationship('PollBook', back_populates='voters')
     voter_status = db.relationship('VoterStatus')  # no bakref needed
 
     def __repr__(self):

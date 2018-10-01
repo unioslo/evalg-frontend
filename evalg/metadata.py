@@ -32,7 +32,11 @@ def eperm(permission, arg=0):
             else:
                 principals = ()
             e = election(args, kw)
-            if not check_perms(principals, permission, election=e, ou=e.ou):
+            if current_app.config['AUTH_ENABLED'] \
+                    and not check_perms(principals,
+                                        permission,
+                                        election=e,
+                                        ou=e.ou):
                 raise PermissionDenied()
             return f(*args, **kw)
 
@@ -236,7 +240,8 @@ def make_group_from_template(template_name, ou, principals=()):
     from dateutil.relativedelta import relativedelta
     import functools
 
-    if not check_perms(principals, 'create-election', ou=ou):
+    if current_app.config['AUTH_ENABLED'] and not \
+            check_perms(principals, 'create-election', ou=ou):
         current_app.logger.info('Testing %s', principals)
         raise PermissionDenied()
     template = election_templates[template_name]
@@ -312,7 +317,7 @@ def make_group_from_template(template_name, ou, principals=()):
             name = e['name']
         election = Election(name=name,
                             sequence=e['sequence'],
-                            group=group,
+                            election_group=group,
                             start=default_start(),
                             end=default_end(),
                             mandate_period_start=mandate_period_start(e),
@@ -329,5 +334,6 @@ def make_group_from_template(template_name, ou, principals=()):
     db.session.add(group)
     db.session.commit()
     return group
+
 
 make_group_from_template.is_protected = True

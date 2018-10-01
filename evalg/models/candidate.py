@@ -3,9 +3,10 @@
 """ Models for candidates. """
 
 import uuid
+from sqlalchemy_utils import UUIDType, URLType, JSONType
+from sqlalchemy_json import NestedMutableJson
 from evalg import db
 from evalg.models import Base
-from sqlalchemy_utils import UUIDType, URLType, JSONType
 
 
 class Candidate(Base):
@@ -16,7 +17,7 @@ class Candidate(Base):
     list = db.relationship('ElectionList', back_populates='candidates',
                            lazy='joined')
     name = db.Column(db.UnicodeText, nullable=False)
-    meta = db.Column(JSONType)
+    meta = db.Column(NestedMutableJson)
     information_url = db.Column(URLType)
     priority = db.Column(db.Integer, default=0)
     pre_cumulated = db.Column(db.Boolean, default=False)
