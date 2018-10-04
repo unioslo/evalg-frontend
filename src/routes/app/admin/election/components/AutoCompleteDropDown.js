@@ -115,7 +115,8 @@ class AutoCompleteDropDown extends DropDownBase {
     this.setState({ selected: null });
   }
 
-  handleButtonClick() {
+  handleButtonClick(e) {
+    e.preventDefault();
     if (this.state.selected) {
       this.props.buttonAction(this.state.selected);
     }
