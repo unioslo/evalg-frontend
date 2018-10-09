@@ -41,9 +41,9 @@ const deleteVoter = gql`
   }
 `;
 
-const deletePollbook = gql`
-mutation DeletePollBook($id: UUID!) {
-  deletePollbook(id: $id) {
+const deleteVotersInPollbook = gql`
+mutation DeleteVotersInPollBook($id: UUID!) {
+  deleteVotersInPollbook(id: $id) {
     ok
   }
 }
@@ -283,7 +283,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                             {(add) => (
                               <>
                                 <Mutation
-                                  mutation={deletePollbook}
+                                  mutation={deleteVotersInPollbook}
                                   refetchQueries={refetchQueries}>
                                   {(del) => {
                                     const addAndClose = (values: any) => {
@@ -299,6 +299,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                                     };
                                     const deletePollbookAndClose = () => {
                                       del({ variables: { id: this.state.showAddVoter } });
+                                      this.hideDeletePollbookConfirmation();
                                       this.closeNewVoterForm();
                                     };
                                     return (
