@@ -48,7 +48,8 @@ interface IProps {
 interface Istate {
   persons: IPerson[],
   personFilter: string,
-  pollbook: IPollBook
+  pollbook: IPollBook,
+  showPersons: IPerson[],
 }
 
 interface IPersonQueryResult {
@@ -71,7 +72,7 @@ class AddVoter extends React.Component<IProps, Istate> {
       }
       return true;
     })
-    this.setState({ persons: newPersons });
+    this.setState({ showPersons: newPersons });
   })
 
   constructor(props: IProps) {
@@ -79,7 +80,8 @@ class AddVoter extends React.Component<IProps, Istate> {
     this.state = {
       personFilter: '',
       persons: [],
-      pollbook: props.pollbook
+      pollbook: props.pollbook,
+      showPersons: [],
     }
     this.handlePersonFilterUpdate = this.handlePersonFilterUpdate.bind(this)
     this.theForm = this.theForm.bind(this);
@@ -140,8 +142,10 @@ class AddVoter extends React.Component<IProps, Istate> {
                 {({ fields }) => {
                   const addPerson = (person: IPerson) => {
                     fields.push(person);
+                    this.setState({persons: [...this.state.persons, ...[person]]})
                   }
                   const removePerson = (index: number) => {
+                    this.setState({persons: [...this.state.persons.slice(0,index), ...this.state.persons.slice(index + 1)]})
                     fields.remove(index);
                   }
                   return (
@@ -157,7 +161,7 @@ class AddVoter extends React.Component<IProps, Istate> {
                                   {renderPerson(values.persons[index])}
                                 </div>
 
-                                <ActionText action={removePerson.bind(index)}>
+                                <ActionText action={removePerson.bind(this, index)}>
                                   <Trans>general.remove</Trans>
                                 </ActionText>
 
@@ -169,7 +173,7 @@ class AddVoter extends React.Component<IProps, Istate> {
                         </div>
                       ))}
                       <AutoCompleteDropDown
-                        objects={this.state.persons}
+                        objects={this.state.showPersons}
                         userInput={this.state.personFilter}
                         onChange={this.handlePersonFilterUpdate.bind(self, client)}
                         buttonAction={addPerson}
