@@ -148,7 +148,7 @@ class DeleteVoter(graphene.Mutation):
         return DeleteVoter(ok=True)
 
 
-class DeletePollBook(graphene.Mutation):
+class DeleteVotersInPollBook(graphene.Mutation):
     class Input:
         id = graphene.UUID(required=True)
 
@@ -158,10 +158,8 @@ class DeletePollBook(graphene.Mutation):
         pollbook = PollBookModel.query.get(kwargs.get('id'))
         for voter in pollbook.voters:
             db.session.delete(voter)
-        db.session.delete(pollbook)
         db.session.commit()
-        return DeletePollBook(ok=True)
-
+        return DeleteVotersInPollBook(ok=True)
 
 class ElectionVoterInfoInput(graphene.InputObjectType):
     id = graphene.UUID(required=True)
@@ -407,4 +405,4 @@ class Mutations(graphene.ObjectType):
     add_voter = AddVoter.Field()
     update_voter_pollbook = UpdateVoterPollBook.Field()
     delete_voter = DeleteVoter.Field()
-    delete_pollbook = DeletePollBook.Field()
+    delete_voters_in_pollbook = DeleteVotersInPollBook.Field()
