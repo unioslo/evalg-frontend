@@ -39,6 +39,7 @@ interface IProps {
   closeAction: () => void,
   submitAction: (values: any) => void,
   deletePollbookAction: () => void,
+  registeredVoters: IVoter[],
   initialValues: any,
   pollbook: IPollBook,
   i18n: any,
@@ -77,9 +78,11 @@ class AddVoter extends React.Component<IProps, Istate> {
 
   constructor(props: IProps) {
     super(props);
+    const { registeredVoters } = this.props;
+    
     this.state = {
       personFilter: '',
-      persons: [],
+      persons: registeredVoters.map(voter => voter.person),
       pollbook: props.pollbook,
       showPersons: [],
     }

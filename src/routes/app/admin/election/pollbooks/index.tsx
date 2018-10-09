@@ -309,6 +309,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                                           submitAction={addAndClose}
                                           deletePollbookAction={this.showDeletePollbookConfirmation}
                                           pollbook={pollBookDict[this.state.showAddVoter]}
+                                          registeredVoters={voters}
                                           initialValues={{}}
                                         />
                                         {this.state.showDeletePollbook ?
