@@ -15,7 +15,7 @@ node ('evalg') {
     stage ('Build evalg image') {
         sh "docker build \
             -t '${project}/valg-evalg' \
-            -f Dockerfile-evalg ."
+            -f Dockerfile-staging ."
         sh "docker tag '${project}/valg-evalg' '${project}/valg-evalg:${image_version}'"
     }
     stage ('Push images') {
