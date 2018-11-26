@@ -11,8 +11,8 @@ COPY . /usr/src/app
 RUN rm -v /usr/src/app/src/index.tsx 
 COPY ./staging/index.tsx.template /usr/src/app/src/index.tsx
 
-COPY package*.json ./
-RUN yarn build evalg-ts
+COPY package*.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
 # Copy build to nginx image
 FROM harbor.uio.no/library/nginx:latest
