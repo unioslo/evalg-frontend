@@ -3,6 +3,10 @@ FROM harbor.uio.no/library/node:10-alpine
 MAINTAINER USITINT <bnt-int@usit.uio.no>
 LABEL no.uio.contact=bnt-int@usit.uio.no
 
+# Proxy for updates during build
+ENV http_proxy="http://updateproxy.uio.no:3128"
+ENV https_proxy="https://updateproxy.uio.no:3128"
+
 WORKDIR /usr/src/app
 COPY . /usr/src/app
 
@@ -13,6 +17,10 @@ COPY ./staging/index.tsx.template /usr/src/app/src/index.tsx
 
 COPY package*.json yarn.lock ./
 RUN yarn install --frozen-lockfile
+
+# Reset proxy -- we don't want the build image to have these
+ENV http_proxy=""
+ENV https_proxy=""
 
 # Copy build to nginx image
 FROM harbor.uio.no/library/nginx:latest
