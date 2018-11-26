@@ -1,4 +1,4 @@
-FROM harbor.uio.no/library/node:latest as build
+FROM harbor.uio.no/library/node:latest
 
 MAINTAINER USITINT <bnt-int@usit.uio.no>
 LABEL no.uio.contact=bnt-int@usit.uio.no
@@ -19,5 +19,5 @@ FROM harbor.uio.no/library/nginx:latest
 RUN rm -v /etc/nginx/nginx.conf
 ADD staging/nginx.conf /etc/nginx/
 RUN rm -rf /usr/share/nginx/html/*
-COPY --from=build /usr/src/app/build /usr/share/nginx/html
+COPY --from=0 /usr/src/app/build /usr/share/nginx/html
 CMD ["nginx", "-g", "daemon off;"]
