@@ -2,7 +2,7 @@
 
 node ('evalg') {
     def workspace = pwd()
-    def project = 'usit-int'
+    def project = 'it-usit-int-drift'
     def image_version
 
     stage ('Checkout') {
