@@ -1,4 +1,4 @@
-FROM harbor.uio.no/library/node:latest
+FROM harbor.uio.no/library/node:10-alpine
 
 MAINTAINER USITINT <bnt-int@usit.uio.no>
 LABEL no.uio.contact=bnt-int@usit.uio.no
