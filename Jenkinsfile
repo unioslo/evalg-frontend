@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-node ('evalg-frontend') {
+node ('evalg') {
     def workspace = pwd()
     def project = 'usit-int'
     def image_version
