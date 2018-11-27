@@ -1,4 +1,4 @@
-FROM harbor.uio.no/library/node:10-alpine
+FROM harbor.uio.no/library/node:latest
 
 MAINTAINER USITINT <bnt-int@usit.uio.no>
 LABEL no.uio.contact=bnt-int@usit.uio.no
@@ -12,7 +12,9 @@ RUN rm -v /usr/src/app/src/index.tsx
 COPY ./staging/index.tsx.template /usr/src/app/src/index.tsx
 
 COPY package*.json yarn.lock ./
-RUN yarn && yarn build
+
+RUN yarn \
+ && yarn build
 
 # Copy build to nginx image
 FROM harbor.uio.no/library/nginx:latest
