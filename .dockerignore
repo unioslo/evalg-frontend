@@ -1,0 +1,16 @@
+# npm stuff
+node_modules
+npm-debug.log
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Git
+.git
+.gitignore
+
+# Jenkins
+Jenkinsfile
+Jenkinsfile*
