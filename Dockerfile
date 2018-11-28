@@ -16,6 +16,9 @@ RUN yarn \
 
 # Copy build to nginx image
 FROM harbor.uio.no/library/nginx:latest
+MAINTAINER USITINT <bnt-int@usit.uio.no>
+LABEL no.uio.contact=bnt-int@usit.uio.no
+
 RUN rm -rf /usr/share/nginx/html/*
 COPY --from=0 /usr/src/app/build /usr/share/nginx/html
 CMD ["nginx", "-g", "daemon off;"]
