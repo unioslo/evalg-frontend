@@ -36,3 +36,7 @@ MANIFEST
 .filebeat
 instance/*.py
 db
+
+# yarn/npm
+yarn.lock
+node_modules/*
