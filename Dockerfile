@@ -8,7 +8,8 @@ COPY . /usr/src/app
 COPY package*.json yarn.lock ./
 
 # TODO fix this by adding the API to a config file
-RUN sed -i 's/localhost:5000/evalg-test01.uio.no/g' /usr/src/app/src/index.tsx
+RUN sed -i 's/localhost:5000/evalg-test01.uio.no/g' /usr/src/app/src/index.tsx \
+ && sed -i 's/testWarning = false/testWarning = true/g' /usr/src/app/src/appConfig.ts
 
 RUN echo 123
 RUN yarn \
