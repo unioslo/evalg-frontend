@@ -1,6 +1,7 @@
 /* @flow */
 import * as React from 'react';
 import injectSheet from 'react-jss';
+import { testWarning } from 'appConfig'
 
 const styles = theme => ({
   footer: {
@@ -27,11 +28,17 @@ type Props = {
 
 const Footer = (props: Props, ctx: Context) => {
   return (
-    <footer className={props.classes.wrapper}>
-      <div className={props.classes.footer}>
-        <p>Footer content</p>
-      </div>
-    </footer>
+    <React.Fragment>
+      <footer className={props.classes.wrapper}>
+        <div className={props.classes.footer}>
+          <p>Footer content</p>
+        </div>
+      </footer>
+      {testWarning &&
+        <div className="alert">
+          Test av evalg 3. For spørsmål om løsningen ta kontakt med <a href='mailto:evalg-kontakt@usit.uio.no'>evalg-drift</a>
+        </div>}
+    </React.Fragment>
   )
 };
 
