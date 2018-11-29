@@ -21,13 +21,14 @@ services:
       LANG: C.UTF-8
 
   db:
-    build:
-      context: .
-      dockerfile: Dockerfile-db
+    image: harbor.uio.no/library/postgres:latest
     ports:
       - "5432:5432"
     volumes:
-      - ./db/main:/var/lib/postgresql/data:z
+      - db-data/:/var/lib/postgresql/data:z
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+
+volumes:
+  db-data:
