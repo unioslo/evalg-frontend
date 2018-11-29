@@ -23,10 +23,7 @@ RUN set -ex \
     && apk add --no-cache --virtual .evalg-deps \
             git \
             bash \
-            postgresql-dev \
-#    && pip3 install -U pip \
-#    && pip3 install -r /usr/src/evalg/requirements.txt \
-#    && apk del .evalg-build-deps
+            postgresql-dev 
 
 # Reset proxy -- we don't want the build image to have these
 ENV http_proxy=""
