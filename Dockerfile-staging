@@ -14,26 +14,26 @@ COPY requirements.txt /usr/src/evalg
 
 # Install build-deps, then install/build deps
 RUN set -ex \
-    && apk add --no-cache --virtual .evalg-build-deps \
-            gcc \
-            make \
-            libc-dev \
-            musl-dev \
-            linux-headers \
-    && apk add --no-cache --virtual .evalg-deps \
-            git \
-            bash \
-            postgresql-dev 
+ && apk add --no-cache --virtual .evalg-build-deps \
+        gcc \
+        make \
+        libc-dev \
+        musl-dev \
+        linux-headers \
+ && apk add --no-cache --virtual .evalg-deps \
+        git \
+        bash \
+        postgresql-dev
 
 # Reset proxy -- we don't want the build image to have these
 ENV http_proxy=""
 ENV https_proxy=""
 
 RUN pip3 config set global.index-url https://repo.usit.uio.no/nexus/repository/pypi-usit/simple \
-    && pip3 config set global.index https://repo.usit.uio.no/nexus/repository/pypi-usit/pypi \
-    && pip3 install -U pip \
-    && pip3 install -r /usr/src/evalg/requirements.txt \
-    && apk del .evalg-build-deps
+ && pip3 config set global.index https://repo.usit.uio.no/nexus/repository/pypi-usit/pypi \
+ && pip3 install -U pip \
+ && pip3 install -r /usr/src/evalg/requirements.txt \
+ && apk del .evalg-build-deps
 
 # Install app
 COPY . /usr/src/evalg
