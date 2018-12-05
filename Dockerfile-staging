@@ -11,6 +11,7 @@ WORKDIR /usr/src/evalg
 
 # Add dependencies
 COPY requirements.txt /usr/src/evalg
+COPY requirements-test.txt /usr/src/evalg
 
 # Install build-deps, then install/build deps
 RUN set -ex \
@@ -33,6 +34,7 @@ RUN pip3 config set global.index-url https://repo.usit.uio.no/nexus/repository/p
  && pip3 config set global.index https://repo.usit.uio.no/nexus/repository/pypi-usit/pypi \
  && pip3 install -U pip \
  && pip3 install -r /usr/src/evalg/requirements.txt \
+ && pip3 install -r /usr/src/evalg/requirements-test.txt \
  && apk del .evalg-build-deps
 
 # Install app
