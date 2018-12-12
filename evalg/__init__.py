@@ -11,7 +11,7 @@ from flask_migrate import Migrate
 from flask_apispec.extension import FlaskApiSpec
 from flask_cors import CORS
 from werkzeug.contrib.fixers import ProxyFix
-from setuptools_scm import get_version
+import pkg_resources
 
 from evalg.utils import convert_json
 from evalg_common.configuration import init_config
@@ -21,6 +21,20 @@ from evalg_common import cli as common_cli
 
 from evalg import default_config
 from evalg import cli
+
+DISTRIBUTION_NAME = 'evalg'
+
+def get_distribution():
+    """ Get the distribution object for this single module dist. """
+    try:
+        return pkg_resources.get_distribution(DISTRIBUTION_NAME)
+    except pkg_resources.DistributionNotFound:
+        return pkg_resources.Distribution(
+            project_name=DISTRIBUTION_NAME,
+            version='0.0.0',
+            location=os.path.dirname(__file__))
+
+__version__ = get_distribution().version
 
 
 class HackSQLAlchemy(SQLAlchemy):
@@ -34,8 +48,6 @@ class HackSQLAlchemy(SQLAlchemy):
         options.update(json_serializer=json.dumps)
         super(HackSQLAlchemy, self).apply_driver_hacks(app, info, options)
 
-
-__VERSION__ = get_version()
 
 APP_CONFIG_ENVIRON_NAME = 'EVALG_CONFIG'
 """ Name of an environmet variable to read config file name from.
@@ -98,6 +110,7 @@ def create_app(config=None, flask_class=Flask):
     migrate.init_app(app, db, directory='evalg/migrations')
 
     # Setup API
+    print(docs)
     docs.init_app(app)
 
     from evalg import api
