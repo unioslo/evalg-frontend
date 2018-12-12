@@ -3,11 +3,11 @@
 pipeline {
     agent { label 'python3' }
     stages {
-        stage('Run unit tests') {
-            steps {
-                sh 'tox --recreate'
-            }
-        }
+#        stage('Run unit tests') {
+#            steps {
+#                sh 'tox --recreate'
+#            }
+#        }
         stage('Build source distribution') {
             steps {
                 sh 'python3.6 setup.py sdist'
@@ -16,9 +16,9 @@ pipeline {
         }
     }
     post {
-        always {
-            junit '**/junit*.xml'
-        }
+#        always {
+#            junit '**/junit*.xml'
+#        }
         cleanup {
             sh 'rm -vf junit.xml'
             sh 'rm -vrf build dist'
