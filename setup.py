@@ -33,12 +33,6 @@ def get_packages():
                                              'ballotbox', 'ballotbox.*'))
 
 
-def build_package_data(packages, *include):
-    """Generate a list of package_data to include."""
-    for package in packages:
-        yield package, list(include)
-
-
 class PyTest(setuptools.command.test.test):
     """ Run tests using pytest.
 
@@ -63,10 +57,6 @@ class PyTest(setuptools.command.test.test):
 
 def run_setup():
     """ Build and run setup. """
-
-
-#        package_data=dict(
-#            build_package_data(packages, '*.tpl')),
 
     setup_requirements = ['setuptools_scm']
     test_requirements = list(get_requirements('requirements-test.txt'))
@@ -98,7 +88,7 @@ def run_setup():
             'test': PyTest,
         },
         classifiers=[
-            'Development Status :: 1 - Alpha',
+            'Development Status :: 3 - Alpha',
             'Intended Audience :: Developers',
             'Intended Audience :: Education',
             # TODO/TBD: 'License :: OSI Approved :: MIT License',
