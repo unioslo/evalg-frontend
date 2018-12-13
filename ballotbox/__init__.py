@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-Module for bootstrapping the ballotbox application.
+"""Module for bootstrapping the ballotbox application."""
 
-"""
+import os
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.contrib.fixers import ProxyFix
-from setuptools_scm import get_version
+import pkg_resources
 
 from evalg_common.configuration import init_config
 from evalg_common.logging import init_logging
@@ -17,25 +17,41 @@ from evalg_common import request_id
 from ballotbox import default_config
 from ballotbox import api
 
-__VERSION__ = get_version()
+DISTRIBUTION_NAME = 'ballotbox'
+
+
+def get_distribution():
+    """Get the distribution object for this single module dist."""
+    try:
+        return pkg_resources.get_distribution(DISTRIBUTION_NAME)
+    except pkg_resources.DistributionNotFound:
+        return pkg_resources.Distribution(
+            project_name=DISTRIBUTION_NAME,
+            version='0.0.0',
+            location=os.path.dirname(__file__))
+
+
+__version__ = get_distribution().version
 
 APP_CONFIG_ENVIRON_NAME = 'BALLOTBOX_CONFIG'
-""" Name of an environmet variable to read config file name from.
+"""
+Name of an environmet variable to read config file name from.
 
 This is a useful method to set a config file if the application is started
 through a third party application server like *gunicorn*.
 """
 
 APP_CONFIG_FILE_NAME = 'ballotbox_config.py'
-""" Config filename in the Flask application instance path. """
+"""Config filename in the Flask application instance path."""
 
 
 class WsgiApp(object):
-    """ Wsgi app proxy object. """
+    """Wsgi app proxy object."""
 
     @staticmethod
     def create(config=None, flask_class=Flask):
-        """ Create application.
+        """
+        Create application.
 
         :rtype: Flask
         :return: The assembled and configured Flask application.
@@ -73,24 +89,24 @@ class WsgiApp(object):
 
     @property
     def app(self):
-        """ Lazily create the application. """
+        """Lazily create the application."""
         if not hasattr(self, '_app'):
             self._app = self.create()
         return self._app
 
     def __call__(self, *args, **kwargs):
-        """ Run the application on a request. """
+        """Run the application on a request."""
         return self.app(*args, **kwargs)
 
 
 wsgi = WsgiApp()
-""" WSGI app. """
+"""WSGI app."""
 
 app = wsgi.app
-""" Flask app. """
+"""Flask app."""
 
 db = SQLAlchemy(app)
-""" Database. """
+"""Database."""
 
 migrate = Migrate(app, db)
-""" Migrations. """
+"""Migrations."""
