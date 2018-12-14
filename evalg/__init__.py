@@ -117,7 +117,6 @@ def create_app(config=None, flask_class=Flask):
                 default_file_name=APP_TEMPLATE_CONFIG_FILE_NAME,
                 default_config=default_config)
 
-    print('------------')
     if app.config.get('NUMBER_OF_PROXIES', None):
         app.wsgi_app = ProxyFix(app.wsgi_app,
                                 num_proxies=app.config.get(
