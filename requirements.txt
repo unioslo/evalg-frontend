@@ -5,7 +5,7 @@ click
 Flask==1.0.2
 flask-apispec
 flask-cors
-flask_fixtures
+flask-fixtures
 flask-graphql
 flask-marshmallow
 flask-migrate
