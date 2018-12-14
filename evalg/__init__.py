@@ -59,7 +59,13 @@ through a third party application server like *gunicorn*.
 """
 
 APP_CONFIG_FILE_NAME = 'evalg_config.py'
-"""Config filename in the Flask application instance path. """
+"""Config filename in the Flask application instance path."""
+
+APP_TEMPLATE_CONFIG_FILE_NAME = 'evalg_template_config.py'
+"""Election definitions."""
+
+APP_INSTANCE_PATH_ENVIRON_NAME = 'EVALG_INSTANCE_PATH'
+"""Name of environment variable used to set the instance_path."""
 
 db = HackSQLAlchemy()
 """Database."""
@@ -84,10 +90,16 @@ def create_app(config=None, flask_class=Flask):
     :rtype: Flask
     :return: The assembled and configured Flask application.
     """
+
+    # Load a custom instance_path if set
+    instance_path = os.environ.get(APP_INSTANCE_PATH_ENVIRON_NAME, default=None)
+
     # Setup Flask app
     app = flask_class(__name__,
                       static_folder=None,
+                      instance_path=instance_path,
                       instance_relative_config=True)
+
 
     # Setup CLI
     common_cli.init_app(app)
@@ -98,6 +110,14 @@ def create_app(config=None, flask_class=Flask):
                 default_file_name=APP_CONFIG_FILE_NAME,
                 default_config=default_config)
 
+    # Load evalg_templates as config.
+    # TODO: Do this another way?
+    init_config(app, config,
+                environ_name=APP_CONFIG_ENVIRON_NAME,
+                default_file_name=APP_TEMPLATE_CONFIG_FILE_NAME,
+                default_config=default_config)
+
+    print('------------')
     if app.config.get('NUMBER_OF_PROXIES', None):
         app.wsgi_app = ProxyFix(app.wsgi_app,
                                 num_proxies=app.config.get(
