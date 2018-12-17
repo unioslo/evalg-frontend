@@ -1,6 +1,5 @@
 #!/usr/bin/env groovy
 
-
 pipeline {
     agent { label 'docker' }
     stages {
@@ -13,17 +12,15 @@ pipeline {
             }
         }
         stage ('Push image to Harbor') {
-
             steps {
-
                 sh "docker push '${project}/valg-backend'"
             }
         }
     }
-    post {
-        cleanup {
-            sh 'rm -vrf build dist'
-        }   
-    }   
+//    post {
+//        cleanup {
+//            sh 'rm -vrf build dist'
+//        }   
+//    }   
 }
 
