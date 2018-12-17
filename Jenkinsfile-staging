@@ -7,7 +7,7 @@ pipeline {
         image_version = sh( 
             returnStdout: true,
             script: 'git describe --dirty=+ --tags'
-        ).trim() - /^v/
+        ).trim()
     }
     stages {
         stage ('Build evalg image') {
