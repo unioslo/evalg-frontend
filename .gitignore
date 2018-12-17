@@ -40,3 +40,9 @@ db
 # yarn/npm
 yarn.lock
 node_modules/*
+
+# vscode
+.vscode/*
+
+# Junit
+junit-*.xml

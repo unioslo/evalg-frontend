@@ -1,54 +1,42 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-""" Setup file for eValg. """
+"""Setup file for eValg."""
 from __future__ import print_function
 
-import os
 import sys
-from setuptools import setup
-from setuptools import find_packages
-from setuptools.command.test import test as TestCommand
 
-
-HERE = os.path.dirname(__file__)
-
-PACKAGE_NAME = 'evalg'
-PACKAGE_DESC = 'An electronic voting application'
-PACKAGE_AUTHOR = 'UIO/LOS/USIT/UAV/INT'
-PACKAGE_URL = 'https://bitbucket.usit.uio.no/projects/EVALG/repos/evalg/'
+import pkg_resources
+import setuptools
+import setuptools.command.test
 
 
 def get_requirements(filename):
-    """ Read requirements from file. """
-    with open(filename, 'r') as reqfile:
-        for req_line in reqfile.readlines():
-            req_line = req_line.strip()
-            if req_line:
-                if req_line.startswith('-'):
-                    continue  # some pip option, hide line from setuptools
-                yield req_line
+    """Read requirements from file."""
+    with open(filename, mode='rt', encoding='utf-8') as f:
+        requirements = iter(pkg_resources.parse_requirements(f))
+        for requirement in requirements:
+            print(repr(requirement))
+            yield str(requirement)
+
+
+def get_textfile(filename):
+    """Get contents from a text file."""
+    with open(filename, mode='rt', encoding='utf-8') as f:
+        return f.read().lstrip()
 
 
 def get_packages():
-    """ List of (sub)packages to install. """
-    return find_packages('.', include=(
-        'evalg_common', 'evalg_common.*',
-        'evalg', 'evalg.*',
-        'ballotbox', 'ballotbox.*',
-    ))
+    """List of (sub)packages to install."""
+    return setuptools.find_packages('.',
+                                    include=('evalg_common', 'evalg_common.*',
+                                             'evalg', 'evalg.*',
+                                             'ballotbox', 'ballotbox.*'))
 
 
-def build_package_data(packages, *include):
-    """ Generate a list of package_data to include. """
-    for package in packages:
-        yield package, list(include)
-
-
-class PyTest(TestCommand, object):
+class PyTest(setuptools.command.test.test):
     """ Run tests using pytest.
 
     From `http://doc.pytest.org/en/latest/goodpractices.html`.
-
     """
 
     user_options = [('pytest-args=', 'a', "Arguments to pass to pytest")]
@@ -67,50 +55,52 @@ class PyTest(TestCommand, object):
         raise SystemExit(errno)
 
 
-def setup_package():
+def run_setup():
     """ Build and run setup. """
 
-    setup_requires = ['setuptools_scm']
+    setup_requirements = ['setuptools_scm']
+    test_requirements = list(get_requirements('requirements-test.txt'))
+    install_requirements = list(get_requirements('requirements.txt'))
 
-    # TODO: Is this good enough? Will it catch aliases?
-    #       Are there better methods to figure out which command we are about
-    #       to run?
     if {'build_sphinx', 'upload_docs'}.intersection(sys.argv):
-        # sphinx modules
-        setup_requires.extend(['sphinx', 'sphinxcontrib-httpdomain'])
-        # dependencies for generating autodoc
-        setup_requires.extend(get_requirements('requirements.txt'))
+        # Sphinx modules:
+        setup_requirements.extend(get_requirements('docs/requirements.txt'))
+        # pofh-dependencies for generating autodoc:
+        setup_requirements.extend(get_requirements('requirements.txt'))
 
-    packages = get_packages()
+    setuptools.setup(
+        name='evalg',
+        description='An electronic voting application',
+        long_description=get_textfile('README.md'),
+        long_description_content_type='text/markdown',
 
-    setup(
-        name=PACKAGE_NAME,
-        description=PACKAGE_DESC,
-        author=PACKAGE_AUTHOR,
-        url=PACKAGE_URL,
+        url='https://bitbucket.usit.uio.no/projects/EVALG/repos/evalg/',
+        author='USIT, University of Oslo',
+        author_email='bnt-int@usit.uio.no',
 
         use_scm_version=True,
-
-        packages=packages,
-        package_data=dict(
-            build_package_data(packages, '*.tpl')),
-
-        setup_requires=setup_requires,
-        install_requires=list(
-            get_requirements('requirements.txt')),
-        tests_require=list(
-            get_requirements('requirements-test.txt')),
-
+        packages=get_packages(),
+        python_requires='~= 3.6',
+        setup_requires=setup_requirements,
+        install_requires=install_requirements,
+        tests_require=test_requirements,
         cmdclass={
             'test': PyTest,
-            'pytest': PyTest,
-        }
+        },
+        classifiers=[
+            'Development Status :: 3 - Alpha',
+            'Intended Audience :: Developers',
+            'Intended Audience :: Education',
+            # TODO/TBD: 'License :: OSI Approved :: MIT License',
+            'Topic :: Software Development :: Libraries',
+            'Programming Language :: Python :: 3 :: Only',
+            'Programming Language :: Python :: 3.6',
+            'Programming Language :: Python :: 3.7',
+            'Topic :: System :: Systems Administration',
+        ],
+        keywords='evalg electronic election',
     )
 
 
 if __name__ == "__main__":
-    from setuptools_scm import get_version
-    print("evalg version: {!s}".format(get_version()))
-    print("packages: {!r}".format(get_packages()))
-    print("")
-    setup_package()
+    run_setup()
