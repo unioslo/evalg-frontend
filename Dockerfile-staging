@@ -1,6 +1,6 @@
 FROM harbor.uio.no/library/python:3-alpine
 
-MAINTAINER USITINT <bnt-int@usit.uio.no>
+MAINTAINER USITINT <uav-int@usit.uio.no>
 LABEL no.uio.contact=bnt-int@usit.uio.no
 
 # Proxy for updates during build
@@ -27,11 +27,11 @@ RUN set -ex \
 ENV http_proxy=""
 ENV https_proxy=""
 
-RUN pip3 config set global.index-url https://repo.usit.uio.no/nexus/repository/pypi-usit/simple \
- && pip3 config set global.index https://repo.usit.uio.no/nexus/repository/pypi-usit/pypi \
- && pip3 install -U pip \
- && pip3 install evalg --no-cache-dir \
- && apk del .evalg-build-deps
+RUN pip3 config set global.index-url https://repo.usit.uio.no/nexus/repository/pypi-usit/simple
+RUN pip3 config set global.index https://repo.usit.uio.no/nexus/repository/pypi-usit/pypi
+RUN pip3 install -U pip
+RUN pip3 install evalg --no-cache-dir
+RUN apk del .evalg-build-deps
 
 # Set instance path
 ENV EVALG_CONFIG="/usr/local/var/evalg-instance"
