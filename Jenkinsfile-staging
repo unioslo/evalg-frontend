@@ -2,7 +2,19 @@
 
 pipeline {
     agent { label 'docker' }
+    enviroment {
+        project = 'it-usit-int-drift'
+        image_version
+    }
     stages {
+        stage ('Get image version') {
+            steps {
+                image_version = sh( 
+                    returnStdout: true,
+                    script: 'git describe --dirty=+ --tags'
+                ).trim() - /^v/
+            }
+        }
         stage ('Build evalg image') {
             steps {
                 sh "docker build \
@@ -17,10 +29,5 @@ pipeline {
             }
         }
     }
-//    post {
-//        cleanup {
-//            sh 'rm -vrf build dist'
-//        }   
-//    }   
 }
 
