@@ -1,3 +1,5 @@
+.. highlight:: bash
+
 Installing Evalg 3.0
 ====================
 

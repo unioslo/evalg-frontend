@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'Evalg 3.0'
+project = 'evalg'
 copyright = '2018, University of Oslo, Norway'
 author = 'USIT/BNT/INT'
 
