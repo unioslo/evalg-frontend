@@ -1,7 +1,16 @@
 Testing
 =======
 
-.. todo::
+Framework
+---------
 
-   Write something about the testing of the Evalg. 
+The *pytest* framework along with *pytest-flask* and several other extensions
+is used for *evalg*
 
+
+Running tests
+-------------
+
+::
+
+   py.test
