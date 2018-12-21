@@ -34,7 +34,8 @@ def get_packages():
 
 
 class PyTest(setuptools.command.test.test):
-    """ Run tests using pytest.
+    """
+    Run tests using pytest.
 
     From `http://doc.pytest.org/en/latest/goodpractices.html`.
     """
@@ -56,7 +57,7 @@ class PyTest(setuptools.command.test.test):
 
 
 def run_setup():
-    """ Build and run setup. """
+    """Build and run setup."""
 
     setup_requirements = ['setuptools_scm']
     test_requirements = list(get_requirements('requirements-test.txt'))
