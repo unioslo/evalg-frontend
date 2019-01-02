@@ -40,38 +40,41 @@ const styles = theme => ({
   },
   textInput: {
     order: 2,
-    height: theme.formFieldHeight,
     width: '100%',
     maxWidth: '48.4rem',
-    fontSize: theme.formFieldFontSize,
-    color: theme.formFieldTextColor,
-    transition: `border-color ${theme.formFieldFocusTransition}`,
-    paddingLeft: theme.formFieldHorizontalPadding,
     paddingTop: '0.4rem',
-    '&:focus + label': {
-      color: theme.formFieldLabelFocusedColor,
-      transition: 'color 200ms ease-in',
-    },
   },
   blockTextInput: {
     display: 'block',
+    color: theme.formFieldTextColor,
+    height: theme.formFieldHeight,
+    paddingLeft: theme.formFieldHorizontalPadding,
     border: theme.formFieldBorder,
     borderRadius: theme.formFieldBorderRadius,
     borderColor: theme.formFieldBorderColor,
+    transition: `border-color ${theme.formFieldFocusTransition}`,
     '&:focus': {
       borderColor: theme.formFieldBorderActiveColor,
       //transition: `border-color ${theme.formFieldFocusTransition}`,
     },
+    '&:focus + label': {
+      color: theme.formFieldLabelFocusedColor,
+      transition: 'color 200ms ease-in',
+    },
+    fontSize: theme.formFieldFontSize,
   },
   inlineTextInput: {
     display: 'inline-block',
     fontFamily: 'inherit',
-    color: theme.inlineFormFieldBottomBorderColor,
+    color: theme.inlineFormFieldFontColor,
     fontSize: 'inherit',
     border: 0,
-    borderBottomWidth: '4px',
+    borderBottomWidth: '2px',
     borderBottomStyle: 'dotted',
     borderBottomColor: theme.inlineFormFieldBottomBorderColor,
+  },
+  inlineTextInner: {
+    marginRight: 30,
   },
   small: {
     height: '3.5rem',
@@ -160,18 +163,24 @@ const TextInput = (props: Props) => {
       {!hideErrors && touched && error && (
         <FormErrorMsg msg={error} className={classes.errorMsg} />
       )}
-      <input
-        type="text"
-        className={inputClassNames}
-        id={id}
-        name={name}
-        value={value}
-        placeholder={placeholder}
-        onChange={handleOnChange}
-        readOnly={readOnly}
-        onFocus={onFocus}
-        onBlur={onBlur}
-      />
+      {!inline ? (
+        <input
+          type="text"
+          className={inputClassNames}
+          id={id}
+          name={name}
+          value={value}
+          placeholder={placeholder}
+          onChange={handleOnChange}
+          readOnly={readOnly}
+          onFocus={onFocus}
+          onBlur={onBlur}
+        />
+      ) : (
+        <div onClick={onFocus} className={inputClassNames}>
+          <div className={classes.inlineTextInner}>{value}</div>
+        </div>
+      )}
       {!!label && (
         <label htmlFor={id} className={labelClassNames}>
           {label}

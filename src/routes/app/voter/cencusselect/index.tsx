@@ -6,7 +6,7 @@ import Link from 'components/link';
 import { Page, PageSection } from 'components/page';
 import { DropDown } from 'components/form';
 import Button, { ButtonContainer } from 'components/button';
-import { translate } from 'react-i18next';
+import { translate, Trans } from 'react-i18next';
 import { withRouter } from 'react-router';
 import injectSheet from 'react-jss';
 import Icon from 'components/icon';
@@ -14,26 +14,34 @@ import Icon from 'components/icon';
 const styles = (theme: any) => ({
   ingress: {
     fontFamily: 'georgia, serif',
-    fontSize: 20,
-    lineHeight: '30px',
+    fontSize: '2rem',
+    lineHeight: '3rem',
   },
   subheading: {
-    fontSize: 26,
-    lineheight: '27px',
+    fontSize: '2.6rem',
+    lineHeight: '2.7rem',
+    marginBottom: '1.6rem',
   },
   electionGroupInfoSection: {
-    paddingBottom: 30,
+    marginBottom: '6rem',
   },
   votingRightsSection: {},
-  notInCensusVotingJustificationTextArea: {
+  notInCensusReasonTextArea: {
     width: '100%',
+    padding: 10,
+    fontFamily: 'inherit',
+    fontSize: 'inherit',
     border: theme.formFieldBorder,
     borderColor: theme.formFieldBorderColor,
     borderRadius: theme.formFieldBorderRadius,
   },
-  paragraph: {
-    marginTop: '10px',
-    marginBottom: '10px',
+  notInCensusParagraph: {
+    marginTop: '1.6rem',
+    marginBottom: '2rem',
+  },
+  aboutElectionLink: {
+    fontSize: '1.8rem',
+    marginTop: '1.8rem',
   },
 });
 
@@ -69,6 +77,7 @@ interface IProps {
 
 interface IState {
   selectedCensusIndex: number;
+  notInCensusReason: string;
 }
 
 class CensusSelectPage extends React.Component<IProps, IState> {
@@ -76,8 +85,12 @@ class CensusSelectPage extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       selectedCensusIndex: 0,
+      notInCensusReason: '',
     };
     this.handleSelectCensus = this.handleSelectCensus.bind(this);
+    this.handleNotInCensusReasonChange = this.handleNotInCensusReasonChange.bind(
+      this
+    );
   }
 
   public hasVotingRights(): boolean {
@@ -89,6 +102,12 @@ class CensusSelectPage extends React.Component<IProps, IState> {
     this.setState({ selectedCensusIndex });
     // tslint:disable-next-line:no-console
     console.log(selectedCensusIndex);
+  }
+
+  public handleNotInCensusReasonChange(
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) {
+    this.setState({ notInCensusReason: event.target.value });
   }
 
   public render() {
@@ -137,8 +156,9 @@ class CensusSelectPage extends React.Component<IProps, IState> {
                       elections[0].mandatePeriodEnd
                     ).toLocaleDateString()}`}
                   </p>
-                  <div className={classes.paragraph}>
-                    {elections[0].informationUrl || (
+                  <div className={classes.aboutElectionLink}>
+                    {(elections[0].informationUrl ||
+                      true) /* <- for testing */ && (
                       <Link
                         to={elections[0].informationUrl}
                         marginRight={true}
@@ -155,7 +175,7 @@ class CensusSelectPage extends React.Component<IProps, IState> {
                     <>
                       <p className={classes.subheading}>Du har stemmerett</p>
                       <div className={classes.ingress}>
-                        Du er registrert med stemmerett i gruppen
+                        Du er registrert med stemmerett i gruppen&nbsp;&nbsp;
                         {dropdown}
                       </div>
                     </>
@@ -165,19 +185,18 @@ class CensusSelectPage extends React.Component<IProps, IState> {
                         Har du valgt riktig stemmegruppe?
                       </p>
                       <p className={classes.ingress}>
-                        Du er ikke registrert i stemmegruppen for
+                        Du er ikke registrert i stemmegruppen for&nbsp;&nbsp;
                         {dropdown}
                       </p>
-                      <p className={classes.paragraph}>
+                      <p className={classes.notInCensusParagraph}>
                         Valgstyret avgjør basert på tilknytningen din til UiO om
                         stemmen vil telles med. Hvis du mener du skulle vært
                         registrert i denne stemmegruppen, oppgi stillingskode
                         eller annen relevant informasjon.
                       </p>
                       <textarea
-                        className={
-                          classes.notInCensusVotingJustificationTextArea
-                        }
+                        onChange={this.handleNotInCensusReasonChange}
+                        className={classes.notInCensusReasonTextArea}
                         placeholder="Skriv begrunnelse"
                         rows={6}
                       />
@@ -186,7 +205,7 @@ class CensusSelectPage extends React.Component<IProps, IState> {
                 </div>
                 <ButtonContainer alignLeft={true}>
                   <Button
-                    text={'Tilbake'}
+                    text={<Trans>general.back</Trans>}
                     action={history.goBack}
                     secondary={true}
                   />
@@ -195,7 +214,16 @@ class CensusSelectPage extends React.Component<IProps, IState> {
                       elections[this.state.selectedCensusIndex].id
                     }/vote`}
                   >
-                    <Button text={'Gå videre'} />
+                    <Button
+                      text={<Trans>general.proceed</Trans>}
+                      // tslint:disable:no-console
+                      // tslint:disable-next-line:jsx-no-lambda
+                      action={() => console.log(this.state.notInCensusReason)}
+                      disabled={
+                        !this.hasVotingRights() &&
+                        this.state.notInCensusReason === ''
+                      }
+                    />
                   </Link>
                 </ButtonContainer>
               </PageSection>

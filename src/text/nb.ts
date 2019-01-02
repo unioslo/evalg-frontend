@@ -193,6 +193,7 @@ export default {
     of: 'av',
     ok: 'OK',
     ongoingElections: 'Pågående valg',
+    proceed: 'Gå videre',
     remove: 'Fjern',
     required: 'Påkrevd',
     save: 'Lagre',

@@ -54,6 +54,7 @@ const styles = theme => ({
   inline: {
     display: 'inline-block',
     fontSize: 'inherit',
+    width: 'fit-content',
   },
   list: {
     position: 'absolute',
@@ -94,6 +95,10 @@ const styles = theme => ({
   },
   input: {
     background: 'url("/dropdownarrow.svg") no-repeat right 13px top 50%',
+    backgroundSize: '14px 9px',
+  },
+  inputInline: {
+    background: 'url("/dropdownarrow.svg") no-repeat right 7px top 50%',
     backgroundSize: '14px 9px',
   },
 });
@@ -199,7 +204,7 @@ class DropDown extends DropDownBase {
           touched={touched}
           error={error}
           onBlur={this.handleOnBlur.bind(this)}
-          className={classes.input}
+          className={inline ? classes.inputInline : classes.input}
           onFocus={this.showList.bind(this)}
           onChange={searchable ? this.onInputChange.bind(this) : () => null}
           value={

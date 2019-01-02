@@ -192,6 +192,7 @@ export default {
     of: 'of',
     ok: 'OK',
     ongoingElections: 'Ongoing elections',
+    proceed: 'Proceed',
     remove: 'Remove',
     required: 'Required',
     save: 'Save',
