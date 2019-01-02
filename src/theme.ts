@@ -58,7 +58,7 @@ const colors = {
   veryLightGray,
   white,
   whiteGray,
-}
+};
 
 const theme = {
   actionTextColor: blueish,
@@ -96,6 +96,7 @@ const theme = {
   dropDownBorderColorActive: darkTurquoise,
   dropDownListItemBorderColor: darkWhite,
   dropDownTextColor: greyishBrown,
+  dropDownSecondaryLineColor: lighterGray,
   dropDownWidth: '22.3rem',
   editText: blueish,
   electionStatusActiveColor: lightOliveGreen,
@@ -123,6 +124,7 @@ const theme = {
   headerMenuMargin: '2rem',
   horizontalMdPadding: '6.5rem',
   horizontalPadding: '2rem',
+  inlineFormFieldBottomBorderColor: darkTurquoise,
   linkExternalColor: blueish,
   linkInternalColor: darkTurquoise,
   mainArrowColor: white,
@@ -158,6 +160,6 @@ const theme = {
   tableRowHoverColor: mediumWhite,
   tableRowMainTextColor: greyishBrown,
   tableThickBorderColor: lightBlueGray,
-}
+};
 
 export default theme;

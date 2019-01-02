@@ -25,14 +25,18 @@ type Props = {
   narrow?: boolean,
   classes: Object,
   hasFocus?: boolean,
-  hideErrors?: boolean
-}
+  hideErrors?: boolean,
+  inline: boolean,
+};
 
 const styles = theme => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    alignContent: 'flex-start'
+    alignContent: 'flex-start',
+  },
+  inlineContainer: {
+    display: 'inline-block',
   },
   textInput: {
     order: 2,
@@ -41,36 +45,48 @@ const styles = theme => ({
     maxWidth: '48.4rem',
     fontSize: theme.formFieldFontSize,
     color: theme.formFieldTextColor,
-    border: theme.formFieldBorder,
-    borderRadius: theme.formFieldBorderRadius,
-    borderColor: theme.formFieldBorderColor,
     transition: `border-color ${theme.formFieldFocusTransition}`,
     paddingLeft: theme.formFieldHorizontalPadding,
     paddingTop: '0.4rem',
+    '&:focus + label': {
+      color: theme.formFieldLabelFocusedColor,
+      transition: 'color 200ms ease-in',
+    },
+  },
+  blockTextInput: {
     display: 'block',
+    border: theme.formFieldBorder,
+    borderRadius: theme.formFieldBorderRadius,
+    borderColor: theme.formFieldBorderColor,
     '&:focus': {
       borderColor: theme.formFieldBorderActiveColor,
       //transition: `border-color ${theme.formFieldFocusTransition}`,
     },
-    '&:focus + label': {
-      color: theme.formFieldLabelFocusedColor,
-      transition: 'color 200ms ease-in'
-    }
+  },
+  inlineTextInput: {
+    display: 'inline-block',
+    fontFamily: 'inherit',
+    color: theme.inlineFormFieldBottomBorderColor,
+    fontSize: 'inherit',
+    border: 0,
+    borderBottomWidth: '4px',
+    borderBottomStyle: 'dotted',
+    borderBottomColor: theme.inlineFormFieldBottomBorderColor,
   },
   small: {
     height: '3.5rem',
   },
   large: {
-    minWidth: theme.formFieldLargeWidth
+    minWidth: theme.formFieldLargeWidth,
   },
   narrow: {
     maxWidth: '22.3rem',
   },
   error: {
-    borderColor: `${theme.formFieldBorderErrorColor} !important`
+    borderColor: `${theme.formFieldBorderErrorColor} !important`,
   },
   errorMsg: {
-    order: 3
+    order: 3,
   },
   label: {
     order: 1,
@@ -83,13 +99,13 @@ const styles = theme => ({
   },
   labelSmall: {
     fontSize: '1.8rem',
-    lineHeight: 1.61
+    lineHeight: 1.61,
   },
   labelFocus: {
     color: theme.formFieldLabelFocusedColor,
-    transition: 'color 200ms ease-in'
-  }
-})
+    transition: 'color 200ms ease-in',
+  },
+});
 
 const TextInput = (props: Props) => {
   const {
@@ -112,37 +128,40 @@ const TextInput = (props: Props) => {
     narrow,
     classes,
     hasFocus,
-    hideErrors
+    hideErrors,
+    inline,
   } = props;
   const extraInputClassName = className ? className : '';
   const inputClassNames = classNames({
     [classes.textInput]: true,
+    [classes.blockTextInput]: !inline,
+    [classes.inlineTextInput]: inline,
     [classes.small]: small,
     [classes.large]: large,
     [classes.error]: error && touched,
     [classes.narrow]: narrow,
-    [extraInputClassName]: true
+    [extraInputClassName]: true,
   });
   const extraLabelClassName = labelClassName ? labelClassName : '';
   const labelClassNames = classNames({
     [classes.label]: true,
     [classes.labelSmall]: smallLabel,
     [classes.labelFocus]: hasFocus,
-    [extraLabelClassName]: true
+    [extraLabelClassName]: true,
   });
 
-  const handleOnChange = (evt) => {
+  const handleOnChange = evt => {
     if (onChange) {
       onChange(evt.target.value);
     }
   };
   return (
-    <div className={classes.container}>
-      {!hideErrors && touched && error &&
-        <FormErrorMsg msg={error}
-          className={classes.errorMsg} />
-      }
-      <input type="text"
+    <div className={inline ? classes.inlineContainer : classes.container}>
+      {!hideErrors && touched && error && (
+        <FormErrorMsg msg={error} className={classes.errorMsg} />
+      )}
+      <input
+        type="text"
         className={inputClassNames}
         id={id}
         name={name}
@@ -153,13 +172,13 @@ const TextInput = (props: Props) => {
         onFocus={onFocus}
         onBlur={onBlur}
       />
-      {!!label &&
+      {!!label && (
         <label htmlFor={id} className={labelClassNames}>
           {label}
         </label>
-      }
+      )}
     </div>
-  )
+  );
 };
 
 const StyledTextInput = injectSheet(styles)(TextInput);
@@ -186,17 +205,11 @@ type RFProps = {
   },
   meta: {
     error: any,
-    touched: boolean
-  }
-}
+    touched: boolean,
+  },
+};
 
 export const TextInputRF = (props: RFProps) => {
   const { input, meta, ...restProps } = props;
-  return (
-    <StyledTextInput
-      {...input}
-      {...meta}
-      {...restProps}
-    />
-  )
+  return <StyledTextInput {...input} {...meta} {...restProps} />;
 };
