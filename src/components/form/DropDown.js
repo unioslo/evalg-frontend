@@ -48,22 +48,21 @@ const styles = theme => ({
     width: theme.dropDownWidth,
     fontSize: theme.formFieldFontSize,
     color: theme.formFieldTextColor,
-    backgroundColor: theme.white,
+    backgroundColor: theme.colors.white,
   },
   dropdownInline: {
     display: 'inline-block',
     width: 'fit-content',
-    color: theme.inlineFormFieldTextColor,
+    color: theme.inlineDropdownTextColor,
     background: 'url("/dropdownarrow.svg") no-repeat right 7px top 50%',
     backgroundSize: '14px 9px',
-    backgroundColor: theme.white,
-
+    backgroundColor: theme.colors.white,
     fontFamily: 'inherit',
     fontSize: 'inherit',
     border: 0,
     borderBottomWidth: '2px',
     borderBottomStyle: 'dotted',
-    borderBottomColor: theme.inlineFormFieldBottomBorderColor,
+    borderBottomColor: theme.inlineDropdownBottomBorderColor,
 
     '& .inlineOptionNameText': {
       marginRight: 30,

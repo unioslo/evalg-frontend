@@ -17,7 +17,7 @@ const styles = (theme: any) => ({
   subheading: {
     fontSize: '2.6rem',
     lineHeight: '2.7rem',
-    marginBottom: '1.6rem',
+    marginBottom: '1.8rem',
   },
   electionGroupInfoSection: {
     marginBottom: '6rem',
@@ -33,7 +33,7 @@ const styles = (theme: any) => ({
     borderRadius: theme.formFieldBorderRadius,
   },
   notInCensusParagraph: {
-    marginTop: '1.6rem',
+    marginTop: '2.2rem',
     marginBottom: '2rem',
   },
   aboutElectionLink: {
