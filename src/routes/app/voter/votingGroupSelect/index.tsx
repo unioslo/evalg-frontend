@@ -45,10 +45,10 @@ const styles = (theme: any) => ({
     position: 'relative',
     top: '-1px',
   },
-  paddingRightForAboutLink: {
+  aboutElectionLinkText: {
     paddingRight: '1.1rem',
   },
-  paddingRightForBeforeDropdownText: {
+  beforeDropdownText: {
     paddingRight: '0.8rem',
   },
 });
@@ -183,7 +183,7 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
                         marginRight={true}
                         external={true}
                       >
-                        <span className={classes.paddingRightForAboutLink}>
+                        <span className={classes.aboutElectionLinkText}>
                           <Trans>
                             voterVotingGroupSelect.aboutElectionLink
                           </Trans>
@@ -205,7 +205,7 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
                       </p>
                       <div className={classes.ingress}>
                         <span
-                          className={classes.paddingRightForBeforeDropdownText}
+                          className={classes.beforeDropdownText}
                         >
                           <Trans>
                             voterVotingGroupSelect.registeredInSelectedGroupBeforeDropdownText
@@ -223,7 +223,7 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
                       </p>
                       <div className={classes.ingress}>
                         <span
-                          className={classes.paddingRightForBeforeDropdownText}
+                          className={classes.beforeDropdownText}
                         >
                           <Trans>
                             voterVotingGroupSelect.notRegisteredInSelectedGroupBeforeDropdownText
