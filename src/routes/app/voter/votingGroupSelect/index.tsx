@@ -103,9 +103,9 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
     this.handleProceed = this.handleProceed.bind(this);
   }
 
-  public hasVotingRights(): boolean {
-    // dummy implementation
-    return this.state.selectedVotingGroupIndex === 0;
+  public hasVotingRights(selectedGroupIndex: number): boolean {
+    // Dummy implementation. TODO: Check for which group an actual logged in user has voting rights.
+    return selectedGroupIndex === 0;
   }
 
   public handleSelectVotingGroup(selectedVotingGroupIndex: number) {
@@ -161,7 +161,7 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
               options={elections.map((election, index) => ({
                 value: index,
                 name: election.lists[0].name[lang],
-                secondaryLine: index === 0 ? 'Stemmerett' : null,
+                secondaryLine: this.hasVotingRights(index) ? 'Stemmerett' : null,
               }))}
               value={this.state.selectedVotingGroupIndex}
               onChange={this.handleSelectVotingGroup}
@@ -196,7 +196,7 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
                   )}
                 </div>
                 <div className="votingRightsSection">
-                  {this.hasVotingRights() ? (
+                  {this.hasVotingRights(this.state.selectedVotingGroupIndex) ? (
                     <>
                       <p className={classes.subheading}>
                         <Trans>
@@ -262,7 +262,7 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
                       )
                     }
                     disabled={
-                      !this.hasVotingRights() &&
+                      !this.hasVotingRights(this.state.selectedVotingGroupIndex) &&
                       this.state.notInVotingGroupReason === ''
                     }
                   />
