@@ -23,7 +23,7 @@ const styles = (theme: any) => ({
     marginBottom: '6rem',
   },
   votingRightsSection: {},
-  notInCensusReasonTextArea: {
+  notInVotingGroupReasonTextArea: {
     width: '100%',
     padding: 10,
     fontFamily: 'inherit',
@@ -32,7 +32,7 @@ const styles = (theme: any) => ({
     borderColor: theme.formFieldBorderColor,
     borderRadius: theme.formFieldBorderRadius,
   },
-  notInCensusParagraph: {
+  notInVotingGroupParagraph: {
     marginTop: '2.2rem',
     marginBottom: '2rem',
   },
@@ -42,8 +42,8 @@ const styles = (theme: any) => ({
   },
 });
 
-const getElectionGroupCensusData = gql`
-  query ElectionGroupCensusData($id: UUID!) {
+const getElectionGroupData = gql`
+  query ElectionGroupData($id: UUID!) {
     electionGroup(id: $id) {
       id
       name
@@ -74,19 +74,19 @@ interface IProps {
 }
 
 interface IState {
-  selectedCensusIndex: number;
-  notInCensusReason: string;
+  selectedVotingGroupIndex: number;
+  notInVotingGroupReason: string;
 }
 
-class CensusSelectPage extends React.Component<IProps, IState> {
+class VotingGroupSelectPage extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      selectedCensusIndex: 0,
-      notInCensusReason: '',
+      selectedVotingGroupIndex: 0,
+      notInVotingGroupReason: '',
     };
-    this.handleSelectCensus = this.handleSelectCensus.bind(this);
-    this.handleNotInCensusReasonChange = this.handleNotInCensusReasonChange.bind(
+    this.handleSelectVotingGroup = this.handleSelectVotingGroup.bind(this);
+    this.handleNotInVotingGroupReasonChange = this.handleNotInVotingGroupReasonChange.bind(
       this
     );
     this.handleProceed = this.handleProceed.bind(this);
@@ -94,27 +94,27 @@ class CensusSelectPage extends React.Component<IProps, IState> {
 
   public hasVotingRights(): boolean {
     // dummy implementation
-    return this.state.selectedCensusIndex === 0;
+    return this.state.selectedVotingGroupIndex === 0;
   }
 
-  public handleSelectCensus(selectedCensusIndex: number) {
-    this.setState({ selectedCensusIndex });
+  public handleSelectVotingGroup(selectedVotingGroupIndex: number) {
+    this.setState({ selectedVotingGroupIndex });
   }
 
-  public handleNotInCensusReasonChange(
+  public handleNotInVotingGroupReasonChange(
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) {
-    this.setState({ notInCensusReason: event.target.value });
+    this.setState({ notInVotingGroupReason: event.target.value });
   }
 
   public handleProceed(
     proceedToLink: string,
     apolloClient: ApolloClient<any>,
-    notInCensusReason: string
+    notInVotingGroupReason: string
   ) {
-    if (notInCensusReason) {
-      // Write "notInCensusReason" to local cache, to send with vote later.
-      apolloClient.writeData({ data: { notInCensusReason } });
+    if (notInVotingGroupReason) {
+      // Write "notInVotingGroupReason" to local cache, to send with vote later.
+      apolloClient.writeData({ data: { notInVotingGroupReason } });
     }
     this.props.history.push(proceedToLink);
   }
@@ -127,7 +127,7 @@ class CensusSelectPage extends React.Component<IProps, IState> {
 
     return (
       <Query
-        query={getElectionGroupCensusData}
+        query={getElectionGroupData}
         variables={{ id: this.props.electionGroupId }}
       >
         {({ data, loading, error, client }) => {
@@ -142,7 +142,7 @@ class CensusSelectPage extends React.Component<IProps, IState> {
           const electionGroupName = electionGroup.name;
           const elections: Election[] = electionGroup.elections;
           const proceedToLink = `/voter/elections/${
-            elections[this.state.selectedCensusIndex].id
+            elections[this.state.selectedVotingGroupIndex].id
           }/vote`;
 
           const dropdown = (
@@ -152,8 +152,8 @@ class CensusSelectPage extends React.Component<IProps, IState> {
                 name: election.lists[0].name[lang],
                 secondaryLine: index === 0 ? 'Stemmerett' : null,
               }))}
-              value={this.state.selectedCensusIndex}
-              onChange={this.handleSelectCensus}
+              value={this.state.selectedVotingGroupIndex}
+              onChange={this.handleSelectVotingGroup}
               inline={true}
             />
           );
@@ -163,7 +163,7 @@ class CensusSelectPage extends React.Component<IProps, IState> {
               <PageSection noBorder={true}>
                 <div className={classes.electionGroupInfoSection}>
                   <p className={classes.ingress}>
-                    <Trans>voterCensusSelect.mandatePeriod</Trans>:&nbsp;
+                    <Trans>election.mandatePeriod</Trans>:&nbsp;
                     {`${new Date(
                       elections[0].mandatePeriodStart
                     ).toLocaleDateString()} - ${new Date(
@@ -178,7 +178,7 @@ class CensusSelectPage extends React.Component<IProps, IState> {
                         marginRight={true}
                         external={true}
                       >
-                        <Trans>voterCensusSelect.aboutElectionLink</Trans>
+                        <Trans>voterVotingGroupSelect.aboutElectionLink</Trans>
                         &nbsp;&nbsp;
                         <Icon type="externalLink" />
                       </Link>
@@ -190,12 +190,12 @@ class CensusSelectPage extends React.Component<IProps, IState> {
                     <>
                       <p className={classes.subheading}>
                         <Trans>
-                          voterCensusSelect.regiseredInSelectedGroupHeading
+                          voterVotingGroupSelect.regiseredInSelectedGroupHeading
                         </Trans>
                       </p>
                       <div className={classes.ingress}>
                         <Trans>
-                          voterCensusSelect.registeredInSelectedGroupBeforeDropdownText
+                          voterVotingGroupSelect.registeredInSelectedGroupBeforeDropdownText
                         </Trans>
                         &nbsp;&nbsp;
                         {dropdown}
@@ -205,25 +205,25 @@ class CensusSelectPage extends React.Component<IProps, IState> {
                     <>
                       <p className={classes.subheading}>
                         <Trans>
-                          voterCensusSelect.notRegiseredInSelectedGroupHeading
+                          voterVotingGroupSelect.notRegiseredInSelectedGroupHeading
                         </Trans>
                       </p>
                       <div className={classes.ingress}>
                         <Trans>
-                          voterCensusSelect.notRegisteredInSelectedGroupBeforeDropdownText
+                          voterVotingGroupSelect.notRegisteredInSelectedGroupBeforeDropdownText
                         </Trans>
                         &nbsp;&nbsp;
                         {dropdown}
                       </div>
-                      <p className={classes.notInCensusParagraph}>
+                      <p className={classes.notInVotingGroupParagraph}>
                         <Trans>
-                          voterCensusSelect.notRegisteredInSelectedGroupInfoText
+                          voterVotingGroupSelect.notRegisteredInSelectedGroupInfoText
                         </Trans>
                       </p>
                       <textarea
-                        onChange={this.handleNotInCensusReasonChange}
-                        className={classes.notInCensusReasonTextArea}
-                        placeholder={t('voterCensusSelect.writeReason')}
+                        onChange={this.handleNotInVotingGroupReasonChange}
+                        className={classes.notInVotingGroupReasonTextArea}
+                        placeholder={t('voterVotingGroupSelect.writeReason')}
                         rows={6}
                       />
                     </>
@@ -242,12 +242,12 @@ class CensusSelectPage extends React.Component<IProps, IState> {
                       this.handleProceed(
                         proceedToLink,
                         client,
-                        this.state.notInCensusReason
+                        this.state.notInVotingGroupReason
                       )
                     }
                     disabled={
                       !this.hasVotingRights() &&
-                      this.state.notInCensusReason === ''
+                      this.state.notInVotingGroupReason === ''
                     }
                   />
                 </ButtonContainer>
@@ -260,4 +260,4 @@ class CensusSelectPage extends React.Component<IProps, IState> {
   }
 }
 
-export default injectSheet(styles)(withRouter(translate()(CensusSelectPage)));
+export default injectSheet(styles)(withRouter(translate()(VotingGroupSelectPage)));

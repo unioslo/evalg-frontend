@@ -5,16 +5,16 @@ import { Redirect, Route } from 'react-router-dom';
 import { authEnabled } from 'appConfig';
 import VoterFrontPage from './frontpage';
 import VotingPage from './vote';
-import CensusSelectPage from './cencusselect';
+import VotingGroupSelectPage from './votingGroupSelect';
 
 const renderVotingPage = ({ match }: any) => {
   const { electionId } = match.params;
   return <VotingPage electionId={electionId} />;
 };
 
-const renderCensusSelectPage = ({ match }: any) => {
+const renderVotingGroupSelectPage = ({ match }: any) => {
   const { electionGroupId } = match.params;
-  return <CensusSelectPage electionGroupId={electionGroupId} />;
+  return <VotingGroupSelectPage electionGroupId={electionGroupId} />;
 };
 
 const VoterRoute: React.SFC = () => {
@@ -30,8 +30,8 @@ const VoterRoute: React.SFC = () => {
         render={renderVotingPage}
       />
       <Route
-        path="/voter/election-groups/:electionGroupId/select-census"
-        render={renderCensusSelectPage}
+        path="/voter/election-groups/:electionGroupId/select-voting-group"
+        render={renderVotingGroupSelectPage}
       />
     </>
   );
