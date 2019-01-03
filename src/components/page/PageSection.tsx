@@ -1,32 +1,23 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import { Trans } from 'react-i18next';;
+import { Trans } from 'react-i18next';
 import injectSheet from 'react-jss';
 
 import ActionText from 'components/actiontext';
 import Text from 'components/text';
 
 interface IProps {
-  children?: React.ReactNode,
-  classes: any,
-  header?: React.ReactNode,
-  active?: boolean,
-  setActive?: () => void,
-  noBorder?: boolean,
-  noBtmPadding?: boolean,
-  desc?: React.ReactNode
+  children?: React.ReactNode;
+  classes: any;
+  header?: React.ReactNode;
+  active?: boolean;
+  setActive?: () => void;
+  noBorder?: boolean;
+  noBtmPadding?: boolean;
+  desc?: React.ReactNode;
 }
 
 const styles = (theme: any) => ({
-  noBorder: {
-    border: 0
-  },
-  noBtmPadding: {
-    paddingBottom: 0
-  },
-  noTopPadding: {
-    paddingTop: 0
-  },
   section: {
     color: theme.colors.greyishBrown,
     padding: `${theme.contentVertPadding} ${theme.contentHorPadding}`,
@@ -35,16 +26,25 @@ const styles = (theme: any) => ({
       padding: `4rem ${theme.contentHorMdPadding} 4rem`,
     },
   },
+  noBtmPadding: {
+    paddingBottom: 0,
+  },
+  noTopPadding: {
+    paddingTop: 0,
+  },
+  noBorder: {
+    border: 0,
+  },
   subSection: {
     marginTop: '3rem',
   },
   subSectionHeader: theme.subSectionHeader,
   subSectionHeaderRegular: {
-    fontWeight: 'normal'
+    fontWeight: 'normal',
   },
   top: {
     '& + p, & + $subSection': {
-      marginTop: 0
+      marginTop: 0,
     },
     marginBottom: '3rem',
   },
@@ -55,7 +55,7 @@ const styles = (theme: any) => ({
     display: 'block',
     [theme.breakpoints.mdQuery]: {
       margin: '3rem 0 3rem',
-    }
+    },
   },
   topHeader: {
     alignItems: 'baseline',
@@ -67,56 +67,58 @@ const styles = (theme: any) => ({
   },
 });
 
-const PageSection: React.SFC<IProps> = (props) => {
+const PageSection: React.SFC<IProps> = props => {
   const {
-    header, active, setActive, noBorder, noBtmPadding, desc, classes
+    header,
+    active,
+    setActive,
+    noBorder,
+    noBtmPadding,
+    desc,
+    classes,
   } = props;
   const cls = classNames({
     [classes.section]: true,
     [classes.noBorder]: noBorder,
-    [classes.noBtmPadding]: noBtmPadding
+    [classes.noBtmPadding]: noBtmPadding,
   });
   const descClassNames = classNames({
-    [classes.topDescription]: desc
+    [classes.topDescription]: desc,
   });
   return (
     <section className={cls}>
-      {(header || (!active && setActive) || desc) &&
+      {(header || (!active && setActive) || desc) && (
         <div className={classes.top}>
-          {header &&
-            <h2 className={classes.topHeader}>
-              {header}
-            </h2>
-          }
-          {!active && setActive &&
+          {header && <h2 className={classes.topHeader}>{header}</h2>}
+          {!active && setActive && (
             <div className={classes.topAction}>
               <ActionText action={setActive} bottom={true}>
                 <Trans>general.edit</Trans>
               </ActionText>
             </div>
-          }
-          {desc &&
+          )}
+          {desc && (
             <div className={descClassNames}>
               <Text size="large">{desc}</Text>
             </div>
-          }
+          )}
         </div>
-      }
+      )}
       {props.children}
     </section>
-  )
+  );
 };
 
 const StyledSection = injectSheet(styles)(PageSection);
 
 interface ISubProps {
-  classes: any,
-  header: React.ReactNode,
-  notBoldHeader?: boolean,
-  customHeader?: boolean
-};
+  classes: any;
+  header: React.ReactNode;
+  notBoldHeader?: boolean;
+  customHeader?: boolean;
+}
 
-const PageSubSection: React.SFC<ISubProps> = (props) => {
+const PageSubSection: React.SFC<ISubProps> = props => {
   const { classes } = props;
   const headerClassNames = classNames({
     [classes.subSectionHeader]: true,
@@ -124,10 +126,11 @@ const PageSubSection: React.SFC<ISubProps> = (props) => {
   });
   return (
     <div className={classes.subSection}>
-      {props.customHeader ?
-        props.header :
+      {props.customHeader ? (
+        props.header
+      ) : (
         <h3 className={headerClassNames}>{props.header}</h3>
-      }
+      )}
       {props.children}
     </div>
   );
@@ -135,7 +138,4 @@ const PageSubSection: React.SFC<ISubProps> = (props) => {
 
 const StyledSubSection = injectSheet(styles)(PageSubSection);
 
-export {
-  StyledSection as PageSection,
-  StyledSubSection as PageSubSection
-}
+export { StyledSection as PageSection, StyledSubSection as PageSubSection };

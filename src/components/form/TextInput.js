@@ -35,9 +35,6 @@ const styles = theme => ({
     flexDirection: 'column',
     alignContent: 'flex-start',
   },
-  inlineContainer: {
-    display: 'inline-block',
-  },
   textInput: {
     order: 2,
     width: '100%',
@@ -64,9 +61,7 @@ const styles = theme => ({
     fontSize: theme.formFieldFontSize,
   },
   inlineTextInput: {
-    display: 'inline-block',
     fontFamily: 'inherit',
-    color: theme.inlineFormFieldFontColor,
     fontSize: 'inherit',
     border: 0,
     borderBottomWidth: '2px',
@@ -159,7 +154,7 @@ const TextInput = (props: Props) => {
     }
   };
   return (
-    <div className={inline ? classes.inlineContainer : classes.container}>
+    <div className={!inline ? classes.container : ''}>
       {!hideErrors && touched && error && (
         <FormErrorMsg msg={error} className={classes.errorMsg} />
       )}

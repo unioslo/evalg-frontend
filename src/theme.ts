@@ -126,8 +126,13 @@ const theme = {
   headerMenuMargin: '2rem',
   horizontalMdPadding: '6.5rem',
   horizontalPadding: '2rem',
-  inlineFormFieldFontColor: darkTurquoise,
+  inlineFormFieldTextColor: darkTurquoise,
   inlineFormFieldBottomBorderColor: darkTurquoise,
+  ingressText: {
+    fontFamily: 'Georgia, Times, Times New Roman, serif',
+    fontSize: '2rem',
+    lineHeight: '3rem',
+  },
   linkExternalColor: blueish,
   linkInternalColor: darkTurquoise,
   mainArrowColor: white,
@@ -163,6 +168,7 @@ const theme = {
   tableRowHoverColor: mediumWhite,
   tableRowMainTextColor: greyishBrown,
   tableThickBorderColor: lightBlueGray,
+  white,
 };
 
 export default theme;

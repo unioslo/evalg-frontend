@@ -10,13 +10,10 @@ import { translate, Trans } from 'react-i18next';
 import { withRouter } from 'react-router';
 import injectSheet from 'react-jss';
 import Icon from 'components/icon';
+import { ApolloClient } from 'apollo-boost';
 
 const styles = (theme: any) => ({
-  ingress: {
-    fontFamily: 'georgia, serif',
-    fontSize: '2rem',
-    lineHeight: '3rem',
-  },
+  ingress: theme.ingressText,
   subheading: {
     fontSize: '2.6rem',
     lineHeight: '2.7rem',
@@ -73,6 +70,7 @@ interface IProps {
   match: any;
   location: any;
   classes: any;
+  t: any;
 }
 
 interface IState {
@@ -91,6 +89,7 @@ class CensusSelectPage extends React.Component<IProps, IState> {
     this.handleNotInCensusReasonChange = this.handleNotInCensusReasonChange.bind(
       this
     );
+    this.handleProceed = this.handleProceed.bind(this);
   }
 
   public hasVotingRights(): boolean {
@@ -110,32 +109,49 @@ class CensusSelectPage extends React.Component<IProps, IState> {
     this.setState({ notInCensusReason: event.target.value });
   }
 
+  public handleProceed(
+    proceedToLink: string,
+    apolloClient: ApolloClient<any>,
+    notInCensusReason: string
+  ) {
+    if (notInCensusReason) {
+      // Write "notInCensusReason" to local cache, to send with vote futher down the line.
+      apolloClient.writeData({ data: { notInCensusReason } });
+    }
+    this.props.history.push(proceedToLink);
+  }
+
   public render() {
     const lang = this.props.i18n.language;
     const history = this.props.history;
     const classes = this.props.classes;
+    const t = this.props.t;
 
     return (
       <Query
         query={getElectionGroupCensusData}
         variables={{ id: this.props.electionGroupId }}
       >
-        {({ data, loading, error }) => {
+        {({ data, loading, error, client }) => {
           if (loading) {
             return <Loading />;
           }
           if (error) {
             return 'Error';
           }
+
           const electionGroup: ElectionGroup = data.electionGroup;
           const electionGroupName = electionGroup.name;
           const elections: Election[] = electionGroup.elections;
+          const proceedToLink = `/voter/elections/${
+            elections[this.state.selectedCensusIndex].id
+          }/vote`;
 
           const dropdown = (
             <DropDown
-              options={elections.map((e, index) => ({
+              options={elections.map((election, index) => ({
                 value: index,
-                name: e.lists[0].name[lang],
+                name: election.lists[0].name[lang],
                 secondaryLine: index === 0 ? 'Stemmerett' : null,
               }))}
               value={this.state.selectedCensusIndex}
@@ -146,10 +162,10 @@ class CensusSelectPage extends React.Component<IProps, IState> {
 
           return (
             <Page header={electionGroupName[lang]}>
-              <PageSection>
+              <PageSection noBorder={true}>
                 <div className={classes.electionGroupInfoSection}>
                   <p className={classes.ingress}>
-                    Styreperiode:{' '}
+                    <Trans>voterCensusSelect.mandatePeriod</Trans>:&nbsp;
                     {`${new Date(
                       elections[0].mandatePeriodStart
                     ).toLocaleDateString()} - ${new Date(
@@ -164,7 +180,8 @@ class CensusSelectPage extends React.Component<IProps, IState> {
                         marginRight={true}
                         external={true}
                       >
-                        Les mer om valget&nbsp;&nbsp;
+                        <Trans>voterCensusSelect.aboutElectionLink</Trans>
+                        &nbsp;&nbsp;
                         <Icon type="externalLink" />
                       </Link>
                     )}
@@ -173,31 +190,42 @@ class CensusSelectPage extends React.Component<IProps, IState> {
                 <div className="votingRightsSection">
                   {this.hasVotingRights() ? (
                     <>
-                      <p className={classes.subheading}>Du har stemmerett</p>
+                      <p className={classes.subheading}>
+                        <Trans>
+                          voterCensusSelect.regiseredInSelectedGroupHeading
+                        </Trans>
+                      </p>
                       <div className={classes.ingress}>
-                        Du er registrert med stemmerett i gruppen&nbsp;&nbsp;
+                        <Trans>
+                          voterCensusSelect.registeredInSelectedGroupBeforeDropdownText
+                        </Trans>
+                        &nbsp;&nbsp;
                         {dropdown}
                       </div>
                     </>
                   ) : (
                     <>
                       <p className={classes.subheading}>
-                        Har du valgt riktig stemmegruppe?
+                        <Trans>
+                          voterCensusSelect.notRegiseredInSelectedGroupHeading
+                        </Trans>
                       </p>
                       <p className={classes.ingress}>
-                        Du er ikke registrert i stemmegruppen for&nbsp;&nbsp;
+                        <Trans>
+                          voterCensusSelect.notRegisteredInSelectedGroupBeforeDropdownText
+                        </Trans>
+                        &nbsp;&nbsp;
                         {dropdown}
                       </p>
                       <p className={classes.notInCensusParagraph}>
-                        Valgstyret avgjør basert på tilknytningen din til UiO om
-                        stemmen vil telles med. Hvis du mener du skulle vært
-                        registrert i denne stemmegruppen, oppgi stillingskode
-                        eller annen relevant informasjon.
+                        <Trans>
+                          voterCensusSelect.notRegisteredInSelectedGroupInfoText
+                        </Trans>
                       </p>
                       <textarea
                         onChange={this.handleNotInCensusReasonChange}
                         className={classes.notInCensusReasonTextArea}
-                        placeholder="Skriv begrunnelse"
+                        placeholder={t('voterCensusSelect.writeReason')}
                         rows={6}
                       />
                     </>
@@ -209,22 +237,21 @@ class CensusSelectPage extends React.Component<IProps, IState> {
                     action={history.goBack}
                     secondary={true}
                   />
-                  <Link
-                    to={`/voter/elections/${
-                      elections[this.state.selectedCensusIndex].id
-                    }/vote`}
-                  >
-                    <Button
-                      text={<Trans>general.proceed</Trans>}
-                      // tslint:disable:no-console
-                      // tslint:disable-next-line:jsx-no-lambda
-                      action={() => console.log(this.state.notInCensusReason)}
-                      disabled={
-                        !this.hasVotingRights() &&
-                        this.state.notInCensusReason === ''
-                      }
-                    />
-                  </Link>
+                  <Button
+                    text={<Trans>general.proceed</Trans>}
+                    // tslint:disable-next-line:jsx-no-lambda
+                    action={() =>
+                      this.handleProceed(
+                        proceedToLink,
+                        client,
+                        this.state.notInCensusReason
+                      )
+                    }
+                    disabled={
+                      !this.hasVotingRights() &&
+                      this.state.notInCensusReason === ''
+                    }
+                  />
                 </ButtonContainer>
               </PageSection>
             </Page>

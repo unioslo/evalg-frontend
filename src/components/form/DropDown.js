@@ -40,21 +40,37 @@ type Props = {
 const styles = theme => ({
   dropdown: {
     position: 'relative',
-    width: theme.dropDownWidth,
-    fontSize: theme.formFieldFontSize,
-    color: theme.formFieldTextColor,
-    background: theme.white,
     '&:hover': {
       cursor: 'pointer',
     },
   },
+  dropdownNormal: {
+    width: theme.dropDownWidth,
+    fontSize: theme.formFieldFontSize,
+    color: theme.formFieldTextColor,
+    backgroundColor: theme.white,
+  },
+  dropdownInline: {
+    display: 'inline-block',
+    width: 'fit-content',
+    color: theme.inlineFormFieldTextColor,
+    background: 'url("/dropdownarrow.svg") no-repeat right 7px top 50%',
+    backgroundSize: '14px 9px',
+    backgroundColor: theme.white,
+
+    fontFamily: 'inherit',
+    fontSize: 'inherit',
+    border: 0,
+    borderBottomWidth: '2px',
+    borderBottomStyle: 'dotted',
+    borderBottomColor: theme.inlineFormFieldBottomBorderColor,
+
+    '& .inlineOptionNameText': {
+      marginRight: 30,
+    },
+  },
   large: {
     width: theme.dropDownWidthLarge,
-  },
-  inline: {
-    display: 'inline-block',
-    fontSize: 'inherit',
-    width: 'fit-content',
   },
   list: {
     position: 'absolute',
@@ -98,13 +114,18 @@ const styles = theme => ({
     backgroundSize: '14px 9px',
   },
   inputInline: {
-    background: 'url("/dropdownarrow.svg") no-repeat right 7px top 50%',
-    backgroundSize: '14px 9px',
+    // background: 'url("/dropdownarrow.svg") no-repeat right 7px top 50%',
+    // backgroundSize: '14px 9px',
   },
 });
 
 class DropDown extends DropDownBase {
   state: DropDownState;
+
+  constructor() {
+    super();
+    this.showList = this.showList.bind(this);
+  }
 
   componentDidMount() {
     if (this.props.searchable && this.props.value !== '') {
@@ -148,7 +169,7 @@ class DropDown extends DropDownBase {
       id,
       label,
       large,
-      inline,
+      inline, // if inline is true, searchable has no effect
       searchable,
       value,
       name,
@@ -171,8 +192,9 @@ class DropDown extends DropDownBase {
 
     const dropdownClassNames = classNames({
       [classes.dropdown]: true,
+      [classes.dropdownNormal]: !inline,
+      [classes.dropdownInline]: inline,
       [classes.large]: large,
-      [classes.inline]: inline,
     });
 
     const listClassNames = classNames({
@@ -194,28 +216,29 @@ class DropDown extends DropDownBase {
         aria-expanded={open}
         ref={node => (this.wrapperRef = node)}
       >
-        <TextInput
-          placeholder={placeholder}
-          readOnly={!searchable}
-          hasFocus={open}
-          id={inputId}
-          name={name}
-          label={label}
-          touched={touched}
-          error={error}
-          onBlur={this.handleOnBlur.bind(this)}
-          className={inline ? classes.inputInline : classes.input}
-          onFocus={this.showList.bind(this)}
-          onChange={searchable ? this.onInputChange.bind(this) : () => null}
-          value={
-            searchable
-              ? inputValue
-              : inline
-              ? getValueName(value, options).toLowerCase()
-              : getValueName(value, options)
-          }
-          inline={inline}
-        />
+        {inline ? (
+          <div onClick={this.showList}>
+            <div className={'inlineOptionNameText'}>
+              {getValueName(value, options).toLowerCase()}
+            </div>
+          </div>
+        ) : (
+          <TextInput
+            placeholder={placeholder}
+            readOnly={!searchable}
+            hasFocus={open}
+            id={inputId}
+            name={name}
+            label={label}
+            touched={touched}
+            error={error}
+            onBlur={this.handleOnBlur.bind(this)}
+            className={!inline ? classes.input : null}
+            onFocus={this.showList}
+            onChange={searchable ? this.onInputChange.bind(this) : () => null}
+            value={searchable ? inputValue : getValueName(value, options)}
+          />
+        )}
         <ReactCSSTransitionGroup
           transitionName="fade-in-and-out"
           transitionEnterTimeout={500}
