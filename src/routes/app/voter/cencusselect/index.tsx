@@ -99,8 +99,6 @@ class CensusSelectPage extends React.Component<IProps, IState> {
 
   public handleSelectCensus(selectedCensusIndex: number) {
     this.setState({ selectedCensusIndex });
-    // tslint:disable-next-line:no-console
-    console.log(selectedCensusIndex);
   }
 
   public handleNotInCensusReasonChange(
