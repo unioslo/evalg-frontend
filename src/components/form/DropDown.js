@@ -10,8 +10,9 @@ import { FieldRenderProps } from 'react-final-form';
 
 type DropDownOption = {
   name: string,
-  value: any
-}
+  secondaryLine?: string,
+  value: any,
+};
 
 const getValueName = (value: any, options: Array<DropDownOption>): string => {
   for (let i = 0; i < options.length; i++) {
@@ -21,7 +22,6 @@ const getValueName = (value: any, options: Array<DropDownOption>): string => {
   }
   return '';
 };
-
 
 type Props = {
   options: Array<Object>,
@@ -34,26 +34,47 @@ type Props = {
   large?: boolean,
   name: string,
   meta: Object,
-  classes: Object
-}
+  classes: Object,
+};
 
 const styles = theme => ({
   dropdown: {
     position: 'relative',
+    '&:hover': {
+      cursor: 'pointer',
+    },
+  },
+  dropdownNormal: {
     width: theme.dropDownWidth,
     fontSize: theme.formFieldFontSize,
     color: theme.formFieldTextColor,
-    background: theme.white,
-    '&:hover': {
-      cursor: 'pointer'
-    }
+    backgroundColor: theme.colors.white,
+  },
+  dropdownInline: {
+    display: 'inline-block',
+    width: 'fit-content',
+    color: theme.inlineDropdownTextColor,
+    background: 'url("/dropdownarrow.svg") no-repeat right 7px top 50%',
+    backgroundSize: '14px 9px',
+    backgroundColor: theme.colors.white,
+    fontFamily: 'inherit',
+    fontSize: 'inherit',
+    border: 0,
+    borderBottomWidth: '2px',
+    borderBottomStyle: 'dotted',
+    borderBottomColor: theme.inlineDropdownBottomBorderColor,
+
+    '& .inlineOptionNameText': {
+      marginRight: 30,
+    },
   },
   large: {
-    width: theme.dropDownWidthLarge
+    width: theme.dropDownWidthLarge,
   },
   list: {
     position: 'absolute',
     top: '9.6rem',
+    fontFamily: 'Arial, sans-serif',
     borderRadius: theme.formFieldBorderRadius,
     listStyleType: 'none',
     minWidth: theme.dropDownWidth,
@@ -67,10 +88,10 @@ const styles = theme => ({
     top: '4.6rem',
   },
   listScroll: {
-    overflowY: 'scroll'
+    overflowY: 'scroll',
   },
   listLarge: {
-    width: theme.dropDownWidthLarge
+    width: theme.dropDownWidthLarge,
   },
   listItem: {
     borderBottom: `0.1rem solid ${theme.formFieldBorderColor}`,
@@ -78,32 +99,40 @@ const styles = theme => ({
     minHeight: '3rem',
     '&:hover': {
       background: theme.lightBlueGray,
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '&:last-child': {
-      borderBottom: 0
-    }
+      borderBottom: 0,
+    },
+  },
+  secondaryLine: {
+    color: theme.dropDownSecondaryLineColor,
   },
   input: {
     background: 'url("/dropdownarrow.svg") no-repeat right 13px top 50%',
-    backgroundSize: '14px 9px'
+    backgroundSize: '14px 9px',
   }
-})
+});
 
 class DropDown extends DropDownBase {
   state: DropDownState;
 
+  constructor() {
+    super();
+    this.showList = this.showList.bind(this);
+  }
+
   componentDidMount() {
-    if (this.props.searchable && this.props.value !== "") {
+    if (this.props.searchable && this.props.value !== '') {
       this.setState({
-        inputValue: this.props.options[this.props.value].name
+        inputValue: this.props.options[this.props.value].name,
       });
     }
   }
 
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.value === '') {
-      this.setState({ inputValue: '' })
+      this.setState({ inputValue: '' });
     }
   }
 
@@ -115,7 +144,7 @@ class DropDown extends DropDownBase {
   }
 
   showList() {
-    this.setState({ open: true })
+    this.setState({ open: true });
   }
 
   onInputChange(value: string) {
@@ -130,8 +159,17 @@ class DropDown extends DropDownBase {
   render() {
     const { open, inputValue } = this.state;
     const {
-      options, placeholder, id, label, large, searchable, value, name,
-      meta, classes
+      options,
+      placeholder,
+      id,
+      label,
+      large,
+      inline, // if inline is true, searchable has no effect
+      searchable,
+      value,
+      name,
+      meta,
+      classes,
     } = this.props;
 
     let touched = undefined;
@@ -143,12 +181,14 @@ class DropDown extends DropDownBase {
     let validOptions = options;
     if (searchable && inputValue !== '') {
       validOptions = validOptions.filter(option => {
-        return option.name.toLowerCase().includes(inputValue.toLowerCase())
-      })
+        return option.name.toLowerCase().includes(inputValue.toLowerCase());
+      });
     }
 
     const dropdownClassNames = classNames({
       [classes.dropdown]: true,
+      [classes.dropdownNormal]: !inline,
+      [classes.dropdownInline]: inline,
       [classes.large]: large,
     });
 
@@ -156,7 +196,7 @@ class DropDown extends DropDownBase {
       [classes.list]: true,
       [classes.listLarge]: large,
       [classes.listScroll]: validOptions.length > 6,
-      [classes.listNoLabel]: !label
+      [classes.listNoLabel]: !label,
     });
 
     const listId = id + '-list';
@@ -164,52 +204,70 @@ class DropDown extends DropDownBase {
     const labelId = id + '-label';
 
     return (
-      <div className={dropdownClassNames}
+      <div
+        className={dropdownClassNames}
         aria-controls={listId}
         aria-haspopup="true"
         aria-expanded={open}
-        ref={(node) => (this.wrapperRef = node)} >
-        <TextInput
-          placeholder={placeholder}
-          readOnly={!searchable}
-          hasFocus={open}
-          id={inputId}
-          name={name}
-          label={label}
-          touched={touched}
-          error={error}
-          onBlur={this.handleOnBlur.bind(this)}
-          className={classes.input}
-          onFocus={this.showList.bind(this)}
-          onChange={searchable ? this.onInputChange.bind(this) : () => null}
-          value={searchable ? inputValue : getValueName(value, options)}
-        />
+        ref={node => (this.wrapperRef = node)}
+      >
+        {inline ? (
+          <div onClick={this.showList}>
+            <div className={'inlineOptionNameText'}>
+              {getValueName(value, options).toLowerCase()}
+            </div>
+          </div>
+        ) : (
+          <TextInput
+            placeholder={placeholder}
+            readOnly={!searchable}
+            hasFocus={open}
+            id={inputId}
+            name={name}
+            label={label}
+            touched={touched}
+            error={error}
+            onBlur={this.handleOnBlur.bind(this)}
+            className={classes.input}
+            onFocus={this.showList}
+            onChange={searchable ? this.onInputChange.bind(this) : () => null}
+            value={searchable ? inputValue : getValueName(value, options)}
+          />
+        )}
         <ReactCSSTransitionGroup
           transitionName="fade-in-and-out"
           transitionEnterTimeout={500}
-          transitionLeaveTimeout={300}>
-          {open &&
-            <ul className={listClassNames}
+          transitionLeaveTimeout={300}
+        >
+          {open && (
+            <ul
+              className={listClassNames}
               aria-labelledby={labelId}
-              id={listId}>
+              id={listId}
+            >
               {validOptions.map((option, index) => {
                 return (
-                  <li onClick={this.onSelect.bind(this, option)}
+                  <li
+                    onClick={this.onSelect.bind(this, option)}
                     key={index}
-                    className={classes.listItem}>
+                    className={classes.listItem}
+                  >
                     <p>{option.name}</p>
+                    {option.secondaryLine && (
+                      <p className={classes.secondaryLine}>
+                        {option.secondaryLine}
+                      </p>
+                    )}
                   </li>
                 );
               })}
             </ul>
-          }
+          )}
         </ReactCSSTransitionGroup>
       </div>
-    )
+    );
   }
 }
-
-
 
 type RFProps = {
   input: Object,
@@ -218,20 +276,14 @@ type RFProps = {
   label: ReactElement,
   searchable?: boolean,
   large?: boolean,
-  meta: Object
-}
+  meta: Object,
+};
 
 const StyledDropDown = injectSheet(styles)(DropDown);
 
 const DropDownRF: React.SFC<RFProps, FieldRenderProps> = (props: RFProps) => {
   const { input, ...remainingProps } = props;
-  return (
-    <StyledDropDown
-      id={input.name}
-      {...remainingProps}
-      {...input}
-    />
-  )
+  return <StyledDropDown id={input.name} {...remainingProps} {...input} />;
 };
 
 export { StyledDropDown as DropDown, DropDownRF };

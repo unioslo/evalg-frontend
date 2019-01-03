@@ -9,8 +9,8 @@ interface IProps {
 
 const MandatePeriodText: React.SFC<IProps> = props => (
   <>
-    <Trans>election.mandatePeriod</Trans>:
-    <Date dateTime={props.election.mandatePeriodStart} /> -&nbsp;
+    <Trans>election.mandatePeriod</Trans>:&nbsp;
+    <Date dateTime={props.election.mandatePeriodStart} />&nbsp;-&nbsp;
     <Date dateTime={props.election.mandatePeriodEnd} />
   </>
 );

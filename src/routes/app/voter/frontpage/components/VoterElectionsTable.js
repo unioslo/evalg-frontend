@@ -14,14 +14,14 @@ import {
   TableHeaderCell,
   TableBody,
   TableRow,
-  TableCell
+  TableCell,
 } from 'components/table';
 
 type Props = {
   electionGroups: Array<ElectionGroup>,
   noElectionsText: ReactElement,
-  i18n: Object
-}
+  i18n: Object,
+};
 
 const VoterElectionsTable = (props: Props) => {
   const lang = props.i18n.language;
@@ -46,11 +46,13 @@ const VoterElectionsTable = (props: Props) => {
         </TableHeaderRow>
       </TableHeader>
       <TableBody>
-        {electionGroups.length === 0 &&
+        {electionGroups.length === 0 && (
           <TableRow>
-            <TableCell colspan={5}><Text>{noElectionsText}</Text></TableCell>
+            <TableCell colspan={5}>
+              <Text>{noElectionsText}</Text>
+            </TableCell>
           </TableRow>
-        }
+        )}
         {electionGroups.map((group, index) => {
           const election = group.elections[0];
           const canVote = true;
@@ -61,38 +63,52 @@ const VoterElectionsTable = (props: Props) => {
                 <Text>{group.name[lang]}</Text>
               </TableCell>
               <TableCell>
-                <Text><Date dateTime={election.start} /></Text>
-                <Text size="small"><Time dateTime={election.start} /></Text>
+                <Text>
+                  <Date dateTime={election.start} />
+                </Text>
+                <Text size="small">
+                  <Time dateTime={election.start} />
+                </Text>
               </TableCell>
               <TableCell>
-                <Text><Date dateTime={election.end} /></Text>
-                <Text size="small"><Time dateTime={election.end} /></Text>
+                <Text>
+                  <Date dateTime={election.end} />
+                </Text>
+                <Text size="small">
+                  <Time dateTime={election.end} />
+                </Text>
               </TableCell>
               <TableCell alignCenter={true}>
                 <Text>
-                  {canVote ?
-                    <Trans>general.yes</Trans> :
+                  {canVote ? (
+                    <Trans>general.yes</Trans>
+                  ) : (
                     <Trans>general.no</Trans>
-                  }
+                  )}
                 </Text>
               </TableCell>
               <TableCell noPadding>
-                {!hasVoted ?
-                  <Link to={`/voter/elections/${election.id}/vote`}>
+                {!hasVoted ? (
+                  <Link
+                    to={`/voter/election-groups/${group.id}/select-voting-group`}
+                  >
                     <Trans>election.voteNow</Trans>&nbsp;
-                  </Link> :
-                  <Button secondary={true} text={<Trans>election.changeVote</Trans>}
+                  </Link>
+                ) : (
+                  <Button
+                    secondary={true}
+                    text={<Trans>election.changeVote</Trans>}
                     wide={true}
                     action={() => console.error('CHANGE VOTE')}
                   />
-                }
+                )}
               </TableCell>
             </TableRow>
-          )
+          );
         })}
       </TableBody>
     </Table>
-  )
+  );
 };
 
 export default translate()(VoterElectionsTable);

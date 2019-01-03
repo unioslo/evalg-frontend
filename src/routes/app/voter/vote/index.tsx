@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 
 // import { getScreenSize, mediaQueryLg, mediaQueryMd, } from "utils/responsive";
 import PrefElec from './PrefElec';
+import Loading from 'components/loading';
 
 const getElectionVotingData = gql`
   query Election($id: UUID!) {
@@ -13,6 +14,7 @@ const getElectionVotingData = gql`
       mandatePeriodStart
       mandatePeriodEnd
       electionGroup {
+        id
         name
       }
       lists {
@@ -35,58 +37,41 @@ const getElectionVotingData = gql`
 `;
 
 interface IProps {
-  electionId: string
+  electionId: string;
 }
 
-
-const VotingPage: React.SFC<IProps> = (props) => {
+const VotingPage: React.SFC<IProps> = props => {
   return (
-    <Query
-      query={getElectionVotingData}
-      variables={{ id: props.electionId }}>
+    <Query query={getElectionVotingData} variables={{ id: props.electionId }}>
       {({ data, loading, error }) => {
-        if (loading || error) {
-          return null;
+        if (loading) {
+          return <Loading />;
+        }
+        if (error) {
+          return 'Error';
         }
         const election: Election = data.election;
         const { candidateType } = election.meta;
         const { voting } = election.meta.ballotRules;
-        const electionName = election.electionGroup ?
-          election.electionGroup.name :
-          { en: '', nb: '', nn: '' };
+        const electionName = election.electionGroup
+          ? election.electionGroup.name
+          : { en: '', nb: '', nn: '' };
         if (voting === 'rank_candidates') {
           if (candidateType === 'single') {
-            return (
-              <PrefElec
-                election={election}
-                electionName={electionName}
-              />
-            )
+            return <PrefElec election={election} electionName={electionName} />;
+          } else if (candidateType === 'single_team') {
+            return <div>Team Preference election!</div>;
+          } else {
+            return <div>Unknown election type!</div>;
           }
-          else if (candidateType === 'single_team') {
-            return (
-              <div>Team Preference election!</div>
-            )
-          }
-          else {
-            return (
-              <div>Unknown election type!</div>
-            )
-          }
-        }
-        else if (voting === 'list') {
-          return (
-            <div>List election!</div>
-          )
-        }
-        else {
-          return (
-            <div>Unknown election type!</div>
-          )
+        } else if (voting === 'list') {
+          return <div>List election!</div>;
+        } else {
+          return <div>Unknown election type!</div>;
         }
       }}
     </Query>
-  )
-}
+  );
+};
 
 export default VotingPage;

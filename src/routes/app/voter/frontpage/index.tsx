@@ -1,8 +1,7 @@
 import gql from 'graphql-tag';
 import * as React from 'react';
-import { Query } from 'react-apollo'
+import { Query } from 'react-apollo';
 import { Trans } from 'react-i18next';
-
 
 import { Page, PageSection } from 'components/page';
 import VoterElections from './components/VoterElections';
@@ -48,6 +47,9 @@ const electionGroupsQuery = gql`
         status
         publishedAt
         cancelledAt
+        electionGroup {
+          id
+        }
       }
     }
   }
@@ -65,9 +67,9 @@ const VoterFrontPage: React.SFC = () => (
             <VoterElections electionGroups={data.electionGroups} />
           </PageSection>
         </Page>
-      )
+      );
     }}
   </Query>
-)
+);
 
 export default VoterFrontPage;

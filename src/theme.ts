@@ -5,6 +5,7 @@ const darkGreyishBrown = '#444444';
 const greyishBrown = '#555555';
 const lightGreyishBrown = '#666666';
 const lighterGray = '#707070';
+const gray = '#777777';
 const lightGray = '#9B9B9B';
 const darkEggWhite = '#c3c3c3';
 const veryLightGray = '#CBCBCB';
@@ -53,12 +54,13 @@ const colors = {
   lightRed,
   lightTurquoise,
   lighterGray,
+  gray,
   mediumWhite,
   paleGrey,
   veryLightGray,
   white,
   whiteGray,
-}
+};
 
 const theme = {
   actionTextColor: blueish,
@@ -96,6 +98,7 @@ const theme = {
   dropDownBorderColorActive: darkTurquoise,
   dropDownListItemBorderColor: darkWhite,
   dropDownTextColor: greyishBrown,
+  dropDownSecondaryLineColor: gray,
   dropDownWidth: '22.3rem',
   editText: blueish,
   electionStatusActiveColor: lightOliveGreen,
@@ -123,6 +126,13 @@ const theme = {
   headerMenuMargin: '2rem',
   horizontalMdPadding: '6.5rem',
   horizontalPadding: '2rem',
+  inlineDropdownTextColor: darkTurquoise,
+  inlineDropdownBottomBorderColor: darkTurquoise,
+  ingressText: {
+    fontFamily: 'Georgia, Times, Times New Roman, serif',
+    fontSize: '2rem',
+    lineHeight: '3rem',
+  },
   linkExternalColor: blueish,
   linkInternalColor: darkTurquoise,
   mainArrowColor: white,
@@ -158,6 +168,6 @@ const theme = {
   tableRowHoverColor: mediumWhite,
   tableRowMainTextColor: greyishBrown,
   tableThickBorderColor: lightBlueGray,
-}
+};
 
 export default theme;
