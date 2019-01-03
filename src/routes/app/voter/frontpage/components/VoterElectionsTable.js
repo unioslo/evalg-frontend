@@ -90,7 +90,7 @@ const VoterElectionsTable = (props: Props) => {
               <TableCell noPadding>
                 {!hasVoted ? (
                   <Link
-                    to={`/voter/${group.id}/select-census`}
+                    to={`/voter/election-groups/${group.id}/select-census`}
                   >
                     <Trans>election.voteNow</Trans>&nbsp;
                   </Link>

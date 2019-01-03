@@ -58,7 +58,7 @@ const VoterElectionsListItem = (props: ListItemProps) => {
         </div>
       </div>
       <ButtonContainer alignLeft>
-        <Link to={`/voter/${electionGroup.id}/select-census`}>
+        <Link to={`/voter/election-groups/${electionGroup.id}/select-census`}>
           {!hasVoted ?
             <Button
               text={<Trans>election.voteNow</Trans>}

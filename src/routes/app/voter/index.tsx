@@ -30,7 +30,7 @@ const VoterRoute: React.SFC = () => {
         render={renderVotingPage}
       />
       <Route
-        path="/voter/:electionGroupId/select-census"
+        path="/voter/election-groups/:electionGroupId/select-census"
         render={renderCensusSelectPage}
       />
     </>
