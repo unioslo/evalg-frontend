@@ -25,52 +25,52 @@ type Props = {
   narrow?: boolean,
   classes: Object,
   hasFocus?: boolean,
-  hideErrors?: boolean,
-};
+  hideErrors?: boolean
+}
 
 const styles = theme => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    alignContent: 'flex-start',
+    alignContent: 'flex-start'
   },
   textInput: {
     order: 2,
+    height: theme.formFieldHeight,
     width: '100%',
     maxWidth: '48.4rem',
-    paddingTop: '0.4rem',
-    display: 'block',
+    fontSize: theme.formFieldFontSize,
     color: theme.formFieldTextColor,
-    height: theme.formFieldHeight,
-    paddingLeft: theme.formFieldHorizontalPadding,
     border: theme.formFieldBorder,
     borderRadius: theme.formFieldBorderRadius,
     borderColor: theme.formFieldBorderColor,
     transition: `border-color ${theme.formFieldFocusTransition}`,
+    paddingLeft: theme.formFieldHorizontalPadding,
+    paddingTop: '0.4rem',
+    display: 'block',
     '&:focus': {
       borderColor: theme.formFieldBorderActiveColor,
       //transition: `border-color ${theme.formFieldFocusTransition}`,
     },
     '&:focus + label': {
       color: theme.formFieldLabelFocusedColor,
-      transition: 'color 200ms ease-in',
-    },
-    fontSize: theme.formFieldFontSize,
+      transition: 'color 200ms ease-in'
+    }
   },
   small: {
     height: '3.5rem',
   },
   large: {
-    minWidth: theme.formFieldLargeWidth,
+    minWidth: theme.formFieldLargeWidth
   },
   narrow: {
     maxWidth: '22.3rem',
   },
   error: {
-    borderColor: `${theme.formFieldBorderErrorColor} !important`,
+    borderColor: `${theme.formFieldBorderErrorColor} !important`
   },
   errorMsg: {
-    order: 3,
+    order: 3
   },
   label: {
     order: 1,
@@ -83,13 +83,13 @@ const styles = theme => ({
   },
   labelSmall: {
     fontSize: '1.8rem',
-    lineHeight: 1.61,
+    lineHeight: 1.61
   },
   labelFocus: {
     color: theme.formFieldLabelFocusedColor,
-    transition: 'color 200ms ease-in',
-  },
-});
+    transition: 'color 200ms ease-in'
+  }
+})
 
 const TextInput = (props: Props) => {
   const {
@@ -112,7 +112,7 @@ const TextInput = (props: Props) => {
     narrow,
     classes,
     hasFocus,
-    hideErrors,
+    hideErrors
   } = props;
   const extraInputClassName = className ? className : '';
   const inputClassNames = classNames({
@@ -121,28 +121,28 @@ const TextInput = (props: Props) => {
     [classes.large]: large,
     [classes.error]: error && touched,
     [classes.narrow]: narrow,
-    [extraInputClassName]: true,
+    [extraInputClassName]: true
   });
   const extraLabelClassName = labelClassName ? labelClassName : '';
   const labelClassNames = classNames({
     [classes.label]: true,
     [classes.labelSmall]: smallLabel,
     [classes.labelFocus]: hasFocus,
-    [extraLabelClassName]: true,
+    [extraLabelClassName]: true
   });
 
-  const handleOnChange = evt => {
+  const handleOnChange = (evt) => {
     if (onChange) {
       onChange(evt.target.value);
     }
   };
   return (
     <div className={classes.container}>
-      {!hideErrors && touched && error && (
-        <FormErrorMsg msg={error} className={classes.errorMsg} />
-      )}
-      <input
-        type="text"
+      {!hideErrors && touched && error &&
+        <FormErrorMsg msg={error}
+          className={classes.errorMsg} />
+      }
+      <input type="text"
         className={inputClassNames}
         id={id}
         name={name}
@@ -153,13 +153,13 @@ const TextInput = (props: Props) => {
         onFocus={onFocus}
         onBlur={onBlur}
       />
-      {!!label && (
+      {!!label &&
         <label htmlFor={id} className={labelClassNames}>
           {label}
         </label>
-      )}
+      }
     </div>
-  );
+  )
 };
 
 const StyledTextInput = injectSheet(styles)(TextInput);
@@ -186,11 +186,17 @@ type RFProps = {
   },
   meta: {
     error: any,
-    touched: boolean,
-  },
-};
+    touched: boolean
+  }
+}
 
 export const TextInputRF = (props: RFProps) => {
   const { input, meta, ...restProps } = props;
-  return <StyledTextInput {...input} {...meta} {...restProps} />;
+  return (
+    <StyledTextInput
+      {...input}
+      {...meta}
+      {...restProps}
+    />
+  )
 };

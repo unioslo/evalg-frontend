@@ -229,7 +229,7 @@ class DropDown extends DropDownBase {
             touched={touched}
             error={error}
             onBlur={this.handleOnBlur.bind(this)}
-            className={!inline ? classes.input : null}
+            className={classes.input}
             onFocus={this.showList}
             onChange={searchable ? this.onInputChange.bind(this) : () => null}
             value={searchable ? inputValue : getValueName(value, options)}
