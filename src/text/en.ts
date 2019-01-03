@@ -244,7 +244,6 @@ export default {
       'Review your ballot below, then confirm your vote or go back to make changes.',
   },
   voterVotingGroupSelect: {
-    mandatePeriod: 'Mandate period',
     aboutElectionLink: 'Read more about the election',
     regiseredInSelectedGroupHeading: 'You have voting rights',
     registeredInSelectedGroupBeforeDropdownText:

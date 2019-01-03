@@ -250,7 +250,6 @@ export default {
       'Se over stemmeseddelen din nedenfor. Bekreft deretter stemmen, eller gå tilbake for å gjøre endringer.',
   },
   voterVotingGroupSelect: {
-    mandatePeriod: 'Styreperiode',
     aboutElectionLink: 'Les mer om valget',
     regiseredInSelectedGroupHeading: 'Du har stemmerett',
     registeredInSelectedGroupBeforeDropdownText:

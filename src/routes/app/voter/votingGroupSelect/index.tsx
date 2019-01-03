@@ -11,6 +11,7 @@ import { withRouter } from 'react-router';
 import injectSheet from 'react-jss';
 import Icon from 'components/icon';
 import { ApolloClient } from 'apollo-boost';
+import MandatePeriodText from '../vote/components/MandatePeriodText';
 
 const styles = (theme: any) => ({
   ingress: theme.ingressText,
@@ -163,12 +164,7 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
               <PageSection noBorder={true}>
                 <div className={classes.electionGroupInfoSection}>
                   <p className={classes.ingress}>
-                    <Trans>election.mandatePeriod</Trans>:&nbsp;
-                    {`${new Date(
-                      elections[0].mandatePeriodStart
-                    ).toLocaleDateString()} - ${new Date(
-                      elections[0].mandatePeriodEnd
-                    ).toLocaleDateString()}`}
+                    <MandatePeriodText election={elections[0]} />
                   </p>
                   <div className={classes.aboutElectionLink}>
                     {(elections[0].informationUrl ||
