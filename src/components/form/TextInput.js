@@ -26,7 +26,6 @@ type Props = {
   classes: Object,
   hasFocus?: boolean,
   hideErrors?: boolean,
-  inline: boolean,
 };
 
 const styles = theme => ({
@@ -40,8 +39,6 @@ const styles = theme => ({
     width: '100%',
     maxWidth: '48.4rem',
     paddingTop: '0.4rem',
-  },
-  blockTextInput: {
     display: 'block',
     color: theme.formFieldTextColor,
     height: theme.formFieldHeight,
@@ -59,17 +56,6 @@ const styles = theme => ({
       transition: 'color 200ms ease-in',
     },
     fontSize: theme.formFieldFontSize,
-  },
-  inlineTextInput: {
-    fontFamily: 'inherit',
-    fontSize: 'inherit',
-    border: 0,
-    borderBottomWidth: '2px',
-    borderBottomStyle: 'dotted',
-    borderBottomColor: theme.inlineFormFieldBottomBorderColor,
-  },
-  inlineTextInner: {
-    marginRight: 30,
   },
   small: {
     height: '3.5rem',
@@ -127,13 +113,10 @@ const TextInput = (props: Props) => {
     classes,
     hasFocus,
     hideErrors,
-    inline,
   } = props;
   const extraInputClassName = className ? className : '';
   const inputClassNames = classNames({
     [classes.textInput]: true,
-    [classes.blockTextInput]: !inline,
-    [classes.inlineTextInput]: inline,
     [classes.small]: small,
     [classes.large]: large,
     [classes.error]: error && touched,
@@ -154,28 +137,22 @@ const TextInput = (props: Props) => {
     }
   };
   return (
-    <div className={!inline ? classes.container : ''}>
+    <div className={classes.container}>
       {!hideErrors && touched && error && (
         <FormErrorMsg msg={error} className={classes.errorMsg} />
       )}
-      {!inline ? (
-        <input
-          type="text"
-          className={inputClassNames}
-          id={id}
-          name={name}
-          value={value}
-          placeholder={placeholder}
-          onChange={handleOnChange}
-          readOnly={readOnly}
-          onFocus={onFocus}
-          onBlur={onBlur}
-        />
-      ) : (
-        <div onClick={onFocus} className={inputClassNames}>
-          <div className={classes.inlineTextInner}>{value}</div>
-        </div>
-      )}
+      <input
+        type="text"
+        className={inputClassNames}
+        id={id}
+        name={name}
+        value={value}
+        placeholder={placeholder}
+        onChange={handleOnChange}
+        readOnly={readOnly}
+        onFocus={onFocus}
+        onBlur={onBlur}
+      />
       {!!label && (
         <label htmlFor={id} className={labelClassNames}>
           {label}

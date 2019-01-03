@@ -11,7 +11,6 @@ import { withRouter } from 'react-router';
 import injectSheet from 'react-jss';
 import Icon from 'components/icon';
 import { ApolloClient } from 'apollo-boost';
-import { createBrowserHistory } from 'history';
 
 const styles = (theme: any) => ({
   ingress: theme.ingressText,

@@ -112,11 +112,7 @@ const styles = theme => ({
   input: {
     background: 'url("/dropdownarrow.svg") no-repeat right 13px top 50%',
     backgroundSize: '14px 9px',
-  },
-  inputInline: {
-    // background: 'url("/dropdownarrow.svg") no-repeat right 7px top 50%',
-    // backgroundSize: '14px 9px',
-  },
+  }
 });
 
 class DropDown extends DropDownBase {
