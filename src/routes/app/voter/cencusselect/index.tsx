@@ -11,6 +11,7 @@ import { withRouter } from 'react-router';
 import injectSheet from 'react-jss';
 import Icon from 'components/icon';
 import { ApolloClient } from 'apollo-boost';
+import { createBrowserHistory } from 'history';
 
 const styles = (theme: any) => ({
   ingress: theme.ingressText,
@@ -69,8 +70,8 @@ interface IProps {
   history: any;
   match: any;
   location: any;
-  classes: any;
   t: any;
+  classes: any;
 }
 
 interface IState {
@@ -115,7 +116,7 @@ class CensusSelectPage extends React.Component<IProps, IState> {
     notInCensusReason: string
   ) {
     if (notInCensusReason) {
-      // Write "notInCensusReason" to local cache, to send with vote futher down the line.
+      // Write "notInCensusReason" to local cache, to send with vote later.
       apolloClient.writeData({ data: { notInCensusReason } });
     }
     this.props.history.push(proceedToLink);
@@ -210,13 +211,13 @@ class CensusSelectPage extends React.Component<IProps, IState> {
                           voterCensusSelect.notRegiseredInSelectedGroupHeading
                         </Trans>
                       </p>
-                      <p className={classes.ingress}>
+                      <div className={classes.ingress}>
                         <Trans>
                           voterCensusSelect.notRegisteredInSelectedGroupBeforeDropdownText
                         </Trans>
                         &nbsp;&nbsp;
                         {dropdown}
-                      </p>
+                      </div>
                       <p className={classes.notInCensusParagraph}>
                         <Trans>
                           voterCensusSelect.notRegisteredInSelectedGroupInfoText
