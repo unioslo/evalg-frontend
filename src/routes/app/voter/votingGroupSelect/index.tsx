@@ -41,6 +41,16 @@ const styles = (theme: any) => ({
     fontSize: '1.8rem',
     marginTop: '1.8rem',
   },
+  aboutElectionLinkIcon: {
+    position: 'relative',
+    top: '-1px',
+  },
+  paddingRightForAboutLink: {
+    paddingRight: '1.1rem',
+  },
+  paddingRightForBeforeDropdownText: {
+    paddingRight: '0.8rem',
+  },
 });
 
 const getElectionGroupData = gql`
@@ -166,34 +176,41 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
                   <p className={classes.ingress}>
                     <MandatePeriodText election={elections[0]} />
                   </p>
-                  <div className={classes.aboutElectionLink}>
-                    {(elections[0].informationUrl ||
-                      true) /* <- for testing */ && (
+                  {elections[0].informationUrl && (
+                    <div className={classes.aboutElectionLink}>
                       <Link
                         to={elections[0].informationUrl}
                         marginRight={true}
                         external={true}
                       >
-                        <Trans>voterVotingGroupSelect.aboutElectionLink</Trans>
-                        &nbsp;&nbsp;
-                        <Icon type="externalLink" />
+                        <span className={classes.paddingRightForAboutLink}>
+                          <Trans>
+                            voterVotingGroupSelect.aboutElectionLink
+                          </Trans>
+                        </span>
+                        <div className={classes.aboutElectionLinkIcon}>
+                          <Icon type="externalLink" />
+                        </div>
                       </Link>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
                 <div className="votingRightsSection">
                   {this.hasVotingRights() ? (
                     <>
                       <p className={classes.subheading}>
                         <Trans>
-                          voterVotingGroupSelect.regiseredInSelectedGroupHeading
+                          voterVotingGroupSelect.registeredInSelectedGroupHeading
                         </Trans>
                       </p>
                       <div className={classes.ingress}>
-                        <Trans>
-                          voterVotingGroupSelect.registeredInSelectedGroupBeforeDropdownText
-                        </Trans>
-                        &nbsp;&nbsp;
+                        <span
+                          className={classes.paddingRightForBeforeDropdownText}
+                        >
+                          <Trans>
+                            voterVotingGroupSelect.registeredInSelectedGroupBeforeDropdownText
+                          </Trans>
+                        </span>
                         {dropdown}
                       </div>
                     </>
@@ -201,14 +218,17 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
                     <>
                       <p className={classes.subheading}>
                         <Trans>
-                          voterVotingGroupSelect.notRegiseredInSelectedGroupHeading
+                          voterVotingGroupSelect.notRegisteredInSelectedGroupHeading
                         </Trans>
                       </p>
                       <div className={classes.ingress}>
-                        <Trans>
-                          voterVotingGroupSelect.notRegisteredInSelectedGroupBeforeDropdownText
-                        </Trans>
-                        &nbsp;&nbsp;
+                        <span
+                          className={classes.paddingRightForBeforeDropdownText}
+                        >
+                          <Trans>
+                            voterVotingGroupSelect.notRegisteredInSelectedGroupBeforeDropdownText
+                          </Trans>
+                        </span>
                         {dropdown}
                       </div>
                       <p className={classes.notInVotingGroupParagraph}>
@@ -256,4 +276,6 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
   }
 }
 
-export default injectSheet(styles)(withRouter(translate()(VotingGroupSelectPage)));
+export default injectSheet(styles)(
+  withRouter(translate()(VotingGroupSelectPage))
+);

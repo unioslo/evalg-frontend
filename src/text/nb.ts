@@ -251,10 +251,10 @@ export default {
   },
   voterVotingGroupSelect: {
     aboutElectionLink: 'Les mer om valget',
-    regiseredInSelectedGroupHeading: 'Du har stemmerett',
+    registeredInSelectedGroupHeading: 'Du har stemmerett',
     registeredInSelectedGroupBeforeDropdownText:
       'Du er registrert med stemmerett i gruppen',
-    notRegiseredInSelectedGroupHeading: 'Har du valgt riktig stemmegruppe?',
+    notRegisteredInSelectedGroupHeading: 'Har du valgt riktig stemmegruppe?',
     notRegisteredInSelectedGroupBeforeDropdownText:
       'Du er ikke registrert i stemmegruppen for',
     notRegisteredInSelectedGroupInfoText:

@@ -245,10 +245,10 @@ export default {
   },
   voterVotingGroupSelect: {
     aboutElectionLink: 'Read more about the election',
-    regiseredInSelectedGroupHeading: 'You have voting rights',
+    registeredInSelectedGroupHeading: 'You have voting rights',
     registeredInSelectedGroupBeforeDropdownText:
       'You are registered with voting rights in the group',
-    notRegiseredInSelectedGroupHeading:
+    notRegisteredInSelectedGroupHeading:
       'Have you chosen the right voting group?',
     notRegisteredInSelectedGroupBeforeDropdownText:
       'You are not registered in the voting group for',
