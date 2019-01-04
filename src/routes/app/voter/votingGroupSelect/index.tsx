@@ -238,6 +238,7 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
                         </Trans>
                       </p>
                       <textarea
+                        value={this.state.notInVotingGroupReason}
                         onChange={this.handleNotInVotingGroupReasonChange}
                         className={classes.notInVotingGroupReasonTextArea}
                         placeholder={t('voterVotingGroupSelect.writeReason')}
