@@ -123,7 +123,10 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
     apolloClient: ApolloClient<any>,
     notInVotingGroupReason: string
   ) {
-    if (notInVotingGroupReason) {
+    if (
+      !this.hasVotingRights(this.state.selectedVotingGroupIndex) &&
+      notInVotingGroupReason
+    ) {
       // Write "notInVotingGroupReason" to local cache, to send with vote later.
       apolloClient.writeData({ data: { notInVotingGroupReason } });
     }
@@ -161,7 +164,9 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
               options={elections.map((election, index) => ({
                 value: index,
                 name: election.lists[0].name[lang],
-                secondaryLine: this.hasVotingRights(index) ? 'Stemmerett' : null,
+                secondaryLine: this.hasVotingRights(index)
+                  ? 'Stemmerett'
+                  : null,
               }))}
               value={this.state.selectedVotingGroupIndex}
               onChange={this.handleSelectVotingGroup}
@@ -204,9 +209,7 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
                         </Trans>
                       </p>
                       <div className={classes.ingress}>
-                        <span
-                          className={classes.beforeDropdownText}
-                        >
+                        <span className={classes.beforeDropdownText}>
                           <Trans>
                             voterVotingGroupSelect.registeredInSelectedGroupBeforeDropdownText
                           </Trans>
@@ -222,9 +225,7 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
                         </Trans>
                       </p>
                       <div className={classes.ingress}>
-                        <span
-                          className={classes.beforeDropdownText}
-                        >
+                        <span className={classes.beforeDropdownText}>
                           <Trans>
                             voterVotingGroupSelect.notRegisteredInSelectedGroupBeforeDropdownText
                           </Trans>
@@ -262,8 +263,9 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
                       )
                     }
                     disabled={
-                      !this.hasVotingRights(this.state.selectedVotingGroupIndex) &&
-                      this.state.notInVotingGroupReason === ''
+                      !this.hasVotingRights(
+                        this.state.selectedVotingGroupIndex
+                      ) && this.state.notInVotingGroupReason === ''
                     }
                   />
                 </ButtonContainer>
