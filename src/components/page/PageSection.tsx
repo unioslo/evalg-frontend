@@ -13,6 +13,15 @@ interface IProps {
 }
 
 const styles = (theme: any) => ({
+  paragraph: {
+    marginBottom: '4rem',
+  },
+  paragraphTitle: {
+    fontSize: '1.8rem',
+    fontWeight: 'normal',
+    display: 'flex',
+    alignItems: 'center',
+  },
   section: {
     color: theme.colors.greyishBrown,
     padding: `${theme.contentVertPadding} ${theme.contentHorPadding}`,
@@ -109,4 +118,24 @@ const PageSubSection: React.SFC<ISubProps> = props => {
 
 const StyledSubSection = injectSheet(styles)(PageSubSection);
 
-export { StyledSection as PageSection, StyledSubSection as PageSubSection };
+const PageParagraph: React.SFC<ISubProps> = props => {
+  const { classes } = props;
+  return (
+    <div className={classes.paragraph}>
+      {props.customHeader ? (
+        props.header
+      ) : (
+        <h3 className={classes.paragraphTitle}>{props.header}</h3>
+      )}
+      {props.children}
+    </div>
+  );
+};
+
+const StyledParagraph = injectSheet(styles)(PageParagraph);
+
+export {
+  StyledSection as PageSection,
+  StyledSubSection as PageSubSection,
+  StyledParagraph as PageParagraph,
+};

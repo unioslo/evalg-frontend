@@ -37,6 +37,7 @@ interface IProps {
   addCandidate: (c: Candidate) => void;
   election: Election;
   reviewAction: () => void;
+  blankReviewAction: () => void;
   classes: any;
 }
 
@@ -69,6 +70,10 @@ class PrefElecBallot extends React.Component<IProps, IState> {
         <Link to="/voter">
           <Button text={<Trans>general.back</Trans>} secondary={true} />
         </Link>
+        <Button
+          text={<Trans>election.blankVote</Trans>}
+          action={this.props.blankReviewAction}
+        />
         <Button
           text={<Trans>election.showBallot</Trans>}
           disabled={!canSubmit}

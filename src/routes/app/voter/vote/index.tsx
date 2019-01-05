@@ -25,7 +25,10 @@ const getElectionVotingData = gql`
         candidates {
           id
           name
-          listId
+          list {
+            id
+            name
+          }
           meta
           informationUrl
           priority
