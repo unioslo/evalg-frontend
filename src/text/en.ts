@@ -243,7 +243,7 @@ export default {
     reviewBallot:
       'Review your ballot below, then confirm your vote or go back to make changes.',
   },
-  voterVotingGroupSelect: {
+  voterGroupSelect: {
     aboutElectionLink: 'Read more about the election',
     registeredInSelectedGroupHeading: 'You have voting rights',
     registeredInSelectedGroupBeforeDropdownText:

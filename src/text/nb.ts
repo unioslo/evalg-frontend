@@ -249,7 +249,7 @@ export default {
     reviewBallot:
       'Se over stemmeseddelen din nedenfor. Bekreft deretter stemmen, eller gå tilbake for å gjøre endringer.',
   },
-  voterVotingGroupSelect: {
+  voterGroupSelect: {
     aboutElectionLink: 'Les mer om valget',
     registeredInSelectedGroupHeading: 'Du har stemmerett',
     registeredInSelectedGroupBeforeDropdownText:
