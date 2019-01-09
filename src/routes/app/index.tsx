@@ -28,24 +28,11 @@ interface IProps {
   authManager: any;
 }
 
-const RoutesRequiringAuth: React.SFC = () => (
-  <>
-    <Route path="/admin" component={Admin} />
-    <Route path="/voter" component={Voter} />
-  </>
-);
-
 const FrontPage: React.SFC = () => (
   <>
     <Link to="/admin">Administer</Link>
     <br />
     <Link to="/voter">Vote</Link>
-  </>
-);
-
-const PublicRoutes: React.SFC = () => (
-  <>
-    <Route exact={true} path="/" component={FrontPage} />
   </>
 );
 
@@ -72,13 +59,16 @@ const WrapHeaderForLogout: React.SFC = () => {
 };
 
 const App: React.SFC<IProps> = ({ classes, authManager }) => {
-  const ProtectedRoutes = authManager(<RoutesRequiringAuth />);
+  const ProtectedAdmin = authManager(<Admin />);
+  const ProtectedVoter = authManager(<Voter />);
+
   return (
     <div className={classes.app}>
       <WrapHeaderForLogout />
       <Content>
-        <ProtectedRoutes />
-        <PublicRoutes />
+        <Route exact={true} path="/" component={FrontPage} />
+        <Route path="/admin" component={ProtectedAdmin} />
+        <Route path="/voter" component={ProtectedVoter} />
       </Content>
       <Footer />
     </div>
