@@ -7,11 +7,12 @@ import { Page, PageSection } from 'components/page';
 import { DropDown } from 'components/form';
 import Button, { ButtonContainer } from 'components/button';
 import { translate, Trans } from 'react-i18next';
-import { withRouter } from 'react-router';
 import injectSheet from 'react-jss';
 import Icon from 'components/icon';
 import { ApolloClient } from 'apollo-boost';
 import MandatePeriodText from '../vote/components/MandatePeriodText';
+import { History } from 'history';
+import { i18n, TranslationFunction } from 'i18next';
 
 const styles = (theme: any) => ({
   ingress: theme.ingressText,
@@ -77,11 +78,9 @@ const getElectionGroupData = gql`
 
 interface IProps {
   electionGroupId: string;
-  i18n: any;
-  history: any;
-  match: any;
-  location: any;
-  t: any;
+  history: History;
+  i18n: i18n;
+  t: TranslationFunction;
   classes: any;
 }
 
@@ -302,6 +301,4 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
   }
 }
 
-export default injectSheet(styles)(
-  withRouter(translate()(VoterGroupSelectPage))
-);
+export default injectSheet(styles)(translate()(VoterGroupSelectPage));
