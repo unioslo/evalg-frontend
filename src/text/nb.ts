@@ -259,6 +259,6 @@ export default {
       'Du er ikke registrert i stemmegruppen for',
     notRegisteredInSelectedGroupInfoText:
       'Valgstyret avgjør basert på tilknytningen din til UiO om stemmen vil telles med. Hvis du mener du skulle vært registrert i denne stemmegruppen, oppgi stillingskode eller annen relevant informasjon.',
-    writeReason: 'Skriv begrunnelse',
+    writeJustification: 'Skriv begrunnelse',
   },
 };

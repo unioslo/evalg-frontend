@@ -25,7 +25,7 @@ const styles = (theme: any) => ({
     marginBottom: '6rem',
   },
   votingRightsSection: {},
-  notInPollBookReasonTextArea: {
+  notInPollBookJustificationTextArea: {
     width: '100%',
     padding: 10,
     fontFamily: 'inherit',
@@ -86,7 +86,7 @@ interface IProps {
 
 interface IState {
   selectedPollBookIndex: number;
-  notInPollBookReason: string;
+  notInPollBookJustification: string;
 }
 
 // Page for selecting voter group / velgergruppe in between selecting an election on the voter
@@ -103,10 +103,10 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       selectedPollBookIndex: 0,
-      notInPollBookReason: '',
+      notInPollBookJustification: '',
     };
     this.handleSelectVoterGroup = this.handleSelectVoterGroup.bind(this);
-    this.handlenotInPollBookReasonChange = this.handlenotInPollBookReasonChange.bind(
+    this.handlenotInPollBookJustificationChange = this.handlenotInPollBookJustificationChange.bind(
       this
     );
     this.handleProceed = this.handleProceed.bind(this);
@@ -121,28 +121,28 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
     this.setState({ selectedPollBookIndex });
   }
 
-  public handlenotInPollBookReasonChange(
+  public handlenotInPollBookJustificationChange(
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) {
-    this.setState({ notInPollBookReason: event.target.value });
+    this.setState({ notInPollBookJustification: event.target.value });
   }
 
   public handleProceed(
     proceedToLink: string,
     selectedPollBookID: string,
-    notInPollBookReason: string,
+    notInPollBookJustification: string,
     apolloClient: ApolloClient<any>
   ) {
-    // Write "selectedPollBookID" and conditionally "notInPollBookReason" to local cache,
+    // Write "selectedPollBookID" and conditionally "notInPollBookJustification" to local cache,
     // to send with vote later.
     apolloClient.writeData({ data: { selectedPollBookID } });
     if (
       !this.hasVotingRights(this.state.selectedPollBookIndex) &&
-      notInPollBookReason
+      notInPollBookJustification
     ) {
-      apolloClient.writeData({ data: { notInPollBookReason } });
+      apolloClient.writeData({ data: { notInPollBookJustification } });
     } else if (this.hasVotingRights(this.state.selectedPollBookIndex)) {
-      apolloClient.writeData({ data: { notInPollBookReason: '' } });
+      apolloClient.writeData({ data: { notInPollBookJustification: '' } });
     }
     this.props.history.push(proceedToLink);
   }
@@ -260,10 +260,10 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
                         </Trans>
                       </p>
                       <textarea
-                        value={this.state.notInPollBookReason}
-                        onChange={this.handlenotInPollBookReasonChange}
-                        className={classes.notInPollBookReasonTextArea}
-                        placeholder={t('voterGroupSelect.writeReason')}
+                        value={this.state.notInPollBookJustification}
+                        onChange={this.handlenotInPollBookJustificationChange}
+                        className={classes.notInPollBookJustificationTextArea}
+                        placeholder={t('voterGroupSelect.writeJustification')}
                         rows={6}
                       />
                     </>
@@ -282,13 +282,13 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
                       this.handleProceed(
                         proceedToLink,
                         pollbooks[this.state.selectedPollBookIndex].id,
-                        this.state.notInPollBookReason,
+                        this.state.notInPollBookJustification,
                         client
                       )
                     }
                     disabled={
                       !this.hasVotingRights(this.state.selectedPollBookIndex) &&
-                      this.state.notInPollBookReason === ''
+                      this.state.notInPollBookJustification === ''
                     }
                   />
                 </ButtonContainer>

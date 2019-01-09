@@ -254,6 +254,7 @@ export default {
       'You are not registered in the voting group for',
     notRegisteredInSelectedGroupInfoText:
       'The election board will decide if your vote will count based on your affiliation with UiO. If you believe you should be registered in this voting group, please state your job code or other relevant information below.',
-    writeReason: 'Please give reason for your voting rights',
+    writeJustification:
+      'Please provide a reason why you have voting rights in this group',
   },
 };
