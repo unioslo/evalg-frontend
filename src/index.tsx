@@ -55,28 +55,22 @@ const constructApolloClient = () => {
   });
 };
 
-const TheApp = () => {
-  return (
-    <ApolloProvider client={constructApolloClient()}>
-      <ThemeProvider theme={theme}>
-        <I18nextProvider i18n={i18n} initialLanguage="nb">
-          <ScreenSizeProvider>
-            <App />
-          </ScreenSizeProvider>
-        </I18nextProvider>
-      </ThemeProvider>
-    </ApolloProvider>
-  );
-};
-
-const TheAppWithAuth = makeAuthenticator({ userManager })(<TheApp />);
+const protector = makeAuthenticator({ userManager });
 
 const appRoot = () => {
   return (
     <BrowserRouter>
       <Switch>
         <Route path="/callback" render={callback} />
-        <TheAppWithAuth />
+        <ApolloProvider client={constructApolloClient()}>
+          <ThemeProvider theme={theme}>
+            <I18nextProvider i18n={i18n} initialLanguage="nb">
+              <ScreenSizeProvider>
+                <App authManager={protector} />
+              </ScreenSizeProvider>
+            </I18nextProvider>
+          </ThemeProvider>
+        </ApolloProvider>
       </Switch>
     </BrowserRouter>
   );
