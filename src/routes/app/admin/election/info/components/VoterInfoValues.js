@@ -1,7 +1,6 @@
 /* @flow */
 import * as React from 'react';
 
-
 import { Date } from 'components/i18n';
 import { Trans, translate } from 'react-i18next';
 import Link from 'components/link';
@@ -9,21 +8,31 @@ import Link from 'components/link';
 import { PageSection, PageSubSection } from 'components/page';
 import { InfoList, InfoListItem } from 'components/infolist';
 
-const valueNotSet = <b><Trans>election.valueNotSet</Trans></b>;
+const valueNotSet = (
+  <b>
+    <Trans>election.valueNotSet</Trans>
+  </b>
+);
 
 const mandatePeriodSingle = (election: Election) => {
-  const startDate = election.mandatePeriodStart ?
-    <Date date={election.mandatePeriodStart} /> : valueNotSet;
-  const endDate = election.mandatePeriodEnd ?
-    <Date date={election.mandatePeriodEnd} /> : valueNotSet;
+  const startDate = election.mandatePeriodStart ? (
+    <Date date={election.mandatePeriodStart} />
+  ) : (
+    valueNotSet
+  );
+  const endDate = election.mandatePeriodEnd ? (
+    <Date date={election.mandatePeriodEnd} />
+  ) : (
+    valueNotSet
+  );
   return (
-    <p><Trans>general.to</Trans>&nbsp;{endDate}</p>
+    <p>
+      <Trans>general.to</Trans>&nbsp;{endDate}
+    </p>
   );
 };
 
-const mandatePeriodMultiple = (
-  elections: Array<Election>, lang: string
-) => {
+const mandatePeriodMultiple = (elections: Array<Election>, lang: string) => {
   return (
     <InfoList>
       {elections.map((election, index) => {
@@ -34,71 +43,71 @@ const mandatePeriodMultiple = (
             &nbsp;<Trans>general.to</Trans>&nbsp;
             <Date dateTime={election.mandatePeriodEnd} />
           </InfoListItem>
-        )
+        );
       })}
     </InfoList>
   );
-}
+};
 
 const contactSingle = (election: Election) => {
-  const contact = election.contact ?
-    <Link external
-      to={`mailto:${election.contact}`}>
+  const contact = election.contact ? (
+    <Link external to={`mailto:${election.contact}`}>
       {election.contact}
-    </Link> : valueNotSet;
-  return (
-    <p>{contact}</p>
-  )
+    </Link>
+  ) : (
+    valueNotSet
+  );
+  return <p>{contact}</p>;
 };
 
-const contactMultiple = (
-  elections: Array<Election>, lang: string
-) => (
-    <InfoList>
-      {elections.map((election, index) => {
-        const contact = election.contact ?
-          <Link external
-            to={`mailto:${election.contact}`}>
-            {election.contact}
-          </Link> : valueNotSet;
-        return (
-          <InfoListItem key={index} bulleted>
-            {election.name[lang]} - {contact}
-          </InfoListItem>
-        )
-      })}
-    </InfoList>
-  );
+const contactMultiple = (elections: Array<Election>, lang: string) => (
+  <InfoList>
+    {elections.map((election, index) => {
+      const contact = election.contact ? (
+        <Link external to={`mailto:${election.contact}`}>
+          {election.contact}
+        </Link>
+      ) : (
+        valueNotSet
+      );
+      return (
+        <InfoListItem key={index} bulleted>
+          {election.name[lang]} - {contact}
+        </InfoListItem>
+      );
+    })}
+  </InfoList>
+);
 
 const informationUrlSingle = (election: Election) => {
-  const informationUrl = election.informationUrl ?
-    <Link external
-      to={election.informationUrl}>
+  const informationUrl = election.informationUrl ? (
+    <Link external to={election.informationUrl}>
       {election.informationUrl}
-    </Link> : valueNotSet;
-  return (
-    <p>{informationUrl}</p>
-  )
+    </Link>
+  ) : (
+    valueNotSet
+  );
+  return <p>{informationUrl}</p>;
 };
 
-const informationUrlMultiple = (
-  elections: Array<Election>, lang: string
-) => (
-    <InfoList>
-      {elections.map((election, index) => {
-        const informationUrl = election.informationUrl ?
-          <Link external
-            to={election.informationUrl}>
-            {election.informationUrl}
-          </Link> : valueNotSet;
-        return (
-          <InfoListItem key={index} bulleted>
-            {election.name[lang]} - {informationUrl}
-          </InfoListItem>
-        )
-      })}
-    </InfoList>
-  );
+const informationUrlMultiple = (elections: Array<Election>, lang: string) => (
+  <InfoList>
+    {elections.map((election, index) => {
+      const informationUrl = election.informationUrl ? (
+        <Link external to={election.informationUrl}>
+          {election.informationUrl}
+        </Link>
+      ) : (
+        valueNotSet
+      );
+      return (
+        <InfoListItem key={index} bulleted>
+          {election.name[lang]} - {informationUrl}
+        </InfoListItem>
+      );
+    })}
+  </InfoList>
+);
 
 type Props = {
   electionGroup: ElectionGroup,
@@ -106,7 +115,7 @@ type Props = {
   active: boolean,
   setActive: Function,
   header: ReactElement | string,
-  i18n: Object
+  i18n: Object,
 };
 
 const VoterInfoValues = (props: Props) => {
@@ -117,25 +126,33 @@ const VoterInfoValues = (props: Props) => {
   let informationUrl = null;
 
   if (elections.length === 0) {
-    mandatePeriodInfo = <p><Trans>election.noActiveElections</Trans></p>;
-    contact = <p><Trans>election.noActiveElections</Trans></p>;
-    informationUrl = <p><Trans>election.noActiveElections</Trans></p>;
-  }
-  else if (electionGroup.type === 'single_election') {
+    mandatePeriodInfo = (
+      <p>
+        <Trans>election.noActiveElections</Trans>
+      </p>
+    );
+    contact = (
+      <p>
+        <Trans>election.noActiveElections</Trans>
+      </p>
+    );
+    informationUrl = (
+      <p>
+        <Trans>election.noActiveElections</Trans>
+      </p>
+    );
+  } else if (electionGroup.type === 'single_election') {
     mandatePeriodInfo = mandatePeriodSingle(elections[0]);
     contact = contactSingle(elections[0]);
     informationUrl = informationUrlSingle(elections[0]);
-  }
-  else {
+  } else {
     mandatePeriodInfo = mandatePeriodMultiple(elections, lang);
     contact = contactMultiple(elections, lang);
     informationUrl = informationUrlMultiple(elections, lang);
   }
 
   return (
-    <PageSection header={header}
-      active={active}
-      setActive={setActive}>
+    <React.Fragment>
       <PageSubSection header={<Trans>election.election</Trans>}>
         <p>{electionGroup.name[lang]}</p>
       </PageSubSection>
@@ -151,7 +168,7 @@ const VoterInfoValues = (props: Props) => {
       <PageSubSection header={<Trans>election.voterInfoUrl</Trans>}>
         {informationUrl}
       </PageSubSection>
-    </PageSection>
+    </React.Fragment>
   );
 };
 

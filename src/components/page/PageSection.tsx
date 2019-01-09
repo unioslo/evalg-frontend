@@ -1,17 +1,13 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import { Trans } from 'react-i18next';
 import injectSheet from 'react-jss';
 
-import ActionText from 'components/actiontext';
 import Text from 'components/text';
 
 interface IProps {
   children?: React.ReactNode;
   classes: any;
   header?: React.ReactNode;
-  active?: boolean;
-  setActive?: () => void;
   noBorder?: boolean;
   noBtmPadding?: boolean;
   desc?: React.ReactNode;
@@ -21,7 +17,7 @@ const styles = (theme: any) => ({
   section: {
     color: theme.colors.greyishBrown,
     padding: `${theme.contentVertPadding} ${theme.contentHorPadding}`,
-    [`@media (min-width: ${theme.breakpoints.md})`]: {
+    [theme.breakpoints.mdQuery]: {
       borderBottom: `10px solid ${theme.contentSectionBorderColor}`,
       padding: `4rem ${theme.contentHorMdPadding} 4rem`,
     },
@@ -48,9 +44,6 @@ const styles = (theme: any) => ({
     },
     marginBottom: '3rem',
   },
-  topAction: {
-    display: 'inline-block',
-  },
   topDescription: {
     display: 'block',
     [theme.breakpoints.mdQuery]: {
@@ -70,8 +63,6 @@ const styles = (theme: any) => ({
 const PageSection: React.SFC<IProps> = props => {
   const {
     header,
-    active,
-    setActive,
     noBorder,
     noBtmPadding,
     desc,
@@ -87,16 +78,9 @@ const PageSection: React.SFC<IProps> = props => {
   });
   return (
     <section className={cls}>
-      {(header || (!active && setActive) || desc) && (
+      {(header || desc) && (
         <div className={classes.top}>
           {header && <h2 className={classes.topHeader}>{header}</h2>}
-          {!active && setActive && (
-            <div className={classes.topAction}>
-              <ActionText action={setActive} bottom={true}>
-                <Trans>general.edit</Trans>
-              </ActionText>
-            </div>
-          )}
           {desc && (
             <div className={descClassNames}>
               <Text size="large">{desc}</Text>

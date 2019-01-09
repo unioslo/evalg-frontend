@@ -1,12 +1,13 @@
 /* @flow */
 import * as React from 'react';
-import gql from "graphql-tag";
-import { Mutation } from "react-apollo";
-
+import gql from 'graphql-tag';
+import { Mutation } from 'react-apollo';
 import { Trans } from 'react-i18next';
+import { dateFromDT, timeFromDT, DTFromDateAndTime } from 'utils';
+
+import { SettingsSection } from 'components/page';
 import VoterInfoForm from './VoterInfoForm';
 import VoterInfoValues from './VoterInfoValues';
-import { dateFromDT, timeFromDT, DTFromDateAndTime } from 'utils';
 
 const buildInitialValues = (elecs: Array<Election>) => {
   const elections = elecs.map(e => ({
@@ -15,13 +16,15 @@ const buildInitialValues = (elecs: Array<Election>) => {
     mandatePeriodStart: e.mandatePeriodStart,
     mandatePeriodEnd: e.mandatePeriodEnd,
     contact: e.contact,
-    informationUrl: e.informationUrl
+    informationUrl: e.informationUrl,
   }));
   let hasMultipleMandateTimes = false;
   if (elecs.length > 1) {
     for (let i = 0; i < elecs.length - 1; i++) {
-      if (elecs[i].mandatePeriodStart !== elecs[i + 1].mandatePeriodStart ||
-        elecs[i].mandatePeriodEnd !== elecs[i + 1].mandatePeriodEnd) {
+      if (
+        elecs[i].mandatePeriodStart !== elecs[i + 1].mandatePeriodStart ||
+        elecs[i].mandatePeriodEnd !== elecs[i + 1].mandatePeriodEnd
+      ) {
         hasMultipleMandateTimes = true;
         break;
       }
@@ -49,35 +52,33 @@ const buildInitialValues = (elecs: Array<Election>) => {
     elections,
     hasMultipleMandateTimes,
     hasMultipleContactInfo,
-    hasMultipleInfoUrls
+    hasMultipleInfoUrls,
   };
-}
+};
 
-const buildPayload = (values) => {
+const buildPayload = values => {
   const {
     hasMultipleContactInfo,
     hasMultipleInfoUrls,
     hasMultipleMandateTimes,
-    elections
+    elections,
   } = values;
-  return ({
+  return {
     ...values,
     elections: elections.map(e => ({
       id: e.id,
-      mandatePeriodStart: hasMultipleMandateTimes ?
-        e.mandatePeriodStart :
-        elections[0].mandatePeriodStart,
-      mandatePeriodEnd: hasMultipleMandateTimes ?
-        e.mandatePeriodEnd :
-        elections[0].mandatePeriodEnd,
-      contact: hasMultipleContactInfo ?
-        e.contact :
-        elections[0].contact,
-      informationUrl: hasMultipleInfoUrls ?
-        e.informationUrl :
-        elections[0].informationUrl
+      mandatePeriodStart: hasMultipleMandateTimes
+        ? e.mandatePeriodStart
+        : elections[0].mandatePeriodStart,
+      mandatePeriodEnd: hasMultipleMandateTimes
+        ? e.mandatePeriodEnd
+        : elections[0].mandatePeriodEnd,
+      contact: hasMultipleContactInfo ? e.contact : elections[0].contact,
+      informationUrl: hasMultipleInfoUrls
+        ? e.informationUrl
+        : elections[0].informationUrl,
     })),
-  })
+  };
 };
 
 const updateVoterInfo = gql`
@@ -95,43 +96,53 @@ type Props = {
   closeAction: Function,
   submitAction: Function,
   electionGroup: ElectionGroup,
-  elections: Array<Election>
+  elections: Array<Election>,
 };
 
 class VoterInfoSection extends React.Component<Props> {
   render() {
     const {
-      active, setActive, submitAction, closeAction, electionGroup, elections
+      active,
+      setActive,
+      submitAction,
+      closeAction,
+      electionGroup,
+      elections,
     } = this.props;
-    if (active) {
-      return (
-        <Mutation
-          mutation={updateVoterInfo}
-          refetchQueries={() => ['electionGroup']}>
-          {(mutation, { data }) => (
-            <VoterInfoForm
-              handleSubmit={(values) => {
-                mutation({ variables: buildPayload(values) });
-                closeAction();
-              }}
-              closeAction={closeAction}
-              electionGroup={electionGroup}
-              initialValues={buildInitialValues(elections)}
-              header={<Trans>election.voterInfo</Trans>}
-            />
-          )}
-        </Mutation>
-      )
-    }
+
+    const activeElement = (
+      <Mutation
+        mutation={updateVoterInfo}
+        refetchQueries={() => ['electionGroup']}
+      >
+        {(mutation, { data }) => (
+          <VoterInfoForm
+            handleSubmit={values => {
+              mutation({ variables: buildPayload(values) });
+              closeAction();
+            }}
+            closeAction={closeAction}
+            electionGroup={electionGroup}
+            initialValues={buildInitialValues(elections)}
+          />
+        )}
+      </Mutation>
+    );
+
+    const inactiveElement = (
+      <VoterInfoValues electionGroup={electionGroup} elections={elections} />
+    );
+
     return (
-      <VoterInfoValues
-        electionGroup={electionGroup}
-        elections={elections}
+      <SettingsSection
         header={<Trans>election.voterInfo</Trans>}
+        desc={<Trans>election.voterInfoFormDesc</Trans>}
         active={active}
         setActive={setActive}
+        activeElement={activeElement}
+        inactiveElement={inactiveElement}
       />
-    )
+    );
   }
 }
 

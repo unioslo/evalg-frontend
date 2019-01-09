@@ -115,7 +115,7 @@ const ElectionNavBar = (props: Props) => {
             number="3"
             groupId={groupId}
             desc={t('election.censuses')}
-            active={activeSection === 'censuses'}
+            active={activeSection === 'pollbooks'}
             classes={classes}
           />
         </Link>

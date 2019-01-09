@@ -11,16 +11,14 @@ import {
   TableHeader,
   TableHeaderCell,
   TableHeaderRow,
-  TableRow
+  TableRow,
 } from 'components/table';
 
 import { CheckBoxRF } from 'components/form';
 import { NumberInputRF, FormButtons } from 'components/form';
-import { PageSection, PageSubSection } from 'components/page';
+import { PageSubSection } from 'components/page';
 
-type ValidateValues = {
-
-};
+type ValidateValues = {};
 
 const validate = (values: ValidateValues) => {
   const errors = {};
@@ -31,7 +29,7 @@ type Props = {
   handleSubmit: Function,
   closeAction: Function,
   initialValues: Object,
-  i18n: Object
+  i18n: Object,
 };
 
 class BaseElectionSettingsForm extends React.Component<Props> {
@@ -46,81 +44,83 @@ class BaseElectionSettingsForm extends React.Component<Props> {
         validate={validate}
         render={(formProps: Object) => {
           const {
-            handleSubmit, reset, submitting, pristine, values, invalid, errors,
-            valid
+            handleSubmit,
+            reset,
+            submitting,
+            pristine,
+            values,
+            invalid,
+            errors,
+            valid,
           } = formProps;
           return (
-            <PageSection
-              header={<Trans>election.voterSettings</Trans>}
-              desc={<Trans>election.activeElectionsHeader</Trans>}>
-              <form onSubmit={handleSubmit}>
-                <Table>
-                  <TableHeader>
-                    <TableHeaderRow>
-                      <TableHeaderCell>
-                        <Trans>election.group</Trans>
-                      </TableHeaderCell>
-                      <TableHeaderCell>
-                        <Trans>election.nrOfCandidates</Trans>
-                      </TableHeaderCell>
-                      <TableHeaderCell>
-                        <Trans>election.nrOfCoCandidates</Trans>
-                      </TableHeaderCell>
-                    </TableHeaderRow>
-                  </TableHeader>
-                  <FieldArray
-                    name="elections"
-                    render={({ fields }) => (
-                      <TableBody>
-                        {fields.map((election, index) => {
-                          return (
-                            <TableRow key={index}>
-                              <TableCell>
-                                <Field
-                                  name={`${election}.active`}
-                                  component={CheckBoxRF}
-                                  type="checkbox"
-                                  label={elections[index].name[lang]}
-                                  normalize={val => !!val}
-                                />
-                              </TableCell>
-                              <TableCell>
-                                <Field
-                                  name={`${election}.seats`}
-                                  component={NumberInputRF}
-                                  disabled={!values.elections[index].active}
-                                />
-                              </TableCell>
-                              <TableCell>
-                                <Field
-                                  name={`${election}.substitutes`}
-                                  component={NumberInputRF}
-                                  disabled={!values.elections[index].active}
-                                />
-                              </TableCell>
-                            </TableRow>
-                          )
-                        })}
-                      </TableBody>
-                    )}
-                  />
-                </Table>
-                <PageSubSection header={<Trans>election.quotas</Trans>}>
-                  <Field
-                    name="hasGenderQuota"
-                    component={CheckBoxRF}
-                    type="checkbox"
-                    label={<Trans>election.hasGenderQuota</Trans>}
-                  />
-                </PageSubSection>
-                <FormButtons
-                  saveAction={handleSubmit}
-                  closeAction={this.props.closeAction}
-                  submitDisabled={pristine || !valid}
+            <form onSubmit={handleSubmit}>
+              <Table>
+                <TableHeader>
+                  <TableHeaderRow>
+                    <TableHeaderCell>
+                      <Trans>election.group</Trans>
+                    </TableHeaderCell>
+                    <TableHeaderCell>
+                      <Trans>election.nrOfCandidates</Trans>
+                    </TableHeaderCell>
+                    <TableHeaderCell>
+                      <Trans>election.nrOfCoCandidates</Trans>
+                    </TableHeaderCell>
+                  </TableHeaderRow>
+                </TableHeader>
+                <FieldArray
+                  name="elections"
+                  render={({ fields }) => (
+                    <TableBody>
+                      {fields.map((election, index) => {
+                        return (
+                          <TableRow key={index}>
+                            <TableCell>
+                              <Field
+                                name={`${election}.active`}
+                                component={CheckBoxRF}
+                                type="checkbox"
+                                label={elections[index].name[lang]}
+                                normalize={val => !!val}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                name={`${election}.seats`}
+                                component={NumberInputRF}
+                                disabled={!values.elections[index].active}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Field
+                                name={`${election}.substitutes`}
+                                component={NumberInputRF}
+                                disabled={!values.elections[index].active}
+                              />
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  )}
                 />
-              </form>
-            </PageSection>
-          )
+              </Table>
+              <PageSubSection header={<Trans>election.quotas</Trans>}>
+                <Field
+                  name="hasGenderQuota"
+                  component={CheckBoxRF}
+                  type="checkbox"
+                  label={<Trans>election.hasGenderQuota</Trans>}
+                />
+              </PageSubSection>
+              <FormButtons
+                saveAction={handleSubmit}
+                closeAction={this.props.closeAction}
+                submitDisabled={pristine || !valid}
+              />
+            </form>
+          );
         }}
       />
     );

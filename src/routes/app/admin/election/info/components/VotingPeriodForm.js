@@ -12,7 +12,7 @@ import {
   FormField,
   FormFieldGroup,
   RadioButtonGroup,
-  TimeInputRF
+  TimeInputRF,
 } from 'components/form';
 
 import {
@@ -22,10 +22,9 @@ import {
   TableHeader,
   TableHeaderCell,
   TableHeaderRow,
-  TableRow
+  TableRow,
 } from 'components/table';
 
-import { PageSection } from 'components/page';
 import FormButtons from 'components/form/FormButtons';
 
 import { equalValues } from 'utils';
@@ -66,8 +65,8 @@ const SingleElectionForm = () => {
         </FormField>
       </FormFieldGroup>
     </div>
-  )
-}
+  );
+};
 
 const MultipleElectionsForm = ({ lang, hasMultipleTimes, elections }) => {
   return (
@@ -78,19 +77,19 @@ const MultipleElectionsForm = ({ lang, hasMultipleTimes, elections }) => {
           component={RadioButtonGroup}
           options={[
             {
-              id: "singleperiod",
+              id: 'singleperiod',
               value: false,
-              label: <Trans>election.singleVotingPeriod</Trans>
+              label: <Trans>election.singleVotingPeriod</Trans>,
             },
             {
-              id: "multipleperiods",
+              id: 'multipleperiods',
               value: true,
-              label: <Trans>election.multipleVotingPeriods</Trans>
-            }
+              label: <Trans>election.multipleVotingPeriods</Trans>,
+            },
           ]}
         />
       </FormField>
-      {hasMultipleTimes ?
+      {hasMultipleTimes ? (
         <Table>
           <TableHeader>
             <TableHeaderRow>
@@ -111,9 +110,7 @@ const MultipleElectionsForm = ({ lang, hasMultipleTimes, elections }) => {
                 fields.map((election, index) => (
                   <TableRow key={index}>
                     <TableCell>
-                      <Text>
-                        {elections[index].name[lang]}
-                      </Text>
+                      <Text>{elections[index].name[lang]}</Text>
                     </TableCell>
                     <TableCell>
                       <FormFieldGroup>
@@ -152,28 +149,28 @@ const MultipleElectionsForm = ({ lang, hasMultipleTimes, elections }) => {
                       </FormFieldGroup>
                     </TableCell>
                   </TableRow>
-                ))}
+                ))
+              }
             </FieldArray>
           </TableBody>
-        </Table> :
+        </Table>
+      ) : (
         <SingleElectionForm />
-      }
-
+      )}
     </div>
-  )
+  );
 };
 
 const determineFormType = (grpType: string, elections: Array<Election>) => {
   if (grpType === 'multiple_elections' && elections.length > 1) {
     return MultipleElectionsForm;
-  }
-  else {
+  } else {
     return SingleElectionForm;
   }
 };
 
-const electionValuesSet = (e) =>
-  e.startDate && e.startTime && e.endDate && e.endTime
+const electionValuesSet = e =>
+  e.startDate && e.startTime && e.endDate && e.endTime;
 
 const validate = (lang: string) => (values: Object) => {
   const errors = {};
@@ -188,13 +185,12 @@ const validate = (lang: string) => (values: Object) => {
       formErrors.push(<Trans>formErrors.invalidDates</Trans>);
       Object.assign(errors, {
         elections: [
-          { startDate: true, startTime: true, endDate: true, endTime: true }
-        ]
+          { startDate: true, startTime: true, endDate: true, endTime: true },
+        ],
       });
     }
-  }
-  else {
-    values.elections.forEach((election) => {
+  } else {
+    values.elections.forEach(election => {
       let electionErrors = undefined;
       if (electionValuesSet(election)) {
         const { startTime, startDate, endTime, endDate } = election;
@@ -207,12 +203,15 @@ const validate = (lang: string) => (values: Object) => {
             </span>
           );
           electionErrors = {
-            startDate: true, startTime: true, endDate: true, endTime: true
+            startDate: true,
+            startTime: true,
+            endDate: true,
+            endTime: true,
           };
         }
       }
       errors.elections.push(electionErrors);
-    })
+    });
   }
   if (formErrors.length > 0) {
     errors._error = formErrors;
@@ -225,74 +224,67 @@ type Props = {
   closeAction: Function,
   electionType: string,
   initialValues: Object,
-  setActive: Function,
-  active: boolean,
-  i18n: Object
+  i18n: Object,
 };
 
 class VotingPeriodForm extends React.Component<Props> {
   render() {
     const {
-      onSubmit, closeAction, setActive, electionType, active, initialValues
+      onSubmit,
+      closeAction,
+      electionType,
+      initialValues,
     } = this.props;
     const lang = this.props.i18n.language;
     const { elections } = initialValues;
     const PeriodForm = determineFormType(electionType, initialValues.elections);
 
-    let desc = <Trans>election.votingPeriodSubHeader</Trans>;
-    if (elections.length === 0) {
-      desc = <Trans>election.noActiveElections</Trans>;
-    }
-
-    const electionNames = elections.map(e => (
-      { ...e.name })
-    );
+    const electionNames = elections.map(e => ({ ...e.name }));
     return (
-      <PageSection
-        header={<Trans>election.votingPeriod</Trans>}
-        desc={desc}
-        active={active}
-        setActive={setActive}>
-        <Form
-          onSubmit={this.props.onSubmit}
-          validate={validate(lang)}
-          initialValues={initialValues}
-          render={(formProps: Object) => {
-            const {
-              handleSubmit, reset, submitting, pristine, values, invalid,
-              errors, valid
-            } = formProps;
-            // initialValues will not be injected on initial render
-            if (values === undefined) {
-              return null;
-            }
-            return (
-              <form onSubmit={handleSubmit}>
-                <PeriodForm
-                  lang={lang}
-                  elections={elections}
-                  hasMultipleTimes={values.hasMultipleTimes}
-                />
-                {errors && errors._error &&
-                  <div>
-                    {errors._error.map((err, index) => {
-                      return <FormErrorMsg key={index} msg={err} />;
-                    })}
-                  </div>
-                }
-                <FormButtons
-                  saveAction={handleSubmit}
-                  closeAction={closeAction}
-                  submitDisabled={pristine || !valid}
-                />
-              </form>
-            )
-          }}
-        />
-      </PageSection>
-    )
+      <Form
+        onSubmit={this.props.onSubmit}
+        validate={validate(lang)}
+        initialValues={initialValues}
+        render={(formProps: Object) => {
+          const {
+            handleSubmit,
+            reset,
+            submitting,
+            pristine,
+            values,
+            invalid,
+            errors,
+            valid,
+          } = formProps;
+          // initialValues will not be injected on initial render
+          if (values === undefined) {
+            return null;
+          }
+          return (
+            <form onSubmit={handleSubmit}>
+              <PeriodForm
+                lang={lang}
+                elections={elections}
+                hasMultipleTimes={values.hasMultipleTimes}
+              />
+              {errors && errors._error && (
+                <div>
+                  {errors._error.map((err, index) => {
+                    return <FormErrorMsg key={index} msg={err} />;
+                  })}
+                </div>
+              )}
+              <FormButtons
+                saveAction={handleSubmit}
+                closeAction={closeAction}
+                submitDisabled={pristine || !valid}
+              />
+            </form>
+          );
+        }}
+      />
+    );
   }
 }
-
 
 export default translate()(VotingPeriodForm);
