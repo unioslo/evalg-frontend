@@ -14,6 +14,8 @@ import Header from './components/Header';
 import Admin from './admin';
 import Voter from './voter';
 
+import { authEnabled } from 'appConfig';
+
 const styles = {
   app: {
     display: 'flex',
@@ -59,8 +61,8 @@ const WrapHeaderForLogout: React.SFC = () => {
 };
 
 const App: React.SFC<IProps> = ({ classes, authManager }) => {
-  const ProtectedAdmin = authManager(<Admin />);
-  const ProtectedVoter = authManager(<Voter />);
+  const ProtectedAdmin = authEnabled ? authManager(<Admin />) : Admin;
+  const ProtectedVoter = authEnabled ? authManager(<Voter />) : Voter;
 
   return (
     <div className={classes.app}>
