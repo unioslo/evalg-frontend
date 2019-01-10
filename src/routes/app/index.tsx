@@ -1,19 +1,20 @@
 import * as React from 'react';
-import injectSheet from 'react-jss'
-import { Route } from 'react-router-dom';
+import injectSheet from 'react-jss';
+import { Route, Link } from 'react-router-dom';
+import { UserData } from 'react-oidc';
+import { ApolloConsumer } from 'react-apollo';
+import { IAuthenticatorContext } from 'react-oidc/lib/makeAuth';
+import { ApolloClient } from 'apollo-boost';
+import createBrowserHistory from 'history/createBrowserHistory';
 
-// import Loading from 'components/loading';
 import Content from './components/Content';
 import Footer from './components/Footer';
 import Header from './components/Header';
 
 import Admin from './admin';
 import Voter from './voter';
-// import Login from './login';
 
-const dummyLogout = () => {
-  console.error('Logged out.');
-}
+import { authEnabled } from 'appConfig';
 
 const styles = {
   app: {
@@ -21,25 +22,60 @@ const styles = {
     flexDirection: 'column',
     fontSize: '1.6rem',
     minHeight: '100%',
-  }
+  },
 };
 
 interface IProps {
-  classes: any
+  classes: any;
+  authManager: any;
 }
 
-const App: React.SFC<IProps> = ({ classes }) => (
-  <div className={classes.app}>
-    <Header logoutAction={dummyLogout} />
-    <Content>
-      {/* <Route path="/login" component={Login} /> */}
-      <Route path="/admin" component={Admin} />
-      <Route path="/voter" component={Voter} />
-    </Content>
-    <Footer />
-  </div>
-)
+const FrontPage: React.SFC = () => (
+  <>
+    <Link to="/admin">Administer</Link>
+    <br />
+    <Link to="/voter">Vote</Link>
+  </>
+);
 
-const StyledApp: any = injectSheet(styles)(App);
+const WrapHeaderForLogout: React.SFC = () => {
+  const logout = (
+    context: IAuthenticatorContext,
+    client: ApolloClient<any>
+  ) => () => {
+    context.signOut();
+    client.resetStore();
+    sessionStorage.clear();
+    const history = createBrowserHistory({ forceRefresh: true });
+    history.push('/');
+  };
+  return (
+    <ApolloConsumer>
+      {client => (
+        <UserData.Consumer>
+          {context => <Header logoutAction={logout(context, client)} />}
+        </UserData.Consumer>
+      )}
+    </ApolloConsumer>
+  );
+};
 
-export default StyledApp;
+const App: React.SFC<IProps> = ({ classes, authManager }) => {
+  const ProtectedAdmin = authEnabled ? authManager(<Admin />) : Admin;
+  const ProtectedVoter = authEnabled ? authManager(<Voter />) : Voter;
+
+  return (
+    <div className={classes.app}>
+      <WrapHeaderForLogout />
+      <Content>
+        <Route exact={true} path="/" component={FrontPage} />
+        <Route path="/admin" component={ProtectedAdmin} />
+        <Route path="/voter" component={ProtectedVoter} />
+      </Content>
+      <Footer />
+    </div>
+  );
+};
+
+const styledApp: any = injectSheet(styles)(App);
+export default styledApp;

@@ -27,6 +27,7 @@
     "react-final-form-arrays": "^1.0.6",
     "react-i18next": "^7.11.0",
     "react-jss": "^8.6.1",
+    "react-oidc": "^0.3.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",

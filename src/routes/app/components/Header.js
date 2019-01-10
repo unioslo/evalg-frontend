@@ -84,7 +84,7 @@ const Header = ({ logoutAction, classes }: Props) => {
               </MobileMenuItem>
               <MobileMenuItem>OMGLOL</MobileMenuItem>
               <MobileMenuItem>
-                <a onClick={() => console.error('LOGOUT')}>
+                <a onClick={logoutAction}>
                   <Trans>general.logout</Trans>
                 </a>
               </MobileMenuItem>
