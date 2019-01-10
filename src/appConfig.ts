@@ -11,5 +11,6 @@ export const oidcConfig = {
   response_type: 'id_token token',
   scope: 'openid',
 };
+export const oidcLogoutUrl = 'https://auth.dataporten.no/logout';
 
 export const graphqlBackend = 'http://localhost:5000/graphql';
