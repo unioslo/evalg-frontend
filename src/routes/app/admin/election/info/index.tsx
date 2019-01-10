@@ -11,6 +11,7 @@ import AdminRolesSection from './components/AdminRolesSection';
 import Button, { ButtonContainer } from 'components/button';
 import { History } from 'history';
 import { i18n } from 'i18next';
+import { activeStatusType } from 'components/page/SettingsSection';
 
 interface IProps {
   children?: React.ReactChildren;
@@ -22,7 +23,7 @@ interface IProps {
 }
 
 interface IState {
-  activeSection: activeSectionName;
+  sectionStatuses: ISectionStatuses;
 }
 
 type activeSectionName =
@@ -32,6 +33,14 @@ type activeSectionName =
   | 'votingPeriod'
   | 'voterInfo'
   | 'adminRoles';
+
+interface ISectionStatuses {
+  baseGroupSettings: activeStatusType,
+  baseElectionSettings: activeStatusType,
+  votingPeriod: activeStatusType,
+  voterInfo: activeStatusType,
+  adminRoles: activeStatusType,
+}
 
 class InfoPage extends React.Component<IProps, IState> {
   constructor(props: IProps) {
@@ -51,10 +60,7 @@ class InfoPage extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const {
-      electionGroup,
-      history,
-    } = this.props;
+    const { electionGroup, history } = this.props;
     const { elections, id: groupId } = electionGroup;
     const lang = this.props.i18n.language;
 
@@ -62,8 +68,8 @@ class InfoPage extends React.Component<IProps, IState> {
     const activeElections = elections.filter(e => e.active);
 
     const proceedToCandiates = () => {
-      history.push(`/admin/elections/${groupId}/candidates`)
-    }
+      history.push(`/admin/elections/${groupId}/candidates`);
+    };
 
     return (
       <Page header={<Trans>election.electionInfo</Trans>}>
@@ -74,7 +80,7 @@ class InfoPage extends React.Component<IProps, IState> {
         {electionGroup.type === 'multiple_elections' && (
           <BaseElectionSettingsSection
             setActive={this.setActive.bind(this, 'baseElectionSettings')}
-            active={activeSection === 'baseElectionSettings'}
+            activeStatus={activeSection === 'baseElectionSettings'}
             submitAction={this.handleUpdate}
             closeAction={this.setActive.bind(this, 'none')}
             electionGroup={electionGroup}

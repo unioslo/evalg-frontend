@@ -48,7 +48,7 @@ const buildPayload = values => ({
 
 type Props = {
   children?: React.ChildrenArray<any>,
-  active: boolean,
+  activeStatus,
   setActive: Function,
   closeAction: Function,
   submitAction: Function,
@@ -92,7 +92,7 @@ class BaseElectionSettingsSection extends React.Component<Props> {
       <SettingsSection
         header={<Trans>election.voterSettings</Trans>}
         desc={<Trans>election.activeElectionsHeader</Trans>}
-        active={active}
+        activeStatus={activeStatus}
         setActive={setActive}
         activeElement={activeElement}
         inactiveElement={inactiveElement}

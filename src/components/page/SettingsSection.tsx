@@ -36,14 +36,16 @@ const styles = (theme: any) => ({
   },
 });
 
+export type activeStatusType = 'minimized' | 'active' | 'inactive';
+
 interface IProps {
-  classes: any;
-  header?: React.ReactNode;
+  header: React.ReactNode;
   desc?: React.ReactNode;
-  active?: boolean;
-  setActive?: () => void;
-  activeElement: React.ComponentType;
-  inactiveElement: React.ComponentType;
+  activeStatus: activeStatusType;
+  setActive: () => void;
+  activeElement: React.ReactNode;
+  inactiveElement: React.ReactNode;
+  classes: any;
 }
 
 const SettingsSection: React.SFC<IProps> = props => {
@@ -51,7 +53,7 @@ const SettingsSection: React.SFC<IProps> = props => {
     desc,
     header,
     classes,
-    active,
+    activeStatus,
     setActive,
     activeElement,
     inactiveElement,
@@ -61,20 +63,24 @@ const SettingsSection: React.SFC<IProps> = props => {
     <section className={classes.section}>
       <div className={classes.top}>
         {header && <h2 className={classes.topHeader}>{header}</h2>}
-        {!active && setActive && (
+        {activeStatus !== 'active' && setActive && (
           <div className={classes.topAction}>
             <ActionText action={setActive} bottom={true}>
               <Trans>general.edit</Trans>
             </ActionText>
           </div>
         )}
-        {active && desc && (
+        {activeStatus === 'active' && desc && (
           <div className={classes.topDescription}>
             <Text size="large">{desc}</Text>
           </div>
         )}
       </div>
-      {active ? activeElement : inactiveElement}
+      {activeStatus !== 'minimized'
+        ? activeStatus === 'active'
+          ? activeElement
+          : inactiveElement
+        : null}
     </section>
   );
 };
