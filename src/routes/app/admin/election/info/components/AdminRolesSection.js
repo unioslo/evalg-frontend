@@ -49,7 +49,7 @@ type Props = {
   setActive: Function,
   closeAction: Function,
   electionGroup: ElectionGroup,
-  getAdminElectionGroup: Function,
+  getAdminElectionGroup?: Function,
   i18n: Object,
 };
 

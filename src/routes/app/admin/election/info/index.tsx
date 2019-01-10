@@ -1,5 +1,4 @@
-/* @flow */
-import * as React from 'react';
+import React from 'react';
 
 import { translate, Trans } from 'react-i18next';
 import Page from 'components/page/Page';
@@ -10,68 +9,69 @@ import VotingPeriodSection from './components/VotingPeriodSection';
 import VoterInfoSection from './components/VoterInfoSection';
 import AdminRolesSection from './components/AdminRolesSection';
 import Button, { ButtonContainer } from 'components/button';
+import { History } from 'history';
+import { i18n } from 'i18next';
 
-type Props = {
-  children?: ReactChildren,
-  groupId: string,
-  electionGroup: Object,
-  handleUpdate: Function,
-  history: RouterHistory,
-  i18n: Object
-};
-
-const activeSectionOptions = {
-  none: 'none',
-  baseGroupSettings: 'baseGroupSettings',
-  baseElectionSettings: 'baseElectionSettings',
-  votingPeriod: 'votingPeriod',
-  voterInfo: 'voterInfo',
-  adminRoles: 'adminRoles'
-};
-
-type Section = $Keys<typeof activeSectionOptions>;
-
-type State = {
-  activeSection: Section
+interface IProps {
+  children?: React.ReactChildren;
+  groupId: string;
+  electionGroup: ElectionGroup;
+  handleUpdate: (payload: any) => any;
+  history: History;
+  i18n: i18n;
 }
 
-class InfoPage extends React.Component<Props, State> {
-  handleUpdate: Function;
+interface IState {
+  activeSection: activeSectionName;
+}
 
-  constructor(props: Props) {
+type activeSectionName =
+  | 'none'
+  | 'baseGroupSettings'
+  | 'baseElectionSettings'
+  | 'votingPeriod'
+  | 'voterInfo'
+  | 'adminRoles';
+
+class InfoPage extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = { activeSection: 'none' };
     this.handleUpdate = this.handleUpdate.bind(this);
   }
 
-  handleUpdate(payload: Object) {
-    return this.props.handleUpdate(payload).then(
-      () => null,
-      (error) => console.error(error)
-    )
+  public handleUpdate(payload: any) {
+    return this.props
+      .handleUpdate(payload)
+      .then(() => null, (error: string) => console.error(error));
   }
 
-  setActive(section: Section) {
+  public setActive(section: activeSectionName) {
     this.setState({ activeSection: section });
   }
 
-  render() {
+  public render() {
     const {
-      electionGroup, electionGroup: { id }, history
+      electionGroup,
+      history,
     } = this.props;
-    const { elections } = electionGroup;
+    const { elections, id: groupId } = electionGroup;
     const lang = this.props.i18n.language;
 
     const { activeSection } = this.state;
     const activeElections = elections.filter(e => e.active);
+
+    const proceedToCandiates = () => {
+      history.push(`/admin/elections/${groupId}/candidates`)
+    }
+
     return (
       <Page header={<Trans>election.electionInfo</Trans>}>
-
-        <PageSection header={<Trans>election.electionType</Trans>} >
+        <PageSection header={<Trans>election.electionType</Trans>}>
           <Text>{electionGroup.name[lang]}</Text>
         </PageSection>
 
-        {electionGroup.type === 'multiple_elections' &&
+        {electionGroup.type === 'multiple_elections' && (
           <BaseElectionSettingsSection
             setActive={this.setActive.bind(this, 'baseElectionSettings')}
             active={activeSection === 'baseElectionSettings'}
@@ -80,7 +80,7 @@ class InfoPage extends React.Component<Props, State> {
             electionGroup={electionGroup}
             elections={elections}
           />
-        }
+        )}
         <VotingPeriodSection
           setActive={this.setActive.bind(this, 'votingPeriod')}
           active={activeSection === 'votingPeriod'}
@@ -105,19 +105,21 @@ class InfoPage extends React.Component<Props, State> {
           closeAction={this.setActive.bind(this, 'none')}
         />
 
-        <ButtonContainer alignRight topMargin>
+        <ButtonContainer alignRight={true} topMargin={true}>
           <Button
-            text={<span>
-              <Trans>election.goTo</Trans>&nbsp;
-                    <Trans>election.candidates</Trans>
-            </span>}
-            action={() => history.push(`/admin/elections/${id}/candidates`)}
+            text={
+              <span>
+                <Trans>election.goTo</Trans>&nbsp;
+                <Trans>election.candidates</Trans>
+              </span>
+            }
+            action={proceedToCandiates}
             disabled={elections.filter(e => e.active).length === 0}
             iconRight="mainArrow"
           />
         </ButtonContainer>
       </Page>
-    )
+    );
   }
 }
 

@@ -63,6 +63,7 @@ type Props = {
   closeAction: Function,
   submitAction: Function,
   electionGroup: ElectionGroup,
+  elections: Election[]
 };
 
 class VotingPeriodSection extends React.Component<Props> {

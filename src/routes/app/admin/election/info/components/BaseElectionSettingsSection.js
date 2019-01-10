@@ -53,6 +53,7 @@ type Props = {
   closeAction: Function,
   submitAction: Function,
   electionGroup: ElectionGroup,
+  elections: Election[]
 };
 
 class BaseElectionSettingsSection extends React.Component<Props> {
