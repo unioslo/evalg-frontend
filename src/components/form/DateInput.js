@@ -144,7 +144,7 @@ class DateInput extends React.Component<Props, State> {
           name={name}
           id={name}
           onFocus={this.handleOnFocus.bind(this)}
-          placeholderText={this.props.t('i18n.datePlaceHolder')}
+          placeholderText={this.props.t('general.datePlaceHolder')}
         />
       </div>
     )

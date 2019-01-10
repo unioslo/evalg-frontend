@@ -252,7 +252,7 @@ class TimeInput extends React.Component<Props, State> {
           <TextInput
             name={name}
             className={classes.timeInput}
-            placeholder={this.props.t('i18n.timePlaceHolder')}
+            placeholder={this.props.t('general.timePlaceHolder')}
             small={small}
             label={label}
             error={error}
