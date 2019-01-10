@@ -1,8 +1,7 @@
 /* @flow */
 import * as React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
-import { authEnabled } from 'appConfig';
 import VoterFrontPage from './frontpage';
 import VotingPage from './vote';
 import VotingGroupSelectPage from './votingGroupSelect';
@@ -18,10 +17,6 @@ const renderVotingGroupSelectPage = ({ match }: any) => {
 };
 
 const VoterRoute: React.SFC = () => {
-  const userRoles: string[] = [];
-  if (authEnabled && (!userRoles || userRoles.indexOf('voter') === -1)) {
-    return <Redirect to="/login" />;
-  }
   return (
     <>
       <Route exact={true} path="/voter" component={VoterFrontPage} />
