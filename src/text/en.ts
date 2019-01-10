@@ -243,7 +243,7 @@ export default {
     reviewBallot:
       'Review your ballot below, then confirm your vote or go back to make changes.',
   },
-  voterVotingGroupSelect: {
+  voterGroupSelect: {
     aboutElectionLink: 'Read more about the election',
     registeredInSelectedGroupHeading: 'You have voting rights',
     registeredInSelectedGroupBeforeDropdownText:
@@ -254,6 +254,7 @@ export default {
       'You are not registered in the voting group for',
     notRegisteredInSelectedGroupInfoText:
       'The election board will decide if your vote will count based on your affiliation with UiO. If you believe you should be registered in this voting group, please state your job code or other relevant information below.',
-    writeReason: 'Please give reason for your voting rights',
+    writeJustification:
+      'Please provide a reason why you have voting rights in this group',
   },
 };

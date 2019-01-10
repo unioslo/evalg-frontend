@@ -7,11 +7,12 @@ import { Page, PageSection } from 'components/page';
 import { DropDown } from 'components/form';
 import Button, { ButtonContainer } from 'components/button';
 import { translate, Trans } from 'react-i18next';
-import { withRouter } from 'react-router';
 import injectSheet from 'react-jss';
 import Icon from 'components/icon';
 import { ApolloClient } from 'apollo-boost';
 import MandatePeriodText from '../vote/components/MandatePeriodText';
+import { History } from 'history';
+import { i18n, TranslationFunction } from 'i18next';
 
 const styles = (theme: any) => ({
   ingress: theme.ingressText,
@@ -24,7 +25,7 @@ const styles = (theme: any) => ({
     marginBottom: '6rem',
   },
   votingRightsSection: {},
-  notInVotingGroupReasonTextArea: {
+  notInPollBookJustificationTextArea: {
     width: '100%',
     padding: 10,
     fontFamily: 'inherit',
@@ -33,7 +34,7 @@ const styles = (theme: any) => ({
     borderColor: theme.formFieldBorderColor,
     borderRadius: theme.formFieldBorderRadius,
   },
-  notInVotingGroupParagraph: {
+  notInVoterGroupParagraph: {
     marginTop: '2.2rem',
     marginBottom: '2rem',
   },
@@ -59,13 +60,14 @@ const getElectionGroupData = gql`
       id
       name
       description
+      type
       elections {
         id
         name
         mandatePeriodStart
         mandatePeriodEnd
         informationUrl
-        lists {
+        pollbooks {
           id
           name
         }
@@ -76,59 +78,71 @@ const getElectionGroupData = gql`
 
 interface IProps {
   electionGroupId: string;
-  i18n: any;
-  history: any;
-  match: any;
-  location: any;
-  t: any;
+  history: History;
+  i18n: i18n;
+  t: TranslationFunction;
   classes: any;
 }
 
 interface IState {
-  selectedVotingGroupIndex: number;
-  notInVotingGroupReason: string;
+  selectedPollBookIndex: number;
+  notInPollBookJustification: string;
 }
 
-class VotingGroupSelectPage extends React.Component<IProps, IState> {
+// Page for selecting voter group / velgergruppe in between selecting an election on the voter
+// front page, and voting in a particular election.
+// Assuming this to be correct about the data model (recieved graphql query data):
+// If the type of the election group is "multiple_elections", i.e. as for a board election / styrevalg,
+// the relevant voter groups is given by the names of the elections in the group.
+// If the type of the election group is not "multiple_elections", it is assumed to be "single_election",
+// and the relevant voter groups is given by the names of the pollbooks in the single election.
+// In the first case, choosing a voter group is in effect choosing an election.
+
+class VoterGroupSelectPage extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      selectedVotingGroupIndex: 0,
-      notInVotingGroupReason: '',
+      selectedPollBookIndex: 0,
+      notInPollBookJustification: '',
     };
-    this.handleSelectVotingGroup = this.handleSelectVotingGroup.bind(this);
-    this.handleNotInVotingGroupReasonChange = this.handleNotInVotingGroupReasonChange.bind(
+    this.handleSelectVoterGroup = this.handleSelectVoterGroup.bind(this);
+    this.handlenotInPollBookJustificationChange = this.handlenotInPollBookJustificationChange.bind(
       this
     );
     this.handleProceed = this.handleProceed.bind(this);
   }
 
-  public hasVotingRights(selectedGroupIndex: number): boolean {
-    // Dummy implementation. TODO: Check for which group an actual logged in user has voting rights.
-    return selectedGroupIndex === 0;
+  public hasVotingRights(selectedPollBookIndex: number): boolean {
+    // Dummy implementation. TODO: Check for which voter group / poll book an actual logged in user has voting rights.
+    return selectedPollBookIndex === 0;
   }
 
-  public handleSelectVotingGroup(selectedVotingGroupIndex: number) {
-    this.setState({ selectedVotingGroupIndex });
+  public handleSelectVoterGroup(selectedPollBookIndex: number) {
+    this.setState({ selectedPollBookIndex });
   }
 
-  public handleNotInVotingGroupReasonChange(
+  public handlenotInPollBookJustificationChange(
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) {
-    this.setState({ notInVotingGroupReason: event.target.value });
+    this.setState({ notInPollBookJustification: event.target.value });
   }
 
   public handleProceed(
     proceedToLink: string,
-    apolloClient: ApolloClient<any>,
-    notInVotingGroupReason: string
+    selectedPollBookID: string,
+    notInPollBookJustification: string,
+    apolloClient: ApolloClient<any>
   ) {
+    // Write "selectedPollBookID" and conditionally "notInPollBookJustification" to local cache,
+    // to send with vote later.
+    apolloClient.writeData({ data: { selectedPollBookID } });
     if (
-      !this.hasVotingRights(this.state.selectedVotingGroupIndex) &&
-      notInVotingGroupReason
+      !this.hasVotingRights(this.state.selectedPollBookIndex) &&
+      notInPollBookJustification
     ) {
-      // Write "notInVotingGroupReason" to local cache, to send with vote later.
-      apolloClient.writeData({ data: { notInVotingGroupReason } });
+      apolloClient.writeData({ data: { notInPollBookJustification } });
+    } else if (this.hasVotingRights(this.state.selectedPollBookIndex)) {
+      apolloClient.writeData({ data: { notInPollBookJustification: '' } });
     }
     this.props.history.push(proceedToLink);
   }
@@ -155,21 +169,31 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
           const electionGroup: ElectionGroup = data.electionGroup;
           const electionGroupName = electionGroup.name;
           const elections: Election[] = electionGroup.elections;
-          const proceedToLink = `/voter/elections/${
-            elections[this.state.selectedVotingGroupIndex].id
-          }/vote`;
+
+          let proceedToLink: string;
+          let pollbooks: IPollBook[];
+
+          if (electionGroup.type === 'multiple_elections') {
+            pollbooks = elections.map(election => election.pollbooks[0]);
+            proceedToLink = `/voter/elections/${
+              elections[this.state.selectedPollBookIndex].id
+            }/vote`;
+          } else {
+            pollbooks = elections[0].pollbooks;
+            proceedToLink = `/voter/elections/${elections[0].id}/vote`;
+          }
 
           const dropdown = (
             <DropDown
-              options={elections.map((election, index) => ({
+              options={pollbooks.map((pollbook, index) => ({
                 value: index,
-                name: election.lists[0].name[lang],
+                name: pollbook.name[lang],
                 secondaryLine: this.hasVotingRights(index)
                   ? 'Stemmerett'
                   : null,
               }))}
-              value={this.state.selectedVotingGroupIndex}
-              onChange={this.handleSelectVotingGroup}
+              value={this.state.selectedPollBookIndex}
+              onChange={this.handleSelectVoterGroup}
               inline={true}
             />
           );
@@ -189,9 +213,7 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
                         external={true}
                       >
                         <span className={classes.aboutElectionLinkText}>
-                          <Trans>
-                            voterVotingGroupSelect.aboutElectionLink
-                          </Trans>
+                          <Trans>voterGroupSelect.aboutElectionLink</Trans>
                         </span>
                         <div className={classes.aboutElectionLinkIcon}>
                           <Icon type="externalLink" />
@@ -201,17 +223,17 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
                   )}
                 </div>
                 <div className="votingRightsSection">
-                  {this.hasVotingRights(this.state.selectedVotingGroupIndex) ? (
+                  {this.hasVotingRights(this.state.selectedPollBookIndex) ? (
                     <>
                       <p className={classes.subheading}>
                         <Trans>
-                          voterVotingGroupSelect.registeredInSelectedGroupHeading
+                          voterGroupSelect.registeredInSelectedGroupHeading
                         </Trans>
                       </p>
                       <div className={classes.ingress}>
                         <span className={classes.beforeDropdownText}>
                           <Trans>
-                            voterVotingGroupSelect.registeredInSelectedGroupBeforeDropdownText
+                            voterGroupSelect.registeredInSelectedGroupBeforeDropdownText
                           </Trans>
                         </span>
                         {dropdown}
@@ -221,27 +243,27 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
                     <>
                       <p className={classes.subheading}>
                         <Trans>
-                          voterVotingGroupSelect.notRegisteredInSelectedGroupHeading
+                          voterGroupSelect.notRegisteredInSelectedGroupHeading
                         </Trans>
                       </p>
                       <div className={classes.ingress}>
                         <span className={classes.beforeDropdownText}>
                           <Trans>
-                            voterVotingGroupSelect.notRegisteredInSelectedGroupBeforeDropdownText
+                            voterGroupSelect.notRegisteredInSelectedGroupBeforeDropdownText
                           </Trans>
                         </span>
                         {dropdown}
                       </div>
-                      <p className={classes.notInVotingGroupParagraph}>
+                      <p className={classes.notInVoterGroupParagraph}>
                         <Trans>
-                          voterVotingGroupSelect.notRegisteredInSelectedGroupInfoText
+                          voterGroupSelect.notRegisteredInSelectedGroupInfoText
                         </Trans>
                       </p>
                       <textarea
-                        value={this.state.notInVotingGroupReason}
-                        onChange={this.handleNotInVotingGroupReasonChange}
-                        className={classes.notInVotingGroupReasonTextArea}
-                        placeholder={t('voterVotingGroupSelect.writeReason')}
+                        value={this.state.notInPollBookJustification}
+                        onChange={this.handlenotInPollBookJustificationChange}
+                        className={classes.notInPollBookJustificationTextArea}
+                        placeholder={t('voterGroupSelect.writeJustification')}
                         rows={6}
                       />
                     </>
@@ -259,14 +281,14 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
                     action={() =>
                       this.handleProceed(
                         proceedToLink,
-                        client,
-                        this.state.notInVotingGroupReason
+                        pollbooks[this.state.selectedPollBookIndex].id,
+                        this.state.notInPollBookJustification,
+                        client
                       )
                     }
                     disabled={
-                      !this.hasVotingRights(
-                        this.state.selectedVotingGroupIndex
-                      ) && this.state.notInVotingGroupReason === ''
+                      !this.hasVotingRights(this.state.selectedPollBookIndex) &&
+                      this.state.notInPollBookJustification === ''
                     }
                   />
                 </ButtonContainer>
@@ -279,6 +301,4 @@ class VotingGroupSelectPage extends React.Component<IProps, IState> {
   }
 }
 
-export default injectSheet(styles)(
-  withRouter(translate()(VotingGroupSelectPage))
-);
+export default injectSheet(styles)(translate()(VoterGroupSelectPage));
