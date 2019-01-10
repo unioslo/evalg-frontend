@@ -15,6 +15,7 @@ import Admin from './admin';
 import Voter from './voter';
 
 import { authEnabled } from 'appConfig';
+import { oidcLogoutUrl } from 'appConfig';
 
 const styles = {
   app: {
@@ -38,6 +39,11 @@ const FrontPage: React.SFC = () => (
   </>
 );
 
+const Logout: React.SFC = () => {
+  window.location.href = oidcLogoutUrl;
+  return <div />;
+};
+
 const WrapHeaderForLogout: React.SFC = () => {
   const logout = (
     context: IAuthenticatorContext,
@@ -47,7 +53,7 @@ const WrapHeaderForLogout: React.SFC = () => {
     client.resetStore();
     sessionStorage.clear();
     const history = createBrowserHistory({ forceRefresh: true });
-    history.push('/');
+    history.push('/logout');
   };
   return (
     <ApolloConsumer>
@@ -71,6 +77,7 @@ const App: React.SFC<IProps> = ({ classes, authManager }) => {
         <Route exact={true} path="/" component={FrontPage} />
         <Route path="/admin" component={ProtectedAdmin} />
         <Route path="/voter" component={ProtectedVoter} />
+        <Route path="/logout" component={Logout} />
       </Content>
       <Footer />
     </div>
