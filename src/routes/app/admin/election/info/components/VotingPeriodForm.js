@@ -229,17 +229,19 @@ type Props = {
 
 class VotingPeriodForm extends React.Component<Props> {
   render() {
-    const {
-      onSubmit,
-      closeAction,
-      electionType,
-      initialValues,
-    } = this.props;
+    const { onSubmit, closeAction, electionType, initialValues } = this.props;
     const lang = this.props.i18n.language;
     const { elections } = initialValues;
     const PeriodForm = determineFormType(electionType, initialValues.elections);
 
     const electionNames = elections.map(e => ({ ...e.name }));
+    if (elections.length === 0) {
+      return (
+        <p>
+          <Trans>election.noActiveElections</Trans>
+        </p>
+      );
+    }
     return (
       <Form
         onSubmit={this.props.onSubmit}
@@ -277,7 +279,7 @@ class VotingPeriodForm extends React.Component<Props> {
               <FormButtons
                 saveAction={handleSubmit}
                 closeAction={closeAction}
-                submitDisabled={pristine || !valid}
+                submitDisabled={!valid}
               />
             </form>
           );

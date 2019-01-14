@@ -91,7 +91,7 @@ class NewElection extends React.Component<any, State> {
   }
   onCreateCompleted(data: Object) {
     const { electionGroup } = data.createNewElectionGroup;
-    this.props.history.push(`/admin/elections/${electionGroup.id}/info`);
+    this.props.history.push(`/admin/elections/${electionGroup.id}/info/new`);
   }
   render() {
     return (
@@ -115,7 +115,7 @@ class NewElection extends React.Component<any, State> {
                       updateValues={this.updateValues}
                       electionTemplate={electionTemplate}
                       submitAction={(values) => createNewElectionGroup({ variables: values })}
-                      cancelAction={() => console.error('CANCEL')}
+                      cancelAction={() => this.props.history.goBack}
                     />
                   </PageSection>
                 </Page>

@@ -1,7 +1,6 @@
-/* @flow */
 import * as React from 'react';
-import { Route } from 'react-router-dom';
-import { Query, graphql, Mutation } from 'react-apollo';
+import { Route, match } from 'react-router-dom';
+import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { translate } from 'react-i18next';
 
@@ -11,8 +10,8 @@ import CandidatesPage from './candidates';
 import PollbooksPage from './pollbooks';
 import StatusPage from './status';
 import Loading from 'components/loading';
-
-import { findObjIndex } from 'utils';
+import { History, Location } from 'history';
+import { i18n } from 'i18next';
 
 const electionGroupQuery = gql`
   query electionGroup($id: UUID!) {
@@ -91,26 +90,26 @@ const electionGroupQuery = gql`
             id
             name
           }
-        }      
+        }
       }
     }
   }
 `;
 
+interface IProps {
+  location: Location;
+  match: match<{ groupId: string }>;
+  history: History;
+  electionGroup: ElectionGroup;
+  i18n: i18n;
+}
 
-type Props = {
-  children?: React$Element<any>,
-  location: Object,
-  match: RouterMatch,
-  history: RouterHistory,
-  electionGroup: ElectionGroup,
-  i18n: Object
-};
-
-const AdminElection = (props: Props) => (
+// tslint:disable:jsx-no-lambda
+const AdminElection: React.SFC<IProps> = (props: IProps) => (
   <Query
     query={electionGroupQuery}
-    variables={{ id: props.match.params.groupId }}>
+    variables={{ id: props.match.params.groupId }}
+  >
     {({ data: { electionGroup }, loading, error }) => {
       if (loading) {
         return <Loading />;
@@ -120,37 +119,61 @@ const AdminElection = (props: Props) => (
       }
       const lang = props.i18n.language;
       return (
-        <div>
+        <>
           <ElectionNavBar
             path={props.location.pathname}
             groupId={props.match.params.groupId}
             lang={lang}
           />
-          <Route path="/admin/elections/:groupId/info" render={(routeProps) =>
-            <InfoPage
-              electionGroup={electionGroup}
-              lang={lang}
-              history={routeProps.history} />
-          } />
-          <Route path="/admin/elections/:groupId/candidates" render={(routeProps) =>
-            <CandidatesPage
-              electionGroup={electionGroup}
-              lang={lang}
-              {...routeProps} />
-          } />
-          <Route path="/admin/elections/:groupId/pollbooks" render={(routeProps) =>
-            <PollbooksPage
-              groupId={props.match.params.groupId}
-              {...routeProps} />
-          } />
-          <Route path="/admin/elections/:groupId/status" render={(routeProps) =>
-            <StatusPage
-              electionGroup={electionGroup}
-              lang={lang}
-              {...routeProps} />
-          } />
-        </div>
-      )
+          <Route
+            path="/admin/elections/:groupId/info/new"
+            render={routeProps => (
+              <InfoPage
+                isNewElection={true}
+                electionGroupData={electionGroup}
+                history={routeProps.history}
+              />
+            )}
+          />
+          <Route
+            exact={true}
+            path="/admin/elections/:groupId/info"
+            render={routeProps => (
+              <InfoPage
+                electionGroupData={electionGroup}
+                history={routeProps.history}
+              />
+            )}
+          />
+          <Route
+            path="/admin/elections/:groupId/candidates"
+            render={routeProps => (
+              <CandidatesPage
+                electionGroup={electionGroup}
+                {...routeProps}
+              />
+            )}
+          />
+          <Route
+            path="/admin/elections/:groupId/pollbooks"
+            render={routeProps => (
+              <PollbooksPage
+                groupId={props.match.params.groupId}
+                {...routeProps}
+              />
+            )}
+          />
+          <Route
+            path="/admin/elections/:groupId/status"
+            render={routeProps => (
+              <StatusPage
+                electionGroup={electionGroup}
+                {...routeProps}
+              />
+            )}
+          />
+        </>
+      );
     }}
   </Query>
 );

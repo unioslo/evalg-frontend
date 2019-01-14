@@ -1,12 +1,11 @@
-/* @flow */
 import * as React from 'react';
-import { translate, Trans } from 'react-i18next';
 import { ApolloConsumer, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { SettingsSection } from 'components/page';
 import AdminRolesValues from './AdminRolesValues';
 import AdminRolesForm from './AdminRolesForm';
+import { IActiveComponentProps, IInactiveComponentProps, ISettingsSectionContents } from 'components/page/SettingsSection';
+import { Trans } from 'react-i18next';
 
 const searchPersonsQuery = gql`
   query searchPersons($val: String!) {
@@ -43,20 +42,11 @@ const removeAdminMutation = gql`
   }
 `;
 
-type Props = {
-  children?: ReactChildren,
-  active: boolean,
-  setActive: Function,
-  closeAction: Function,
-  electionGroup: ElectionGroup,
-  getAdminElectionGroup?: Function,
-  i18n: Object,
-};
+const refetchQueriesFunction = () => ['electionGroup'];
 
-const AdminRolesSection = (props: Props) => {
-  const { active, setActive, electionGroup, closeAction } = props;
-
-  const adminRoles = electionGroup.roles.filter(
+const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
+  const electionGroupData: ElectionGroup = props.electionGroupData;
+  const adminRoles = electionGroupData.roles.filter(
     r => r.role === 'election-admin'
   );
 
@@ -78,18 +68,18 @@ const AdminRolesSection = (props: Props) => {
       grantId: r.grantId,
     }));
 
-  const activeElement = (
+  return (
     <ApolloConsumer>
       {client => {
-        async function searchPersons(val) {
-          const { data } = await client.query({
+        async function searchPersons(val: string) {
+          const { data }: { data: any } = await client.query({
             query: searchPersonsQuery,
             variables: { val },
           });
           return data.searchPersons;
         }
-        async function searchGroups(val) {
-          const { data } = await client.query({
+        async function searchGroups(val: string) {
+          const { data }: { data: any } = await client.query({
             query: searchGroupsQuery,
             variables: { val },
           });
@@ -98,25 +88,25 @@ const AdminRolesSection = (props: Props) => {
         return (
           <Mutation
             mutation={removeAdminMutation}
-            refetchQueries={() => ['electionGroup']}
+            refetchQueries={refetchQueriesFunction}
           >
             {(removeAdmin, { data: removeData }) => (
               <Mutation
                 mutation={addAdminMutation}
-                refetchQueries={() => ['electionGroup']}
+                refetchQueries={refetchQueriesFunction}
               >
                 {(addAdmin, { data: addData }) => {
-                  const addAction = (adminId, type) => {
+                  const addAction = (adminId: any, type: string) => {
                     addAdmin({
                       variables: {
                         adminId,
                         type,
-                        elGrpId: electionGroup.id,
+                        elGrpId: electionGroupData.id,
                       },
                     });
                   };
 
-                  const removeAction = grantId => {
+                  const removeAction = (grantId: any) => {
                     removeAdmin({ variables: { grantId } });
                   };
 
@@ -126,7 +116,7 @@ const AdminRolesSection = (props: Props) => {
                       adminGroups={adminGroups}
                       addAction={addAction}
                       removeAction={removeAction}
-                      closeAction={closeAction}
+                      closeAction={props.submitAction}
                       searchPersons={searchPersons}
                       searchGroups={searchGroups}
                     />
@@ -139,19 +129,18 @@ const AdminRolesSection = (props: Props) => {
       }}
     </ApolloConsumer>
   );
-
-  const inactiveElement = <AdminRolesValues roles={electionGroup.roles} />;
-
-  return (
-    <SettingsSection
-      header={<Trans>election.adminRoles</Trans>}
-      desc={<Trans>election.adminRolesDesc</Trans>}
-      active={active}
-      setActive={setActive}
-      activeElement={activeElement}
-      inactiveElement={inactiveElement}
-    />
-  );
 };
 
-export default translate()(AdminRolesSection);
+const InactiveComponent: React.SFC<IInactiveComponentProps> = props => (
+  <AdminRolesValues roles={props.electionGroupData.roles} />
+);
+
+const AdminRolesSettingsSection: ISettingsSectionContents = {
+  sectionName: 'adminRolesSettings',
+  activeComponent: ActiveComponent,
+  inactiveComponent: InactiveComponent,
+  header: <Trans>election.adminRoles</Trans>,
+  description: <Trans>election.adminRolesDesc</Trans>
+};
+
+export default AdminRolesSettingsSection;

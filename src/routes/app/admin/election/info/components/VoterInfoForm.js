@@ -151,12 +151,11 @@ type Props = {
   closeAction: Function,
   t: Function,
   i18n: Object,
-  header: ReactElement | string,
 };
 
 class VoterInfoForm extends React.Component<Props> {
   render() {
-    const { electionGroup, initialValues, closeAction, t, header } = this.props;
+    const { electionGroup, initialValues, closeAction, t } = this.props;
     const lang = this.props.i18n.language;
     const { elections } = initialValues;
     if (elections.length === 0) {
@@ -461,7 +460,7 @@ class VoterInfoForm extends React.Component<Props> {
               <FormButtons
                 saveAction={handleSubmit}
                 closeAction={closeAction}
-                submitDisabled={pristine || !valid}
+                submitDisabled={!valid}
                 alignRight
               />
             </form>

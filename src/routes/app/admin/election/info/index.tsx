@@ -4,68 +4,57 @@ import { translate, Trans } from 'react-i18next';
 import Page from 'components/page/Page';
 import { PageSection } from 'components/page';
 import Text from 'components/text';
-import BaseElectionSettingsSection from './components/BaseElectionSettingsSection';
-import VotingPeriodSection from './components/VotingPeriodSection';
-import VoterInfoSection from './components/VoterInfoSection';
-import AdminRolesSection from './components/AdminRolesSection';
 import Button, { ButtonContainer } from 'components/button';
 import { History } from 'history';
 import { i18n } from 'i18next';
-import { activeStatusType } from 'components/page/SettingsSection';
+import { ISettingsSectionContents } from 'components/page/SettingsSection';
+import BaseElectionSettingsSection from './components/BaseElectionSettings';
+import VotingPeriodSettingsSection from './components/VotingperiodSettings';
+import VoterInfoSettingsSection from './components/VoterInfoSettings';
+import AdminRolesSettingsSection from './components/AdminRolesSettings';
+import SettingsSectionsGroup from 'components/page/SettingsSectionsGroup';
+
+let settingsSectionsContents: ISettingsSectionContents[] = [
+  BaseElectionSettingsSection,
+  VotingPeriodSettingsSection,
+  VoterInfoSettingsSection,
+  AdminRolesSettingsSection,
+];
 
 interface IProps {
-  children?: React.ReactChildren;
-  groupId: string;
-  electionGroup: ElectionGroup;
-  handleUpdate: (payload: any) => any;
+  electionGroupData: ElectionGroup;
+  isNewElection?: boolean;
+  handleUpdate?: (payload: any) => Promise<any>; // TODO: Isn't used. Delete?
   history: History;
   i18n: i18n;
 }
 
-interface IState {
-  sectionStatuses: ISectionStatuses;
-}
-
-type activeSectionName =
-  | 'none'
-  | 'baseGroupSettings'
-  | 'baseElectionSettings'
-  | 'votingPeriod'
-  | 'voterInfo'
-  | 'adminRoles';
-
-interface ISectionStatuses {
-  baseGroupSettings: activeStatusType,
-  baseElectionSettings: activeStatusType,
-  votingPeriod: activeStatusType,
-  voterInfo: activeStatusType,
-  adminRoles: activeStatusType,
-}
-
-class InfoPage extends React.Component<IProps, IState> {
+class InfoPage extends React.Component<IProps> {
   constructor(props: IProps) {
     super(props);
-    this.state = { activeSection: 'none' };
-    this.handleUpdate = this.handleUpdate.bind(this);
+
+    const isMultipleElections =
+      this.props.electionGroupData.type === 'multiple_elections';
+
+    if (!isMultipleElections) {
+      settingsSectionsContents = settingsSectionsContents.slice(1);
+    }
   }
 
-  public handleUpdate(payload: any) {
-    return this.props
-      .handleUpdate(payload)
-      .then(() => null, (error: string) => console.error(error));
-  }
-
-  public setActive(section: activeSectionName) {
-    this.setState({ activeSection: section });
-  }
+  public handleUpdate = (payload: any) => {
+    if (this.props.handleUpdate) {
+      this.props
+        .handleUpdate(payload)
+        .then(() => null, (error: string) => console.error(error));
+    }
+  };
 
   public render() {
-    const { electionGroup, history } = this.props;
-    const { elections, id: groupId } = electionGroup;
-    const lang = this.props.i18n.language;
+    const { electionGroupData } = this.props;
+    const { id: groupId } = electionGroupData;
 
-    const { activeSection } = this.state;
-    const activeElections = elections.filter(e => e.active);
+    const lang = this.props.i18n.language;
+    const history = this.props.history;
 
     const proceedToCandiates = () => {
       history.push(`/admin/elections/${groupId}/candidates`);
@@ -74,41 +63,14 @@ class InfoPage extends React.Component<IProps, IState> {
     return (
       <Page header={<Trans>election.electionInfo</Trans>}>
         <PageSection header={<Trans>election.electionType</Trans>}>
-          <Text>{electionGroup.name[lang]}</Text>
+          <Text>{electionGroupData.name[lang]}</Text>
         </PageSection>
 
-        {electionGroup.type === 'multiple_elections' && (
-          <BaseElectionSettingsSection
-            setActive={this.setActive.bind(this, 'baseElectionSettings')}
-            activeStatus={activeSection === 'baseElectionSettings'}
-            submitAction={this.handleUpdate}
-            closeAction={this.setActive.bind(this, 'none')}
-            electionGroup={electionGroup}
-            elections={elections}
-          />
-        )}
-        <VotingPeriodSection
-          setActive={this.setActive.bind(this, 'votingPeriod')}
-          active={activeSection === 'votingPeriod'}
-          submitAction={this.handleUpdate}
-          closeAction={this.setActive.bind(this, 'none')}
-          electionGroup={electionGroup}
-          elections={activeElections}
-        />
-
-        <VoterInfoSection
-          setActive={this.setActive.bind(this, 'voterInfo')}
-          active={activeSection === 'voterInfo'}
-          submitAction={this.handleUpdate}
-          closeAction={this.setActive.bind(this, 'none')}
-          electionGroup={electionGroup}
-          elections={activeElections}
-        />
-        <AdminRolesSection
-          setActive={this.setActive.bind(this, 'adminRoles')}
-          active={activeSection === 'adminRoles'}
-          electionGroup={electionGroup}
-          closeAction={this.setActive.bind(this, 'none')}
+        <SettingsSectionsGroup
+          settingsSectionsContents={settingsSectionsContents}
+          electionGroupData={electionGroupData}
+          startWithDirectedFlowActive={this.props.isNewElection}
+          handleSubmitSettingsSection={this.handleUpdate}
         />
 
         <ButtonContainer alignRight={true} topMargin={true}>
@@ -120,7 +82,9 @@ class InfoPage extends React.Component<IProps, IState> {
               </span>
             }
             action={proceedToCandiates}
-            disabled={elections.filter(e => e.active).length === 0}
+            disabled={
+              electionGroupData.elections.filter(e => e.active).length === 0
+            }
             iconRight="mainArrow"
           />
         </ButtonContainer>

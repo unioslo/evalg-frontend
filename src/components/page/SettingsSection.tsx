@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Trans } from 'react-i18next';
+import injectSheet from 'react-jss';
+import classNames from 'classnames';
 
 import ActionText from 'components/actiontext';
 import Text from 'components/text';
-import injectSheet from 'react-jss';
 
 const styles = (theme: any) => ({
   section: {
@@ -14,7 +15,7 @@ const styles = (theme: any) => ({
       padding: `${theme.contentVertMdPadding} ${theme.contentHorMdPadding}`,
     },
   },
-  top: {
+  topMarginBottom: {
     marginBottom: '3rem',
   },
   topAction: {
@@ -26,7 +27,7 @@ const styles = (theme: any) => ({
       margin: '3rem 0',
     },
   },
-  topHeader: {
+  title: {
     alignItems: 'baseline',
     color: theme.colors.greyishBrown,
     display: 'inline-block',
@@ -36,51 +37,93 @@ const styles = (theme: any) => ({
   },
 });
 
-export type activeStatusType = 'minimized' | 'active' | 'inactive';
+export type SettingsSectionDisplayStatus = 'minimized' | 'active' | 'inactive';
+
+export interface ISettingsSectionContents {
+  sectionName: string;
+  activeComponent: React.StatelessComponent<IActiveComponentProps>;
+  inactiveComponent: React.StatelessComponent<IInactiveComponentProps>;
+  header: React.ReactNode;
+  description: React.ReactNode;
+}
+
+export interface IActiveComponentProps {
+  electionGroupData: ElectionGroup;
+  submitAction: () => void;
+  closeAction: () => void;
+}
+
+export interface IInactiveComponentProps {
+  electionGroupData: ElectionGroup;
+}
 
 interface IProps {
-  header: React.ReactNode;
-  desc?: React.ReactNode;
-  activeStatus: activeStatusType;
-  setActive: () => void;
-  activeElement: React.ReactNode;
-  inactiveElement: React.ReactNode;
+  sectionIndex: number;
+  settingsSectionContents: ISettingsSectionContents;
+  electionGroupData: ElectionGroup;
+  displayStatus: SettingsSectionDisplayStatus;
+  onSetActive: (sectionIndex: number) => void;
+  onSubmitSettingsSection: () => void;
+  onCloseSettingsSection: () => void;
   classes: any;
 }
 
 const SettingsSection: React.SFC<IProps> = props => {
   const {
-    desc,
-    header,
+    sectionIndex,
+    settingsSectionContents: {
+      header,
+      description,
+    },
+    electionGroupData,
+    displayStatus,
+    onSetActive,
+    onSubmitSettingsSection,
+    onCloseSettingsSection,
     classes,
-    activeStatus,
-    setActive,
-    activeElement,
-    inactiveElement,
   } = props;
+
+  const handleSetActive = () => {
+    onSetActive(sectionIndex);
+  };
+
+  const topClasses = classNames({
+    [classes.topMarginBottom]: displayStatus !== 'minimized',
+  });
+
+  const sectionTop = (
+    <div className={topClasses}>
+      {header && <h2 className={classes.title}>{header}</h2>}
+      {displayStatus !== 'active' && onSetActive && (
+        <div className={classes.topAction}>
+          <ActionText action={handleSetActive} bottom={true}>
+            <Trans>general.edit</Trans>
+          </ActionText>
+        </div>
+      )}
+      {displayStatus === 'active' && description && (
+        <div className={classes.topDescription}>
+          <Text size="large">{description}</Text>
+        </div>
+      )}
+    </div>
+  );
+
+  const sectionContent =
+    displayStatus === 'active' ? (
+      <props.settingsSectionContents.activeComponent
+        electionGroupData={electionGroupData}
+        submitAction={onSubmitSettingsSection}
+        closeAction={onCloseSettingsSection}
+      />
+    ) : displayStatus === 'inactive' ? (
+      <props.settingsSectionContents.inactiveComponent electionGroupData={electionGroupData} />
+    ) : null;
 
   return (
     <section className={classes.section}>
-      <div className={classes.top}>
-        {header && <h2 className={classes.topHeader}>{header}</h2>}
-        {activeStatus !== 'active' && setActive && (
-          <div className={classes.topAction}>
-            <ActionText action={setActive} bottom={true}>
-              <Trans>general.edit</Trans>
-            </ActionText>
-          </div>
-        )}
-        {activeStatus === 'active' && desc && (
-          <div className={classes.topDescription}>
-            <Text size="large">{desc}</Text>
-          </div>
-        )}
-      </div>
-      {activeStatus !== 'minimized'
-        ? activeStatus === 'active'
-          ? activeElement
-          : inactiveElement
-        : null}
+      {sectionTop}
+      {sectionContent}
     </section>
   );
 };

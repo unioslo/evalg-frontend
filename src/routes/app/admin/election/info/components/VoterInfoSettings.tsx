@@ -1,15 +1,17 @@
-/* @flow */
 import * as React from 'react';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
-import { Trans } from 'react-i18next';
-import { dateFromDT, timeFromDT, DTFromDateAndTime } from 'utils';
 
-import { SettingsSection } from 'components/page';
 import VoterInfoForm from './VoterInfoForm';
 import VoterInfoValues from './VoterInfoValues';
+import {
+  IActiveComponentProps,
+  IInactiveComponentProps,
+  ISettingsSectionContents,
+} from 'components/page/SettingsSection';
+import { Trans } from 'react-i18next';
 
-const buildInitialValues = (elecs: Array<Election>) => {
+const buildInitialValues = (elecs: Election[]) => {
   const elections = elecs.map(e => ({
     id: e.id,
     name: e.name,
@@ -56,7 +58,7 @@ const buildInitialValues = (elecs: Array<Election>) => {
   };
 };
 
-const buildPayload = values => {
+const buildPayload = (values: any) => {
   const {
     hasMultipleContactInfo,
     hasMultipleInfoUrls,
@@ -65,7 +67,7 @@ const buildPayload = values => {
   } = values;
   return {
     ...values,
-    elections: elections.map(e => ({
+    elections: elections.map((e: ElectionVoterInfoInput) => ({
       id: e.id,
       mandatePeriodStart: hasMultipleMandateTimes
         ? e.mandatePeriodStart
@@ -89,61 +91,55 @@ const updateVoterInfo = gql`
   }
 `;
 
-type Props = {
-  children?: ReactChildren,
-  active: boolean,
-  setActive: Function,
-  closeAction: Function,
-  submitAction: Function,
-  electionGroup: ElectionGroup,
-  elections: Array<Election>,
+const refetchQueriesFunction = () => ['electionGroup'];
+
+const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
+  const electionGroupData: ElectionGroup = props.electionGroupData;
+  const { elections } = electionGroupData;
+  const activeElections = elections.filter(e => e.active);
+
+  return (
+    <Mutation
+      mutation={updateVoterInfo}
+      refetchQueries={refetchQueriesFunction}
+    >
+      {(mutation, { data }) => {
+        const handleSubmit = (values: any) => {
+          mutation({ variables: buildPayload(values) });
+          props.submitAction();
+        };
+        return (
+          <VoterInfoForm
+            handleSubmit={handleSubmit}
+            closeAction={props.closeAction}
+            electionGroup={electionGroupData}
+            initialValues={buildInitialValues(activeElections)}
+          />
+        );
+      }}
+    </Mutation>
+  );
 };
 
-class VoterInfoSection extends React.Component<Props> {
-  render() {
-    const {
-      active,
-      setActive,
-      submitAction,
-      closeAction,
-      electionGroup,
-      elections,
-    } = this.props;
+const InactiveComponent: React.SFC<IInactiveComponentProps> = props => {
+  const electionGroupData: ElectionGroup = props.electionGroupData;
+  const { elections } = electionGroupData;
+  const activeElections = elections.filter(e => e.active);
 
-    const activeElement = (
-      <Mutation
-        mutation={updateVoterInfo}
-        refetchQueries={() => ['electionGroup']}
-      >
-        {(mutation, { data }) => (
-          <VoterInfoForm
-            handleSubmit={values => {
-              mutation({ variables: buildPayload(values) });
-              closeAction();
-            }}
-            closeAction={closeAction}
-            electionGroup={electionGroup}
-            initialValues={buildInitialValues(elections)}
-          />
-        )}
-      </Mutation>
-    );
+  return (
+    <VoterInfoValues
+      electionGroup={electionGroupData}
+      elections={activeElections}
+    />
+  );
+};
 
-    const inactiveElement = (
-      <VoterInfoValues electionGroup={electionGroup} elections={elections} />
-    );
+const VoterInfoSettingsSection: ISettingsSectionContents = {
+  sectionName: 'voterInfoSettings',
+  activeComponent: ActiveComponent,
+  inactiveComponent: InactiveComponent,
+  header: <Trans>election.voterInfo</Trans>,
+  description: <Trans>election.voterInfoFormDesc</Trans>,
+};
 
-    return (
-      <SettingsSection
-        header={<Trans>election.voterInfo</Trans>}
-        desc={<Trans>election.voterInfoFormDesc</Trans>}
-        active={active}
-        setActive={setActive}
-        activeElement={activeElement}
-        inactiveElement={inactiveElement}
-      />
-    );
-  }
-}
-
-export default VoterInfoSection;
+export default VoterInfoSettingsSection;

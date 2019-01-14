@@ -1,8 +1,8 @@
-/* @flow */
 import * as React from 'react';
-import { Field, Form } from 'react-final-form';
+import { Field, Form, FormRenderProps } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
 import { translate, Trans } from 'react-i18next';
+import { i18n } from 'i18next';
 
 import {
   Table,
@@ -18,42 +18,83 @@ import { CheckBoxRF } from 'components/form';
 import { NumberInputRF, FormButtons } from 'components/form';
 import { PageSubSection } from 'components/page';
 
-type ValidateValues = {};
+export interface IElectionsBaseSettings {
+  elections: ElectionBaseSettingsInput[];
+}
 
-const validate = (values: ValidateValues) => {
+// tslint:disable-next-line:no-empty-interface
+interface IValidateValues {}
+
+// TODO: Finish implementing
+const validate = (values: IValidateValues) => {
   const errors = {};
   return errors;
 };
 
-type Props = {
-  handleSubmit: Function,
-  closeAction: Function,
-  initialValues: Object,
-  i18n: Object,
-};
+const buildInitialValues = (electionGroup: ElectionGroup) => ({
+  elections: electionGroup.elections.map(e => ({
+    id: e.id,
+    active: e.active,
+    name: e.name,
+    seats: e.meta.candidateRules.seats,
+    substitutes: e.meta.candidateRules.substitutes,
+  })),
+  hasGenderQuota: electionGroup.meta.candidateRules.candidateGender,
+  id: electionGroup.id,
+});
 
-class BaseElectionSettingsForm extends React.Component<Props> {
-  render() {
+const buildSubmitPayload = (
+  submitValues: IElectionsBaseSettings
+): IElectionsBaseSettings => ({
+  ...submitValues, // TODO: is this nececarry / used?
+  elections: submitValues.elections.map((e: ElectionBaseSettingsInput) => ({
+    id: e.id,
+    active: e.active,
+    seats: e.seats ? e.seats : 0,
+    substitutes: e.substitutes ? e.substitutes : 0,
+  })),
+});
+
+interface IProps {
+  electionGroup: ElectionGroup;
+  onSubmit: (electionBaseSettings: IElectionsBaseSettings) => any;
+  closeAction: () => void;
+  i18n: i18n;
+}
+
+class BaseElectionSettingsForm extends React.Component<IProps> {
+  public initialValues = buildInitialValues(this.props.electionGroup);
+
+  constructor(props: IProps) {
+    super(props);
+
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+  }
+
+  public handleFormSubmit(submitValues: {
+    elections: ElectionBaseSettingsInput[];
+  }) {
+    this.props.onSubmit(buildSubmitPayload(submitValues));
+  }
+
+  public render() {
     const lang = this.props.i18n.language;
-    const { initialValues } = this.props;
-    const { elections } = initialValues;
+    const { elections } = this.initialValues;
     return (
       <Form
-        onSubmit={this.props.handleSubmit}
-        initialValues={this.props.initialValues}
+        onSubmit={this.handleFormSubmit}
+        initialValues={this.initialValues}
         validate={validate}
-        render={(formProps: Object) => {
+      >
+        {(formProps: FormRenderProps) => {
           const {
             handleSubmit,
-            reset,
-            submitting,
-            pristine,
             values,
-            invalid,
-            errors,
             valid,
           } = formProps;
           return (
+            // TODO: There should probably be a generalized "table builder" component that takes table headings
+            // and table cell content as props...
             <form onSubmit={handleSubmit}>
               <Table>
                 <TableHeader>
@@ -69,9 +110,8 @@ class BaseElectionSettingsForm extends React.Component<Props> {
                     </TableHeaderCell>
                   </TableHeaderRow>
                 </TableHeader>
-                <FieldArray
-                  name="elections"
-                  render={({ fields }) => (
+                <FieldArray name="elections">
+                  {({ fields }) => (
                     <TableBody>
                       {fields.map((election, index) => {
                         return (
@@ -82,7 +122,8 @@ class BaseElectionSettingsForm extends React.Component<Props> {
                                 component={CheckBoxRF}
                                 type="checkbox"
                                 label={elections[index].name[lang]}
-                                normalize={val => !!val}
+                                // tslint:disable-next-line:jsx-no-lambda
+                                normalize={(val: any) => !!val} // TODO: Doesn't look like normalize is a prop. Remove?
                               />
                             </TableCell>
                             <TableCell>
@@ -104,7 +145,7 @@ class BaseElectionSettingsForm extends React.Component<Props> {
                       })}
                     </TableBody>
                   )}
-                />
+                </FieldArray>
               </Table>
               <PageSubSection header={<Trans>election.quotas</Trans>}>
                 <Field
@@ -117,12 +158,12 @@ class BaseElectionSettingsForm extends React.Component<Props> {
               <FormButtons
                 saveAction={handleSubmit}
                 closeAction={this.props.closeAction}
-                submitDisabled={pristine || !valid}
+                submitDisabled={!valid}
               />
             </form>
           );
         }}
-      />
+      </Form>
     );
   }
 }

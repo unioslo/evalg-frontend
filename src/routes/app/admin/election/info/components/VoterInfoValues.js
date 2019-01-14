@@ -112,14 +112,11 @@ const informationUrlMultiple = (elections: Array<Election>, lang: string) => (
 type Props = {
   electionGroup: ElectionGroup,
   elections: Array<Election>,
-  active: boolean,
-  setActive: Function,
-  header: ReactElement | string,
   i18n: Object,
 };
 
 const VoterInfoValues = (props: Props) => {
-  const { electionGroup, elections, active, setActive, header } = props;
+  const { electionGroup, elections } = props;
   const lang = props.i18n.language;
   let mandatePeriodInfo = null;
   let contact = null;
