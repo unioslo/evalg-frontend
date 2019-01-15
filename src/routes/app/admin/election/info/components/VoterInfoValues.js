@@ -16,18 +16,18 @@ const valueNotSet = (
 
 const mandatePeriodSingle = (election: Election) => {
   const startDate = election.mandatePeriodStart ? (
-    <Date date={election.mandatePeriodStart} />
+    <Date dateTime={election.mandatePeriodStart} />
   ) : (
     valueNotSet
   );
   const endDate = election.mandatePeriodEnd ? (
-    <Date date={election.mandatePeriodEnd} />
+    <Date dateTime={election.mandatePeriodEnd} />
   ) : (
     valueNotSet
   );
   return (
     <p>
-      <Trans>general.to</Trans>&nbsp;{endDate}
+      {startDate}&nbsp;<Trans>general.to</Trans>&nbsp;{endDate}
     </p>
   );
 };
