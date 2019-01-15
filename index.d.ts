@@ -9,6 +9,14 @@ declare module 'react-jss' {
   export default injectSheet;
 }
 
+interface EvalgClientState {
+  voter: {
+    selectedPollBookID: string,
+    notInPollBookJustification: string,
+  },
+  admin: { isCreatingNewElection: boolean },
+}
+
 interface NameFields {
   nb: string;
   nn: string;
