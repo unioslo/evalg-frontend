@@ -53,6 +53,8 @@ class InfoPage extends React.Component<PropsInternal> {
 
     if (!isMultipleElections) {
       this.settingsSectionsContents = settingsSectionsContentsTemplate.slice(1);
+    } else {
+      this.settingsSectionsContents = settingsSectionsContentsTemplate.slice();
     }
   }
 
