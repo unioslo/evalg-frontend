@@ -126,16 +126,6 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
             lang={lang}
           />
           <Route
-            path="/admin/elections/:groupId/info/new"
-            render={routeProps => (
-              <InfoPage
-                isNewElection={true}
-                electionGroupData={electionGroup}
-                history={routeProps.history}
-              />
-            )}
-          />
-          <Route
             exact={true}
             path="/admin/elections/:groupId/info"
             render={routeProps => (
