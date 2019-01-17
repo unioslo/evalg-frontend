@@ -42,10 +42,13 @@ const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
     <Mutation
       mutation={updateBaseSettings}
       refetchQueries={refetchQueriesFunction}
+      awaitRefetchQueries={true}
     >
       {(mutation, { data }) => {
-        const handleSubmit = (electionBaseSettings: IElectionsBaseSettings) => {
-          mutation({ variables: electionBaseSettings });
+        const handleSubmit = async (
+          electionBaseSettings: IElectionsBaseSettings
+        ) => {
+          await mutation({ variables: electionBaseSettings });
           props.submitAction();
         };
 
@@ -76,7 +79,7 @@ const BaseElectionSettingsSection: ISettingsSectionContents = {
   activeComponent: ActiveComponent,
   inactiveComponent: InactiveComponent,
   header: <Trans>election.voterSettings</Trans>,
-  description: <Trans>election.activeElectionsHeader</Trans>
+  description: <Trans>election.activeElectionsHeader</Trans>,
 };
 
 export default BaseElectionSettingsSection;

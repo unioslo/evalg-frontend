@@ -114,15 +114,16 @@ const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
     <Mutation
       mutation={updateVoterInfo}
       refetchQueries={refetchQueriesFunction}
+      awaitRefetchQueries={true}
     >
       {(mutation, { data }) => {
-        const handleSubmit = (values: any) => {
-          mutation({ variables: buildPayload(values) });
+        const handleSubmit = async (values: any) => {
+          await mutation({ variables: buildPayload(values) });
           props.submitAction();
         };
         return (
           <VoterInfoForm
-            handleSubmit={handleSubmit}
+            onSubmit={handleSubmit}
             closeAction={props.closeAction}
             electionGroup={electionGroupData}
             initialValues={buildInitialValues(activeElections)}

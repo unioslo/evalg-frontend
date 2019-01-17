@@ -29,7 +29,7 @@ interface IProps {
   electionGroupData: ElectionGroup;
   startWithDirectedFlowActive: boolean;
   initialDisplayStatuses: SettingsSectionDisplayStatus[];
-  handleSubmitSettingsSection: () => void;
+  onSettingsWasSaved: () => void;
 }
 
 interface IState {
@@ -50,8 +50,12 @@ class SettingsSectionsGroup extends React.Component<IProps, IState> {
     };
   }
 
-  public handleSaveSettingSection = () => {
-    this.props.handleSubmitSettingsSection();
+  handleSettingsWasSaved = () => {
+    this.props.onSettingsWasSaved();
+    this.updateUIAfterSavingSettings();
+  };
+
+  updateUIAfterSavingSettings = () => {
     if (this.state.isDirectedFlowActive) {
       this.activateNextSection();
     } else {
@@ -59,9 +63,16 @@ class SettingsSectionsGroup extends React.Component<IProps, IState> {
       displayStatuses = this.setAllSectionsToInactive(displayStatuses);
       this.setState({ displayStatuses });
     }
+  }
+
+  updateUIAfterCancelSettings = () => {
+    this.deactivateDirectedFlow();
+    let displayStatuses = [...this.state.displayStatuses];
+    displayStatuses = this.setAllSectionsToInactive(displayStatuses);
+    this.setState({ displayStatuses });
   };
 
-  public activateNextSection = () => {
+  activateNextSection = () => {
     const displayStatuses = [...this.state.displayStatuses];
     for (let i = 0; i < displayStatuses.length; i++) {
       if (displayStatuses[i] === 'active' && i < displayStatuses.length - 1) {
@@ -78,7 +89,7 @@ class SettingsSectionsGroup extends React.Component<IProps, IState> {
     this.setState({ displayStatuses });
   };
 
-  public handleManuallySetSectionActive = (sectionIndex: number) => {
+  handleManuallySetSectionActive = (sectionIndex: number) => {
     this.deactivateDirectedFlow();
     let displayStatuses = [...this.state.displayStatuses];
     displayStatuses = this.setAllSectionsToInactive(displayStatuses);
@@ -88,20 +99,13 @@ class SettingsSectionsGroup extends React.Component<IProps, IState> {
     this.setState({ displayStatuses });
   };
 
-  public handleCloseSettingsSection = () => {
-    this.deactivateDirectedFlow();
-    let displayStatuses = [...this.state.displayStatuses];
-    displayStatuses = this.setAllSectionsToInactive(displayStatuses);
-    this.setState({ displayStatuses });
-  };
-
-  public deactivateDirectedFlow = () => {
+  deactivateDirectedFlow = () => {
     if (this.state.isDirectedFlowActive) {
       this.setState({ isDirectedFlowActive: false });
     }
   };
 
-  public setAllSectionsToInactive = (
+  setAllSectionsToInactive = (
     displayStatuses: SettingsSectionDisplayStatus[]
   ) => {
     for (let i = 0; i < displayStatuses.length; i++) {
@@ -110,23 +114,17 @@ class SettingsSectionsGroup extends React.Component<IProps, IState> {
     return displayStatuses;
   };
 
-  public render() {
+  render() {
     return this.props.settingsSectionsContents.map((sectionContents, index) => (
       <SettingsSection
         key={sectionContents.sectionName}
         sectionIndex={index}
         settingsSectionContents={sectionContents}
         electionGroupData={this.props.electionGroupData}
-        // desc={
-        //   sectionData.descriptionNoActiveElections &&
-        //   activeElections.length === 0
-        //     ? sectionData.descriptionNoActiveElections
-        //     : sectionData.description
-        // }
         displayStatus={this.state.displayStatuses[index]}
         onSetActive={this.handleManuallySetSectionActive}
-        onSubmitSettingsSection={this.handleSaveSettingSection}
-        onCloseSettingsSection={this.handleCloseSettingsSection}
+        onSubmitSettingsSection={this.handleSettingsWasSaved}
+        onCloseSettingsSection={this.updateUIAfterCancelSettings}
       />
     ));
   }

@@ -68,17 +68,17 @@ const refetchQueriesFunction = () => ['electionGroup'];
 
 const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
   const electionGroupData: ElectionGroup = props.electionGroupData;
-
   const activeElections = electionGroupData.elections.filter(e => e.active);
 
   return (
     <Mutation
       mutation={updateVotingPeriods}
       refetchQueries={refetchQueriesFunction}
+      awaitRefetchQueries={true}
     >
       {(mutation, { data }) => {
-        const handleSubmit = (submitValues: any) => {
-          mutation({ variables: buildSubmitPayload(submitValues) });
+        const handleSubmit = async (submitValues: any) => {
+          await mutation({ variables: buildSubmitPayload(submitValues) });
           props.submitAction();
         };
         return (

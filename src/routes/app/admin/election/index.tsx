@@ -96,6 +96,31 @@ const electionGroupQuery = gql`
   }
 `;
 
+const electionsOrder = [
+  'Academic staff',
+  'Temporary academic staff',
+  'Technical and administrative staff',
+  'Students',
+];
+
+const orderElections = (elections: Election[]): Election[] => {
+  if (elections.length === 1) {
+    return elections;
+  }
+
+  const orderedElections: Election[] = [];
+
+  for (const electionNameInOrder of electionsOrder) {
+    for (const election of elections) {
+      if (election.name.en === electionNameInOrder) {
+        orderedElections.push(election);
+      }
+    }
+  }
+
+  return orderedElections;
+};
+
 interface IProps {
   location: Location;
   match: match<{ groupId: string }>;
@@ -117,6 +142,16 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
       if (error) {
         return <p>Error!</p>;
       }
+
+      const orderedElections =
+        electionGroup.type === 'multiple_elections'
+          ? orderElections(electionGroup.elections)
+          : electionGroup.elections;
+      const electionGroupWithOrderedElections = {
+        ...electionGroup,
+        elections: orderedElections,
+      };
+
       const lang = props.i18n.language;
       return (
         <>
@@ -130,7 +165,7 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
             path="/admin/elections/:groupId/info"
             render={routeProps => (
               <InfoPage
-                electionGroupData={electionGroup}
+                electionGroupData={electionGroupWithOrderedElections}
                 history={routeProps.history}
               />
             )}
@@ -139,7 +174,7 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
             path="/admin/elections/:groupId/candidates"
             render={routeProps => (
               <CandidatesPage
-                electionGroup={electionGroup}
+                electionGroup={electionGroupWithOrderedElections}
                 {...routeProps}
               />
             )}
@@ -157,7 +192,7 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
             path="/admin/elections/:groupId/status"
             render={routeProps => (
               <StatusPage
-                electionGroup={electionGroup}
+                electionGroup={electionGroupWithOrderedElections}
                 {...routeProps}
               />
             )}

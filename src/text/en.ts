@@ -215,6 +215,7 @@ export default {
     remove: 'Remove',
     required: 'Required',
     save: 'Save',
+    saving: 'Saving',
     select: 'Select',
     timePlaceHolder: 'hh:mm',
     title: 'eValg',

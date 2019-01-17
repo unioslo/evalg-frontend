@@ -16,7 +16,7 @@ const styles = theme => ({
     display: 'flex',
     //fontSize: '1.4rem',
     //height: '6rem',
-    lineHeight: 1.1,
+    lineHeight: 0.9,
     padding: '1.5rem 2rem',
     transition: 'background 100ms ease-in',
     [theme.breakpoints.mdQuery]: {

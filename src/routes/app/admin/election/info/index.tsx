@@ -25,7 +25,7 @@ const isCreatingNewElectionQuery = gql`
   }
 `;
 
-const settingsSectionsContentsTemplate: ISettingsSectionContents[] = [
+const defaultSettingsSectionsContents: ISettingsSectionContents[] = [
   BaseElectionSettingsSection,
   VotingPeriodSettingsSection,
   VoterInfoSettingsSection,
@@ -48,17 +48,17 @@ class InfoPage extends React.Component<PropsInternal> {
   constructor(props: PropsInternal) {
     super(props);
 
-    const isMultipleElections =
-      this.props.electionGroupData.type === 'multiple_elections';
+    const isSingleElection =
+      this.props.electionGroupData.type === 'single_election';
 
-    if (!isMultipleElections) {
-      this.settingsSectionsContents = settingsSectionsContentsTemplate.slice(1);
+    if (isSingleElection) {
+      this.settingsSectionsContents = defaultSettingsSectionsContents.slice(1);
     } else {
-      this.settingsSectionsContents = settingsSectionsContentsTemplate.slice();
+      this.settingsSectionsContents = defaultSettingsSectionsContents.slice();
     }
   }
 
-  public handleUpdate = (payload: any) => {
+  handleSettingsWasSaved = (payload: any) => {
     if (this.props.handleUpdate) {
       this.props
         .handleUpdate(payload)
@@ -66,7 +66,7 @@ class InfoPage extends React.Component<PropsInternal> {
     }
   };
 
-  public componentWillUnmount() {
+  componentWillUnmount() {
     const localStateData = {
       // TODO: find out how to not need __typename here
       admin: { isCreatingNewElection: false, __typename: 'admin' },
@@ -74,9 +74,8 @@ class InfoPage extends React.Component<PropsInternal> {
     this.props.client.writeData({ data: localStateData });
   }
 
-  public render() {
-    const { electionGroupData } = this.props;
-    const { id: groupId } = electionGroupData;
+  render() {
+    const { id: groupId } = this.props.electionGroupData;
 
     const lang = this.props.i18n.language;
     const history = this.props.history;
@@ -94,14 +93,14 @@ class InfoPage extends React.Component<PropsInternal> {
         }) => (
           <Page header={<Trans>election.electionInfo</Trans>}>
             <PageSection header={<Trans>election.electionType</Trans>}>
-              <Text>{electionGroupData.name[lang]}</Text>
+              <Text>{this.props.electionGroupData.name[lang]}</Text>
             </PageSection>
 
             <SettingsSectionsGroup
               settingsSectionsContents={this.settingsSectionsContents}
-              electionGroupData={electionGroupData}
+              electionGroupData={this.props.electionGroupData}
               startWithDirectedFlowActive={isCreatingNewElection}
-              handleSubmitSettingsSection={this.handleUpdate}
+              onSettingsWasSaved={this.handleSettingsWasSaved}
             />
 
             <ButtonContainer alignRight={true} topMargin={true}>
@@ -114,7 +113,8 @@ class InfoPage extends React.Component<PropsInternal> {
                 }
                 action={proceedToCandiates}
                 disabled={
-                  electionGroupData.elections.filter(e => e.active).length === 0
+                  this.props.electionGroupData.elections.filter(e => e.active)
+                    .length === 0
                 }
                 iconRight="mainArrow"
               />

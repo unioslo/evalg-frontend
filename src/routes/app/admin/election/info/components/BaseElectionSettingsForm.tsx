@@ -22,11 +22,8 @@ export interface IElectionsBaseSettings {
   elections: ElectionBaseSettingsInput[];
 }
 
-// tslint:disable-next-line:no-empty-interface
-interface IValidateValues {}
-
 // TODO: Finish implementing
-const validate = (values: IValidateValues) => {
+const validate = (values: any) => {
   const errors = {};
   return errors;
 };
@@ -63,7 +60,8 @@ interface IProps {
 }
 
 class BaseElectionSettingsForm extends React.Component<IProps> {
-  public initialValues = buildInitialValues(this.props.electionGroup);
+  isSubmitting = false;
+  initialValues = buildInitialValues(this.props.electionGroup);
 
   constructor(props: IProps) {
     super(props);
@@ -71,13 +69,19 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
-  public handleFormSubmit(submitValues: {
+  async handleFormSubmit(submitValues: {
     elections: ElectionBaseSettingsInput[];
   }) {
-    this.props.onSubmit(buildSubmitPayload(submitValues));
+    this.isSubmitting = true;
+    await this.props.onSubmit(buildSubmitPayload(submitValues));
+    this.isSubmitting = false;
   }
 
-  public render() {
+  shouldComponentUpdate() {
+    return !this.isSubmitting;
+  }
+
+  render() {
     const lang = this.props.i18n.language;
     const { elections } = this.initialValues;
     return (
@@ -91,10 +95,11 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
             handleSubmit,
             values,
             valid,
+            submitting,
           } = formProps;
           return (
             // TODO: There should probably be a generalized "table builder" component that takes table headings
-            // and table cell content as props...
+            // and table cell content as props.
             <form onSubmit={handleSubmit}>
               <Table>
                 <TableHeader>
@@ -122,6 +127,7 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
                                 component={CheckBoxRF}
                                 type="checkbox"
                                 label={elections[index].name[lang]}
+                                disabled={submitting}
                                 // tslint:disable-next-line:jsx-no-lambda
                                 normalize={(val: any) => !!val} // TODO: Doesn't look like normalize is a prop. Remove?
                               />
@@ -130,14 +136,18 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
                               <Field
                                 name={`${election}.seats`}
                                 component={NumberInputRF}
-                                disabled={!values.elections[index].active}
+                                disabled={
+                                  !values.elections[index].active || submitting
+                                }
                               />
                             </TableCell>
                             <TableCell>
                               <Field
                                 name={`${election}.substitutes`}
                                 component={NumberInputRF}
-                                disabled={!values.elections[index].active}
+                                disabled={
+                                  !values.elections[index].active || submitting
+                                }
                               />
                             </TableCell>
                           </TableRow>
@@ -156,9 +166,10 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
                 />
               </PageSubSection>
               <FormButtons
+                submitting={submitting}
                 saveAction={handleSubmit}
                 closeAction={this.props.closeAction}
-                submitDisabled={!valid}
+                submitDisabled={!valid || submitting}
               />
             </form>
           );

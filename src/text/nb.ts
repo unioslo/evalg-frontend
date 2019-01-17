@@ -222,6 +222,7 @@ export default {
     remove: 'Fjern',
     required: 'Påkrevd',
     save: 'Lagre',
+    saving: 'Lagrer',
     select: 'Velg',
     timePlaceHolder: 'tt:mm',
     title: 'eValg',

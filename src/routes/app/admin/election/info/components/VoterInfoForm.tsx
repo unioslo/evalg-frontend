@@ -1,8 +1,9 @@
-/* @flow */
 import * as React from 'react';
 import arrayMutators from 'final-form-arrays';
-import { Field, Form } from 'react-final-form';
+import { Field, Form, FormRenderProps } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
+import { Trans, translate, TranslationFunction } from 'react-i18next';
+import { i18n } from 'i18next';
 
 import {
   DateInputRF,
@@ -25,17 +26,14 @@ import {
 } from 'components/table';
 
 import { validateEmail, validateUrl } from 'utils/validators';
-import { equalValues } from 'utils';
 
-import { PageSection, PageSubSection } from 'components/page';
-import { Trans, translate } from 'react-i18next';
+import { PageSubSection } from 'components/page';
 import Text from 'components/text';
 
-const validate = (lang: string) => (values: Object) => {
-  const errors = {};
-  const elecErrors: Array<Object> = [];
-  values.elections.forEach(e => elecErrors.push({}));
-  const formErrors: Object = {
+const validate = (lang: string) => (values: any) => {
+  const elecErrors: any[] = [];
+  values.elections.forEach((e: any) => elecErrors.push({}));
+  const formErrors: any = {
     mandateDates: [],
     contact: [],
     informationUrl: [],
@@ -64,7 +62,7 @@ const validate = (lang: string) => (values: Object) => {
       });
     }
   } else {
-    elections.forEach((e, index) => {
+    elections.forEach((e: any, index: number) => {
       const { mandatePeriodStart, mandatePeriodEnd } = e;
       if (
         mandatePeriodStart &&
@@ -98,7 +96,7 @@ const validate = (lang: string) => (values: Object) => {
       Object.assign(elecErrors[0], { contact: true });
     }
   } else {
-    elections.forEach((e, index) => {
+    elections.forEach((e: any, index: number) => {
       const { contact } = e;
       if (contact && !validateEmail(contact)) {
         formErrors.contact.push({
@@ -125,7 +123,7 @@ const validate = (lang: string) => (values: Object) => {
       Object.assign(elecErrors[0], { informationUrl: true });
     }
   } else {
-    elections.forEach((e, index) => {
+    elections.forEach((e: any, index: number) => {
       const { informationUrl } = e;
       if (informationUrl && !validateUrl(informationUrl)) {
         formErrors.informationUrl.push({
@@ -144,16 +142,28 @@ const validate = (lang: string) => (values: Object) => {
   return { elections: elecErrors, formErrors };
 };
 
-type Props = {
-  electionGroup: ElectionGroup,
-  initialValues: Object,
-  handleSubmit: Function,
-  closeAction: Function,
-  t: Function,
-  i18n: Object,
-};
+interface IProps {
+  electionGroup: ElectionGroup;
+  initialValues: any;
+  onSubmit: (submitValues: any) => void;
+  closeAction: () => void;
+  t: TranslationFunction;
+  i18n: i18n;
+}
 
-class VoterInfoForm extends React.Component<Props> {
+class VoterInfoForm extends React.Component<IProps> {
+  isSubmitting = false;
+
+  handleSubmit = async (submitValues: any) => {
+    this.isSubmitting = true;
+    await this.props.onSubmit(submitValues);
+    this.isSubmitting = false;
+  };
+
+  shouldComponentUpdate() {
+    return !this.isSubmitting;
+  }
+
   render() {
     const { electionGroup, initialValues, closeAction, t } = this.props;
     const lang = this.props.i18n.language;
@@ -167,18 +177,16 @@ class VoterInfoForm extends React.Component<Props> {
     }
     return (
       <Form
-        onSubmit={this.props.handleSubmit}
+        onSubmit={this.handleSubmit}
         validate={validate(lang)}
         initialValues={initialValues}
-        mutators={arrayMutators}
-        render={(formProps: Object) => {
+        mutators={arrayMutators as any}
+        // tslint:disable-next-line:jsx-no-lambda
+        render={(formProps: FormRenderProps) => {
           const {
             handleSubmit,
-            reset,
             submitting,
-            pristine,
             values,
-            invalid,
             errors,
             valid,
             visited,
@@ -190,7 +198,7 @@ class VoterInfoForm extends React.Component<Props> {
           return (
             <form onSubmit={handleSubmit}>
               <PageSubSection header={<Trans>election.election</Trans>}>
-                <Text large>{electionGroup.name[lang]}</Text>
+                <Text large={true}>{electionGroup.name[lang]}</Text>
               </PageSubSection>
 
               <PageSubSection header={<Trans>election.mandatePeriod</Trans>}>
@@ -198,7 +206,7 @@ class VoterInfoForm extends React.Component<Props> {
                   <FormField>
                     <Field
                       name="hasMultipleMandateTimes"
-                      component={RadioButtonGroup}
+                      component={RadioButtonGroup as any}
                       key="mandatefields"
                       options={[
                         {
@@ -216,7 +224,7 @@ class VoterInfoForm extends React.Component<Props> {
                   </FormField>
                 )}
                 {values.hasMultipleMandateTimes ? (
-                  <Table smlTopMargin>
+                  <Table smlTopMargin={true}>
                     <TableHeader>
                       <TableHeaderRow>
                         <TableHeaderCell>
@@ -240,20 +248,20 @@ class VoterInfoForm extends React.Component<Props> {
                                 <Text>{elections[index].name[lang]}</Text>
                               </TableCell>
                               <TableCell>
-                                <FormField inline noTopMargin>
+                                <FormField inline={true} noTopMargin={true}>
                                   <Field
                                     name={`${election}.mandatePeriodStart`}
-                                    component={DateInputRF}
-                                    small
+                                    component={DateInputRF as any}
+                                    small={true}
                                   />
                                 </FormField>
                               </TableCell>
                               <TableCell>
-                                <FormField inline noTopMargin>
+                                <FormField inline={true} noTopMargin={true}>
                                   <Field
                                     name={`${election}.mandatePeriodEnd`}
-                                    component={DateInputRF}
-                                    small
+                                    component={DateInputRF as any}
+                                    small={true}
                                   />
                                 </FormField>
                               </TableCell>
@@ -265,17 +273,17 @@ class VoterInfoForm extends React.Component<Props> {
                   </Table>
                 ) : (
                   <FormFieldGroup>
-                    <FormField inline noTopMargin>
+                    <FormField inline={true} noTopMargin={true}>
                       <Field
                         name="elections[0].mandatePeriodStart"
-                        component={DateInputRF}
+                        component={DateInputRF as any}
                         label={<Trans>election.fromDate</Trans>}
                       />
                     </FormField>
-                    <FormField inline noTopMargin>
+                    <FormField inline={true} noTopMargin={true}>
                       <Field
                         name="elections[0].mandatePeriodEnd"
-                        component={DateInputRF}
+                        component={DateInputRF as any}
                         label={<Trans>election.toDate</Trans>}
                       />
                     </FormField>
@@ -283,11 +291,12 @@ class VoterInfoForm extends React.Component<Props> {
                 )}
 
                 {errors._error
-                  ? errors._error.mandateDates.map(error => {
-                      const { msg, index } = error;
+                  ? errors._error.mandateDates.map((error: any) => {
+                      const { index } = error;
                       if (
-                        visited[`elections[${index}].mandatePeriodStart`] ||
-                        visited[`elections[${index}].mandatePeriodEnd`]
+                        visited &&
+                        (visited[`elections[${index}].mandatePeriodStart`] ||
+                          visited[`elections[${index}].mandatePeriodEnd`])
                       ) {
                         return <FormErrorMsg key={index} msg={error.msg} />;
                       }
@@ -301,7 +310,7 @@ class VoterInfoForm extends React.Component<Props> {
                   <FormField>
                     <Field
                       name="hasMultipleContactInfo"
-                      component={RadioButtonGroup}
+                      component={RadioButtonGroup as any}
                       options={[
                         {
                           id: 'single-contact',
@@ -341,12 +350,12 @@ class VoterInfoForm extends React.Component<Props> {
                                 <Text>{elections[index].name[lang]}</Text>
                               </TableCell>
                               <TableCell>
-                                <FormField noTopMargin>
+                                <FormField noTopMargin={true}>
                                   <Field
                                     name={`${election}.contact`}
-                                    component={TextInputRF}
+                                    component={TextInputRF as any}
                                     placeholder={t('general.email')}
-                                    small
+                                    small={true}
                                   />
                                 </FormField>
                               </TableCell>
@@ -360,16 +369,16 @@ class VoterInfoForm extends React.Component<Props> {
                   <FormField>
                     <Field
                       name="elections[0].contact"
-                      component={TextInputRF}
+                      component={TextInputRF as any}
                       label={<Trans>general.contactInfo</Trans>}
                       placeholder={t('general.email')}
                     />
                   </FormField>
                 )}
                 {errors._error
-                  ? errors._error.contact.map(error => {
+                  ? errors._error.contact.map((error: any) => {
                       const { msg, index } = error;
-                      if (touched[`elections[${index}].contact`]) {
+                      if (touched && touched[`elections[${index}].contact`]) {
                         return <FormErrorMsg key={index} msg={msg} />;
                       }
                       return null;
@@ -382,7 +391,7 @@ class VoterInfoForm extends React.Component<Props> {
                   <FormField>
                     <Field
                       name="hasMultipleInfoUrls"
-                      component={RadioButtonGroup}
+                      component={RadioButtonGroup as any}
                       options={[
                         {
                           id: 'single-infourl',
@@ -420,12 +429,12 @@ class VoterInfoForm extends React.Component<Props> {
                                 <Text>{elections[index].name[lang]}</Text>
                               </TableCell>
                               <TableCell>
-                                <FormField noTopMargin>
+                                <FormField noTopMargin={true}>
                                   <Field
                                     name={`${election}.informationUrl`}
-                                    component={TextInputRF}
+                                    component={TextInputRF as any}
                                     placeholder={t('general.webpage')}
-                                    small
+                                    small={true}
                                   />
                                 </FormField>
                               </TableCell>
@@ -436,10 +445,10 @@ class VoterInfoForm extends React.Component<Props> {
                     />
                   </Table>
                 ) : (
-                  <FormField noTopMargin>
+                  <FormField noTopMargin={true}>
                     <Field
                       name="elections[0].informationUrl"
-                      component={TextInputRF}
+                      component={TextInputRF as any}
                       label={<Trans>election.voterInfoUrl</Trans>}
                       placeholder={t('general.webpage')}
                       id="infourl-single"
@@ -447,9 +456,9 @@ class VoterInfoForm extends React.Component<Props> {
                   </FormField>
                 )}
                 {errors._error
-                  ? errors._error.informationUrl.map(error => {
-                      const { msg, index } = error;
-                      if (touched[`elections[${index}].informationUrl`]) {
+                  ? errors._error.informationUrl.map((error: any) => {
+                      const { index } = error;
+                      if (touched && touched[`elections[${index}].informationUrl`]) {
                         return <FormErrorMsg key={index} msg={error.msg} />;
                       }
                       return null;
@@ -460,8 +469,8 @@ class VoterInfoForm extends React.Component<Props> {
               <FormButtons
                 saveAction={handleSubmit}
                 closeAction={closeAction}
-                submitDisabled={!valid}
-                alignRight
+                submitDisabled={!valid || submitting}
+                submitting={submitting}
               />
             </form>
           );
