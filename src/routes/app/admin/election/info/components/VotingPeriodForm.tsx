@@ -178,7 +178,7 @@ const electionValuesSet = (e: any) =>
 const validate = (lang: string) => (values: any) => {
   const errors: any = {};
   errors.elections = [];
-  const formErrors = [];
+  const formErrors: any[] = [];
   const { hasMultipleTimes, elections } = values;
   if (!hasMultipleTimes && electionValuesSet(elections[0])) {
     const { startDate, startTime, endDate, endTime } = elections[0];

@@ -12,6 +12,7 @@ import StatusPage from './status';
 import Loading from 'components/loading';
 import { History, Location } from 'history';
 import { i18n } from 'i18next';
+import { orderMultipleElections } from 'utils/processGraphQLData';
 
 const electionGroupQuery = gql`
   query electionGroup($id: UUID!) {
@@ -96,31 +97,6 @@ const electionGroupQuery = gql`
   }
 `;
 
-const electionsOrder = [
-  'Academic staff',
-  'Temporary academic staff',
-  'Technical and administrative staff',
-  'Students',
-];
-
-const orderElections = (elections: Election[]): Election[] => {
-  if (elections.length === 1) {
-    return elections;
-  }
-
-  const orderedElections: Election[] = [];
-
-  for (const electionNameInOrder of electionsOrder) {
-    for (const election of elections) {
-      if (election.name.en === electionNameInOrder) {
-        orderedElections.push(election);
-      }
-    }
-  }
-
-  return orderedElections;
-};
-
 interface IProps {
   location: Location;
   match: match<{ groupId: string }>;
@@ -145,7 +121,7 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
 
       const orderedElections =
         electionGroup.type === 'multiple_elections'
-          ? orderElections(electionGroup.elections)
+          ? orderMultipleElections(electionGroup.elections)
           : electionGroup.elections;
       const electionGroupWithOrderedElections = {
         ...electionGroup,

@@ -241,7 +241,7 @@ class PrefElecCandTable extends React.Component<Props, State> {
                             key={index}
                             count={election.lists[0].candidates.length}
                             minCount={minCount}
-                            active
+                            active={election.active}
                             counterTextTag="election.candidateCounter"
                             action={this.setNewFormActive.bind(this, election.lists[0].id)}
                           />

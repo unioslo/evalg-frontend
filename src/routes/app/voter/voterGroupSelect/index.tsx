@@ -64,6 +64,7 @@ const getElectionGroupData = gql`
       elections {
         id
         name
+        active
         mandatePeriodStart
         mandatePeriodEnd
         informationUrl
@@ -174,7 +175,10 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
           let pollbooks: IPollBook[];
 
           if (electionGroup.type === 'multiple_elections') {
-            pollbooks = elections.map(election => election.pollbooks[0]);
+            console.error(elections);
+            pollbooks = elections
+              .filter(election => election.active)
+              .map(election => election.pollbooks[0]);
             proceedToLink = `/voter/elections/${
               elections[this.state.selectedPollBookIndex].id
             }/vote`;
