@@ -102,15 +102,15 @@ const getVotingInfoComponent = (grpType, elections) => {
 
 type Props = {
   electionGroup: ElectionGroup,
+  activeElections: Election[],
   i18n: Object
 }
 
 const VotingPeriodValues = (props: Props) => {
-  const { electionGroup: grp } = props;
-  const { elections } = grp;
-  const VotingTimes = getVotingInfoComponent(grp.type, elections);
+  const { electionGroup: grp, activeElections } = props;
+  const VotingTimes = getVotingInfoComponent(grp.type, activeElections);
   return (
-    <VotingTimes elections={ elections } lang={props.i18n.language} />
+    <VotingTimes elections={ activeElections } lang={props.i18n.language} />
   )
 };
 

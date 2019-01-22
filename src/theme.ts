@@ -90,7 +90,6 @@ const theme = {
   contentHorMdPadding: '1rem',
   contentHorPadding: '0rem',
   contentPageHeaderColor: greyishBrown,
-  contentSectionBorderColor: lightBlueGray,
   contentVertMdPadding: '4rem',
   contentVertPadding: '2rem',
   dropDownArrowColor: darkTurquoise,
@@ -130,8 +129,11 @@ const theme = {
   inlineDropdownBottomBorderColor: darkTurquoise,
   ingressText: {
     fontFamily: 'Georgia, Times, Times New Roman, serif',
-    fontSize: '2rem',
+    fontSize: '2.2rem',
     lineHeight: '3rem',
+    '@media (min-width:768px)': {
+      margin: '3rem 0 3.5rem',
+    }
   },
   linkExternalColor: blueish,
   linkInternalColor: darkTurquoise,
@@ -149,6 +151,9 @@ const theme = {
   secondaryBtnBgColor: white,
   secondaryBtnBorderColor: lightTurquoise,
   secondaryBtnColor: darkBlueGreen,
+  sectionBorderColor: lightBlueGray,
+  sectionBorderWidth: '1rem',
+  sectionBorderStyle: 'solid',
   subSectionHeader: {
     fontSize: '2.2rem',
     fontWeight: 'bold',

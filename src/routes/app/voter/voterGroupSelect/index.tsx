@@ -13,6 +13,7 @@ import { ApolloClient } from 'apollo-boost';
 import MandatePeriodText from '../vote/components/MandatePeriodText';
 import { History } from 'history';
 import { i18n, TranslationFunction } from 'i18next';
+import { orderMultipleElections } from 'utils/processGraphQLData';
 
 const styles = (theme: any) => ({
   ingress: theme.ingressText,
@@ -64,6 +65,7 @@ const getElectionGroupData = gql`
       elections {
         id
         name
+        active
         mandatePeriodStart
         mandatePeriodEnd
         informationUrl
@@ -113,7 +115,8 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
   }
 
   public hasVotingRights(selectedPollBookIndex: number): boolean {
-    // Dummy implementation. TODO: Check for which voter group / poll book an actual logged in user has voting rights.
+    // Dummy implementation. TODO: Check for which voter group / poll book
+    // an actual logged in user has voting rights.
     return selectedPollBookIndex === 0;
   }
 
@@ -133,8 +136,8 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
     notInPollBookJustification: string,
     apolloClient: ApolloClient<any>
   ) {
-    // Write "selectedPollBookID" and conditionally "notInPollBookJustification" to local cache,
-    // to send with vote later.
+    // Write "selectedPollBookID" and conditionally "notInPollBookJustification"
+    // to local cache, to send with vote later.
     apolloClient.writeData({ data: { selectedPollBookID } });
     if (
       !this.hasVotingRights(this.state.selectedPollBookIndex) &&
@@ -174,7 +177,9 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
           let pollbooks: IPollBook[];
 
           if (electionGroup.type === 'multiple_elections') {
-            pollbooks = elections.map(election => election.pollbooks[0]);
+            pollbooks = orderMultipleElections(elections)
+              .filter(election => election.active)
+              .map(election => election.pollbooks[0]);
             proceedToLink = `/voter/elections/${
               elections[this.state.selectedPollBookIndex].id
             }/vote`;

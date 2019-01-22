@@ -16,7 +16,7 @@ const styles = theme => ({
     display: 'flex',
     //fontSize: '1.4rem',
     //height: '6rem',
-    lineHeight: 1.1,
+    lineHeight: 0.9,
     padding: '1.5rem 2rem',
     transition: 'background 100ms ease-in',
     [theme.breakpoints.mdQuery]: {
@@ -46,7 +46,7 @@ const styles = theme => ({
       background: theme.btnDefDisabledColor
     },
     borderColor: theme.btnDefDisabledColor,
-    color: theme.btnDefDisabledTextColor,
+    // color: theme.btnDefDisabledTextColor, // this makes secondary button text dissapear when disabled
     cursor: 'not-allowed',
   },
   osx: {

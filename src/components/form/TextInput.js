@@ -110,6 +110,7 @@ const TextInput = (props: Props) => {
     large,
     touched,
     narrow,
+    disabled,
     classes,
     hasFocus,
     hideErrors
@@ -147,6 +148,7 @@ const TextInput = (props: Props) => {
         id={id}
         name={name}
         value={value}
+        disabled={disabled}
         placeholder={placeholder}
         onChange={handleOnChange}
         readOnly={readOnly}

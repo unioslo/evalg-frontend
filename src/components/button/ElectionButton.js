@@ -16,19 +16,19 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     padding: '1.6rem',
+  },
+  buttonComplete: {
+    background: theme.colors.lightBlueGray
+  },
+  buttonActive: {
+    border: `2px solid ${theme.colors.lightTurquoise}`,
     '&:hover': {
       border: `2px solid ${theme.colors.darkTurquoise}`,
       cursor: 'pointer'
     },
     '&:hover $hoverText': {
       display: 'flex'
-    }
-  },
-  buttonComplete: {
-    background: theme.colors.lightBlueGray
-  },
-  active: {
-    border: `2px solid ${theme.colors.lightTurquoise}`
+    },
   },
   text: {
     fontSize: '1.4rem',
@@ -122,7 +122,7 @@ const ElectionButton = (props: Props) => {
 
   const elButtonClasses = classNames({
     [classes.button]: true,
-    [classes.active]: active,
+    [classes.buttonActive]: active,
     [classes.buttonComplete]: hasCompleteStatus
   });
   const elButtonTextClasses = classNames({

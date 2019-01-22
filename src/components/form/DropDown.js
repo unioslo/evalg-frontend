@@ -109,7 +109,10 @@ const styles = theme => ({
     color: theme.dropDownSecondaryLineColor,
   },
   input: {
-    background: 'url("/dropdownarrow.svg") no-repeat right 13px top 50%',
+    backgroundImage: 'url("/dropdownarrow.svg")',
+    backgroundPosition: 'right 13px top 50%',
+    backgroundRepeatX: 'no-repeat',
+    backgroundRepeatY: 'no-repeat',
     backgroundSize: '14px 9px',
   }
 });
@@ -123,6 +126,7 @@ class DropDown extends DropDownBase {
   }
 
   componentDidMount() {
+    super.componentDidMount();
     if (this.props.searchable && this.props.value !== '') {
       this.setState({
         inputValue: this.props.options[this.props.value].name,
@@ -166,6 +170,7 @@ class DropDown extends DropDownBase {
       large,
       inline, // if inline is true, searchable has no effect
       searchable,
+      disabled,
       value,
       name,
       meta,
@@ -226,6 +231,7 @@ class DropDown extends DropDownBase {
             name={name}
             label={label}
             touched={touched}
+            disabled={disabled}
             error={error}
             onBlur={this.handleOnBlur.bind(this)}
             className={classes.input}

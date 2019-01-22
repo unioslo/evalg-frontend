@@ -72,7 +72,7 @@ type RFProps = {
     name: string,
     value: number
   },
-  disabled: boolean
+  disabled?: boolean
 }
 
 export const NumberInputRF = (props: RFProps) => {

@@ -17,7 +17,6 @@ class StatusPage extends React.Component<Props> {
 
   render() {
     const { electionGroup } = this.props;
-    console.error('PROPS', this.props);
     return (
       <Page header={<Trans>election.electionStatus</Trans>}>
         <ElectionStatusSection

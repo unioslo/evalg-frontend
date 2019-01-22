@@ -1,19 +1,14 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import { Trans } from 'react-i18next';
 import injectSheet from 'react-jss';
-
-import ActionText from 'components/actiontext';
-import Text from 'components/text';
 
 interface IProps {
   children?: React.ReactNode;
   classes: any;
   header?: React.ReactNode;
-  active?: boolean;
-  setActive?: () => void;
   noBorder?: boolean;
   noBtmPadding?: boolean;
+  noTopPadding?: boolean;
   desc?: React.ReactNode;
 }
 
@@ -21,8 +16,10 @@ const styles = (theme: any) => ({
   section: {
     color: theme.colors.greyishBrown,
     padding: `${theme.contentVertPadding} ${theme.contentHorPadding}`,
-    [`@media (min-width: ${theme.breakpoints.md})`]: {
-      borderBottom: `10px solid ${theme.contentSectionBorderColor}`,
+    [theme.breakpoints.mdQuery]: {
+      borderBottom: `${theme.sectionBorderWidth} ${theme.sectionBorderStyle} ${
+        theme.sectionBorderColor
+      }`,
       padding: `4rem ${theme.contentHorMdPadding} 4rem`,
     },
   },
@@ -48,15 +45,7 @@ const styles = (theme: any) => ({
     },
     marginBottom: '3rem',
   },
-  topAction: {
-    display: 'inline-block',
-  },
-  topDescription: {
-    display: 'block',
-    [theme.breakpoints.mdQuery]: {
-      margin: '3rem 0 3rem',
-    },
-  },
+  topDescription: theme.ingressText,
   topHeader: {
     alignItems: 'baseline',
     color: theme.colors.greyishBrown,
@@ -68,40 +57,22 @@ const styles = (theme: any) => ({
 });
 
 const PageSection: React.SFC<IProps> = props => {
-  const {
-    header,
-    active,
-    setActive,
-    noBorder,
-    noBtmPadding,
-    desc,
-    classes,
-  } = props;
+  const { header, noBorder, noBtmPadding, noTopPadding, desc, classes } = props;
   const cls = classNames({
     [classes.section]: true,
     [classes.noBorder]: noBorder,
     [classes.noBtmPadding]: noBtmPadding,
+    [classes.noTopPadding]: noTopPadding,
   });
   const descClassNames = classNames({
     [classes.topDescription]: desc,
   });
   return (
     <section className={cls}>
-      {(header || (!active && setActive) || desc) && (
+      {(header || desc) && (
         <div className={classes.top}>
           {header && <h2 className={classes.topHeader}>{header}</h2>}
-          {!active && setActive && (
-            <div className={classes.topAction}>
-              <ActionText action={setActive} bottom={true}>
-                <Trans>general.edit</Trans>
-              </ActionText>
-            </div>
-          )}
-          {desc && (
-            <div className={descClassNames}>
-              <Text size="large">{desc}</Text>
-            </div>
-          )}
+          {desc && <div className={descClassNames}>{desc}</div>}
         </div>
       )}
       {props.children}

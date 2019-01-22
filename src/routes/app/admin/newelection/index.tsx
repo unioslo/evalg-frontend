@@ -1,17 +1,14 @@
 /* @flow */
 import * as React from 'react';
-import { Query, graphql, Mutation } from 'react-apollo';
+import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import Page from 'components/page/Page';
 import { PageSection } from 'components/page';
 import NewElectionForm from './components/NewElectionForm';
-import { Trans } from 'react-i18next';;
-import { translate } from 'react-i18next';
-
-type Props = {
-  history: RouterHistory,
-}
+import { Trans } from 'react-i18next';
+import { ApolloClient } from 'apollo-boost';
+import { History } from 'history';
 
 const electionTemplateQuery = gql`
   query {
@@ -21,9 +18,15 @@ const electionTemplateQuery = gql`
 
 const createNewElectionGroupMutation = gql`
   mutation CreateNewElectionGroup(
-      $ouId: UUID!, $template: Boolean!, $templateName: String!) {
+    $ouId: UUID!
+    $template: Boolean!
+    $templateName: String!
+  ) {
     createNewElectionGroup(
-        ouId: $ouId, template: $template, templateName: $templateName) {
+      ouId: $ouId
+      template: $template
+      templateName: $templateName
+    ) {
       electionGroup {
         id
         name
@@ -69,37 +72,47 @@ const createNewElectionGroupMutation = gql`
   }
 `;
 
-const submit = (mutation: Function) => (values: Object) => {
-  mutation({ variables: { ...values } });
+interface IProps {
+  history: History;
 }
 
-type State = {
-  initialValues: Object
+interface IState {
+  currentValues: any;
 }
 
-class NewElection extends React.Component<any, State> {
-  updateValues: Function
-  onCreateCompleted: Function
-  constructor(props: Props) {
+class NewElection extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
-    this.state = { initialValues: {} }
+    this.state = { currentValues: {} };
     this.updateValues = this.updateValues.bind(this);
     this.onCreateCompleted = this.onCreateCompleted.bind(this);
   }
-  updateValues(newVals: Object) {
-    this.setState({ initialValues: newVals });
+
+  public updateValues(newVals: any) {
+    this.setState({ currentValues: newVals });
   }
-  onCreateCompleted(data: Object) {
+
+  public onCreateCompleted(data: any, client: ApolloClient<EvalgClientState>) {
+    
+    const localStateData = {
+      // TODO: find out how to not need __typename here
+      admin: { isCreatingNewElection: true, __typename: 'admin' },
+    };
+    client.writeData({ data: localStateData });
+    
     const { electionGroup } = data.createNewElectionGroup;
     this.props.history.push(`/admin/elections/${electionGroup.id}/info`);
   }
-  render() {
+
+  // tslint:disable:jsx-no-lambda
+  public render() {
     return (
       <Query query={electionTemplateQuery}>
-        {({ data: { electionTemplate }, loading, error }) => (
+        {({ data: { electionTemplate }, loading, error, client }) => (
           <Mutation
             mutation={createNewElectionGroupMutation}
-            onCompleted={this.onCreateCompleted}>
+            onCompleted={data => this.onCreateCompleted(data, client)}
+          >
             {createNewElectionGroup => {
               if (loading) {
                 return 'Loading...';
@@ -111,21 +124,22 @@ class NewElection extends React.Component<any, State> {
                 <Page header={<Trans>election.electionInfo</Trans>}>
                   <PageSection header={<Trans>election.voterSettings</Trans>}>
                     <NewElectionForm
-                      initialValues={this.state.initialValues}
+                      initialValues={this.state.currentValues}
                       updateValues={this.updateValues}
                       electionTemplate={electionTemplate}
-                      submitAction={(values) => createNewElectionGroup({ variables: values })}
-                      cancelAction={() => console.error('CANCEL')}
+                      submitAction={(values: any) =>
+                        createNewElectionGroup({ variables: values })
+                      }
+                      cancelAction={() => this.props.history.goBack}
                     />
                   </PageSection>
                 </Page>
-              )
+              );
             }}
           </Mutation>
-        )
-        }
+        )}
       </Query>
-    )
+    );
   }
 }
 

@@ -7,6 +7,12 @@ interface IProps {
 }
 
 const styles = (theme: any) => ({
+  page: {
+    [theme.breakpoints.mdQuery]: {
+      marginTop: '5rem',
+      marginBottom: '5rem',
+    },
+  },
   header: {
     color: theme.contentPageHeaderColor,
     fontSize: '3rem',
@@ -15,18 +21,17 @@ const styles = (theme: any) => ({
     [theme.breakpoints.mdQuery]: {
       fontWeight: 'normal',
       fontSize: '3.6rem',
-      margin: `4rem ${theme.contentHorMdPadding} 0 ${
-        theme.contentHorMdPadding
-      }`,
+      marginLeft: `${theme.contentHorMdPadding}`,
+      marginRight: `${theme.contentHorMdPadding}`,
     },
   },
 });
 
 const Page: React.SFC<IProps> = props => (
-  <div>
+  <main className={props.classes.page}>
     <h1 className={props.classes.header}>{props.header}</h1>
     {props.children}
-  </div>
+  </main>
 );
 
 const StyledPage: any = injectSheet(styles)(Page);

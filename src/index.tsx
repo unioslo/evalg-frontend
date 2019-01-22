@@ -17,6 +17,7 @@ import App from './routes/app';
 import theme from './theme';
 
 import { oidcConfig, graphqlBackend } from 'appConfig';
+import { withClientState } from 'apollo-link-state';
 
 const storeToken = (props: any) => (user: User) => {
   sessionStorage.setItem(
@@ -49,10 +50,31 @@ const constructApolloClient = () => {
     }
   });
 
-  return new ApolloClient({
-    link: authMiddleware.concat(httpLink),
-    cache: new InMemoryCache(),
+  const cache = new InMemoryCache();
+
+  const defaults = {
+    voter: {
+      __typename: 'voter',
+      selectedPollBookID: '',
+      notInPollBookJustification: '',
+    },
+    admin: { __typename: 'admin', isCreatingNewElection: false },
+  };
+
+  const stateLink = withClientState({
+    cache,
+    resolvers: null,
+    defaults,
   });
+
+  const client = new ApolloClient({
+    link: ApolloLink.from([stateLink, authMiddleware, httpLink]),
+    cache,
+  });
+
+  // client.onResetStore(stateLink.writeDefaults); // TODO: update apollo stuff to make this work
+
+  return client;
 };
 
 const protector = makeAuthenticator({ userManager });

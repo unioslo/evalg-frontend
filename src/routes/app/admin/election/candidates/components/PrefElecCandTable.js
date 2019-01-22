@@ -227,7 +227,7 @@ class PrefElecCandTable extends React.Component<Props, State> {
                 mutation={updatePrefElecCandidate}
                 refetchQueries={() => ['electionGroup']}>
                 {(updateCandidate) => (
-                  <PageSection desc={pageDesc}>
+                  <PageSection desc={pageDesc} noTopPadding>
                     <ElectionButtonContainer>
                       {elections.map((election, index) => {
                         const { seats, substitutes } =
@@ -241,7 +241,7 @@ class PrefElecCandTable extends React.Component<Props, State> {
                             key={index}
                             count={election.lists[0].candidates.length}
                             minCount={minCount}
-                            active
+                            active={election.active}
                             counterTextTag="election.candidateCounter"
                             action={this.setNewFormActive.bind(this, election.lists[0].id)}
                           />
@@ -272,6 +272,7 @@ class PrefElecCandTable extends React.Component<Props, State> {
                                 name={t('general.name')}
                                 placeholder={t('general.name')}
                                 value={this.state.nameFilter}
+                                disabled={this.state.newFormListId}
                                 narrow
                               />
                             </TableCell>
@@ -280,6 +281,7 @@ class PrefElecCandTable extends React.Component<Props, State> {
                                 options={genderFilterOptions}
                                 onChange={this.handleGenderFilterChange.bind(this)}
                                 placeholder={t('general.gender')}
+                                disabled={this.state.newFormListId}
                                 value={this.state.genderFilter}
                               />
                             </TableCell>
@@ -288,6 +290,7 @@ class PrefElecCandTable extends React.Component<Props, State> {
                                 options={listFilterOptions}
                                 onChange={this.handleListFilterChange.bind(this)}
                                 placeholder={t('general.group')}
+                                disabled={this.state.newFormListId}
                                 value={this.state.listFilter}
                                 large
                               />

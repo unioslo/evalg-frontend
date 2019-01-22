@@ -92,7 +92,7 @@ const VoterElectionsTable = (props: Props) => {
                   <Link
                     to={`/voter/election-groups/${group.id}/select-voting-group`}
                   >
-                    <Trans>election.voteNow</Trans>&nbsp;
+                    <Trans>election.voteNow</Trans>
                   </Link>
                 ) : (
                   <Button
