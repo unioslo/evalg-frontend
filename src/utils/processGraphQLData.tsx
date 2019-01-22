@@ -1,3 +1,11 @@
+/**
+ * Order elections of an election group in a set order, so they can be listed in
+ * the same order consistently even though their ordering changes between
+ * queries. Meant to be used with the elections array of an election group with
+ * type=multiple_elections. 
+ * @param elections Array of elections from an election group to order
+ */
+
 export const orderMultipleElections = (elections: Election[]): Election[] => {
   const electionsOrder = [
     'Academic staff',
@@ -11,27 +19,21 @@ export const orderMultipleElections = (elections: Election[]): Election[] => {
   }
 
   const orderedElections: Election[] = [];
-  let unprocessedElections = [...elections];
+  const processedIndexes: number[] = [];
 
   for (const electionNameInOrder of electionsOrder) {
-    const removeIndexes: number[] = [];
-    for (let i = 0; i < unprocessedElections.length; i++) {
-      if (unprocessedElections[i].name.en === electionNameInOrder) {
-        orderedElections.push(unprocessedElections[i]);
-        removeIndexes.push(i);
+    for (let i = 0; i < elections.length; i++) {
+      if (elections[i].name.en === electionNameInOrder) {
+        orderedElections.push(elections[i]);
+        processedIndexes.push(i);
       }
     }
-    const newUnprocessedElections: Election[] = [];
-    for (let i = 0; i < unprocessedElections.length; i++) {
-      if (removeIndexes.indexOf(i) === -1) {
-        newUnprocessedElections.push(unprocessedElections[i]);
-      }
-    }
-    unprocessedElections = newUnprocessedElections;
   }
 
-  for (const unprocessedElection of unprocessedElections) {
-    orderedElections.push(unprocessedElection);
+  for (let i = 0; i < elections.length; i++) {
+    if (processedIndexes.indexOf(i) === -1) {
+      orderedElections.push(elections[i]);
+    }
   }
 
   return orderedElections;
