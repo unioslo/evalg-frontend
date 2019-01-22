@@ -12,13 +12,13 @@ class DropDownBase extends React.Component<Object, DropDownState> {
       inputValue: '',
       objects: [],
       open: false,
-      selected: null
+      selected: null,
     };
     this.handleClickOutside = this.handleClickOutside.bind(this);
   }
 
   handleClick() {
-    this.setState({ open: !this.state.open });
+    this.setState(({ open }) => ({ open: !open }));
   }
 
   componentDidMount() {
