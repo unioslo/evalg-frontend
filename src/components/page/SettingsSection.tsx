@@ -11,7 +11,9 @@ const styles = (theme: any) => ({
     color: theme.colors.greyishBrown,
     padding: `${theme.contentVertPadding} ${theme.contentHorPadding}`,
     [theme.breakpoints.mdQuery]: {
-      borderBottom: `10px solid ${theme.contentSectionBorderColor}`,
+      borderBottom: `${theme.sectionBorderWidth} ${theme.sectionBorderStyle} ${
+        theme.sectionBorderColor
+      }`,
       padding: `${theme.contentVertMdPadding} ${theme.contentHorMdPadding}`,
     },
   },
@@ -71,10 +73,7 @@ interface IProps {
 const SettingsSection: React.SFC<IProps> = props => {
   const {
     sectionIndex,
-    settingsSectionContents: {
-      header,
-      description,
-    },
+    settingsSectionContents: { header, description },
     electionGroupData,
     displayStatus,
     onSetActive,
@@ -117,7 +116,9 @@ const SettingsSection: React.SFC<IProps> = props => {
         closeAction={onCloseSettingsSection}
       />
     ) : displayStatus === 'inactive' ? (
-      <props.settingsSectionContents.inactiveComponent electionGroupData={electionGroupData} />
+      <props.settingsSectionContents.inactiveComponent
+        electionGroupData={electionGroupData}
+      />
     ) : null;
 
   return (
