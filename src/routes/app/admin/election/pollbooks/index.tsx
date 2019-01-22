@@ -7,10 +7,11 @@ import { Trans, translate } from 'react-i18next';
 import { orderMultipleElections } from 'utils/processGraphQLData';
 import AddVoter from './components/AddVoter';
 import ActionText from 'components/actiontext';
-import {
+import Button, {
   ActionButton,
   ElectionButton,
   ElectionButtonContainer,
+  ButtonContainer,
 } from 'components/button';
 import { DropDownRF, FormButtons } from 'components/form';
 import { ConfirmModal } from 'components/modal';
@@ -25,6 +26,7 @@ import {
   TableRow,
 } from 'components/table';
 import Text from 'components/text';
+import { Redirect } from 'react-router';
 
 const updateVoterPollBook = gql`
   mutation UpdateVoterPollBook($id: UUID!, $pollbookId: UUID!) {
@@ -193,6 +195,7 @@ interface IState {
   showDeletePollbook: boolean;
   showDeleteVoter: boolean;
   showAddVoter: string;
+  proceed: boolean;
 }
 
 class ElectionGroupCensuses extends React.Component<IProps, IState> {
@@ -205,6 +208,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
       showDeleteVoter: false,
       updateVoterId: '',
       voterId: '',
+      proceed: false,
     };
     this.closeUpdateVoterForm = this.closeUpdateVoterForm.bind(this);
     this.showDeletePersonConfirmation = this.showDeletePersonConfirmation.bind(
@@ -222,7 +226,42 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
     this.closeNewVoterForm = this.closeNewVoterForm.bind(this);
   }
 
-  public render() {
+  showNewVoterForm(pollbookId: string) {
+    this.setState({ showAddVoter: pollbookId });
+  }
+
+  closeNewVoterForm() {
+    this.setState({ showAddVoter: '' });
+  }
+
+  showDeletePersonConfirmation() {
+    this.setState({ showDeleteVoter: true });
+  }
+
+  hideDeletePersonConfirmation() {
+    this.setState({ showDeleteVoter: false });
+  }
+
+  showDeletePollbookConfirmation() {
+    this.setState({ showDeletePollbook: true });
+  }
+
+  hideDeletePollbookConfirmation() {
+    this.setState({ showDeletePollbook: false });
+  }
+  showUpdateVoterForm(voterId: string) {
+    this.setState({ updateVoterId: voterId });
+  }
+
+  closeUpdateVoterForm() {
+    this.setState({ updateVoterId: '' });
+  }
+
+  handleProceed = () => {
+    this.setState({ proceed: true });
+  };
+
+  render() {
     const {
       t,
       i18n: { language: lang },
@@ -239,7 +278,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
             data.electionGroup.type === 'multiple_elections'
               ? orderMultipleElections(electionsRaw)
               : electionsRaw;
-          
+
           const voters: IVoter[] = [];
           const pollBookDict = {};
           const pollBookOptions: DropDownOption[] = [];
@@ -276,14 +315,12 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
             <Page header={<Trans>election.censuses</Trans>}>
               <PageSection
                 noBorder={true}
+                noTopPadding={true}
                 desc={<Trans>census.censusPageDesc</Trans>}
               >
                 <ActionButton text={t('census.uploadCensusFile')} />
               </PageSection>
-              <PageSection
-                header={<Trans>election.census</Trans>}
-                noBorder={true}
-              >
+              <PageSection header={<Trans>election.census</Trans>}>
                 <ElectionButtonContainer>
                   {pollbookButtons}
                 </ElectionButtonContainer>
@@ -529,42 +566,29 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                   </TableBody>
                 </Table>
               </PageSection>
+
+              <ButtonContainer alignRight={true} topMargin={true}>
+                <Button
+                  text={
+                    <span>
+                      <Trans>election.goTo</Trans>&nbsp;
+                      <Trans>election.electionStatus</Trans>
+                    </span>
+                  }
+                  action={this.handleProceed}
+                  iconRight="mainArrow"
+                />
+              </ButtonContainer>
+              {this.state.proceed ? (
+                <Redirect
+                  to={`/admin/elections/${this.props.groupId}/status`}
+                />
+              ) : null}
             </Page>
           );
         }}
       </Query>
     );
-  }
-
-  private showNewVoterForm(pollbookId: string) {
-    this.setState({ showAddVoter: pollbookId });
-  }
-
-  private closeNewVoterForm() {
-    this.setState({ showAddVoter: '' });
-  }
-
-  private showDeletePersonConfirmation() {
-    this.setState({ showDeleteVoter: true });
-  }
-
-  private hideDeletePersonConfirmation() {
-    this.setState({ showDeleteVoter: false });
-  }
-
-  private showDeletePollbookConfirmation() {
-    this.setState({ showDeletePollbook: true });
-  }
-
-  private hideDeletePollbookConfirmation() {
-    this.setState({ showDeletePollbook: false });
-  }
-  private showUpdateVoterForm(voterId: string) {
-    this.setState({ updateVoterId: voterId });
-  }
-
-  private closeUpdateVoterForm() {
-    this.setState({ updateVoterId: '' });
   }
 }
 
