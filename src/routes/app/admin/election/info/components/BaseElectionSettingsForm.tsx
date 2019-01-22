@@ -127,9 +127,6 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
                                 component={CheckBoxRF}
                                 type="checkbox"
                                 label={elections[index].name[lang]}
-                                disabled={submitting}
-                                // tslint:disable-next-line:jsx-no-lambda
-                                normalize={(val: any) => !!val} // TODO: Doesn't look like normalize is a prop. Remove?
                               />
                             </TableCell>
                             <TableCell>

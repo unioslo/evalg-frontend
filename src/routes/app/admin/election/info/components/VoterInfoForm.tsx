@@ -458,7 +458,10 @@ class VoterInfoForm extends React.Component<IProps> {
                 {errors._error
                   ? errors._error.informationUrl.map((error: any) => {
                       const { index } = error;
-                      if (touched && touched[`elections[${index}].informationUrl`]) {
+                      if (
+                        touched &&
+                        touched[`elections[${index}].informationUrl`]
+                      ) {
                         return <FormErrorMsg key={index} msg={error.msg} />;
                       }
                       return null;

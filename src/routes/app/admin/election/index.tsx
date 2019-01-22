@@ -111,13 +111,15 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
     query={electionGroupQuery}
     variables={{ id: props.match.params.groupId }}
   >
-    {({ data: { electionGroup }, loading, error }) => {
+    {({ data, loading, error }) => {
       if (loading) {
         return <Loading />;
       }
       if (error) {
         return <p>Error!</p>;
       }
+
+      const electionGroup = data.electionGroup;
 
       const orderedElections =
         electionGroup.type === 'multiple_elections'
