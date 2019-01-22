@@ -46,7 +46,7 @@ const styles = theme => ({
       background: theme.btnDefDisabledColor
     },
     borderColor: theme.btnDefDisabledColor,
-    color: theme.btnDefDisabledTextColor,
+    // color: theme.btnDefDisabledTextColor, // this makes secondary button text dissapear when disabled
     cursor: 'not-allowed',
   },
   osx: {

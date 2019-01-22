@@ -30,6 +30,7 @@ interface IProps {
   saveAction: (submitValues: any) => void;
   closeAction: () => void;
   submitDisabled: boolean;
+  cancelDisabled: boolean;
   submitting?: boolean;
   entityAction?: any;
   entityText?: React.ReactNode | string;
@@ -52,6 +53,7 @@ const FormButtons = (props: IProps) => {
       )}
       <Button
         text={<Trans>general.cancel</Trans>}
+        disabled={submitting}
         action={closeAction}
         secondary={true}
       />
