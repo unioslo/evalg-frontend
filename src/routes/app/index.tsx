@@ -4,7 +4,7 @@ import { Route, Link } from 'react-router-dom';
 import { UserData } from 'react-oidc';
 import { ApolloConsumer } from 'react-apollo';
 import { IAuthenticatorContext } from 'react-oidc/lib/makeAuth';
-import { ApolloClient } from 'apollo-boost';
+import { ApolloClient } from 'apollo-client';
 import createBrowserHistory from 'history/createBrowserHistory';
 
 import Content from './components/Content';
