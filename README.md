@@ -9,9 +9,8 @@
 ### Dev quickstart:
 1. `curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash`
 2. `nvm install --lts`
-3. `npm install -g yarn`
-4. `yarn install`
-5. `npm start`
+3. `npm install`
+4. `npm start`
 
 ### Relevant dokumentasjon og opplæring
 
