@@ -7,7 +7,7 @@ import Page from 'components/page/Page';
 import { PageSection } from 'components/page';
 import NewElectionForm from './components/NewElectionForm';
 import { Trans } from 'react-i18next';
-import { ApolloClient } from 'apollo-boost';
+import { ApolloClient } from 'apollo-client';
 import { History } from 'history';
 
 const electionTemplateQuery = gql`

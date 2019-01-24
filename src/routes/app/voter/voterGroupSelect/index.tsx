@@ -9,7 +9,7 @@ import Button, { ButtonContainer } from 'components/button';
 import { translate, Trans } from 'react-i18next';
 import injectSheet from 'react-jss';
 import Icon from 'components/icon';
-import { ApolloClient } from 'apollo-boost';
+import { ApolloClient } from 'apollo-client';
 import MandatePeriodText from '../vote/components/MandatePeriodText';
 import { History } from 'history';
 import { i18n, TranslationFunction } from 'i18next';
