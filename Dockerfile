@@ -5,15 +5,14 @@ LABEL no.uio.contact=bnt-int@usit.uio.no
 
 WORKDIR /usr/src/app
 COPY . /usr/src/app
-COPY package*.json yarn.lock ./
+COPY package*.json ./run/
 
 # TODO fix this by adding the API to a config file
-RUN sed -i 's/localhost:5000/evalg-test01.uio.no/g' /usr/src/app/src/index.tsx \
+RUN sed -i 's/localhost:5000/evalg-test01.uio.no/g' /usr/src/app/src/appConfig.ts \
  && sed -i 's/testWarning = false/testWarning = true/g' /usr/src/app/src/appConfig.ts
 
-RUN echo 123
-RUN yarn \
- && yarn build
+RUN npm install \
+ && npm build run
 
 # Copy build to nginx image
 FROM harbor.uio.no/library/nginx:latest
