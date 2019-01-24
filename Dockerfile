@@ -12,7 +12,7 @@ RUN sed -i 's/localhost:5000/evalg-test01.uio.no/g' /usr/src/app/src/appConfig.t
  && sed -i 's/testWarning = false/testWarning = true/g' /usr/src/app/src/appConfig.ts
 
 RUN npm install \
- && npm build run
+ && npm run build
 
 # Copy build to nginx image
 FROM harbor.uio.no/library/nginx:latest
