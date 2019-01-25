@@ -80,7 +80,7 @@ interface ElectionList {
 }
 
 interface Election {
-  id: number;
+  id: string;
   name: NameFields;
   start: string;
   end: string;
@@ -100,7 +100,7 @@ interface Election {
 }
 
 interface ElectionGroup {
-  id: number;
+  id: string;
   type: 'single_election' | 'multiple_elections'; // TODO: Are there more possibilities?
   name: NameFields;
   start: string | null;
