@@ -351,8 +351,8 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                                   refetchQueries={refetchQueries}
                                 >
                                   {del => {
-                                    const addAndClose = (values: any) => {
-                                      values.persons.map((person: IPerson) =>
+                                    const addAndClose = (persons: IPerson[]) => {
+                                      persons.map(person =>
                                         add({
                                           variables: {
                                             personId: person.id,
@@ -385,7 +385,6 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                                             ]
                                           }
                                           registeredVoters={voters}
-                                          initialValues={{}}
                                         />
                                         {this.state.showDeletePollbook ? (
                                           <ConfirmModal

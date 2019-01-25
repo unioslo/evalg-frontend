@@ -1,11 +1,8 @@
 import { ApolloClient } from 'apollo-client';
-import arrayMutators from 'final-form-arrays'
 import gql from 'graphql-tag';
 import throttle from 'lodash/throttle';
 import * as React from 'react';
 import { ApolloConsumer } from 'react-apollo';
-import { Form } from 'react-final-form';
-import { FieldArray } from 'react-final-form-arrays';
 import { Trans, translate } from 'react-i18next';
 import injectSheet from 'react-jss';
 
@@ -18,11 +15,11 @@ const styles = (theme: any) => ({
     alignItems: 'center',
     display: 'flex',
     marginBottom: '1rem',
-    marginTop: '1rem'
+    marginTop: '1rem',
   },
   itemName: {
     marginRight: '1rem',
-  }
+  },
 });
 
 const searchPersonsQuery = gql`
@@ -36,169 +33,152 @@ const searchPersonsQuery = gql`
 `;
 
 interface IProps {
-  closeAction: () => void,
-  submitAction: (values: any) => void,
-  deletePollbookAction: () => void,
-  registeredVoters: IVoter[],
-  initialValues: any,
-  pollbook: IPollBook,
-  i18n: any,
-  classes: any
+  closeAction: () => void;
+  submitAction: (values: any) => void;
+  deletePollbookAction: () => void;
+  registeredVoters: IVoter[];
+  initialValues: any;
+  pollbook: IPollBook;
+  i18n: any;
+  classes: any;
 }
 
 interface Istate {
-  persons: IPerson[],
-  personFilter: string,
-  pollbook: IPollBook,
-  showPersons: IPerson[],
+  personsAlreadyInPollbook: IPerson[];
+  newPersonsToAddList: IPerson[];
+  addablePersonsFromSearch: IPerson[];
+  personFilter: string;
+  pollbook: IPollBook;
 }
 
 interface IPersonQueryResult {
-  searchPersons: IPerson[]
+  searchPersons: IPerson[];
 }
 
 class AddVoter extends React.Component<IProps, Istate> {
+  handlePersonSearch = throttle(
+    async (client: ApolloClient<any>, value: string) => {
+      const searchResultPersons = await this.searchPersons(client, value);
+      const { personsAlreadyInPollbook, newPersonsToAddList } = this.state;
+      // We don't want to list persons that are already added
+      // in the search results.
 
-  public handlePersonSearch = throttle(async (client: ApolloClient<any>, value: string) => {
-    const searchedPersons = await this.searchPersons(client, value);
-    const { persons } = this.state;
-    // We don't want to list persons that are already added
-    // in the search results.
+      const removePersons = personsAlreadyInPollbook.concat(
+        newPersonsToAddList
+      );
 
-    const newPersons = searchedPersons.filter((p: IPerson) => {
-      for (const e of persons) {
-        if (p.id === e.id) {
-          return false;
+      const addablePersonsFromSearch = searchResultPersons.filter(
+        (searchPerson: IPerson) => {
+          for (const removePerson of removePersons) {
+            if (searchPerson.id === removePerson.id) {
+              return false;
+            }
+          }
+          return true;
         }
-      }
-      return true;
-    })
-    this.setState({ showPersons: newPersons });
-  })
-
+      );
+      this.setState({ addablePersonsFromSearch });
+    },
+    50
+  );
+  
   constructor(props: IProps) {
     super(props);
     const { registeredVoters } = this.props;
-    
+
     this.state = {
       personFilter: '',
-      persons: registeredVoters.map(voter => voter.person),
+      personsAlreadyInPollbook: registeredVoters.map(voter => voter.person),
+      newPersonsToAddList: [],
+      addablePersonsFromSearch: [],
       pollbook: props.pollbook,
-      showPersons: [],
-    }
-    this.handlePersonFilterUpdate = this.handlePersonFilterUpdate.bind(this)
-    this.theForm = this.theForm.bind(this);
+    };
+    this.handlePersonFilterUpdate = this.handlePersonFilterUpdate.bind(this);
   }
 
-
-  public async searchPersons(client: ApolloClient<any>, name: string) {
+  async searchPersons(client: ApolloClient<any>, name: string) {
     const { data } = await client.query<IPersonQueryResult>({
       query: searchPersonsQuery,
-      variables: { val: name }
+      variables: { val: name },
     });
     return data.searchPersons;
   }
 
-  public handlePersonFilterUpdate(client: ApolloClient<any>, value: string) {
+  handlePersonFilterUpdate(client: ApolloClient<any>, value: string) {
     this.setState({ personFilter: value });
     if (value.length > 1) {
       this.handlePersonSearch(client, value);
     }
   }
 
-  public render() {
-    const {
-      initialValues,
-    } = this.props;
+  addPersonToAddList = (person: IPerson) => {
+    this.setState(currState => ({
+      newPersonsToAddList: [...currState.newPersonsToAddList, person],
+    }));
+  };
 
-    return (
-      <Form
-        onSubmit={this.props.submitAction}
-        mutators={{ ...arrayMutators }}
-        initialValues={initialValues}
-        render={this.theForm}
-      />
-    )
-  }
+  removePersonFromAddList = (index: number) => {
+    this.setState({
+      newPersonsToAddList: [
+        ...this.state.newPersonsToAddList.slice(0, index),
+        ...this.state.newPersonsToAddList.slice(index + 1),
+      ],
+    });
+  };
 
-  private theForm(formProps: any) {
-    const { pristine, valid, handleSubmit, values } = formProps;
+  submitNewPersons = () => {
+    this.props.submitAction(this.state.newPersonsToAddList);
+    this.setState({
+      newPersonsToAddList: [],
+    });
+  };
+
+  render() {
     const {
       closeAction,
       deletePollbookAction,
       i18n: { language: lang },
-      classes
+      classes,
     } = this.props;
 
-    const renderPerson = (obj: IPerson) => [obj.firstName, obj.lastName].join(' ');
+    const renderPerson = (p: IPerson) => [p.firstName, p.lastName].join(' ');
+
     return (
-      <ApolloConsumer>
-        {client => {
-          return (
-            <form onSubmit={handleSubmit}>
-              <b>
-                <Trans values={{ pollbookName: this.state.pollbook.name[lang] }}>
-                  census.addPersons
-                </Trans>
-              </b>
-              <FieldArray name="persons">
-                {({ fields }) => {
-                  const addPerson = (person: IPerson) => {
-                    fields.push(person);
-                    this.setState({persons: [...this.state.persons, ...[person]]})
-                  }
-                  const removePerson = (index: number) => {
-                    this.setState({persons: [...this.state.persons.slice(0,index), ...this.state.persons.slice(index + 1)]})
-                    fields.remove(index);
-                  }
-                  return (
-                    <div>
-                      {fields.map((name, index) => (
-                        <div key={index}>
-
-                          {values && values.persons && values.persons[index] ?
-                            <>
-
-                              <div className={classes.item}>
-                                <div className={classes.itemName}>
-                                  {renderPerson(values.persons[index])}
-                                </div>
-
-                                <ActionText action={removePerson.bind(this, index)}>
-                                  <Trans>general.remove</Trans>
-                                </ActionText>
-
-                              </div>
-                            </>
-                            : null
-                          }
-
-                        </div>
-                      ))}
-                      <AutoCompleteDropDown
-                        objects={this.state.showPersons}
-                        userInput={this.state.personFilter}
-                        onChange={this.handlePersonFilterUpdate.bind(self, client)}
-                        buttonAction={addPerson}
-                        buttonText={<Trans>general.add</Trans>}
-                        objRenderer={renderPerson}
-                      />
-                      <FormButtons
-                        saveAction={handleSubmit}
-                        closeAction={closeAction}
-                        submitDisabled={pristine || !valid}
-                        entityAction={deletePollbookAction}
-                        entityText={<Trans>census.deleteCensus</Trans>}
-                      />
-                    </div>
-                  )
-                }}
-              </FieldArray>
-            </form>
-          )
-        }}
-      </ApolloConsumer>
-    )
+      <>
+        <strong>
+          <Trans values={{ pollbookName: this.state.pollbook.name[lang] }}>
+            census.addPersons
+          </Trans>
+        </strong>
+        {this.state.newPersonsToAddList.map((person, index) => (
+          <div key={person.id} className={classes.item}>
+            <div className={classes.itemName}>{renderPerson(person)}</div>
+            <ActionText action={() => this.removePersonFromAddList(index)}>
+              <Trans>general.remove</Trans>
+            </ActionText>
+          </div>
+        ))}
+        <ApolloConsumer>
+          {client => (
+            <AutoCompleteDropDown
+              objects={this.state.addablePersonsFromSearch}
+              userInput={this.state.personFilter}
+              onChange={this.handlePersonFilterUpdate.bind(self, client)}
+              buttonAction={this.addPersonToAddList}
+              buttonText={<Trans>general.add</Trans>}
+              objRenderer={renderPerson}
+            />
+          )}
+        </ApolloConsumer>
+        <FormButtons
+          saveAction={this.submitNewPersons}
+          closeAction={closeAction}
+          submitDisabled={this.state.newPersonsToAddList.length === 0}
+          entityAction={deletePollbookAction}
+          entityText={<Trans>census.deleteCensus</Trans>}
+        />
+      </>
+    );
   }
 }
 

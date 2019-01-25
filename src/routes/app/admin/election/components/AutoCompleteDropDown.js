@@ -19,8 +19,8 @@ const styles = theme => ({
     fontSize: '1.4rem',
     paddingLeft: '1rem',
     '&:focus': {
-      borderColor: theme.formFieldBorderActiveColor
-    }
+      borderColor: theme.formFieldBorderActiveColor,
+    },
   },
   button: {
     marginLeft: '1.5rem',
@@ -34,12 +34,12 @@ const styles = theme => ({
     justifyContent: 'center',
     alignItems: 'center',
     '&:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '&:disabled': {
       cursor: 'not-allowed',
-      borderColor: theme.colors.veryLightGray
-    }
+      borderColor: theme.colors.veryLightGray,
+    },
   },
   list: {
     position: 'absolute',
@@ -55,18 +55,20 @@ const styles = theme => ({
     padding: '0 1rem',
     minWidth: '20rem',
     '&:first-child': {
-      borderTop: 0
+      borderTop: 0,
     },
     '&:hover': {
       background: theme.colors.lightBlueGray,
-      cursor: 'pointer'
-    }
-  }
-})
+      cursor: 'pointer',
+    },
+  },
+});
 
-const filterObjects = (objects: Array<Object>,
+const filterObjects = (
+  objects: Array<Object>,
   filter: string,
-  filterOn: Array<string>) => {
+  filterOn: Array<string>
+) => {
   // We don't want to return anything if the user hasn't typed in a filter yet.
   if (filter === '') {
     return [];
@@ -76,8 +78,7 @@ const filterObjects = (objects: Array<Object>,
       let value = '';
       if (typeof filterOn[i] === 'string') {
         value = obj[filterOn[i]];
-      }
-      else if (Array.isArray(filterOn[i])) {
+      } else if (Array.isArray(filterOn[i])) {
         const values = filterOn[i].map(attr => obj[attr]);
         value = values.join(' ');
       }
@@ -86,7 +87,7 @@ const filterObjects = (objects: Array<Object>,
       }
     }
     return false;
-  })
+  });
 };
 
 type Props = {
@@ -96,15 +97,11 @@ type Props = {
   onChange: Function,
   buttonAction: Function,
   buttonText: ReactElement | string,
-  classes: Object
-}
+  classes: Object,
+};
 
 class AutoCompleteDropDown extends DropDownBase {
   props: Props;
-
-  componentWillReceiveProps(newProps: Props) {
-    this.setState({ open: newProps.objects.length > 0 && !!this.props.userInput })
-  }
 
   handleSelect(obj: Object) {
     this.setState({ selected: obj });
@@ -121,41 +118,49 @@ class AutoCompleteDropDown extends DropDownBase {
       this.props.buttonAction(this.state.selected);
     }
     this.props.onChange('');
-    this.setState({ selected: null, open: false });
+    this.setState({ selected: null });
   }
 
   render() {
-    const {
-      userInput, objRenderer, buttonText, classes
-    } = this.props;
+    const { userInput, objRenderer, buttonText, classes } = this.props;
     const { selected } = this.state;
+    const showDropDown =
+      !this.state.selected &&
+      this.props.objects.length > 0 &&
+      !!this.props.userInput;
+
     return (
       <div className={classes.autoCompleteDropDown}>
-        <input type="text"
+        <input
+          type="text"
           className={classes.input}
           value={selected ? objRenderer(selected) : userInput}
-          onChange={this.handleOnChange.bind(this)} />
+          onChange={this.handleOnChange.bind(this)}
+        />
         <button
           onClick={this.handleButtonClick.bind(this)}
           className={classes.button}
-          disabled={!this.state.selected}>
+          disabled={!this.state.selected}
+        >
           {buttonText}
         </button>
-        {!this.state.selected && this.state.open &&
+        {showDropDown && (
           <ul className={classes.list}>
             {this.props.objects.map((obj, index) => {
               return (
-                <li key={index}
+                <li
+                  key={index}
                   className={classes.listItem}
-                  onClick={this.handleSelect.bind(this, obj)}>
+                  onClick={this.handleSelect.bind(this, obj)}
+                >
                   {objRenderer(obj)}
                 </li>
-              )
+              );
             })}
           </ul>
-        }
+        )}
       </div>
-    )
+    );
   }
 }
 
