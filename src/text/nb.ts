@@ -76,6 +76,7 @@ export default {
     electionKey: 'Valgnøkkel',
     electionKeyCreate: 'Lag nøkkel',
     electionKeyExists: 'En valgnøkkel eksisterer for dette valget.',
+    electionKeyGenerating: 'Genererer valgnøkkel',
     electionKeyMissing: 'En valgnøkkel er nødvendig for å telle opp stemmene.',
     electionKeyReadMore: 'Les mer om nøkkelhåndtering',
     electionKeySave: 'Lagre nøkkel',
