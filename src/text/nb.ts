@@ -11,6 +11,8 @@ export default {
     addPersons: 'Legg til personer i {{pollbookName}}',
     addTo: 'Legg til',
     censusPageDesc: 'Her kan du opprette og administrere manntall.',
+    censusType: 'Type manntall',                                                                
+    chooseFile: 'Velg fil for opplasting',
     deleteCensus: 'Slett manntall',
     deletePersonConfirmationModalText:
       'Er du sikker på at du vil slette {{personName}} fra «{{pollbookName}}»?',
@@ -21,7 +23,8 @@ export default {
     group: 'Gruppe',
     person: 'Person',
     persons: 'Personer',
-    uploadCensusFile: 'Last opp manntallsfil',
+    uploadCensusFileButton: 'Last opp manntallsfil',                                            
+    uploadCensusFileHeader: 'Last opp manntal fra fil', 
   },
   election: {
     activeElectionsHeader:
@@ -196,6 +199,7 @@ export default {
     back: 'Tilbake',
     cancel: 'Avbryt',
     choose: 'Velg',
+    chooseFile: 'Velg fil',
     close: 'Lukk',
     contactInfo: 'Kontaktinfo',
     copy: 'Kopiér',
@@ -229,6 +233,7 @@ export default {
     title: 'eValg',
     to: 'til',
     upcomingElections: 'Kommende valg',
+    upload: 'Last opp',
     webpage: 'Nettadresse',
     welcome: 'Velkommen til eValg',
     yes: 'Ja',
