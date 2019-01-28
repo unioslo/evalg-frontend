@@ -1,5 +1,3 @@
-// tslint:disable:no-console
-
 import * as React from 'react';
 
 // import { Trans } from 'react-i18next';
@@ -15,7 +13,7 @@ import { ApolloQueryResult } from 'apollo-client';
 
 import Button from 'components/button';
 import { FormField } from 'components/form';
-import { RadioButtonGroup } from 'components/fform';
+import { RadioButtonGroup } from 'components/form';
 import Modal from 'components/modal';
 import { restBackend } from 'appConfig';
 import injectSheet from 'react-jss';
@@ -140,9 +138,6 @@ class UploadCensusFileModal extends React.Component<
       fileName: '',
     };
 
-    // tslint:disable-next-line:no-console
-    console.log(this.props.pollBooks);
-
     this.renderForm = this.renderForm.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -215,7 +210,7 @@ class UploadCensusFileModal extends React.Component<
   public componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyPress);
   }
-  // tslint:disable:no-console
+
   /**
    * Close the modal on escape
    */
@@ -324,8 +319,7 @@ class UploadCensusFileModal extends React.Component<
             <FormField>
               <Field
                 name="pollbookId"
-                component={RadioButtonGroup}
-                key="poolbookSelection"
+                component={RadioButtonGroup as any}
                 validate={this.required}
                 options={pollBookOptions}
               />
