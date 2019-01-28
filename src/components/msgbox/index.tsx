@@ -88,9 +88,6 @@ class MsgBox extends React.Component<IProps, IState> {
 
     if (this.props.timeout) {
       const waitTime = (this.props.timeoutSec || 10) * 1000;
-      // tslint:disable-next-line:no-console
-      console.log('TIME!', waitTime);
-
       this.timerHandle = setTimeout(() => {
         this.setState({ display: false });
         this.timerHandle = null;
