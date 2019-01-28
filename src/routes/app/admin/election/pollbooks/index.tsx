@@ -14,6 +14,7 @@ import Button, {
   ButtonContainer,
 } from 'components/button';
 import { DropDownRF, FormButtons } from 'components/form';
+import { MsgBox } from 'components/msgbox';
 import { ConfirmModal } from 'components/modal';
 import { Page, PageSection } from 'components/page';
 import {
@@ -27,6 +28,7 @@ import {
 } from 'components/table';
 import Text from 'components/text';
 import { Redirect } from 'react-router';
+import UploadCensusFileModal, { IReturnStatus } from './components/UploadCensusFile';
 
 const updateVoterPollBook = gql`
   mutation UpdateVoterPollBook($id: UUID!, $pollbookId: UUID!) {
@@ -196,6 +198,9 @@ interface IState {
   showDeleteVoter: boolean;
   showAddVoter: string;
   proceed: boolean;
+  showUploadCensusFileModal: boolean;
+  showUploadMsgBox: boolean;
+  uploadMsg: string;
 }
 
 class ElectionGroupCensuses extends React.Component<IProps, IState> {
@@ -209,6 +214,9 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
       updateVoterId: '',
       voterId: '',
       proceed: false,
+      showUploadCensusFileModal: false,
+      showUploadMsgBox: false,
+      uploadMsg: '',
     };
     this.closeUpdateVoterForm = this.closeUpdateVoterForm.bind(this);
     this.showDeletePersonConfirmation = this.showDeletePersonConfirmation.bind(
@@ -224,6 +232,10 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
       this
     );
     this.closeNewVoterForm = this.closeNewVoterForm.bind(this);
+    this.showUploadCensusFileModal = this.showUploadCensusFileModal.bind(this);
+    this.closeUploadCensusFileModal = this.closeUploadCensusFileModal.bind(
+      this
+    );
   }
 
   showNewVoterForm(pollbookId: string) {
@@ -261,6 +273,37 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
     this.setState({ proceed: true });
   };
 
+  showUploadCensusFileModal() {
+    this.closeUpdateVoterForm();
+
+    this.setState({
+      showUploadCensusFileModal: true,
+      showUploadMsgBox: false,
+    });
+  }
+
+  closeUploadCensusFileModal(proc: IReturnStatus) {
+    this.setState({
+      showUploadCensusFileModal: false,
+    });
+
+    if (proc.showMsg) {
+
+      let msg: string;
+      if (proc.parseCompleded) {
+        // TODO: add better error messages?
+        msg = `${proc.ok} personer ble lagt til i gruppen ${proc.pollBookName}.`;
+      } else {
+        // Todo Trans
+        msg = 'Feil i svar fra tjener'
+      }
+      this.setState({
+        showUploadMsgBox: true,
+        uploadMsg: msg,
+      });
+    }
+  }
+
   render() {
     const {
       t,
@@ -268,7 +311,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
     } = this.props;
     return (
       <Query query={electionGroupQuery} variables={{ id: this.props.groupId }}>
-        {({ data, loading, error }) => {
+        {({ data, loading, error, refetch }) => {
           if (loading || error) {
             return null;
           }
@@ -318,12 +361,21 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                 noTopPadding={true}
                 desc={<Trans>census.censusPageDesc</Trans>}
               >
-                <ActionButton text={t('census.uploadCensusFile')} />
+
+              <div onClick={this.showUploadCensusFileModal}>
+                <ActionButton text={t('census.uploadCensusFileButton')} />
+              </div>
+
               </PageSection>
               <PageSection header={<Trans>election.census</Trans>}>
                 <ElectionButtonContainer>
                   {pollbookButtons}
                 </ElectionButtonContainer>
+
+                {this.state.showUploadMsgBox ? (
+                  <MsgBox msg={this.state.uploadMsg} timeout={true} />
+                ) : null}
+
                 <Table>
                   <TableHeader>
                     <TableHeaderRow>
@@ -578,6 +630,18 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                   iconRight="mainArrow"
                 />
               </ButtonContainer>
+              <PageSection>
+                {this.state.showUploadCensusFileModal ? (
+                  <UploadCensusFileModal
+                    header={<Trans>census.uploadCensusFileHeader</Trans>}
+                    closeAction={this.closeUploadCensusFileModal}
+                    pollBooks={pollBookDict}
+                    groupId={this.props.groupId}
+                    refetchData={refetch}
+                  />
+                ) : null}
+              </PageSection>
+
               {this.state.proceed ? (
                 <Redirect
                   to={`/admin/elections/${this.props.groupId}/status`}
