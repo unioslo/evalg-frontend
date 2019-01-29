@@ -21,7 +21,6 @@ const styles = theme => ({
     color: theme.colors.greyishBrown
   },
   content: {
-    lineHeight: '4.5rem',
     padding: '1rem 4rem 4rem 4rem'
   },
   buttons: {

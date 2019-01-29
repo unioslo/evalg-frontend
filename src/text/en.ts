@@ -11,6 +11,8 @@ export default {
     addPersons: 'Add persons in {{pollbookName}}',
     addTo: 'Add',
     censusPageDesc: 'Here you can create and administer censuses.',
+    censusType: 'Pollbook type',                                                                
+    chooseFile: 'Choose file to upload', 
     deleteCensus: 'Delete census',
     deletePersonConfirmationModalText:
       'Are you sure you want to delete {{personName}} from “{{pollbookName}}”?',
@@ -21,7 +23,8 @@ export default {
     group: 'Group',
     person: 'Person',
     persons: 'Persons',
-    uploadCensusFile: 'Upload census file',
+    uploadCensusFileButton: 'Upload census file',                                               
+    uploadCensusFileHeader: 'Upload census from file', 
   },
   election: {
     activeElectionsHeader:
@@ -189,6 +192,7 @@ export default {
     back: 'Back',
     cancel: 'Cancel',
     choose: 'Choose',
+    chooseFile: 'Choose file',
     close: 'Close',
     contactInfo: 'Contact info',
     copy: 'Copy',
@@ -222,6 +226,7 @@ export default {
     title: 'eValg',
     to: 'to',
     upcomingElections: 'Upcoming elections',
+    upload: 'Upload',
     webpage: 'Nettside',
     welcome: 'Welcome to eValg',
     yes: 'Yes',

@@ -270,6 +270,46 @@ const getIcon = (type: string, classes: Object, custom: any) => {
           </g>
         </svg>
       );
+    case 'closeMsgBox':
+      return (
+      <svg
+        className={classes.closeMsgBox}
+        xmlns="http://www.w3.org/2000/svg"
+        width="26"
+        height="26"
+        viewBox="0 0 26 26"
+      >
+        <path
+          fill="#2294A8"
+          fillRule="evenodd"
+          d="M12.853 14.85l4.42 4.419 2.21-2.21-4.42-4.42
+            4.42-4.419-2.21-2.21-4.42 4.42-4.419-4.42-2.21 2.21
+            4.42 4.42-4.42 4.42 2.21 2.209 4.42-4.42zM3.84
+            21.516c-4.882-4.882-4.882-12.797 0-17.678 4.881-4.882
+            12.796-4.882 17.678 0 4.881 4.881 4.881 12.796 0 17.678-4.882
+            4.881-12.797 4.881-17.678 0z"
+          />
+      </svg>
+
+      );
+    case 'infoMsgBox':
+      return (
+        <svg
+          className={classes.infoMsgBox}
+          xmlns="http://www.w3.org/2000/svg"
+          width="22"
+          height="20"
+          viewBox="0 0 22 20"
+        >
+          <path
+            fill="#2194A8"
+            fillRule="evenodd"
+            d="M11.271 20c5.72 0 10.364-4.48 10.364-10S16.992 0 11.27 0C5.551
+              0 .908 4.48.908 10s4.643 10 10.363 10zM10.235
+              5h2.073v2h-2.073V5zm2.073 4v6h-2.073V9h2.073z"
+          />
+        </svg>
+      );
     default:
       if (process.NODE_ENV !== 'production') {
         console.error(`Icon not found: ${type}`);
@@ -399,7 +439,16 @@ const styles = theme => ({
   grayStroke: {
     stroke: '#6EAEBB',
   },
+  infoMsgBox: {
+    width: '22px',
+    height: '20px',
+  },
+  closeMsgBox: {
+    width: '26px',
+    height: '26px',
+  },
 });
+
 
 type Props = {
   type: string,
