@@ -120,8 +120,8 @@ export interface IReturnStatus {
   parseCompleded: boolean;
   showMsg: boolean;
   ok: number;
-  existing: number;
   failed: number;
+  error_msg: string,
   pollBookName: string;
 }
 
@@ -165,9 +165,9 @@ class UploadCensusFileModal extends React.Component<
         const ret: IReturnStatus = {
           parseCompleded: true,
           showMsg: true,
-          ok: response.data.added_ok,
-          existing: response.data.already_added,
-          failed: response.data.added_failed,
+          ok: response.data.ok,
+          failed: response.data.failed,
+          error_msg: '',
           pollBookName: this.props.pollBooks[values.pollbookId].name[lang],
         };
         if (this.props.refetchData !== undefined) {
@@ -176,12 +176,13 @@ class UploadCensusFileModal extends React.Component<
         this.props.closeAction(ret);
       })
       .catch(error => {
+
         const ret: IReturnStatus = {
           parseCompleded: false,
           showMsg: true,
           ok: 0,
-          existing: 0,
           failed: 0,
+          error_msg: error.data.details,
           pollBookName: this.props.pollBooks[values.pollbookId].name[lang],
         };
         this.props.closeAction(ret);
@@ -220,8 +221,8 @@ class UploadCensusFileModal extends React.Component<
         parseCompleded: false,
         showMsg: false,
         ok: 0,
-        existing: 0,
         failed: 0,
+        error_msg: '',
         pollBookName: '',
       };
 

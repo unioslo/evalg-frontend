@@ -107,16 +107,19 @@ class MsgBox extends React.Component<IProps, IState> {
   }
 
   public render() {
+
+    const { classes } = this.props;
+
     if (this.state.display) {
       return (
-        <div className={this.props.classes.info}>
-          <div className={this.props.classes.infoIconMargins}>
+        <div className={classes.info}>
+          <div className={classes.infoIconMargins}>
             <Icon type="infoMsgBox"/>
           </div>
-          <span className={this.props.classes.msg}>
+          <span className={classes.msg}>
             {this.props.msg}
           </span>
-          <div className={this.props.classes.closeIconMargins}>
+          <div className={classes.closeIconMargins}>
             <Icon type="closeMsgBox" onClick={this.closeBox}/>
           </div>
         </div>
