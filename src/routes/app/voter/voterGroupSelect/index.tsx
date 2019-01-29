@@ -8,7 +8,6 @@ import { DropDown } from 'components/form';
 import Button, { ButtonContainer } from 'components/button';
 import { translate, Trans } from 'react-i18next';
 import injectSheet from 'react-jss';
-import Icon from 'components/icon';
 import { ApolloClient } from 'apollo-client';
 import MandatePeriodText from '../vote/components/MandatePeriodText';
 import { History } from 'history';
@@ -42,10 +41,6 @@ const styles = (theme: any) => ({
   aboutElectionLink: {
     fontSize: '1.8rem',
     marginTop: '1.8rem',
-  },
-  aboutElectionLinkIcon: {
-    position: 'relative',
-    top: '-1px',
   },
   aboutElectionLinkText: {
     paddingRight: '1.1rem',
@@ -217,12 +212,7 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
                         marginRight={true}
                         external={true}
                       >
-                        <span className={classes.aboutElectionLinkText}>
-                          <Trans>voterGroupSelect.aboutElectionLink</Trans>
-                        </span>
-                        <div className={classes.aboutElectionLinkIcon}>
-                          <Icon type="externalLink" />
-                        </div>
+                        <Trans>voterGroupSelect.aboutElectionLink</Trans>
                       </Link>
                     </div>
                   )}

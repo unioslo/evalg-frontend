@@ -73,17 +73,25 @@ export default {
     electionInfoShort: 'Election info',
     electionKey: 'Election key',
     electionKeyCreate: 'Create election key',
+    electionKeyCreateNew: 'Create new election key',
+    electionKeyConfirmNewModalHeader: 'Replace existing election key?',
+    electionKeyConfirmNewModalText:
+      'Are you sure you want to replace the existing election key? If you proceed, the existing election key cannot be used to count the votes.',
     electionKeyExists: 'A key exists for this election.',
     electionKeyGenerating: 'Generating election key',
-    electionKeyMissing: 'An election key is needed to count the votes.',
+    electionKeyMissing:
+      'No elecition key is created. An election key is needed to count the votes.',
     electionKeyReadMore: 'Read more about election keys',
     electionKeySave: 'Save key',
     electionKeyStatusCanReplace:
       'You can replace the old key with a new one as long as the election has not started.',
     electionKeyStatusKeepItSafe:
       'Make sure the key is stored somewhere safe. Without the key, votes cannot be counted.',
+    electionKeyCannotCreateReasonPublished: 'To create a new election key, you must first unpublish the election.',
+    electionKeyCannotCreateReasonHasStarted: 'It is not possible to create a new election key since the election has started.',
     electionNotStarted: 'The election has not started.',
     electionOpens: 'Election opens',
+    electionCancelled: 'The election is cancelled',
     electionStatus: 'Election status',
     electionType: 'Election type',
     elections: 'Elections',

@@ -64,7 +64,7 @@ type Props = {
   closeAction: Function,
   buttons: Array<ReactElement>,
   header: ReactElement | string,
-  hideButtonSeparator?: bool,
+  hideButtons?: bool,
   classes: Object
 }
 
@@ -82,7 +82,7 @@ const Modal = (props: Props) => {
           </h1>
           {props.children}
         </div>
-        {(props.hideButtonSeparator === 'undefined' || !props.hideButtonSeparator) &&
+        {(props.hideButtons === 'undefined' || !props.hideButtons) &&
           <div>
             <div className={classes.separator} />
             <div className={classes.buttons}>
