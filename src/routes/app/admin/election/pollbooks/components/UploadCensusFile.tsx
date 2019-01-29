@@ -21,7 +21,7 @@ import classNames from 'classnames';
 
 const styles = (theme: any) => ({
   modalSize: {
-    minHeight: '550px',
+    minHeight: '55rem',
   },
 
   hiddenFileInput: {
@@ -35,19 +35,19 @@ const styles = (theme: any) => ({
 
   size: {
     display: 'flex',
-    minWidth: '260px',
+    minWidth: '26rem',
   },
 
   button: {
-    width: '90px',
-    height: '40px',
+    width: '9rem',
+    height: '4rem',
     border: `0.3rem solid`,
-    borderRadius: '4px',
+    borderRadius: '0.4rem',
     cursor: 'pointer',
     display: 'block',
     objectFit: 'contain',
     fontFamily: 'Arial',
-    fontSize: '18px',
+    fontSize: '1.8rem',
     fontWeight: 'normal',
     fontStyle: 'normal',
     fontStretch: 'normal',
@@ -64,19 +64,19 @@ const styles = (theme: any) => ({
   },
 
   fileNameBox: {
-    width: '392px',
-    height: '40px',
+    width: '39.2rem',
+    height: '4rem',
     border: `0.2rem solid`,
-    borderRadius: '4px',
+    borderRadius: '0.4rem',
     borderColor: '#dfdddd',
     backgroundColor: '#ffffff',
-    marginRight: '20px',
-    paddingLeft: '12px',
+    marginRight: '2rem',
+    paddingLeft: '1.2rem',
   },
 
   formHeader: {
     fontFamily: 'Arial',
-    fontSize: '24px',
+    fontSize: '2.4rem',
     fontWeight: 'normal',
     fontStyle: 'normal',
     fontStretch: 'normal',
