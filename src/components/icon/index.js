@@ -2,7 +2,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
-import { auto } from 'async';
 
 const getIcon = (type: string, classes: Object, custom: any) => {
   switch (type) {
