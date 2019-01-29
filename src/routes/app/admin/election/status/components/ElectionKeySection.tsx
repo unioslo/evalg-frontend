@@ -11,7 +11,7 @@ import { InfoList, InfoListItem } from 'components/infolist';
 import { PageSection } from 'components/page';
 import Text from 'components/text';
 import Link from 'components/link';
-import CreateNewElectionKeyModal from './CreateNewElectionKeyModal';
+import CreateElectionKeyModal from './CreateElectionKeyModal';
 
 const createElectionKey = gql`
   mutation CreateElectionGroupKey($id: UUID!, $key: String!) {
@@ -181,8 +181,7 @@ class CreateElectionKey extends React.Component<PropsInternal, IState> {
           ) : (
             <>
               <Text marginBottom>
-                {/* <Trans>election.electionKeyExists</Trans> */}
-                Valgnøkkel ble opprettet av [brukernavn] [dato] kl
+                <Trans>election.electionKeyCreatedBy</Trans> [brukernavn] [dato] kl
                 [klokkeslett].
               </Text>
               <InfoList>
@@ -249,7 +248,7 @@ class CreateElectionKey extends React.Component<PropsInternal, IState> {
           </Modal>
         )}
         {this.state.showCreateKeyModal && (
-          <CreateNewElectionKeyModal
+          <CreateElectionKeyModal
             secretKey={this.state.secretKey}
             publicKey={this.state.publicKey}
             isWorking={this.state.isWorking}

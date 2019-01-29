@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
+import { Trans, translate, TranslationFunction } from 'react-i18next';
 import injectSheet from 'react-jss';
 
 import Modal from 'components/modal';
@@ -103,6 +103,7 @@ interface IProps {
   swsActivatePublicKey: SubtaskWorkingState;
   subtaskError: string | null;
   handleCloseModal: () => void;
+  t: TranslationFunction;
   classes: any;
 }
 
@@ -110,7 +111,7 @@ interface IState {
   showDetails: boolean;
 }
 
-class CreateNewElectionKeyModal extends React.Component<IProps, IState> {
+class CreateElectionKeyModal extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -127,6 +128,7 @@ class CreateNewElectionKeyModal extends React.Component<IProps, IState> {
       swsActivatePublicKey,
       subtaskError,
       handleCloseModal,
+      t,
       classes,
     } = this.props;
 
@@ -139,9 +141,15 @@ class CreateNewElectionKeyModal extends React.Component<IProps, IState> {
         <>
           <div className={classes.workingStateGrid}>
             <SubtaskWorkingStateIcon workingState={swsGenerateKeyPair} />
-            <p>Genererer nøkkelpar</p>
+            <p>
+              <Trans>election.createElectionKeyModalGeneratingPair</Trans>
+            </p>
             <SubtaskWorkingStateIcon workingState={swsActivatePublicKey} />
-            <p>Laster opp og aktiverer offentlig nøkkel</p>
+            <p>
+              <Trans>
+                election.createElectionKeyModalUploadingAndActivating
+              </Trans>
+            </p>
           </div>
           {subtaskError && (
             <p className={classes.errorMessage}>{subtaskError}</p>
@@ -151,14 +159,32 @@ class CreateNewElectionKeyModal extends React.Component<IProps, IState> {
               <>
                 <div className={classes.keyPairGrid}>
                   <p className="rowCaption">
-                    Hemmelig dekrypteringsnøkkel (valgnøkkel):
+                    <Trans>
+                      election.createElectionKeyModalDetailsSecretKey
+                    </Trans>
+                    :
                   </p>
                   <p>{secretKey}</p>
-                  <p className="rowCaption">Offentlig krypteringsnøkkel:</p>
+                  <p className="rowCaption">
+                    <Trans>
+                      election.createElectionKeyModalDetailsPublicKey
+                    </Trans>
+                    :
+                  </p>
                   <p>{publicKey}</p>
-                  <p className="rowCaption">Opprettet av:</p>
+                  <p className="rowCaption">
+                    <Trans>
+                      election.createElectionKeyModalDetailsCreatedBy
+                    </Trans>
+                    :
+                  </p>
                   <p>[ikke implementert]</p>
-                  <p className="rowCaption">Tidspunkt opprettet:</p>
+                  <p className="rowCaption">
+                    <Trans>
+                      election.createElectionKeyModalDetailsTimeCreated
+                    </Trans>
+                    :
+                  </p>
                   <p>[ikke implementert]</p>
                 </div>
               </>
@@ -171,7 +197,9 @@ class CreateNewElectionKeyModal extends React.Component<IProps, IState> {
                 }))
               }
             >
-              {this.state.showDetails ? 'Skjul detailer' : 'Vis detailer'}
+              {this.state.showDetails
+                ? t('general.hideDetails')
+                : t('general.showDetails')}
             </a>
           </div>
 
@@ -189,36 +217,34 @@ created-date`
             >
               <Button
                 disabled={isWorking || subtaskError}
-                text="Lagre valgnøkkel"
+                text={t('election.createElectionKeyModalSaveKey')}
               />
             </a>
           </ButtonContainer>
 
-          <p className={classes.importantInfoHeader}>Viktig informasjon:</p>
+          <p className={classes.importantInfoHeader}>
+            <Trans>election.createElectionKeyModalInfoListHeader</Trans>
+          </p>
           <InfoList>
             <InfoListItem bulleted>
-              Lagre filen med valgnøkkelen ved å trykke på knappen over. Lagre
-              filen på et sikkert sted hvor uvedkommende ikke har tilgang.
+              <Trans>election.createElectionKeyModalInfoBullet1</Trans>
             </InfoListItem>
             <InfoListItem bulleted>
-              Du må ta vare på valgnøkkelen frem til stemmene skal telles opp.{' '}
-              <strong>
-                Uten valgnøkkelen er det ikke mulig å telle opp stemmene
-              </strong>
-              , da stemmene ikke vil kunne dekrypteres. Vi anbefaler at du tar
-              en sikkerhetskopi av valgnøkkel-filen.
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: t('election.createElectionKeyModalInfoBullet2'),
+                }}
+              />
             </InfoListItem>
             <InfoListItem bulleted>
-              <strong>
-                Når du lukker denne dialogboksen, vil det IKKE være mulig å få
-                tak i valgnøkkelen igjen.
-              </strong>
-              &nbsp;Frem til valget starter kan du imidlertid generere en ny
-              valgnøkkel som erstatter den gamle.
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: t('election.createElectionKeyModalInfoBullet3'),
+                }}
+              />
             </InfoListItem>
             <InfoListItem bulleted>
-              Du kan endre filnavnet, men du må ikke endre innholdet i
-              valgnøkkelfilen.
+              <Trans>election.createElectionKeyModalInfoBullet4</Trans>
             </InfoListItem>
           </InfoList>
 
@@ -246,27 +272,27 @@ created-date`
                     component={CheckBoxRF}
                     type="checkbox"
                   />
-                  <span>
-                    Jeg har lagret filen med valgnøkkelen på et trygt sted.
-                  </span>
+                  <Trans>election.createElectionKeyModalCheckboxLabel1</Trans>
                   <Field
                     name="secondCheck"
                     component={CheckBoxRF}
                     type="checkbox"
                   />
-                  <span>
-                    Jeg forstår at valgnøkkelen ikke kan hentes etter at jeg
-                    lukker denne dialogboksen, og at valget ikke kan telles opp
-                    uten valgnøkkelen.
-                  </span>
+                  <Trans>election.createElectionKeyModalCheckboxLabel2</Trans>
                 </div>
                 <div className={classes.closeButtonAndFormValidationGrid}>
-                  <Button secondary action={handleSubmit} text="Lukk" />
+                  <Button
+                    secondary
+                    action={handleSubmit}
+                    text={t('general.close')}
+                  />
                   {!valid &&
                     ((touched as any).firstCheck || // To make the message come up when clicking the close button
                       (touched as any).secondCheck) && (
                       <span className={classes.checkboxFormValidationError}>
-                        Du må krysse av boksene over før du kan trykke «Lukk».
+                        <Trans>
+                          election.createElectionKeyModalCheckboxesValidationError
+                        </Trans>
                       </span>
                     )}
                 </div>
@@ -278,8 +304,6 @@ created-date`
     );
   }
 }
-
-export default injectSheet(styles)(CreateNewElectionKeyModal);
 
 const subtaskWorkingStateIconStyles = (theme: any) => ({
   iconContainer: {
@@ -335,3 +359,5 @@ const SubtaskWorkingStateIcon = injectSheet(subtaskWorkingStateIconStyles)(
     </>
   )
 );
+
+export default injectSheet(styles)(translate()(CreateElectionKeyModal));
