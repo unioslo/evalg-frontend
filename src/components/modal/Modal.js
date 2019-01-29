@@ -11,17 +11,17 @@ const styles = theme => ({
     zIndex: 9001,
     backgroundColor: 'white',
     margin: '0 auto',
-    maxWidth: '90%',
-    position: 'fixed'
+    width: '90%',
+    maxWidth: '1200px',
+    position: 'fixed',
   },
   h1: {
     fontSize: '3.6rem',
     fontWeight: 'normal',
-    lineHeight: '4.5rem',
+    marginBottom: '2rem',
     color: theme.colors.greyishBrown
   },
   content: {
-    lineHeight: '4.5rem',
     padding: '1rem 4rem 4rem 4rem'
   },
   buttons: {

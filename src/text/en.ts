@@ -72,7 +72,7 @@ export default {
     electionInfo: 'Election information',
     electionInfoShort: 'Election info',
     electionKey: 'Election key',
-    electionKeyCreate: 'Create key',
+    electionKeyCreate: 'Create election key',
     electionKeyExists: 'A key exists for this election.',
     electionKeyGenerating: 'Generating election key',
     electionKeyMissing: 'An election key is needed to count the votes.',

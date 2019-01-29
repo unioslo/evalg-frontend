@@ -8,12 +8,12 @@ const generateKeyPair = () => {
       const keyPair = {};
       const keys = nacl.crypto_box_keypair();
       keyPair.publicKey = nacl.to_hex(keys.boxPk);
-      keyPair.secretKey = nacl.to_hex(keys.boxSk)
+      keyPair.secretKey = nacl.to_hex(keys.boxSk);
       resolve(keyPair);
     });
   });
 };
 
 export const naCl = {
-  generateKeyPair
+  generateKeyPair,
 };

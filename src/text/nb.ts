@@ -74,7 +74,7 @@ export default {
     electionCloses: 'Valget stenger',
     electionInfo: 'Valginformasjon',
     electionKey: 'Valgnøkkel',
-    electionKeyCreate: 'Lag nøkkel',
+    electionKeyCreate: 'Opprett valgnøkkel',
     electionKeyExists: 'En valgnøkkel eksisterer for dette valget.',
     electionKeyGenerating: 'Genererer valgnøkkel',
     electionKeyMissing: 'En valgnøkkel er nødvendig for å telle opp stemmene.',
