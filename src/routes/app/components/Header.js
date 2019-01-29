@@ -3,10 +3,11 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import Link from 'components/link';
 import LanguageToggler from './LanguageToggler';
-import { Trans } from 'react-i18next';;
+import { Trans, translate } from 'react-i18next';
 import { DesktopMenu, DesktopMenuItem } from './DesktopMenu';
 import { MobileMenu, MobileMenuItem } from './MobileMenu';
 import { H1 } from 'components/text';
+import { Route, Switch } from 'react-router';
 
 const styles = theme => ({
   logoBar: {
@@ -14,35 +15,39 @@ const styles = theme => ({
     maxWidth: theme.appMaxWidth,
     padding: `0 ${theme.horizontalPadding}`,
     [theme.breakpoints.mdQuery]: {
-      padding: `0 ${theme.horizontalMdPadding}`
+      padding: `0 ${theme.horizontalMdPadding}`,
     },
   },
   logoBarWrapper: {
-    backgroundColor: theme.colors.black
+    backgroundColor: theme.colors.black,
   },
   logo: {
     background: 'url("/uio-app-logo-nb.png") left center no-repeat',
-    height: '4rem'
+    height: '4rem',
   },
   mainWrapper: {
-    backgroundColor: theme.headerMainAreaColor
+    backgroundColor: theme.headerMainAreaColor,
   },
   main: {
     margin: '0 auto',
     maxWidth: theme.appMaxWidth,
     height: '12rem',
-    padding: `2.5rem ${theme.horizontalPadding} 3rem ${theme.horizontalPadding}`,
+    padding: `2.5rem ${theme.horizontalPadding} 3rem ${
+      theme.horizontalPadding
+    }`,
     [theme.breakpoints.mdQuery]: {
-      padding: `2.5rem ${theme.horizontalMdPadding} 3rem ${theme.horizontalMdPadding}`
+      padding: `2.5rem ${theme.horizontalMdPadding} 3rem ${
+        theme.horizontalMdPadding
+      }`,
     },
   },
   mainRow: {
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   title: {
     fontWeight: 'bold',
-    color: theme.colors.white
+    color: theme.colors.white,
   },
   desc: {
     fontSize: '1.7rem',
@@ -50,16 +55,15 @@ const styles = theme => ({
     color: theme.colors.eggWhite,
     marginTop: '0.5rem',
     [theme.breakpoints.mdQuery]: {
-      fontSize: '2rem'
+      fontSize: '2rem',
     },
   },
-
-})
+});
 
 type Props = {
   logoutAction: Function,
-  classes: Object
-}
+  classes: Object,
+};
 
 const Header = ({ logoutAction, classes }: Props) => {
   return (
@@ -73,7 +77,24 @@ const Header = ({ logoutAction, classes }: Props) => {
         <div className={classes.main}>
           <div className={classes.mainRow}>
             <div className={classes.title}>
-              <H1>eValg</H1>
+              <Switch>
+                <Route
+                  path="/admin"
+                  render={() => (
+                    <Link to="/admin" inheritColor noUnderline>
+                      <H1>eValg</H1>
+                    </Link>
+                  )}
+                />
+                <Route
+                  path="/"
+                  render={() => (
+                    <Link to="/voter" inheritColor noUnderline>
+                      <H1>eValg</H1>
+                    </Link>
+                  )}
+                />
+              </Switch>
             </div>
             <MobileMenu>
               <MobileMenuItem>
@@ -90,12 +111,35 @@ const Header = ({ logoutAction, classes }: Props) => {
               </MobileMenuItem>
             </MobileMenu>
             <DesktopMenu>
-              <DesktopMenuItem>Forsiden</DesktopMenuItem>
-              <DesktopMenuItem><LanguageToggler /></DesktopMenuItem>
+              <DesktopMenuItem>
+                <Link inheritColor to="/">
+                  <Trans>general.frontPage</Trans>
+                </Link>
+              </DesktopMenuItem>
+              <DesktopMenuItem>
+                <LanguageToggler />
+              </DesktopMenuItem>
             </DesktopMenu>
           </div>
           <div className={classes.mainRow}>
-            <p className={classes.desc}>Elektronisk valg</p>
+            <Switch>
+              <Route
+                path="/admin"
+                render={() => (
+                  <p className={classes.desc}>
+                    <Trans>general.headerSubtitleAdmin</Trans>
+                  </p>
+                )}
+              />
+              <Route
+                path="/"
+                render={() => (
+                  <p className={classes.desc}>
+                    <Trans>general.headerSubtitleVoter</Trans>
+                  </p>
+                )}
+              />
+            </Switch>
             <DesktopMenu>
               <DesktopMenuItem>Zaphod Beeblebrox</DesktopMenuItem>
               <DesktopMenuItem>
@@ -108,7 +152,7 @@ const Header = ({ logoutAction, classes }: Props) => {
         </div>
       </div>
     </header>
-  )
+  );
 };
 
-export default injectSheet(styles)(Header);
+export default injectSheet(styles)(translate()(Header));

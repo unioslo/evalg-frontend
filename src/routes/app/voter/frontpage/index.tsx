@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import * as React from 'react';
 import { Query } from 'react-apollo';
-import { Trans } from 'react-i18next';
+import { Trans, translate } from 'react-i18next';
 
 import { Page, PageSection } from 'components/page';
 import VoterElections from './components/VoterElections';
@@ -72,4 +72,4 @@ const VoterFrontPage: React.SFC = () => (
   </Query>
 );
 
-export default VoterFrontPage;
+export default translate()(VoterFrontPage);
