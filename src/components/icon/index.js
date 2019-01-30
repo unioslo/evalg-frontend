@@ -272,25 +272,24 @@ const getIcon = (type: string, classes: Object, custom: any) => {
       );
     case 'closeMsgBox':
       return (
-      <svg
-        className={classes.closeMsgBox}
-        xmlns="http://www.w3.org/2000/svg"
-        width="26"
-        height="26"
-        viewBox="0 0 26 26"
-      >
-        <path
-          fill="#2294A8"
-          fillRule="evenodd"
-          d="M12.853 14.85l4.42 4.419 2.21-2.21-4.42-4.42
-            4.42-4.419-2.21-2.21-4.42 4.42-4.419-4.42-2.21 2.21
-            4.42 4.42-4.42 4.42 2.21 2.209 4.42-4.42zM3.84
-            21.516c-4.882-4.882-4.882-12.797 0-17.678 4.881-4.882
-            12.796-4.882 17.678 0 4.881 4.881 4.881 12.796 0 17.678-4.882
-            4.881-12.797 4.881-17.678 0z"
+        <svg
+          className={classes.closeMsgBox}
+          xmlns="http://www.w3.org/2000/svg"
+          width="26"
+          height="26"
+          viewBox="0 0 26 26"
+        >
+          <path
+            fill="#2294A8"
+            fillRule="evenodd"
+            d="M12.853 14.85l4.42 4.419 2.21-2.21-4.42-4.42
+              4.42-4.419-2.21-2.21-4.42 4.42-4.419-4.42-2.21 2.21
+              4.42 4.42-4.42 4.42 2.21 2.209 4.42-4.42zM3.84
+              21.516c-4.882-4.882-4.882-12.797 0-17.678 4.881-4.882
+              12.796-4.882 17.678 0 4.881 4.881 4.881 12.796 0 17.678-4.882
+              4.881-12.797 4.881-17.678 0z"
           />
-      </svg>
-
+        </svg>
       );
     case 'infoMsgBox':
       return (
@@ -308,6 +307,8 @@ const getIcon = (type: string, classes: Object, custom: any) => {
               0 .908 4.48.908 10s4.643 10 10.363 10zM10.235
               5h2.073v2h-2.073V5zm2.073 4v6h-2.073V9h2.073z"
           />
+        </svg>
+      );
     case 'checkMark':
       return (
         <svg
@@ -468,6 +469,7 @@ const styles = theme => ({
   closeMsgBox: {
     width: '26px',
     height: '26px',
+  },
   checkMark: {
     fill: 'green',
   },
