@@ -226,11 +226,13 @@ class PrefTeamElecCandTable extends React.Component<Props, State> {
                   <TableRow key={index} actionTextOnHover>
                     <TableCell>
                       <Text>{candidate.name}</Text>
-                      <Text size="small">
-                        <Link to={candidate.informationUrl} external>
-                          {candidate.informationUrl}
-                        </Link>
-                      </Text>
+                      {candidate.informationUrl &&
+                        <Text size="small">
+                          <Link to={candidate.informationUrl} external>
+                            {candidate.informationUrl}
+                          </Link>
+                        </Text>
+                      }
                     </TableCell>
                     <TableCell>
                       <Text>

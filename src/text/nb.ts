@@ -44,7 +44,7 @@ export default {
       'Merk at valget ikke kan starte før det oppfyller minimumskravene og publisering er godkjent av valgansvarlig.',
     announceElectionReadMore: 'Les mer om synliggjøring av valget',
     ballot: 'Stemmeseddel',
-    blockerMissingKey: 'Opptellingsnøkkel',
+    blockerMissingKey: 'Valgnøkkel',
     blockerStartBeforeEnd: 'Starttid må være før sluttid',
     blockerUnknown: 'Noe uventet er galt',
     canVote: 'Stemmerett',
@@ -77,18 +77,51 @@ export default {
     electionCloses: 'Valget stenger',
     electionInfo: 'Valginformasjon',
     electionKey: 'Valgnøkkel',
-    electionKeyCreate: 'Lag nøkkel',
-    electionKeyExists: 'En valgnøkkel eksisterer for dette valget.',
-    electionKeyGenerating: 'Genererer valgnøkkel',
-    electionKeyMissing: 'En valgnøkkel er nødvendig for å telle opp stemmene.',
+    electionKeyCreate: 'Opprett valgnøkkel',
+    electionKeyCreateNew: 'Opprett ny valgnøkkel',
+    electionKeyConfirmNewModalHeader: 'Erstatt eksisterende valgnøkkel?',
+    electionKeyConfirmNewModalText:
+      'Er du sikker på at du ønsker å erstatte den eksisterende valgnøkkelen med en ny? Den eksisterende valgnøkkelen vil ikke kunne brukes til å telle opp valget.',
+    createElectionKeyModalGeneratingPair: 'Genererer nøkkelpar',
+    createElectionKeyModalUploadingAndActivating:
+      'Laster opp og aktiverer offentlig nøkkel',
+    createElectionKeyModalDetailsSecretKey:
+      'Hemmelig dekrypteringsnøkkel (valgnøkkel)',
+    createElectionKeyModalDetailsPublicKey: 'Offentlig krypteringsnøkkel',
+    createElectionKeyModalDetailsCreatedBy: 'Opprettet av',
+    createElectionKeyModalDetailsTimeCreated: 'Tidspunkt opprettet',
+    createElectionKeyModalSaveKey: 'Lagre valgnøkkel',
+    createElectionKeyModalInfoListHeader: 'Viktig informasjon:',
+    createElectionKeyModalInfoBullet1:
+      'Lagre filen med valgnøkkelen ved å trykke på knappen over. Lagre filen på et sikkert sted hvor uvedkommende ikke har tilgang.',
+    createElectionKeyModalInfoBullet2:
+      'Du må ta vare på valgnøkkelen frem til stemmene skal telles opp. <strong>Uten valgnøkkelen er det ikke mulig å telle opp stemmene</strong>, da stemmene ikke vil kunne dekrypteres. Det anbefales å ta en sikkerhetskopi av valgnøkkel-filen.',
+    createElectionKeyModalInfoBullet3:
+      '<strong>Når du lukker denne dialogboksen, vil det IKKE være mulig å få tak i valgnøkkelen igjen.</strong> Frem til valget starter kan du imidlertid generere en ny valgnøkkel som erstatter den gamle.',
+    createElectionKeyModalInfoBullet4:
+      'Du kan endre filnavnet, men du må ikke endre innholdet i valgnøkkelfilen.',
+    createElectionKeyModalCheckboxLabel1:
+      'Jeg har lagret filen med valgnøkkelen på et trygt sted.',
+    createElectionKeyModalCheckboxLabel2:
+      'Jeg forstår at valgnøkkelen ikke kan hentes etter at jeg lukker denne dialogboksen, og at valget ikke kan telles opp uten valgnøkkelen.',
+    createElectionKeyModalCheckboxesValidationError:
+      'Du må krysse av boksene over før du kan trykke «Lukk».',
+    electionKeyMissing:
+      'Valgnøkkel er ikke opprettet. En valgnøkkel er nødvendig for å telle opp stemmene.',
+    electionKeyCreatedBy: 'Valgnøkkel ble opprettet av',
     electionKeyReadMore: 'Les mer om nøkkelhåndtering',
     electionKeySave: 'Lagre nøkkel',
     electionKeyStatusCanReplace:
       'Frem til valget har startet vil du fortsatt ha mulighet til å lage en ny nøkkel som erstatter den gamle.',
     electionKeyStatusKeepItSafe:
       'Sørg for at nøkkelen er lagret et sikkert sted. Uten nøkkelen kan ikke stemmene telles opp.',
+    electionKeyCannotCreateReasonPublished:
+      'For å opprette ny valgnøkkel må du først avpublisere valget.',
+    electionKeyCannotCreateReasonHasStarted:
+      'Det er ikke mulig å opprette ny valgnøkkel siden valget har begynt.',
     electionNotStarted: 'Valget har ikke startet.',
     electionOpens: 'Valget åpner',
+    electionCancelled: 'Valget er avlyst',
     electionStatus: 'Valgstatus',
     electionType: 'Valgordning',
     elections: 'Valg',
@@ -214,6 +247,7 @@ export default {
     group: 'Gruppe',
     headerSubtitleVoter: 'Elektronisk valg',
     headerSubtitleAdmin: 'Elektronisk valg - Administrasjon',
+    hideDetails: 'Skjul detaljer',
     logout: 'Logg ut',
     male: 'Mann',
     menu: 'Meny',
@@ -232,6 +266,7 @@ export default {
     saving: 'Lagrer',
     select: 'Velg',
     frontPage: 'Forsiden',
+    showDetails: 'Vis detaljer',
     timePlaceHolder: 'tt:mm',
     title: 'eValg',
     to: 'til',

@@ -35,6 +35,16 @@ const styles = theme => ({
       justifyContent: 'flex-start'
     }
   },
+  center: {
+    [theme.breakpoints.mdQuery]: {
+      justifyContent: 'center'
+    }
+  },
+  alignRight: {
+    [theme.breakpoints.mdQuery]: {
+      justifyContent: 'flex-end'
+    }
+  },
   smallTopMargin: {
     marginTop: '1rem',
     [theme.breakpoints.mdQuery]: {
@@ -51,6 +61,8 @@ const ButtonContainer = (props: Props) => {
   const cls = classNames({
     [classes.btnContainer]: true,
     [classes.alignLeft]: props.alignLeft,
+    [classes.center]: props.center,
+    [classes.alignRight]: props.alignRight,
     [classes.noTopMargin]: props.noTopMargin,
     [classes.smallTopMargin]: props.smlTopMargin
   });

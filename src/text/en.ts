@@ -75,18 +75,51 @@ export default {
     electionInfo: 'Election information',
     electionInfoShort: 'Election info',
     electionKey: 'Election key',
-    electionKeyCreate: 'Create key',
-    electionKeyExists: 'A key exists for this election.',
-    electionKeyGenerating: 'Generating election key',
-    electionKeyMissing: 'An election key is needed to count the votes.',
+    electionKeyCreate: 'Create election key',
+    electionKeyCreateNew: 'Create new election key',
+    electionKeyConfirmNewModalHeader: 'Replace existing election key?',
+    electionKeyConfirmNewModalText:
+      'Are you sure you want to replace the existing election key? If you proceed, the existing election key cannot be used to count the votes.',
+    createElectionKeyModalGeneratingPair: 'Generating key pair',
+    createElectionKeyModalUploadingAndActivating:
+      'Uploading and activating public key',
+    createElectionKeyModalDetailsSecretKey:
+      'Secret decryption key (election key)',
+    createElectionKeyModalDetailsPublicKey: 'Public encryption key',
+    createElectionKeyModalDetailsCreatedBy: 'Created by',
+    createElectionKeyModalDetailsTimeCreated: 'Time created',
+    createElectionKeyModalSaveKey: 'Save election key',
+    createElectionKeyModalInfoListHeader: 'Important information:',
+    createElectionKeyModalInfoBullet1:
+      'Save the file with the election key by clicking the button above. Save the file on a secure location not accessible to others.',
+    createElectionKeyModalInfoBullet2:
+      'You must keep the election key and have it available when the votes will be counted. <strong>Without the election key it will not be possible to count the votes</strong>, since the votes will be encrypted. Keeping a backup of the election key file is recommended.',
+    createElectionKeyModalInfoBullet3:
+      '<strong>When you close this dialog, it will NOT be possible to get hold of the election key again.</strong> However, until the election has stared, it is possible to generate a new election key.',
+    createElectionKeyModalInfoBullet4:
+      'You can change the filename of the election key file, but you must not change the file contents.',
+    createElectionKeyModalCheckboxLabel1:
+      "I've saved the file with the election key somewhere safe.",
+    createElectionKeyModalCheckboxLabel2:
+      'I understand that the election key can will not be available for download after I close this diaolog, and that the election votes can not be counted without the election key.',
+    createElectionKeyModalCheckboxesValidationError:
+      'You must check the boxes above before clicking «Close».',
+    electionKeyMissing:
+      'No elecition key is created. An election key is needed to count the votes.',
+    electionKeyCreatedBy: 'Election key was created by',
     electionKeyReadMore: 'Read more about election keys',
     electionKeySave: 'Save key',
     electionKeyStatusCanReplace:
       'You can replace the old key with a new one as long as the election has not started.',
     electionKeyStatusKeepItSafe:
       'Make sure the key is stored somewhere safe. Without the key, votes cannot be counted.',
+    electionKeyCannotCreateReasonPublished:
+      'To create a new election key, you must first unpublish the election.',
+    electionKeyCannotCreateReasonHasStarted:
+      'It is not possible to create a new election key since the election has started.',
     electionNotStarted: 'The election has not started.',
     electionOpens: 'Election opens',
+    electionCancelled: 'The election is cancelled',
     electionStatus: 'Election status',
     electionType: 'Election type',
     elections: 'Elections',
@@ -207,6 +240,7 @@ export default {
     group: 'Group',
     headerSubtitleVoter: 'Digital Elections',
     headerSubtitleAdmin: 'Digital Elections - Administration',
+    hideDetails: 'Hide details',
     logout: 'Log out',
     male: 'Male',
     menu: 'Menu',
@@ -225,6 +259,7 @@ export default {
     saving: 'Saving',
     select: 'Select',
     frontPage: 'Front page',
+    showDetails: 'Show details',
     timePlaceHolder: 'hh:mm',
     title: 'eValg',
     to: 'to',

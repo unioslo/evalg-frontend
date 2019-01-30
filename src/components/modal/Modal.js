@@ -11,13 +11,14 @@ const styles = theme => ({
     zIndex: 9001,
     backgroundColor: 'white',
     margin: '0 auto',
-    maxWidth: '90%',
-    position: 'fixed'
+    width: '90%',
+    maxWidth: '1200px',
+    position: 'fixed',
   },
   h1: {
     fontSize: '3.6rem',
     fontWeight: 'normal',
-    lineHeight: '4.5rem',
+    marginBottom: '2rem',
     color: theme.colors.greyishBrown
   },
   content: {
@@ -63,7 +64,7 @@ type Props = {
   closeAction: Function,
   buttons: Array<ReactElement>,
   header: ReactElement | string,
-  hideButtonSeparator?: bool,
+  hideButtons?: bool,
   classes: Object
 }
 
@@ -81,7 +82,7 @@ const Modal = (props: Props) => {
           </h1>
           {props.children}
         </div>
-        {(props.hideButtonSeparator === 'undefined' || !props.hideButtonSeparator) &&
+        {(props.hideButtons === 'undefined' || !props.hideButtons) &&
           <div>
             <div className={classes.separator} />
             <div className={classes.buttons}>
