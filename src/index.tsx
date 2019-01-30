@@ -1,3 +1,5 @@
+import 'react-app-polyfill/ie11';
+
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
