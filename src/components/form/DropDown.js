@@ -111,8 +111,7 @@ const styles = theme => ({
   input: {
     backgroundImage: 'url("/dropdownarrow.svg")',
     backgroundPosition: 'right 13px top 50%',
-    backgroundRepeatX: 'no-repeat',
-    backgroundRepeatY: 'no-repeat',
+    backgroundRepeat: 'no-repeat',
     backgroundSize: '14px 9px',
   }
 });
