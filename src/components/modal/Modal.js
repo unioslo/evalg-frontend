@@ -11,7 +11,7 @@ const styles = theme => ({
     zIndex: 9001,
     backgroundColor: 'white',
     margin: '0 auto',
-    width: '90%',
+    //width: '90%',
     maxWidth: '1200px',
     position: 'fixed',
   },

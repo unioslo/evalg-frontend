@@ -324,6 +324,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
 
           const voters: IVoter[] = [];
           const pollBookDict = {};
+          const pollBookRadioButtonOptions = {}
           const pollBookOptions: DropDownOption[] = [];
 
           elections.forEach((el: Election) => {
@@ -336,6 +337,11 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                 name: pollBook.name[lang],
                 value: pollBook.id,
               });
+              pollBookRadioButtonOptions[pollBook.id] = {
+                  name: pollBook.name,
+                  value: pollBook.id,
+                  active: el.active,
+              }
             });
           });
           const pollbookButtons: JSX.Element[] = [];
@@ -635,7 +641,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                   <UploadCensusFileModal
                     header={<Trans>census.uploadCensusFileHeader</Trans>}
                     closeAction={this.closeUploadCensusFileModal}
-                    pollBooks={pollBookDict}
+                    pollBooks={pollBookRadioButtonOptions}
                     groupId={this.props.groupId}
                     refetchData={refetch}
                   />
