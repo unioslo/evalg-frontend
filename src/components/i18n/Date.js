@@ -1,6 +1,7 @@
 /* @flow */
 import * as React from 'react';
 import { translate, Trans } from 'react-i18next';
+import moment from 'moment-timezone';
 
 type Props = {
   dateTime: string,
@@ -19,7 +20,7 @@ const Date = (props: Props) => {
   if (!props.dateTime) {
     return <b><Trans>election.valueNotSet</Trans></b>
   }
-  const date = props.dateTime.substring(0, 10);
+  const date = moment.tz(props.dateTime, "Europe/Oslo").format("YYYY-MM-DD");
   return (
     <span>{formatter(date.split('-'), props.i18n.language)}</span>
   );

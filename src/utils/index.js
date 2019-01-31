@@ -1,5 +1,6 @@
 /* @flow */
 import { makeElObj, makeElObjData } from './makeElectionObjects';
+var moment = require('moment-timezone');
 
 import {
   isObjEmpty,
@@ -10,13 +11,19 @@ import {
   allEqual,
   equalValues,
   findObjIndex,
-  objsEqual
+  objsEqual,
 } from './helpers';
 
-const dateFromDT = (dateTime: string) => dateTime.substring(0, 10);
-const timeFromDT = (dateTime: string) => dateTime.substring(11, 16);
+const dateFromDT = (dateTime: string) =>
+  moment
+    .tz(dateTime, 'Europe/Oslo')
+    .format("YYYY-MM-DD");
+const timeFromDT = (dateTime: string) =>
+  moment
+    .tz(dateTime, 'Europe/Oslo')
+    .format("HH:mm");
 const DTFromDateAndTime = (date: string, time: string) =>
-  `${date}T${time}`;
+  moment.tz(`${date}T${time}`, 'Europe/Oslo').format();
 
 export {
   objPropsToArray,
@@ -32,5 +39,5 @@ export {
   objsEqual,
   dateFromDT,
   timeFromDT,
-  DTFromDateAndTime
-}
+  DTFromDateAndTime,
+};

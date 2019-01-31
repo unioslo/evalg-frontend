@@ -1,6 +1,7 @@
 /* @flow */
 import * as React from 'react';
-import DatePicker from 'react-datepicker';
+import DatePicker, { registerLocale } from 'react-datepicker';
+import nb from 'date-fns/locale/nb';
 import moment from 'moment';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
@@ -83,6 +84,7 @@ class DateInput extends React.Component<Props, State> {
     this.state = {
       hasFocus: false
     }
+    registerLocale("nb", nb);
   }
 
   componentDidMount() {
@@ -106,7 +108,7 @@ class DateInput extends React.Component<Props, State> {
     if (!value) {
       return this.props.onChange(null);
     }
-    this.props.onChange(value.format('YYYY-MM-DD'));
+    this.props.onChange(moment(value).format('YYYY-MM-DD'));
   }
 
   handleOnFocus() {
@@ -115,9 +117,11 @@ class DateInput extends React.Component<Props, State> {
   }
   render() {
     const {
-      value, lang, name, label, small, error, classes
+      value, name, label, small, error, classes
     } = this.props;
-    const momentValue = value ? moment(value) : value;
+    const lang = this.props.i18n.language;
+    
+    const dateValue = value ? new Date(value) : value;
     const inputClassNames = classNames({
       [classes.dateInput]: true,
       [classes.small]: small,
@@ -138,9 +142,10 @@ class DateInput extends React.Component<Props, State> {
         }
         <DatePicker
           className={inputClassNames}
-          selected={momentValue}
+          selected={dateValue}
           onChange={this.handleOnChange.bind(this)}
           locale={lang}
+          dateFormat={lang === "en" ? "yyyy.MM.dd" : "dd.MM.yyyy"}
           name={name}
           id={name}
           onFocus={this.handleOnFocus.bind(this)}
