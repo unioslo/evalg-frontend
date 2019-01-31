@@ -14,6 +14,7 @@ import Button, {
   ButtonContainer,
 } from 'components/button';
 import { DropDownRF, FormButtons } from 'components/form';
+import Link from 'components/link';
 import { MsgBox } from 'components/msgbox';
 import { ConfirmModal } from 'components/modal';
 import { Page, PageSection } from 'components/page';
@@ -370,6 +371,11 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
 
               <div onClick={this.showUploadCensusFileModal}>
                 <ActionButton text={t('census.uploadCensusFileButton')} />
+              </div>
+
+              <div>
+                <Trans>census.aboutCensusFiles</Trans>
+                <Link external to="https://www.uio.no/for-ansatte/arbeidsstotte/arrangere-valg/" />
               </div>
 
               </PageSection>

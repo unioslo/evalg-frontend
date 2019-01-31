@@ -3,6 +3,7 @@ export default {
     infoLinkText: 'Mer om kandidaten',
   },
   census: {
+    aboutCensusFiles: 'For informasjon om manntallsfiler se',
     addPerson: 'Legg til person',
     addPersonHelpText:
       'Du kan også legge inn flere personer separert med komma',
