@@ -16,12 +16,12 @@ const valueNotSet = (
 
 const mandatePeriodSingle = (election: Election) => {
   const startDate = election.mandatePeriodStart ? (
-    <Date dateTime={election.mandatePeriodStart} />
+    <Date dateTime={election.mandatePeriodStart} longDate />
   ) : (
     valueNotSet
   );
   const endDate = election.mandatePeriodEnd ? (
-    <Date dateTime={election.mandatePeriodEnd} />
+    <Date dateTime={election.mandatePeriodEnd} longDate />
   ) : (
     valueNotSet
   );
@@ -39,9 +39,9 @@ const mandatePeriodMultiple = (elections: Array<Election>, lang: string) => {
         return (
           <InfoListItem key={index} bulleted>
             {election.name[lang]} -&nbsp;
-            <Date dateTime={election.mandatePeriodStart} />
+            <Date dateTime={election.mandatePeriodStart} longDate />
             &nbsp;<Trans>general.to</Trans>&nbsp;
-            <Date dateTime={election.mandatePeriodEnd} />
+            <Date dateTime={election.mandatePeriodEnd} longDate />
           </InfoListItem>
         );
       })}

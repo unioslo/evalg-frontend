@@ -64,7 +64,7 @@ const VoterElectionsTable = (props: Props) => {
               </TableCell>
               <TableCell>
                 <Text>
-                  <Date dateTime={election.start} />
+                  <Date dateTime={election.start} longDate />
                 </Text>
                 <Text size="small">
                   <Time dateTime={election.start} />
@@ -72,7 +72,7 @@ const VoterElectionsTable = (props: Props) => {
               </TableCell>
               <TableCell>
                 <Text>
-                  <Date dateTime={election.end} />
+                  <Date dateTime={election.end} longDate />
                 </Text>
                 <Text size="small">
                   <Time dateTime={election.end} />

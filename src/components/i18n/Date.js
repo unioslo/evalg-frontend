@@ -1,28 +1,25 @@
 /* @flow */
 import * as React from 'react';
 import { translate, Trans } from 'react-i18next';
+import moment from 'moment-timezone';
+import 'moment/locale/nb';
+import { appTimezone } from 'appConfig';
 
 type Props = {
   dateTime: string,
-  i18n: Object
-};
-
-const formatter = (vals, lang) => {
-  const year = vals[0];
-  const month = vals[1];
-  const day = vals[2];
-  if (lang === 'en') { return `${year}.${month}.${day}`; }
-  else { return `${day}.${month}.${year}`; }
+  longDate: boolean,
+  i18n: Object,
 };
 
 const Date = (props: Props) => {
   if (!props.dateTime) {
-    return <b><Trans>election.valueNotSet</Trans></b>
+    return <Trans>election.valueNotSet</Trans>;
   }
-  const date = props.dateTime.substring(0, 10);
-  return (
-    <span>{formatter(date.split('-'), props.i18n.language)}</span>
-  );
+  moment.locale(props.i18n.language);
+  const date = props.longDate
+    ? moment.tz(props.dateTime, appTimezone).format('LL')
+    : moment.tz(props.dateTime, appTimezone).format('L');
+  return <span>{date}</span>;
 };
 
 export default translate()(Date);

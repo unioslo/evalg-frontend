@@ -42,12 +42,12 @@ const VoterElectionsListItem = (props: ListItemProps) => {
       <div>
         <div>
           <Trans>election.opens</Trans>:&nbsp;
-          <Date dateTime={election.start} />&nbsp;
+          <Date dateTime={election.start} longDate />&nbsp;
           <Time dateTime={election.start} />
         </div>
         <div>
           <Trans>election.closes</Trans>:&nbsp;
-          <Date dateTime={election.end} />&nbsp;
+          <Date dateTime={election.end} longDate />&nbsp;
           <Time dateTime={election.end} />
         </div>
         <div>

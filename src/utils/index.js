@@ -1,5 +1,7 @@
 /* @flow */
 import { makeElObj, makeElObjData } from './makeElectionObjects';
+import moment from 'moment-timezone';
+import { appTimezone } from 'appConfig';
 
 import {
   isObjEmpty,
@@ -10,13 +12,17 @@ import {
   allEqual,
   equalValues,
   findObjIndex,
-  objsEqual
+  objsEqual,
 } from './helpers';
 
-const dateFromDT = (dateTime: string) => dateTime.substring(0, 10);
-const timeFromDT = (dateTime: string) => dateTime.substring(11, 16);
-const DTFromDateAndTime = (date: string, time: string) =>
-  `${date}T${time}`;
+const ISODateTimeToTimeZoneAdjustedISODate = (dateTime: string) =>
+  moment.tz(dateTime, appTimezone).format('YYYY-MM-DD');
+
+const ISODateTimeToTimeZoneAdjustedTime = (dateTime: string) =>
+  moment.tz(dateTime, appTimezone).format('HH:mm');
+
+const DateAndTimeToISODTWithTimeZonedOffset = (date: string, time: string) =>
+  moment.tz(`${date}T${time}`, appTimezone).toISOString();
 
 export {
   objPropsToArray,
@@ -30,7 +36,7 @@ export {
   equalValues,
   findObjIndex,
   objsEqual,
-  dateFromDT,
-  timeFromDT,
-  DTFromDateAndTime
-}
+  ISODateTimeToTimeZoneAdjustedISODate,
+  ISODateTimeToTimeZoneAdjustedTime,
+  DateAndTimeToISODTWithTimeZonedOffset,
+};

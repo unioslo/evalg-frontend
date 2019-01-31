@@ -1,5 +1,6 @@
 export const authEnabled = false;
 export const cryptoVariant = 'nacl';
+export const appTimezone = "Europe/Oslo";
 
 /* Enable or dissable a simple test warning message */
 export const testWarning = false;

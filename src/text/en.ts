@@ -185,6 +185,7 @@ export default {
     unpublishElectionModalInfo:
       'The election will not start at the specified time.',
     valueNotSet: 'not set',
+    voteNow: 'Vote now',
     voterContactInfo: 'Voter contact info',
     voterContactInfoMultiple: 'Specific contact info each voter group',
     voterContactInfoShared: 'Shared contact info for all voter groups',
