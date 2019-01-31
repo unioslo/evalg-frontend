@@ -1,7 +1,11 @@
 import * as React from 'react';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
-import { dateFromDT, timeFromDT, DTFromDateAndTime } from 'utils';
+import {
+  ISODateTimeToTimeZoneAdjustedISODate,
+  ISODateTimeToTimeZoneAdjustedTime,
+  DateAndTimeToISODTWithTimeZonedOffset,
+} from 'utils';
 
 import VotingPeriodForm from './VotingPeriodForm';
 import VotingPeriodValues from './VotingPeriodValues';
@@ -35,10 +39,10 @@ const buildInitialValues = (elecs: Election[]) => {
   const elections = elecs.map(e => ({
     id: e.id,
     name: e.name,
-    startDate: dateFromDT(e.start),
-    startTime: timeFromDT(e.start),
-    endDate: dateFromDT(e.end),
-    endTime: timeFromDT(e.end),
+    startDate: ISODateTimeToTimeZoneAdjustedISODate(e.start),
+    startTime: ISODateTimeToTimeZoneAdjustedTime(e.start),
+    endDate: ISODateTimeToTimeZoneAdjustedISODate(e.end),
+    endTime: ISODateTimeToTimeZoneAdjustedTime(e.end),
   }));
   let hasMultipleTimes = false;
   if (elecs.length > 1) {
@@ -58,8 +62,8 @@ const buildInitialValues = (elecs: Election[]) => {
 const buildSubmitPayload = (submitValues: any): IVotingPeriodSettings => ({
   elections: submitValues.elections.map((e: any) => ({
     id: e.id,
-    start: DTFromDateAndTime(e.startDate, e.startTime),
-    end: DTFromDateAndTime(e.endDate, e.endTime),
+    start: DateAndTimeToISODTWithTimeZonedOffset(e.startDate, e.startTime),
+    end: DateAndTimeToISODTWithTimeZonedOffset(e.endDate, e.endTime),
   })),
   hasMultipleTimes: submitValues.hasMultipleTimes,
 });

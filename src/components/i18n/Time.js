@@ -2,25 +2,26 @@
 import * as React from 'react';
 import { translate, Trans } from 'react-i18next';
 import moment from 'moment-timezone';
+import { appTimezone } from 'appConfig';
 
 type Props = {
   dateTime: string,
-  i18n: Object
+  i18n: Object,
 };
 
 const prefixes = {
   en: 'at',
-  nb: 'kl'
+  nb: 'kl',
 };
 
 const Time = (props: Props) => {
-  if (!props.dateTime) { return 'Not set' };
-  const time = moment.tz(props.dateTime, "Europe/Oslo").format("HH:mm");
+  if (!props.dateTime) {
+    return <Trans>election.valueNotSet</Trans>;
+  }
+  moment.locale(props.i18n.language === 'en' ? 'en' : 'nb');
   const lang = props.i18n.language;
-  const hrMinValues = time.split(':');
-  return (
-    <span>{`${prefixes[lang]} ${hrMinValues[0]}.${hrMinValues[1]}`}</span>
-  );
-}
+  const time = moment.tz(props.dateTime, appTimezone).format('LT');
+  return <span>{`${prefixes[lang]} ${time}`}</span>;
+};
 
 export default translate()(Time);

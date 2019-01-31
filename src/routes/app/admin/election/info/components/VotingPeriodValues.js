@@ -2,7 +2,7 @@
 import * as React from 'react';
 import {translate, Trans} from 'react-i18next';
 
-import { getDate, getTime } from 'components/i18n';
+import { Time, Date } from 'components/i18n';
 import Text from 'components/text';
 import {
   Table,
@@ -44,18 +44,18 @@ const MultipleVotingPeriods = (props) => {
               </TableCell>
               <TableCell>
                 <Text>
-                  { getDate(e.start) }
+                  <Date dateTime={e.start} longDate />
                 </Text>
                 <Text size="small">
-                  { getTime(e.start) }
+                  <Time dateTime={e.start} />
                 </Text>
               </TableCell>
               <TableCell>
                 <Text>
-                  { getDate(e.end) }
+                  <Date dateTime={e.end} longDate />
                 </Text>
                 <Text size="small">
-                  { getTime(e.end) }
+                  <Time dateTime={e.end} />
                 </Text>
               </TableCell>
             </TableRow>
@@ -73,13 +73,13 @@ const SingleVotingPeriod = (props) => {
       <InfoListItem>
         <Trans>election.electionOpens</Trans>:&nbsp;
         <Text bold inline>
-          { getDate(elections[0].start) } { getTime(elections[0].start) }
+          <Date dateTime={elections[0].start} longDate />{' '}<Time dateTime={elections[0].start} />
         </Text>
       </InfoListItem>
       <InfoListItem>
         <Trans>election.electionCloses</Trans>:&nbsp;
         <Text bold inline>
-          { getDate(elections[0].end) } { getTime(elections[0].end) }
+          <Date dateTime={elections[0].end} longDate />{' '}<Time dateTime={elections[0].end} />
         </Text>
       </InfoListItem>
     </InfoList>
