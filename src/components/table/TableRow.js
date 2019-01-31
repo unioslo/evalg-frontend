@@ -11,6 +11,7 @@ type Props = {
   noHoverBg?: boolean,
   tall?: boolean,
   verticalPadding?: boolean,
+  onClick: Function,
   classes: Object
 }
 
@@ -21,7 +22,8 @@ const styles = theme => ({
     height: '6rem',
     borderBottom: `1px solid ${theme.tableCandidateBottomBorderColor}`,
     '&:hover': {
-      backgroundColor: theme.tableRowHoverColor
+      backgroundColor: theme.tableRowHoverColor,
+      cursor: 'pointer',
     }
   },
   actionTextOnhover: {
@@ -69,7 +71,7 @@ const TableRow = (props: Props) => {
     [classes.tall]: props.tall
   });
   return (
-    <tr className={cls}>
+    <tr className={cls} onClick={props.onClick}>
       {props.children}
     </tr>
   )

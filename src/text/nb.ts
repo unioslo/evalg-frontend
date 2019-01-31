@@ -91,13 +91,13 @@ export default {
     createElectionKeyModalDetailsCreatedBy: 'Opprettet av',
     createElectionKeyModalDetailsTimeCreated: 'Tidspunkt opprettet',
     createElectionKeyModalSaveKey: 'Lagre valgnøkkel',
-    createElectionKeyModalInfoListHeader: 'Viktig informasjon:',
+    createElectionKeyModalInfoListHeader: 'Viktig om valgnøkkelen:',
     createElectionKeyModalInfoBullet1:
       'Lagre filen med valgnøkkelen ved å trykke på knappen over. Lagre filen på et sikkert sted hvor uvedkommende ikke har tilgang.',
     createElectionKeyModalInfoBullet2:
-      'Du må ta vare på valgnøkkelen frem til stemmene skal telles opp. <strong>Uten valgnøkkelen er det ikke mulig å telle opp stemmene</strong>, da stemmene ikke vil kunne dekrypteres. Det anbefales å ta en sikkerhetskopi av valgnøkkel-filen.',
+      '<strong>Uten valgnøkkelen er det ikke mulig å telle opp stemmene</strong>. Det anbefales å ta en sikkerhetskopi av valgnøkkel-filen.',
     createElectionKeyModalInfoBullet3:
-      '<strong>Når du lukker denne dialogboksen, vil det IKKE være mulig å få tak i valgnøkkelen igjen.</strong> Frem til valget starter kan du imidlertid generere en ny valgnøkkel som erstatter den gamle.',
+      '<strong>Etter at du har lukket denne dialogboksen, vil det ikke være mulig å få tak i valgnøkkelen igjen.</strong> Frem til valget starter kan du imidlertid generere en ny valgnøkkel som erstatter den gamle.',
     createElectionKeyModalInfoBullet4:
       'Du kan endre filnavnet, men du må ikke endre innholdet i valgnøkkelfilen.',
     createElectionKeyModalCheckboxLabel1:

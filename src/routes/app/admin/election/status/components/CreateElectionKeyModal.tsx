@@ -227,10 +227,7 @@ created-date`
           </p>
           <InfoList>
             <InfoListItem bulleted>
-              <Trans>election.createElectionKeyModalInfoBullet1</Trans>
-            </InfoListItem>
-            <InfoListItem bulleted>
-              <span
+            <span
                 dangerouslySetInnerHTML={{
                   __html: t('election.createElectionKeyModalInfoBullet2'),
                 }}
@@ -242,9 +239,6 @@ created-date`
                   __html: t('election.createElectionKeyModalInfoBullet3'),
                 }}
               />
-            </InfoListItem>
-            <InfoListItem bulleted>
-              <Trans>election.createElectionKeyModalInfoBullet4</Trans>
             </InfoListItem>
           </InfoList>
 

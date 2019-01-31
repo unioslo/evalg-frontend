@@ -89,13 +89,13 @@ export default {
     createElectionKeyModalDetailsCreatedBy: 'Created by',
     createElectionKeyModalDetailsTimeCreated: 'Time created',
     createElectionKeyModalSaveKey: 'Save election key',
-    createElectionKeyModalInfoListHeader: 'Important information:',
+    createElectionKeyModalInfoListHeader: 'Important about the election key:',
     createElectionKeyModalInfoBullet1:
       'Save the file with the election key by clicking the button above. Save the file on a secure location not accessible to others.',
     createElectionKeyModalInfoBullet2:
-      'You must keep the election key and have it available when the votes will be counted. <strong>Without the election key it will not be possible to count the votes</strong>, since the votes will be encrypted. Keeping a backup of the election key file is recommended.',
+      '<strong>Without the election key it will not be possible to count the votes</strong>. Keeping a backup of the election key file is recommended.',
     createElectionKeyModalInfoBullet3:
-      '<strong>When you close this dialog, it will NOT be possible to get hold of the election key again.</strong> However, until the election has stared, it is possible to generate a new election key.',
+      '<strong>After you have closed this dialog, it will not be possible to get hold of the election key again.</strong> However, until the election has stared, it is possible to generate a new election key.',
     createElectionKeyModalInfoBullet4:
       'You can change the filename of the election key file, but you must not change the file contents.',
     createElectionKeyModalCheckboxLabel1:
