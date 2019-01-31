@@ -65,28 +65,17 @@ const buildPayload = (values: any) => {
     hasMultipleMandateTimes,
     elections,
   } = values;
-
-  // TODO: This is a bugfix. It would be better if the format of these date
-  // values was fixed before leaving the form component.
-  const dateToDateTimeFormat = (dateString: string) =>
-    dateString.search(/T\d\d:\d\d:\d\d$/g) > 0
-      ? dateString
-      : dateString + 'T00:00:00';
-
+  
   return {
     ...values,
     elections: elections.map((e: ElectionVoterInfoInput) => ({
       id: e.id,
-      mandatePeriodStart: dateToDateTimeFormat(
-        hasMultipleMandateTimes
-          ? e.mandatePeriodStart
-          : elections[0].mandatePeriodStart
-      ),
-      mandatePeriodEnd: dateToDateTimeFormat(
-        hasMultipleMandateTimes
-          ? e.mandatePeriodEnd
-          : elections[0].mandatePeriodEnd
-      ),
+      mandatePeriodStart: hasMultipleMandateTimes
+        ? e.mandatePeriodStart
+        : elections[0].mandatePeriodStart,
+      mandatePeriodEnd: hasMultipleMandateTimes
+        ? e.mandatePeriodEnd
+        : elections[0].mandatePeriodEnd,
       contact: hasMultipleContactInfo ? e.contact : elections[0].contact,
       informationUrl: hasMultipleInfoUrls
         ? e.informationUrl
