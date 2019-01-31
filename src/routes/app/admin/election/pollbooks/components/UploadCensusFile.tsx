@@ -298,11 +298,13 @@ class UploadCensusFileModal extends React.Component<
      */
     const pollBookOptions: any = [];
     Object.keys(this.props.pollBooks).forEach(pollBookID => {
-      pollBookOptions.push({
-        label: this.props.pollBooks[pollBookID].name[lang],
-        value: this.props.pollBooks[pollBookID].id,
-        id: this.props.pollBooks[pollBookID].id,
-      });
+      if (this.props.pollBooks[pollBookID].active) {
+        pollBookOptions.push({
+          label: this.props.pollBooks[pollBookID].name[lang],
+          value: this.props.pollBooks[pollBookID].value,
+          id: this.props.pollBooks[pollBookID].value,
+        });
+      }
     });
 
     return (
