@@ -130,7 +130,7 @@ class NewElection extends React.Component<IProps, IState> {
                       submitAction={(values: any) =>
                         createNewElectionGroup({ variables: values })
                       }
-                      cancelAction={() => this.props.history.goBack}
+                      cancelAction={() => this.props.history.push('/admin')}
                     />
                   </PageSection>
                 </Page>
