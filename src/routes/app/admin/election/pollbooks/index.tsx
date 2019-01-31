@@ -201,7 +201,7 @@ interface IState {
   proceed: boolean;
   showUploadCensusFileModal: boolean;
   showUploadMsgBox: boolean;
-  uploadMsg: string;
+  uploadMsg: string | React.ReactElement<any>;
 }
 
 class ElectionGroupCensuses extends React.Component<IProps, IState> {
@@ -283,20 +283,18 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
     });
   }
 
-  closeUploadCensusFileModal(proc: IReturnStatus) {
+  closeUploadCensusFileModal(props: IReturnStatus) {
     this.setState({
       showUploadCensusFileModal: false,
     });
 
-    if (proc.showMsg) {
+    if (props.showMsg) {
 
-      let msg: string;
-      if (proc.parseCompleded) {
-        // TODO: add better error messages?
-        msg = `${proc.ok} personer ble lagt til i gruppen ${proc.pollBookName}.`;
+      let msg: string | React.ReactElement<any>;
+      if (props.parseCompleded) {
+        msg = <Trans values={{nr: props.ok, pollbookName: props.pollBookName}}>census.uploadOkMsg</Trans>
       } else {
-        // Todo Trans
-        msg = 'Feil i svar fra tjener'
+        msg = <Trans>census.uploadServerError</Trans>
       }
       this.setState({
         showUploadMsgBox: true,

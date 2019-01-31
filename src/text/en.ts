@@ -25,7 +25,9 @@ export default {
     person: 'Person',
     persons: 'Persons',
     uploadCensusFileButton: 'Upload census file',                                               
-    uploadCensusFileHeader: 'Upload census from file', 
+    uploadCensusFileHeader: 'Upload census from file',
+    uploadOkMsg: 'Added {{nr}} persons to the group {{pollbookName}}',
+    uploadServerError: 'Error from server. Census file parsing failed',
   },
   election: {
     activeElectionsHeader:

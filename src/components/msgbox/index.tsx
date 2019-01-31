@@ -60,7 +60,7 @@ const styles = () => ({
 
 
 interface IProps {
-  msg: string;
+  msg: string | React.ReactElement<any>;
   timeout: boolean;
   timeoutSec: number;
   classes: any;

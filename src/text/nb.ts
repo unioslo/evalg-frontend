@@ -24,8 +24,10 @@ export default {
     group: 'Gruppe',
     person: 'Person',
     persons: 'Personer',
-    uploadCensusFileButton: 'Last opp manntallsfil',                                            
-    uploadCensusFileHeader: 'Last opp manntal fra fil', 
+    uploadCensusFileButton: 'Last opp manntallsfil',
+    uploadCensusFileHeader: 'Last opp manntal fra fil',
+    uploadOkMsg: '{{nr}} personer ble lagt til i gruppen {{pollbookName}}',
+    uploadServerError: 'Feilmelding fra tjener. Greie ikke å laste inn manntall',
   },
   election: {
     activeElectionsHeader:
