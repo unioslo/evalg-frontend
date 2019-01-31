@@ -300,7 +300,7 @@ const NewElectionForm = (props: Props) => {
 
             <FormButtons
               saveAction={handleSubmit}
-              cancelAction={cancelAction}
+              closeAction={cancelAction}
               submitDisabled={submitting || invalid}
             />
           </form>
