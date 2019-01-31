@@ -1,6 +1,6 @@
 /* @flow */
 import { makeElObj, makeElObjData } from './makeElectionObjects';
-var moment = require('moment-timezone');
+import moment from 'moment-timezone';
 
 import {
   isObjEmpty,
