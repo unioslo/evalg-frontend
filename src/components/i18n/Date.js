@@ -15,7 +15,7 @@ const Date = (props: Props) => {
   if (!props.dateTime) {
     return <Trans>election.valueNotSet</Trans>;
   }
-  moment.locale(props.i18n.language === 'en' ? 'en' : 'nb');
+  moment.locale(props.i18n.language);
   const date = props.longDate
     ? moment.tz(props.dateTime, appTimezone).format('LL')
     : moment.tz(props.dateTime, appTimezone).format('L');

@@ -145,7 +145,7 @@ class DateInput extends React.Component<Props, State> {
           selected={dateValue}
           onChange={this.handleOnChange.bind(this)}
           locale={lang}
-          dateFormat={lang === "en" ? "yyyy.MM.dd" : "dd.MM.yyyy"}
+          dateFormat={lang === "en" ? "MM/dd/yyyy" : "dd.MM.yyyy"}
           name={name}
           id={name}
           onFocus={this.handleOnFocus.bind(this)}

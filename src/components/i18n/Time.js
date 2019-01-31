@@ -18,7 +18,7 @@ const Time = (props: Props) => {
   if (!props.dateTime) {
     return <Trans>election.valueNotSet</Trans>;
   }
-  moment.locale(props.i18n.language === 'en' ? 'en' : 'nb');
+  moment.locale(props.i18n.language);
   const lang = props.i18n.language;
   const time = moment.tz(props.dateTime, appTimezone).format('LT');
   return <span>{`${prefixes[lang]} ${time}`}</span>;
