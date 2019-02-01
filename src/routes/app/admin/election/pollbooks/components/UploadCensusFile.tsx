@@ -182,7 +182,7 @@ class UploadCensusFileModal extends React.Component<
           showMsg: true,
           ok: 0,
           failed: 0,
-          error_msg: error.data.details,
+          error_msg: error.response.details,
           pollBookName: this.props.pollBooks[values.pollbookId].name[lang],
         };
         this.props.closeAction(ret);
