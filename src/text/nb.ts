@@ -93,7 +93,7 @@ export default {
     createElectionKeyModalDetailsPublicKey: 'Offentlig krypteringsnøkkel',
     createElectionKeyModalDetailsCreatedBy: 'Opprettet av',
     createElectionKeyModalDetailsTimeCreated: 'Tidspunkt opprettet',
-    createElectionKeyModalSaveKey: 'Lagre valgnøkkel',
+    createElectionKeyModalSaveKeyFile: 'Lagre valgnøkkel-fil',
     createElectionKeyModalInfoListHeader: 'Viktig om valgnøkkelen:',
     createElectionKeyModalInfoBullet1:
       'Lagre filen med valgnøkkelen ved å trykke på knappen over. Lagre filen på et sikkert sted hvor uvedkommende ikke har tilgang.',

@@ -91,7 +91,7 @@ export default {
     createElectionKeyModalDetailsPublicKey: 'Public encryption key',
     createElectionKeyModalDetailsCreatedBy: 'Created by',
     createElectionKeyModalDetailsTimeCreated: 'Time created',
-    createElectionKeyModalSaveKey: 'Save election key',
+    createElectionKeyModalSaveKeyFile: 'Save election key file',
     createElectionKeyModalInfoListHeader: 'Important about the election key:',
     createElectionKeyModalInfoBullet1:
       'Save the file with the election key by clicking the button above. Save the file on a secure location not accessible to others.',

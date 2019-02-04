@@ -3,7 +3,7 @@ import { Trans, translate, TranslationFunction } from 'react-i18next';
 import injectSheet from 'react-jss';
 
 import Modal from 'components/modal';
-import Icon from 'components/icon';
+// import Icon from 'components/icon';
 import { SubtaskWorkingState } from './ElectionKeySection';
 import Button, { ButtonContainer } from 'components/button';
 import { InfoList, InfoListItem } from 'components/infolist';
@@ -79,13 +79,13 @@ const styles = (theme: any) => ({
     },
   },
 
-  checkBoxFieldsGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'auto auto',
-    justifyContent: 'start',
-    margin: '3rem 0',
-    rowGap: '1rem',
-  },
+  // checkBoxFieldsGrid: {
+  //   display: 'grid',
+  //   gridTemplateColumns: 'auto auto',
+  //   justifyContent: 'start',
+  //   margin: '3rem 0',
+  //   rowGap: '1rem',
+  // },
   closeButtonAndFormValidationGrid: {
     display: 'grid',
     gridTemplateColumns: 'auto auto',
@@ -124,8 +124,8 @@ class CreateElectionKeyModal extends React.Component<IProps, IState> {
       secretKey,
       publicKey,
       isWorking,
-      swsGenerateKeyPair,
-      swsActivatePublicKey,
+      // swsGenerateKeyPair,
+      // swsActivatePublicKey,
       subtaskError,
       handleCloseModal,
       t,
@@ -139,7 +139,7 @@ class CreateElectionKeyModal extends React.Component<IProps, IState> {
         hideButtons
       >
         <>
-          <div className={classes.workingStateGrid}>
+          {/* <div className={classes.workingStateGrid}>
             <SubtaskWorkingStateIcon workingState={swsGenerateKeyPair} />
             <p>
               <Trans>election.createElectionKeyModalGeneratingPair</Trans>
@@ -150,10 +150,50 @@ class CreateElectionKeyModal extends React.Component<IProps, IState> {
                 election.createElectionKeyModalUploadingAndActivating
               </Trans>
             </p>
-          </div>
+          </div> */}
           {subtaskError && (
             <p className={classes.errorMessage}>{subtaskError}</p>
           )}
+
+          <p className={classes.importantInfoHeader}>
+            <Trans>election.createElectionKeyModalInfoListHeader</Trans>
+          </p>
+          <InfoList>
+            <InfoListItem bulleted>
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: t('election.createElectionKeyModalInfoBullet2'),
+                }}
+              />
+            </InfoListItem>
+            <InfoListItem bulleted>
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: t('election.createElectionKeyModalInfoBullet3'),
+                }}
+              />
+            </InfoListItem>
+          </InfoList>
+
+          <ButtonContainer center smlTopMargin>
+            <a
+              href={`data:text/plain;charset=utf-8,${encodeURIComponent(
+                `${secretKey}
+${publicKey}
+created-by
+created-date`
+              )}`}
+              key="download"
+              className={classes.buttonAnchorWrapper}
+              download="electionKey.txt"
+            >
+              <Button
+                disabled={isWorking || subtaskError}
+                text={'1. ' + t('election.createElectionKeyModalSaveKeyFile')}
+              />
+            </a>
+          </ButtonContainer>
+
           <div className={classes.keyPairDetails}>
             {this.state.showDetails && (
               <>
@@ -203,45 +243,6 @@ class CreateElectionKeyModal extends React.Component<IProps, IState> {
             </a>
           </div>
 
-          <ButtonContainer center smlTopMargin>
-            <a
-              href={`data:text/plain;charset=utf-8,${encodeURIComponent(
-                `${secretKey}
-${publicKey}
-created-by
-created-date`
-              )}`}
-              key="download"
-              className={classes.buttonAnchorWrapper}
-              download="electionKey.txt"
-            >
-              <Button
-                disabled={isWorking || subtaskError}
-                text={t('election.createElectionKeyModalSaveKey')}
-              />
-            </a>
-          </ButtonContainer>
-
-          <p className={classes.importantInfoHeader}>
-            <Trans>election.createElectionKeyModalInfoListHeader</Trans>
-          </p>
-          <InfoList>
-            <InfoListItem bulleted>
-            <span
-                dangerouslySetInnerHTML={{
-                  __html: t('election.createElectionKeyModalInfoBullet2'),
-                }}
-              />
-            </InfoListItem>
-            <InfoListItem bulleted>
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: t('election.createElectionKeyModalInfoBullet3'),
-                }}
-              />
-            </InfoListItem>
-          </InfoList>
-
           <Form
             onSubmit={handleCloseModal}
             validate={(values: any) => {
@@ -260,21 +261,34 @@ created-date`
                 {/* <pre>
                       <code>{JSON.stringify(errors, null, 2)}</code>
                     </pre> */}
-                <div className={classes.checkBoxFieldsGrid}>
-                  <Field
-                    name="firstCheck"
-                    component={CheckBoxRF}
-                    type="checkbox"
-                  />
-                  <Trans>election.createElectionKeyModalCheckboxLabel1</Trans>
-                  <Field
-                    name="secondCheck"
-                    component={CheckBoxRF}
-                    type="checkbox"
-                  />
-                  <Trans>election.createElectionKeyModalCheckboxLabel2</Trans>
-                </div>
-                <div className={classes.closeButtonAndFormValidationGrid}>
+                <Field
+                  name="firstCheck"
+                  component={CheckBoxRF}
+                  type="checkbox"
+                  label={
+                    <>
+                      <span>2. </span>
+                      <Trans>
+                        election.createElectionKeyModalCheckboxLabel1
+                      </Trans>
+                    </>
+                  }
+                />
+                <Field
+                  name="secondCheck"
+                  component={CheckBoxRF}
+                  type="checkbox"
+                  label={
+                    <>
+                      <span>3. </span>
+                      <Trans>
+                        election.createElectionKeyModalCheckboxLabel2
+                      </Trans>
+                    </>
+                  }
+                />
+
+                {/* <div className={classes.closeButtonAndFormValidationGrid}>
                   <Button
                     secondary
                     action={handleSubmit}
@@ -289,69 +303,72 @@ created-date`
                         </Trans>
                       </span>
                     )}
-                </div>
+                </div> */}
               </form>
             )}
           </Form>
+          <ButtonContainer center smlTopMargin>
+            <Button text={'4. Aktiver valgnøkkel'} />
+          </ButtonContainer>
         </>
       </Modal>
     );
   }
 }
 
-const subtaskWorkingStateIconStyles = (theme: any) => ({
-  iconContainer: {
-    width: '2.2rem',
-    height: '2.2rem',
-  },
-  iconContainerWithOffset: {
-    width: '2.2rem',
-    height: '2.2rem',
-    position: 'relative',
-    top: '-0.2rem',
-  },
-  generatingSpinner: {
-    width: '2.2rem',
-    height: '2.2rem',
-    border: '3px solid rgba(0,0,0,.3)',
-    borderRadius: '50%',
-    borderTopColor: '#000',
-    animation: 'spin 0.8s linear infinite',
-    '-webkit-animation': 'spin 0.8s linear infinite',
-  },
-  '@keyframes spin': {
-    to: { '-webkit-transform': 'rotate(360deg)' },
-  },
-});
+// const subtaskWorkingStateIconStyles = (theme: any) => ({
+//   iconContainer: {
+//     width: '2.2rem',
+//     height: '2.2rem',
+//   },
+//   iconContainerWithOffset: {
+//     width: '2.2rem',
+//     height: '2.2rem',
+//     position: 'relative',
+//     top: '-0.2rem',
+//   },
+//   generatingSpinner: {
+//     width: '2.2rem',
+//     height: '2.2rem',
+//     border: '3px solid rgba(0,0,0,.3)',
+//     borderRadius: '50%',
+//     borderTopColor: '#000',
+//     animation: 'spin 0.8s linear infinite',
+//     '-webkit-animation': 'spin 0.8s linear infinite',
+//   },
+//   '@keyframes spin': {
+//     to: { '-webkit-transform': 'rotate(360deg)' },
+//   },
+// });
 
-interface IsubtaskWorkingStateIconProps {
-  workingState: SubtaskWorkingState;
-  classes: any;
-}
+// interface IsubtaskWorkingStateIconProps {
+//   workingState: SubtaskWorkingState;
+//   classes: any;
+// }
 
-const SubtaskWorkingStateIcon = injectSheet(subtaskWorkingStateIconStyles)(
-  ({ workingState, classes }: IsubtaskWorkingStateIconProps) => (
-    <>
-      {workingState === SubtaskWorkingState.notStarted && (
-        <div className={classes.iconContainer} />
-      )}
-      {workingState === SubtaskWorkingState.working && (
-        <div className={classes.iconContainer}>
-          <div className={classes.generatingSpinner} />
-        </div>
-      )}
-      {workingState === SubtaskWorkingState.failed && (
-        <div className={classes.iconContainerWithOffset}>
-          <Icon type="xMark" />
-        </div>
-      )}
-      {workingState === SubtaskWorkingState.done && (
-        <div className={classes.iconContainerWithOffset}>
-          <Icon type="checkMark" />
-        </div>
-      )}
-    </>
-  )
-);
+// const SubtaskWorkingStateIcon = injectSheet(subtaskWorkingStateIconStyles)(
+//   ({ workingState, classes }: IsubtaskWorkingStateIconProps) => (
+//     <>
+//       {workingState === SubtaskWorkingState.notStarted && (
+//         <div className={classes.iconContainer} />
+//       )}
+//       {workingState === SubtaskWorkingState.working && (
+//         <div className={classes.iconContainer}>
+//           <div className={classes.generatingSpinner} />
+//         </div>
+//       )}
+//       {workingState === SubtaskWorkingState.failed && (
+//         <div className={classes.iconContainerWithOffset}>
+//           <Icon type="xMark" />
+//         </div>
+//       )}
+//       {workingState === SubtaskWorkingState.done && (
+//         <div className={classes.iconContainerWithOffset}>
+//           <Icon type="checkMark" />
+//         </div>
+//       )}
+//     </>
+//   )
+// );
 
 export default injectSheet(styles)(translate()(CreateElectionKeyModal));
