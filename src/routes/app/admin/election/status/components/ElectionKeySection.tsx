@@ -19,6 +19,7 @@ interface IProps {
 interface IState {
   showCreateKeyModal: boolean;
   showConfirmNewKeyModal: boolean;
+  showPublicKey: boolean;
 }
 
 class CreateElectionKey extends React.Component<IProps, IState> {
@@ -29,6 +30,7 @@ class CreateElectionKey extends React.Component<IProps, IState> {
     this.state = {
       showCreateKeyModal: false,
       showConfirmNewKeyModal: false,
+      showPublicKey: false,
     };
   }
 
@@ -90,6 +92,27 @@ class CreateElectionKey extends React.Component<IProps, IState> {
                 kl [klokkeslett].
               </Text>
               <InfoList>
+                <InfoListItem bulleted key="public-key">
+                  Offentlig nøkkel (ikke valgnøkkel):{' '}
+                  {this.state.showPublicKey ? (
+                    <span>
+                      {electionGroup.publicKey}{' '}
+                      <a
+                        href="javascript:void(0);"
+                        onClick={() => this.setState({ showPublicKey: false })}
+                      >
+                        Skjul
+                      </a>
+                    </span>
+                  ) : (
+                    <a
+                      href="javascript:void(0);"
+                      onClick={() => this.setState({ showPublicKey: true })}
+                    >
+                      Vis
+                    </a>
+                  )}
+                </InfoListItem>
                 <InfoListItem bulleted key="keep-it-safe">
                   <Trans>election.electionKeyStatusKeepItSafe</Trans>
                 </InfoListItem>
