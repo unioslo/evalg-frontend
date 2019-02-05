@@ -1,14 +1,18 @@
 import React from 'react';
 import { Trans, translate, TranslationFunction } from 'react-i18next';
 import injectSheet from 'react-jss';
+import classNames from 'classnames';
+import { Form } from 'react-final-form';
+import gql from 'graphql-tag';
+import { withApollo, WithApolloClient } from 'react-apollo';
 
 import Modal from 'components/modal';
 // import Icon from 'components/icon';
-import { SubtaskWorkingState } from './ElectionKeySection';
 import Button, { ButtonContainer } from 'components/button';
 import { InfoList, InfoListItem } from 'components/infolist';
-import { Form, Field } from 'react-final-form';
-import { CheckBoxRF } from 'components/form';
+import Link from 'components/link';
+import { CheckBox } from 'components/form';
+import { getCryptoEngine } from 'cryptoEngines';
 
 const styles = (theme: any) => ({
   workingStateGrid: {
@@ -20,6 +24,32 @@ const styles = (theme: any) => ({
     gridRowGap: '1rem',
     '& p': {
       margin: 0,
+    },
+  },
+
+  stepsGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'auto auto',
+    gridRowGap: '3.5rem',
+    gridColumnGap: '5rem',
+    justifyItems: 'start',
+    alignItems: 'center',
+    margin: '4rem auto',
+    width: '60rem',
+  },
+
+  stepNumber: {
+    fontSize: '4rem',
+    fontWeight: 'bold',
+    color: theme.colors.lightGray,
+    textAlign: 'center',
+    border: '2px solid',
+    borderRadius: '50%',
+    width: '5.5rem',
+    height: '5.5rem',
+    paddingTop: '3px',
+    '&.active': {
+      color: theme.colors.darkTurquoise,
     },
   },
 
@@ -50,20 +80,20 @@ const styles = (theme: any) => ({
     whiteSpace: 'pre-line',
   },
 
-  generatingSpinner: {
-    display: 'inline-block',
+  workingSpinner: {
     position: 'relative',
-    top: '0.5rem',
-    marginRight: '1rem',
+    top: -5,
+    marginLeft: 10,
+    marginRight: -2,
+    display: 'inline-block',
     width: '2.5rem',
     height: '2.5rem',
-    border: '3px solid rgba(0,0,0,.3)',
+    border: '3px solid rgba(255,255,255,.3)',
     borderRadius: '50%',
-    borderTopColor: '#000',
+    borderTopColor: '#fff',
     animation: 'spin 0.8s linear infinite',
     '-webkit-animation': 'spin 0.8s linear infinite',
   },
-
   '@keyframes spin': {
     to: { '-webkit-transform': 'rotate(360deg)' },
   },
@@ -95,42 +125,132 @@ const styles = (theme: any) => ({
   },
 });
 
-interface IProps {
-  secretKey: string;
+const createElectionKey = gql`
+  mutation CreateElectionGroupKey($id: UUID!, $key: String!) {
+    createElectionGroupKey(id: $id, key: $key) {
+      ok
+    }
+  }
+`;
+
+interface IKeyPair {
   publicKey: string;
-  isWorking: boolean;
-  swsGenerateKeyPair: SubtaskWorkingState;
-  swsActivatePublicKey: SubtaskWorkingState;
-  subtaskError: string | null;
+  secretKey: string;
+}
+
+interface IProps {
+  electionGroupId: string;
   handleCloseModal: () => void;
   t: TranslationFunction;
   classes: any;
 }
 
+type PropsInternal = WithApolloClient<IProps>;
+
 interface IState {
+  secretKey: string;
+  publicKey: string;
+  isGeneratingKey: boolean;
+  isActivatingKey: boolean;
+  hasDownloadedKey: boolean;
+  checkbox1: boolean;
+  checkbox2: boolean;
+  isAllowedToActivateKey: boolean;
   showDetails: boolean;
+  errorMessage: string | null;
 }
 
-class CreateElectionKeyModal extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
+class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
+  cryptoEngine: any;
+
+  constructor(props: PropsInternal) {
     super(props);
+    this.cryptoEngine = getCryptoEngine();
+
     this.state = {
+      secretKey: '',
+      publicKey: '',
+      isGeneratingKey: false,
+      isActivatingKey: false,
+      hasDownloadedKey: false,
+      checkbox1: false,
+      checkbox2: true,
+      isAllowedToActivateKey: false,
       showDetails: false,
+      errorMessage: '',
     };
   }
 
+  componentDidMount() {
+    this.generateElectionKey();
+  }
+
+  checkIfAllowedToActivateKey = () => {
+    this.setState(currState => ({
+      isAllowedToActivateKey: currState.hasDownloadedKey && currState.checkbox1,
+    }));
+  };
+
+  generateElectionKey = async () => {
+    let keys: IKeyPair = { secretKey: '', publicKey: '' };
+    try {
+      this.setState({
+        isGeneratingKey: true,
+      });
+      keys = await this.cryptoEngine.generateKeyPair();
+      this.setState({
+        isGeneratingKey: false,
+        secretKey: keys.secretKey,
+        publicKey: keys.publicKey,
+      });
+    } catch (error) {
+      this.setState({
+        isGeneratingKey: false,
+        errorMessage:
+          'Noe gikk galt under generering av nøkkelpar.\nFeilmelding: ' + error,
+      });
+    }
+  };
+
+  activateKey = async () => {
+    this.setState({
+      isActivatingKey: true,
+    });
+    try {
+      await this.props.client.mutate({
+        mutation: createElectionKey,
+        variables: {
+          id: this.props.electionGroupId,
+          key: this.state.publicKey,
+        },
+        refetchQueries: ['electionGroup'],
+        awaitRefetchQueries: true,
+      });
+      this.setState({ secretKey: '', isActivatingKey: false });
+      this.props.handleCloseModal();
+    } catch (error) {
+      this.setState({
+        isActivatingKey: false,
+        errorMessage:
+          'Noe gikk galt under opplasting og aktivering av offentlig nøkkel. Sjekk internett-tilkoblingen, lukk dialogboksen og prøv på nytt.\nFeilmelding: ' +
+          error,
+      });
+    }
+  };
+
   render() {
+    const { handleCloseModal, t, classes } = this.props;
+
     const {
-      secretKey,
       publicKey,
-      isWorking,
-      // swsGenerateKeyPair,
-      // swsActivatePublicKey,
-      subtaskError,
-      handleCloseModal,
-      t,
-      classes,
-    } = this.props;
+      secretKey,
+      isGeneratingKey,
+      isActivatingKey,
+      hasDownloadedKey,
+      checkbox1,
+      isAllowedToActivateKey,
+      errorMessage,
+    } = this.state;
 
     return (
       <Modal
@@ -139,25 +259,17 @@ class CreateElectionKeyModal extends React.Component<IProps, IState> {
         hideButtons
       >
         <>
-          {/* <div className={classes.workingStateGrid}>
-            <SubtaskWorkingStateIcon workingState={swsGenerateKeyPair} />
-            <p>
-              <Trans>election.createElectionKeyModalGeneratingPair</Trans>
-            </p>
-            <SubtaskWorkingStateIcon workingState={swsActivatePublicKey} />
-            <p>
-              <Trans>
-                election.createElectionKeyModalUploadingAndActivating
-              </Trans>
-            </p>
-          </div> */}
-          {subtaskError && (
-            <p className={classes.errorMessage}>{subtaskError}</p>
+          {/* <pre>
+            <code>{JSON.stringify(this.state, null, 2)}</code>
+          </pre> */}
+
+          {errorMessage && (
+            <p className={classes.errorMessage}>{errorMessage}</p>
           )}
 
-          <p className={classes.importantInfoHeader}>
+          {/* <p className={classes.importantInfoHeader}>
             <Trans>election.createElectionKeyModalInfoListHeader</Trans>
-          </p>
+          </p> */}
           <InfoList>
             <InfoListItem bulleted>
               <span
@@ -173,29 +285,119 @@ class CreateElectionKeyModal extends React.Component<IProps, IState> {
                 }}
               />
             </InfoListItem>
+            <InfoListItem bulleted>
+              <Link external to="#TODO">
+                Mer informasjon og tips
+              </Link>
+            </InfoListItem>
           </InfoList>
 
-          <ButtonContainer center smlTopMargin>
-            <a
-              href={`data:text/plain;charset=utf-8,${encodeURIComponent(
-                `${secretKey}
+          <div className={classes.stepsGrid}>
+            <div
+              className={classNames({
+                [classes.stepNumber]: true,
+                active: !isGeneratingKey,
+              })}
+            >
+              1
+            </div>
+            <ButtonContainer center noTopMargin>
+              <a
+                href={`data:text/plain;charset=utf-8,${encodeURIComponent(
+                  `${secretKey}
 ${publicKey}
 created-by
 created-date`
-              )}`}
-              key="download"
-              className={classes.buttonAnchorWrapper}
-              download="electionKey.txt"
-            >
-              <Button
-                disabled={isWorking || subtaskError}
-                text={'1. ' + t('election.createElectionKeyModalSaveKeyFile')}
-              />
-            </a>
-          </ButtonContainer>
+                )}`}
+                key="download"
+                className={classes.buttonAnchorWrapper}
+                download="electionKey.txt"
+              >
+                <Button
+                  action={() =>
+                    this.setState(
+                      { hasDownloadedKey: true },
+                      this.checkIfAllowedToActivateKey
+                    )
+                  }
+                  disabled={isGeneratingKey || errorMessage}
+                  text={
+                    isGeneratingKey ? (
+                      <>
+                        <span>Generer valgnøkkel</span>
+                        <div className={classes.workingSpinner} />
+                      </>
+                    ) : (
+                      t('election.createElectionKeyModalSaveKeyFile')
+                    )
+                  }
+                />
+              </a>
+            </ButtonContainer>
 
-          <div className={classes.keyPairDetails}>
-            {this.state.showDetails && (
+            <div
+              className={classNames({
+                [classes.stepNumber]: true,
+                ['active']: hasDownloadedKey,
+              })}
+            >
+              2
+            </div>
+            <div
+              onClick={() => {
+                if (hasDownloadedKey) {
+                  this.setState(
+                    currState => ({
+                      checkbox1: !currState.checkbox1,
+                    }),
+                    this.checkIfAllowedToActivateKey
+                  );
+                }
+              }}
+            >
+              <CheckBox
+                value={checkbox1}
+                label={
+                  <Trans>election.createElectionKeyModalCheckboxLabel</Trans>
+                }
+                disabled={!hasDownloadedKey}
+                onChange={() => null}
+              />
+            </div>
+
+            <div
+              className={classNames({
+                [classes.stepNumber]: true,
+                active: isAllowedToActivateKey,
+              })}
+            >
+              3
+            </div>
+            <ButtonContainer center noTopMargin>
+              <Button
+                text={
+                  isActivatingKey ? (
+                    <>
+                      <span>Aktiverer valgnøkkel</span>
+                      <div className={classes.workingSpinner} />
+                    </>
+                  ) : (
+                    'Aktiver valgnøkkel'
+                  )
+                }
+                disabled={
+                  !isAllowedToActivateKey ||
+                  isGeneratingKey ||
+                  isActivatingKey ||
+                  errorMessage
+                }
+                action={this.activateKey}
+              />
+            </ButtonContainer>
+          </div>
+
+          {/* <div className={classes.keyPairDetails}>
+            {showDetails && (
               <>
                 <div className={classes.keyPairGrid}>
                   <p className="rowCaption">
@@ -237,11 +439,11 @@ created-date`
                 }))
               }
             >
-              {this.state.showDetails
-                ? t('general.hideDetails')
-                : t('general.showDetails')}
+              {showDetails
+                ? 'Skjul nøkkelpar'
+                : 'Vis nøkkelpar'}
             </a>
-          </div>
+          </div> */}
 
           <Form
             onSubmit={handleCloseModal}
@@ -261,7 +463,7 @@ created-date`
                 {/* <pre>
                       <code>{JSON.stringify(errors, null, 2)}</code>
                     </pre> */}
-                <Field
+                {/* <Field
                   name="firstCheck"
                   component={CheckBoxRF}
                   type="checkbox"
@@ -286,7 +488,7 @@ created-date`
                       </Trans>
                     </>
                   }
-                />
+                /> */}
 
                 {/* <div className={classes.closeButtonAndFormValidationGrid}>
                   <Button
@@ -307,9 +509,6 @@ created-date`
               </form>
             )}
           </Form>
-          <ButtonContainer center smlTopMargin>
-            <Button text={'4. Aktiver valgnøkkel'} />
-          </ButtonContainer>
         </>
       </Modal>
     );
@@ -371,4 +570,6 @@ created-date`
 //   )
 // );
 
-export default injectSheet(styles)(translate()(CreateElectionKeyModal));
+export default injectSheet(styles)(
+  translate()(withApollo(CreateElectionKeyModal))
+);

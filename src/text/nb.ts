@@ -80,7 +80,7 @@ export default {
     electionCloses: 'Valget stenger',
     electionInfo: 'Valginformasjon',
     electionKey: 'Valgnøkkel',
-    electionKeyCreate: 'Opprett valgnøkkel',
+    electionKeyCreate: 'Opprett og aktiver valgnøkkel',
     electionKeyCreateNew: 'Opprett ny valgnøkkel',
     electionKeyConfirmNewModalHeader: 'Erstatt eksisterende valgnøkkel?',
     electionKeyConfirmNewModalText:
@@ -93,20 +93,22 @@ export default {
     createElectionKeyModalDetailsPublicKey: 'Offentlig krypteringsnøkkel',
     createElectionKeyModalDetailsCreatedBy: 'Opprettet av',
     createElectionKeyModalDetailsTimeCreated: 'Tidspunkt opprettet',
-    createElectionKeyModalSaveKeyFile: 'Lagre valgnøkkel-fil',
+    createElectionKeyModalSaveKeyFile: 'Last ned valgnøkkel',
     createElectionKeyModalInfoListHeader: 'Viktig om valgnøkkelen:',
     createElectionKeyModalInfoBullet1:
       'Lagre filen med valgnøkkelen ved å trykke på knappen over. Lagre filen på et sikkert sted hvor uvedkommende ikke har tilgang.',
     createElectionKeyModalInfoBullet2:
-      '<strong>Uten valgnøkkelen er det ikke mulig å telle opp stemmene</strong>. Det anbefales å ta en sikkerhetskopi av valgnøkkel-filen.',
+      'Uten valgnøkkelen er det ikke mulig å telle opp stemmene. Det anbefales å ta en sikkerhetskopi av valgnøkkel-filen.',
     createElectionKeyModalInfoBullet3:
-      '<strong>Etter at du har lukket denne dialogboksen, vil det ikke være mulig å få tak i valgnøkkelen igjen.</strong> Frem til valget starter kan du imidlertid generere en ny valgnøkkel som erstatter den gamle.',
+      'Det er kun nå du kan laste ned valgnøkkelen du er i ferd med å aktivere. Inntil valget starter kan du imidlertid erstatte den aktive valgnøkkelen med en ny.',
     createElectionKeyModalInfoBullet4:
       'Du kan endre filnavnet, men du må ikke endre innholdet i valgnøkkelfilen.',
+    createElectionKeyModalCheckboxLabel:
+      'Jeg forstår at valget ikke kan telles opp uten valgnøkkelen.',
     createElectionKeyModalCheckboxLabel1:
       'Jeg har lagret filen med valgnøkkelen på et trygt sted.',
     createElectionKeyModalCheckboxLabel2:
-      'Jeg forstår at valgnøkkelen ikke kan hentes etter at jeg lukker denne dialogboksen, og at valget ikke kan telles opp uten valgnøkkelen.',
+      'Jeg forstår at valgnøkkelen ikke kan hentes på nytt at jeg lukker denne dialogboksen, og at valget ikke kan telles opp uten valgnøkkelen.',
     createElectionKeyModalCheckboxesValidationError:
       'Du må krysse av boksene over før du kan trykke «Lukk».',
     electionKeyMissing:

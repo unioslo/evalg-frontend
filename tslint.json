@@ -8,8 +8,7 @@
     "object-literal-sort-keys": false,
     "ordered-imports": false,
     "no-console": [
-      true,
-      "log"
+      false
     ]
   },
   "rules": {
@@ -19,8 +18,7 @@
     "ordered-imports": false,
     "member-access": false,
     "no-console": [
-      true,
-      "log"
+      false
     ]
   },
   "linterOptions": {

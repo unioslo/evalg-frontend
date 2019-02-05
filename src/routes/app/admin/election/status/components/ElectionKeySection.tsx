@@ -1,10 +1,7 @@
 import * as React from 'react';
 
 import { Trans } from 'react-i18next';
-import { withApollo, WithApolloClient } from 'react-apollo';
-import gql from 'graphql-tag';
 
-import { getCryptoEngine } from 'cryptoEngines';
 import Button, { ButtonContainer } from 'components/button';
 import Modal from 'components/modal';
 import { InfoList, InfoListItem } from 'components/infolist';
@@ -13,64 +10,29 @@ import Text from 'components/text';
 import Link from 'components/link';
 import CreateElectionKeyModal from './CreateElectionKeyModal';
 
-const createElectionKey = gql`
-  mutation CreateElectionGroupKey($id: UUID!, $key: String!) {
-    createElectionGroupKey(id: $id, key: $key) {
-      ok
-    }
-  }
-`;
-
-interface IKeyPair {
-  publicKey: string;
-  secretKey: string;
-}
-
 interface IProps {
   electionGroup: ElectionGroup;
   replaceKey: boolean;
   classes: any;
 }
 
-type PropsInternal = WithApolloClient<IProps>;
-
 interface IState {
-  publicKey: string;
-  secretKey: string;
   showCreateKeyModal: boolean;
   showConfirmNewKeyModal: boolean;
-  isWorking: boolean;
-  swsGenerateKeyPair: SubtaskWorkingState;
-  swsActivatePublicKey: SubtaskWorkingState;
-  subtaskError: string;
 }
 
-class CreateElectionKey extends React.Component<PropsInternal, IState> {
+class CreateElectionKey extends React.Component<IProps, IState> {
   cryptoEngine: any;
-  hasErorredOut = false;
 
-  constructor(props: PropsInternal) {
+  constructor(props: IProps) {
     super(props);
     this.state = {
-      publicKey: '',
-      secretKey: '',
       showCreateKeyModal: false,
       showConfirmNewKeyModal: false,
-      isWorking: false,
-      swsGenerateKeyPair: SubtaskWorkingState.notStarted,
-      swsActivatePublicKey: SubtaskWorkingState.notStarted,
-      subtaskError: '',
     };
-    this.cryptoEngine = getCryptoEngine();
   }
 
   showCreateKeyModal = () => {
-    if (!this.state.isWorking) {
-      this.generateAndActivateNewKey();
-      this.setState({
-        isWorking: true,
-      });
-    }
     this.setState({
       showCreateKeyModal: true,
     });
@@ -78,7 +40,6 @@ class CreateElectionKey extends React.Component<PropsInternal, IState> {
 
   closeCreateKeyModal = () => {
     this.setState({
-      secretKey: '',
       showCreateKeyModal: false,
     });
   };
@@ -100,62 +61,6 @@ class CreateElectionKey extends React.Component<PropsInternal, IState> {
       showConfirmNewKeyModal: false,
     });
     this.showCreateKeyModal();
-  };
-
-  generateAndActivateNewKey = async () => {
-    this.hasErorredOut = false;
-    this.setState({
-      swsGenerateKeyPair: SubtaskWorkingState.working,
-      swsActivatePublicKey: SubtaskWorkingState.notStarted,
-    });
-    let keys: IKeyPair = { secretKey: '', publicKey: '' };
-    try {
-      // await new Promise(resolve => setTimeout(resolve, 1000));
-      keys = await this.cryptoEngine.generateKeyPair();
-    } catch (error) {
-      this.hasErorredOut = true;
-      this.setState({
-        isWorking: false,
-        swsGenerateKeyPair: SubtaskWorkingState.failed,
-        subtaskError:
-          'Noe gikk galt under generering av nøkkelpar.\nFeilmelding: ' + error,
-      });
-    }
-    if (!this.hasErorredOut) {
-      this.setState({
-        secretKey: keys.secretKey,
-        publicKey: keys.publicKey,
-        swsGenerateKeyPair: SubtaskWorkingState.done,
-        swsActivatePublicKey: SubtaskWorkingState.working,
-      });
-      try {
-        // await new Promise(resolve => setTimeout(resolve, 1000));
-        // const t0 = performance.now();
-        await this.props.client.mutate({
-          mutation: createElectionKey,
-          variables: { id: this.props.electionGroup.id, key: keys.publicKey },
-          refetchQueries: ['electionGroup'],
-          awaitRefetchQueries: true,
-        });
-        // const t1 = performance.now();
-        // console.error("Call to mutate took " + (t1 - t0) + " milliseconds.")
-      } catch (error) {
-        this.hasErorredOut = true;
-        this.setState({
-          isWorking: false,
-          swsActivatePublicKey: SubtaskWorkingState.failed,
-          subtaskError:
-            'Noe gikk galt under opplasting og aktivering av offentlig nøkkel. Sjekk internett-tilkoblingen, lukk dialogboksen og prøv på nytt.\nFeilmelding: ' +
-            error,
-        });
-      }
-      if (!this.hasErorredOut) {
-        this.setState({
-          swsActivatePublicKey: SubtaskWorkingState.done,
-          isWorking: false,
-        });
-      }
-    }
   };
 
   render() {
@@ -181,8 +86,8 @@ class CreateElectionKey extends React.Component<PropsInternal, IState> {
           ) : (
             <>
               <Text marginBottom>
-                <Trans>election.electionKeyCreatedBy</Trans> [brukernavn] [dato] kl
-                [klokkeslett].
+                <Trans>election.electionKeyCreatedBy</Trans> [brukernavn] [dato]
+                kl [klokkeslett].
               </Text>
               <InfoList>
                 <InfoListItem bulleted key="keep-it-safe">
@@ -249,12 +154,7 @@ class CreateElectionKey extends React.Component<PropsInternal, IState> {
         )}
         {this.state.showCreateKeyModal && (
           <CreateElectionKeyModal
-            secretKey={this.state.secretKey}
-            publicKey={this.state.publicKey}
-            isWorking={this.state.isWorking}
-            swsGenerateKeyPair={this.state.swsGenerateKeyPair}
-            swsActivatePublicKey={this.state.swsActivatePublicKey}
-            subtaskError={this.state.subtaskError}
+            electionGroupId={this.props.electionGroup.id}
             handleCloseModal={this.closeCreateKeyModal}
           />
         )}
@@ -270,4 +170,4 @@ export enum SubtaskWorkingState {
   done,
 }
 
-export default withApollo(CreateElectionKey);
+export default CreateElectionKey;
