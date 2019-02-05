@@ -1,4 +1,3 @@
-/* @flow */
 import * as React from 'react';
 import injectSheet from 'react-jss';
 import Link from 'components/link';
@@ -9,7 +8,7 @@ import { MobileMenu, MobileMenuItem } from './MobileMenu';
 import { H1 } from 'components/text';
 import { Route, Switch } from 'react-router';
 
-const styles = theme => ({
+const styles = (theme: any) => ({
   logoBar: {
     margin: '0 auto',
     maxWidth: theme.appMaxWidth,
@@ -60,12 +59,12 @@ const styles = theme => ({
   },
 });
 
-type Props = {
-  logoutAction: Function,
-  classes: Object,
-};
+interface IProps {
+  logoutAction: () => void;
+  classes?: any;
+}
 
-const Header = ({ logoutAction, classes }: Props) => {
+const Header = ({ logoutAction, classes }: IProps) => {
   return (
     <header>
       <div className={classes.logoBarWrapper}>
