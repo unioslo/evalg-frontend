@@ -12,7 +12,7 @@ export default {
     addPersons: 'Legg til personer i {{pollbookName}}',
     addTo: 'Legg til',
     censusPageDesc: 'Her kan du opprette og administrere manntall.',
-    censusType: 'Type manntall',                                                                
+    censusType: 'Type manntall',
     chooseFile: 'Velg fil for opplasting',
     deleteCensus: 'Slett manntall',
     deletePersonConfirmationModalText:
@@ -27,7 +27,7 @@ export default {
     uploadCensusFileButton: 'Last opp manntallsfil',
     uploadCensusFileHeader: 'Last opp manntal fra fil',
     uploadOkMsg: '{{nr}} personer ble lagt til i gruppen {{pollbookName}}',
-    uploadServerError: 'Feilmelding fra tjener. Greie ikke å laste inn manntall',
+    uploadServerError: 'Feilmelding fra tjener. Greide ikke å laste inn manntall',
   },
   election: {
     activeElectionsHeader:
