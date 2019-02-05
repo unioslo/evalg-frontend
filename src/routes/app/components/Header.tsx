@@ -102,7 +102,6 @@ const Header = ({ logoutAction, classes }: IProps) => {
               <MobileMenuItem>
                 <Link to="/voter">Voter page!</Link>
               </MobileMenuItem>
-              <MobileMenuItem>OMGLOL</MobileMenuItem>
               <MobileMenuItem>
                 <a onClick={logoutAction}>
                   <Trans>general.logout</Trans>
