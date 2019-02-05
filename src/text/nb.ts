@@ -80,14 +80,15 @@ export default {
     electionCloses: 'Valget stenger',
     electionInfo: 'Valginformasjon',
     electionKey: 'Valgnøkkel',
-    electionKeyCreate: 'Opprett og aktiver valgnøkkel',
+    electionKeyCreate: 'Opprett valgnøkkel',
     electionKeyCreateNew: 'Opprett ny valgnøkkel',
     electionKeyConfirmNewModalHeader: 'Erstatt eksisterende valgnøkkel?',
     electionKeyConfirmNewModalText:
       'Er du sikker på at du ønsker å erstatte den eksisterende valgnøkkelen med en ny? Den eksisterende valgnøkkelen vil ikke kunne brukes til å telle opp valget.',
-    createElectionKeyModalGeneratingPair: 'Genererer nøkkelpar',
-    createElectionKeyModalUploadingAndActivating:
-      'Laster opp og aktiverer offentlig nøkkel',
+    createElectionKeyModalGenerating: 'Genererer valgnøkkel',
+    createElectionKeyModalActivate: 'Aktiver valgnøkkel',
+    createElectionKeyModalActivating: 'Aktiverer valgnøkkel',
+    publicKeyCaption: 'Offentlig nøkkel (ikke valgnøkkel)',
     createElectionKeyModalDetailsSecretKey:
       'Hemmelig dekrypteringsnøkkel (valgnøkkel)',
     createElectionKeyModalDetailsPublicKey: 'Offentlig krypteringsnøkkel',
@@ -100,9 +101,10 @@ export default {
     createElectionKeyModalInfoBullet2:
       'Uten valgnøkkelen er det ikke mulig å telle opp stemmene. Det anbefales å ta en sikkerhetskopi av valgnøkkel-filen.',
     createElectionKeyModalInfoBullet3:
-      'Det er kun nå du kan laste ned valgnøkkelen du er i ferd med å aktivere. Inntil valget starter kan du imidlertid erstatte den aktive valgnøkkelen med en ny.',
+      'Valgnøkkelen du er i ferd med å aktivere kan ikke lastes ned på nytt senere. Inntil valget starter kan du imidlertid erstatte den aktive valgnøkkelen med en ny.',
     createElectionKeyModalInfoBullet4:
       'Du kan endre filnavnet, men du må ikke endre innholdet i valgnøkkelfilen.',
+    createElectionKeyModalMoreInfoLink: 'Mer informasjon og tips',
     createElectionKeyModalCheckboxLabel:
       'Jeg forstår at valget ikke kan telles opp uten valgnøkkelen.',
     createElectionKeyModalCheckboxLabel1:
@@ -252,6 +254,7 @@ export default {
     group: 'Gruppe',
     headerSubtitleVoter: 'Elektronisk valg',
     headerSubtitleAdmin: 'Elektronisk valg - Administrasjon',
+    hide: 'Skul',
     hideDetails: 'Skjul detaljer',
     logout: 'Logg ut',
     male: 'Mann',
@@ -271,6 +274,7 @@ export default {
     saving: 'Lagrer',
     select: 'Velg',
     frontPage: 'Forsiden',
+    show: 'Vis',
     showDetails: 'Vis detaljer',
     timePlaceHolder: 'tt:mm',
     title: 'eValg',

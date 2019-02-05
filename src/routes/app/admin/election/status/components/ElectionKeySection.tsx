@@ -93,7 +93,7 @@ class CreateElectionKey extends React.Component<IProps, IState> {
               </Text>
               <InfoList>
                 <InfoListItem bulleted key="public-key">
-                  Offentlig nøkkel (ikke valgnøkkel):{' '}
+                  <Trans>election.publicKeyCaption</Trans>:{' '}
                   {this.state.showPublicKey ? (
                     <span>
                       {electionGroup.publicKey}{' '}
@@ -101,7 +101,7 @@ class CreateElectionKey extends React.Component<IProps, IState> {
                         href="javascript:void(0);"
                         onClick={() => this.setState({ showPublicKey: false })}
                       >
-                        Skjul
+                        <Trans>general.hide</Trans>
                       </a>
                     </span>
                   ) : (
@@ -109,7 +109,7 @@ class CreateElectionKey extends React.Component<IProps, IState> {
                       href="javascript:void(0);"
                       onClick={() => this.setState({ showPublicKey: true })}
                     >
-                      Vis
+                      <Trans>general.show</Trans>
                     </a>
                   )}
                 </InfoListItem>
@@ -155,7 +155,7 @@ class CreateElectionKey extends React.Component<IProps, IState> {
         {this.state.showConfirmNewKeyModal && (
           <Modal
             header={<Trans>election.electionKeyConfirmNewModalHeader</Trans>}
-            closeAction={this.cancelNewKey}
+            hideTopCloseButton
             buttons={[
               <Button
                 text={<Trans>general.yes</Trans>}
@@ -184,13 +184,6 @@ class CreateElectionKey extends React.Component<IProps, IState> {
       </>
     );
   }
-}
-
-export enum SubtaskWorkingState {
-  notStarted,
-  working,
-  failed,
-  done,
 }
 
 export default CreateElectionKey;

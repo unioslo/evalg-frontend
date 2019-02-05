@@ -3,7 +3,8 @@ export default {
     infoLinkText: 'More about the candidate',
   },
   census: {
-    aboutCensusFiles: 'For more information about the census files (norwegian only)',
+    aboutCensusFiles:
+      'For more information about the census files (norwegian only)',
     addPerson: 'Add person',
     addPersonHelpText:
       'You can also add multiple persons, separated by a comma',
@@ -12,8 +13,8 @@ export default {
     addPersons: 'Add persons in {{pollbookName}}',
     addTo: 'Add',
     censusPageDesc: 'Here you can create and administer censuses.',
-    censusType: 'Pollbook type',                                                                
-    chooseFile: 'Choose file to upload', 
+    censusType: 'Pollbook type',
+    chooseFile: 'Choose file to upload',
     deleteCensus: 'Delete census',
     deletePersonConfirmationModalText:
       'Are you sure you want to delete {{personName}} from “{{pollbookName}}”?',
@@ -24,7 +25,7 @@ export default {
     group: 'Group',
     person: 'Person',
     persons: 'Persons',
-    uploadCensusFileButton: 'Upload census file',                                               
+    uploadCensusFileButton: 'Upload census file',
     uploadCensusFileHeader: 'Upload census from file',
     uploadOkMsg: 'Added {{nr}} persons to the group {{pollbookName}}',
     uploadServerError: 'Error from server. Census file parsing failed',
@@ -83,7 +84,10 @@ export default {
     electionKeyConfirmNewModalHeader: 'Replace existing election key?',
     electionKeyConfirmNewModalText:
       'Are you sure you want to replace the existing election key? If you proceed, the existing election key cannot be used to count the votes.',
-    createElectionKeyModalGeneratingPair: 'Generating key pair',
+    createElectionKeyModalGenerating: 'Generating election key',
+    createElectionKeyModalActivate: 'Activate election key',
+    createElectionKeyModalActivating: 'Activating election key',
+    publicKeyCaption: 'Public key (not the election key)',
     createElectionKeyModalUploadingAndActivating:
       'Uploading and activating public key',
     createElectionKeyModalDetailsSecretKey:
@@ -96,11 +100,14 @@ export default {
     createElectionKeyModalInfoBullet1:
       'Save the file with the election key by clicking the button above. Save the file on a secure location not accessible to others.',
     createElectionKeyModalInfoBullet2:
-      '<strong>Without the election key it will not be possible to count the votes</strong>. Keeping a backup of the election key file is recommended.',
+      'Without the election key it will not be possible to count the votes. Keeping a backup of the election key file is recommended.',
     createElectionKeyModalInfoBullet3:
-      '<strong>After you have closed this dialog, it will not be possible to get hold of the election key again.</strong> However, until the election has stared, it is possible to generate a new election key.',
+      'The election key you are about to activate can not be downloaded again later. However, until the election has started it is possible to create a new election key that replaces the old one.',
     createElectionKeyModalInfoBullet4:
       'You can change the filename of the election key file, but you must not change the file contents.',
+    createElectionKeyModalMoreInfoLink: 'More information and tips',
+    createElectionKeyModalCheckboxLabel:
+      'I understand that without the election key, the votes can not be counted.',
     createElectionKeyModalCheckboxLabel1:
       "I've saved the file with the election key somewhere safe.",
     createElectionKeyModalCheckboxLabel2:
@@ -244,6 +251,7 @@ export default {
     group: 'Group',
     headerSubtitleVoter: 'Digital Elections',
     headerSubtitleAdmin: 'Digital Elections - Administration',
+    hide: 'Hide',
     hideDetails: 'Hide details',
     logout: 'Log out',
     male: 'Male',
@@ -263,6 +271,7 @@ export default {
     saving: 'Saving',
     select: 'Select',
     frontPage: 'Front page',
+    show: 'Show',
     showDetails: 'Show details',
     timePlaceHolder: 'hh:mm',
     title: 'eValg',

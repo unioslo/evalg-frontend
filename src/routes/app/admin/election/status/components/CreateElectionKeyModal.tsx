@@ -2,12 +2,10 @@ import React from 'react';
 import { Trans, translate, TranslationFunction } from 'react-i18next';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
-import { Form } from 'react-final-form';
 import gql from 'graphql-tag';
 import { withApollo, WithApolloClient } from 'react-apollo';
 
 import Modal from 'components/modal';
-// import Icon from 'components/icon';
 import Button, { ButtonContainer } from 'components/button';
 import { InfoList, InfoListItem } from 'components/infolist';
 import Link from 'components/link';
@@ -15,18 +13,6 @@ import { CheckBox } from 'components/form';
 import { getCryptoEngine } from 'cryptoEngines';
 
 const styles = (theme: any) => ({
-  workingStateGrid: {
-    display: 'grid',
-    gridTemplateColumns: '3.3rem auto',
-    gridTemplateRows: 'auto auto',
-    margin: '2.5rem 0 1.7rem 0',
-    alignItems: 'center',
-    gridRowGap: '1rem',
-    '& p': {
-      margin: 0,
-    },
-  },
-
   stepsGrid: {
     display: 'grid',
     gridTemplateColumns: 'auto auto',
@@ -53,31 +39,9 @@ const styles = (theme: any) => ({
     },
   },
 
-  keyPairDetails: {
-    marginBottom: '2rem',
-    '& .toggleDetailsLink': {
-      color: theme.colors.blueish,
-    },
-  },
-  keyPairGrid: {
-    marginTop: '2rem',
-    marginBottom: '1.2rem',
-    display: 'grid',
-    gridTemplateColumns: 'auto auto',
-    gridTemplateRows: 'auto auto auto auto',
-    justifyContent: 'start',
-    columnGap: '2rem',
-    rowGap: '0.5rem',
-    '& p': {
-      margin: 0,
-    },
-    '& .rowCaption': {
-      textDecoration: 'bold',
-    },
-  },
-
   errorMessage: {
     whiteSpace: 'pre-line',
+    color: theme.colors.darkRed,
   },
 
   workingSpinner: {
@@ -98,30 +62,14 @@ const styles = (theme: any) => ({
     to: { '-webkit-transform': 'rotate(360deg)' },
   },
 
-  importantInfoHeader: {
-    marginTop: '3rem',
-    marginBottom: '1rem',
+  infoList: {
+    maxWidth: '100rem',
   },
 
   buttonAnchorWrapper: {
     '&:hover': {
       textDecoration: 'none',
     },
-  },
-
-  // checkBoxFieldsGrid: {
-  //   display: 'grid',
-  //   gridTemplateColumns: 'auto auto',
-  //   justifyContent: 'start',
-  //   margin: '3rem 0',
-  //   rowGap: '1rem',
-  // },
-  closeButtonAndFormValidationGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'auto auto',
-    columnGap: '2rem',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
   },
 });
 
@@ -153,8 +101,7 @@ interface IState {
   isGeneratingKey: boolean;
   isActivatingKey: boolean;
   hasDownloadedKey: boolean;
-  checkbox1: boolean;
-  checkbox2: boolean;
+  isCheckboxChecked: boolean;
   isAllowedToActivateKey: boolean;
   showDetails: boolean;
   errorMessage: string | null;
@@ -173,8 +120,7 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
       isGeneratingKey: false,
       isActivatingKey: false,
       hasDownloadedKey: false,
-      checkbox1: false,
-      checkbox2: true,
+      isCheckboxChecked: false,
       isAllowedToActivateKey: false,
       showDetails: false,
       errorMessage: '',
@@ -187,7 +133,8 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
 
   checkIfAllowedToActivateKey = () => {
     this.setState(currState => ({
-      isAllowedToActivateKey: currState.hasDownloadedKey && currState.checkbox1,
+      isAllowedToActivateKey:
+        currState.hasDownloadedKey && currState.isCheckboxChecked,
     }));
   };
 
@@ -247,7 +194,7 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
       isGeneratingKey,
       isActivatingKey,
       hasDownloadedKey,
-      checkbox1,
+      isCheckboxChecked: checkbox1,
       isAllowedToActivateKey,
       errorMessage,
     } = this.state;
@@ -256,41 +203,40 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
       <Modal
         header={<Trans>election.electionKeyCreate</Trans>}
         closeAction={handleCloseModal}
-        hideButtons
+        hideTopCloseButton
+        buttons={[
+          <Button
+            key="cancel-button"
+            text={<Trans>general.cancel</Trans>}
+            action={handleCloseModal}
+            secondary
+          />,
+        ]}
       >
         <>
-          {/* <pre>
-            <code>{JSON.stringify(this.state, null, 2)}</code>
-          </pre> */}
-
-          {errorMessage && (
-            <p className={classes.errorMessage}>{errorMessage}</p>
-          )}
-
-          {/* <p className={classes.importantInfoHeader}>
-            <Trans>election.createElectionKeyModalInfoListHeader</Trans>
-          </p> */}
-          <InfoList>
-            <InfoListItem bulleted>
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: t('election.createElectionKeyModalInfoBullet2'),
-                }}
-              />
-            </InfoListItem>
-            <InfoListItem bulleted>
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: t('election.createElectionKeyModalInfoBullet3'),
-                }}
-              />
-            </InfoListItem>
-            <InfoListItem bulleted>
-              <Link external to="#TODO">
-                Mer informasjon og tips
-              </Link>
-            </InfoListItem>
-          </InfoList>
+          <div className={classes.infoList}>
+            <InfoList>
+              <InfoListItem bulleted>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: t('election.createElectionKeyModalInfoBullet2'),
+                  }}
+                />
+              </InfoListItem>
+              <InfoListItem bulleted>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: t('election.createElectionKeyModalInfoBullet3'),
+                  }}
+                />
+              </InfoListItem>
+              <InfoListItem bulleted>
+                <Link external to="#TODO">
+                  <Trans>election.createElectionKeyModalMoreInfoLink</Trans>
+                </Link>
+              </InfoListItem>
+            </InfoList>
+          </div>
 
           <div className={classes.stepsGrid}>
             <div
@@ -304,10 +250,8 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
             <ButtonContainer center noTopMargin>
               <a
                 href={`data:text/plain;charset=utf-8,${encodeURIComponent(
-                  `${secretKey}
-${publicKey}
-created-by
-created-date`
+                  `secret:${secretKey}
+public:${publicKey}`
                 )}`}
                 key="download"
                 className={classes.buttonAnchorWrapper}
@@ -324,7 +268,7 @@ created-date`
                   text={
                     isGeneratingKey ? (
                       <>
-                        <span>Generer valgnøkkel</span>
+                        <Trans>election.createElectionKeyModalGenerating</Trans>
                         <div className={classes.workingSpinner} />
                       </>
                     ) : (
@@ -348,7 +292,7 @@ created-date`
                 if (hasDownloadedKey) {
                   this.setState(
                     currState => ({
-                      checkbox1: !currState.checkbox1,
+                      isCheckboxChecked: !currState.isCheckboxChecked,
                     }),
                     this.checkIfAllowedToActivateKey
                   );
@@ -378,11 +322,11 @@ created-date`
                 text={
                   isActivatingKey ? (
                     <>
-                      <span>Aktiverer valgnøkkel</span>
+                      <Trans>election.createElectionKeyModalActivating</Trans>
                       <div className={classes.workingSpinner} />
                     </>
                   ) : (
-                    'Aktiver valgnøkkel'
+                    <Trans>election.createElectionKeyModalActivate</Trans>
                   )
                 }
                 disabled={
@@ -396,179 +340,14 @@ created-date`
             </ButtonContainer>
           </div>
 
-          {/* <div className={classes.keyPairDetails}>
-            {showDetails && (
-              <>
-                <div className={classes.keyPairGrid}>
-                  <p className="rowCaption">
-                    <Trans>
-                      election.createElectionKeyModalDetailsSecretKey
-                    </Trans>
-                    :
-                  </p>
-                  <p>{secretKey}</p>
-                  <p className="rowCaption">
-                    <Trans>
-                      election.createElectionKeyModalDetailsPublicKey
-                    </Trans>
-                    :
-                  </p>
-                  <p>{publicKey}</p>
-                  <p className="rowCaption">
-                    <Trans>
-                      election.createElectionKeyModalDetailsCreatedBy
-                    </Trans>
-                    :
-                  </p>
-                  <p>[ikke implementert]</p>
-                  <p className="rowCaption">
-                    <Trans>
-                      election.createElectionKeyModalDetailsTimeCreated
-                    </Trans>
-                    :
-                  </p>
-                  <p>[ikke implementert]</p>
-                </div>
-              </>
-            )}
-            <a
-              className="toggleDetailsLink"
-              onClick={() =>
-                this.setState(currState => ({
-                  showDetails: !currState.showDetails,
-                }))
-              }
-            >
-              {showDetails
-                ? 'Skjul nøkkelpar'
-                : 'Vis nøkkelpar'}
-            </a>
-          </div> */}
-
-          <Form
-            onSubmit={handleCloseModal}
-            validate={(values: any) => {
-              const errors: any = {};
-              if (!values.firstCheck) {
-                errors.firstCheck = 'required';
-              }
-              if (!values.secondCheck) {
-                errors.secondCheck = 'required';
-              }
-              return errors;
-            }}
-          >
-            {({ handleSubmit, errors, valid, touched }) => (
-              <form onSubmit={handleSubmit}>
-                {/* <pre>
-                      <code>{JSON.stringify(errors, null, 2)}</code>
-                    </pre> */}
-                {/* <Field
-                  name="firstCheck"
-                  component={CheckBoxRF}
-                  type="checkbox"
-                  label={
-                    <>
-                      <span>2. </span>
-                      <Trans>
-                        election.createElectionKeyModalCheckboxLabel1
-                      </Trans>
-                    </>
-                  }
-                />
-                <Field
-                  name="secondCheck"
-                  component={CheckBoxRF}
-                  type="checkbox"
-                  label={
-                    <>
-                      <span>3. </span>
-                      <Trans>
-                        election.createElectionKeyModalCheckboxLabel2
-                      </Trans>
-                    </>
-                  }
-                /> */}
-
-                {/* <div className={classes.closeButtonAndFormValidationGrid}>
-                  <Button
-                    secondary
-                    action={handleSubmit}
-                    text={t('general.close')}
-                  />
-                  {!valid &&
-                    ((touched as any).firstCheck || // To make the message come up when clicking the close button
-                      (touched as any).secondCheck) && (
-                      <span className={classes.checkboxFormValidationError}>
-                        <Trans>
-                          election.createElectionKeyModalCheckboxesValidationError
-                        </Trans>
-                      </span>
-                    )}
-                </div> */}
-              </form>
-            )}
-          </Form>
+          {errorMessage && (
+            <p className={classes.errorMessage}>{errorMessage}</p>
+          )}
         </>
       </Modal>
     );
   }
 }
-
-// const subtaskWorkingStateIconStyles = (theme: any) => ({
-//   iconContainer: {
-//     width: '2.2rem',
-//     height: '2.2rem',
-//   },
-//   iconContainerWithOffset: {
-//     width: '2.2rem',
-//     height: '2.2rem',
-//     position: 'relative',
-//     top: '-0.2rem',
-//   },
-//   generatingSpinner: {
-//     width: '2.2rem',
-//     height: '2.2rem',
-//     border: '3px solid rgba(0,0,0,.3)',
-//     borderRadius: '50%',
-//     borderTopColor: '#000',
-//     animation: 'spin 0.8s linear infinite',
-//     '-webkit-animation': 'spin 0.8s linear infinite',
-//   },
-//   '@keyframes spin': {
-//     to: { '-webkit-transform': 'rotate(360deg)' },
-//   },
-// });
-
-// interface IsubtaskWorkingStateIconProps {
-//   workingState: SubtaskWorkingState;
-//   classes: any;
-// }
-
-// const SubtaskWorkingStateIcon = injectSheet(subtaskWorkingStateIconStyles)(
-//   ({ workingState, classes }: IsubtaskWorkingStateIconProps) => (
-//     <>
-//       {workingState === SubtaskWorkingState.notStarted && (
-//         <div className={classes.iconContainer} />
-//       )}
-//       {workingState === SubtaskWorkingState.working && (
-//         <div className={classes.iconContainer}>
-//           <div className={classes.generatingSpinner} />
-//         </div>
-//       )}
-//       {workingState === SubtaskWorkingState.failed && (
-//         <div className={classes.iconContainerWithOffset}>
-//           <Icon type="xMark" />
-//         </div>
-//       )}
-//       {workingState === SubtaskWorkingState.done && (
-//         <div className={classes.iconContainerWithOffset}>
-//           <Icon type="checkMark" />
-//         </div>
-//       )}
-//     </>
-//   )
-// );
 
 export default injectSheet(styles)(
   translate()(withApollo(CreateElectionKeyModal))
