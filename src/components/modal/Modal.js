@@ -1,10 +1,10 @@
 /* @flow */
 import * as React from 'react';
 import injectSheet from 'react-jss';
+import classNames from 'classnames';
 
 import { ButtonContainer } from '../button';
 import CloseIcon from './icons/CloseIcon';
-
 
 const styles = theme => ({
   modal: {
@@ -19,23 +19,23 @@ const styles = theme => ({
     fontSize: '3.6rem',
     fontWeight: 'normal',
     marginBottom: '2rem',
-    color: theme.colors.greyishBrown
+    color: theme.colors.greyishBrown,
   },
   content: {
-    padding: '1rem 4rem 4rem 4rem'
+    padding: '1rem 4rem 4rem 4rem',
   },
   buttons: {
     diplay: 'flex',
     justifyContent: 'flex-end',
-    padding: '2.5rem 3rem 3rem 3rem'
+    padding: '2.5rem 3rem 3rem 3rem',
   },
-  buttonContainer: {marginLeft: '2rem'},
+  buttonContainer: { marginLeft: '2rem' },
   separator: {
     width: '100%',
     height: '0.3rem',
     border: '0.1rem',
     borderColor: theme.colors.darkWhite,
-    'border-style': 'solid'
+    'border-style': 'solid',
   },
   overlay: {
     position: 'fixed',
@@ -47,15 +47,18 @@ const styles = theme => ({
     overflow: 'visible',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-    closeIcon: {
-     width: '100%',
+  closeIcon: {
+    width: '100%',
     paddingTop: '2.2rem',
     paddingRight: '2.2rem',
     display: 'flex',
     justifyContent: 'flex-end',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    '&.hidden': {
+      visibility: 'hidden',
+    },
   },
 });
 
@@ -64,37 +67,39 @@ type Props = {
   closeAction: Function,
   buttons: Array<ReactElement>,
   header: ReactElement | string,
-  hideButtons?: bool,
-  classes: Object
-}
+  hideButtons?: boolean,
+  hideTopCloseButton?: boolean,
+  classes: Object,
+};
 
 const Modal = (props: Props) => {
-  const {classes} = props;
+  const { classes } = props;
   return (
     <div className={classes.overlay}>
       <div className={classes.modal}>
-        <div className={classes.closeIcon}>
+        <div
+          className={classNames({
+            [classes.closeIcon]: true,
+            hidden: props.hideTopCloseButton,
+          })}
+        >
           <CloseIcon closeAction={props.closeAction} />
         </div>
         <div className={classes.content}>
-          <h1 className={classes.h1}>
-            {props.header}
-          </h1>
+          <h1 className={classes.h1}>{props.header}</h1>
           {props.children}
         </div>
-        {(props.hideButtons === 'undefined' || !props.hideButtons) &&
+        {(props.hideButtons === 'undefined' || !props.hideButtons) && (
           <div>
             <div className={classes.separator} />
             <div className={classes.buttons}>
-              <ButtonContainer noTopMargin>
-                {props.buttons}
-              </ButtonContainer>
+              <ButtonContainer noTopMargin>{props.buttons}</ButtonContainer>
             </div>
           </div>
-        }
+        )}
       </div>
     </div>
-  )
+  );
 };
 
 export default injectSheet(styles)(Modal);
