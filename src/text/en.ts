@@ -1,4 +1,46 @@
 export default {
+  admin: {
+    electionKey: {
+      create: 'Create election key',
+      createNew: 'Create new election key',
+      confirmNewModalHeader: 'Replace existing election key?',
+      confirmNewModalText:
+        'Are you sure you want to replace the existing election key? If you proceed, the existing election key cannot be used to count the votes.',
+      modalGenerating: 'Generating election key',
+      modalActivate: 'Activate the election key',
+      modalActivateNew: 'Activate the new election key',
+      modalActivating: 'Activating election key',
+      modalActivatedSuccessfully: 'The election key is activated',
+      publicKeyCaption: 'Public key (not the election key)',
+      modalDetailsSecretKey: 'Secret decryption key (election key)',
+      modalDetailsPublicKey: 'Public encryption key',
+      modalDetailsCreatedBy: 'Created by',
+      modalDetailsTimeCreated: 'Time created',
+      modalDownloadKey: 'Download election key',
+      modalDownloadNewKey: 'Download new election key',
+      modalInfoListHeader: 'Important about the election key:',
+      modalInfoBullet1:
+        'Without the election key it will not be possible to count the votes. Keeping a backup of the election key file is recommended.',
+      modalInfoBullet2:
+        'The election key you are about to activate can not be downloaded again later. However, until the election has started it is possible to create a new election key that replaces the old one.',
+      modalMoreInfoLink: 'More information and tips',
+      modalCheckboxLabel:
+        'I understand that without the election key, the votes can not be counted.',
+      missing:
+        'No elecition key is created. An election key is needed to count the votes.',
+      createdBy: 'Election key was created by',
+      readMore: 'Read more about election keys',
+      save: 'Save key',
+      statusCanReplace:
+        'You can replace the old key with a new one as long as the election has not started.',
+      statusKeepItSafe:
+        'Make sure the key is stored somewhere safe. Without the key, votes cannot be counted.',
+      cannotCreateReasonPublished:
+        'To create a new election key, you must first unpublish the election.',
+      cannotCreateReasonHasStarted:
+        'It is not possible to create a new election key since the election has started.',
+    },
+  },
   candidate: {
     infoLinkText: 'More about the candidate',
   },
@@ -79,54 +121,6 @@ export default {
     electionInfo: 'Election information',
     electionInfoShort: 'Election info',
     electionKey: 'Election key',
-    electionKeyCreate: 'Create election key',
-    electionKeyCreateNew: 'Create new election key',
-    electionKeyConfirmNewModalHeader: 'Replace existing election key?',
-    electionKeyConfirmNewModalText:
-      'Are you sure you want to replace the existing election key? If you proceed, the existing election key cannot be used to count the votes.',
-    createElectionKeyModalGenerating: 'Generating election key',
-    createElectionKeyModalActivate: 'Activate election key',
-    createElectionKeyModalActivating: 'Activating election key',
-    publicKeyCaption: 'Public key (not the election key)',
-    createElectionKeyModalUploadingAndActivating:
-      'Uploading and activating public key',
-    createElectionKeyModalDetailsSecretKey:
-      'Secret decryption key (election key)',
-    createElectionKeyModalDetailsPublicKey: 'Public encryption key',
-    createElectionKeyModalDetailsCreatedBy: 'Created by',
-    createElectionKeyModalDetailsTimeCreated: 'Time created',
-    createElectionKeyModalSaveKeyFile: 'Save election key file',
-    createElectionKeyModalInfoListHeader: 'Important about the election key:',
-    createElectionKeyModalInfoBullet1:
-      'Save the file with the election key by clicking the button above. Save the file on a secure location not accessible to others.',
-    createElectionKeyModalInfoBullet2:
-      'Without the election key it will not be possible to count the votes. Keeping a backup of the election key file is recommended.',
-    createElectionKeyModalInfoBullet3:
-      'The election key you are about to activate can not be downloaded again later. However, until the election has started it is possible to create a new election key that replaces the old one.',
-    createElectionKeyModalInfoBullet4:
-      'You can change the filename of the election key file, but you must not change the file contents.',
-    createElectionKeyModalMoreInfoLink: 'More information and tips',
-    createElectionKeyModalCheckboxLabel:
-      'I understand that without the election key, the votes can not be counted.',
-    createElectionKeyModalCheckboxLabel1:
-      "I've saved the file with the election key somewhere safe.",
-    createElectionKeyModalCheckboxLabel2:
-      'I understand that the election key can will not be available for download after I close this diaolog, and that the election votes can not be counted without the election key.',
-    createElectionKeyModalCheckboxesValidationError:
-      'You must check the boxes above before clicking «Close».',
-    electionKeyMissing:
-      'No elecition key is created. An election key is needed to count the votes.',
-    electionKeyCreatedBy: 'Election key was created by',
-    electionKeyReadMore: 'Read more about election keys',
-    electionKeySave: 'Save key',
-    electionKeyStatusCanReplace:
-      'You can replace the old key with a new one as long as the election has not started.',
-    electionKeyStatusKeepItSafe:
-      'Make sure the key is stored somewhere safe. Without the key, votes cannot be counted.',
-    electionKeyCannotCreateReasonPublished:
-      'To create a new election key, you must first unpublish the election.',
-    electionKeyCannotCreateReasonHasStarted:
-      'It is not possible to create a new election key since the election has started.',
     electionNotStarted: 'The election has not started.',
     electionOpens: 'Election opens',
     electionCancelled: 'The election is cancelled',
