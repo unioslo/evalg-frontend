@@ -47,6 +47,7 @@ const Link = (props: Props) => {
   const {
     to,
     external,
+    mail,
     children,
     marginRight,
     inheritColor,
@@ -56,6 +57,7 @@ const Link = (props: Props) => {
   const cls = classNames({
     [classes.internal]: !external,
     [classes.external]: external,
+    [classes.mail]: external,
     [classes.marginRight]: marginRight,
     [classes.inheritColor]: inheritColor,
     [classes.noUnderline]: noUnderline,
@@ -69,7 +71,7 @@ const Link = (props: Props) => {
       </g>
     </svg>
   );
-  
+
   if (external) {
     return (
       <a className={cls} href={to} target="_blank">
@@ -77,12 +79,19 @@ const Link = (props: Props) => {
         <span className={classes.externalIcon}>{externalLinkIcon}</span>
       </a>
     );
+  } else if (mail) {
+    return (
+      <a className={cls} href={`mailto:${to}`}>
+        {children}
+      </a>
+    );
+  } else {
+    return (
+      <RouterLink className={cls} to={to}>
+        {children}
+      </RouterLink>
+    );
   }
-  return (
-    <RouterLink className={cls} to={to}>
-      {children}
-    </RouterLink>
-  );
 };
 
 export default injectSheet(styles)(Link);
