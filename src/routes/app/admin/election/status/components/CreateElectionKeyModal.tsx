@@ -5,12 +5,13 @@ import classNames from 'classnames';
 import gql from 'graphql-tag';
 import { withApollo, WithApolloClient } from 'react-apollo';
 
+import { sleep } from 'utils';
+import { getCryptoEngine } from 'cryptoEngines';
 import Modal from 'components/modal';
 import Button, { ButtonContainer } from 'components/button';
 import { InfoList, InfoListItem } from 'components/infolist';
 import Link from 'components/link';
 import { CheckBox } from 'components/form';
-import { getCryptoEngine } from 'cryptoEngines';
 
 const styles = (theme: any) => ({
   stepsGrid: {
@@ -52,7 +53,7 @@ const styles = (theme: any) => ({
     display: 'inline-block',
     width: '2.5rem',
     height: '2.5rem',
-    border: '3px solid rgba(255,255,255,.3)',
+    border: '3px solid rgba(0, 0, 0, .3)',
     borderRadius: '50%',
     borderTopColor: '#fff',
     animation: 'spin 0.8s linear infinite',
@@ -69,6 +70,26 @@ const styles = (theme: any) => ({
   buttonAnchorWrapper: {
     '&:hover': {
       textDecoration: 'none',
+    },
+  },
+
+  animatedCheckmarkSvg: {
+    position: 'relative',
+    top: '-22px',
+    marginRight: '-13px',
+
+    '& .checkmarkPath': {
+      strokeWidth: 5,
+      stroke: 'white',
+      strokeMiterlimit: 10,
+      strokeDasharray: 48,
+      strokeDashoffset: 48,
+      animation: 'stroke .4s cubic-bezier(0.650, 0.000, 0.450, 1.000) forwards',
+    },
+  },
+  '@keyframes stroke': {
+    '100%': {
+      strokeDashoffset: 0,
     },
   },
 });
@@ -88,6 +109,7 @@ interface IKeyPair {
 
 interface IProps {
   electionGroupId: string;
+  isReplacingOldKey: boolean;
   handleCloseModal: () => void;
   t: TranslationFunction;
   classes: any;
@@ -103,6 +125,7 @@ interface IState {
   hasDownloadedKey: boolean;
   isCheckboxChecked: boolean;
   isAllowedToActivateKey: boolean;
+  hasActivatedNewKey: boolean;
   showDetails: boolean;
   errorMessage: string | null;
 }
@@ -122,6 +145,7 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
       hasDownloadedKey: false,
       isCheckboxChecked: false,
       isAllowedToActivateKey: false,
+      hasActivatedNewKey: false,
       showDetails: false,
       errorMessage: '',
     };
@@ -173,7 +197,12 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
         refetchQueries: ['electionGroup'],
         awaitRefetchQueries: true,
       });
-      this.setState({ secretKey: '', isActivatingKey: false });
+      this.setState({
+        secretKey: '',
+        isActivatingKey: false,
+        hasActivatedNewKey: true,
+      });
+      await sleep(1300);
       this.props.handleCloseModal();
     } catch (error) {
       this.setState({
@@ -186,7 +215,7 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
   };
 
   render() {
-    const { handleCloseModal, t, classes } = this.props;
+    const { isReplacingOldKey, handleCloseModal, t, classes } = this.props;
 
     const {
       publicKey,
@@ -194,14 +223,69 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
       isGeneratingKey,
       isActivatingKey,
       hasDownloadedKey,
-      isCheckboxChecked: checkbox1,
+      isCheckboxChecked,
       isAllowedToActivateKey,
+      hasActivatedNewKey,
       errorMessage,
     } = this.state;
 
+    const electionKeyFileContents = `
+secret:${secretKey}
+public:${publicKey}`.trim();
+
+    const animatedCheckmarkSvg = (
+      <svg
+        className={classes.animatedCheckmarkSvg}
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 52 52"
+        width="56"
+        height="56"
+      >
+        <path
+          className="checkmarkPath"
+          fill="none"
+          d="M14.1 27.2l7.1 7.2 16.7-16.8"
+          stroke-width="5"
+        />
+      </svg>
+    );
+
+    const downloadKeyButtonContent = isGeneratingKey ? (
+      <>
+        <Trans>admin.electionKey.modalGenerating</Trans>
+        <div className={classes.workingSpinner} />
+      </>
+    ) : isReplacingOldKey ? (
+      <Trans>admin.electionKey.modalDownloadNewKey</Trans>
+    ) : (
+      <Trans>admin.electionKey.modalDownloadKey</Trans>
+    );
+
+    const activateKeyButtonContent = isActivatingKey ? (
+      <>
+        <Trans>admin.electionKey.modalActivating</Trans>
+        <div className={classes.workingSpinner} />
+      </>
+    ) : hasActivatedNewKey ? (
+      <>
+        <Trans>admin.electionKey.modalActivatedSuccessfully</Trans>
+        {animatedCheckmarkSvg}
+      </>
+    ) : isReplacingOldKey ? (
+      <Trans>admin.electionKey.modalActivateNew</Trans>
+    ) : (
+      <Trans>admin.electionKey.modalActivate</Trans>
+    );
+
     return (
       <Modal
-        header={<Trans>election.electionKeyCreate</Trans>}
+        header={
+          isReplacingOldKey ? (
+            <Trans>admin.electionKey.createNew</Trans>
+          ) : (
+            <Trans>admin.electionKey.create</Trans>
+          )
+        }
         closeAction={handleCloseModal}
         hideTopCloseButton
         buttons={[
@@ -219,20 +303,20 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
               <InfoListItem bulleted>
                 <span
                   dangerouslySetInnerHTML={{
-                    __html: t('election.createElectionKeyModalInfoBullet2'),
+                    __html: t('admin.electionKey.modalInfoBullet1'),
                   }}
                 />
               </InfoListItem>
               <InfoListItem bulleted>
                 <span
                   dangerouslySetInnerHTML={{
-                    __html: t('election.createElectionKeyModalInfoBullet3'),
+                    __html: t('admin.electionKey.modalInfoBullet2'),
                   }}
                 />
               </InfoListItem>
               <InfoListItem bulleted>
                 <Link external to="#TODO">
-                  <Trans>election.createElectionKeyModalMoreInfoLink</Trans>
+                  <Trans>admin.electionKey.modalMoreInfoLink</Trans>
                 </Link>
               </InfoListItem>
             </InfoList>
@@ -250,8 +334,7 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
             <ButtonContainer center noTopMargin>
               <a
                 href={`data:text/plain;charset=utf-8,${encodeURIComponent(
-                  `secret:${secretKey}
-public:${publicKey}`
+                  electionKeyFileContents
                 )}`}
                 key="download"
                 className={classes.buttonAnchorWrapper}
@@ -265,16 +348,7 @@ public:${publicKey}`
                     )
                   }
                   disabled={isGeneratingKey || errorMessage}
-                  text={
-                    isGeneratingKey ? (
-                      <>
-                        <Trans>election.createElectionKeyModalGenerating</Trans>
-                        <div className={classes.workingSpinner} />
-                      </>
-                    ) : (
-                      t('election.createElectionKeyModalSaveKeyFile')
-                    )
-                  }
+                  text={downloadKeyButtonContent}
                 />
               </a>
             </ButtonContainer>
@@ -300,10 +374,8 @@ public:${publicKey}`
               }}
             >
               <CheckBox
-                value={checkbox1}
-                label={
-                  <Trans>election.createElectionKeyModalCheckboxLabel</Trans>
-                }
+                value={isCheckboxChecked}
+                label={<Trans>admin.electionKey.modalCheckboxLabel</Trans>}
                 disabled={!hasDownloadedKey}
                 onChange={() => null}
               />
@@ -319,20 +391,12 @@ public:${publicKey}`
             </div>
             <ButtonContainer center noTopMargin>
               <Button
-                text={
-                  isActivatingKey ? (
-                    <>
-                      <Trans>election.createElectionKeyModalActivating</Trans>
-                      <div className={classes.workingSpinner} />
-                    </>
-                  ) : (
-                    <Trans>election.createElectionKeyModalActivate</Trans>
-                  )
-                }
+                text={activateKeyButtonContent}
                 disabled={
                   !isAllowedToActivateKey ||
                   isGeneratingKey ||
                   isActivatingKey ||
+                  hasActivatedNewKey ||
                   errorMessage
                 }
                 action={this.activateKey}

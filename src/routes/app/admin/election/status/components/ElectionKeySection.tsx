@@ -22,7 +22,7 @@ interface IState {
   showPublicKey: boolean;
 }
 
-class CreateElectionKey extends React.Component<IProps, IState> {
+class ElectionKeySection extends React.Component<IProps, IState> {
   cryptoEngine: any;
 
   constructor(props: IProps) {
@@ -46,7 +46,7 @@ class CreateElectionKey extends React.Component<IProps, IState> {
     });
   };
 
-  showCreateNewKeyModal = () => {
+  showConfirmNewKeyModal = () => {
     this.setState({
       showConfirmNewKeyModal: true,
     });
@@ -70,6 +70,8 @@ class CreateElectionKey extends React.Component<IProps, IState> {
     const hasKey = electionGroup.publicKey !== null;
     const status = electionGroup.status;
 
+    console.log(hasKey);
+
     return (
       <>
         <PageSection header={<Trans>election.electionKey</Trans>}>
@@ -77,23 +79,20 @@ class CreateElectionKey extends React.Component<IProps, IState> {
             <>
               <ButtonContainer alignLeft smlTopMargin>
                 <Button
-                  text={<Trans>election.electionKeyCreate</Trans>}
+                  text={<Trans>admin.electionKey.create</Trans>}
                   action={this.showCreateKeyModal}
                 />
               </ButtonContainer>
               <Text marginTop>
-                <Trans>election.electionKeyMissing</Trans>
+                <Trans>admin.electionKey.missing</Trans>
               </Text>
             </>
           ) : (
             <>
               <Text marginBottom>
-                <Trans>election.electionKeyCreatedBy</Trans> [brukernavn] [dato]
-                kl [klokkeslett].
-              </Text>
-              <InfoList>
-                <InfoListItem bulleted key="public-key">
-                  <Trans>election.publicKeyCaption</Trans>:{' '}
+                <Trans>admin.electionKey.createdBy</Trans> [brukernavn] [dato]
+                kl [klokkeslett].<br />
+                <Trans>admin.electionKey.publicKeyCaption</Trans>:{' '}
                   {this.state.showPublicKey ? (
                     <span>
                       {electionGroup.publicKey}{' '}
@@ -112,38 +111,37 @@ class CreateElectionKey extends React.Component<IProps, IState> {
                       <Trans>general.show</Trans>
                     </a>
                   )}
-                </InfoListItem>
+              </Text>
+              <InfoList>
                 <InfoListItem bulleted key="keep-it-safe">
-                  <Trans>election.electionKeyStatusKeepItSafe</Trans>
+                  <Trans>admin.electionKey.statusKeepItSafe</Trans>
                 </InfoListItem>
                 <InfoListItem bulleted key="can-replace">
-                  <Trans>election.electionKeyStatusCanReplace</Trans>
+                  <Trans>admin.electionKey.statusCanReplace</Trans>
                 </InfoListItem>
                 <InfoListItem bulleted key="read-more">
                   <Link external to="#TODO">
-                    <Trans>election.electionKeyReadMore</Trans>
+                    <Trans>admin.electionKey.readMore</Trans>
                   </Link>
                 </InfoListItem>
               </InfoList>
               {(status === 'draft' || status === 'announced') && (
                 <ButtonContainer alignLeft smlTopMargin>
                   <Button
-                    text={<Trans>election.electionKeyCreateNew</Trans>}
-                    action={this.showCreateNewKeyModal}
+                    text={<Trans>admin.electionKey.createNew</Trans>}
+                    action={this.showConfirmNewKeyModal}
                     secondary
                   />
                 </ButtonContainer>
               )}
               <Text marginTop>
                 {status === 'published' && (
-                  <Trans>election.electionKeyCannotCreateReasonPublished</Trans>
+                  <Trans>admin.electionKey.cannotCreateReasonPublished</Trans>
                 )}
                 {(status === 'ongoing' ||
                   status === 'closed' ||
                   status === 'multipleStatuses') && (
-                  <Trans>
-                    election.electionKeyCannotCreateReasonHasStarted
-                  </Trans>
+                  <Trans>admin.electionKey.cannotCreateReasonHasStarted</Trans>
                 )}
                 {status === 'cancelled' && (
                   <Trans>election.electionCancelled</Trans>
@@ -154,7 +152,7 @@ class CreateElectionKey extends React.Component<IProps, IState> {
         </PageSection>
         {this.state.showConfirmNewKeyModal && (
           <Modal
-            header={<Trans>election.electionKeyConfirmNewModalHeader</Trans>}
+            header={<Trans>admin.electionKey.confirmNewModalHeader</Trans>}
             hideTopCloseButton
             buttons={[
               <Button
@@ -170,15 +168,18 @@ class CreateElectionKey extends React.Component<IProps, IState> {
               />,
             ]}
           >
-            <Text>
-              <Trans>election.electionKeyConfirmNewModalText</Trans>
-            </Text>
+            <div style={{ maxWidth: '100rem' }}>
+              <Text>
+                <Trans>admin.electionKey.confirmNewModalText</Trans>
+              </Text>
+            </div>
           </Modal>
         )}
         {this.state.showCreateKeyModal && (
           <CreateElectionKeyModal
             electionGroupId={this.props.electionGroup.id}
             handleCloseModal={this.closeCreateKeyModal}
+            isReplacingOldKey={hasKey}
           />
         )}
       </>
@@ -186,4 +187,4 @@ class CreateElectionKey extends React.Component<IProps, IState> {
   }
 }
 
-export default CreateElectionKey;
+export default ElectionKeySection;
