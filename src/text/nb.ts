@@ -26,6 +26,8 @@ export default {
       modalMoreInfoLink: 'Mer informasjon og tips',
       modalCheckboxLabel:
         'Jeg forstår at valget ikke kan telles opp uten valgnøkkelen.',
+      modalGenerateKeyError: 'Noe gikk galt under generering av nøkkelpar.',
+      modalActivateKeyError: 'Noe gikk galt under opplasting og aktivering av offentlig nøkkel. Sjekk internett-tilkoblingen, lukk dialogboksen og prøv på nytt.',
       missing:
         'Valgnøkkel er ikke opprettet. En valgnøkkel er nødvendig for å telle opp stemmene.',
       createdBy: 'Valgnøkkel ble opprettet av',
@@ -243,6 +245,7 @@ export default {
     delete: 'Slett',
     edit: 'endre',
     email: 'Epost',
+    errorMessage: 'Feilmelding',
     female: 'Kvinne',
     finishedElections: 'Avsluttede valg',
     frontPageDesc: 'Her kan du stemme i elektroniske valg.',

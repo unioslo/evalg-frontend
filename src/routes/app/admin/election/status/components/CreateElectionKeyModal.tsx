@@ -175,10 +175,12 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
         publicKey: keys.publicKey,
       });
     } catch (error) {
+      const t = this.props.t;
       this.setState({
         isGeneratingKey: false,
-        errorMessage:
-          'Noe gikk galt under generering av nøkkelpar.\nFeilmelding: ' + error,
+        errorMessage: `${t('admin.electionKey.modalGenerateKeyError')}\n${t(
+          'general.errorMessage'
+        )}: ${error}`,
       });
     }
   };
@@ -205,11 +207,12 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
       await sleep(1300);
       this.props.handleCloseModal();
     } catch (error) {
+      const t = this.props.t;
       this.setState({
         isActivatingKey: false,
-        errorMessage:
-          'Noe gikk galt under opplasting og aktivering av offentlig nøkkel. Sjekk internett-tilkoblingen, lukk dialogboksen og prøv på nytt.\nFeilmelding: ' +
-          error,
+        errorMessage: `${t('admin.electionKey.modalActivateKeyError')}\n${t(
+          'general.errorMessage'
+        )}: ${error}`,
       });
     }
   };

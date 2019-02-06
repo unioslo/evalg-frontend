@@ -26,6 +26,9 @@ export default {
       modalMoreInfoLink: 'More information and tips',
       modalCheckboxLabel:
         'I understand that without the election key, the votes can not be counted.',
+      modalGenerateKeyError: 'Something went wrong when generating a key pair.',
+      modalActivateKeyError:
+        'Something went wrong when trying to upload and activate the public key. Check your Internet connection, close this dialog, and try again.',
       missing:
         'No elecition key is created. An election key is needed to count the votes.',
       createdBy: 'Election key was created by',
@@ -238,6 +241,7 @@ export default {
     delete: 'Delete',
     edit: 'edit',
     email: 'Email',
+    errorMessage: 'Error message',
     female: 'Female',
     finishedElections: 'Finished elections',
     frontPageDesc: 'Here you can vote in electronic elections.',
