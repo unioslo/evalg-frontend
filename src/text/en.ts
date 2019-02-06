@@ -221,6 +221,10 @@ export default {
     published: 'Ready',
     upcomingElections: 'Upcoming elections',
   },
+  footer: {
+    contactSectionHeader: 'Contact information',
+    responsibleOrganizationHeader: 'Responsible for eValg',
+  },
   formErrors: {
     invalidDates: 'Start time must be before closing time.',
     invalidEmail: 'Invalid email address.',

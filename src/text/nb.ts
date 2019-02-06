@@ -225,6 +225,10 @@ export default {
     published: 'Klart',
     upcomingElections: 'Kommende valg',
   },
+  footer: {
+    contactSectionHeader: 'Kontaktinformasjon',
+    responsibleOrganizationHeader: 'Ansvarlig for eValg',
+  },
   formErrors: {
     invalidDates: 'Starttid må være tidligere enn sluttid.',
     invalidEmail: 'Ugyldig epostadresse.',
