@@ -123,6 +123,7 @@ const theme = {
   headerLogoBarColor: black,
   headerMainAreaColor: darkGray,
   headerMenuMargin: '2rem',
+  helpBoxBorderColor: lightTurquoise,
   horizontalMdPadding: '6.5rem',
   horizontalPadding: '2rem',
   inlineDropdownTextColor: darkTurquoise,
