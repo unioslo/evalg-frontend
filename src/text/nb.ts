@@ -1,4 +1,48 @@
 export default {
+  admin: {
+    electionKey: {
+      create: 'Opprett valgnøkkel',
+      createNew: 'Opprett ny valgnøkkel',
+      confirmNewModalHeader: 'Erstatt eksisterende valgnøkkel?',
+      confirmNewModalText:
+        'Er du sikker på at du ønsker å erstatte den eksisterende valgnøkkelen med en ny? Den eksisterende valgnøkkelen vil ikke kunne brukes til å telle opp valget.',
+      modalGenerating: 'Genererer valgnøkkel',
+      modalActivate: 'Aktiver valgnøkkelen',
+      modalActivateNew: 'Aktiver den nye valgnøkkelen',
+      modalActivating: 'Aktiverer valgnøkkel',
+      modalActivatedSuccessfully: 'Valgnøkkelen er aktivert',
+      publicKeyCaption: 'Offentlig nøkkel (ikke valgnøkkel)',
+      modalDetailsSecretKey: 'Hemmelig dekrypteringsnøkkel (valgnøkkel)',
+      modalDetailsPublicKey: 'Offentlig krypteringsnøkkel',
+      modalDetailsCreatedBy: 'Opprettet av',
+      modalDetailsTimeCreated: 'Tidspunkt opprettet',
+      modalDownloadKey: 'Last ned valgnøkkel',
+      modalDownloadNewKey: 'Last ned ny valgnøkkel',
+      modalInfoListHeader: 'Viktig om valgnøkkelen:',
+      modalInfoBullet1:
+        'Uten valgnøkkelen er det ikke mulig å telle opp stemmene. Det anbefales å ta en sikkerhetskopi av valgnøkkel-filen.',
+      modalInfoBullet2:
+        'Valgnøkkelen du er i ferd med å aktivere kan ikke lastes ned på nytt senere. Inntil valget starter kan du imidlertid erstatte den aktive valgnøkkelen med en ny.',
+      modalMoreInfoLink: 'Mer informasjon og tips',
+      modalCheckboxLabel:
+        'Jeg forstår at valget ikke kan telles opp uten valgnøkkelen.',
+      modalGenerateKeyError: 'Noe gikk galt under generering av nøkkelpar.',
+      modalActivateKeyError: 'Noe gikk galt under opplasting og aktivering av offentlig nøkkel. Sjekk internett-tilkoblingen, lukk dialogboksen og prøv på nytt.',
+      missing:
+        'Valgnøkkel er ikke opprettet. En valgnøkkel er nødvendig for å telle opp stemmene.',
+      createdBy: 'Valgnøkkel ble opprettet av',
+      readMore: 'Les mer om nøkkelhåndtering',
+      save: 'Lagre nøkkel',
+      statusCanReplace:
+        'Frem til valget har startet vil du fortsatt ha mulighet til å lage en ny nøkkel som erstatter den gamle.',
+      statusKeepItSafe:
+        'Sørg for at nøkkelen er lagret et sikkert sted. Uten nøkkelen kan ikke stemmene telles opp.',
+      cannotCreateReasonPublished:
+        'For å opprette ny valgnøkkel må du først avpublisere valget.',
+      cannotCreateReasonHasStarted:
+        'Det er ikke mulig å opprette ny valgnøkkel siden valget har begynt.',
+    },
+  },
   candidate: {
     infoLinkText: 'Mer om kandidaten',
   },
@@ -80,48 +124,6 @@ export default {
     electionCloses: 'Valget stenger',
     electionInfo: 'Valginformasjon',
     electionKey: 'Valgnøkkel',
-    electionKeyCreate: 'Opprett valgnøkkel',
-    electionKeyCreateNew: 'Opprett ny valgnøkkel',
-    electionKeyConfirmNewModalHeader: 'Erstatt eksisterende valgnøkkel?',
-    electionKeyConfirmNewModalText:
-      'Er du sikker på at du ønsker å erstatte den eksisterende valgnøkkelen med en ny? Den eksisterende valgnøkkelen vil ikke kunne brukes til å telle opp valget.',
-    createElectionKeyModalGeneratingPair: 'Genererer nøkkelpar',
-    createElectionKeyModalUploadingAndActivating:
-      'Laster opp og aktiverer offentlig nøkkel',
-    createElectionKeyModalDetailsSecretKey:
-      'Hemmelig dekrypteringsnøkkel (valgnøkkel)',
-    createElectionKeyModalDetailsPublicKey: 'Offentlig krypteringsnøkkel',
-    createElectionKeyModalDetailsCreatedBy: 'Opprettet av',
-    createElectionKeyModalDetailsTimeCreated: 'Tidspunkt opprettet',
-    createElectionKeyModalSaveKey: 'Lagre valgnøkkel',
-    createElectionKeyModalInfoListHeader: 'Viktig om valgnøkkelen:',
-    createElectionKeyModalInfoBullet1:
-      'Lagre filen med valgnøkkelen ved å trykke på knappen over. Lagre filen på et sikkert sted hvor uvedkommende ikke har tilgang.',
-    createElectionKeyModalInfoBullet2:
-      '<strong>Uten valgnøkkelen er det ikke mulig å telle opp stemmene</strong>. Det anbefales å ta en sikkerhetskopi av valgnøkkel-filen.',
-    createElectionKeyModalInfoBullet3:
-      '<strong>Etter at du har lukket denne dialogboksen, vil det ikke være mulig å få tak i valgnøkkelen igjen.</strong> Frem til valget starter kan du imidlertid generere en ny valgnøkkel som erstatter den gamle.',
-    createElectionKeyModalInfoBullet4:
-      'Du kan endre filnavnet, men du må ikke endre innholdet i valgnøkkelfilen.',
-    createElectionKeyModalCheckboxLabel1:
-      'Jeg har lagret filen med valgnøkkelen på et trygt sted.',
-    createElectionKeyModalCheckboxLabel2:
-      'Jeg forstår at valgnøkkelen ikke kan hentes etter at jeg lukker denne dialogboksen, og at valget ikke kan telles opp uten valgnøkkelen.',
-    createElectionKeyModalCheckboxesValidationError:
-      'Du må krysse av boksene over før du kan trykke «Lukk».',
-    electionKeyMissing:
-      'Valgnøkkel er ikke opprettet. En valgnøkkel er nødvendig for å telle opp stemmene.',
-    electionKeyCreatedBy: 'Valgnøkkel ble opprettet av',
-    electionKeyReadMore: 'Les mer om nøkkelhåndtering',
-    electionKeySave: 'Lagre nøkkel',
-    electionKeyStatusCanReplace:
-      'Frem til valget har startet vil du fortsatt ha mulighet til å lage en ny nøkkel som erstatter den gamle.',
-    electionKeyStatusKeepItSafe:
-      'Sørg for at nøkkelen er lagret et sikkert sted. Uten nøkkelen kan ikke stemmene telles opp.',
-    electionKeyCannotCreateReasonPublished:
-      'For å opprette ny valgnøkkel må du først avpublisere valget.',
-    electionKeyCannotCreateReasonHasStarted:
-      'Det er ikke mulig å opprette ny valgnøkkel siden valget har begynt.',
     electionNotStarted: 'Valget har ikke startet.',
     electionOpens: 'Valget åpner',
     electionCancelled: 'Valget er avlyst',
@@ -243,6 +245,7 @@ export default {
     delete: 'Slett',
     edit: 'endre',
     email: 'Epost',
+    errorMessage: 'Feilmelding',
     female: 'Kvinne',
     finishedElections: 'Avsluttede valg',
     frontPageDesc: 'Her kan du stemme i elektroniske valg.',
@@ -250,6 +253,7 @@ export default {
     group: 'Gruppe',
     headerSubtitleVoter: 'Elektronisk valg',
     headerSubtitleAdmin: 'Elektronisk valg - Administrasjon',
+    hide: 'Skjul',
     hideDetails: 'Skjul detaljer',
     logout: 'Logg ut',
     male: 'Mann',
@@ -269,6 +273,7 @@ export default {
     saving: 'Lagrer',
     select: 'Velg',
     frontPage: 'Forsiden',
+    show: 'Vis',
     showDetails: 'Vis detaljer',
     timePlaceHolder: 'tt:mm',
     title: 'eValg',

@@ -1,10 +1,7 @@
 import * as React from 'react';
 
 import { Trans } from 'react-i18next';
-import { withApollo, WithApolloClient } from 'react-apollo';
-import gql from 'graphql-tag';
 
-import { getCryptoEngine } from 'cryptoEngines';
 import Button, { ButtonContainer } from 'components/button';
 import Modal from 'components/modal';
 import { InfoList, InfoListItem } from 'components/infolist';
@@ -13,64 +10,31 @@ import Text from 'components/text';
 import Link from 'components/link';
 import CreateElectionKeyModal from './CreateElectionKeyModal';
 
-const createElectionKey = gql`
-  mutation CreateElectionGroupKey($id: UUID!, $key: String!) {
-    createElectionGroupKey(id: $id, key: $key) {
-      ok
-    }
-  }
-`;
-
-interface IKeyPair {
-  publicKey: string;
-  secretKey: string;
-}
-
 interface IProps {
   electionGroup: ElectionGroup;
   replaceKey: boolean;
   classes: any;
 }
 
-type PropsInternal = WithApolloClient<IProps>;
-
 interface IState {
-  publicKey: string;
-  secretKey: string;
   showCreateKeyModal: boolean;
   showConfirmNewKeyModal: boolean;
-  isWorking: boolean;
-  swsGenerateKeyPair: SubtaskWorkingState;
-  swsActivatePublicKey: SubtaskWorkingState;
-  subtaskError: string;
+  showPublicKey: boolean;
 }
 
-class CreateElectionKey extends React.Component<PropsInternal, IState> {
+class ElectionKeySection extends React.Component<IProps, IState> {
   cryptoEngine: any;
-  hasErorredOut = false;
 
-  constructor(props: PropsInternal) {
+  constructor(props: IProps) {
     super(props);
     this.state = {
-      publicKey: '',
-      secretKey: '',
       showCreateKeyModal: false,
       showConfirmNewKeyModal: false,
-      isWorking: false,
-      swsGenerateKeyPair: SubtaskWorkingState.notStarted,
-      swsActivatePublicKey: SubtaskWorkingState.notStarted,
-      subtaskError: '',
+      showPublicKey: false,
     };
-    this.cryptoEngine = getCryptoEngine();
   }
 
   showCreateKeyModal = () => {
-    if (!this.state.isWorking) {
-      this.generateAndActivateNewKey();
-      this.setState({
-        isWorking: true,
-      });
-    }
     this.setState({
       showCreateKeyModal: true,
     });
@@ -78,12 +42,11 @@ class CreateElectionKey extends React.Component<PropsInternal, IState> {
 
   closeCreateKeyModal = () => {
     this.setState({
-      secretKey: '',
       showCreateKeyModal: false,
     });
   };
 
-  showCreateNewKeyModal = () => {
+  showConfirmNewKeyModal = () => {
     this.setState({
       showConfirmNewKeyModal: true,
     });
@@ -102,62 +65,6 @@ class CreateElectionKey extends React.Component<PropsInternal, IState> {
     this.showCreateKeyModal();
   };
 
-  generateAndActivateNewKey = async () => {
-    this.hasErorredOut = false;
-    this.setState({
-      swsGenerateKeyPair: SubtaskWorkingState.working,
-      swsActivatePublicKey: SubtaskWorkingState.notStarted,
-    });
-    let keys: IKeyPair = { secretKey: '', publicKey: '' };
-    try {
-      // await new Promise(resolve => setTimeout(resolve, 1000));
-      keys = await this.cryptoEngine.generateKeyPair();
-    } catch (error) {
-      this.hasErorredOut = true;
-      this.setState({
-        isWorking: false,
-        swsGenerateKeyPair: SubtaskWorkingState.failed,
-        subtaskError:
-          'Noe gikk galt under generering av nøkkelpar.\nFeilmelding: ' + error,
-      });
-    }
-    if (!this.hasErorredOut) {
-      this.setState({
-        secretKey: keys.secretKey,
-        publicKey: keys.publicKey,
-        swsGenerateKeyPair: SubtaskWorkingState.done,
-        swsActivatePublicKey: SubtaskWorkingState.working,
-      });
-      try {
-        // await new Promise(resolve => setTimeout(resolve, 1000));
-        // const t0 = performance.now();
-        await this.props.client.mutate({
-          mutation: createElectionKey,
-          variables: { id: this.props.electionGroup.id, key: keys.publicKey },
-          refetchQueries: ['electionGroup'],
-          awaitRefetchQueries: true,
-        });
-        // const t1 = performance.now();
-        // console.error("Call to mutate took " + (t1 - t0) + " milliseconds.")
-      } catch (error) {
-        this.hasErorredOut = true;
-        this.setState({
-          isWorking: false,
-          swsActivatePublicKey: SubtaskWorkingState.failed,
-          subtaskError:
-            'Noe gikk galt under opplasting og aktivering av offentlig nøkkel. Sjekk internett-tilkoblingen, lukk dialogboksen og prøv på nytt.\nFeilmelding: ' +
-            error,
-        });
-      }
-      if (!this.hasErorredOut) {
-        this.setState({
-          swsActivatePublicKey: SubtaskWorkingState.done,
-          isWorking: false,
-        });
-      }
-    }
-  };
-
   render() {
     const { electionGroup } = this.props;
     const hasKey = electionGroup.publicKey !== null;
@@ -170,52 +77,69 @@ class CreateElectionKey extends React.Component<PropsInternal, IState> {
             <>
               <ButtonContainer alignLeft smlTopMargin>
                 <Button
-                  text={<Trans>election.electionKeyCreate</Trans>}
+                  text={<Trans>admin.electionKey.create</Trans>}
                   action={this.showCreateKeyModal}
                 />
               </ButtonContainer>
               <Text marginTop>
-                <Trans>election.electionKeyMissing</Trans>
+                <Trans>admin.electionKey.missing</Trans>
               </Text>
             </>
           ) : (
             <>
               <Text marginBottom>
-                <Trans>election.electionKeyCreatedBy</Trans> [brukernavn] [dato] kl
-                [klokkeslett].
+                <Trans>admin.electionKey.createdBy</Trans> [brukernavn] [dato]
+                kl [klokkeslett].<br />
+                <Trans>admin.electionKey.publicKeyCaption</Trans>:{' '}
+                  {this.state.showPublicKey ? (
+                    <span>
+                      {electionGroup.publicKey}{' '}
+                      <a
+                        href="javascript:void(0);"
+                        onClick={() => this.setState({ showPublicKey: false })}
+                      >
+                        <Trans>general.hide</Trans>
+                      </a>
+                    </span>
+                  ) : (
+                    <a
+                      href="javascript:void(0);"
+                      onClick={() => this.setState({ showPublicKey: true })}
+                    >
+                      <Trans>general.show</Trans>
+                    </a>
+                  )}
               </Text>
               <InfoList>
                 <InfoListItem bulleted key="keep-it-safe">
-                  <Trans>election.electionKeyStatusKeepItSafe</Trans>
+                  <Trans>admin.electionKey.statusKeepItSafe</Trans>
                 </InfoListItem>
                 <InfoListItem bulleted key="can-replace">
-                  <Trans>election.electionKeyStatusCanReplace</Trans>
+                  <Trans>admin.electionKey.statusCanReplace</Trans>
                 </InfoListItem>
                 <InfoListItem bulleted key="read-more">
                   <Link external to="#TODO">
-                    <Trans>election.electionKeyReadMore</Trans>
+                    <Trans>admin.electionKey.readMore</Trans>
                   </Link>
                 </InfoListItem>
               </InfoList>
               {(status === 'draft' || status === 'announced') && (
                 <ButtonContainer alignLeft smlTopMargin>
                   <Button
-                    text={<Trans>election.electionKeyCreateNew</Trans>}
-                    action={this.showCreateNewKeyModal}
+                    text={<Trans>admin.electionKey.createNew</Trans>}
+                    action={this.showConfirmNewKeyModal}
                     secondary
                   />
                 </ButtonContainer>
               )}
               <Text marginTop>
                 {status === 'published' && (
-                  <Trans>election.electionKeyCannotCreateReasonPublished</Trans>
+                  <Trans>admin.electionKey.cannotCreateReasonPublished</Trans>
                 )}
                 {(status === 'ongoing' ||
                   status === 'closed' ||
                   status === 'multipleStatuses') && (
-                  <Trans>
-                    election.electionKeyCannotCreateReasonHasStarted
-                  </Trans>
+                  <Trans>admin.electionKey.cannotCreateReasonHasStarted</Trans>
                 )}
                 {status === 'cancelled' && (
                   <Trans>election.electionCancelled</Trans>
@@ -226,8 +150,8 @@ class CreateElectionKey extends React.Component<PropsInternal, IState> {
         </PageSection>
         {this.state.showConfirmNewKeyModal && (
           <Modal
-            header={<Trans>election.electionKeyConfirmNewModalHeader</Trans>}
-            closeAction={this.cancelNewKey}
+            header={<Trans>admin.electionKey.confirmNewModalHeader</Trans>}
+            hideTopCloseButton
             buttons={[
               <Button
                 text={<Trans>general.yes</Trans>}
@@ -242,20 +166,18 @@ class CreateElectionKey extends React.Component<PropsInternal, IState> {
               />,
             ]}
           >
-            <Text>
-              <Trans>election.electionKeyConfirmNewModalText</Trans>
-            </Text>
+            <div style={{ maxWidth: '100rem' }}>
+              <Text>
+                <Trans>admin.electionKey.confirmNewModalText</Trans>
+              </Text>
+            </div>
           </Modal>
         )}
         {this.state.showCreateKeyModal && (
           <CreateElectionKeyModal
-            secretKey={this.state.secretKey}
-            publicKey={this.state.publicKey}
-            isWorking={this.state.isWorking}
-            swsGenerateKeyPair={this.state.swsGenerateKeyPair}
-            swsActivatePublicKey={this.state.swsActivatePublicKey}
-            subtaskError={this.state.subtaskError}
+            electionGroupId={this.props.electionGroup.id}
             handleCloseModal={this.closeCreateKeyModal}
+            isReplacingOldKey={hasKey}
           />
         )}
       </>
@@ -263,11 +185,4 @@ class CreateElectionKey extends React.Component<PropsInternal, IState> {
   }
 }
 
-export enum SubtaskWorkingState {
-  notStarted,
-  working,
-  failed,
-  done,
-}
-
-export default withApollo(CreateElectionKey);
+export default ElectionKeySection;

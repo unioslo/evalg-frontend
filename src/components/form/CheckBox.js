@@ -1,8 +1,13 @@
 /* @flow */
 import * as React from 'react';
 import injectSheet from 'react-jss';
+import classNames from 'classnames';
 
 const styles = theme => ({
+  checkBoxAndLabel: {
+    position: 'relative',
+    top: '3px',
+  },
   checkBox: {
     display: 'inline-block',
     position: 'relative',
@@ -10,9 +15,11 @@ const styles = theme => ({
     height: '2.1rem',
     marginRight: '2rem',
     verticalAlign: 'super',
+    float: 'left',
+    top: '-3px',
     '& input[type=checkbox]:checked + label > $icon': {
-      visibility: 'visible'
-    }
+      visibility: 'visible',
+    },
   },
   iconContainer: {
     display: 'inline-block',
@@ -24,6 +31,9 @@ const styles = theme => ({
     height: '2.1rem',
     border: `0.2rem solid ${theme.colors.darkTurquoise}`,
     borderRadius: theme.formFieldBorderRadius,
+    '&.disabled': {
+      borderColor: theme.colors.lightGray,
+    },
   },
   icon: {
     visibility: 'hidden',
@@ -32,18 +42,24 @@ const styles = theme => ({
     left: '-0.2rem',
   },
   iconBg: {
-    fill: theme.colors.darkTurquoise
+    fill: theme.colors.darkTurquoise,
+    '&.disabled': {
+      fill: theme.colors.lightGray,
+    },
   },
   iconCheckMark: {
-    fill: theme.colors.white
+    fill: theme.colors.white,
   },
   label: {
-    display: 'inline-block',
-    fontSize: '1.6rem',
-    lineHeight: '2.1rem',
-    verticalAlign: 'bottom'
-  }
-})
+    verticalAlign: 'bottom',
+    '&:hover': {
+      cursor: 'pointer',
+    },
+    '&.disabled': {
+      color: theme.colors.lightGray,
+    },
+  },
+});
 
 type Props = {
   name: string,
@@ -51,37 +67,65 @@ type Props = {
   id: string,
   value: boolean,
   label: ReactElement | string,
-  classes: Object
+  disabled: boolean,
+  classes: Object,
 };
 
 const CheckBox = (props: Props) => {
-  const { name, onChange, id, value, label, classes } = props;
+  const { name, onChange, id, value, label, disabled, classes } = props;
   return (
-    <div>
+    <div className={classes.checkBoxAndLabel}>
       <div className={classes.checkBox}>
-        <input type="checkbox"
-               name={ name }
-               id={ id }
-               checked={ !!value }
-               onChange={ onChange } />
-        <label htmlFor={ name } className={classes.iconContainer}>
-          <svg width="21" height="21" viewBox="0 0 21 21"
-               className={classes.icon}>
-            <path className={classes.iconBg}
-                  d="M3.009 0A3.008 3.008 0 0 0 0 3.009V17.99A3.008 3.008
+        <input
+          type="checkbox"
+          name={name}
+          id={id}
+          checked={!!value}
+          onChange={onChange}
+          disabled={disabled}
+        />
+        <label
+          htmlFor={name}
+          className={classNames({
+            [classes.iconContainer]: true,
+            disabled: disabled,
+          })}
+        >
+          <svg
+            width="21"
+            height="21"
+            viewBox="0 0 21 21"
+            className={classes.icon}
+          >
+            <path
+              className={classNames({
+                [classes.iconBg]: true,
+                disabled: disabled,
+              })}
+              d="M3.009 0A3.008 3.008 0 0 0 0 3.009V17.99A3.008 3.008
                      0 0 0 3.009 21H17.99A3.002 3.002 0 0 0 21
-                     17.997V3.006A3.006 3.006 0 0 0 17.991 0H3.01z"/>
-            <path className={classes.iconCheckMark}
-                  d="M4 12.14l4.888 4.9 9.544-9.567L15.958
-                     5l-7.081 7.082-2.404-2.415" />
+                     17.997V3.006A3.006 3.006 0 0 0 17.991 0H3.01z"
+            />
+            <path
+              className={classes.iconCheckMark}
+              d="M4 12.14l4.888 4.9 9.544-9.567L15.958
+                     5l-7.081 7.082-2.404-2.415"
+            />
           </svg>
         </label>
       </div>
-      <label htmlFor={ name } className="checkbox--label">{ label }</label>
+      <label
+        htmlFor={name}
+        className={classNames({
+          [classes.label]: true,
+          disabled: disabled,
+        })}
+      >
+        {label}
+      </label>
     </div>
-  )
+  );
 };
-
 
 const StyledCheckBox = injectSheet(styles)(CheckBox);
 
@@ -89,21 +133,23 @@ type RFProps = {
   input: {
     name: string,
     onChange: Function,
-    value: boolean
+    value: boolean,
+    disabled: boolean,
   },
   label: ReactElement | string,
-  classes: Object
-}
+  classes: Object,
+};
 
 const CheckBoxRF = (props: RFProps) => {
-  const { input, label, classes } = props;
+  const { input, label, disabled, classes } = props;
   return (
     <CheckBox
-      name={ input.name }
-      onChange={ input.onChange }
-      id={ input.name }
-      value={ input.value }
-      label={ label }
+      name={input.name}
+      onChange={input.onChange}
+      id={input.name}
+      value={input.value}
+      label={label}
+      disabled={disabled}
       classes={classes}
     />
   );
@@ -111,7 +157,4 @@ const CheckBoxRF = (props: RFProps) => {
 
 const StyledCheckBoxRF = injectSheet(styles)(CheckBoxRF);
 
-export {
-  StyledCheckBox as CheckBox,
-  StyledCheckBoxRF as CheckBoxRF
-}
+export { StyledCheckBox as CheckBox, StyledCheckBoxRF as CheckBoxRF };

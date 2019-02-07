@@ -1,76 +1,70 @@
 import React from 'react';
 import { Trans, translate, TranslationFunction } from 'react-i18next';
 import injectSheet from 'react-jss';
+import classNames from 'classnames';
+import gql from 'graphql-tag';
+import { withApollo, WithApolloClient } from 'react-apollo';
 
+import { sleep } from 'utils';
+import { getCryptoEngine } from 'cryptoEngines';
 import Modal from 'components/modal';
-import Icon from 'components/icon';
-import { SubtaskWorkingState } from './ElectionKeySection';
 import Button, { ButtonContainer } from 'components/button';
 import { InfoList, InfoListItem } from 'components/infolist';
-import { Form, Field } from 'react-final-form';
-import { CheckBoxRF } from 'components/form';
+import Link from 'components/link';
+import { CheckBox } from 'components/form';
 
 const styles = (theme: any) => ({
-  workingStateGrid: {
-    display: 'grid',
-    gridTemplateColumns: '3.3rem auto',
-    gridTemplateRows: 'auto auto',
-    margin: '2.5rem 0 1.7rem 0',
-    alignItems: 'center',
-    gridRowGap: '1rem',
-    '& p': {
-      margin: 0,
-    },
-  },
-
-  keyPairDetails: {
-    marginBottom: '2rem',
-    '& .toggleDetailsLink': {
-      color: theme.colors.blueish,
-    },
-  },
-  keyPairGrid: {
-    marginTop: '2rem',
-    marginBottom: '1.2rem',
+  stepsGrid: {
     display: 'grid',
     gridTemplateColumns: 'auto auto',
-    gridTemplateRows: 'auto auto auto auto',
-    justifyContent: 'start',
-    columnGap: '2rem',
-    rowGap: '0.5rem',
-    '& p': {
-      margin: 0,
-    },
-    '& .rowCaption': {
-      textDecoration: 'bold',
+    gridRowGap: '3.5rem',
+    gridColumnGap: '5rem',
+    justifyItems: 'start',
+    alignItems: 'center',
+    margin: '4rem auto',
+    width: '60rem',
+  },
+
+  stepNumber: {
+    fontSize: '4rem',
+    fontWeight: 'bold',
+    color: theme.colors.lightGray,
+    textAlign: 'center',
+    border: '2px solid',
+    borderRadius: '50%',
+    width: '5.5rem',
+    height: '5.5rem',
+    paddingTop: '3px',
+    '&.active': {
+      color: theme.colors.darkTurquoise,
     },
   },
 
   errorMessage: {
     whiteSpace: 'pre-line',
+    color: theme.colors.darkRed,
   },
 
-  generatingSpinner: {
-    display: 'inline-block',
+  workingSpinner: {
     position: 'relative',
-    top: '0.5rem',
-    marginRight: '1rem',
+    top: -5,
+    marginLeft: 10,
+    marginRight: -2,
+    display: 'inline-block',
     width: '2.5rem',
     height: '2.5rem',
-    border: '3px solid rgba(0,0,0,.3)',
+    border: '3px solid rgba(0, 0, 0, .3)',
     borderRadius: '50%',
-    borderTopColor: '#000',
+    borderTopColor: '#fff',
     animation: 'spin 0.8s linear infinite',
     '-webkit-animation': 'spin 0.8s linear infinite',
   },
-
   '@keyframes spin': {
     to: { '-webkit-transform': 'rotate(360deg)' },
   },
 
-  importantInfoHeader: {
-    marginTop: '3rem',
-    marginBottom: '1rem',
+  infoList: {
+    maxWidth: '100rem',
   },
 
   buttonAnchorWrapper: {
@@ -79,279 +73,349 @@ const styles = (theme: any) => ({
     },
   },
 
-  checkBoxFieldsGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'auto auto',
-    justifyContent: 'start',
-    margin: '3rem 0',
-    rowGap: '1rem',
+  animatedCheckmarkSvg: {
+    position: 'relative',
+    top: '-22px',
+    marginRight: '-13px',
+
+    '& .checkmarkPath': {
+      strokeWidth: 5,
+      stroke: 'white',
+      strokeMiterlimit: 10,
+      strokeDasharray: 48,
+      strokeDashoffset: 48,
+      animation: 'stroke .4s cubic-bezier(0.650, 0.000, 0.450, 1.000) forwards',
+    },
   },
-  closeButtonAndFormValidationGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'auto auto',
-    columnGap: '2rem',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+  '@keyframes stroke': {
+    '100%': {
+      strokeDashoffset: 0,
+    },
   },
 });
 
-interface IProps {
-  secretKey: string;
+const createElectionKey = gql`
+  mutation CreateElectionGroupKey($id: UUID!, $key: String!) {
+    createElectionGroupKey(id: $id, key: $key) {
+      ok
+    }
+  }
+`;
+
+interface IKeyPair {
   publicKey: string;
-  isWorking: boolean;
-  swsGenerateKeyPair: SubtaskWorkingState;
-  swsActivatePublicKey: SubtaskWorkingState;
-  subtaskError: string | null;
+  secretKey: string;
+}
+
+interface IProps {
+  electionGroupId: string;
+  isReplacingOldKey: boolean;
   handleCloseModal: () => void;
   t: TranslationFunction;
   classes: any;
 }
 
+type PropsInternal = WithApolloClient<IProps>;
+
 interface IState {
+  secretKey: string;
+  publicKey: string;
+  isGeneratingKey: boolean;
+  isActivatingKey: boolean;
+  hasDownloadedKey: boolean;
+  isCheckboxChecked: boolean;
+  isAllowedToActivateKey: boolean;
+  hasActivatedNewKey: boolean;
   showDetails: boolean;
+  errorMessage: string | null;
 }
 
-class CreateElectionKeyModal extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
+class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
+  cryptoEngine: any;
+
+  constructor(props: PropsInternal) {
     super(props);
+    this.cryptoEngine = getCryptoEngine();
+
     this.state = {
+      secretKey: '',
+      publicKey: '',
+      isGeneratingKey: false,
+      isActivatingKey: false,
+      hasDownloadedKey: false,
+      isCheckboxChecked: false,
+      isAllowedToActivateKey: false,
+      hasActivatedNewKey: false,
       showDetails: false,
+      errorMessage: '',
     };
   }
 
+  componentDidMount() {
+    this.generateElectionKey();
+  }
+
+  checkIfAllowedToActivateKey = () => {
+    this.setState(currState => ({
+      isAllowedToActivateKey:
+        currState.hasDownloadedKey && currState.isCheckboxChecked,
+    }));
+  };
+
+  generateElectionKey = async () => {
+    let keys: IKeyPair = { secretKey: '', publicKey: '' };
+    try {
+      this.setState({
+        isGeneratingKey: true,
+      });
+      keys = await this.cryptoEngine.generateKeyPair();
+      this.setState({
+        isGeneratingKey: false,
+        secretKey: keys.secretKey,
+        publicKey: keys.publicKey,
+      });
+    } catch (error) {
+      const t = this.props.t;
+      this.setState({
+        isGeneratingKey: false,
+        errorMessage: `${t('admin.electionKey.modalGenerateKeyError')}\n${t(
+          'general.errorMessage'
+        )}: ${error}`,
+      });
+    }
+  };
+
+  activateKey = async () => {
+    this.setState({
+      isActivatingKey: true,
+    });
+    try {
+      await this.props.client.mutate({
+        mutation: createElectionKey,
+        variables: {
+          id: this.props.electionGroupId,
+          key: this.state.publicKey,
+        },
+        refetchQueries: ['electionGroup'],
+        awaitRefetchQueries: true,
+      });
+      this.setState({
+        secretKey: '',
+        isActivatingKey: false,
+        hasActivatedNewKey: true,
+      });
+      // Sleep while playing checkmark animation
+      await sleep(1300);
+      this.props.handleCloseModal();
+    } catch (error) {
+      const t = this.props.t;
+      this.setState({
+        isActivatingKey: false,
+        errorMessage: `${t('admin.electionKey.modalActivateKeyError')}\n${t(
+          'general.errorMessage'
+        )}: ${error}`,
+      });
+    }
+  };
+
   render() {
+    const { isReplacingOldKey, handleCloseModal, t, classes } = this.props;
+
     const {
-      secretKey,
       publicKey,
-      isWorking,
-      swsGenerateKeyPair,
-      swsActivatePublicKey,
-      subtaskError,
-      handleCloseModal,
-      t,
-      classes,
-    } = this.props;
+      secretKey,
+      isGeneratingKey,
+      isActivatingKey,
+      hasDownloadedKey,
+      isCheckboxChecked,
+      isAllowedToActivateKey,
+      hasActivatedNewKey,
+      errorMessage,
+    } = this.state;
+
+    const electionKeyFileContents = `
+secret:${secretKey}
+public:${publicKey}`.trim();
+
+    const animatedCheckmarkSvg = (
+      <svg
+        className={classes.animatedCheckmarkSvg}
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 52 52"
+        width="56"
+        height="56"
+      >
+        <path
+          className="checkmarkPath"
+          fill="none"
+          d="M14.1 27.2l7.1 7.2 16.7-16.8"
+        />
+      </svg>
+    );
+
+    const downloadKeyButtonContent = isGeneratingKey ? (
+      <>
+        <Trans>admin.electionKey.modalGenerating</Trans>
+        <div className={classes.workingSpinner} />
+      </>
+    ) : isReplacingOldKey ? (
+      <Trans>admin.electionKey.modalDownloadNewKey</Trans>
+    ) : (
+      <Trans>admin.electionKey.modalDownloadKey</Trans>
+    );
+
+    const activateKeyButtonContent = isActivatingKey ? (
+      <>
+        <Trans>admin.electionKey.modalActivating</Trans>
+        <div className={classes.workingSpinner} />
+      </>
+    ) : hasActivatedNewKey ? (
+      <>
+        <Trans>admin.electionKey.modalActivatedSuccessfully</Trans>
+        {animatedCheckmarkSvg}
+      </>
+    ) : isReplacingOldKey ? (
+      <Trans>admin.electionKey.modalActivateNew</Trans>
+    ) : (
+      <Trans>admin.electionKey.modalActivate</Trans>
+    );
 
     return (
       <Modal
-        header={<Trans>election.electionKeyCreate</Trans>}
+        header={
+          isReplacingOldKey ? (
+            <Trans>admin.electionKey.createNew</Trans>
+          ) : (
+            <Trans>admin.electionKey.create</Trans>
+          )
+        }
         closeAction={handleCloseModal}
-        hideButtons
+        hideTopCloseButton
+        buttons={[
+          <Button
+            key="cancel-button"
+            text={<Trans>general.cancel</Trans>}
+            action={handleCloseModal}
+            secondary
+          />,
+        ]}
       >
         <>
-          <div className={classes.workingStateGrid}>
-            <SubtaskWorkingStateIcon workingState={swsGenerateKeyPair} />
-            <p>
-              <Trans>election.createElectionKeyModalGeneratingPair</Trans>
-            </p>
-            <SubtaskWorkingStateIcon workingState={swsActivatePublicKey} />
-            <p>
-              <Trans>
-                election.createElectionKeyModalUploadingAndActivating
-              </Trans>
-            </p>
-          </div>
-          {subtaskError && (
-            <p className={classes.errorMessage}>{subtaskError}</p>
-          )}
-          <div className={classes.keyPairDetails}>
-            {this.state.showDetails && (
-              <>
-                <div className={classes.keyPairGrid}>
-                  <p className="rowCaption">
-                    <Trans>
-                      election.createElectionKeyModalDetailsSecretKey
-                    </Trans>
-                    :
-                  </p>
-                  <p>{secretKey}</p>
-                  <p className="rowCaption">
-                    <Trans>
-                      election.createElectionKeyModalDetailsPublicKey
-                    </Trans>
-                    :
-                  </p>
-                  <p>{publicKey}</p>
-                  <p className="rowCaption">
-                    <Trans>
-                      election.createElectionKeyModalDetailsCreatedBy
-                    </Trans>
-                    :
-                  </p>
-                  <p>[ikke implementert]</p>
-                  <p className="rowCaption">
-                    <Trans>
-                      election.createElectionKeyModalDetailsTimeCreated
-                    </Trans>
-                    :
-                  </p>
-                  <p>[ikke implementert]</p>
-                </div>
-              </>
-            )}
-            <a
-              className="toggleDetailsLink"
-              onClick={() =>
-                this.setState(currState => ({
-                  showDetails: !currState.showDetails,
-                }))
-              }
-            >
-              {this.state.showDetails
-                ? t('general.hideDetails')
-                : t('general.showDetails')}
-            </a>
+          <div className={classes.infoList}>
+            <InfoList>
+              <InfoListItem bulleted>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: t('admin.electionKey.modalInfoBullet1'),
+                  }}
+                />
+              </InfoListItem>
+              <InfoListItem bulleted>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: t('admin.electionKey.modalInfoBullet2'),
+                  }}
+                />
+              </InfoListItem>
+              <InfoListItem bulleted>
+                <Link external to="#TODO">
+                  <Trans>admin.electionKey.modalMoreInfoLink</Trans>
+                </Link>
+              </InfoListItem>
+            </InfoList>
           </div>
 
-          <ButtonContainer center smlTopMargin>
-            <a
-              href={`data:text/plain;charset=utf-8,${encodeURIComponent(
-                `${secretKey}
-${publicKey}
-created-by
-created-date`
-              )}`}
-              key="download"
-              className={classes.buttonAnchorWrapper}
-              download="electionKey.txt"
+          <div className={classes.stepsGrid}>
+            <div
+              className={classNames({
+                [classes.stepNumber]: true,
+                active: !isGeneratingKey,
+              })}
             >
+              1
+            </div>
+            <ButtonContainer center noTopMargin>
+              <a
+                href={`data:text/plain;charset=utf-8,${encodeURIComponent(
+                  electionKeyFileContents
+                )}`}
+                key="download"
+                className={classes.buttonAnchorWrapper}
+                download="electionKey.txt"
+              >
+                <Button
+                  action={() =>
+                    this.setState(
+                      { hasDownloadedKey: true },
+                      this.checkIfAllowedToActivateKey
+                    )
+                  }
+                  disabled={isGeneratingKey || errorMessage}
+                  text={downloadKeyButtonContent}
+                />
+              </a>
+            </ButtonContainer>
+
+            <div
+              className={classNames({
+                [classes.stepNumber]: true,
+                ['active']: hasDownloadedKey,
+              })}
+            >
+              2
+            </div>
+            <div
+              onClick={() => {
+                if (hasDownloadedKey) {
+                  this.setState(
+                    currState => ({
+                      isCheckboxChecked: !currState.isCheckboxChecked,
+                    }),
+                    this.checkIfAllowedToActivateKey
+                  );
+                }
+              }}
+            >
+              <CheckBox
+                value={isCheckboxChecked}
+                label={<Trans>admin.electionKey.modalCheckboxLabel</Trans>}
+                disabled={!hasDownloadedKey}
+                onChange={() => null}
+              />
+            </div>
+
+            <div
+              className={classNames({
+                [classes.stepNumber]: true,
+                active: isAllowedToActivateKey,
+              })}
+            >
+              3
+            </div>
+            <ButtonContainer center noTopMargin>
               <Button
-                disabled={isWorking || subtaskError}
-                text={t('election.createElectionKeyModalSaveKey')}
+                text={activateKeyButtonContent}
+                disabled={
+                  !isAllowedToActivateKey ||
+                  isGeneratingKey ||
+                  isActivatingKey ||
+                  hasActivatedNewKey ||
+                  errorMessage
+                }
+                action={this.activateKey}
               />
-            </a>
-          </ButtonContainer>
+            </ButtonContainer>
+          </div>
 
-          <p className={classes.importantInfoHeader}>
-            <Trans>election.createElectionKeyModalInfoListHeader</Trans>
-          </p>
-          <InfoList>
-            <InfoListItem bulleted>
-            <span
-                dangerouslySetInnerHTML={{
-                  __html: t('election.createElectionKeyModalInfoBullet2'),
-                }}
-              />
-            </InfoListItem>
-            <InfoListItem bulleted>
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: t('election.createElectionKeyModalInfoBullet3'),
-                }}
-              />
-            </InfoListItem>
-          </InfoList>
-
-          <Form
-            onSubmit={handleCloseModal}
-            validate={(values: any) => {
-              const errors: any = {};
-              if (!values.firstCheck) {
-                errors.firstCheck = 'required';
-              }
-              if (!values.secondCheck) {
-                errors.secondCheck = 'required';
-              }
-              return errors;
-            }}
-          >
-            {({ handleSubmit, errors, valid, touched }) => (
-              <form onSubmit={handleSubmit}>
-                {/* <pre>
-                      <code>{JSON.stringify(errors, null, 2)}</code>
-                    </pre> */}
-                <div className={classes.checkBoxFieldsGrid}>
-                  <Field
-                    name="firstCheck"
-                    component={CheckBoxRF}
-                    type="checkbox"
-                  />
-                  <Trans>election.createElectionKeyModalCheckboxLabel1</Trans>
-                  <Field
-                    name="secondCheck"
-                    component={CheckBoxRF}
-                    type="checkbox"
-                  />
-                  <Trans>election.createElectionKeyModalCheckboxLabel2</Trans>
-                </div>
-                <div className={classes.closeButtonAndFormValidationGrid}>
-                  <Button
-                    secondary
-                    action={handleSubmit}
-                    text={t('general.close')}
-                  />
-                  {!valid &&
-                    ((touched as any).firstCheck || // To make the message come up when clicking the close button
-                      (touched as any).secondCheck) && (
-                      <span className={classes.checkboxFormValidationError}>
-                        <Trans>
-                          election.createElectionKeyModalCheckboxesValidationError
-                        </Trans>
-                      </span>
-                    )}
-                </div>
-              </form>
-            )}
-          </Form>
+          {errorMessage && (
+            <p className={classes.errorMessage}>{errorMessage}</p>
+          )}
         </>
       </Modal>
     );
   }
 }
 
-const subtaskWorkingStateIconStyles = (theme: any) => ({
-  iconContainer: {
-    width: '2.2rem',
-    height: '2.2rem',
-  },
-  iconContainerWithOffset: {
-    width: '2.2rem',
-    height: '2.2rem',
-    position: 'relative',
-    top: '-0.2rem',
-  },
-  generatingSpinner: {
-    width: '2.2rem',
-    height: '2.2rem',
-    border: '3px solid rgba(0,0,0,.3)',
-    borderRadius: '50%',
-    borderTopColor: '#000',
-    animation: 'spin 0.8s linear infinite',
-    '-webkit-animation': 'spin 0.8s linear infinite',
-  },
-  '@keyframes spin': {
-    to: { '-webkit-transform': 'rotate(360deg)' },
-  },
-});
-
-interface IsubtaskWorkingStateIconProps {
-  workingState: SubtaskWorkingState;
-  classes: any;
-}
-
-const SubtaskWorkingStateIcon = injectSheet(subtaskWorkingStateIconStyles)(
-  ({ workingState, classes }: IsubtaskWorkingStateIconProps) => (
-    <>
-      {workingState === SubtaskWorkingState.notStarted && (
-        <div className={classes.iconContainer} />
-      )}
-      {workingState === SubtaskWorkingState.working && (
-        <div className={classes.iconContainer}>
-          <div className={classes.generatingSpinner} />
-        </div>
-      )}
-      {workingState === SubtaskWorkingState.failed && (
-        <div className={classes.iconContainerWithOffset}>
-          <Icon type="xMark" />
-        </div>
-      )}
-      {workingState === SubtaskWorkingState.done && (
-        <div className={classes.iconContainerWithOffset}>
-          <Icon type="checkMark" />
-        </div>
-      )}
-    </>
-  )
+export default injectSheet(styles)(
+  translate()(withApollo(CreateElectionKeyModal))
 );
-
-export default injectSheet(styles)(translate()(CreateElectionKeyModal));
