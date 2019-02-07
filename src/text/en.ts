@@ -227,8 +227,11 @@ export default {
     upcomingElections: 'Upcoming elections',
   },
   footer: {
-    contactSectionHeader: 'Contact information',
-    responsibleOrganizationHeader: 'Responsible for eValg',
+    contactSectionHeader: 'Contact points',
+    responsibleOrganizationHeader: 'Service owner',
+    technicalSupport: 'Technical support',
+    holdingElectionsInfoLink: 'Rules and assistance on holding elections',
+    serviceOwnerLink: 'Department for System Integration and Identity Management (INT)',
   },
   formErrors: {
     invalidDates: 'Start time must be before closing time.',

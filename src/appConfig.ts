@@ -18,3 +18,7 @@ export const oidcLogoutUrl = 'https://auth.dataporten.no/logout';
 
 export const graphqlBackend = 'http://localhost:5000/graphql';
 export const restBackend = 'http://localhost:5000/';
+
+export const appTechnicalSupportEmail = 'it-support@uio.no';
+export const appHoldingElectionsInfoLink = 'https://www.uio.no/for-ansatte/arbeidsstotte/arrangere-valg/';
+export const appServiceOwnerLink = 'https://www.usit.uio.no/om/organisasjon/bnt/usitint/';
