@@ -204,6 +204,7 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
         isActivatingKey: false,
         hasActivatedNewKey: true,
       });
+      // Sleep while playing checkmark animation
       await sleep(1300);
       this.props.handleCloseModal();
     } catch (error) {
@@ -248,7 +249,6 @@ public:${publicKey}`.trim();
           className="checkmarkPath"
           fill="none"
           d="M14.1 27.2l7.1 7.2 16.7-16.8"
-          stroke-width="5"
         />
       </svg>
     );

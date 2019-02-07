@@ -70,8 +70,6 @@ class ElectionKeySection extends React.Component<IProps, IState> {
     const hasKey = electionGroup.publicKey !== null;
     const status = electionGroup.status;
 
-    console.log(hasKey);
-
     return (
       <>
         <PageSection header={<Trans>election.electionKey</Trans>}>
