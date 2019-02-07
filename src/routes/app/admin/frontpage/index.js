@@ -11,9 +11,9 @@ import { PageSection } from 'components/page';
 import { Trans, translate } from 'react-i18next';
 import { ActionButton } from 'components/button';
 import ManageElectionsTable from './components/ManageElectionsTable';
-import { H3 } from 'components/text';
 import { InfoList, InfoListItem } from 'components/infolist';
 import Link from 'components/link';
+import { appHoldingElectionsInfoLink, appElectionRegulationsLink } from 'appConfig';
 
 const electionGroupsQuery = gql`
   query {
@@ -75,7 +75,7 @@ const styles = theme => ({
     borderRadius: '0.4rem',
     borderColor: theme.helpBoxBorderColor,
     '& .title': {
-      fontSize: '2.2rem',
+      fontSize: '2.4rem',
       marginBottom: '1.5rem',
     },
   },
@@ -89,17 +89,17 @@ const AdminFrontPage = props => {
         <InfoListItem bulleted>
           <Link
             external
-            to="https://www.uio.no/for-ansatte/arbeidsstotte/arrangere-valg/"
+            to={appHoldingElectionsInfoLink}
           >
-            <Trans>admin.frontPage.holdElectionLink</Trans>
+            <Trans>admin.frontPage.holdingElectionsInfoLink</Trans>
           </Link>
         </InfoListItem>
         <InfoListItem bulleted>
           <Link
             external
-            to="https://www.uio.no/om/regelverk/orgadm/valgreglement.html"
+            to={appElectionRegulationsLink}
           >
-            <Trans>admin.frontPage.electionRegulationUiOLink</Trans>
+            <Trans>admin.frontPage.electionRegulationsLink</Trans>
           </Link>
         </InfoListItem>
       </InfoList>

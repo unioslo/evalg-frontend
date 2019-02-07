@@ -2,8 +2,8 @@ export default {
   admin: {
     frontPage: {
       helpLinksBoxTitle: 'Hjelp og informasjon',
-      holdElectionLink: 'Arrangere valg',
-      electionRegulationUiOLink: 'UiOs valgreglement',
+      holdingElectionsInfoLink: 'Arrangere valg',
+      electionRegulationsLink: 'UiOs valgreglement',
     },
     electionKey: {
       create: 'Opprett valgnøkkel',
