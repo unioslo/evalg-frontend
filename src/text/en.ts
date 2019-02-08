@@ -264,6 +264,7 @@ export default {
     hide: 'Hide',
     hideDetails: 'Hide details',
     logout: 'Log out',
+    logoutInProgress: 'We are working to log you out',
     male: 'Male',
     menu: 'Menu',
     name: 'Name',

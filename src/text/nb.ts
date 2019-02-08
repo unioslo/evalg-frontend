@@ -268,6 +268,7 @@ export default {
     hide: 'Skjul',
     hideDetails: 'Skjul detaljer',
     logout: 'Logg ut',
+    logoutInProgress: 'Vi arbeider med å logge deg ut av systemet',
     male: 'Mann',
     menu: 'Meny',
     name: 'Navn',
