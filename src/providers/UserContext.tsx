@@ -29,8 +29,6 @@ interface IProps {
 }
 
 class UserContextProvider extends React.Component<IProps, IProviderState> {
-  public userManager: UserManager;
-
   constructor(props: IProps) {
     super(props);
     this.state = {
