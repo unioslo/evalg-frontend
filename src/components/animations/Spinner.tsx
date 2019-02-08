@@ -6,9 +6,6 @@ import injectSheet from 'react-jss';
 const styles = () => ({
   spinner: {
     position: 'relative',
-    top: -5,
-    marginLeft: 10,
-    marginRight: -2,
     display: 'inline-block',
     width: '2.5rem',
     height: '2.5rem',
