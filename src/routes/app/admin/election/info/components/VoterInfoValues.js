@@ -51,7 +51,7 @@ const mandatePeriodMultiple = (elections: Array<Election>, lang: string) => {
 
 const contactSingle = (election: Election) => {
   const contact = election.contact ? (
-    <Link external to={`mailto:${election.contact}`}>
+    <Link mail to={election.contact}>
       {election.contact}
     </Link>
   ) : (
@@ -64,7 +64,7 @@ const contactMultiple = (elections: Array<Election>, lang: string) => (
   <InfoList>
     {elections.map((election, index) => {
       const contact = election.contact ? (
-        <Link external to={`mailto:${election.contact}`}>
+        <Link mail to={election.contact}>
           {election.contact}
         </Link>
       ) : (

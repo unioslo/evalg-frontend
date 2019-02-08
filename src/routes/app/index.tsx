@@ -1,6 +1,6 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
-import { Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { UserData } from 'react-oidc';
 import { ApolloConsumer } from 'react-apollo';
 import { IAuthenticatorContext } from 'react-oidc/lib/makeAuth';
@@ -10,6 +10,7 @@ import createBrowserHistory from 'history/createBrowserHistory';
 import Content from './components/Content';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import Link from 'components/link';
 
 import Admin from './admin';
 import Voter from './voter';
@@ -32,11 +33,9 @@ interface IProps {
 }
 
 const FrontPage: React.SFC = () => (
-  <>
-    <Link to="/admin">Administer</Link>
-    <br />
-    <Link to="/voter">Vote</Link>
-  </>
+  <p style={{fontSize: '3rem'}}>
+    <Link to="/admin">Admin</Link> | <Link to="/voter">Voter</Link>
+  </p>
 );
 
 const Logout: React.SFC = () => {

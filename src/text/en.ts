@@ -1,5 +1,10 @@
 export default {
   admin: {
+    frontPage: {
+      helpLinksBoxTitle: 'Help and information',
+      holdingElectionsInfoLink: 'Holding elections (Norwegian)',
+      electionRegulationsLink: 'Election regulations at UiO (Norwegian)',
+    },
     electionKey: {
       create: 'Create election key',
       createNew: 'Create new election key',
@@ -222,8 +227,11 @@ export default {
     upcomingElections: 'Upcoming elections',
   },
   footer: {
-    contactSectionHeader: 'Contact information',
-    responsibleOrganizationHeader: 'Responsible for eValg',
+    contactSectionHeader: 'Contact points',
+    responsibleOrganizationHeader: 'Service owner',
+    technicalSupport: 'Technical support',
+    holdingElectionsInfoLink: 'Rules and assistance on holding elections',
+    serviceOwnerLink: 'Department for System Integration and Identity Management (INT)',
   },
   formErrors: {
     invalidDates: 'Start time must be before closing time.',

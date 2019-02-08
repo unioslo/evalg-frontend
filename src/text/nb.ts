@@ -1,5 +1,10 @@
 export default {
   admin: {
+    frontPage: {
+      helpLinksBoxTitle: 'Hjelp og informasjon',
+      holdingElectionsInfoLink: 'Arrangere valg',
+      electionRegulationsLink: 'UiOs valgreglement',
+    },
     electionKey: {
       create: 'Opprett valgnøkkel',
       createNew: 'Opprett ny valgnøkkel',
@@ -226,8 +231,11 @@ export default {
     upcomingElections: 'Kommende valg',
   },
   footer: {
-    contactSectionHeader: 'Kontaktinformasjon',
-    responsibleOrganizationHeader: 'Ansvarlig for eValg',
+    contactSectionHeader: 'Kontaktpunkter',
+    responsibleOrganizationHeader: 'Ansvarlig for tjenesten',
+    technicalSupport: 'Teknisk støtte',
+    holdingElectionsInfoLink: 'Regelverk og støtte til gjennomføring av valg',
+    serviceOwnerLink: 'Seksjon for integrasjon og elektroniske identiteter (INT)',
   },
   formErrors: {
     invalidDates: 'Starttid må være tidligere enn sluttid.',

@@ -1,11 +1,14 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
-import { testWarning } from 'appConfig';
 import { Trans, translate } from 'react-i18next';
 
+import {
+  testWarning,
+  appHoldingElectionsInfoLink,
+  appServiceOwnerLink,
+  appTechnicalSupportEmail,
+} from 'appConfig';
 import Link from 'components/link';
-
-const contactEmail = 'noe@usit.uio.no';
 
 const styles = (theme: any) => ({
   wrapper: {
@@ -21,7 +24,7 @@ const styles = (theme: any) => ({
     margin: '0 auto',
     padding: `0rem ${theme.horizontalPadding}`,
     [theme.breakpoints.mdQuery]: {
-      height: '8rem',
+      minHeight: '8rem',
       padding: `0rem ${theme.horizontalMdPadding}`,
       background: `url('/uio-app-uio-sickle-medium.png') left ${
         theme.horizontalMdPadding
@@ -29,7 +32,7 @@ const styles = (theme: any) => ({
     },
   },
   logoOffsetContainer: {
-    paddingLeft: '8rem',
+    paddingLeft: '10rem',
   },
   contentContainer: {
     width: 'fit-content',
@@ -49,6 +52,7 @@ const styles = (theme: any) => ({
       marginBottom: '3rem',
     },
     [theme.breakpoints.mdQuery]: {
+      width: '21rem',
       '&:not(:first-child)': {
         marginLeft: '5rem',
       },
@@ -57,11 +61,15 @@ const styles = (theme: any) => ({
       },
     },
     '& header': {
-      fontSize: '1.8rem',
+      fontSize: '2rem',
       marginBottom: '2rem',
     },
     '& .content': {
-      fontSize: '1.5rem',
+      fontSize: '1.4rem',
+      lineHeight: '2rem',
+      '& div:not(:last-child)': {
+        marginBottom: '1rem',
+      },
     },
   },
 });
@@ -84,16 +92,45 @@ const Footer = (props: IProps) => {
                   <Trans>footer.contactSectionHeader</Trans>
                 </header>
                 <div className="content">
-                  <Link mail to={contactEmail} inheritColor>
-                    {contactEmail}
-                  </Link>
+                  <div>
+                    <Trans>footer.technicalSupport</Trans>:{' '}
+                    <Link
+                      mail
+                      to={appTechnicalSupportEmail}
+                      inheritColor
+                      underline
+                    >
+                      {appTechnicalSupportEmail}
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
+                      external
+                      noExternalIcon
+                      inheritColor
+                      underline
+                      to={appHoldingElectionsInfoLink}
+                    >
+                      <Trans>footer.holdingElectionsInfoLink</Trans>
+                    </Link>
+                  </div>
                 </div>
               </section>
               <section className={classes.footerSection}>
                 <header>
                   <Trans>footer.responsibleOrganizationHeader</Trans>
                 </header>
-                <div className="content">Ansvarlig enhet</div>
+                <div className="content">
+                  <Link
+                    external
+                    noExternalIcon
+                    inheritColor
+                    underline
+                    to={appServiceOwnerLink}
+                  >
+                    <Trans>footer.serviceOwnerLink</Trans>
+                  </Link>
+                </div>
               </section>
             </div>
           </div>
