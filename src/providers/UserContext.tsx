@@ -26,7 +26,6 @@ interface IProviderState {
 
 interface IProps {
   userManager: UserManager;
-  children?: React.ReactNode;
 }
 
 class UserContextProvider extends React.Component<IProps, IProviderState> {
