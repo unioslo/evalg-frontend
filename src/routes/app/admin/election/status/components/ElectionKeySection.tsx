@@ -13,6 +13,7 @@ import CreateElectionKeyModal from './CreateElectionKeyModal';
 interface IProps {
   electionGroup: ElectionGroup;
   replaceKey: boolean;
+  refetchElectionGroupFunction: () => Promise<any>;
   classes: any;
 }
 
@@ -40,10 +41,11 @@ class ElectionKeySection extends React.Component<IProps, IState> {
     });
   };
 
-  closeCreateKeyModal = () => {
+  handleCloseCreateKeyModal = () => {
     this.setState({
       showCreateKeyModal: false,
     });
+    this.props.refetchElectionGroupFunction();
   };
 
   showConfirmNewKeyModal = () => {
@@ -176,7 +178,7 @@ class ElectionKeySection extends React.Component<IProps, IState> {
         {this.state.showCreateKeyModal && (
           <CreateElectionKeyModal
             electionGroupId={this.props.electionGroup.id}
-            handleCloseModal={this.closeCreateKeyModal}
+            onCloseModal={this.handleCloseCreateKeyModal}
             isReplacingOldKey={hasKey}
           />
         )}
