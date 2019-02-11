@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import gql from 'graphql-tag';
 import { withApollo, WithApolloClient } from 'react-apollo';
 
-import { sleep } from 'utils';
+import { sleep, lookupErrorMessageForBackendError } from 'utils';
 import { getCryptoEngine } from 'cryptoEngines';
 import Modal from 'components/modal';
 import Button, { ButtonContainer } from 'components/button';
@@ -94,9 +94,9 @@ const styles = (theme: any) => ({
   },
 });
 
-const createElectionKey = gql`
-  mutation CreateElectionGroupKey($id: UUID!, $key: String!) {
-    createElectionGroupKey(id: $id, key: $key) {
+const setElectionKey = gql`
+  mutation SetElectionGroupKey($id: UUID!, $key: String!) {
+    setElectionGroupKey(id: $id, key: $key) {
       ok
     }
   }
@@ -178,7 +178,7 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
       const t = this.props.t;
       this.setState({
         isGeneratingKey: false,
-        errorMessage: `${t('admin.electionKey.modalGenerateKeyError')}\n${t(
+        errorMessage: `${t('admin.errors.generateKeyError')}\n${t(
           'general.errorMessage'
         )}: ${error}`,
       });
@@ -191,7 +191,7 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
     });
     try {
       await this.props.client.mutate({
-        mutation: createElectionKey,
+        mutation: setElectionKey,
         variables: {
           id: this.props.electionGroupId,
           key: this.state.publicKey,
@@ -207,11 +207,13 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
       this.props.onCloseModal();
     } catch (error) {
       const t = this.props.t;
+      let errorMessage = lookupErrorMessageForBackendError(error.toString(), t);
+      if (errorMessage === '') {
+        errorMessage = t('admin.errors.activateKeyErrorGeneral');
+      }
       this.setState({
         isActivatingKey: false,
-        errorMessage: `${t('admin.electionKey.modalActivateKeyError')}\n${t(
-          'general.errorMessage'
-        )}: ${error}`,
+        errorMessage,
       });
     }
   };

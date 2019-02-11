@@ -10,6 +10,8 @@ import Text from 'components/text';
 import Link from 'components/link';
 import CreateElectionKeyModal from './CreateElectionKeyModal';
 
+const setKeySafeStatuses = ['draft', 'announced'];
+
 interface IProps {
   electionGroup: ElectionGroup;
   replaceKey: boolean;
@@ -91,33 +93,34 @@ class ElectionKeySection extends React.Component<IProps, IState> {
             <>
               <Text marginBottom>
                 <Trans>admin.electionKey.createdBy</Trans> [brukernavn] [dato]
-                kl [klokkeslett].<br />
+                kl [klokkeslett].
+                <br />
                 <Trans>admin.electionKey.publicKeyCaption</Trans>:{' '}
-                  {this.state.showPublicKey ? (
-                    <span>
-                      {electionGroup.publicKey}{' '}
-                      <a
-                        href="javascript:void(0);"
-                        onClick={() => this.setState({ showPublicKey: false })}
-                      >
-                        <Trans>general.hide</Trans>
-                      </a>
-                    </span>
-                  ) : (
+                {this.state.showPublicKey ? (
+                  <span>
+                    {electionGroup.publicKey}{' '}
                     <a
                       href="javascript:void(0);"
-                      onClick={() => this.setState({ showPublicKey: true })}
+                      onClick={() => this.setState({ showPublicKey: false })}
                     >
-                      <Trans>general.show</Trans>
+                      <Trans>general.hide</Trans>
                     </a>
-                  )}
+                  </span>
+                ) : (
+                  <a
+                    href="javascript:void(0);"
+                    onClick={() => this.setState({ showPublicKey: true })}
+                  >
+                    <Trans>general.show</Trans>
+                  </a>
+                )}
               </Text>
               <InfoList>
                 <InfoListItem bulleted key="keep-it-safe">
-                  <Trans>admin.electionKey.statusKeepItSafe</Trans>
+                  <Trans>admin.electionKey.infoListKeepItSafe</Trans>
                 </InfoListItem>
                 <InfoListItem bulleted key="can-replace">
-                  <Trans>admin.electionKey.statusCanReplace</Trans>
+                  <Trans>admin.electionKey.infoListCanReplace</Trans>
                 </InfoListItem>
                 <InfoListItem bulleted key="read-more">
                   <Link external to="#TODO">
@@ -125,7 +128,7 @@ class ElectionKeySection extends React.Component<IProps, IState> {
                   </Link>
                 </InfoListItem>
               </InfoList>
-              {(status === 'draft' || status === 'announced') && (
+              {setKeySafeStatuses.indexOf(status) >= 0 ? (
                 <ButtonContainer alignLeft smlTopMargin>
                   <Button
                     text={<Trans>admin.electionKey.createNew</Trans>}
@@ -133,20 +136,13 @@ class ElectionKeySection extends React.Component<IProps, IState> {
                     secondary
                   />
                 </ButtonContainer>
+              ) : (
+                <Text marginTop>
+                  <Trans>
+                    admin.electionKey.cannotReplaceBecauseUnsafeStatus
+                  </Trans>
+                </Text>
               )}
-              <Text marginTop>
-                {status === 'published' && (
-                  <Trans>admin.electionKey.cannotCreateReasonPublished</Trans>
-                )}
-                {(status === 'ongoing' ||
-                  status === 'closed' ||
-                  status === 'multipleStatuses') && (
-                  <Trans>admin.electionKey.cannotCreateReasonHasStarted</Trans>
-                )}
-                {status === 'cancelled' && (
-                  <Trans>election.electionCancelled</Trans>
-                )}
-              </Text>
             </>
           )}
         </PageSection>
