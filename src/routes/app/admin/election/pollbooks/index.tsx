@@ -125,7 +125,6 @@ const electionGroupQuery = gql`
               id
               firstName
               lastName
-              nin
             }
           }
         }
