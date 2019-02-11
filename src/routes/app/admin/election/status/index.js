@@ -8,27 +8,25 @@ import VotesSection from './components/VotesSection';
 import ElectionKeySection from './components/ElectionKeySection';
 import CountVotesSection from './components/CountVotesSection';
 
-
 type Props = {
   electionGroup: ElectionGroup,
+  refetchElectionGroupFunction: Function,
 };
 
 class StatusPage extends React.Component<Props> {
-
   render() {
-    const { electionGroup } = this.props;
+    const { electionGroup, refetchElectionGroupFunction } = this.props;
     return (
       <Page header={<Trans>election.electionStatus</Trans>}>
-        <ElectionStatusSection
-          electionGroup={electionGroup}
-        />
+        <ElectionStatusSection electionGroup={electionGroup} />
         <ElectionKeySection
           electionGroup={electionGroup}
+          refetchElectionGroupFunction={refetchElectionGroupFunction}
         />
         <VotesSection />
         <CountVotesSection />
       </Page>
-    )
+    );
   }
 }
 

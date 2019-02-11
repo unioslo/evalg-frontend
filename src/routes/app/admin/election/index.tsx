@@ -110,7 +110,7 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
     query={electionGroupQuery}
     variables={{ id: props.match.params.groupId }}
   >
-    {({ data, loading, error }) => {
+    {({ data, loading, error, refetch }) => {
       if (loading) {
         return <Loading />;
       }
@@ -170,6 +170,7 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
             render={routeProps => (
               <StatusPage
                 electionGroup={electionGroupWithOrderedElections}
+                refetchElectionGroupFunction={refetch}
                 {...routeProps}
               />
             )}

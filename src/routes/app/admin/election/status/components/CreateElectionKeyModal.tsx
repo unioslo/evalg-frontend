@@ -110,7 +110,7 @@ interface IKeyPair {
 interface IProps {
   electionGroupId: string;
   isReplacingOldKey: boolean;
-  handleCloseModal: () => void;
+  onCloseModal: () => void;
   t: TranslationFunction;
   classes: any;
 }
@@ -196,8 +196,6 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
           id: this.props.electionGroupId,
           key: this.state.publicKey,
         },
-        refetchQueries: ['electionGroup'],
-        awaitRefetchQueries: true,
       });
       this.setState({
         secretKey: '',
@@ -206,7 +204,7 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
       });
       // Sleep while playing checkmark animation
       await sleep(1300);
-      this.props.handleCloseModal();
+      this.props.onCloseModal();
     } catch (error) {
       const t = this.props.t;
       this.setState({
@@ -219,7 +217,7 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
   };
 
   render() {
-    const { isReplacingOldKey, handleCloseModal, t, classes } = this.props;
+    const { isReplacingOldKey, onCloseModal, t, classes } = this.props;
 
     const {
       publicKey,
@@ -289,13 +287,13 @@ public:${publicKey}`.trim();
             <Trans>admin.electionKey.create</Trans>
           )
         }
-        closeAction={handleCloseModal}
+        closeAction={onCloseModal}
         hideTopCloseButton
         buttons={[
           <Button
             key="cancel-button"
             text={<Trans>general.cancel</Trans>}
-            action={handleCloseModal}
+            action={onCloseModal}
             secondary
           />,
         ]}
