@@ -1,11 +1,10 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
+
 import { Route } from 'react-router-dom';
-import { UserData } from 'react-oidc';
-import { ApolloConsumer } from 'react-apollo';
-import { IAuthenticatorContext } from 'react-oidc/lib/makeAuth';
-import { ApolloClient } from 'apollo-client';
-import createBrowserHistory from 'history/createBrowserHistory';
+import { Trans, translate } from 'react-i18next';
+
+import Spinner from 'components/animations/Spinner';
 
 import Content from './components/Content';
 import Footer from './components/Footer';
@@ -25,45 +24,42 @@ const styles = {
     fontSize: '1.6rem',
     minHeight: '100%',
   },
+  logout: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  spinBox: {
+    marginRight: '2rem',
+  },
 };
 
 interface IProps {
   classes: any;
   authManager: any;
+  i18n: object;
 }
 
 const FrontPage: React.SFC = () => (
-  <p style={{fontSize: '3rem'}}>
+  <p style={{ fontSize: '3rem' }}>
     <Link to="/admin">Admin</Link> | <Link to="/voter">Voter</Link>
   </p>
 );
 
-const Logout: React.SFC = () => {
-  window.location.href = oidcLogoutUrl;
-  return <div />;
-};
+interface IStyleProp {
+  classes: any;
+}
 
-const WrapHeaderForLogout: React.SFC = () => {
-  const logout = (
-    context: IAuthenticatorContext,
-    client: ApolloClient<any>
-  ) => () => {
-    context.signOut();
-    client.resetStore();
-    sessionStorage.clear();
-    const history = createBrowserHistory({ forceRefresh: true });
-    history.push('/logout');
-  };
+const Logout: React.SFC = injectSheet(styles)(({ classes }: IStyleProp) => {
+  window.location.href = oidcLogoutUrl;
   return (
-    <ApolloConsumer>
-      {client => (
-        <UserData.Consumer>
-          {context => <Header logoutAction={logout(context, client)} />}
-        </UserData.Consumer>
-      )}
-    </ApolloConsumer>
+    <div className={classes.logout}>
+      <div className={classes.spinBox}>
+        <Spinner darkStyle={true} />
+      </div>
+      <Trans>general.logoutInProgress</Trans>
+    </div>
   );
-};
+});
 
 const App: React.SFC<IProps> = ({ classes, authManager }) => {
   const ProtectedAdmin = authEnabled ? authManager(<Admin />) : Admin;
@@ -71,7 +67,7 @@ const App: React.SFC<IProps> = ({ classes, authManager }) => {
 
   return (
     <div className={classes.app}>
-      <WrapHeaderForLogout />
+      <Header />
       <Content>
         <Route exact={true} path="/" component={FrontPage} />
         <Route path="/admin" component={ProtectedAdmin} />
@@ -83,5 +79,5 @@ const App: React.SFC<IProps> = ({ classes, authManager }) => {
   );
 };
 
-const styledApp: any = injectSheet(styles)(App);
+const styledApp: any = injectSheet(styles)(translate()(App));
 export default styledApp;

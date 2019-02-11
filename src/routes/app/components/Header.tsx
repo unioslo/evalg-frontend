@@ -1,15 +1,22 @@
-/* @flow */
 import * as React from 'react';
+import gql from 'graphql-tag';
 import injectSheet from 'react-jss';
 import Link from 'components/link';
 import LanguageToggler from './LanguageToggler';
 import { Trans, translate } from 'react-i18next';
 import { DesktopMenu, DesktopMenuItem } from './DesktopMenu';
 import { MobileMenu, MobileMenuItem } from './MobileMenu';
+import { UserContext } from 'providers/UserContext';
 import { H1 } from 'components/text';
+import { Query } from 'react-apollo';
 import { Route, Switch } from 'react-router';
 
-const styles = theme => ({
+import { ApolloConsumer } from 'react-apollo';
+import { IAuthenticatorContext } from 'react-oidc/lib/makeAuth';
+import { ApolloClient } from 'apollo-client';
+import createBrowserHistory from 'history/createBrowserHistory';
+
+const styles = (theme: any) => ({
   logoBar: {
     margin: '0 auto',
     maxWidth: theme.appMaxWidth,
@@ -60,12 +67,21 @@ const styles = theme => ({
   },
 });
 
-type Props = {
-  logoutAction: Function,
-  classes: Object,
-};
+const sayMyName = gql`
+  query {
+    viewer {
+      person {
+        displayName
+      }
+    }
+  }
+`;
 
-const Header = ({ logoutAction, classes }: Props) => {
+interface IProps {
+  classes?: any;
+}
+
+const Header = ({ classes }: IProps) => {
   return (
     <header>
       <div className={classes.logoBarWrapper}>
@@ -103,11 +119,8 @@ const Header = ({ logoutAction, classes }: Props) => {
               <MobileMenuItem>
                 <Link to="/voter">Voter page!</Link>
               </MobileMenuItem>
-              <MobileMenuItem>OMGLOL</MobileMenuItem>
               <MobileMenuItem>
-                <a onClick={logoutAction}>
-                  <Trans>general.logout</Trans>
-                </a>
+                <MobileLogout />
               </MobileMenuItem>
             </MobileMenu>
             <DesktopMenu>
@@ -141,17 +154,88 @@ const Header = ({ logoutAction, classes }: Props) => {
               />
             </Switch>
             <DesktopMenu>
-              <DesktopMenuItem>Zaphod Beeblebrox</DesktopMenuItem>
-              <DesktopMenuItem>
-                <a onClick={logoutAction}>
-                  <Trans>general.logout</Trans>
-                </a>
-              </DesktopMenuItem>
+              <UserNameAndLogout />
             </DesktopMenu>
           </div>
         </div>
       </div>
     </header>
+  );
+};
+
+const logout = (
+  context: IAuthenticatorContext,
+  client: ApolloClient<any>
+) => () => {
+  context.signOut();
+  client.resetStore();
+  sessionStorage.clear();
+  const history = createBrowserHistory({ forceRefresh: true });
+  history.push('/logout');
+};
+
+const MobileLogout = () => {
+  return (
+    <ApolloConsumer>
+      {client => {
+        return (
+          <UserContext.Consumer>
+            {context => {
+              if (context.user) {
+                return (
+                  <MobileMenuItem>
+                    <a onClick={logout(context, client)}>
+                      <Trans>general.logout</Trans>
+                    </a>
+                  </MobileMenuItem>
+                );
+              } else {
+                return null;
+              }
+            }}
+          </UserContext.Consumer>
+        );
+      }}
+    </ApolloConsumer>
+  );
+};
+
+const UserNameAndLogout = () => {
+  return (
+    <ApolloConsumer>
+      {client => {
+        return (
+          <UserContext.Consumer>
+            {context => {
+              if (context.user) {
+                return (
+                  <>
+                    <DesktopMenuItem>
+                      <Query query={sayMyName}>
+                        {({ data, loading, error }) => {
+                          if (loading || error) {
+                            return null;
+                          } else {
+                            return <>{data.viewer.person.displayName}</>;
+                          }
+                        }}
+                      </Query>
+                    </DesktopMenuItem>
+                    <DesktopMenuItem>
+                      <a onClick={logout(context, client)}>
+                        <Trans>general.logout</Trans>
+                      </a>
+                    </DesktopMenuItem>
+                  </>
+                );
+              } else {
+                return null;
+              }
+            }}
+          </UserContext.Consumer>
+        );
+      }}
+    </ApolloConsumer>
   );
 };
 

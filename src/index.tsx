@@ -13,7 +13,6 @@ import 'core-js/es6/map';
 import 'core-js/es6/weak-map';
 import 'core-js/es6/set';
 
-
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
@@ -28,6 +27,7 @@ import { makeAuthenticator, makeUserManager, Callback } from 'react-oidc';
 import { User } from 'oidc-client';
 
 import { ScreenSizeProvider } from 'providers/ScreenSize';
+import { UserContextProvider } from 'providers/UserContext';
 import i18n from './i18n';
 import App from './routes/app';
 import theme from './theme';
@@ -104,7 +104,9 @@ const appRoot = () => {
           <ThemeProvider theme={theme}>
             <I18nextProvider i18n={i18n} initialLanguage="nb">
               <ScreenSizeProvider>
-                <App authManager={protector} />
+                <UserContextProvider userManager={userManager}>
+                  <App authManager={protector} />
+                </UserContextProvider>
               </ScreenSizeProvider>
             </I18nextProvider>
           </ThemeProvider>
