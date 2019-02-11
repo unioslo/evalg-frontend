@@ -22,9 +22,9 @@ const styles = (theme: any) => ({
   },
 });
 
-const searchPersonsQuery = gql`
-  query searchPersons($val: String!) {
-    searchPersons(val: $val) {
+const searchPersonQuery = gql`
+  query searchPerson($val: String!) {
+    searchPerson(val: $val) {
       id
       firstName
       lastName
@@ -52,7 +52,7 @@ interface Istate {
 }
 
 interface IPersonQueryResult {
-  searchPersons: IPerson[];
+  searchPerson: IPerson[];
 }
 
 class AddVoter extends React.Component<IProps, Istate> {
@@ -81,7 +81,7 @@ class AddVoter extends React.Component<IProps, Istate> {
     },
     50
   );
-  
+
   constructor(props: IProps) {
     super(props);
     const { registeredVoters } = this.props;
@@ -98,10 +98,10 @@ class AddVoter extends React.Component<IProps, Istate> {
 
   async searchPersons(client: ApolloClient<any>, name: string) {
     const { data } = await client.query<IPersonQueryResult>({
-      query: searchPersonsQuery,
+      query: searchPersonQuery,
       variables: { val: name },
     });
-    return data.searchPersons;
+    return data.searchPerson;
   }
 
   handlePersonFilterUpdate(client: ApolloClient<any>, value: string) {

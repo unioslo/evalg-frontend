@@ -7,9 +7,9 @@ import AdminRolesForm from './AdminRolesForm';
 import { IActiveComponentProps, IInactiveComponentProps, ISettingsSectionContents } from 'components/page/SettingsSection';
 import { Trans } from 'react-i18next';
 
-const searchPersonsQuery = gql`
-  query searchPersons($val: String!) {
-    searchPersons(val: $val) {
+const searchPersonQuery = gql`
+  query searchPerson($val: String!) {
+    searchPerson(val: $val) {
       id
       firstName
       lastName
@@ -73,7 +73,7 @@ const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
       {client => {
         async function searchPersons(val: string) {
           const { data }: { data: any } = await client.query({
-            query: searchPersonsQuery,
+            query: searchPersonQuery,
             variables: { val },
           });
           return data.searchPersons;
