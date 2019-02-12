@@ -68,7 +68,8 @@ const styles = (theme: any) => ({
   },
   mobileLanguageToggler: {
     color: theme.navMenuTextColor,
-    [theme.breakpoints.lgQuery]: {
+    fontSize: theme.navFontSize,
+    [theme.breakpoints.mdQuery]: {
       display: 'none',
     }
   },

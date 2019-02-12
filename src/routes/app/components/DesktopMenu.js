@@ -12,7 +12,7 @@ const styles = theme => ({
     listStyleType: 'none',
     fontSize: theme.navFontSize
   },
-  [`@media (min-width: ${theme.breakpoints.lg})`]: {
+  [theme.breakpoints.mdQuery]: {
     menu: {
       display: 'flex',
       alignItems: 'center'
