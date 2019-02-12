@@ -1,10 +1,5 @@
 export default {
   admin: {
-    frontPage: {
-      helpLinksBoxTitle: 'Help and information',
-      holdingElectionsInfoLink: 'Holding elections (Norwegian)',
-      electionRegulationsLink: 'Election regulations at UiO (Norwegian)',
-    },
     electionKey: {
       create: 'Create election key',
       createNew: 'Create new election key',
