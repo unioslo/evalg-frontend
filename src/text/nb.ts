@@ -26,21 +26,26 @@ export default {
       modalMoreInfoLink: 'Mer informasjon og tips',
       modalCheckboxLabel:
         'Jeg forstår at valget ikke kan telles opp uten valgnøkkelen.',
-      modalGenerateKeyError: 'Noe gikk galt under generering av nøkkelpar.',
-      modalActivateKeyError: 'Noe gikk galt under opplasting og aktivering av offentlig nøkkel. Sjekk internett-tilkoblingen, lukk dialogboksen og prøv på nytt.',
       missing:
         'Valgnøkkel er ikke opprettet. En valgnøkkel er nødvendig for å telle opp stemmene.',
       createdBy: 'Valgnøkkel ble opprettet av',
       readMore: 'Les mer om nøkkelhåndtering',
       save: 'Lagre nøkkel',
-      statusCanReplace:
-        'Frem til valget har startet vil du fortsatt ha mulighet til å lage en ny nøkkel som erstatter den gamle.',
-      statusKeepItSafe:
+      infoListCanReplace:
+        'Frem til det er avgitt stemmer har du mulighet til å opprette en ny valgnøkkel som erstatter den gamle. Merk: Hvis valget er publisert eller pågår må du avpublisere valget før du kan erstatte valgnøkkelen.',
+      infoListKeepItSafe:
         'Sørg for at nøkkelen er lagret et sikkert sted. Uten nøkkelen kan ikke stemmene telles opp.',
-      cannotCreateReasonPublished:
-        'For å opprette ny valgnøkkel må du først avpublisere valget.',
-      cannotCreateReasonHasStarted:
-        'Det er ikke mulig å opprette ny valgnøkkel siden valget har begynt.',
+      cannotReplaceBecauseUnsafeStatus:
+        'For å opprette en ny valgnøkkel som erstatter den gamle valgnøkkelen må du først avpublisere valget. Det vil ikke være mulig å erstatte valgnøkkelen dersom det er avgitt stemmer i valget.',
+    },
+    errors: {
+      generateKeyError: 'Noe gikk galt under generering av nøkkelpar.',
+      activateKeyErrorGeneral:
+        'Noe gikk galt under opplasting og aktivering av offentlig nøkkel. Sjekk internett-tilkoblingen, lukk dialogboksen og prøv på nytt.',
+      activateKeyErrorUnsafeStatus:
+        'Det er ikke tillatt å endre valgnøkkelen nå, på grunn av valgets status. Trykk avbryt og kontroller at valget ikke er publisert.',
+      activateKeyErrorHasVotes:
+        'Det er ikke tillatt å endre valgnøkkelen fordi det er avgitt stemmer i valget.',
     },
   },
   candidate: {
@@ -71,7 +76,8 @@ export default {
     uploadCensusFileButton: 'Last opp manntallsfil',
     uploadCensusFileHeader: 'Last opp manntal fra fil',
     uploadOkMsg: '{{nr}} personer ble lagt til i gruppen {{pollbookName}}',
-    uploadServerError: 'Feilmelding fra tjener. Greide ikke å laste inn manntall',
+    uploadServerError:
+      'Feilmelding fra tjener. Greide ikke å laste inn manntall',
   },
   election: {
     activeElectionsHeader:

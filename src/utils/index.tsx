@@ -14,9 +14,11 @@ import {
   objsEqual,
 } from './helpers';
 
+import { translateBackendError } from './i18n';
+
 const sleep = async (ms: number) => {
   await new Promise(resolve => setTimeout(resolve, ms));
-}
+};
 
 const ISODateTimeToTimeZoneAdjustedISODate = (dateTime: string) =>
   moment.tz(dateTime, appTimezone).format('YYYY-MM-DD');
@@ -29,6 +31,7 @@ const DateAndTimeToISODTWithTimeZonedOffset = (date: string, time: string) =>
 
 export {
   sleep,
+  translateBackendError,
   objPropsToArray,
   isObjEmpty,
   isObject,

@@ -26,22 +26,26 @@ export default {
       modalMoreInfoLink: 'More information and tips',
       modalCheckboxLabel:
         'I understand that without the election key, the votes can not be counted.',
-      modalGenerateKeyError: 'Something went wrong when generating a key pair.',
-      modalActivateKeyError:
-        'Something went wrong when trying to upload and activate the public key. Check your Internet connection, close this dialog, and try again.',
       missing:
         'No elecition key is created. An election key is needed to count the votes.',
       createdBy: 'Election key was created by',
       readMore: 'Read more about election keys',
       save: 'Save key',
-      statusCanReplace:
-        'You can replace the old key with a new one as long as the election has not started.',
-      statusKeepItSafe:
+      infoListCanReplace:
+        'Until votes has been recieved in the election, you may create a new election key that replaces the old one. Note: If the election is published or ongoing, you will first need to unpublish it.',
+      infoListKeepItSafe:
         'Make sure the key is stored somewhere safe. Without the key, votes cannot be counted.',
-      cannotCreateReasonPublished:
-        'To create a new election key, you must first unpublish the election.',
-      cannotCreateReasonHasStarted:
-        'It is not possible to create a new election key since the election has started.',
+      cannotReplaceBecauseUnsafeStatus:
+        "To create a new election key that replaces the old noe, you must first unpublish the election. It's not possible to replace the election key if any votes has been recieved in the election.",
+    },
+    errors: {
+      generateKeyError: 'Something went wrong when generating a key pair.',
+      activateKeyErrorGeneral:
+        'Something went wrong when trying to upload and activate the public key. Check your Internet connection, close this dialog, and try again.',
+      activateKeyErrorUnsafeStatus:
+        'Changing the election key is not permitted, because of the current status of the election. Press cancel and check that the election is not published.',
+      activateKeyErrorHasVotes:
+        'Changing the election key is not permitted, because votes has been recieved in the election.',
     },
   },
   candidate: {
@@ -230,7 +234,8 @@ export default {
     responsibleOrganizationHeader: 'Service owner',
     technicalSupport: 'Technical support',
     holdingElectionsInfoLink: 'Rules and assistance on holding elections',
-    serviceOwnerLink: 'Department for System Integration and Identity Management (INT)',
+    serviceOwnerLink:
+      'Department for System Integration and Identity Management (INT)',
   },
   formErrors: {
     invalidDates: 'Start time must be before closing time.',
