@@ -121,8 +121,8 @@ class NewElection extends React.Component<IProps, IState> {
                 return 'Error!';
               }
               return (
-                <Page header={<Trans>election.electionInfo</Trans>}>
-                  <PageSection header={<Trans>election.voterSettings</Trans>}>
+                <Page header={<Trans>election.createNewElection</Trans>}>
+                  <PageSection header={<Trans>election.selectType</Trans>}>
                     <NewElectionForm
                       initialValues={this.state.currentValues}
                       updateValues={this.updateValues}
