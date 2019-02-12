@@ -4,16 +4,17 @@ import { Trans, translate } from 'react-i18next';
 
 import {
   testWarning,
-  appHoldingElectionsInfoLink,
   appServiceOwnerLink,
   appTechnicalSupportEmail,
+  appTermsAndPrivacylink,
+  appCookiesInformationLink,
 } from 'appConfig';
 import Link from 'components/link';
 
 const styles = (theme: any) => ({
   wrapper: {
     background: theme.colors.black,
-    padding: '3.5rem 0',
+    padding: '4rem 0',
   },
   footer: {
     background: `url('/uio-app-uio-sickle-medium.png') left ${
@@ -62,13 +63,13 @@ const styles = (theme: any) => ({
     },
     '& header': {
       fontSize: '2rem',
-      marginBottom: '2rem',
+      marginBottom: '1.5rem',
     },
     '& .content': {
       fontSize: '1.4rem',
       lineHeight: '2rem',
-      '& div:not(:last-child)': {
-        marginBottom: '1rem',
+      '& :not(:last-child)': {
+        marginBottom: '0.5rem',
       },
     },
   },
@@ -89,6 +90,36 @@ const Footer = (props: IProps) => {
             <div className={classes.contentContainer}>
               <section className={classes.footerSection}>
                 <header>
+                  <Trans>footer.termsHeader</Trans>
+                </header>
+                <div className="content">
+                  <div>
+                    <Link
+                      external
+                      noExternalIcon
+                      inheritColor
+                      underline
+                      to={appTermsAndPrivacylink}
+                    >
+                      <Trans>footer.termsAndPrivacyLink</Trans>
+                    </Link>
+                  </div>
+                  <div>
+                    <Trans>footer.evalgUses</Trans>{' '}
+                    <Link
+                      external
+                      noExternalIcon
+                      inheritColor
+                      underline
+                      to={appCookiesInformationLink}
+                    >
+                      <Trans>footer.cookiesInformationLink</Trans>
+                    </Link>
+                  </div>
+                </div>
+              </section>
+              <section className={classes.footerSection}>
+                <header>
                   <Trans>footer.contactSectionHeader</Trans>
                 </header>
                 <div className="content">
@@ -103,17 +134,6 @@ const Footer = (props: IProps) => {
                       {appTechnicalSupportEmail}
                     </Link>
                   </div>
-                  <div>
-                    <Link
-                      external
-                      noExternalIcon
-                      inheritColor
-                      underline
-                      to={appHoldingElectionsInfoLink}
-                    >
-                      <Trans>footer.holdingElectionsInfoLink</Trans>
-                    </Link>
-                  </div>
                 </div>
               </section>
               <section className={classes.footerSection}>
@@ -121,15 +141,17 @@ const Footer = (props: IProps) => {
                   <Trans>footer.responsibleOrganizationHeader</Trans>
                 </header>
                 <div className="content">
-                  <Link
-                    external
-                    noExternalIcon
-                    inheritColor
-                    underline
-                    to={appServiceOwnerLink}
-                  >
-                    <Trans>footer.serviceOwnerLink</Trans>
-                  </Link>
+                  <div>
+                    <Link
+                      external
+                      noExternalIcon
+                      inheritColor
+                      underline
+                      to={appServiceOwnerLink}
+                    >
+                      <Trans>footer.serviceOwnerLink</Trans>
+                    </Link>
+                  </div>
                 </div>
               </section>
             </div>

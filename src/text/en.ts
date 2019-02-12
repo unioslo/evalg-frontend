@@ -222,6 +222,10 @@ export default {
     upcomingElections: 'Upcoming elections',
   },
   footer: {
+    termsHeader: 'Terms',
+    termsAndPrivacyLink: 'Terms of use and privacy',
+    evalgUses: 'eValg uses',
+    cookiesInformationLink: 'cookies',
     contactSectionHeader: 'Contact points',
     responsibleOrganizationHeader: 'Service owner',
     technicalSupport: 'Technical support',

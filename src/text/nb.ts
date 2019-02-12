@@ -226,10 +226,13 @@ export default {
     upcomingElections: 'Kommende valg',
   },
   footer: {
+    termsHeader: 'Vilkår',
+    termsAndPrivacyLink: 'Personvern og vilkår for bruk',
+    evalgUses: 'eValg bruker',
+    cookiesInformationLink: 'informasjonskapsler',
     contactSectionHeader: 'Kontaktpunkter',
     responsibleOrganizationHeader: 'Ansvarlig for tjenesten',
     technicalSupport: 'Teknisk støtte',
-    holdingElectionsInfoLink: 'Regelverk og støtte til gjennomføring av valg',
     serviceOwnerLink: 'Seksjon for integrasjon og elektroniske identiteter (INT)',
   },
   formErrors: {

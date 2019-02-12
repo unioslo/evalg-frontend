@@ -22,3 +22,5 @@ export const restBackend = 'http://localhost:5000/';
 export const appHelpLink = 'https://www.uio.no/for-ansatte/arbeidsstotte/arrangere-valg/';
 export const appTechnicalSupportEmail = 'it-support@uio.no';
 export const appServiceOwnerLink = 'https://www.usit.uio.no/om/organisasjon/bnt/usitint/';
+export const appTermsAndPrivacylink = '#TODO';
+export const appCookiesInformationLink = '#TODO';
