@@ -51,7 +51,7 @@ const VoterElectionsListItem = (props: ListItemProps) => {
           <Time dateTime={election.end} />
         </div>
         <div>
-          <Trans>election.canVote</Trans>:&nbsp;
+          <Trans>election.rightToVote</Trans>:&nbsp;
           {canVote ? <Trans>general.yes</Trans> :
             <Trans>general.no</Trans>
           }

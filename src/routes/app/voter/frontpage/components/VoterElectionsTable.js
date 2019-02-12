@@ -40,7 +40,7 @@ const VoterElectionsTable = (props: Props) => {
             <Trans>election.closes</Trans>
           </TableHeaderCell>
           <TableHeaderCell>
-            <Trans>election.canVote</Trans>
+            <Trans>election.rightToVote</Trans>
           </TableHeaderCell>
           <TableHeaderCell />
         </TableHeaderRow>

@@ -167,8 +167,7 @@ export default {
     published: 'Published',
     quotas: 'Quotas',
     remove: 'Remove',
-    reviewBallot:
-      'Review your ballot below. Then either submit your vote, or go back to make changes.',
+    rightToVote: 'Right to vote',
     selectLevel: 'Election of',
     selectParish: 'Parish',
     selectType: 'Choose election type',

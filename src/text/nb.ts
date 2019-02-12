@@ -100,7 +100,6 @@ export default {
     blockerMissingKey: 'Valgnøkkel',
     blockerStartBeforeEnd: 'Starttid må være før sluttid',
     blockerUnknown: 'Noe uventet er galt',
-    canVote: 'Stemmerett',
     candidate: 'Kandidat',
     candidateCounter: 'Har {{count}} av {{minCount}} kandidater',
     candidateNamePlaceHolder: 'Navn på kandidat',
@@ -126,7 +125,7 @@ export default {
     election: 'Valg',
     electionAdmins: 'Valgansvarlige',
     electionAdminsDesc:
-      'Kan endre innstillinger og informasjon for valget, telle stemmer og delegere tilganger.',
+    'Kan endre innstillinger og informasjon for valget, telle stemmer og delegere tilganger.',
     electionCloses: 'Valget stenger',
     electionInfo: 'Valginformasjon',
     electionKey: 'Valgnøkkel',
@@ -152,25 +151,24 @@ export default {
     multipleVotingPeriods: 'Invidiuelle stemmeperioder',
     newCoCandidate: 'Ny medkandidat',
     noActiveElections:
-      'Det er for øyeblikket ingen valg som er satt som aktive.',
+    'Det er for øyeblikket ingen valg som er satt som aktive.',
     noCandidatesDefined: 'Det er ingen kandidater i listen.',
     noCandidatesFound: 'Ingen kandidater tilfredstiller søkekriteriene.',
     noManageableElections:
-      'Det er for øyeblikket ingen valg hvor du er registrert som administrator.',
+    'Det er for øyeblikket ingen valg hvor du er registrert som administrator.',
     nrOfCandidates: 'Antall faste representanter',
     nrOfCoCandidates: 'Antall vararepresentanter',
     opens: 'Åpnes',
     prefTeamHeader:
-      'Her kan du legge til og administrere kandidater og medkandidater som stiller til valg.',
+    'Her kan du legge til og administrere kandidater og medkandidater som stiller til valg.',
     publish: 'Publiser',
     publishElection: 'Publiser valget',
     publishElectionModalInfo:
-      'Valget vil være synlig for velgerne og åpner automatisk til angitt tidspunkt.',
+    'Valget vil være synlig for velgerne og åpner automatisk til angitt tidspunkt.',
     published: 'Publisert',
     quotas: 'Kvotering',
     remove: 'Fjern',
-    reviewBallot:
-      'Se over stemmeseddelen din nedenfor. Bekreft deretter stemmen, eller gå tilbake for å gjøre endringer.',
+    rightToVote: 'Stemmerett',
     selectLevel: 'Valg av',
     selectParish: 'Valgkrets',
     selectType: 'Velg valgordning',
