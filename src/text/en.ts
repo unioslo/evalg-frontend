@@ -240,6 +240,7 @@ export default {
   },
   general: {
     add: 'Add',
+    administerElections: 'Administer elections',
     all: 'All',
     at: 'at',
     back: 'Back',
@@ -261,6 +262,7 @@ export default {
     group: 'Group',
     headerSubtitleVoter: 'Digital Elections',
     headerSubtitleAdmin: 'Digital Elections - Administration',
+    help: 'Help',
     hide: 'Hide',
     hideDetails: 'Hide details',
     logout: 'Log out',

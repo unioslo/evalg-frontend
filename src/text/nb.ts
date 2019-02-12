@@ -244,6 +244,7 @@ export default {
   },
   general: {
     add: 'Legg til',
+    administerElections: 'Administrer valg',
     all: 'Alle',
     at: 'ved',
     back: 'Tilbake',
@@ -265,6 +266,7 @@ export default {
     group: 'Gruppe',
     headerSubtitleVoter: 'Elektronisk valg',
     headerSubtitleAdmin: 'Elektronisk valg - Administrasjon',
+    help: 'Hjelp',
     hide: 'Skjul',
     hideDetails: 'Skjul detaljer',
     logout: 'Logg ut',
