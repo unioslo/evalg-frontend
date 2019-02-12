@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import gql from 'graphql-tag';
 import { withApollo, WithApolloClient } from 'react-apollo';
 
-import { sleep, lookupErrorMessageForBackendError } from 'utils';
+import { sleep, translateBackendError } from 'utils';
 import { getCryptoEngine } from 'cryptoEngines';
 import Modal from 'components/modal';
 import Button, { ButtonContainer } from 'components/button';
@@ -207,7 +207,7 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
       this.props.onCloseModal();
     } catch (error) {
       const t = this.props.t;
-      let errorMessage = lookupErrorMessageForBackendError(error.toString(), t);
+      let errorMessage = translateBackendError(error.toString(), t);
       if (errorMessage === '') {
         errorMessage = t('admin.errors.activateKeyErrorGeneral');
       }

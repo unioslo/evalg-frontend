@@ -14,7 +14,7 @@ import {
   objsEqual,
 } from './helpers';
 
-import { lookupErrorMessageForBackendError } from './errorHandling';
+import { translateBackendError } from './i18n';
 
 const sleep = async (ms: number) => {
   await new Promise(resolve => setTimeout(resolve, ms));
@@ -31,7 +31,7 @@ const DateAndTimeToISODTWithTimeZonedOffset = (date: string, time: string) =>
 
 export {
   sleep,
-  lookupErrorMessageForBackendError,
+  translateBackendError,
   objPropsToArray,
   isObjEmpty,
   isObject,
