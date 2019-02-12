@@ -18,7 +18,7 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center'
   },
-  [`@media (min-width: ${theme.breakpoints.lg})`]: {
+  [theme.breakpoints.mdQuery]: {
     mobileMenu: {
       display: 'none'
     }

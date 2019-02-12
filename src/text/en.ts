@@ -1,10 +1,5 @@
 export default {
   admin: {
-    frontPage: {
-      helpLinksBoxTitle: 'Help and information',
-      holdingElectionsInfoLink: 'Holding elections (Norwegian)',
-      electionRegulationsLink: 'Election regulations at UiO (Norwegian)',
-    },
     electionKey: {
       create: 'Create election key',
       createNew: 'Create new election key',
@@ -227,6 +222,10 @@ export default {
     upcomingElections: 'Upcoming elections',
   },
   footer: {
+    termsHeader: 'Terms',
+    termsAndPrivacyLink: 'Terms of use and privacy',
+    evalgUses: 'eValg uses',
+    cookiesInformationLink: 'cookies',
     contactSectionHeader: 'Contact points',
     responsibleOrganizationHeader: 'Service owner',
     technicalSupport: 'Technical support',
@@ -240,6 +239,7 @@ export default {
   },
   general: {
     add: 'Add',
+    administerElections: 'Administer elections',
     all: 'All',
     at: 'at',
     back: 'Back',
@@ -261,6 +261,7 @@ export default {
     group: 'Group',
     headerSubtitleVoter: 'Digital Elections',
     headerSubtitleAdmin: 'Digital Elections - Administration',
+    help: 'Help',
     hide: 'Hide',
     hideDetails: 'Hide details',
     logout: 'Log out',

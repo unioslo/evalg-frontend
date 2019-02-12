@@ -3,17 +3,15 @@ import * as React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import injectSheet from 'react-jss';
+import { Trans, translate } from 'react-i18next';
 
 import { objPropsToArray } from 'utils';
 import Loading from 'components/loading';
 import Page from 'components/page/Page';
 import { PageSection } from 'components/page';
-import { Trans, translate } from 'react-i18next';
 import { ActionButton } from 'components/button';
 import ManageElectionsTable from './components/ManageElectionsTable';
-import { InfoList, InfoListItem } from 'components/infolist';
 import Link from 'components/link';
-import { appHoldingElectionsInfoLink, appElectionRegulationsLink } from 'appConfig';
 
 const electionGroupsQuery = gql`
   query {
@@ -81,63 +79,32 @@ const styles = theme => ({
   },
 });
 
-const AdminFrontPage = props => {
-  const helpLinksBox = (
-    <div className={props.classes.helpLinksBox}>
-      <p className="title"><Trans>admin.frontPage.helpLinksBoxTitle</Trans></p>
-      <InfoList>
-        <InfoListItem bulleted>
-          <Link
-            external
-            to={appHoldingElectionsInfoLink}
+const AdminFrontPage = props => (
+  <Query query={electionGroupsQuery}>
+    {({ loading, error, data }) => {
+      if (loading) {
+        return <Loading />;
+      }
+      if (error) {
+        return <p>Error!</p>;
+      }
+      return (
+        <Page header={<Trans>election.manageElections</Trans>}>
+          <PageSection noBorder noBtmPadding>
+            <Link to="/admin/newElection">
+              <ActionButton text={<Trans>election.createNewElection</Trans>} />
+            </Link>
+          </PageSection>
+          <PageSection
+            noBorder
+            header={<Trans>election.manageableElections</Trans>}
           >
-            <Trans>admin.frontPage.holdingElectionsInfoLink</Trans>
-          </Link>
-        </InfoListItem>
-        <InfoListItem bulleted>
-          <Link
-            external
-            to={appElectionRegulationsLink}
-          >
-            <Trans>admin.frontPage.electionRegulationsLink</Trans>
-          </Link>
-        </InfoListItem>
-      </InfoList>
-    </div>
-  );
-
-  return (
-    <Query query={electionGroupsQuery}>
-      {({ loading, error, data }) => {
-        if (loading) {
-          return <Loading />;
-        }
-        if (error) {
-          return <p>Error!</p>;
-        }
-        return (
-          <Page header={<Trans>election.manageElections</Trans>}>
-            <PageSection noBorder noBtmPadding>
-              <div className={props.classes.flexContainer}>
-                <Link to="/admin/newElection">
-                  <ActionButton
-                    text={<Trans>election.createNewElection</Trans>}
-                  />
-                </Link>
-                {helpLinksBox}
-              </div>
-            </PageSection>
-            <PageSection
-              noBorder
-              header={<Trans>election.manageableElections</Trans>}
-            >
-              <ManageElectionsTable electionGroups={data.electionGroups} />
-            </PageSection>
-          </Page>
-        );
-      }}
-    </Query>
-  );
-};
+            <ManageElectionsTable electionGroups={data.electionGroups} />
+          </PageSection>
+        </Page>
+      );
+    }}
+  </Query>
+);
 
 export default translate()(injectSheet(styles)(AdminFrontPage));

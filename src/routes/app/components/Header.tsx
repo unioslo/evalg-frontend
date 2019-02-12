@@ -15,6 +15,7 @@ import { ApolloConsumer } from 'react-apollo';
 import { IAuthenticatorContext } from 'react-oidc/lib/makeAuth';
 import { ApolloClient } from 'apollo-client';
 import createBrowserHistory from 'history/createBrowserHistory';
+import { appHelpLink } from 'appConfig';
 
 const styles = (theme: any) => ({
   logoBar: {
@@ -65,6 +66,13 @@ const styles = (theme: any) => ({
       fontSize: '2rem',
     },
   },
+  mobileLanguageToggler: {
+    color: theme.navMenuTextColor,
+    fontSize: theme.navFontSize,
+    [theme.breakpoints.mdQuery]: {
+      display: 'none',
+    }
+  },
 });
 
 const sayMyName = gql`
@@ -114,10 +122,29 @@ const Header = ({ classes }: IProps) => {
             </div>
             <MobileMenu>
               <MobileMenuItem>
-                <Link to="/admin">Admin page!</Link>
+                <Switch>
+                  <Route
+                    path="/admin"
+                    render={() => (
+                      <Link to="/voter" inheritColor>
+                        <Trans>general.frontPage</Trans>
+                      </Link>
+                    )}
+                  />
+                  <Route
+                    path="/voter"
+                    render={() => (
+                      <Link to="/admin" inheritColor>
+                        <Trans>general.administerElections</Trans>
+                      </Link>
+                    )}
+                  />
+                </Switch>
               </MobileMenuItem>
               <MobileMenuItem>
-                <Link to="/voter">Voter page!</Link>
+                <Link inheritColor external noExternalIcon to={appHelpLink}>
+                  <Trans>general.help</Trans>
+                </Link>
               </MobileMenuItem>
               <MobileMenuItem>
                 <MobileLogout />
@@ -125,8 +152,28 @@ const Header = ({ classes }: IProps) => {
             </MobileMenu>
             <DesktopMenu>
               <DesktopMenuItem>
-                <Link inheritColor to="/">
-                  <Trans>general.frontPage</Trans>
+                <Switch>
+                  <Route
+                    path="/admin"
+                    render={() => (
+                      <Link to="/voter" inheritColor>
+                        <Trans>general.frontPage</Trans>
+                      </Link>
+                    )}
+                  />
+                  <Route
+                    path="/voter"
+                    render={() => (
+                      <Link to="/admin" inheritColor>
+                        <Trans>general.administerElections</Trans>
+                      </Link>
+                    )}
+                  />
+                </Switch>
+              </DesktopMenuItem>
+              <DesktopMenuItem>
+                <Link inheritColor external noExternalIcon to={appHelpLink}>
+                  <Trans>general.help</Trans>
                 </Link>
               </DesktopMenuItem>
               <DesktopMenuItem>
@@ -156,6 +203,9 @@ const Header = ({ classes }: IProps) => {
             <DesktopMenu>
               <UserNameAndLogout />
             </DesktopMenu>
+            <div className={classes.mobileLanguageToggler}>
+              <LanguageToggler />
+            </div>
           </div>
         </div>
       </div>

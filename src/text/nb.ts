@@ -1,10 +1,5 @@
 export default {
   admin: {
-    frontPage: {
-      helpLinksBoxTitle: 'Hjelp og informasjon',
-      holdingElectionsInfoLink: 'Arrangere valg',
-      electionRegulationsLink: 'UiOs valgreglement',
-    },
     electionKey: {
       create: 'Opprett valgnøkkel',
       createNew: 'Opprett ny valgnøkkel',
@@ -231,10 +226,13 @@ export default {
     upcomingElections: 'Kommende valg',
   },
   footer: {
+    termsHeader: 'Vilkår',
+    termsAndPrivacyLink: 'Personvern og vilkår for bruk',
+    evalgUses: 'eValg bruker',
+    cookiesInformationLink: 'informasjonskapsler',
     contactSectionHeader: 'Kontaktpunkter',
     responsibleOrganizationHeader: 'Ansvarlig for tjenesten',
     technicalSupport: 'Teknisk støtte',
-    holdingElectionsInfoLink: 'Regelverk og støtte til gjennomføring av valg',
     serviceOwnerLink: 'Seksjon for integrasjon og elektroniske identiteter (INT)',
   },
   formErrors: {
@@ -244,6 +242,7 @@ export default {
   },
   general: {
     add: 'Legg til',
+    administerElections: 'Administrer valg',
     all: 'Alle',
     at: 'ved',
     back: 'Tilbake',
@@ -265,6 +264,7 @@ export default {
     group: 'Gruppe',
     headerSubtitleVoter: 'Elektronisk valg',
     headerSubtitleAdmin: 'Elektronisk valg - Administrasjon',
+    help: 'Hjelp',
     hide: 'Skjul',
     hideDetails: 'Skjul detaljer',
     logout: 'Logg ut',
