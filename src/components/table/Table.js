@@ -7,18 +7,21 @@ type Props = {
   children?: React.ChildrenArray<any>,
   smlTopMargin?: boolean,
   noTopMargin?: boolean,
-  classes: Object
-}
+  classes: Object,
+};
 
 const styles = theme => ({
   table: {
     width: '100%',
     userSelect: 'none',
-    marginTop: '4rem'
+    marginTop: '4rem',
+    '& th:not(:last-child), & td:not(:last-child)': {
+      paddingRight: '2rem',
+    },
   },
   smallTopMargin: {
-    marginTop: '2rem'
-  }
+    marginTop: '2rem',
+  },
 });
 
 const Table = (props: Props) => {
@@ -27,11 +30,7 @@ const Table = (props: Props) => {
     [classes.table]: true,
     [classes.smallTopMargin]: props.smlTopMargin,
   });
-  return (
-    <table className={cls}>
-      {props.children}
-    </table>
-  )
+  return <table className={cls}>{props.children}</table>;
 };
 
 export default injectSheet(styles)(Table);
