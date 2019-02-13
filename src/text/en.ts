@@ -150,6 +150,7 @@ export default {
     multipleVotingPeriods: 'Invidual voting periods for groups',
     newCoCandidate: 'New cocandidate',
     noActiveElections: 'There are currently no active elections.',
+    noActiveVoterGroups: 'No active voter groups',
     noCandidatesDefined: 'There are no candidates in the list.',
     noCandidatesFound: 'No candidates matches the search criterias',
     noManageableElections:

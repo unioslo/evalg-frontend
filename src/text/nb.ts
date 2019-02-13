@@ -153,6 +153,7 @@ export default {
     newCoCandidate: 'Ny medkandidat',
     noActiveElections:
       'Det er for øyeblikket ingen valg som er satt som aktive.',
+    noActiveVoterGroups: 'Ingen aktive velgergrupper',
     noCandidatesDefined: 'Det er ingen kandidater i listen.',
     noCandidatesFound: 'Ingen kandidater tilfredstiller søkekriteriene.',
     noManageableElections:

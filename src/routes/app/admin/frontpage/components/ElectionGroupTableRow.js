@@ -31,6 +31,7 @@ class ElGrpTableRow extends React.Component<Props> {
     const statuses = [];
     const { elections } = elGrp;
     const activeElections = elections.filter(e => e.active);
+    const hasActiveElections = activeElections.length > 0;
 
     activeElections.forEach(e => {
       startTimes.push(e.start);
@@ -55,52 +56,64 @@ class ElGrpTableRow extends React.Component<Props> {
         <TableCell>
           <Text bold>{elGrp.name[lang]}</Text>
         </TableCell>
-        {sharedStartTime ? (
-          <TableCell>
-            <Text>
-              <Date dateTime={elections[0].start} />
-            </Text>
-            <Text size="small">
-              <Time dateTime={elections[0].start} />
-            </Text>
-          </TableCell>
+        {hasActiveElections ? (
+          <React.Fragment>
+            {sharedStartTime ? (
+              <TableCell>
+                <Text>
+                  <Date dateTime={elections[0].start} />
+                </Text>
+                <Text size="small">
+                  <Time dateTime={elections[0].start} />
+                </Text>
+              </TableCell>
+            ) : (
+              <TableCell>
+                <Text>
+                  <Trans>election.multipleTimes</Trans>
+                </Text>
+              </TableCell>
+            )}
+            {sharedEndTime ? (
+              <TableCell>
+                <Text>
+                  <Date dateTime={elections[0].end} />
+                </Text>
+                <Text size="small">
+                  <Time dateTime={elections[0].end} />
+                </Text>
+              </TableCell>
+            ) : (
+              <TableCell>
+                <Text>
+                  <Trans>election.multipleTimes</Trans>
+                </Text>
+              </TableCell>
+            )}
+            <TableCell>
+              <VoteStatus
+                totalVotes={totalVotes}
+                votesOutsideCensus={totalVotesOutsideCensus}
+                preposition={<Trans>general.of</Trans>}
+              />
+            </TableCell>
+            <TableCell>
+              {sharedStatus ? (
+                <ElectionStatus status={elections[0].status} />
+              ) : (
+                <ElectionStatus status="multipleStatuses" />
+              )}
+            </TableCell>
+          </React.Fragment>
         ) : (
-          <TableCell>
+          <TableCell colspan={4} alignCenter>
             <Text>
-              <Trans>election.multipleTimes</Trans>
+              <em>
+                <Trans>election.noActiveVoterGroups</Trans>
+              </em>
             </Text>
           </TableCell>
         )}
-        {sharedEndTime ? (
-          <TableCell>
-            <Text>
-              <Date dateTime={elections[0].end} />
-            </Text>
-            <Text size="small">
-              <Time dateTime={elections[0].end} />
-            </Text>
-          </TableCell>
-        ) : (
-          <TableCell>
-            <Text>
-              <Trans>election.multipleTimes</Trans>
-            </Text>
-          </TableCell>
-        )}
-        <TableCell>
-          <VoteStatus
-            totalVotes={totalVotes}
-            votesOutsideCensus={totalVotesOutsideCensus}
-            preposition={<Trans>general.of</Trans>}
-          />
-        </TableCell>
-        <TableCell>
-          {sharedStatus ? (
-            <ElectionStatus status={elections[0].status} />
-          ) : (
-            <ElectionStatus status="multipleStatuses" />
-          )}
-        </TableCell>
       </TableRow>
     );
   }
