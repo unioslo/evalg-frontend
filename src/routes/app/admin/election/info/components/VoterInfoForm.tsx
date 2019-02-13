@@ -370,7 +370,6 @@ class VoterInfoForm extends React.Component<IProps> {
                     <Field
                       name="elections[0].contact"
                       component={TextInputRF as any}
-                      label={<Trans>general.contactInfo</Trans>}
                       placeholder={t('general.email')}
                     />
                   </FormField>
@@ -445,11 +444,10 @@ class VoterInfoForm extends React.Component<IProps> {
                     />
                   </Table>
                 ) : (
-                  <FormField noTopMargin={true}>
+                  <FormField>
                     <Field
                       name="elections[0].informationUrl"
                       component={TextInputRF as any}
-                      label={<Trans>election.voterInfoUrl</Trans>}
                       placeholder={t('general.webpage')}
                       id="infourl-single"
                     />
