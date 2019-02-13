@@ -12,6 +12,7 @@ import { PageSection } from 'components/page';
 import { ActionButton } from 'components/button';
 import ManageElectionsTable from './components/ManageElectionsTable';
 import Link from 'components/link';
+import { orderElectionsInElectionGroup } from 'utils/processGraphQLData';
 
 const electionGroupsQuery = gql`
   query {
@@ -88,6 +89,11 @@ const AdminFrontPage = props => (
       if (error) {
         return <p>Error!</p>;
       }
+
+      const electionGroupsWithOrderedElections = data.electionGroups.map(
+        elGrp => orderElectionsInElectionGroup(elGrp)
+      );
+
       return (
         <Page header={<Trans>election.manageElections</Trans>}>
           <PageSection noBorder noBtmPadding>
@@ -99,7 +105,9 @@ const AdminFrontPage = props => (
             noBorder
             header={<Trans>election.manageableElections</Trans>}
           >
-            <ManageElectionsTable electionGroups={data.electionGroups} />
+            <ManageElectionsTable
+              electionGroups={electionGroupsWithOrderedElections}
+            />
           </PageSection>
         </Page>
       );

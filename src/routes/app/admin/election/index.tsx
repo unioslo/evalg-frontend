@@ -12,7 +12,7 @@ import StatusPage from './status';
 import Loading from 'components/loading';
 import { History, Location } from 'history';
 import { i18n } from 'i18next';
-import { orderMultipleElections } from 'utils/processGraphQLData';
+import { orderElectionsInElectionGroup } from 'utils/processGraphQLData';
 
 const electionGroupQuery = gql`
   query electionGroup($id: UUID!) {
@@ -118,16 +118,9 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
         return <p>Error!</p>;
       }
 
-      const electionGroup = data.electionGroup;
-
-      const orderedElections =
-        electionGroup.type === 'multiple_elections'
-          ? orderMultipleElections(electionGroup.elections)
-          : electionGroup.elections;
-      const electionGroupWithOrderedElections = {
-        ...electionGroup,
-        elections: orderedElections,
-      };
+      const electionGroupWithOrderedElections = orderElectionsInElectionGroup(
+        data.electionGroup
+      );
 
       const lang = props.i18n.language;
       return (
