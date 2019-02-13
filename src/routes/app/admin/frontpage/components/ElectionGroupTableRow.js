@@ -11,7 +11,7 @@ import DropdownArrowIcon from './DropdownArrowIcon';
 
 import { Date, Time } from 'components/i18n';
 
-import { equalValues } from 'utils';
+import { allEqual } from 'utils';
 
 type Props = {
   elGrp: ElectionGroup,
@@ -22,25 +22,28 @@ type Props = {
 
 class ElGrpTableRow extends React.Component<Props> {
   render() {
+    const lang = this.props.i18n.language;
     const { elGrp } = this.props;
     let totalVotes = 0;
     let totalVotesOutsideCensus = 0;
-    const start = [];
-    const end = [];
-    const electionStatuses = [];
+    const startTimes = [];
+    const endTimes = [];
+    const statuses = [];
     const { elections } = elGrp;
-    // TODO: Fetch votes from ballot API when ready
-    elections.forEach(el => {
-      start.push(el.start);
-      end.push(el.end);
-      electionStatuses.push(el.status);
+    const activeElections = elections.filter(e => e.active);
+
+    activeElections.forEach(e => {
+      startTimes.push(e.start);
+      endTimes.push(e.end);
+      statuses.push(e.status);
+      // TODO: Fetch votes from ballot API when ready
       totalVotes = 0;
       totalVotesOutsideCensus = 0;
     });
-    const lang = this.props.i18n.language;
-    const sharedStartTime = equalValues(elections, ['startDate', 'startTime']);
-    const sharedEndTime = equalValues(elections, ['endDate', 'endTime']);
-    const sharedStatus = equalValues(elections, ['status']);
+    const sharedStartTime = allEqual(startTimes);
+    const sharedEndTime = allEqual(endTimes);
+    const sharedStatus = allEqual(statuses);
+
     return (
       <TableRow
         thickBorder={!this.props.selected}
