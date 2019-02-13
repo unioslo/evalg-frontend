@@ -88,6 +88,7 @@ export default {
     adminRoles: 'Administrative roles',
     adminRolesDesc: 'The roles indicate who has permissions on this election.',
     adminUser: 'Single users',
+    allVotingGroups: 'All voting groups',
     announceElectionConfirm: 'Make visible',
     announceElectionHeader: 'Make election visible',
     announceElectionInfoOne:

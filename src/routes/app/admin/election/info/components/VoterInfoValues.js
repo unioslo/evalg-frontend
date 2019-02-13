@@ -1,12 +1,13 @@
 /* @flow */
-import * as React from 'react';
-
-import { Date } from 'components/i18n';
+import React from 'react';
 import { Trans, translate } from 'react-i18next';
-import Link from 'components/link';
 
+import Text from 'components/text';
+import Link from 'components/link';
+import { Date } from 'components/i18n';
 import { PageSection, PageSubSection } from 'components/page';
 import { InfoList, InfoListItem } from 'components/infolist';
+import { allEqualForAttrs } from 'utils';
 
 const valueNotSet = (
   <b>
@@ -26,28 +27,28 @@ const mandatePeriodSingle = (election: Election) => {
     valueNotSet
   );
   return (
-    <p>
+    <span>
       {startDate}&nbsp;<Trans>general.to</Trans>&nbsp;{endDate}
-    </p>
+    </span>
   );
 };
 
-const mandatePeriodMultiple = (elections: Array<Election>, lang: string) => {
-  return (
-    <InfoList>
-      {elections.map((election, index) => {
-        return (
-          <InfoListItem key={index} bulleted>
-            {election.name[lang]} -&nbsp;
+const mandatePeriodMultiple = (elections: Array<Election>, lang: string) => (
+  <InfoList>
+    {elections.map((election, index) => {
+      return (
+        <InfoListItem key={index} bulleted>
+          {election.name[lang]}:{' '}
+          <Text bold inline>
             <Date dateTime={election.mandatePeriodStart} longDate />
             &nbsp;<Trans>general.to</Trans>&nbsp;
             <Date dateTime={election.mandatePeriodEnd} longDate />
-          </InfoListItem>
-        );
-      })}
-    </InfoList>
-  );
-};
+          </Text>
+        </InfoListItem>
+      );
+    })}
+  </InfoList>
+);
 
 const contactSingle = (election: Election) => {
   const contact = election.contact ? (
@@ -57,7 +58,7 @@ const contactSingle = (election: Election) => {
   ) : (
     valueNotSet
   );
-  return <p>{contact}</p>;
+  return contact;
 };
 
 const contactMultiple = (elections: Array<Election>, lang: string) => (
@@ -72,7 +73,7 @@ const contactMultiple = (elections: Array<Election>, lang: string) => (
       );
       return (
         <InfoListItem key={index} bulleted>
-          {election.name[lang]} - {contact}
+          {election.name[lang]}: {contact}
         </InfoListItem>
       );
     })}
@@ -87,7 +88,7 @@ const informationUrlSingle = (election: Election) => {
   ) : (
     valueNotSet
   );
-  return <p>{informationUrl}</p>;
+  return informationUrl;
 };
 
 const informationUrlMultiple = (elections: Array<Election>, lang: string) => (
@@ -102,7 +103,7 @@ const informationUrlMultiple = (elections: Array<Election>, lang: string) => (
       );
       return (
         <InfoListItem key={index} bulleted>
-          {election.name[lang]} - {informationUrl}
+          {election.name[lang]}: {informationUrl}
         </InfoListItem>
       );
     })}
@@ -139,13 +140,49 @@ const VoterInfoValues = (props: Props) => {
       </p>
     );
   } else if (electionGroup.type === 'single_election') {
-    mandatePeriodInfo = mandatePeriodSingle(elections[0]);
-    contact = contactSingle(elections[0]);
-    informationUrl = informationUrlSingle(elections[0]);
+    mandatePeriodInfo = <p>{mandatePeriodSingle(elections[0])}</p>;
+    contact = <p>{contactSingle(elections[0])}</p>;
+    informationUrl = <p>{informationUrlSingle(elections[0])}</p>;
   } else {
-    mandatePeriodInfo = mandatePeriodMultiple(elections, lang);
-    contact = contactMultiple(elections, lang);
-    informationUrl = informationUrlMultiple(elections, lang);
+    if (
+      elections.length > 1 && // to not present the value as "shared" if there
+                              // is only one active election
+      allEqualForAttrs(elections, ['mandatePeriodStart', 'mandatePeriodEnd'])
+    ) {
+      mandatePeriodInfo = (
+        <p>
+          <Trans>election.mandatePeriodShared</Trans>:{' '}
+          <Text bold inline>
+            {mandatePeriodSingle(elections[0])}
+          </Text>
+        </p>
+      );
+    } else {
+      mandatePeriodInfo = mandatePeriodMultiple(elections, lang);
+    }
+    if (elections.length > 1 && allEqualForAttrs(elections, ['contact'])) {
+      contact = (
+        <p>
+          <Trans>election.voterContactInfoShared</Trans>:{' '}
+          {contactSingle(elections[0])}
+        </p>
+      );
+    } else {
+      contact = contactMultiple(elections, lang);
+    }
+    if (
+      elections.length > 1 &&
+      allEqualForAttrs(elections, ['informationUrl'])
+    ) {
+      informationUrl = (
+        <p>
+          <Trans>election.voterInfoUrlShared</Trans>:{' '}
+          {informationUrlSingle(elections[0])}
+        </p>
+      );
+    } else {
+      informationUrl = informationUrlMultiple(elections, lang);
+    }
   }
 
   return (

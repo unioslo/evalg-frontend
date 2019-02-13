@@ -89,6 +89,7 @@ export default {
     adminRolesDesc:
       'Rollene angir hvem som har rettigheter i forbindelse med valget.',
     adminUser: 'Enkeltbrukere',
+    allVotingGroups: 'Alle velgergrupper',
     announceElectionConfirm: 'Synliggjør valget',
     announceElectionHeader: 'Synliggjør valget på forsiden',
     announceElectionInfoOne:
@@ -148,7 +149,7 @@ export default {
     mandatePeriodShared: 'Felles mandatperiode for alle velgergrupper',
     multipleStatuses: 'Flere verdier',
     multipleTimes: 'Flere tider',
-    multipleVotingPeriods: 'Invidiuelle stemmeperioder',
+    multipleVotingPeriods: 'Invidiuelle stemmeperioder for velgergrupper',
     newCoCandidate: 'Ny medkandidat',
     noActiveElections:
       'Det er for øyeblikket ingen valg som er satt som aktive.',
@@ -175,7 +176,7 @@ export default {
     selectType: 'Velg valgordning',
     settings: 'valginnstillinger',
     showBallot: 'Vis stemmeseddel',
-    singleVotingPeriod: 'Felles stemmeperiode',
+    singleVotingPeriod: 'Felles stemmeperiode for alle velgergrupper',
     status: 'Status',
     statusCanAnnounce:
       'Du kan gjøre stemmeperioden for valget synlig for velgerne',
@@ -211,7 +212,7 @@ export default {
       'Informasjonen som angis her vil være synlig på forsiden hos velgerne.',
     voterInfoUrl: 'Lenke til mer informasjon om valget',
     voterInfoUrlMultiple: 'Individuelle nettsider for velgergrupper',
-    voterInfoUrlShared: 'Felles nettside',
+    voterInfoUrlShared: 'Felles nettside for alle velgergrupper',
     voterSettings: 'Velgergrupper og kandidatinnstillinger',
     votes: 'Stemmer',
     votesOutsideCensus: 'Stemmer utenfor manntallet',

@@ -25,7 +25,7 @@ const BaseElectionSettingsValues: React.SFC<IProps> = (props) => {
       {activeElections.map((election, index) => {
         return (
           <InfoListItem key={index}>
-            {election.name[lang]} -&nbsp;
+            {election.name[lang]}:{' '}
             <Text bold={true} inline={true}>
               {election.meta.candidateRules.seats}&nbsp;
               <Trans>election.candidatesShort</Trans>,&nbsp;
