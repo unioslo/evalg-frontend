@@ -9,7 +9,7 @@ import {
   objPropsToCamelCase,
   objPropsToArray,
   allEqual,
-  equalValues,
+  allEqualForAttrs,
   findObjIndex,
   objsEqual,
 } from './helpers';
@@ -40,7 +40,7 @@ export {
   objPropsToSnakeCase,
   objPropsToCamelCase,
   allEqual,
-  equalValues,
+  allEqualForAttrs,
   findObjIndex,
   objsEqual,
   ISODateTimeToTimeZoneAdjustedISODate,
