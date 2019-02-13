@@ -8,52 +8,59 @@ import {
   TableHeaderCell,
   TableBody,
   TableRow,
-  TableCell
+  TableCell,
 } from 'components/table';
 
 import Icon from 'components/icon';
 import ElectionGroupTableRow from './ElectionGroupTableRow';
 import ElectionTableRow from './ElectionTableRow';
 import Link from 'components/link';
-import { Trans } from 'react-i18next';;
+import { Trans } from 'react-i18next';
 
 import { objPropsToArray } from 'utils';
+import injectSheet from 'react-jss';
 
+const styles = theme => ({
+  votesOutsideCensusColumnHeader: {
+    width: '8rem',
+  },
+});
 
 type Props = {
   electionGroups: Object,
 };
 
 type State = {
-  selectedElection: string
-}
+  selectedElection: string,
+};
 
 class ManageElectionsTable extends React.Component<Props, State> {
   setSelected: Function;
 
   constructor(props: Props) {
     super(props);
-    this.state = { selectedElection: '' }
-    this.setSelected = this.setSelected.bind(this)
+    this.state = { selectedElection: '' };
+    this.setSelected = this.setSelected.bind(this);
   }
 
   setSelected(electionId: string) {
     if (electionId === this.state.selectedElection) {
-      this.setState({ selectedElection: '' })
-    }
-    else {
+      this.setState({ selectedElection: '' });
+    } else {
       this.setState({ selectedElection: electionId });
     }
   }
   render() {
-    const { electionGroups } = this.props;
+    const { electionGroups, classes } = this.props;
     if (electionGroups.length === 0) {
       return (
         <div>
           <h2 className="content--header">
             <Trans>election.manageableElections</Trans>
           </h2>
-          <p><Trans>election.noManageableElections</Trans></p>
+          <p>
+            <Trans>election.noManageableElections</Trans>
+          </p>
         </div>
       );
     }
@@ -72,7 +79,9 @@ class ManageElectionsTable extends React.Component<Props, State> {
               <Trans>election.closes</Trans>
             </TableHeaderCell>
             <TableHeaderCell>
-              <Trans>election.votesOutsideCensus</Trans>
+              <div className={classes.votesOutsideCensusColumnHeader}>
+                <Trans>election.votesOutsideCensus</Trans>
+              </div>
             </TableHeaderCell>
             <TableHeaderCell>
               <Trans>election.electionStatus</Trans>
@@ -91,24 +100,22 @@ class ManageElectionsTable extends React.Component<Props, State> {
                 selectAction={this.setSelected.bind(this)}
                 selected={selected}
               />
-              {selected && elGrp.type === 'multiple_elections' &&
+              {selected &&
+                elGrp.type === 'multiple_elections' &&
                 elGrp.elections.map(el => {
                   if (!el.active) {
                     return null;
                   }
-                  return (
-                    <ElectionTableRow
-                      key={el.id}
-                      election={el}
-                    />
-                  )
+                  return <ElectionTableRow key={el.id} election={el} />;
                 })}
-              {selected &&
+              {selected && (
                 <TableRow thickBorder noHoverBg>
                   <TableCell />
                   <TableCell colspan="5" greyBg alignRight>
-                    <Link to={`/admin/elections/${elGrp.id}/status`}
-                      marginRight>
+                    <Link
+                      to={`/admin/elections/${elGrp.id}/status`}
+                      marginRight
+                    >
                       <Icon type="forwardArrow" marginRight />
                       <Trans>election.goTo</Trans>&nbsp;
                       <Trans>election.status</Trans>
@@ -120,14 +127,13 @@ class ManageElectionsTable extends React.Component<Props, State> {
                     </Link>
                   </TableCell>
                 </TableRow>
-              }
+              )}
             </TableBody>
-          )
-        }
-        )}
+          );
+        })}
       </Table>
-    )
+    );
   }
 }
 
-export default ManageElectionsTable;
+export default injectSheet(styles)(ManageElectionsTable);
