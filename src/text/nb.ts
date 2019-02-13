@@ -100,7 +100,6 @@ export default {
     blockerMissingKey: 'Valgnøkkel',
     blockerStartBeforeEnd: 'Starttid må være før sluttid',
     blockerUnknown: 'Noe uventet er galt',
-    canVote: 'Stemmerett',
     candidate: 'Kandidat',
     candidateCounter: 'Har {{count}} av {{minCount}} kandidater',
     candidateNamePlaceHolder: 'Navn på kandidat',
@@ -169,8 +168,7 @@ export default {
     published: 'Publisert',
     quotas: 'Kvotering',
     remove: 'Fjern',
-    reviewBallot:
-      'Se over stemmeseddelen din nedenfor. Bekreft deretter stemmen, eller gå tilbake for å gjøre endringer.',
+    rightToVote: 'Stemmerett',
     selectLevel: 'Valg av',
     selectParish: 'Valgkrets',
     selectType: 'Velg valgordning',
@@ -239,7 +237,8 @@ export default {
     contactSectionHeader: 'Kontaktpunkter',
     responsibleOrganizationHeader: 'Ansvarlig for tjenesten',
     technicalSupport: 'Teknisk støtte',
-    serviceOwnerLink: 'Seksjon for integrasjon og elektroniske identiteter (INT)',
+    serviceOwnerLink:
+      'Seksjon for integrasjon og elektroniske identiteter (INT)',
   },
   formErrors: {
     invalidDates: 'Starttid må være tidligere enn sluttid.',
