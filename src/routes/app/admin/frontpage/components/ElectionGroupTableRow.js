@@ -61,10 +61,10 @@ class ElGrpTableRow extends React.Component<Props> {
             {sharedStartTime ? (
               <TableCell>
                 <Text>
-                  <Date dateTime={elections[0].start} />
+                  <Date dateTime={activeElections[0].start} />
                 </Text>
                 <Text size="small">
-                  <Time dateTime={elections[0].start} />
+                  <Time dateTime={activeElections[0].start} />
                 </Text>
               </TableCell>
             ) : (
@@ -77,10 +77,10 @@ class ElGrpTableRow extends React.Component<Props> {
             {sharedEndTime ? (
               <TableCell>
                 <Text>
-                  <Date dateTime={elections[0].end} />
+                  <Date dateTime={activeElections[0].end} />
                 </Text>
                 <Text size="small">
-                  <Time dateTime={elections[0].end} />
+                  <Time dateTime={activeElections[0].end} />
                 </Text>
               </TableCell>
             ) : (
@@ -99,7 +99,7 @@ class ElGrpTableRow extends React.Component<Props> {
             </TableCell>
             <TableCell>
               {sharedStatus ? (
-                <ElectionStatus status={elections[0].status} />
+                <ElectionStatus status={activeElections[0].status} />
               ) : (
                 <ElectionStatus status="multipleStatuses" />
               )}
