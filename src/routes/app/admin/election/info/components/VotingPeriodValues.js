@@ -1,6 +1,6 @@
 /* @flow */
 import * as React from 'react';
-import {translate, Trans} from 'react-i18next';
+import { translate, Trans } from 'react-i18next';
 
 import { Time, Date } from 'components/i18n';
 import Text from 'components/text';
@@ -11,13 +11,59 @@ import {
   TableHeader,
   TableHeaderCell,
   TableHeaderRow,
-  TableRow
+  TableRow,
 } from 'components/table';
 
 import { InfoList, InfoListItem } from 'components/infolist';
+import { allEqualForAttrs } from 'utils';
 
-const MultipleVotingPeriods = (props) => {
+const MultipleVotingPeriods = props => {
   const { elections, lang } = props;
+
+  const makeTableRow = (
+    votingGroupName,
+    startDateTime,
+    endDateTime,
+    key = 0
+  ) => (
+    <TableRow key={key}>
+      <TableCell>
+        <Text>{votingGroupName}</Text>
+      </TableCell>
+      <TableCell>
+        <Text>
+          <Date dateTime={startDateTime} longDate />
+        </Text>
+        <Text size="small">
+          <Time dateTime={startDateTime} />
+        </Text>
+      </TableCell>
+      <TableCell>
+        <Text>
+          <Date dateTime={endDateTime} longDate />
+        </Text>
+        <Text size="small">
+          <Time dateTime={endDateTime} />
+        </Text>
+      </TableCell>
+    </TableRow>
+  );
+
+  const tableRows =
+    elections.length > 1 && allEqualForAttrs(elections, ['start', 'end'])
+      ? [
+          makeTableRow(
+            <em>
+              <Trans>election.allVotingGroups</Trans>
+            </em>,
+            elections[0].start,
+            elections[0].end
+          ),
+        ]
+      : elections.map((e, index) =>
+          makeTableRow(e.name[lang], e.start, e.end, index)
+        );
+
   return (
     <Table>
       <TableHeader>
@@ -33,68 +79,45 @@ const MultipleVotingPeriods = (props) => {
           </TableHeaderCell>
         </TableHeaderRow>
       </TableHeader>
-      <TableBody>
-        {elections.map((e, index) => {
-          return (
-            <TableRow key={index}>
-              <TableCell>
-                <Text>
-                  {e.name[lang]}
-                </Text>
-              </TableCell>
-              <TableCell>
-                <Text>
-                  <Date dateTime={e.start} longDate />
-                </Text>
-                <Text size="small">
-                  <Time dateTime={e.start} />
-                </Text>
-              </TableCell>
-              <TableCell>
-                <Text>
-                  <Date dateTime={e.end} longDate />
-                </Text>
-                <Text size="small">
-                  <Time dateTime={e.end} />
-                </Text>
-              </TableCell>
-            </TableRow>
-          )
-        })}
-      </TableBody>
+      <TableBody>{tableRows}</TableBody>
     </Table>
-  )
+  );
 };
 
-const SingleVotingPeriod = (props) => {
+const SingleVotingPeriod = props => {
   const { elections } = props;
   return (
     <InfoList>
       <InfoListItem>
         <Trans>election.electionOpens</Trans>:&nbsp;
         <Text bold inline>
-          <Date dateTime={elections[0].start} longDate />{' '}<Time dateTime={elections[0].start} />
+          <Date dateTime={elections[0].start} longDate />{' '}
+          <Time dateTime={elections[0].start} />
         </Text>
       </InfoListItem>
       <InfoListItem>
         <Trans>election.electionCloses</Trans>:&nbsp;
         <Text bold inline>
-          <Date dateTime={elections[0].end} longDate />{' '}<Time dateTime={elections[0].end} />
+          <Date dateTime={elections[0].end} longDate />{' '}
+          <Time dateTime={elections[0].end} />
         </Text>
       </InfoListItem>
     </InfoList>
-  )
+  );
 };
 
 const NoActiveElections = () => {
-  return <p><Trans>election.noActiveElections</Trans></p>;
+  return (
+    <p>
+      <Trans>election.noActiveElections</Trans>
+    </p>
+  );
 };
 
 const getVotingInfoComponent = (grpType, elections) => {
   if (elections.length === 0) {
     return NoActiveElections;
-  }
-  else if (grpType === 'multiple_elections') {
+  } else if (grpType === 'multiple_elections') {
     return MultipleVotingPeriods;
   }
   return SingleVotingPeriod;
@@ -103,15 +126,13 @@ const getVotingInfoComponent = (grpType, elections) => {
 type Props = {
   electionGroup: ElectionGroup,
   activeElections: Election[],
-  i18n: Object
-}
+  i18n: Object,
+};
 
 const VotingPeriodValues = (props: Props) => {
   const { electionGroup: grp, activeElections } = props;
   const VotingTimes = getVotingInfoComponent(grp.type, activeElections);
-  return (
-    <VotingTimes elections={ activeElections } lang={props.i18n.language} />
-  )
+  return <VotingTimes elections={activeElections} lang={props.i18n.language} />;
 };
 
 export default translate()(VotingPeriodValues);
