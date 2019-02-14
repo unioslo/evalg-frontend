@@ -335,7 +335,7 @@ export default {
       'Du kan oppgi din stillingskode eller annen relevant informasjon under.',
     registeredInSelectedGroupHeading: 'Du har stemmerett',
     registeredInSelectedGroupBeforeDropdownText:
-      'Du har stemmerett i manntallet for',
+      'Du er i manntallet for',
     writeJustification:
       'Hvorfor du skulle vært med i dette mantallet (valgfritt)',
     youAreOnTheElectoralRoll: 'Du er i manntallet',
