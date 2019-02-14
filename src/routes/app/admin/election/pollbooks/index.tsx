@@ -29,7 +29,9 @@ import {
 } from 'components/table';
 import Text from 'components/text';
 import { Redirect } from 'react-router';
-import UploadCensusFileModal, { IReturnStatus } from './components/UploadCensusFile';
+import UploadCensusFileModal, {
+  IReturnStatus,
+} from './components/UploadCensusFile';
 
 const updateVoterPollBook = gql`
   mutation UpdateVoterPollBook($id: UUID!, $pollbookId: UUID!) {
@@ -288,12 +290,15 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
     });
 
     if (props.showMsg) {
-
       let msg: string | React.ReactElement<any>;
       if (props.parseCompleded) {
-        msg = <Trans values={{nr: props.ok, pollbookName: props.pollBookName}}>census.uploadOkMsg</Trans>
+        msg = (
+          <Trans values={{ nr: props.ok, pollbookName: props.pollBookName }}>
+            census.uploadOkMsg
+          </Trans>
+        );
       } else {
-        msg = <Trans>census.uploadServerError</Trans>
+        msg = <Trans>census.uploadServerError</Trans>;
       }
       this.setState({
         showUploadMsgBox: true,
@@ -322,7 +327,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
 
           const voters: IVoter[] = [];
           const pollBookDict = {};
-          const pollBookRadioButtonOptions = {}
+          const pollBookRadioButtonOptions = {};
           const pollBookOptions: DropDownOption[] = [];
 
           elections.forEach((el: Election) => {
@@ -336,10 +341,10 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                 value: pollBook.id,
               });
               pollBookRadioButtonOptions[pollBook.id] = {
-                  name: pollBook.name,
-                  value: pollBook.id,
-                  active: el.active,
-              }
+                name: pollBook.name,
+                value: pollBook.id,
+                active: el.active,
+              };
             });
           });
           const pollbookButtons: JSX.Element[] = [];
@@ -360,21 +365,18 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
           });
           return (
             <Page header={<Trans>election.censuses</Trans>}>
-              <PageSection
-                noBorder={true}
-                noTopPadding={true}
-                desc={<Trans>census.censusPageDesc</Trans>}
-              >
+              <PageSection noBorder desc={<Trans>census.censusPageDesc</Trans>}>
+                <div onClick={this.showUploadCensusFileModal}>
+                  <ActionButton text={t('census.uploadCensusFileButton')} />
+                </div>
 
-              <div onClick={this.showUploadCensusFileModal}>
-                <ActionButton text={t('census.uploadCensusFileButton')} />
-              </div>
-
-              <div>
-                <Trans>census.aboutCensusFiles</Trans>
-                <Link external to="https://www.uio.no/for-ansatte/arbeidsstotte/arrangere-valg/" />
-              </div>
-
+                <div>
+                  <Trans>census.aboutCensusFiles</Trans>
+                  <Link
+                    external
+                    to="https://www.uio.no/for-ansatte/arbeidsstotte/arrangere-valg/"
+                  />
+                </div>
               </PageSection>
               <PageSection header={<Trans>election.census</Trans>}>
                 <ElectionButtonContainer>
@@ -412,7 +414,9 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                                   refetchQueries={refetchQueries}
                                 >
                                   {del => {
-                                    const addAndClose = (persons: IPerson[]) => {
+                                    const addAndClose = (
+                                      persons: IPerson[]
+                                    ) => {
                                       persons.map(person =>
                                         add({
                                           variables: {

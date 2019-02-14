@@ -1,21 +1,23 @@
-import gql from 'graphql-tag';
-import * as React from 'react';
+import React from 'react';
+import { ApolloClient } from 'apollo-client';
 import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import { History } from 'history';
+import { i18n, TranslationFunction } from 'i18next';
+import { translate, Trans } from 'react-i18next';
+import injectSheet from 'react-jss';
+
 import Loading from 'components/loading';
 import Link from 'components/link';
 import { Page, PageSection } from 'components/page';
 import { DropDown } from 'components/form';
 import Button, { ButtonContainer } from 'components/button';
-import { translate, Trans } from 'react-i18next';
-import injectSheet from 'react-jss';
-import { ApolloClient } from 'apollo-client';
 import MandatePeriodText from '../vote/components/MandatePeriodText';
-import { History } from 'history';
-import { i18n, TranslationFunction } from 'i18next';
 import { orderMultipleElections } from 'utils/processGraphQLData';
+// import Text from 'components/text';
 
 const styles = (theme: any) => ({
-  ingress: theme.ingressText,
+  ingress: theme.ingress,
   subheading: {
     fontSize: '2.6rem',
     lineHeight: '2.7rem',
@@ -38,12 +40,13 @@ const styles = (theme: any) => ({
     marginTop: '2.2rem',
     marginBottom: '2rem',
   },
-  aboutElectionLink: {
-    fontSize: '1.8rem',
-    marginTop: '1.8rem',
+  mandatePeriodText: {
+    ...theme.ingress,
+    marginBottom: '1.5rem',
   },
   aboutElectionLinkText: {
-    paddingRight: '1.1rem',
+    fontSize: '1.8rem',
+    marginTop: '1.8rem',
   },
   beforeDropdownText: {
     paddingRight: '0.8rem',
@@ -90,7 +93,8 @@ interface IState {
 // front page, and voting in a particular election.
 // Assuming this to be correct about the data model (recieved graphql query data):
 // If the type of the election group is "multiple_elections", i.e. as for a board election / styrevalg,
-// the relevant voter groups is given by the names of the elections in the group.
+// the relevant voter groups is given by the names of the first and presumably only pollbook for each
+// election in the group.
 // If the type of the election group is not "multiple_elections", it is assumed to be "single_election",
 // and the relevant voter groups is given by the names of the pollbooks in the single election.
 // In the first case, choosing a voter group is in effect choosing an election.
@@ -109,9 +113,9 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
     this.handleProceed = this.handleProceed.bind(this);
   }
 
-  public hasVotingRights(selectedPollBookIndex: number): boolean {
+  public hasRightToVote(selectedPollBookIndex: number): boolean {
     // Dummy implementation. TODO: Check for which voter group / poll book
-    // an actual logged in user has voting rights.
+    // an actual logged in user has right to vote.
     return selectedPollBookIndex === 0;
   }
 
@@ -135,11 +139,11 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
     // to local cache, to send with vote later.
     apolloClient.writeData({ data: { selectedPollBookID } });
     if (
-      !this.hasVotingRights(this.state.selectedPollBookIndex) &&
+      !this.hasRightToVote(this.state.selectedPollBookIndex) &&
       notInPollBookJustification
     ) {
       apolloClient.writeData({ data: { notInPollBookJustification } });
-    } else if (this.hasVotingRights(this.state.selectedPollBookIndex)) {
+    } else if (this.hasRightToVote(this.state.selectedPollBookIndex)) {
       apolloClient.writeData({ data: { notInPollBookJustification: '' } });
     }
     this.props.history.push(proceedToLink);
@@ -165,31 +169,38 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
           }
 
           const electionGroup: ElectionGroup = data.electionGroup;
-          const electionGroupName = electionGroup.name;
+          const electionGroupName = electionGroup.name[lang];
           const elections: Election[] = electionGroup.elections;
 
-          let proceedToLink: string;
           let pollbooks: IPollBook[];
+          let electionForSelectedPollbook: Election;
 
           if (electionGroup.type === 'multiple_elections') {
-            pollbooks = orderMultipleElections(elections)
-              .filter(election => election.active)
-              .map(election => election.pollbooks[0]);
-            proceedToLink = `/voter/elections/${
-              elections[this.state.selectedPollBookIndex].id
-            }/vote`;
+            const activeOrderedElections = orderMultipleElections(
+              elections
+            ).filter(e => e.active);
+
+            pollbooks = activeOrderedElections.map(
+              election => election.pollbooks[0]
+            );
+
+            electionForSelectedPollbook =
+              activeOrderedElections[this.state.selectedPollBookIndex];
           } else {
             pollbooks = elections[0].pollbooks;
-            proceedToLink = `/voter/elections/${elections[0].id}/vote`;
+            electionForSelectedPollbook = elections[0];
           }
+          const proceedToLink = `/voter/elections/${
+            electionForSelectedPollbook.id
+          }/vote`;
 
           const dropdown = (
             <DropDown
               options={pollbooks.map((pollbook, index) => ({
                 value: index,
                 name: pollbook.name[lang],
-                secondaryLine: this.hasVotingRights(index)
-                  ? 'Stemmerett'
+                secondaryLine: this.hasRightToVote(index)
+                  ? t('voterGroupSelect.youAreOnTheElectoralRoll')
                   : null,
               }))}
               value={this.state.selectedPollBookIndex}
@@ -199,26 +210,27 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
           );
 
           return (
-            <Page header={electionGroupName[lang]}>
+            <Page header={electionGroupName}>
               <PageSection noBorder={true}>
                 <div className={classes.electionGroupInfoSection}>
-                  <p className={classes.ingress}>
-                    <MandatePeriodText election={elections[0]} />
-                  </p>
-                  {elections[0].informationUrl && (
-                    <div className={classes.aboutElectionLink}>
+                  <div className={classes.mandatePeriodText}>
+                    <MandatePeriodText election={electionForSelectedPollbook} />
+                  </div>
+                  {electionForSelectedPollbook.informationUrl && (
+                    <p>
+                      <Trans>voterGroupSelect.moreAboutTheElection</Trans>:{' '}
                       <Link
-                        to={elections[0].informationUrl}
-                        marginRight={true}
-                        external={true}
+                        to={electionForSelectedPollbook.informationUrl}
+                        // marginRight
+                        external
                       >
-                        <Trans>voterGroupSelect.aboutElectionLink</Trans>
+                        {electionForSelectedPollbook.informationUrl}
                       </Link>
-                    </div>
+                    </p>
                   )}
                 </div>
                 <div className="votingRightsSection">
-                  {this.hasVotingRights(this.state.selectedPollBookIndex) ? (
+                  {this.hasRightToVote(this.state.selectedPollBookIndex) ? (
                     <>
                       <p className={classes.subheading}>
                         <Trans>
@@ -272,7 +284,6 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
                   />
                   <Button
                     text={<Trans>general.proceed</Trans>}
-                    // tslint:disable-next-line:jsx-no-lambda
                     action={() =>
                       this.handleProceed(
                         proceedToLink,
@@ -280,10 +291,6 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
                         this.state.notInPollBookJustification,
                         client
                       )
-                    }
-                    disabled={
-                      !this.hasVotingRights(this.state.selectedPollBookIndex) &&
-                      this.state.notInPollBookJustification === ''
                     }
                   />
                 </ButtonContainer>
