@@ -11,10 +11,10 @@ declare module 'react-jss' {
 
 interface EvalgClientState {
   voter: {
-    selectedPollBookID: string,
-    notInPollBookJustification: string,
-  },
-  admin: { isCreatingNewElection: boolean },
+    selectedPollBookID: string;
+    notInPollBookJustification: string;
+  };
+  admin: { isCreatingNewElection: boolean };
 }
 
 interface NameFields {
@@ -67,8 +67,12 @@ interface Candidate {
   priority: number;
   preCumulated: boolean;
   meta: {
-    coCandidates?: Array<string>;
+    coCandidates?: coCandidate[];
   };
+}
+
+interface coCandidate {
+  name: string;
 }
 
 interface ElectionList {
