@@ -57,10 +57,8 @@ const VotingPage: React.SFC<IProps> = props => {
           ? election.electionGroup.name
           : { en: '', nb: '', nn: '' };
         if (voting === 'rank_candidates') {
-          if (candidateType === 'single') {
+          if (candidateType === 'single' || candidateType === 'single_team') {
             return <PrefElec election={election} electionName={electionName} />;
-          } else if (candidateType === 'single_team') {
-            return <div>Team Preference election!</div>;
           } else {
             return <div>Unknown election type!</div>;
           }
