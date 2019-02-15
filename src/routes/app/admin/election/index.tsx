@@ -82,8 +82,7 @@ const electionGroupQuery = gql`
           principalType
           person {
             id
-            firstName
-            lastName
+            displayName
             lastUpdate
           }
           group {
