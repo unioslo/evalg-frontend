@@ -45,7 +45,7 @@ const styles = (theme: any) => ({
     },
     marginBottom: '3rem',
   },
-  topDescription: theme.ingressText,
+  topDescription: theme.ingress,
   topHeader: {
     alignItems: 'baseline',
     color: theme.colors.greyishBrown,

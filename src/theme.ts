@@ -128,13 +128,11 @@ const theme = {
   horizontalPadding: '2rem',
   inlineDropdownTextColor: darkTurquoise,
   inlineDropdownBottomBorderColor: darkTurquoise,
-  ingressText: {
+  ingress: {
     fontFamily: 'Georgia, Times, Times New Roman, serif',
     fontSize: '2.2rem',
     lineHeight: '3rem',
-    '@media (min-width:768px)': {
-      margin: '3rem 0 3.5rem',
-    }
+    marginBottom: '3.5rem',
   },
   linkExternalColor: blueish,
   linkInternalColor: darkTurquoise,

@@ -4,15 +4,23 @@ import { Trans } from 'react-i18next';
 import { Date } from 'components/i18n';
 
 interface IProps {
-  election: Election
+  election: Election;
+  longDate?: boolean;
 }
 
-const MandatePeriodText: React.SFC<IProps> = props => (
-  <>
-    <Trans>election.mandatePeriod</Trans>:&nbsp;
-    <Date dateTime={props.election.mandatePeriodStart} longDate />&nbsp;-&nbsp;
-    <Date dateTime={props.election.mandatePeriodEnd} longDate />
-  </>
-);
+const MandatePeriodText: React.SFC<IProps> = props => {
+  const longDate = props.longDate ? props.longDate : false;
+
+  return (
+    <>
+      <Trans>election.mandatePeriod</Trans>:&nbsp;
+      <Date
+        dateTime={props.election.mandatePeriodStart}
+        longDate={longDate}
+      />{' '}
+      - <Date dateTime={props.election.mandatePeriodEnd} longDate={longDate} />
+    </>
+  );
+};
 
 export default MandatePeriodText;

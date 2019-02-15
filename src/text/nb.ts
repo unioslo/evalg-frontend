@@ -325,15 +325,19 @@ export default {
       'Se over stemmeseddelen din nedenfor. Bekreft deretter stemmen, eller gå tilbake for å gjøre endringer.',
   },
   voterGroupSelect: {
-    aboutElectionLink: 'Les mer om valget',
+    moreAboutTheElection: 'Mer om valget',
+    notRegisteredInSelectedGroupHeading: 'Har du valgt riktig manntall?',
+    notRegisteredInSelectedGroupBeforeDropdownText:
+      'Du er ikke i manntallet for',
+    notRegisteredInSelectedGroupInfoText:
+      'Du er ikke registert i dette manntallet. Du kan allikevel gå videre og stemme som om du var i manntallet. ' +
+      'Valgstyret for valget vil avgjøre om din stemme skal telles med basert på dine tilknytninger ved UiO. ' +
+      'Du kan oppgi din stillingskode eller annen relevant informasjon under.',
     registeredInSelectedGroupHeading: 'Du har stemmerett',
     registeredInSelectedGroupBeforeDropdownText:
-      'Du er registrert med stemmerett i gruppen',
-    notRegisteredInSelectedGroupHeading: 'Har du valgt riktig stemmegruppe?',
-    notRegisteredInSelectedGroupBeforeDropdownText:
-      'Du er ikke registrert i stemmegruppen for',
-    notRegisteredInSelectedGroupInfoText:
-      'Valgstyret avgjør basert på tilknytningen din til UiO om stemmen vil telles med. Hvis du mener du skulle vært registrert i denne stemmegruppen, oppgi stillingskode eller annen relevant informasjon.',
-    writeJustification: 'Skriv begrunnelse',
+      'Du er i manntallet for',
+    writeJustification:
+      'Hvorfor du skulle vært med i dette mantallet (valgfritt)',
+    youAreOnTheElectoralRoll: 'Du er i manntallet',
   },
 };

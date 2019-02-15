@@ -227,7 +227,7 @@ class PrefElecCandTable extends React.Component<Props, State> {
                 mutation={updatePrefElecCandidate}
                 refetchQueries={() => ['electionGroup']}>
                 {(updateCandidate) => (
-                  <PageSection desc={pageDesc} noTopPadding>
+                  <PageSection desc={pageDesc}>
                     <ElectionButtonContainer>
                       {elections.map((election, index) => {
                         const { seats, substitutes } =

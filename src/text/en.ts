@@ -220,7 +220,7 @@ export default {
     closed: 'Closed',
     closedElections: 'Closed elections',
     draft: 'Draft',
-    multipleStatuses: 'Multiple Values',
+    multipleStatuses: 'Multiple values',
     ongoing: 'Ongoing',
     ongoingElections: 'Ongoing elections',
     published: 'Ready',
@@ -322,17 +322,20 @@ export default {
       'Review your ballot below, then confirm your vote or go back to make changes.',
   },
   voterGroupSelect: {
-    aboutElectionLink: 'Read more about the election',
-    registeredInSelectedGroupHeading: 'You have voting rights',
-    registeredInSelectedGroupBeforeDropdownText:
-      'You are registered with voting rights in the group',
+    moreAboutTheElection: 'More about the election',
     notRegisteredInSelectedGroupHeading:
-      'Have you chosen the right voting group?',
+      'Have you chosen the correct voter group?',
     notRegisteredInSelectedGroupBeforeDropdownText:
-      'You are not registered in the voting group for',
+      'You are not on the electoral roll for the voter group',
     notRegisteredInSelectedGroupInfoText:
-      'The election board will decide if your vote will count based on your affiliation with UiO. If you believe you should be registered in this voting group, please state your job code or other relevant information below.',
+      'You are not on the electoral roll for this voter group. You may still proceed and vote as if you were. ' +
+      'The election board for this election will decide if your vote will count based on your affiliations with UiO. ' +
+      'You may provide your job code («stillingskode») or other relevant information below.',
+    registeredInSelectedGroupHeading: 'You have the right to vote',
+    registeredInSelectedGroupBeforeDropdownText:
+      'You are on the electoral roll for the voter group',
     writeJustification:
-      'Please provide a reason why you have voting rights in this group',
+      'Why you should be on the electoral roll for this voter group (optional)',
+    youAreOnTheElectoralRoll: 'You are on the electoral roll',
   },
 };
