@@ -32,6 +32,8 @@ type Props = {
   label: ReactElement,
   searchable?: boolean,
   large?: boolean,
+  inline?: boolean,
+  noRelativePositionOfListOnMobile?: boolean,
   name: string,
   meta: Object,
   classes: Object,
@@ -42,6 +44,12 @@ const styles = theme => ({
     position: 'relative',
     '&:hover': {
       cursor: 'pointer',
+    },
+  },
+  dropDownNoRelativePositionOfListOnMobile: {
+    position: 'static',
+    [theme.breakpoints.mdQuery]: {
+      position: 'relative',
     },
   },
   dropdownNormal: {
@@ -73,6 +81,7 @@ const styles = theme => ({
   },
   list: {
     position: 'absolute',
+    left: 0,
     top: '9.6rem',
     fontFamily: 'Arial, sans-serif',
     borderRadius: theme.formFieldBorderRadius,
@@ -113,7 +122,7 @@ const styles = theme => ({
     backgroundPosition: 'right 13px top 50%',
     backgroundRepeat: 'no-repeat',
     backgroundSize: '14px 9px',
-  }
+  },
 });
 
 class DropDown extends DropDownBase {
@@ -168,6 +177,7 @@ class DropDown extends DropDownBase {
       label,
       large,
       inline, // if inline is true, searchable has no effect
+      noRelativePositionOfListOnMobile,
       searchable,
       disabled,
       value,
@@ -193,6 +203,7 @@ class DropDown extends DropDownBase {
       [classes.dropdown]: true,
       [classes.dropdownNormal]: !inline,
       [classes.dropdownInline]: inline,
+      [classes.dropDownNoRelativePositionOfListOnMobile]: noRelativePositionOfListOnMobile,
       [classes.large]: large,
     });
 

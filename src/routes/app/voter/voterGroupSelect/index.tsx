@@ -14,17 +14,34 @@ import { DropDown } from 'components/form';
 import Button, { ButtonContainer } from 'components/button';
 import MandatePeriodText from '../vote/components/MandatePeriodText';
 import { orderMultipleElections } from 'utils/processGraphQLData';
-// import Text from 'components/text';
 
 const styles = (theme: any) => ({
-  ingress: theme.ingress,
+  dropDownSelectionText: {
+    position: 'relative', // "anchor" for dropdown list absolute position
+    ...theme.ingress,
+    fontSize: '2rem',
+    [theme.breakpoints.mdQuery]: {
+      fontSize: '2.2rem',
+    },
+    '& .beforeDropdownText': {
+      paddingRight: '0.8rem',
+    },
+  },
   subheading: {
-    fontSize: '2.6rem',
+    fontSize: '2.2rem',
+    fontWeight: 'bold',
     lineHeight: '2.7rem',
     marginBottom: '1.8rem',
+    [theme.breakpoints.mdQuery]: {
+      fontSize: '2.6rem',
+      fontWeight: 'normal',
+    },
   },
   electionGroupInfoSection: {
-    marginBottom: '6rem',
+    marginBottom: '3rem',
+    [theme.breakpoints.mdQuery]: {
+      marginBottom: '6rem',
+    },
   },
   votingRightsSection: {},
   notInPollBookJustificationTextArea: {
@@ -40,16 +57,22 @@ const styles = (theme: any) => ({
     marginTop: '2.2rem',
     marginBottom: '2rem',
   },
-  mandatePeriodText: {
-    ...theme.ingress,
-    marginBottom: '1.5rem',
+  mandatePeriodTextDesktop: {
+    display: 'none',
+    [theme.breakpoints.mdQuery]: {
+      display: 'inherit',
+      ...theme.ingress,
+      marginBottom: '1.5rem',
+    },
+  },
+  mandatePeriodTextMobile: {
+    [theme.breakpoints.mdQuery]: {
+      display: 'none',
+    },
   },
   aboutElectionLinkText: {
     fontSize: '1.8rem',
     marginTop: '1.8rem',
-  },
-  beforeDropdownText: {
-    paddingRight: '0.8rem',
   },
 });
 
@@ -205,7 +228,8 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
               }))}
               value={this.state.selectedPollBookIndex}
               onChange={this.handleSelectVoterGroup}
-              inline={true}
+              inline
+              noRelativePositionOfListOnMobile
             />
           );
 
@@ -213,7 +237,13 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
             <Page header={electionGroupName}>
               <PageSection noBorder={true}>
                 <div className={classes.electionGroupInfoSection}>
-                  <div className={classes.mandatePeriodText}>
+                  <div className={classes.mandatePeriodTextDesktop}>
+                    <MandatePeriodText
+                      election={electionForSelectedPollbook}
+                      longDate
+                    />
+                  </div>
+                  <div className={classes.mandatePeriodTextMobile}>
                     <MandatePeriodText election={electionForSelectedPollbook} />
                   </div>
                   {electionForSelectedPollbook.informationUrl && (
@@ -237,8 +267,8 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
                           voterGroupSelect.registeredInSelectedGroupHeading
                         </Trans>
                       </p>
-                      <div className={classes.ingress}>
-                        <span className={classes.beforeDropdownText}>
+                      <div className={classes.dropDownSelectionText}>
+                        <span className="beforeDropdownText">
                           <Trans>
                             voterGroupSelect.registeredInSelectedGroupBeforeDropdownText
                           </Trans>
@@ -253,8 +283,8 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
                           voterGroupSelect.notRegisteredInSelectedGroupHeading
                         </Trans>
                       </p>
-                      <div className={classes.ingress}>
-                        <span className={classes.beforeDropdownText}>
+                      <div className={classes.dropDownSelectionText}>
+                        <span className="beforeDropdownText">
                           <Trans>
                             voterGroupSelect.notRegisteredInSelectedGroupBeforeDropdownText
                           </Trans>
