@@ -26,8 +26,7 @@ const searchPersonQuery = gql`
   query searchPerson($val: String!) {
     searchPerson(val: $val) {
       id
-      firstName
-      lastName
+      displayName
     }
   }
 `;
@@ -141,7 +140,7 @@ class AddVoter extends React.Component<IProps, Istate> {
       classes,
     } = this.props;
 
-    const renderPerson = (p: IPerson) => [p.firstName, p.lastName].join(' ');
+    const renderPerson = (p: IPerson) => p.displayName;
 
     return (
       <>

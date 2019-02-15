@@ -39,8 +39,7 @@ type ElectionStatusType =
 
 interface IPerson {
   id: string;
-  firstName: string;
-  lastName: string;
+  displayName: string;
   nin: string;
 }
 

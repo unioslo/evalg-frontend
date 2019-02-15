@@ -11,8 +11,7 @@ const searchPersonQuery = gql`
   query searchPerson($val: String!) {
     searchPerson(val: $val) {
       id
-      firstName
-      lastName
+      displayName
     }
   }
 `;
@@ -54,9 +53,7 @@ const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
     .filter(r => r.principal.principalType === 'person-principal')
     .map(r => ({
       id: r.principal.person.id,
-      firstName: r.principal.person.firstName,
-      lastName: r.principal.person.lastName,
-      username: r.principal.person.username,
+      displayName: r.principal.person.displayName,
       grantId: r.grantId,
     }));
 
