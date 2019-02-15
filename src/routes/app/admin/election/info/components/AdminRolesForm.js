@@ -127,7 +127,7 @@ class AdminRolesForm extends React.Component<Props, State> {
               <ul className={classes.list}>
                 {adminPersons.map((person, index) => (
                   <li key={index}>
-                    <Text inline>{person.firstName} {person.lastName}</Text>
+                    <Text inline>{person.displayName}</Text>
                     <div
                       className={classes.removeButton}
                       onClick={() => removeAction(adminPersons[index].grantId)}
@@ -141,7 +141,7 @@ class AdminRolesForm extends React.Component<Props, State> {
                 onChange={this.handleAdminPersonFilterUpdate.bind(this)}
                 buttonAction={(person) => addAction(person.id, 'person')}
                 buttonText={<Trans>general.add</Trans>}
-                objRenderer={(obj) => [obj.firstName, obj.lastName].join(' ')}
+                objRenderer={(person) => person.displayName}
               />
             </div>
             <div className={classes.formSection}>

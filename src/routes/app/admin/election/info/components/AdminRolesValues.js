@@ -13,8 +13,7 @@ const AdminRolesValues = (props: Props) => {
   const adminRoles = roles.filter(role => role.role === 'election-admin');
   const adminRoleNames = adminRoles.map(role => {
     if (role.principal.principalType === 'person-principal') {
-      return [role.principal.person.firstName,
-      role.principal.person.lastName].join(' ')
+      return role.principal.person.displayName
     }
     else if (role.principal.principalType === 'group-principal') {
       return role.principal.group.name

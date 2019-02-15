@@ -125,8 +125,7 @@ const electionGroupQuery = gql`
             pollbookId
             person {
               id
-              firstName
-              lastName
+              displayName
             }
           }
         }
@@ -512,9 +511,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                           <TableRow key={index} verticalPadding={true}>
                             <TableCell>
                               <Text>
-                                {voter.person.firstName +
-                                  ' ' +
-                                  voter.person.lastName}
+                                {voter.person.displayName}
                               </Text>
                             </TableCell>
                             <TableCell colspan={2}>
@@ -571,9 +568,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                                           <Trans
                                             values={{
                                               personName:
-                                                voter.person.firstName +
-                                                ' ' +
-                                                voter.person.lastName,
+                                                voter.person.displayName,
                                               pollbookName:
                                                 pollBookDict[voter.pollbookId]
                                                   .name[lang],
@@ -601,9 +596,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                           <TableRow key={index} actionTextOnHover={true}>
                             <TableCell>
                               <Text>
-                                {voter.person.firstName +
-                                  ' ' +
-                                  voter.person.lastName}
+                                {voter.person.displayName}
                               </Text>
                             </TableCell>
                             <TableCell>
