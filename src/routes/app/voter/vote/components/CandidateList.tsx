@@ -104,7 +104,7 @@ const CandidateInfo: React.SFC<IInfoProps & TranslateHocProps> = props => {
   return (
     <div className={classes.candidateInfo}>
       <div>{candidate.name}</div>
-      {coCandidates && coCandidates.length > 0 && coCandidates[0].name !== '' && (
+      {coCandidates && coCandidates.length > 0 && (
         <div className={classes.candidateInfoSubText}>
           <Trans>election.coCandidates</Trans>:{' '}
           {coCandidates.map(coCandidate => coCandidate.name).join(', ')}

@@ -16,7 +16,7 @@ import {
   TableHeaderCell,
   TableBody,
   TableRow,
-  TableCell
+  TableCell,
 } from 'components/table';
 import Icon from 'components/icon';
 
@@ -25,39 +25,41 @@ import NoCandidatesRow from './NoCandidatesRow';
 
 const addTeamPrefElecCandidate = gql`
   mutation AddTeamPrefElecCandidate(
-    $name: String!,
-    $coCandidates: [CoCandidatesInput]!,
+    $name: String!
+    $coCandidates: [CoCandidatesInput]!
     $informationUrl: String
-    $listId: UUID!) {
-    
+    $listId: UUID!
+  ) {
     addTeamPrefElecCandidate(
-      name: $name,
-      coCandidates: $coCandidates,
-      informationUrl: $informationUrl,
-      listId: $listId) {
+      name: $name
+      coCandidates: $coCandidates
+      informationUrl: $informationUrl
+      listId: $listId
+    ) {
       ok
     }
   }
-`
+`;
 
 const updateTeamPrefElecCandidate = gql`
   mutation UpdateTeamPrefElecCandidate(
-    $id: UUID!,
-    $name: String!,
-    $coCandidates: [CoCandidatesInput]!,
+    $id: UUID!
+    $name: String!
+    $coCandidates: [CoCandidatesInput]!
     $informationUrl: String
-    $listId: UUID!) {
-    
+    $listId: UUID!
+  ) {
     updateTeamPrefElecCandidate(
-      id: $id,
-      name: $name,
-      coCandidates: $coCandidates,
-      informationUrl: $informationUrl,
-      listId: $listId) {
+      id: $id
+      name: $name
+      coCandidates: $coCandidates
+      informationUrl: $informationUrl
+      listId: $listId
+    ) {
       ok
     }
   }
-`
+`;
 
 const deleteCandidate = gql`
   mutation DeleteCandidate($id: UUID!) {
@@ -65,7 +67,7 @@ const deleteCandidate = gql`
       ok
     }
   }
-`
+`;
 
 type Props = {
   children?: ReactChildren,
@@ -79,8 +81,8 @@ type Props = {
 type State = {
   newFormTopActive: boolean,
   newFormBottomActive: boolean,
-  editCandidateId: number
-}
+  editCandidateId: number,
+};
 
 class PrefTeamElecCandTable extends React.Component<Props, State> {
   state: State;
@@ -94,12 +96,15 @@ class PrefTeamElecCandTable extends React.Component<Props, State> {
     this.state = {
       newFormBottomActive: false,
       newFormTopActive: false,
-      editCandidateId: -1
-    }
+      editCandidateId: -1,
+    };
     this.setNewFormsInactive = this.setNewFormsInactive.bind(this);
     this.setNewFormTopActive = this.setNewFormTopActive.bind(this);
     this.setNewFormBottomActive = this.setNewFormBottomActive.bind(this);
     this.setEditId = this.setEditId.bind(this);
+    this.removeEmptyCoCandidates = this.removeCoCandidatesWithoutName.bind(
+      this
+    );
   }
 
   setNewFormTopActive() {
@@ -119,32 +124,41 @@ class PrefTeamElecCandTable extends React.Component<Props, State> {
     this.setState({ editCandidateId: id });
   }
 
+  removeCoCandidatesWithoutName(newCandidateSubmitValues) {
+    return {
+      ...newCandidateSubmitValues,
+      coCandidates: newCandidateSubmitValues.coCandidates.filter(
+        coCandidate => coCandidate.name
+      ),
+    };
+  }
 
   render() {
     const candidateList = this.props.electionGroup.elections[0].lists[0];
     if (!candidateList) {
       return (
-        <PageSection noBorder
-          desc={<Trans>election.prefTeamHeader</Trans>}>
-          <p><Trans>election.noActiveElections</Trans></p>
+        <PageSection noBorder desc={<Trans>election.prefTeamHeader</Trans>}>
+          <p>
+            <Trans>election.noActiveElections</Trans>
+          </p>
         </PageSection>
-      )
+      );
     }
     const candidates = candidateList.candidates.map(candidate => ({
       id: candidate.id,
       name: candidate.name,
-      coCandidates: candidate.meta.coCandidates ?
-        candidate.meta.coCandidates : [],
+      coCandidates: candidate.meta.coCandidates
+        ? candidate.meta.coCandidates
+        : [],
       informationUrl: candidate.informationUrl,
-      listId: candidate.listId
+      listId: candidate.listId,
     }));
     const newCandidateValues = {
       coCandidates: [{ name: '' }],
-      listId: candidateList.id
-    }
+      listId: candidateList.id,
+    };
     return (
-      <PageSection noBorder
-        desc={<Trans>election.prefTeamHeader</Trans>}>
+      <PageSection noBorder desc={<Trans>election.prefTeamHeader</Trans>}>
         <Table>
           <TableHeader>
             <TableHeaderRow>
@@ -163,129 +177,146 @@ class PrefTeamElecCandTable extends React.Component<Props, State> {
             </TableHeaderRow>
           </TableHeader>
           <TableBody>
-            {this.state.newFormTopActive &&
+            {this.state.newFormTopActive && (
               <Mutation
                 mutation={addTeamPrefElecCandidate}
-                refetchQueries={() => ['electionGroup']}>
-                {(addCand) => (
+                refetchQueries={() => ['electionGroup']}
+              >
+                {addCand => (
                   <TableRow>
                     <TableCell colspan="3">
                       <PrefTeamElecCandForm
                         initialValues={newCandidateValues}
-                        handleSubmit={(values) => {
+                        handleSubmit={values => {
+                          values = this.removeCoCandidatesWithoutName(values);
                           addCand({ variables: values });
                           this.setNewFormsInactive();
                         }}
                         cancelAction={this.setNewFormsInactive}
-                        formHeader={<Trans>election.addPrefTeamCandidate</Trans>}
+                        formHeader={
+                          <Trans>election.addPrefTeamCandidate</Trans>
+                        }
                       />
                     </TableCell>
                   </TableRow>
                 )}
               </Mutation>
-            }
-            {candidates.length === 0 ?
-              <NoCandidatesRow colSpan={3} /> : null
-            }
-            {candidates.length > 0 ?
-              candidates.map((candidate, index) => {
-                if (candidate.id === this.state.editCandidateId) {
+            )}
+            {candidates.length === 0 ? <NoCandidatesRow colSpan={3} /> : null}
+            {candidates.length > 0
+              ? candidates.map((candidate, index) => {
+                  if (candidate.id === this.state.editCandidateId) {
+                    return (
+                      <TableRow key={index}>
+                        <TableCell colspan="3">
+                          <Mutation
+                            mutation={deleteCandidate}
+                            refetchQueries={() => ['electionGroup']}
+                          >
+                            {deleteCand => (
+                              <Mutation
+                                mutation={updateTeamPrefElecCandidate}
+                                refetchQueries={() => ['electionGroup']}
+                              >
+                                {updCand => (
+                                  <PrefTeamElecCandForm
+                                    formHeader={
+                                      <Trans>election.editCandidate</Trans>
+                                    }
+                                    initialValues={{ ...candidate }}
+                                    handleSubmit={values => {
+                                      values = this.removeCoCandidatesWithoutName(
+                                        values
+                                      );
+                                      updCand({ variables: values });
+                                      this.setEditId('');
+                                    }}
+                                    cancelAction={this.setEditId.bind(-1)}
+                                    deleteAction={() => {
+                                      deleteCand({
+                                        variables: { id: candidate.id },
+                                      });
+                                    }}
+                                  />
+                                )}
+                              </Mutation>
+                            )}
+                          </Mutation>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  }
+                  const { coCandidates } = candidate;
                   return (
-                    <TableRow key={index}>
-                      <TableCell colspan="3">
-                        <Mutation
-                          mutation={deleteCandidate}
-                          refetchQueries={() => ['electionGroup']}>
-                          {(deleteCand) => (
-                            <Mutation
-                              mutation={updateTeamPrefElecCandidate}
-                              refetchQueries={() => ['electionGroup']}>
-                              {(updCand) => (
-                                <PrefTeamElecCandForm
-                                  formHeader={<Trans>election.editCandidate</Trans>}
-                                  initialValues={{ ...candidate }}
-                                  handleSubmit={(values) => {
-                                    updCand({ variables: values });
-                                    this.setEditId('');
-                                  }}
-                                  cancelAction={this.setEditId.bind(-1)}
-                                  deleteAction={() => {
-                                    deleteCand({ variables: { id: candidate.id } })
-                                  }}
-                                />
-                              )}
-                            </Mutation>
-                          )}
-                        </Mutation>
+                    <TableRow key={index} actionTextOnHover>
+                      <TableCell>
+                        <Text>{candidate.name}</Text>
+                        {candidate.informationUrl && (
+                          <Text size="small">
+                            <Link to={candidate.informationUrl} external>
+                              {candidate.informationUrl}
+                            </Link>
+                          </Text>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <Text>
+                          {coCandidates.map((coCandidate, i) => {
+                            if (i === coCandidates.length - 1) {
+                              return coCandidate.name;
+                            }
+                            return `${coCandidate.name}, `;
+                          })}
+                        </Text>
+                      </TableCell>
+                      <TableCell alignRight>
+                        <Text>
+                          <ActionText
+                            action={this.setEditId.bind(this, candidate.id)}
+                          >
+                            <Trans>general.edit</Trans>
+                          </ActionText>
+                        </Text>
                       </TableCell>
                     </TableRow>
-                  )
-                }
-                const { coCandidates } = candidate;
-                return (
-                  <TableRow key={index} actionTextOnHover>
-                    <TableCell>
-                      <Text>{candidate.name}</Text>
-                      {candidate.informationUrl &&
-                        <Text size="small">
-                          <Link to={candidate.informationUrl} external>
-                            {candidate.informationUrl}
-                          </Link>
-                        </Text>
-                      }
-                    </TableCell>
-                    <TableCell>
-                      <Text>
-                        {coCandidates.map((coCandidate, i) => {
-                          if (i === coCandidates.length - 1) {
-                            return coCandidate.name;
-                          }
-                          return `${coCandidate.name}, `;
-                        })}
-                      </Text>
-                    </TableCell>
-                    <TableCell alignRight>
-                      <Text>
-                        <ActionText action={
-                          this.setEditId.bind(this, candidate.id)}>
-                          <Trans>general.edit</Trans>
-                        </ActionText>
-                      </Text>
-                    </TableCell>
-                  </TableRow>
-                )
-              })
+                  );
+                })
               : null}
             <TableRow>
-              {this.state.newFormBottomActive ?
+              {this.state.newFormBottomActive ? (
                 <Mutation
                   mutation={addTeamPrefElecCandidate}
-                  refetchQueries={() => ['electionGroup']}>
-                  {(addCand) => (
+                  refetchQueries={() => ['electionGroup']}
+                >
+                  {addCand => (
                     <TableCell colspan="3">
                       <PrefTeamElecCandForm
                         initialValues={newCandidateValues}
-                        handleSubmit={(values) => {
+                        handleSubmit={values => {
+                          values = this.removeCoCandidatesWithoutName(values);
                           addCand({ variables: values });
                           this.setNewFormsInactive();
                         }}
                         cancelAction={this.setNewFormsInactive}
-                        formHeader={<Trans>election.addPrefTeamCandidate</Trans>}
+                        formHeader={
+                          <Trans>election.addPrefTeamCandidate</Trans>
+                        }
                       />
                     </TableCell>
                   )}
-                </Mutation> :
+                </Mutation>
+              ) : (
                 <TableCell colspan="3">
                   <ActionText action={this.setNewFormBottomActive.bind(this)}>
                     <Trans>election.addPrefTeamCandidate</Trans>
                   </ActionText>
                 </TableCell>
-              }
+              )}
             </TableRow>
           </TableBody>
         </Table>
       </PageSection>
-    )
+    );
   }
 }
 
