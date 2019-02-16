@@ -251,6 +251,7 @@ export default {
     add: 'Legg til',
     administerElections: 'Administrer valg',
     all: 'Alle',
+    and: 'og',
     at: 'ved',
     back: 'Tilbake',
     cancel: 'Avbryt',

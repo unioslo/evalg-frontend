@@ -247,6 +247,7 @@ export default {
     add: 'Add',
     administerElections: 'Administer elections',
     all: 'All',
+    and: 'and',
     at: 'at',
     back: 'Back',
     cancel: 'Cancel',

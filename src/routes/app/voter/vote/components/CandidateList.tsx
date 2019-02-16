@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Trans, translate } from 'react-i18next';
+import { Trans, translate, TranslationFunction } from 'react-i18next';
 import { TranslateHocProps } from 'react-i18next/src/translate';
+import injectSheet from 'react-jss';
 
 import Icon from 'components/icon';
 import Link from 'components/link';
-import injectSheet from 'react-jss';
+import { joinStringsWithCommaAndAnd } from 'utils';
 
 const styles = (theme: any) => ({
   button: {
@@ -95,6 +96,7 @@ interface IInfoProps {
   infoUrl?: boolean;
   listName?: boolean;
   metaFields?: string[];
+  t: TranslationFunction;
 }
 
 const CandidateInfo: React.SFC<IInfoProps & TranslateHocProps> = props => {
@@ -107,7 +109,10 @@ const CandidateInfo: React.SFC<IInfoProps & TranslateHocProps> = props => {
       {coCandidates && coCandidates.length > 0 && (
         <div className={classes.candidateInfoSubText}>
           <Trans>election.coCandidates</Trans>:{' '}
-          {coCandidates.map(coCandidate => coCandidate.name).join(', ')}
+          {joinStringsWithCommaAndAnd(
+            coCandidates.map(coCandidate => coCandidate.name),
+            props.t
+          )}
         </div>
       )}
       {props.infoUrl ? (

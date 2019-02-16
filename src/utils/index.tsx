@@ -14,7 +14,7 @@ import {
   objsEqual,
 } from './helpers';
 
-import { translateBackendError } from './i18n';
+import { translateBackendError, joinStringsWithCommaAndAnd } from './i18n';
 
 const sleep = async (ms: number) => {
   await new Promise(resolve => setTimeout(resolve, ms));
@@ -32,6 +32,7 @@ const DateAndTimeToISODTWithTimeZonedOffset = (date: string, time: string) =>
 export {
   sleep,
   translateBackendError,
+  joinStringsWithCommaAndAnd,
   objPropsToArray,
   isObjEmpty,
   isObject,
