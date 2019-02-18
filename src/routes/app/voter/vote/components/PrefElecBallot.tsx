@@ -6,7 +6,7 @@ import { Button, ButtonContainer } from 'components/button';
 import Icon from 'components/icon';
 import Link from 'components/link';
 import { PageSection } from 'components/page';
-import { ScreenSizeConsumer } from 'providers/ScreenSize'
+import { ScreenSizeConsumer } from 'providers/ScreenSize';
 import CandidateButtonBar from './CandidateButtonBar';
 import {
   CandidateInfo,
@@ -16,31 +16,32 @@ import {
   ListItemDesktopButtons,
   RemoveButton,
   ToggleSelectIcon,
-  UpArrow
-} from './CandidateList'
+  UpArrow,
+} from './CandidateList';
 import HelpSubSection from './HelpSubSection';
 import MandatePeriodText from './MandatePeriodText';
-
+import injectSheet from 'react-jss';
 
 const helpTextTags = [
   'voter.prefElecRankCandidatesShort',
   'voter.prefElecNrOfCandidates',
   'voter.prefElecOnlySelectedGetVote',
   'voter.canVoteBlank',
-]
+];
 
 interface IProps {
-  selectedCandidates: Candidate[]
-  unselectedCandidates: Candidate[]
-  moveCandidate: (oldIndex: number, newIndex: number) => void
-  removeCandidate: (c: Candidate) => void,
-  addCandidate: (c: Candidate) => void,
-  election: Election,
-  reviewAction: () => void
+  selectedCandidates: Candidate[];
+  unselectedCandidates: Candidate[];
+  moveCandidate: (oldIndex: number, newIndex: number) => void;
+  removeCandidate: (c: Candidate) => void;
+  addCandidate: (c: Candidate) => void;
+  election: Election;
+  reviewAction: () => void;
+  classes: any;
 }
 
 interface IState {
-  activeCandIndex: number
+  activeCandIndex: number;
 }
 
 class PrefElecBallot extends React.Component<IProps, IState> {
@@ -55,20 +56,20 @@ class PrefElecBallot extends React.Component<IProps, IState> {
   }
 
   public render() {
+    const { classes } = this.props;
     return (
       <ScreenSizeConsumer>
         {({ screenSize }) => {
           const {
-            selectedCandidates, unselectedCandidates, election
+            selectedCandidates,
+            unselectedCandidates,
+            election,
           } = this.props;
-          const canSubmit = selectedCandidates.length > 0
-          const ballotActions =
+          const canSubmit = selectedCandidates.length > 0;
+          const ballotActions = (
             <ButtonContainer alignLeft={true}>
               <Link to="/voter">
-                <Button
-                  text={<Trans>general.back</Trans>}
-                  secondary={true}
-                />
+                <Button text={<Trans>general.back</Trans>} secondary={true} />
               </Link>
               <Button
                 text={<Trans>election.showBallot</Trans>}
@@ -76,78 +77,76 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                 action={this.props.reviewAction}
               />
             </ButtonContainer>
+          );
           return (
             <PageSection>
-              <MandatePeriodText election={election} />
+              <div className={classes.mandatePeriodTextDesktop}>
+                <MandatePeriodText election={election} longDate />
+              </div>
+              <div className={classes.mandatePeriodTextMobile}>
+                <MandatePeriodText election={election} />
+              </div>
               <HelpSubSection
-                header="Velg kandidater"
+                header={<Trans>voter.chooseCandidates</Trans>}
                 desc={<Trans>voter.prefElecDesc</Trans>}
-                helpTextTags={helpTextTags}>
-
-                {screenSize === 'sm' ?
-                  ballotActions : null
-                }
+                helpTextTags={helpTextTags}
+              >
+                {screenSize === 'sm' ? ballotActions : null}
 
                 <CandidateList>
                   {selectedCandidates.map((c, index) => {
-                    let selectAction = this.selectCandidate.bind(this, index)
+                    let selectAction = this.selectCandidate.bind(this, index);
                     if (this.state.activeCandIndex === index) {
-                      selectAction = this.deselectCandidate
+                      selectAction = this.deselectCandidate;
                     }
                     const promoteCandidate = () =>
                       this.props.moveCandidate(index, index - 1);
                     const demoteCandidate = () =>
                       this.props.moveCandidate(index, index + 1);
-                    const removeCandidate = () =>
-                      this.props.removeCandidate(c);
+                    const removeCandidate = () => this.props.removeCandidate(c);
                     return (
                       <CandidateListItem key={`selected-${index}`}>
                         <Icon
                           type="rankCircle"
                           custom={{
                             nr: index + 1,
-                            small: screenSize !== 'sm'
+                            small: screenSize !== 'sm',
                           }}
                         />
-                        <CandidateInfo
-                          candidate={c}
-                          infoUrl={true}
-                        />
-                        {screenSize === 'sm' ?
+                        <CandidateInfo candidate={c} infoUrl={true} />
+                        {screenSize === 'sm' ? (
                           <ToggleSelectIcon
                             selected={index === this.state.activeCandIndex}
                             action={selectAction}
-                          /> :
+                          />
+                        ) : (
                           <ListItemDesktopButtons>
-                            {index !== 0 ?
-                              <UpArrow onClick={promoteCandidate} /> : null
-                            }
-                            {index < selectedCandidates.length - 1 ?
-                              <DownArrow onClick={demoteCandidate} /> : null
-                            }
+                            {index !== 0 ? (
+                              <UpArrow onClick={promoteCandidate} />
+                            ) : null}
+                            {index < selectedCandidates.length - 1 ? (
+                              <DownArrow onClick={demoteCandidate} />
+                            ) : null}
                             <RemoveButton onClick={removeCandidate} />
                           </ListItemDesktopButtons>
-                        }
+                        )}
                       </CandidateListItem>
-                    )
+                    );
                   })}
                   {unselectedCandidates.map((c, index) => (
                     <CandidateListItem key={`unselected-${index}`}>
                       <Icon
                         type="addCircle"
-                        custom={screenSize !== 'sm' ? "small" : false}
+                        custom={screenSize !== 'sm' ? 'small' : false}
                         onClick={this.props.addCandidate.bind(this, c)}
                       />
-                      <CandidateInfo
-                        candidate={c}
-                        infoUrl={true}
-                      />
+                      <CandidateInfo candidate={c} infoUrl={true} />
                     </CandidateListItem>
                   ))}
                 </CandidateList>
                 {ballotActions}
 
-                {screenSize === 'sm' && this.state.activeCandIndex !== -1 ?
+                {screenSize === 'sm' && this.state.activeCandIndex !== -1 ? (
                   <CandidateButtonBar
                     upAction={this.promoteSelectedCandidate}
                     downAction={this.demoteSelectedCandidate}
@@ -158,14 +157,14 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                       this.state.activeCandIndex ===
                       this.props.selectedCandidates.length - 1
                     }
-                  /> : null
-                }
+                  />
+                ) : null}
               </HelpSubSection>
             </PageSection>
-          )
+          );
         }}
       </ScreenSizeConsumer>
-    )
+    );
   }
 
   private selectCandidate(index: number) {
@@ -173,14 +172,15 @@ class PrefElecBallot extends React.Component<IProps, IState> {
   }
 
   private deselectCandidate() {
-    this.setState({ activeCandIndex: -1 })
+    this.setState({ activeCandIndex: -1 });
   }
 
   private promoteSelectedCandidate() {
     this.props.moveCandidate(
-      this.state.activeCandIndex, this.state.activeCandIndex - 1
+      this.state.activeCandIndex,
+      this.state.activeCandIndex - 1
     );
-    this.setState({ activeCandIndex: this.state.activeCandIndex - 1 })
+    this.setState({ activeCandIndex: this.state.activeCandIndex - 1 });
   }
 
   private demoteSelectedCandidate() {
@@ -188,15 +188,29 @@ class PrefElecBallot extends React.Component<IProps, IState> {
       this.state.activeCandIndex,
       this.state.activeCandIndex + 1
     );
-    this.setState({ activeCandIndex: this.state.activeCandIndex + 1 })
+    this.setState({ activeCandIndex: this.state.activeCandIndex + 1 });
   }
 
   private removeCandidate() {
     const candidate = this.props.selectedCandidates[this.state.activeCandIndex];
     this.props.removeCandidate(candidate);
-    this.setState({ activeCandIndex: -1 })
+    this.setState({ activeCandIndex: -1 });
   }
 }
 
+const styles = (theme: any) => ({
+  mandatePeriodTextDesktop: {
+    display: 'none',
+    [theme.breakpoints.mdQuery]: {
+      display: 'inherit',
+      ...theme.ingress,
+    },
+  },
+  mandatePeriodTextMobile: {
+    [theme.breakpoints.mdQuery]: {
+      display: 'none',
+    },
+  },
+});
 
-export default PrefElecBallot;
+export default injectSheet(styles)(PrefElecBallot);

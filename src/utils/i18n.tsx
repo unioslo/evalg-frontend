@@ -18,3 +18,19 @@ export const translateBackendError = (
 
   return '';
 };
+
+export const joinStringsWithCommaAndAnd = (
+  strings: string[],
+  t: TranslationFunction
+) => {
+  if (strings.length === 0) {
+    return '';
+  } else if (strings.length === 1) {
+    return strings[0];
+  } else {
+    const commaSeparatedStrings = strings.slice(0, -1).join(', ');
+    return `${commaSeparatedStrings} ${t('general.and')} ${
+      strings[strings.length - 1]
+    }`;
+  }
+};
