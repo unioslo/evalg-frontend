@@ -3,7 +3,7 @@ import injectSheet from 'react-jss';
 import { Trans, translate } from 'react-i18next';
 
 import {
-  testWarning,
+  appStagingWarning,
   appServiceOwnerLink,
   appTechnicalSupportEmail,
   appTermsAndPrivacylink,
@@ -158,9 +158,9 @@ const Footer = (props: IProps) => {
           </div>
         </div>
       </footer>
-      {testWarning && (
+      {appStagingWarning && (
         <div className="alert">
-          Test av evalg 3. For spørsmål om løsningen ta kontakt med{' '}
+          Test av eValg 3. For spørsmål om løsningen ta kontakt med{' '}
           <a href="mailto:evalg-kontakt@usit.uio.no">evalg-drift</a>
         </div>
       )}

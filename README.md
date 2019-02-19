@@ -12,6 +12,14 @@
 3. `npm install`
 4. `npm start`
 
+### Configuration: Environment files
+
+Use the `.env` files to configure the frontend. Put local overrides in e.g. `.env.development.local` or `.env.local`.
+
+Tip: Set `BROWSER=none` in a local .env file to disable opening a browser when running `npm start`.
+
+[Read more about environment variables](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables)
+
 ### Relevant dokumentasjon og opplæring
 
 - React - https://reactjs.org/docs/

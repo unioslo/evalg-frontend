@@ -1,26 +1,29 @@
-export const authEnabled = false;
-export const cryptoVariant = 'nacl';
-export const appTimezone = "Europe/Oslo";
+/* General settings */
+export const cryptoVariant: string = 'nacl';
+export const appTimezone: string = 'Europe/Oslo';
 
-/* Enable or dissable a simple test warning message */
-export const testWarning = false;
+/* Backends */
+export const graphqlBackend: string = process.env.REACT_APP_BACKEND_GRAPHQL as string;
+export const restBackend: string = process.env.REACT_APP_BACKEND_REST as string;
 
-export const feideGatekeeperScope = 'gk_evalg-something';
-
-export const oidcConfig = {
+/* Authentication */
+export const authEnabled: boolean = (process.env.REACT_APP_AUTH_ENABLED === 'true');
+export const feideGatekeeperScope: string = process.env.REACT_APP_FEIDE_GK_API_SCOPE as string;
+export const oidcConfig: Oidc.OidcClientSettings = {
   authority: 'https://auth.dataporten.no/',
-  client_id: '48f63358-9eee-429f-bd79-381fb12fbf6b',
-  redirect_uri: 'http://localhost:3000/callback',
+  client_id: process.env.REACT_APP_FEIDE_DP_APP_ID as string,
+  redirect_uri: process.env.REACT_APP_FEIDE_DP_REDIRECT_URI as string,
   response_type: 'id_token token',
   scope: feideGatekeeperScope + ' openid profile email groups userid userid-feide userinfo-entitlement',
 };
 export const oidcLogoutUrl = 'https://auth.dataporten.no/logout';
 
-export const graphqlBackend = 'http://localhost:5000/graphql';
-export const restBackend = 'http://localhost:5000/';
+/* Show warning in the footer about this being a staging/test system */
+export const appStagingWarning: boolean = (process.env.REACT_APP_STAGING_WARNING === 'true');
 
-export const appHelpLink = 'https://www.uio.no/for-ansatte/arbeidsstotte/arrangere-valg/';
-export const appTechnicalSupportEmail = 'it-support@uio.no';
-export const appServiceOwnerLink = 'https://www.usit.uio.no/om/organisasjon/bnt/usitint/';
-export const appTermsAndPrivacylink = '#TODO';
-export const appCookiesInformationLink = '#TODO';
+/* Footer content */
+export const appHelpLink: string = 'https://www.uio.no/for-ansatte/arbeidsstotte/arrangere-valg/';
+export const appTechnicalSupportEmail: string = 'it-support@uio.no';
+export const appServiceOwnerLink: string = 'https://www.usit.uio.no/om/organisasjon/bnt/usitint/';
+export const appTermsAndPrivacylink: string = '#TODO';
+export const appCookiesInformationLink: string = '#TODO';
