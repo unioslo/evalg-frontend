@@ -324,6 +324,11 @@ export default {
       'Review your ballot below, then confirm your vote or go back to make changes.',
   },
   voterGroupSelect: {
+    andCloses: 'and closes',
+    electionClosed: 'This election has closed',
+    electionNotOpen: 'This election is not open',
+    electionNotYetOpen: 'This election has not opened yet',
+    isNotOpen: 'is not open',
     moreAboutTheElection: 'More about the election',
     notRegisteredInSelectedGroupHeading:
       'Have you chosen the correct voter group?',
@@ -333,9 +338,12 @@ export default {
       'You are not on the electoral roll for this voter group. You may still proceed and vote as if you were. ' +
       'The election board for this election will decide if your vote will count based on your affiliations with UiO. ' +
       'You may provide your job code («stillingskode») or other relevant information below.',
+    opens: 'opens',
     registeredInSelectedGroupHeading: 'You have the right to vote',
     registeredInSelectedGroupBeforeDropdownText:
       'You are on the electoral roll for the voter group',
+    theElectionFor: 'The election for',
+    wasClosed: 'was closed',
     writeJustification:
       'Why you should be on the electoral roll for this voter group (optional)',
     youAreOnTheElectoralRoll: 'You are on the electoral roll',

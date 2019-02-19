@@ -14,6 +14,7 @@ import { DropDown } from 'components/form';
 import Button, { ButtonContainer } from 'components/button';
 import MandatePeriodText from '../vote/components/MandatePeriodText';
 import { orderMultipleElections } from 'utils/processGraphQLData';
+import { Date, Time } from 'components/i18n';
 
 const styles = (theme: any) => ({
   dropDownSelectionText: {
@@ -53,7 +54,7 @@ const styles = (theme: any) => ({
     borderColor: theme.formFieldBorderColor,
     borderRadius: theme.formFieldBorderRadius,
   },
-  notInVoterGroupParagraph: {
+  additionalInformationParagraph: {
     marginTop: '2.2rem',
     marginBottom: '2rem',
   },
@@ -87,6 +88,9 @@ const getElectionGroupData = gql`
         id
         name
         active
+        status
+        start
+        end
         mandatePeriodStart
         mandatePeriodEnd
         informationUrl
@@ -197,6 +201,7 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
 
           let pollbooks: IPollBook[];
           let electionForSelectedPollbook: Election;
+          let electionForSelectedPollbookIsOngoing = true;
 
           if (electionGroup.type === 'multiple_elections') {
             const activeOrderedElections = orderMultipleElections(
@@ -209,6 +214,10 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
 
             electionForSelectedPollbook =
               activeOrderedElections[this.state.selectedPollBookIndex];
+
+            if (electionForSelectedPollbook.status !== 'ongoing') {
+              electionForSelectedPollbookIsOngoing = false;
+            }
           } else {
             pollbooks = elections[0].pollbooks;
             electionForSelectedPollbook = elections[0];
@@ -233,6 +242,100 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
             />
           );
 
+          let subheading: React.ReactNode = null;
+          let beforeDropDownText: React.ReactNode = null;
+          let afterDropDownText: React.ReactNode = null;
+          let additionalInformation: React.ReactNode = null;
+          let extraElements: React.ReactNode = null;
+
+          if (electionForSelectedPollbookIsOngoing) {
+            if (this.hasRightToVote(this.state.selectedPollBookIndex)) {
+              subheading = (
+                <Trans>voterGroupSelect.registeredInSelectedGroupHeading</Trans>
+              );
+              beforeDropDownText = (
+                <Trans>
+                  voterGroupSelect.registeredInSelectedGroupBeforeDropdownText
+                </Trans>
+              );
+            } else {
+              subheading = (
+                <Trans>
+                  voterGroupSelect.notRegisteredInSelectedGroupHeading
+                </Trans>
+              );
+              beforeDropDownText = (
+                <Trans>
+                  voterGroupSelect.notRegisteredInSelectedGroupBeforeDropdownText
+                </Trans>
+              );
+              additionalInformation = (
+                <Trans>
+                  voterGroupSelect.notRegisteredInSelectedGroupInfoText
+                </Trans>
+              );
+              extraElements = (
+                <textarea
+                  value={this.state.notInPollBookJustification}
+                  onChange={this.handlenotInPollBookJustificationChange}
+                  className={classes.notInPollBookJustificationTextArea}
+                  placeholder={t('voterGroupSelect.writeJustification')}
+                  rows={6}
+                />
+              );
+            }
+          } else {
+            if (electionForSelectedPollbook.status === 'published') {
+              subheading = <Trans>voterGroupSelect.electionNotYetOpen</Trans>;
+              beforeDropDownText = (
+                <Trans>voterGroupSelect.theElectionFor</Trans>
+              );
+              afterDropDownText = (
+                <>
+                  <Trans>voterGroupSelect.opens</Trans>{' '}
+                  <Date dateTime={electionForSelectedPollbook.start} longDate />{' '}
+                  <Time dateTime={electionForSelectedPollbook.start} />.
+                </>
+              );
+              additionalInformation = (
+                <>
+                  <Trans>voterGroupSelect.theElectionFor</Trans>{' '}
+                  {pollbooks[this.state.selectedPollBookIndex].name[
+                    lang
+                  ].toLowerCase()}{' '}
+                  <Trans>voterGroupSelect.opens</Trans>{' '}
+                  <Date dateTime={electionForSelectedPollbook.start} longDate />{' '}
+                  <Time dateTime={electionForSelectedPollbook.start} />{' '}
+                  <Trans>voterGroupSelect.andCloses</Trans>{' '}
+                  <Date dateTime={electionForSelectedPollbook.end} longDate />{' '}
+                  <Time dateTime={electionForSelectedPollbook.end} />.
+                </>
+              );
+            } else if (electionForSelectedPollbook.status === 'closed') {
+              subheading = <Trans>voterGroupSelect.electionClosed</Trans>;
+              beforeDropDownText = (
+                <Trans>voterGroupSelect.theElectionFor</Trans>
+              );
+              afterDropDownText = (
+                <>
+                  <Trans>voterGroupSelect.wasClosed</Trans>{' '}
+                  <Date dateTime={electionForSelectedPollbook.end} longDate />{' '}
+                  <Time dateTime={electionForSelectedPollbook.end} />.
+                </>
+              );
+            } else {
+              subheading = <Trans>voterGroupSelect.electionNotOpen</Trans>;
+              beforeDropDownText = (
+                <Trans>voterGroupSelect.theElectionFor</Trans>
+              );
+              afterDropDownText = (
+                <>
+                  <Trans>voterGroupSelect.isNotOpen</Trans> .
+                </>
+              );
+            }
+          }
+
           return (
             <Page header={electionGroupName}>
               <PageSection noBorder={true}>
@@ -243,15 +346,16 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
                       longDate
                     />
                   </div>
+
                   <div className={classes.mandatePeriodTextMobile}>
                     <MandatePeriodText election={electionForSelectedPollbook} />
                   </div>
+
                   {electionForSelectedPollbook.informationUrl && (
                     <p>
                       <Trans>voterGroupSelect.moreAboutTheElection</Trans>:{' '}
                       <Link
                         to={electionForSelectedPollbook.informationUrl}
-                        // marginRight
                         external
                       >
                         {electionForSelectedPollbook.informationUrl}
@@ -259,53 +363,21 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
                     </p>
                   )}
                 </div>
+
                 <div className="votingRightsSection">
-                  {this.hasRightToVote(this.state.selectedPollBookIndex) ? (
-                    <>
-                      <p className={classes.subheading}>
-                        <Trans>
-                          voterGroupSelect.registeredInSelectedGroupHeading
-                        </Trans>
-                      </p>
-                      <div className={classes.dropDownSelectionText}>
-                        <span className="beforeDropdownText">
-                          <Trans>
-                            voterGroupSelect.registeredInSelectedGroupBeforeDropdownText
-                          </Trans>
-                        </span>
-                        {dropdown}
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <p className={classes.subheading}>
-                        <Trans>
-                          voterGroupSelect.notRegisteredInSelectedGroupHeading
-                        </Trans>
-                      </p>
-                      <div className={classes.dropDownSelectionText}>
-                        <span className="beforeDropdownText">
-                          <Trans>
-                            voterGroupSelect.notRegisteredInSelectedGroupBeforeDropdownText
-                          </Trans>
-                        </span>
-                        {dropdown}
-                      </div>
-                      <p className={classes.notInVoterGroupParagraph}>
-                        <Trans>
-                          voterGroupSelect.notRegisteredInSelectedGroupInfoText
-                        </Trans>
-                      </p>
-                      <textarea
-                        value={this.state.notInPollBookJustification}
-                        onChange={this.handlenotInPollBookJustificationChange}
-                        className={classes.notInPollBookJustificationTextArea}
-                        placeholder={t('voterGroupSelect.writeJustification')}
-                        rows={6}
-                      />
-                    </>
-                  )}
+                  <p className={classes.subheading}>{subheading}</p>
+                  <div className={classes.dropDownSelectionText}>
+                    <span className="beforeDropdownText">
+                      {beforeDropDownText}
+                    </span>
+                    {dropdown} {afterDropDownText}
+                  </div>
+                  <p className={classes.additionalInformationParagraph}>
+                    {additionalInformation}
+                  </p>
+                  {extraElements}
                 </div>
+
                 <ButtonContainer alignLeft={true}>
                   <Button
                     text={<Trans>general.back</Trans>}
@@ -322,6 +394,7 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
                         client
                       )
                     }
+                    disabled={!electionForSelectedPollbookIsOngoing}
                   />
                 </ButtonContainer>
               </PageSection>
