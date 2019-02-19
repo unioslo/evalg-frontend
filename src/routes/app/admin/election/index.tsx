@@ -12,7 +12,7 @@ import StatusPage from './status';
 import Loading from 'components/loading';
 import { History, Location } from 'history';
 import { i18n } from 'i18next';
-import { orderElectionsInElectionGroup } from 'utils/processGraphQLData';
+import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
 
 const electionGroupQuery = gql`
   query electionGroup($id: UUID!) {
@@ -117,7 +117,7 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
         return <p>Error!</p>;
       }
 
-      const electionGroupWithOrderedElections = orderElectionsInElectionGroup(
+      const egWithOrderedElections = electionGroupWithOrderedElections(
         data.electionGroup
       );
 
@@ -134,7 +134,7 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
             path="/admin/elections/:groupId/info"
             render={routeProps => (
               <InfoPage
-                electionGroupData={electionGroupWithOrderedElections}
+                electionGroupData={egWithOrderedElections}
                 history={routeProps.history}
               />
             )}
@@ -143,7 +143,7 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
             path="/admin/elections/:groupId/candidates"
             render={routeProps => (
               <CandidatesPage
-                electionGroup={electionGroupWithOrderedElections}
+                electionGroup={egWithOrderedElections}
                 {...routeProps}
               />
             )}
@@ -161,7 +161,7 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
             path="/admin/elections/:groupId/status"
             render={routeProps => (
               <StatusPage
-                electionGroup={electionGroupWithOrderedElections}
+                electionGroup={egWithOrderedElections}
                 refetchElectionGroupFunction={refetch}
                 {...routeProps}
               />

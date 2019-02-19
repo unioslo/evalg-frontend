@@ -12,7 +12,7 @@ import { PageSection } from 'components/page';
 import { ActionButton } from 'components/button';
 import ManageElectionsTable from './components/ManageElectionsTable';
 import Link from 'components/link';
-import { orderElectionsInElectionGroup } from 'utils/processGraphQLData';
+import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
 
 const electionGroupsQuery = gql`
   query {
@@ -91,7 +91,7 @@ const AdminFrontPage = props => (
       }
 
       const electionGroupsWithOrderedElections = data.electionGroups.map(
-        elGrp => orderElectionsInElectionGroup(elGrp)
+        elGrp => electionGroupWithOrderedElections(elGrp)
       );
 
       return (
