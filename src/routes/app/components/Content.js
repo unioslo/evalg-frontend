@@ -9,7 +9,7 @@ type Props = {
 
 const styles = theme => ({
   wrapper: {
-    flex: '1',
+    flex: '1 0 auto',
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'row',
@@ -19,7 +19,7 @@ const styles = theme => ({
   },
   container: {
     maxWidth: theme.appMaxWidth,
-    flex: '1',
+    flex: '1 0 auto',
     padding: `4rem ${theme.contentContainerHorPadding}`,
     [theme.breakpoints.mdQuery]: {
       padding: `4rem ${theme.contentContainerMdHorPadding}`

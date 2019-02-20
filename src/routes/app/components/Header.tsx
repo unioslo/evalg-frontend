@@ -54,7 +54,6 @@ const styles = (theme: any) => ({
     justifyContent: 'space-between',
   },
   title: {
-    fontWeight: 'bold',
     color: theme.colors.white,
   },
   desc: {

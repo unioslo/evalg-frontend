@@ -18,11 +18,16 @@ import { authEnabled } from 'appConfig';
 import { oidcLogoutUrl } from 'appConfig';
 
 const styles = {
+  ie11ExtraFlexContainer: {
+    // https://github.com/philipwalton/flexbugs#flexbug-3
+    display: 'flex',
+    flexDirection: 'column',
+  },
   app: {
     display: 'flex',
     flexDirection: 'column',
     fontSize: '1.6rem',
-    minHeight: '100%',
+    minHeight: '100vh',
   },
   logout: {
     display: 'flex',
@@ -66,15 +71,17 @@ const App: React.SFC<IProps> = ({ classes, authManager }) => {
   const ProtectedVoter = authEnabled ? authManager(<Voter />) : Voter;
 
   return (
-    <div className={classes.app}>
-      <Header />
-      <Content>
-        <Route exact={true} path="/" component={FrontPage} />
-        <Route path="/admin" component={ProtectedAdmin} />
-        <Route path="/voter" component={ProtectedVoter} />
-        <Route path="/logout" component={Logout} />
-      </Content>
-      <Footer />
+    <div className={classes.ie11ExtraFlexContainer}>
+      <div className={classes.app}>
+        <Header />
+        <Content>
+          <Route exact={true} path="/" component={FrontPage} />
+          <Route path="/admin" component={ProtectedAdmin} />
+          <Route path="/voter" component={ProtectedVoter} />
+          <Route path="/logout" component={Logout} />
+        </Content>
+        <Footer />
+      </div>
     </div>
   );
 };
