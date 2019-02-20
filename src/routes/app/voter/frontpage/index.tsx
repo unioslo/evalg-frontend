@@ -5,6 +5,7 @@ import { Trans, translate } from 'react-i18next';
 
 import { Page, PageSection } from 'components/page';
 import VoterElections from './components/VoterElections';
+import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
 
 const electionGroupsQuery = gql`
   query {
@@ -64,7 +65,15 @@ const VoterFrontPage: React.SFC = () => (
       return (
         <Page header={<Trans>general.welcome</Trans>}>
           <PageSection desc={<Trans>general.frontPageDesc</Trans>}>
-            <VoterElections electionGroups={data.electionGroups} />
+            <VoterElections
+              electionGroups={data.electionGroups
+                .map((eg: ElectionGroup) =>
+                  electionGroupWithOrderedElections(eg, {
+                    onlyActiveElections: true,
+                  })
+                )
+                .filter((eg: ElectionGroup) => eg.elections.length > 0)}
+            />
           </PageSection>
         </Page>
       );

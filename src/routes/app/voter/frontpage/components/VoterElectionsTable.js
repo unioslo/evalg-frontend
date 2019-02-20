@@ -1,7 +1,7 @@
 /* @flow */
 import * as React from 'react';
-
 import { Trans, translate } from 'react-i18next';
+import moment from 'moment';
 
 import Text from 'components/text';
 import { Date, Time } from 'components/i18n';
@@ -16,6 +16,7 @@ import {
   TableRow,
   TableCell,
 } from 'components/table';
+import { allEqualForAttrs } from 'utils';
 
 type Props = {
   electionGroups: Array<ElectionGroup>,
@@ -26,6 +27,18 @@ type Props = {
 const VoterElectionsTable = (props: Props) => {
   const lang = props.i18n.language;
   const { electionGroups, i18n, noElectionsText } = props;
+
+  const dateTimeToMarkup = dateTime => (
+    <React.Fragment>
+      <Text>
+        <Date dateTime={dateTime} longDate />
+      </Text>
+      <Text size="small">
+        <Time dateTime={dateTime} />
+      </Text>
+    </React.Fragment>
+  );
+
   return (
     <Table>
       <TableHeader key="thead">
@@ -54,7 +67,19 @@ const VoterElectionsTable = (props: Props) => {
           </TableRow>
         )}
         {electionGroups.map((group, index) => {
-          const election = group.elections[0];
+          let startTime;
+          let endTime;
+
+          if (group.elections.length === 1) {
+            startTime = group.elections[0].start;
+            endTime = group.elections[0].end;
+          } else {
+            startTime = moment.min(
+              ...group.elections.map(e => moment(e.start))
+            );
+            endTime = moment.max(...group.elections.map(e => moment(e.end)));
+          }
+
           const canVote = true;
           const hasVoted = false;
           return (
@@ -62,22 +87,8 @@ const VoterElectionsTable = (props: Props) => {
               <TableCell>
                 <Text>{group.name[lang]}</Text>
               </TableCell>
-              <TableCell>
-                <Text>
-                  <Date dateTime={election.start} longDate />
-                </Text>
-                <Text size="small">
-                  <Time dateTime={election.start} />
-                </Text>
-              </TableCell>
-              <TableCell>
-                <Text>
-                  <Date dateTime={election.end} longDate />
-                </Text>
-                <Text size="small">
-                  <Time dateTime={election.end} />
-                </Text>
-              </TableCell>
+              <TableCell>{dateTimeToMarkup(startTime)}</TableCell>
+              <TableCell>{dateTimeToMarkup(endTime)}</TableCell>
               <TableCell alignCenter={true}>
                 <Text>
                   {canVote ? (
@@ -90,7 +101,9 @@ const VoterElectionsTable = (props: Props) => {
               <TableCell noPadding>
                 {!hasVoted ? (
                   <Link
-                    to={`/voter/election-groups/${group.id}/select-voting-group`}
+                    to={`/voter/election-groups/${
+                      group.id
+                    }/select-voting-group`}
                   >
                     <Trans>election.voteNow</Trans>
                   </Link>

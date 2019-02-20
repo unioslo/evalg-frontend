@@ -38,16 +38,23 @@ export const orderMultipleElections = (elections: Election[]): Election[] => {
   return orderedElections;
 };
 
-export const orderElectionsInElectionGroup = (
-  electionGroup: ElectionGroup
+export const electionGroupWithOrderedElections = (
+  electionGroup: ElectionGroup,
+  options?: { onlyActiveElections: boolean }
 ): ElectionGroup => {
-  const orderedElections =
-    electionGroup.type === 'multiple_elections'
-      ? orderMultipleElections(electionGroup.elections)
-      : electionGroup.elections;
-  const electionGroupWithOrderedElections = {
+  if (electionGroup.type !== 'multiple_elections') {
+    return electionGroup;
+  }
+
+  const processedElections = orderMultipleElections(
+    options && options.onlyActiveElections
+      ? electionGroup.elections.filter(e => e.active)
+      : electionGroup.elections
+  );
+
+  const electionGroupWithProcessedElections = {
     ...electionGroup,
-    elections: orderedElections,
+    elections: processedElections,
   };
-  return electionGroupWithOrderedElections;
+  return electionGroupWithProcessedElections;
 };
