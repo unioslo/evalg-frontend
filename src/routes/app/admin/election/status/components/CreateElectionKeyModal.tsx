@@ -14,26 +14,28 @@ import Link from 'components/link';
 import { CheckBox } from 'components/form';
 
 const styles = (theme: any) => ({
-  stepsGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'auto auto',
-    gridRowGap: '3.5rem',
-    gridColumnGap: '5rem',
-    justifyItems: 'start',
-    alignItems: 'center',
+  steps: {
     margin: '4rem auto',
     width: '60rem',
   },
 
+  stepRow: {
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: '3.5rem',
+  },
+
   stepNumber: {
+    width: '5.5rem',
+    height: '5.5rem',
+    flexShrink: 0,
+    marginRight: '6rem',
     fontSize: '4rem',
     fontWeight: 'bold',
     color: theme.colors.lightGray,
     textAlign: 'center',
     border: '2px solid',
     borderRadius: '50%',
-    width: '5.5rem',
-    height: '5.5rem',
     paddingTop: '3px',
     '&.active': {
       color: theme.colors.darkTurquoise,
@@ -325,86 +327,92 @@ public:${publicKey}`.trim();
             </InfoList>
           </div>
 
-          <div className={classes.stepsGrid}>
-            <div
-              className={classNames({
-                [classes.stepNumber]: true,
-                active: !isGeneratingKey,
-              })}
-            >
-              1
-            </div>
-            <ButtonContainer center noTopMargin>
-              <a
-                href={`data:text/plain;charset=utf-8,${encodeURIComponent(
-                  electionKeyFileContents
-                )}`}
-                key="download"
-                className={classes.buttonAnchorWrapper}
-                download="electionKey.txt"
+          <div className={classes.steps}>
+            <div className={classes.stepRow}>
+              <div
+                className={classNames({
+                  [classes.stepNumber]: true,
+                  active: !isGeneratingKey,
+                })}
               >
-                <Button
-                  action={() =>
+                1
+              </div>
+              <ButtonContainer center noTopMargin>
+                <a
+                  href={`data:text/plain;charset=utf-8,${encodeURIComponent(
+                    electionKeyFileContents
+                  )}`}
+                  key="download"
+                  className={classes.buttonAnchorWrapper}
+                  download="electionKey.txt"
+                >
+                  <Button
+                    action={() =>
+                      this.setState(
+                        { hasDownloadedKey: true },
+                        this.checkIfAllowedToActivateKey
+                      )
+                    }
+                    disabled={isGeneratingKey || errorMessage}
+                    text={downloadKeyButtonContent}
+                  />
+                </a>
+              </ButtonContainer>
+            </div>
+
+            <div className={classes.stepRow}>
+              <div
+                className={classNames({
+                  [classes.stepNumber]: true,
+                  ['active']: hasDownloadedKey,
+                })}
+              >
+                2
+              </div>
+              <div
+                onClick={() => {
+                  if (hasDownloadedKey) {
                     this.setState(
-                      { hasDownloadedKey: true },
+                      currState => ({
+                        isCheckboxChecked: !currState.isCheckboxChecked,
+                      }),
                       this.checkIfAllowedToActivateKey
-                    )
+                    );
                   }
-                  disabled={isGeneratingKey || errorMessage}
-                  text={downloadKeyButtonContent}
+                }}
+              >
+                <CheckBox
+                  value={isCheckboxChecked}
+                  label={<Trans>admin.electionKey.modalCheckboxLabel</Trans>}
+                  disabled={!hasDownloadedKey}
+                  onChange={() => null}
                 />
-              </a>
-            </ButtonContainer>
-
-            <div
-              className={classNames({
-                [classes.stepNumber]: true,
-                ['active']: hasDownloadedKey,
-              })}
-            >
-              2
-            </div>
-            <div
-              onClick={() => {
-                if (hasDownloadedKey) {
-                  this.setState(
-                    currState => ({
-                      isCheckboxChecked: !currState.isCheckboxChecked,
-                    }),
-                    this.checkIfAllowedToActivateKey
-                  );
-                }
-              }}
-            >
-              <CheckBox
-                value={isCheckboxChecked}
-                label={<Trans>admin.electionKey.modalCheckboxLabel</Trans>}
-                disabled={!hasDownloadedKey}
-                onChange={() => null}
-              />
+              </div>
             </div>
 
-            <div
-              className={classNames({
-                [classes.stepNumber]: true,
-                active: isAllowedToActivateKey,
-              })}
-            >
-              3
+            <div className={classes.stepRow}>
+              <div
+                className={classNames({
+                  [classes.stepNumber]: true,
+                  active: isAllowedToActivateKey,
+                })}
+              >
+                3
+              </div>
+              <ButtonContainer center noTopMargin>
+                <Button
+                  text={activateKeyButtonContent}
+                  disabled={
+                    !isAllowedToActivateKey ||
+                    isGeneratingKey ||
+                    isActivatingKey ||
+                    hasActivatedNewKey ||
+                    errorMessage
+                  }
+                  action={this.activateKey}
+                />
+              </ButtonContainer>
             </div>
-            <ButtonContainer center noTopMargin>
-              <Button
-                text={activateKeyButtonContent}
-                disabled={
-                  !isAllowedToActivateKey ||
-                  isGeneratingKey ||
-                  isActivatingKey ||
-                  hasActivatedNewKey ||
-                  errorMessage
-                }
-                action={this.activateKey}
-              />
-            </ButtonContainer>
           </div>
 
           {errorMessage && (
