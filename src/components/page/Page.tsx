@@ -8,6 +8,7 @@ interface IProps {
 
 const styles = (theme: any) => ({
   page: {
+    display: 'block',
     [theme.breakpoints.mdQuery]: {
       marginTop: '5rem',
       marginBottom: '5rem',
