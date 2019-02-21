@@ -10,10 +10,8 @@ const styles = theme => ({
   modal: {
     zIndex: 9001,
     backgroundColor: 'white',
-    margin: '0 auto',
     //width: '90%',
     maxWidth: '1200px',
-    position: 'fixed',
   },
   h1: {
     fontSize: '3.6rem',
