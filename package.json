@@ -56,8 +56,9 @@
     "valid-url": "^1.0.9"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
+    "start": "NODE_ENV=development npm run build:env && react-scripts-ts start",
+    "build": "npm run build:env && react-scripts-ts build",
+    "build:env": "node scripts/build-env.js",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
   }
