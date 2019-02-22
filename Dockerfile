@@ -12,6 +12,9 @@ RUN npm install
 COPY . /app
 RUN NODE_ENV=production npm run build
 
+# Make sure no client environment is included in the build
+RUN rm /app/build/env.js
+
 # Copy build to nginx image
 FROM harbor.uio.no/library/nginx:latest
 MAINTAINER USITINT <bnt-int@usit.uio.no>
