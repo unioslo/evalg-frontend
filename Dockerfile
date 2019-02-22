@@ -1,24 +1,28 @@
-FROM harbor.uio.no/library/node:latest
+# Build stage
+FROM harbor.uio.no/library/node:latest as build-stage
 
-MAINTAINER USITINT <bnt-int@usit.uio.no>
-LABEL no.uio.contact=bnt-int@usit.uio.no
+RUN mkdir /app
+WORKDIR /app
 
-WORKDIR /usr/src/app
-COPY . /usr/src/app
-COPY package*.json ./run/
+# Install dependencies
+COPY package.json package-lock.json /app/
+RUN npm install
 
-# TODO fix this by adding the API to a config file
-RUN sed -i 's/localhost:5000/evalg-test01.uio.no/g' /usr/src/app/src/appConfig.ts \
- && sed -i 's/testWarning = false/testWarning = true/g' /usr/src/app/src/appConfig.ts
-
-RUN npm install \
- && npm run build
+# Build app
+COPY . /app
+RUN NODE_ENV=production npm run build
 
 # Copy build to nginx image
 FROM harbor.uio.no/library/nginx:latest
 MAINTAINER USITINT <bnt-int@usit.uio.no>
 LABEL no.uio.contact=bnt-int@usit.uio.no
 
-RUN rm -rf /usr/share/nginx/html/*
-COPY --from=0 /usr/src/app/build /usr/share/nginx/html
+# Install jq for the docker entrypoint
+RUN set -x \
+    && apt-get update \
+    && apt-get install -y jq
+
+COPY --from=build-stage /app/build /app/build
+COPY --from=build-stage /app/docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
