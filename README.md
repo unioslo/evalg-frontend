@@ -20,6 +20,27 @@ Tip: Set `BROWSER=none` in a local .env file to disable opening a browser when r
 
 [Read more about environment variables](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables)
 
+### Configuration: Authentication
+
+Authentication can be enabled by setting the environment variable `REACT_APP_AUTH_ENABLED` to `"true"`.
+
+When authentication is enabled, the following must also be set:
+
+- `REACT_APP_FEIDE_GK_API_SCOPE` contains the scope used by the Dataporten API Gateway.
+- `oidcLogoutUrl` in `appConfig.ts` is set to an endpoint which will facilitate logout.
+- The following structure should be present in `appConfig.ts`, with proper values for the applicable application defined in Dataporten:
+  ```
+  export const oidcConfig: Oidc.OidcClientSettings = {
+      authority: 'https://auth.dataporten.no/',
+      client_id: '<my-client-id>',
+      redirect_uri: '<my-proto>://<my-hostname>/callback',
+      response_type: 'id_token token',
+      scope:
+          feideGatekeeperScope +
+          ' openid profile email groups userid userid-feide userinfo-entitlement',
+  };
+  ```
+
 ### Relevant dokumentasjon og opplæring
 
 - React - https://reactjs.org/docs/
