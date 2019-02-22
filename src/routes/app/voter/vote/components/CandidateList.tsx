@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Trans, translate, TranslationFunction } from 'react-i18next';
 import { TranslateHocProps } from 'react-i18next/src/translate';
 import injectSheet from 'react-jss';
+import classNames from 'classnames';
 
 import Icon from 'components/icon';
 import Link from 'components/link';
@@ -62,10 +63,10 @@ const styles = (theme: any) => ({
     display: 'flex',
     padding: '0.75rem 0',
   },
-  toggleSelectIcon: {
+  toggleSelectionIconFlexRight: {
     alignItems: 'flex-end',
     display: 'flex',
-    flex: 1,
+    flex: '1 1 auto',
     justifyContent: 'flex-end',
   },
 });
@@ -168,33 +169,52 @@ const HOCRankIcon = injectSheet(styles)(RankIcon);
 interface ISelectProps {
   classes: any;
   selected: boolean;
+  flexRight: boolean;
   action: () => void;
 }
 
-const ToggleSelectIcon: React.SFC<ISelectProps> = props => (
-  <div className={props.classes.toggleSelectIcon} onClick={props.action}>
-    {props.selected ? (
-      <svg width="51px" height="42px" viewBox="0 0 51 62" version="1.1">
-        <g stroke="none" strokeWidth="1" fill="none">
-          <rect fill="#D5EBEF" x="0" y="0" width="51" height="62" rx="8" />
-          <g transform="translate(12.000000, 17.000000)">
-            <circle stroke="#8ECED9" strokeWidth="3" cx="14" cy="14" r="12.5" />
-            <circle fill="#2294A8" cx="14" cy="14" r="5" />
+const ToggleSelectIcon: React.SFC<ISelectProps> = props => {
+  const { classes } = props;
+  const cls = classNames({
+    [classes.toggleSelectionIconFlexRight]: props.flexRight,
+  });
+  return (
+    <div className={cls} onClick={props.action}>
+      {props.selected ? (
+        <svg width="51px" height="42px" viewBox="0 0 51 62" version="1.1">
+          <g stroke="none" strokeWidth="1" fill="none">
+            <rect fill="#D5EBEF" x="0" y="0" width="51" height="62" rx="8" />
+            <g transform="translate(12.000000, 17.000000)">
+              <circle
+                stroke="#8ECED9"
+                strokeWidth="3"
+                cx="14"
+                cy="14"
+                r="12.5"
+              />
+              <circle fill="#2294A8" cx="14" cy="14" r="5" />
+            </g>
           </g>
-        </g>
-      </svg>
-    ) : (
-      <svg width="51px" height="42px" viewBox="0 0 51 62" version="1.1">
-        <g stroke="none" strokeWidth="1" fill="none">
-          <rect fill="#F9F4FA" x="0" y="0" width="51" height="62" rx="8" />
-          <g transform="translate(12.000000, 17.000000)">
-            <circle stroke="#8ECED9" strokeWidth="3" cx="14" cy="14" r="12.5" />
+        </svg>
+      ) : (
+        <svg width="51px" height="42px" viewBox="0 0 51 62" version="1.1">
+          <g stroke="none" strokeWidth="1" fill="none">
+            <rect fill="#F9F4FA" x="0" y="0" width="51" height="62" rx="8" />
+            <g transform="translate(12.000000, 17.000000)">
+              <circle
+                stroke="#8ECED9"
+                strokeWidth="3"
+                cx="14"
+                cy="14"
+                r="12.5"
+              />
+            </g>
           </g>
-        </g>
-      </svg>
-    )}
-  </div>
-);
+        </svg>
+      )}
+    </div>
+  );
+};
 
 const HOCToggleSelectIcon = injectSheet(styles)(ToggleSelectIcon);
 

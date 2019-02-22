@@ -311,9 +311,14 @@ export default {
       'Valget må ha minimum like mange kandidater per gruppe som angitt under <1>valginnstillinger</1>.',
   },
   voter: {
-    canVoteBlank: 'Det er også mulig å stemme blankt.',
+    canVoteBlank: 'Det kan også stemme blankt.',
+    castVote: 'Avgi stemme',
     chooseCandidates: 'Velg kandidater',
+    chosenCandidate: 'Valgt kandidat',
     cumulate: 'Ekstra stemme',
+    editVote: 'Rediger stemme',
+    majorityVoteHelpHeader: 'Velg kandidaten du vil stemme på',
+    majorityVoteHelpYouMaySelectOnlyOne: 'Dette er et flertallsvalg, og du kan kun velge en kandidat.',
     prefElecDesc:
       'Marker hvilke kandidater du vil stemme på, i prioritert rekkefølge.',
     prefElecNrOfCandidates: 'Du kan stemme på så mange kandidater du vil.',

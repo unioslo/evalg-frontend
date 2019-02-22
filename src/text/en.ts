@@ -307,9 +307,14 @@ export default {
       'The election must have at least as many candidates per voter group as stated in {{infoLink}}.',
   },
   voter: {
-    canVoteBlank: 'You may also submit a blank vote.',
+    canVoteBlank: 'You may also cast a blank vote.',
+    castVote: 'Cast vote',
     chooseCandidates: 'Choose candidates',
+    chosenCandidate: 'Chosen candidate',
     cumulate: 'Extra vote',
+    editVote: 'Edit vote',
+    majorityVoteHelpHeader: 'Choose the candidate you want to give your vote to',
+    majorityVoteHelpYouMaySelectOnlyOne: 'This is a majority vote election, and you may select only one candidate.',
     prefElecDesc:
       'Select the candidates you would like to include in your vote, in prioritized order.',
     prefElecNrOfCandidates:

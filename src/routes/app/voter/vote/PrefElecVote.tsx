@@ -1,26 +1,11 @@
 import * as React from 'react';
 import { translate } from 'react-i18next';
 import { TranslateHocProps } from 'react-i18next/src/translate';
-// import injectSheet from 'react-jss'
 
-
+import { shuffleArray } from 'utils/helpers';
 import { Page, } from 'components/page'
-
 import PrefElecBallot from './components/PrefElecBallot';
 import PrefElecReview from './components/PrefElecReview';
-
-
-function shuffleArray<T>(array: T[]): T[] {
-  const emptyArray: T[] = [];
-  const shuffledArray = emptyArray.concat(array);
-  for (let i = shuffledArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const temp = shuffledArray[i];
-    shuffledArray[i] = shuffledArray[j];
-    shuffledArray[j] = temp;
-  }
-  return shuffledArray;
-}
 
 function moveArrayItem(arr: any[], oldIndex: number, newIndex: number) {
   if (newIndex >= arr.length) {
@@ -46,7 +31,7 @@ interface IState {
   reviewingBallot: boolean
 }
 
-class PrefElec extends React.Component<IProps, IState> {
+class PrefElecVote extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -115,4 +100,4 @@ class PrefElec extends React.Component<IProps, IState> {
   }
 }
 
-export default translate()(PrefElec);
+export default translate()(PrefElecVote);
