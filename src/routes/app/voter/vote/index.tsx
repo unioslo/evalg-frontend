@@ -1,10 +1,10 @@
-import gql from 'graphql-tag';
 import * as React from 'react';
 import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
 // import { getScreenSize, mediaQueryLg, mediaQueryMd, } from "utils/responsive";
-import PrefElec from './PrefElec';
 import Loading from 'components/loading';
+import PrefElecVote from './PrefElecVote';
 
 const getElectionVotingData = gql`
   query Election($id: UUID!) {
@@ -58,7 +58,7 @@ const VotingPage: React.SFC<IProps> = props => {
           : { en: '', nb: '', nn: '' };
         if (voting === 'rank_candidates') {
           if (candidateType === 'single' || candidateType === 'single_team') {
-            return <PrefElec election={election} electionName={electionName} />;
+            return <PrefElecVote election={election} electionName={electionName} />;
           } else {
             return <div>Unknown election type!</div>;
           }
