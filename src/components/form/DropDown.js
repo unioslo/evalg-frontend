@@ -1,6 +1,6 @@
 /* @flow */
 import * as React from 'react';
-import ReactCSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
 
@@ -250,36 +250,39 @@ class DropDown extends DropDownBase {
             value={searchable ? inputValue : getValueName(value, options)}
           />
         )}
-        <ReactCSSTransitionGroup
-          transitionName="fade-in-and-out"
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={300}
-        >
-          {open && (
-            <ul
-              className={listClassNames}
-              aria-labelledby={labelId}
-              id={listId}
-            >
-              {validOptions.map((option, index) => {
-                return (
-                  <li
-                    onClick={this.onSelect.bind(this, option)}
-                    key={index}
-                    className={classes.listItem}
-                  >
-                    <p>{option.name}</p>
-                    {option.secondaryLine && (
-                      <p className={classes.secondaryLine}>
-                        {option.secondaryLine}
-                      </p>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </ReactCSSTransitionGroup>
+        <TransitionGroup>
+          <CSSTransition
+            classNames="fade-in-and-out"
+            timeout={{ enter: 500, exit: 300 }}
+          >
+            <div>
+              {open && (
+                <ul
+                  className={listClassNames}
+                  aria-labelledby={labelId}
+                  id={listId}
+                >
+                  {validOptions.map((option, index) => {
+                    return (
+                      <li
+                        onClick={this.onSelect.bind(this, option)}
+                        key={index}
+                        className={classes.listItem}
+                      >
+                        <p>{option.name}</p>
+                        {option.secondaryLine && (
+                          <p className={classes.secondaryLine}>
+                            {option.secondaryLine}
+                          </p>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+          </CSSTransition>
+        </TransitionGroup>
       </div>
     );
   }

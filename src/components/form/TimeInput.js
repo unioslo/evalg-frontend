@@ -1,6 +1,6 @@
 /* @flow */
 import * as React from 'react';
-import ReactCSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
 import injectSheet from 'react-jss';
@@ -91,7 +91,7 @@ type State = {
   hourValue: string,
   minuteValue: string,
   hasFocus: boolean,
-  inputValue: string
+  inputValue: stringCSSTransition
 }
 
 class TimeInput extends React.Component<Props, State> {
@@ -241,7 +241,7 @@ class TimeInput extends React.Component<Props, State> {
   render() {
     const { name, label, small, error, classes } = this.props;
     const { hasFocus, inputValue } = this.state;
-    const timepickerClassNames = classNames({
+    const timepickerClatssNames = classNames({
       [classes.timePicker]: true,
       [classes.timePickerNoLabel]: !label
     });
@@ -261,50 +261,53 @@ class TimeInput extends React.Component<Props, State> {
             value={inputValue}
             onFocus={this.handleOnFocus.bind(this)}
           />
-          <ReactCSSTransitionGroup
-            transitionName="fade-in-and-out"
-            transitionEnterTimeout={500}
-            transitionLeaveTimeout={300}>
-            {hasFocus &&
-              <div className={timepickerClassNames} >
-                <div className={classes.timePickerInputContainer}>
-                  <div className={classes.timePickerIcon}
-                    onClick={this.incrementHourValue} >
-                    <Icon type="upArrowSmall" onClick={this.incrementHourValue} />
+          <TransitionGroup>
+            <CSSTransition
+            classNames="fade-in-and-out"
+            timeout={{ enter: 500, exit: 500 }}>
+              <div>
+                {hasFocus &&
+                  <div className={timepickerClassNames} >
+                    <div className={classes.timePickerInputContainer}>
+                      <div className={classes.timePickerIcon}
+                        onClick={this.incrementHourValue} >
+                        <Icon type="upArrowSmall" onClick={this.incrementHourValue} />
+                      </div>
+                      <input
+                        type="text"
+                        name="hourValue"
+                        className={classes.timePickerInput}
+                        value={this.state.hourValue}
+                        onChange={this.handleHourChange}
+                      />
+                      <div className={classes.timePickerIcon}
+                        onClick={this.decrementHourValue} >
+                        <Icon type="downArrowSmall" />
+                      </div>
+                    </div>
+                    <div className={classes.timePickerSeparator}>:</div>
+                    <div className={classes.timePickerInputContainer}>
+                      <div className={classes.timePickerIcon}
+                        onClick={this.incrementMinuteValue} >
+                        <Icon type="upArrowSmall" />
+                      </div>
+                      <input
+                        type="text"
+                        name="minuteValue"
+                        className={classes.timePickerInput}
+                        value={this.state.minuteValue}
+                        onChange={this.handleMinuteChange}
+                      />
+                      <div className={classes.timePickerIcon}
+                        onClick={this.decrementMinuteValue} >
+                        <Icon type="downArrowSmall" />
+                      </div>
+                    </div>
                   </div>
-                  <input
-                    type="text"
-                    name="hourValue"
-                    className={classes.timePickerInput}
-                    value={this.state.hourValue}
-                    onChange={this.handleHourChange}
-                  />
-                  <div className={classes.timePickerIcon}
-                    onClick={this.decrementHourValue} >
-                    <Icon type="downArrowSmall" />
-                  </div>
-                </div>
-                <div className={classes.timePickerSeparator}>:</div>
-                <div className={classes.timePickerInputContainer}>
-                  <div className={classes.timePickerIcon}
-                    onClick={this.incrementMinuteValue} >
-                    <Icon type="upArrowSmall" />
-                  </div>
-                  <input
-                    type="text"
-                    name="minuteValue"
-                    className={classes.timePickerInput}
-                    value={this.state.minuteValue}
-                    onChange={this.handleMinuteChange}
-                  />
-                  <div className={classes.timePickerIcon}
-                    onClick={this.decrementMinuteValue} >
-                    <Icon type="downArrowSmall" />
-                  </div>
-                </div>
+                }
               </div>
-            }
-          </ReactCSSTransitionGroup>
+            </CSSTransition>
+          </TransitionGroup>
         </div>
       </div>
     )
