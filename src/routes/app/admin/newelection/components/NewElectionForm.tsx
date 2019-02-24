@@ -22,11 +22,10 @@ interface IProps {
 
 const buildDropdownOptions = (options: any[], lang: string) => {
   // Create the drop down options
-
   return options.map((option, index) => ({
     label: option.name[lang] + ( option.externalId ? ' (' + option.externalId + ')' : ''),
     value: index,
-  }));
+  })).sort((a,b) => (a.label > b.label ? 1 : -1));
 };
 
 export const getCurrentValues = (
