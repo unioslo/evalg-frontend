@@ -2,7 +2,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
-import ReactCSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import DropDownBase from 'components/baseComponents/DropDownBase';
 
@@ -70,16 +70,20 @@ class MobileDropDown extends DropDownBase {
           ref={(node) => (this.wrapperRef = node)}
           onClick={this.handleClick.bind(this)}>
           {text}
-          <ReactCSSTransitionGroup
-            transitionName="fade-in-and-out"
-            transitionEnterTimeout={500}
-            transitionLeaveTimeout={300}>
-            {this.state.open &&
-              <ul className={classes.menuList}>
-                {this.props.children}
-              </ul>
-            }
-          </ReactCSSTransitionGroup>
+          <TransitionGroup>
+            <CSSTransition
+              classNames="fade-in-and-out"
+              timeout={{ enter: 500, exit: 300 }}
+            >
+              <div>
+                {this.state.open &&
+                  <ul className={classes.menuList}>
+                    {this.props.children}
+                  </ul>
+                }
+              </div>
+            </CSSTransition>
+          </TransitionGroup>
         </div>
       </nav>
     )

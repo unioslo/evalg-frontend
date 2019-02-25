@@ -1,44 +1,60 @@
 /* @flow */
 import * as React from 'react';
-import { Form, Field, FormSpy } from 'react-final-form';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { Form, FormRenderProps, FormSpy, Field } from 'react-final-form';
+
 import { getSupportedLanguages } from 'utils/i18n';
-import { translate, Trans } from "react-i18next";
+import { translate } from 'react-i18next';
+import { i18n } from 'i18next';
+import { FormField, FormButtons, TextInput, SelectDropDown} from 'components/form';
 
 import { isObjEmpty } from 'utils/helpers';
-import {
-  DropDownRF, FormButtons, FormField, TextInputRF
-} from 'components/form';
+// import i18next = require('i18next');
 
-const buildDropdownOptions = (options: Array<Object>, lang: string) => {
+interface IProps {
+  submitAction: (v: any) => any;
+  electionTemplate: any;
+  cancelAction: () => void;
+  updateValues: (newVals: any) => void;
+  initialValues: object;
+  t: (v: string) => string;
+  i18n: i18n;
+}
+
+const buildDropdownOptions = (options: any[], lang: string) => {
+  // Create the drop down options
   return options.map((option, index) => ({
-    name: option.name[lang], value: index
-  }))
+    label: option.name[lang] + ( option.externalId ? ' (' + option.externalId + ')' : ''),
+    value: index,
+  })).sort((a,b) => (a.label > b.label ? 1 : -1));
 };
 
-export const getCurrentValues = (valueObject: Object): Array<string | number> => {
-  let currentValues = [];
+export const getCurrentValues = (
+  valueObject: object
+): Array<string | number> => {
+  let currentValues: any[] = [];
   if (valueObject) {
-    currentValues = Object.keys(valueObject).map(key => (
-      valueObject[key]
-    ));
+    currentValues = Object.keys(valueObject).map(key => valueObject[key]);
   }
+
   return currentValues;
 };
 
 const getNodeListAndSettings = (
-  currentValues: Array<number | string>, templateRoot: Object
+  currentValues: any[],
+  templateRoot: any
 ) => {
-  const nodeList = [];
-  let settings = {};
-  if (currentValues.length === 0) {
+  // Generates a list of the settings nodes
+  const nodeList: any[] = [];
+  let settings: any = {};
+  if (currentValues.length === 0 || !templateRoot.options) {
     return { nodeList, settings };
   }
 
-  const selectedRootNodeOption = templateRoot.options[currentValues[0]];
+  const selectedRootNodeOption = templateRoot.options[currentValues[0].value];
   const nextNodes = selectedRootNodeOption.nextNodes;
-
+  if (!selectedRootNodeOption.settings) {
+    return { nodeList, settings };
+  }
   if (selectedRootNodeOption.settings) {
     settings = Object.assign(settings, selectedRootNodeOption.settings);
   }
@@ -51,23 +67,26 @@ const getNodeListAndSettings = (
       // No next node, which means we're at the end of the template flow
       if (!nextNodes[nextNodeIndex]) {
         nodesAdded++;
-      }
-      else {
+      } else {
         const nextNode = nextNodes[nextNodeIndex];
-        if (currentValues[curValIndex] !== undefined &&
+        if (
+          currentValues[curValIndex] !== undefined &&
           nextNode.options &&
-          nextNode.options[currentValues[curValIndex]] &&
-          nextNode.options[currentValues[curValIndex]].settings) {
-          const newSettings = nextNode.options[
-            currentValues[curValIndex]
-          ].settings;
+          nextNode.options[currentValues[curValIndex].value] &&
+          nextNode.options[currentValues[curValIndex].value].settings
+        ) {
+          const newSettings =
+            nextNode.options[currentValues[curValIndex].value].settings;
           settings = Object.assign(settings, newSettings);
         }
         // If ouListsLevel is set to 1 (the root-node in the OU tree), we
         // simply skip the OU-search node
-        if (!(settings.ouTag &&
-          settings.ouTag === 'root' &&
-          nextNode.searchInOuTree)) {
+        if (!(
+            settings.ouTag &&
+            settings.ouTag === 'root' &&
+            nextNode.searchInOuTree
+          )
+        ) {
           nodeList.push(nextNode);
           nodesAdded++;
           curValIndex++;
@@ -76,15 +95,17 @@ const getNodeListAndSettings = (
       }
     }
   }
+
   return { nodeList, settings };
 };
 
 const renderOptionFields = (
-  nodeList: Array<Object>,
-  ouLists: Object,
-  currentSettings: Object,
-  t: Function,
-  lang: string) => {
+  nodeList: any[],
+  ouLists: any,
+  currentSettings: any,
+  t: (v: string) => string,
+  lang: string
+) => {
   return nodeList.map((node, index) => {
     if (node.searchInOuTree) {
       const ouTagEntries = ouLists[currentSettings.ouTag];
@@ -92,66 +113,65 @@ const renderOptionFields = (
       return (
         <FormField inline key={index}>
           <Field
-            name={`option${index + 2}ou`}
-            component={DropDownRF}
-            options={ouOptions}
-            large
-            searchable
-            placeholder={t('general.select')}
             label={node.name[lang]}
+            name={`option${index + 2}ou`}
+            component={SelectDropDown}
+            options={ouOptions}
+            large={true}
+            isSearchable={true}
+            placeholder={t('general.select')}
           />
         </FormField>
-      )
-    }
-    else if (node.setElectionName) {
+      );
+    } else if (node.setElectionName) {
       return (
         <FormField key={index}>
           <Field
             name={`option${index + 2}name`}
-            component={TextInputRF}
+            component={TextInput}
             label={node.name[lang]}
+            placeholder={'Velg'}
           />
         </FormField>
-      )
+      );
     }
     const nodeOptions = buildDropdownOptions(node.options, lang);
     return (
       <FormField inline key={index}>
         <Field
           label={node.name[lang]}
-          component={DropDownRF}
+          component={SelectDropDown}
           name={`option${index + 2}`}
           placeholder={t('general.select')}
           options={nodeOptions}
         />
       </FormField>
-    )
-  })
+    );
+  });
 };
 
-const getDerivedValues = (values: Object, settings: Object, ouLists: Object) => {
+const getDerivedValues = (values: object, settings: any, ouLists: any) => {
   let ou = null;
   let name = null;
 
   Object.keys(values).forEach(valueName => {
     if (valueName.endsWith('ou')) {
-      ou = values[valueName];
+      ou = values[valueName].value;
     }
     if (valueName.endsWith('name')) {
-      name = values[valueName];
+      name = values[valueName].value;
     }
   });
 
   if (ou === null && settings.ouTag === 'root') {
     ou = ouLists.root[0];
-  }
-  else if (ou !== null) {
+  } else if (ou !== null) {
     ou = ouLists[settings.ouTag][ou];
   }
-  //const { electionNameTag } = settings;
-  //if (name === null && ou !== null && ou.electionNameTags[electionNameTag]) {
+  // const { electionNameTag } = settings;
+  // if (name === null && ou !== null && ou.electionNameTags[electionNameTag]) {
   //  name = ou.electionNameTags[electionNameTag]
-  //}
+  // }
   if (name === null && settings.name) {
     name = settings.name;
   }
@@ -162,41 +182,46 @@ const getDerivedValues = (values: Object, settings: Object, ouLists: Object) => 
 const requiredManualSettings = ['name', 'group', 'ouTag'];
 const requiredTemplateSettings = ['template', 'templateName', 'ouTag'];
 
-const internalSubmit = (submitAction: Function, electionTemplate: Object) =>
-  (values: Object) => {
-    const currentValues = getCurrentValues(values);
-    const { templateRoot, ouLists, elections } = electionTemplate;
-    const { settings } = getNodeListAndSettings(currentValues, templateRoot);
-    let { ou, name } = getDerivedValues(values, settings, ouLists);
-    if (settings.template && ou) {
-      const { ouTag, ...restSettings } = settings;
-      submitAction(
-        Object.assign({}, restSettings, { ouId: ou.id })
-      );
-    }
-    else if (ou && name) {
-      if (typeof name === 'string') {
-        const nameObj = {};
-        getSupportedLanguages().forEach(lang => {
-          nameObj[lang] = name;
-        });
-        name = nameObj;
-      }
-      let electionsData = [];
-      if (settings.hasMultipleElections) {
-        electionsData = elections;
-      }
-      else {
-        electionsData.push({ name, active: true });
-      }
-      const { ouTag, ...restSettings } = settings;
-      submitAction(Object.assign({}, restSettings, {
-        name, ouId: ou.id, elections: electionsData
-      }));
-    }
-  }
+const internalSubmit = (
+  submitAction: (v: any) => any,
+  electionTemplate: any
+) => (values: object) => {
+  const currentValues = getCurrentValues(values);
+  const { templateRoot, ouLists, elections } = electionTemplate;
+  const { settings } = getNodeListAndSettings(currentValues, templateRoot);
+  const ret = getDerivedValues(values, settings, ouLists);
+  const ou = ret.ou;
+  let name = ret.name;
 
-const validate = (electionTemplate: Object) => (values: Object) => {
+  if (settings.template && ou) {
+    const { ouTag, ...restSettings } = settings;
+    submitAction(Object.assign({}, restSettings, { ouId: ou.id }));
+  } else if (ou && name) {
+    if (typeof name === 'string') {
+      const nameObj = {};
+      getSupportedLanguages().forEach(lang => {
+        nameObj[lang] = name;
+      });
+      name = nameObj;
+    }
+    let electionsData = [];
+    if (settings.hasMultipleElections) {
+      electionsData = elections;
+    } else {
+      electionsData.push({ name, active: true });
+    }
+    const { ouTag, ...restSettings } = settings;
+    submitAction(
+      Object.assign({}, restSettings, {
+        name,
+        ouId: ou.id,
+        elections: electionsData,
+      })
+    );
+  }
+};
+
+const validate = (electionTemplate: any) => (values: object) => {
   const notFinished = { _error: 'not done' };
   if (isObjEmpty(values)) {
     return notFinished;
@@ -205,11 +230,13 @@ const validate = (electionTemplate: Object) => (values: Object) => {
   const currentValues = getCurrentValues(values);
   const { settings } = getNodeListAndSettings(currentValues, templateRoot);
   let requiredSettings = requiredTemplateSettings;
+
   if (!settings.template) {
     requiredSettings = requiredManualSettings;
   }
-  for (let i = 0; i < requiredSettings.length; i++) {
-    if (settings[requiredSettings[i]] === undefined) {
+
+  for (const requiredSetting of requiredSettings) {
+    if (settings[requiredSetting] === undefined) {
       return notFinished;
     }
   }
@@ -223,48 +250,51 @@ const validate = (electionTemplate: Object) => (values: Object) => {
   return {};
 };
 
-type Props = {
-  submitAction: Function,
-  electionTemplate: Object,
-  cancelAction: Function,
-  updateValues: Function,
-  initialValues: Object,
-  t: Function,
-  i18n: Object
-};
+const NewElectionForm = (props: IProps) => {
+  const { electionTemplate, submitAction, cancelAction, t } = props;
 
-const NewElectionForm = (props: Props) => {
-  const {
-    electionTemplate, submitAction, cancelAction, t
-  } = props;
   const { templateRoot, ouLists } = electionTemplate;
   const lang = props.i18n.language;
+
   return (
-    <Form onSubmit={internalSubmit(submitAction, electionTemplate)}
+    <Form
+      onSubmit={internalSubmit(submitAction, electionTemplate)}
       validate={validate(electionTemplate)}
       initialValues={props.initialValues}
-      render={(formProps: Object) => {
+      render={(formProps: FormRenderProps) => {
         const {
-          handleSubmit, reset, submitting, pristine, values, invalid
+          handleSubmit,
+          // reset,
+          submitting,
+          // pristine,
+          values,
+          invalid,
         } = formProps;
+
         const currentValues = getCurrentValues(values);
         const { nodeList, settings } = getNodeListAndSettings(
-          currentValues, templateRoot
+          currentValues,
+          templateRoot
         );
+
         return (
           <form onSubmit={handleSubmit}>
             <FormSpy
               onChange={formState => {
                 const { values: formValues, initialValues } = formState;
                 if (!formValues || !initialValues) {
+                  // no changes?
                   return;
                 }
-                if (Object.keys(formValues).length !== Object.keys(initialValues).length) {
-                  // A new value was added, push all values as-is
+                if (
+                  Object.keys(formValues).length !==
+                  Object.keys(initialValues).length
+                ) {
+                  // A new value is added, push all values as-is.
                   props.updateValues(formValues);
-                  return;
                 }
-                // Either a previous value was changed, or this is just a
+
+                // Either a previous value was changed, or this is hus a
                 // re-render without any real updates, which is ignored.
                 let changedValue = '';
                 Object.keys(formValues).forEach(key => {
@@ -272,15 +302,16 @@ const NewElectionForm = (props: Props) => {
                     changedValue = key;
                   }
                 });
+
                 if (changedValue) {
-                  // We need to delete all the subsequent values after the one
+                  // We need to delete all the subsequent vakues after the one
                   // that was updated, as they are now invalid.
-                  const keptValues = Object.keys(formValues).filter(key =>
-                    key <= changedValue
+                  const keptValues = Object.keys(formValues).filter(
+                    key => key <= changedValue
                   );
                   const updatedValues = {};
-                  keptValues.forEach(value => {
-                    updatedValues[value] = formValues[value];
+                  keptValues.forEach(key => {
+                    updatedValues[key] = formValues[key];
                   });
                   props.updateValues(updatedValues);
                 }
@@ -289,12 +320,13 @@ const NewElectionForm = (props: Props) => {
             <FormField inline>
               <Field
                 label={templateRoot.name[lang]}
-                name='option1'
+                name="option1"
                 placeholder={t('general.select')}
-                component={DropDownRF}
+                component={SelectDropDown}
                 options={buildDropdownOptions(templateRoot.options, lang)}
               />
             </FormField>
+
 
             {renderOptionFields(nodeList, ouLists, settings, t, lang)}
 
@@ -304,10 +336,10 @@ const NewElectionForm = (props: Props) => {
               submitDisabled={submitting || invalid}
             />
           </form>
-        )
+        );
       }}
     />
-  )
+  );
 };
 
 export default translate()(NewElectionForm);

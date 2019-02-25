@@ -154,6 +154,9 @@ const TextInput = (props: Props) => {
         readOnly={readOnly}
         onFocus={onFocus}
         onBlur={onBlur}
+        autoCapitalize="none"
+        autoComplete="off"
+        autoCorrect="off"
       />
       {!!label &&
         <label htmlFor={id} className={labelClassNames}>

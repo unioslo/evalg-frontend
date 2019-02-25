@@ -7,6 +7,7 @@ import FormField from './FormField';
 import FormFieldGroup from './FormFieldGroup';
 import NumberInput, { NumberInputRF } from './NumberInput';
 import { RadioButton, RadioButtonRF, RadioButtonGroup } from './RadioButton';
+import { SelectDropDown } from './SelectDropDown';
 import TextInput, { TextInputRF } from './TextInput';
 import TimeInput, { TimeInputRF } from './TimeInput';
 import {
@@ -29,6 +30,7 @@ export {
   RadioButton,
   RadioButtonGroup,
   RadioButtonRF,
+  SelectDropDown,
   TableRowForm,
   TableRowFormFields,
   TableRowFormHeader,
