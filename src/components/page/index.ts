@@ -1,5 +1,5 @@
 import Page from './Page';
-import { PageSection, PageSubSection } from './PageSection';
+import { PageSection, PageSubSection, PageParagraph } from './PageSection';
 import SettingsSection from './SettingsSection';
 
-export { Page, PageSection, PageSubSection, SettingsSection };
+export { Page, PageSection, PageSubSection, PageParagraph, SettingsSection };

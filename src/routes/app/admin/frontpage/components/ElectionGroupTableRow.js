@@ -7,7 +7,7 @@ import TableCell from 'components/table/TableCell';
 import Text from 'components/text';
 import VoteStatus from './VoteStatus';
 import ElectionStatus from 'components/electionStatus';
-import DropdownArrowIcon from './DropdownArrowIcon';
+import DropdownArrowIcon from 'components/icons/DropdownArrowIcon';
 
 import { Date, Time } from 'components/i18n';
 
