@@ -62,6 +62,9 @@ const styles = (theme: any) => ({
     borderBottom: '1px solid #CCC',
     display: 'flex',
     padding: '0.75rem 0',
+    '&:first-child': {
+      borderTop: '1px solid #CCC',
+    },
   },
   toggleSelectionIconFlexRight: {
     alignItems: 'flex-end',
