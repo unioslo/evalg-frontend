@@ -68,6 +68,7 @@ class MajorityVote extends React.Component<IProps, IState> {
       </Page>
     );
   }
+  
   private handleSelectCandidate(selectedCandidateIndex: number) {
     this.setState(currState => ({
       selectedCandidateIndex,
@@ -83,7 +84,10 @@ class MajorityVote extends React.Component<IProps, IState> {
   }
 
   private handleGoBackToBallot() {
-    this.setState({ isReviewingBallot: false, isBlankVote: false });
+    this.setState({
+      isReviewingBallot: false,
+      isBlankVote: false,
+    });
   }
 
   private handleBlankVote() {

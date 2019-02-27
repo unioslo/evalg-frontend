@@ -1,10 +1,7 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 
-import { Button, ButtonContainer } from 'components/button';
-import Link from 'components/link';
 import { PageSection } from 'components/page';
-import { ScreenSizeConsumer } from 'providers/ScreenSize';
 import {
   CandidateList,
   CandidateListItem,
@@ -14,6 +11,7 @@ import {
 import HelpSubSection from './HelpSubSection';
 import MandatePeriodText from './MandatePeriodText';
 import injectSheet from 'react-jss';
+import BallotButtons from './BallotButtons';
 
 const helpTextTags = [
   'voter.majorityVoteHelpYouMaySelectOnlyOne',
@@ -43,51 +41,6 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
     classes,
   } = props;
   const canSubmit = selectedCandidateIndex !== -1;
-  const ballotActions = (
-    <ScreenSizeConsumer>
-      {({ screenSize }) =>
-        screenSize === 'sm' ? (
-          <>
-            <ButtonContainer>
-              <Link to="/voter">
-                <Button text={<Trans>general.back</Trans>} secondary />
-              </Link>
-              <Button
-                text={<Trans>election.showBallot</Trans>}
-                disabled={!canSubmit}
-                action={onReviewBallot}
-              />
-            </ButtonContainer>
-            <ButtonContainer>
-              <Button
-                text={<Trans>election.blankVote</Trans>}
-                action={onBlankVote}
-                secondary
-                fillWidth
-                centerContent
-              />
-            </ButtonContainer>
-          </>
-        ) : (
-          <ButtonContainer alignLeft>
-            <Link to="/voter">
-              <Button text={<Trans>general.back</Trans>} secondary />
-            </Link>
-            <Button
-              text={<Trans>election.blankVote</Trans>}
-              action={onBlankVote}
-              secondary
-            />
-            <Button
-              text={<Trans>election.showBallot</Trans>}
-              disabled={!canSubmit}
-              action={onReviewBallot}
-            />
-          </ButtonContainer>
-        )
-      }
-    </ScreenSizeConsumer>
-  );
 
   return (
     <PageSection>
@@ -119,7 +72,11 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
             );
           })}
         </CandidateList>
-        {ballotActions}
+        <BallotButtons
+          canSubmit={canSubmit}
+          onReviewBallot={onReviewBallot}
+          onBlankVote={onBlankVote}
+        />
       </HelpSubSection>
     </PageSection>
   );
