@@ -19,21 +19,25 @@ interface IState {
   selectedCandidate: Candidate | null;
   selectedCandidateIndex: number;
   shuffledCandidates: Candidate[];
-  reviewingBallot: boolean;
+  isBlankVote: boolean;
+  isReviewingBallot: boolean;
 }
 
 class MajorityVote extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      reviewingBallot: false,
       selectedCandidate: null,
       selectedCandidateIndex: -1,
       shuffledCandidates: shuffleArray(props.election.lists[0].candidates),
+      isBlankVote: false,
+      isReviewingBallot: false,
     };
-    this.selectCandidate = this.selectCandidate.bind(this);
-    this.deselectCandidate = this.deselectCandidate.bind(this);
-    this.toggleShowBallotReview = this.toggleShowBallotReview.bind(this);
+    this.handleSelectCandidate = this.handleSelectCandidate.bind(this);
+    this.handleDeselectCandidate = this.handleDeselectCandidate.bind(this);
+    this.handleReviewBallot = this.handleReviewBallot.bind(this);
+    this.handleGoBackToBallot = this.handleGoBackToBallot.bind(this);
+    this.handleBlankVote = this.handleBlankVote.bind(this);
   }
   public render() {
     const { i18n } = this.props;
@@ -43,40 +47,47 @@ class MajorityVote extends React.Component<IProps, IState> {
     }
     return (
       <Page header={this.props.electionName[lang]}>
-        {this.state.reviewingBallot ? (
+        {this.state.isReviewingBallot ? (
           <MajorityVoteReview
-            backAction={this.toggleShowBallotReview}
             selectedCandidate={this.state.selectedCandidate}
+            isBlankVote={this.state.isBlankVote}
             submitAction={dummySubmit}
-            toggleReviewAction={this.toggleShowBallotReview}
+            onGoBackToBallot={this.handleGoBackToBallot}
           />
         ) : (
           <MajorityVoteBallot
             candidates={this.state.shuffledCandidates}
             selectedCandidateIndex={this.state.selectedCandidateIndex}
-            selectCandidate={this.selectCandidate}
-            deselectCandidate={this.deselectCandidate}
             election={this.props.election}
-            toggleReviewAction={this.toggleShowBallotReview}
+            onSelectCandidate={this.handleSelectCandidate}
+            onDeselectCandidate={this.handleDeselectCandidate}
+            onBlankVote={this.handleBlankVote}
+            onReviewBallot={this.handleReviewBallot}
           />
         )}
       </Page>
     );
   }
-  private selectCandidate(selectedCandidateIndex: number) {
+  private handleSelectCandidate(selectedCandidateIndex: number) {
     this.setState(currState => ({
       selectedCandidateIndex,
       selectedCandidate: currState.shuffledCandidates[selectedCandidateIndex],
     }));
   }
-  private deselectCandidate() {
+  private handleDeselectCandidate() {
     this.setState({ selectedCandidateIndex: -1 });
   }
 
-  private toggleShowBallotReview() {
-    this.setState(currState => ({
-      reviewingBallot: !currState.reviewingBallot,
-    }));
+  private handleReviewBallot() {
+    this.setState({ isReviewingBallot: true });
+  }
+
+  private handleGoBackToBallot() {
+    this.setState({ isReviewingBallot: false, isBlankVote: false });
+  }
+
+  private handleBlankVote() {
+    this.setState({ isBlankVote: true }, this.handleReviewBallot);
   }
 }
 

@@ -23,10 +23,11 @@ const helpTextTags = [
 interface IProps {
   candidates: Candidate[];
   selectedCandidateIndex: number;
-  selectCandidate: (selectedCandidateIndex: number) => void;
-  deselectCandidate: () => void;
+  onSelectCandidate: (selectedCandidateIndex: number) => void;
+  onDeselectCandidate: () => void;
   election: Election;
-  toggleReviewAction: () => void;
+  onReviewBallot: () => void;
+  onBlankVote: () => void;
   classes: any;
 }
 
@@ -34,65 +35,93 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
   const {
     candidates,
     selectedCandidateIndex,
-    selectCandidate,
-    deselectCandidate,
-    toggleReviewAction,
+    onSelectCandidate,
+    onDeselectCandidate,
+    onReviewBallot,
+    onBlankVote,
     election,
     classes,
   } = props;
   const canSubmit = selectedCandidateIndex !== -1;
   const ballotActions = (
-    <ButtonContainer alignLeft={true}>
-      <Link to="/voter">
-        <Button text={<Trans>general.back</Trans>} secondary={true} />
-      </Link>
-      <Button
-        text={<Trans>election.showBallot</Trans>}
-        disabled={!canSubmit}
-        action={toggleReviewAction}
-      />
-    </ButtonContainer>
+    <ScreenSizeConsumer>
+      {({ screenSize }) =>
+        screenSize === 'sm' ? (
+          <>
+            <ButtonContainer>
+              <Link to="/voter">
+                <Button text={<Trans>general.back</Trans>} secondary />
+              </Link>
+              <Button
+                text={<Trans>election.showBallot</Trans>}
+                disabled={!canSubmit}
+                action={onReviewBallot}
+              />
+            </ButtonContainer>
+            <ButtonContainer>
+              <Button
+                text={<Trans>election.blankVote</Trans>}
+                action={onBlankVote}
+                secondary
+                fillWidth
+                centerContent
+              />
+            </ButtonContainer>
+          </>
+        ) : (
+          <ButtonContainer alignLeft>
+            <Link to="/voter">
+              <Button text={<Trans>general.back</Trans>} secondary />
+            </Link>
+            <Button
+              text={<Trans>election.blankVote</Trans>}
+              action={onBlankVote}
+              secondary
+            />
+            <Button
+              text={<Trans>election.showBallot</Trans>}
+              disabled={!canSubmit}
+              action={onReviewBallot}
+            />
+          </ButtonContainer>
+        )
+      }
+    </ScreenSizeConsumer>
   );
 
   return (
-    <ScreenSizeConsumer>
-      {({ screenSize }) => (
-        <PageSection>
-          <div className={classes.mandatePeriodTextDesktop}>
-            <MandatePeriodText election={election} longDate />
-          </div>
-          <div className={classes.mandatePeriodTextMobile}>
-            <MandatePeriodText election={election} />
-          </div>
-          <HelpSubSection
-            header={<Trans>voter.majorityVoteHelpHeader</Trans>}
-            helpTextTags={helpTextTags}
-          >
-            {screenSize === 'sm' ? ballotActions : null}
+    <PageSection>
+      <div className={classes.mandatePeriodTextDesktop}>
+        <MandatePeriodText election={election} longDate />
+      </div>
+      <div className={classes.mandatePeriodTextMobile}>
+        <MandatePeriodText election={election} />
+      </div>
+      <HelpSubSection
+        header={<Trans>voter.majorityVoteHelpHeader</Trans>}
+        helpTextTags={helpTextTags}
+      >
+        <CandidateList>
+          {candidates.map((c, index) => {
+            let selectAction = () => onSelectCandidate(index);
+            if (selectedCandidateIndex === index) {
+              selectAction = onDeselectCandidate;
+            }
 
-            <CandidateList>
-              {candidates.map((c, index) => {
-                let selectAction = () => selectCandidate(index);
-                if (selectedCandidateIndex === index) {
-                  selectAction = deselectCandidate;
-                }
-
-                return (
-                  <CandidateListItem key={index}>
-                    <ToggleSelectIcon
-                      selected={index === selectedCandidateIndex}
-                      action={selectAction}
-                    />
-                    <CandidateInfo candidate={c} infoUrl={true} />
-                  </CandidateListItem>
-                );
-              })}
-            </CandidateList>
-            {ballotActions}
-          </HelpSubSection>
-        </PageSection>
-      )}
-    </ScreenSizeConsumer>
+            return (
+              <CandidateListItem key={index}>
+                <ToggleSelectIcon
+                  selected={index === selectedCandidateIndex}
+                  action={selectAction}
+                />
+                <CandidateInfo candidate={c} infoUrl={true} />
+              </CandidateListItem>
+            );
+          })}
+        </CandidateList>
+        {ballotActions}
+      </HelpSubSection>
+    </PageSection>
   );
 };
 

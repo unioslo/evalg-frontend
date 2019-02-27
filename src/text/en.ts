@@ -97,7 +97,7 @@ export default {
       'Note that the election cannot start before it meets the minimum requirements and is approved by the election owner.',
     announceElectionReadMore: 'Read more about making an election visible',
     ballot: 'Ballot',
-    blankVote: 'None of the above',
+    blankVote: 'Blank vote',
     blockerMissingKey: 'Election key',
     blockerStartBeforeEnd: 'Start time must be before end time',
     blockerUnknown: 'Something unexpected is wrong',
