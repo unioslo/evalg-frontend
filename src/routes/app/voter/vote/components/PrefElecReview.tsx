@@ -98,11 +98,11 @@ const CrossedBallot = ({
 };
 
 interface IReviewProps extends TranslateHocProps {
-  backAction: () => void;
-  submitAction: () => void;
   candidates: Candidate[];
   unselectedCandidates: Candidate[];
-  isVoteBlank: boolean;
+  isBlankVote: boolean;
+  onGoBackToBallot: () => void;
+  onSubmitBallot: () => void;
   classes: any;
 }
 
@@ -119,11 +119,12 @@ class PrefElecReview extends React.Component<IReviewProps, IReviewState> {
     );
   }
   public render() {
+    const { isBlankVote, onGoBackToBallot, onSubmitBallot } = this.props;
     return (
       <PageSection>
         <Trans>voter.reviewBallot</Trans>
         <PageSubSection header={<Trans>election.ballot</Trans>}>
-          {this.props.isVoteBlank ? (
+          {isBlankVote ? (
             BlankBallot()
           ) : (
             <>
@@ -150,12 +151,12 @@ class PrefElecReview extends React.Component<IReviewProps, IReviewState> {
 
           <ButtonContainer alignLeft={true}>
             <Button
-              action={this.props.backAction}
+              action={onGoBackToBallot}
               text={<Trans>general.back</Trans>}
               secondary={true}
             />
             <Button
-              action={this.props.submitAction}
+              action={onSubmitBallot}
               text={<Trans>election.deliverVote</Trans>}
             />
           </ButtonContainer>
