@@ -63,31 +63,31 @@ const styles = theme => ({
   },
 });
 
-const filterObjects = (
-  objects,
-  filter,
-  filterOn
-) => {
-  // We don't want to return anything if the user hasn't typed in a filter yet.
-  if (filter === '') {
-    return [];
-  }
-  return objects.filter(obj => {
-    for (let i = 0; i < filterOn.length; i++) {
-      let value = '';
-      if (typeof filterOn[i] === 'string') {
-        value = obj[filterOn[i]];
-      } else if (Array.isArray(filterOn[i])) {
-        const values = filterOn[i].map(attr => obj[attr]);
-        value = values.join(' ');
-      }
-      if (typeof value === 'string' && value.toLowerCase().includes(filter)) {
-        return true;
-      }
-    }
-    return false;
-  });
-};
+// const filterObjects = (
+//   objects,
+//   filter,
+//   filterOn
+// ) => {
+//   // We don't want to return anything if the user hasn't typed in a filter yet.
+//   if (filter === '') {
+//     return [];
+//   }
+//   return objects.filter(obj => {
+//     for (let i = 0; i < filterOn.length; i++) {
+//       let value = '';
+//       if (typeof filterOn[i] === 'string') {
+//         value = obj[filterOn[i]];
+//       } else if (Array.isArray(filterOn[i])) {
+//         const values = filterOn[i].map(attr => obj[attr]);
+//         value = values.join(' ');
+//       }
+//       if (typeof value === 'string' && value.toLowerCase().includes(filter)) {
+//         return true;
+//       }
+//     }
+//     return false;
+//   });
+// };
 
 // type Props = {
 //   userInput: string,
