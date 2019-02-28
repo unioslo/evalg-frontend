@@ -22,8 +22,8 @@ import injectSheet from 'react-jss';
 import BallotButtons from './BallotButtons';
 
 const helpTextTags = [
-  'voter.prefElecRankCandidatesShort',
   'voter.prefElecNrOfCandidates',
+  'voter.prefElecRankCandidates',
   'voter.prefElecOnlySelectedGetVote',
   'voter.canVoteBlank',
 ];

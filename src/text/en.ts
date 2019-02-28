@@ -316,16 +316,17 @@ export default {
     crossedCandidates: 'Crossed candidates',
     cumulate: 'Extra vote',
     editVote: 'Edit vote',
-    majorityVoteHelpHeader: 'Choose the candidate you want to give your vote to',
+    majorityVoteHelpHeader: 'Choose one candidate',
+    majorityVoteHelpDesc: 'Choose the candidate you would like to vote for.',
     majorityVoteHelpYouMaySelectOnlyOne: 'This is a majority vote election, and you may select only one candidate.',
     prefElecDesc:
-      'Select the candidates you would like to include in your vote, in prioritized order.',
+      'Choose the candidates you would like to vote for, in prioritized order.',
     prefElecNrOfCandidates:
-      'You can vote on as many of the listed candidates as you prefer.',
+      'You may vote for as many of the candidates as you want.',
     prefElecOnlySelectedGetVote:
       'It is only the candidates you select that will receive a vote.',
     prefElecRankCandidates:
-      "Rank the candidates in prioritized order. If a candidate you have selected doesn't receive enough total votes in the election, your vote for that candidate will be transferred to the next candidate on your ballot.",
+      'Rank the candidate you prefer the most as number 1. If the candidate ranked as number 1 doesn\'t recieve enough votes in total, and you have ranked another candidate as number 2, your vote for candidate number 1 will be transferred to candidate number 2, and so on.',
     prefElecRankCandidatesShort:
       'Rank the candidates as preferred by selection them in the preferred order. You may change the order of already selected candidates as you go along.',
     reviewBallot:
