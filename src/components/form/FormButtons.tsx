@@ -2,7 +2,7 @@
 import * as React from 'react';
 
 import { Trans } from 'react-i18next';
-import Button, { ButtonContainer } from 'components/button';
+import Button, { ButtonContainer } from '../../components/button';
 import injectSheet from 'react-jss';
 
 const styles = (theme: any) => ({
@@ -75,4 +75,4 @@ const FormButtons = (props: IProps) => {
   );
 };
 
-export default injectSheet(styles)(FormButtons);
+export default injectSheet(styles as any)(FormButtons);

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 
-import { objPropsToArray } from '../../../../../../utils';
+// import { objPropsToArray } from '../../../../../../utils';
 
 import { PageSection } from '../../../../../../components/page';
 import Text from '../../../../../../components/text';
@@ -20,7 +20,7 @@ import {
 } from '../../../../../../components/table';
 
 import ActionText from '../../../../../../components/actiontext';
-import { DropDown, DropDownRF, TextInput } from '../../../../../../components/form';
+import { DropDown, TextInput } from '../../../../../../components/form';
 
 import NoCandidatesRow from './NoCandidatesRow';
 import NoCandidatesFoundRow from './NoCandidatesFoundRow';

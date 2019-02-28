@@ -1,12 +1,22 @@
 /* @flow */
 import * as React from 'react';
 
-class DropDownBase extends React.Component<Object, DropDownState> {
-  state: DropDownState;
-  wrapperRef: any;
-  handleClickOutside: Function;
+import {} from '../../interfaces'
 
-  constructor(props: Object) {
+interface IDropDownState {
+  inputValue: any,
+  objects: any[],
+  open: boolean,
+  selected: any
+}
+
+
+class DropDownBase<T> extends React.Component<T, IDropDownState> {
+  state: IDropDownState;
+  wrapperRef: any;
+  // handleClickOutside: Function;
+
+  constructor(props: T) {
     super(props);
     this.state = {
       inputValue: '',

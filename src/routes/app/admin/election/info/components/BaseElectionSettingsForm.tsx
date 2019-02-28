@@ -12,11 +12,12 @@ import {
   TableHeaderCell,
   TableHeaderRow,
   TableRow,
-} from 'components/table';
+} from '../../../../../../components/table';
 
-import { CheckBoxRF } from 'components/form';
-import { NumberInputRF, FormButtons } from 'components/form';
-import { PageSubSection } from 'components/page';
+import { CheckBoxRF } from '../../../../../../components/form';
+import { NumberInputRF, FormButtons } from '../../../../../../components/form';
+import { PageSubSection } from '../../../../../../components/page';
+import { ElectionBaseSettingsInput, ElectionGroup } from '../../../../../../interfaces';
 
 export interface IElectionsBaseSettings {
   elections: ElectionBaseSettingsInput[];
@@ -69,9 +70,7 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
-  async handleFormSubmit(submitValues: {
-    elections: ElectionBaseSettingsInput[];
-  }) {
+  async handleFormSubmit(submitValues: any) {
     this.isSubmitting = true;
     await this.props.onSubmit(buildSubmitPayload(submitValues));
     this.isSubmitting = false;
@@ -83,7 +82,7 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
 
   render() {
     const lang = this.props.i18n.language;
-    const { elections } = this.initialValues;
+    const elections: any = this.initialValues;
     return (
       <Form
         onSubmit={this.handleFormSubmit}
@@ -124,7 +123,7 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
                             <TableCell>
                               <Field
                                 name={`${election}.active`}
-                                component={CheckBoxRF}
+                                component={CheckBoxRF as any}
                                 type="checkbox"
                                 label={elections[index].name[lang]}
                               />
@@ -157,7 +156,7 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
               <PageSubSection header={<Trans>election.quotas</Trans>}>
                 <Field
                   name="hasGenderQuota"
-                  component={CheckBoxRF}
+                  component={CheckBoxRF as any}
                   type="checkbox"
                   label={<Trans>election.hasGenderQuota</Trans>}
                 />

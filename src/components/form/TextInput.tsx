@@ -173,7 +173,7 @@ const TextInput = (props: IProps) => {
   );
 };
 
-const StyledTextInput = injectSheet(styles)(TextInput);
+const StyledTextInput = injectSheet(styles as any)(TextInput);
 
 export default StyledTextInput;
 

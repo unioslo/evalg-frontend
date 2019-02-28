@@ -8,8 +8,10 @@ import {
   IActiveComponentProps,
   IInactiveComponentProps,
   ISettingsSectionContents,
-} from 'components/page/SettingsSection';
+} from '../../../../../../components/page/SettingsSection';
 import { Trans } from 'react-i18next';
+
+import { Election, ElectionGroup, ElectionVoterInfoInput } from '../../../../../../interfaces';
 
 const buildInitialValues = (elecs: Election[]) => {
   const elections = elecs.map(e => ({
@@ -65,7 +67,7 @@ const buildPayload = (values: any) => {
     hasMultipleMandateTimes,
     elections,
   } = values;
-  
+
   return {
     ...values,
     elections: elections.map((e: ElectionVoterInfoInput) => ({

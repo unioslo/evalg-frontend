@@ -2,11 +2,11 @@
 import * as React from 'react';
 import { Trans } from 'react-i18next';
 
-import { Button, ButtonContainer } from 'components/button';
-import Icon from 'components/icon';
-import Link from 'components/link';
-import { PageSection } from 'components/page';
-import { ScreenSizeConsumer } from 'providers/ScreenSize';
+import { Button, ButtonContainer } from '../../../../../components/button';
+import Icon from '../../../../../components/icon';
+import Link from '../../../../../components/link';
+import { PageSection } from '../../../../../components/page';
+import { ScreenSizeConsumer } from '../../../../../providers/ScreenSize';
 import CandidateButtonBar from './CandidateButtonBar';
 import {
   CandidateInfo,
@@ -28,6 +28,8 @@ const helpTextTags = [
   'voter.prefElecOnlySelectedGetVote',
   'voter.canVoteBlank',
 ];
+import { Election, Candidate } from '../../../../../interfaces';
+
 
 interface IProps {
   selectedCandidates: Candidate[];
@@ -67,7 +69,7 @@ class PrefElecBallot extends React.Component<IProps, IState> {
     const ballotActions = (
       <ButtonContainer alignLeft={true}>
         <Link to="/voter">
-          <Button text={<Trans>general.back</Trans>} secondary={true} />
+          <Button text={<Trans>general.back</Trans>} secondary={true} action={() => null}/>
         </Link>
         <Button
           text={<Trans>election.showBallot</Trans>}

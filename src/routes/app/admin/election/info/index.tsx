@@ -1,21 +1,22 @@
 import React from 'react';
 
 import { translate, Trans } from 'react-i18next';
-import Page from 'components/page/Page';
-import { PageSection } from 'components/page';
-import Text from 'components/text';
-import Button, { ButtonContainer } from 'components/button';
+import Page from '../../../../../components/page/Page';
+import { PageSection } from '../../../../../components/page';
+import Text from '../../../../../components/text';
+import Button, { ButtonContainer } from '../../../../../components/button';
 import { History } from 'history';
 import { i18n } from 'i18next';
 import gql from 'graphql-tag';
 
-import { ISettingsSectionContents } from 'components/page/SettingsSection';
+import { ISettingsSectionContents } from '../../../../../components/page/SettingsSection';
 import BaseElectionSettingsSection from './components/BaseElectionSettings';
 import VotingPeriodSettingsSection from './components/VotingperiodSettings';
 import VoterInfoSettingsSection from './components/VoterInfoSettings';
 import AdminRolesSettingsSection from './components/AdminRolesSettings';
-import SettingsSectionsGroup from 'components/page/SettingsSectionsGroup';
+import SettingsSectionsGroup from '../../../../../components/page/SettingsSectionsGroup';
 import { Query, withApollo, WithApolloClient } from 'react-apollo';
+// import { ElectionGroup } from '../../../../../interfaces';
 
 const isCreatingNewElectionQuery = gql`
   query {
@@ -33,9 +34,9 @@ const defaultSettingsSectionsContents: ISettingsSectionContents[] = [
 ];
 
 interface IProps {
-  electionGroupData: ElectionGroup;
+  electionGroupData: any;
   isNewElection?: boolean;
-  handleUpdate?: (payload: any) => Promise<any>; // TODO: Isn't used. Delete?
+  handleUpdate?: () => Promise<any>; // TODO: Isn't used. Delete?
   history: History;
   i18n: i18n;
 }
@@ -58,10 +59,10 @@ class InfoPage extends React.Component<PropsInternal> {
     }
   }
 
-  handleSettingsWasSaved = (payload: any) => {
+  handleSettingsWasSaved = () => {
     if (this.props.handleUpdate) {
       this.props
-        .handleUpdate(payload)
+        .handleUpdate()
         .then(() => null, (error: string) => console.error(error));
     }
   };
@@ -103,7 +104,7 @@ class InfoPage extends React.Component<PropsInternal> {
               onSettingsWasSaved={this.handleSettingsWasSaved}
             />
 
-            <ButtonContainer alignRight={true} topMargin={true}>
+            <ButtonContainer alignRight={true} noTopMargin={false}>
               <Button
                 text={
                   <span>
@@ -113,7 +114,7 @@ class InfoPage extends React.Component<PropsInternal> {
                 }
                 action={proceedToCandiates}
                 disabled={
-                  this.props.electionGroupData.elections.filter(e => e.active)
+                  this.props.electionGroupData.elections.filter((e: any) => e.active)
                     .length === 0
                 }
                 iconRight="mainArrow"

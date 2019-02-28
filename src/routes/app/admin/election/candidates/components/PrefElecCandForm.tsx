@@ -59,7 +59,10 @@ class PrefElecCandForm extends React.Component<IProps> {
 
   render() {
     const {
-      t, cancelAction, listDict, candidate
+      t,
+      cancelAction,
+      listDict,
+      // candidate
     } = this.props;
     const lang = this.props.i18n.language;
     const genderOptions = [
@@ -78,7 +81,13 @@ class PrefElecCandForm extends React.Component<IProps> {
         initialValues={this.props.candidate}
         render={(formProps) => {
           const {
-            handleSubmit, reset, submitting, pristine, values, invalid, errors,
+            handleSubmit,
+            // reset,
+            // submitting,
+            pristine,
+            // values,
+            // invalid,
+            errors,
             valid, touched
           } = formProps;
           return (
@@ -114,6 +123,8 @@ class PrefElecCandForm extends React.Component<IProps> {
                 {!pristine && errors._errors && Object.keys(errors._errors).map((field, index) => {
                   if (touched && touched[field]) {
                     return <FormErrorMsg key={index} msg={errors._errors[field]} />;
+                  } else {
+                    return <React.Fragment/>;
                   }
                 })}
                 <FormButtons

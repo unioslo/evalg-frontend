@@ -80,7 +80,7 @@ const PageSection: React.SFC<IProps> = props => {
   );
 };
 
-const StyledSection = injectSheet(styles)(PageSection);
+const StyledSection = injectSheet(styles as any)(PageSection);
 
 interface ISubProps {
   classes: any;
@@ -107,6 +107,6 @@ const PageSubSection: React.SFC<ISubProps> = props => {
   );
 };
 
-const StyledSubSection = injectSheet(styles)(PageSubSection);
+const StyledSubSection = injectSheet(styles as any)(PageSubSection);
 
 export { StyledSection as PageSection, StyledSubSection as PageSubSection };

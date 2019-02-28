@@ -36,4 +36,4 @@ const Spinner = ({ classes, darkStyle }: IProps) => {
   return <div className={cls} />;
 };
 
-export default injectSheet(styles)(Spinner);
+export default injectSheet(styles as any)(Spinner);

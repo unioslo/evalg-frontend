@@ -35,6 +35,6 @@ const Page: React.SFC<IProps> = props => (
   </main>
 );
 
-const StyledPage: any = injectSheet(styles)(Page);
+const StyledPage: any = injectSheet(styles as any)(Page);
 
 export default StyledPage;

@@ -69,7 +69,7 @@ const RadioButton = (props: IProps) => {
   )
 };
 
-const StyledRadioButton = injectSheet(styles)(RadioButton);
+const StyledRadioButton = injectSheet(styles as any)(RadioButton);
 export { StyledRadioButton as RadioButton };
 
 interface IGroupProps {

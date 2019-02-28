@@ -136,4 +136,4 @@ const ElectionNavBar = (props: IProps) => {
   )
 };
 
-export default injectSheet(styles)(translate()(ElectionNavBar));
+export default injectSheet(styles as any)(translate()(ElectionNavBar));

@@ -20,12 +20,13 @@ export const filterObjSubPropValue = (
   if (filterValue === '') {
     return inputArray;
   }
-  return inputArray.filter((obj) => {
+  return inputArray.filter((obj: any) => {
     for (const subObj of obj[subArray]) {
       if (subObj[attribute].toLowerCase().includes(filterValue.toLowerCase())) {
         return true;
       }
     }
+    return false;
   });
 };
 

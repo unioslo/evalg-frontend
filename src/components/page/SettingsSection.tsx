@@ -3,8 +3,10 @@ import { Trans } from 'react-i18next';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import ActionText from 'components/actiontext';
-import Text from 'components/text';
+import ActionText from '../../components/actiontext';
+import Text from '../../components/text';
+
+import { ElectionGroup } from '../../interfaces';
 
 const styles = (theme: any) => ({
   section: {
@@ -129,4 +131,4 @@ const SettingsSection: React.SFC<IProps> = props => {
   );
 };
 
-export default injectSheet(styles)(SettingsSection);
+export default injectSheet(styles as any)(SettingsSection);

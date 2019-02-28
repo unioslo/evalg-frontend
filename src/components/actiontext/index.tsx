@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
-const styles: StyleSheet = (theme) => ({
+const styles = (theme: any) => ({
   actionText: {
     '&:hover': {
       cursor: 'pointer',

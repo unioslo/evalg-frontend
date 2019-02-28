@@ -13,7 +13,7 @@ import {
   FormFieldGroup,
   RadioButtonGroup,
   TextInputRF,
-} from 'components/form';
+} from '../../../../../../components/form';
 
 import {
   Table,
@@ -23,12 +23,14 @@ import {
   TableHeaderCell,
   TableHeaderRow,
   TableRow,
-} from 'components/table';
+} from '../../../../../../components/table';
 
-import { validateEmail, validateUrl } from 'utils/validators';
+import { validateEmail, validateUrl } from '../../../../../../utils/validators';
 
-import { PageSubSection } from 'components/page';
-import Text from 'components/text';
+import { PageSubSection } from '../../../../../../components/page';
+import Text from '../../../../../../components/text';
+
+import { ElectionGroup } from '../../../../../../interfaces';
 
 const validate = (lang: string) => (values: any) => {
   const elecErrors: any[] = [];
@@ -165,7 +167,8 @@ class VoterInfoForm extends React.Component<IProps> {
   }
 
   render() {
-    const { electionGroup, initialValues, closeAction, t } = this.props;
+    const { initialValues, closeAction, t } = this.props;
+    const electionGroup: any = this.props.electionGroup;
     const lang = this.props.i18n.language;
     const { elections } = initialValues;
     if (elections.length === 0) {
@@ -198,7 +201,7 @@ class VoterInfoForm extends React.Component<IProps> {
           return (
             <form onSubmit={handleSubmit}>
               <PageSubSection header={<Trans>election.election</Trans>}>
-                <Text large={true}>{electionGroup.name[lang]}</Text>
+                <Text size="large">{electionGroup.name[lang]}</Text>
               </PageSubSection>
 
               <PageSubSection header={<Trans>election.mandatePeriod</Trans>}>

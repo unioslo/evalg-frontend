@@ -4,18 +4,20 @@ import injectSheet from 'react-jss';
 import { Route } from 'react-router-dom';
 import { Trans, translate } from 'react-i18next';
 
-import Spinner from 'components/animations/Spinner';
+import Spinner from '../../components/animations/Spinner';
 
 import Content from './components/Content';
 import Footer from './components/Footer';
 import Header from './components/Header';
-import Link from 'components/link';
+import Link from '../../components/link';
 
 import Admin from './admin';
 import Voter from './voter';
 
-import { authEnabled } from 'appConfig';
-import { oidcLogoutUrl } from 'appConfig';
+import { authEnabled } from '../../appConfig';
+import { oidcLogoutUrl } from '../../appConfig';
+import { Classes } from 'jss';
+import { i18n } from 'i18next';
 
 const styles = {
   ie11ExtraFlexContainer: {
@@ -39,9 +41,9 @@ const styles = {
 };
 
 interface IProps {
-  classes: any;
+  classes: Classes;
   authManager: any;
-  i18n: object;
+  i18n: i18n;
 }
 
 const FrontPage: React.SFC = () => (
@@ -51,22 +53,24 @@ const FrontPage: React.SFC = () => (
 );
 
 interface IStyleProp {
-  classes: any;
+  classes: Classes;
 }
 
-const Logout: React.SFC = injectSheet(styles)(({ classes }: IStyleProp) => {
+const logout: React.SFC<IStyleProp> = (props: IStyleProp) => {
   window.location.href = oidcLogoutUrl;
   return (
-    <div className={classes.logout}>
-      <div className={classes.spinBox}>
+    <div className={props.classes.logout}>
+      <div className={props.classes.spinBox}>
         <Spinner darkStyle={true} />
       </div>
       <Trans>general.logoutInProgress</Trans>
     </div>
   );
-});
+};
+const styledLogout = injectSheet(styles as any)(logout)
 
-const App: React.SFC<IProps> = ({ classes, authManager }) => {
+const App: React.SFC<IProps> = (props: IProps) => {
+  const { authManager, classes } = props;
   const ProtectedAdmin = authEnabled ? authManager(<Admin />) : Admin;
   const ProtectedVoter = authEnabled ? authManager(<Voter />) : Voter;
 
@@ -78,7 +82,7 @@ const App: React.SFC<IProps> = ({ classes, authManager }) => {
           <Route exact={true} path="/" component={FrontPage} />
           <Route path="/admin" component={ProtectedAdmin} />
           <Route path="/voter" component={ProtectedVoter} />
-          <Route path="/logout" component={Logout} />
+          <Route path="/logout" component={styledLogout} />
         </Content>
         <Footer />
       </div>
@@ -86,5 +90,5 @@ const App: React.SFC<IProps> = ({ classes, authManager }) => {
   );
 };
 
-const styledApp: any = injectSheet(styles)(translate()(App));
+const styledApp = injectSheet(styles as any)(translate()(App));
 export default styledApp;

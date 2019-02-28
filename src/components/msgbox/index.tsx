@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Icon from 'components/icon';
+import Icon from '../../components/icon';
 
 import injectSheet from 'react-jss';
 
@@ -11,9 +11,9 @@ const styles = () => ({
     display: 'flex',
     // alignItems: 'stretch',
     // alignContent: 'center',
-    
+
     // justifyContent: 'space-between',
-    
+
     backgroundColor: '#f4f9fa',
     border: '2px',
     borderStyle: 'solid',
@@ -55,7 +55,7 @@ const styles = () => ({
     marginRight: '20px',
     marginLeft: 'auto',
   },
-  
+
 });
 
 
@@ -130,5 +130,5 @@ class MsgBox extends React.Component<IProps, IState> {
   }
 }
 
-const StyledMsgBox = injectSheet(styles)(MsgBox);
+const StyledMsgBox = injectSheet(styles as any)(MsgBox);
 export { StyledMsgBox as MsgBox };

@@ -4,9 +4,11 @@ import { TranslateHocProps } from 'react-i18next/src/translate';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import Icon from 'components/icon';
-import Link from 'components/link';
-import { joinStringsWithCommaAndAnd } from 'utils';
+import Icon from '../../../../../components/icon';
+import Link from '../../../../../components/link';
+import { joinStringsWithCommaAndAnd } from '../../../../../utils';
+import { Candidate } from '../../../../../interfaces';
+
 
 const styles = (theme: any) => ({
   button: {
@@ -102,7 +104,8 @@ interface IInfoProps {
 
 const CandidateInfo: React.SFC<IInfoProps & TranslateHocProps> = props => {
   const lang = props.i18n ? props.i18n.language : 'nb';
-  const { candidate, classes } = props;
+  const { classes } = props;
+  const candidate: any = props.candidate;
   const { coCandidates } = candidate.meta;
   return (
     <div className={classes.candidateInfo}>
@@ -111,7 +114,7 @@ const CandidateInfo: React.SFC<IInfoProps & TranslateHocProps> = props => {
         <div className={classes.candidateInfoSubText}>
           <Trans>election.coCandidates</Trans>:{' '}
           {joinStringsWithCommaAndAnd(
-            coCandidates.map(coCandidate => coCandidate.name),
+            coCandidates.map((coCandidate: any) => coCandidate.name),
             props.t
           )}
         </div>

@@ -123,7 +123,7 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
         data.electionGroup
       );
 
-      const lang = props.i18n.language;
+      // const lang = props.i18n.language;
       return (
         <>
           <ElectionNavBar

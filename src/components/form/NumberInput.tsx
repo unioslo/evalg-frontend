@@ -68,7 +68,7 @@ class NumberInput extends React.Component<IProps, IState> {
   }
 }
 
-const StyledNumberInput = injectSheet(styles)(NumberInput);
+const StyledNumberInput = injectSheet(styles as any)(NumberInput);
 
 export default StyledNumberInput;
 

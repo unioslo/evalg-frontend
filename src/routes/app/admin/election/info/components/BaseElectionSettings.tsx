@@ -10,8 +10,9 @@ import {
   IActiveComponentProps,
   IInactiveComponentProps,
   ISettingsSectionContents,
-} from 'components/page/SettingsSection';
+} from '../../../../../../components/page/SettingsSection';
 import { Trans } from 'react-i18next';
+import { ElectionGroup } from '../../../../../../interfaces';
 
 const updateBaseSettings = gql`
   mutation UpdateBaseSettings(

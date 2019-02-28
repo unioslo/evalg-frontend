@@ -78,4 +78,4 @@ const TableRow = (props: IProps) => {
   )
 };
 
-export default injectSheet(styles)(TableRow);
+export default injectSheet(styles as any)(TableRow);

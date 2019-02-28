@@ -5,13 +5,13 @@ import classNames from 'classnames';
 import gql from 'graphql-tag';
 import { withApollo, WithApolloClient } from 'react-apollo';
 
-import { sleep, translateBackendError } from 'utils';
-import { getCryptoEngine } from 'cryptoEngines';
-import Modal from 'components/modal';
-import Button, { ButtonContainer } from 'components/button';
-import { InfoList, InfoListItem } from 'components/infolist';
-import Link from 'components/link';
-import { CheckBox } from 'components/form';
+import { sleep, translateBackendError } from '../../../../../../utils';
+import { getCryptoEngine } from '../../../../../../cryptoEngines';
+import Modal from '../../../../../../components/modal';
+import Button, { ButtonContainer } from '../../../../../../components/button';
+import { InfoList, InfoListItem } from '../../../../../../components/infolist';
+import Link from '../../../../../../components/link';
+import { CheckBox } from '../../../../../../components/form';
 
 const styles = (theme: any) => ({
   steps: {
@@ -235,6 +235,8 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
       errorMessage,
     } = this.state;
 
+    const errorMessageValue = errorMessage ? true : false;
+
     const electionKeyFileContents = `
 secret:${secretKey}
 public:${publicKey}`.trim();
@@ -353,7 +355,7 @@ public:${publicKey}`.trim();
                         this.checkIfAllowedToActivateKey
                       )
                     }
-                    disabled={isGeneratingKey || errorMessage}
+                    disabled={isGeneratingKey || errorMessageValue}
                     text={downloadKeyButtonContent}
                   />
                 </a>
@@ -407,7 +409,7 @@ public:${publicKey}`.trim();
                     isGeneratingKey ||
                     isActivatingKey ||
                     hasActivatedNewKey ||
-                    errorMessage
+                    errorMessageValue
                   }
                   action={this.activateKey}
                 />
@@ -424,6 +426,6 @@ public:${publicKey}`.trim();
   }
 }
 
-export default injectSheet(styles)(
+export default injectSheet(styles as any)(
   translate()(withApollo(CreateElectionKeyModal))
 );

@@ -10,7 +10,7 @@ import {
   FormButtons, FormField, FormFieldGroup, TextInputRF
 } from '../../../../../../components/form';
 
-import { validateUrl } from '../../../../../../utils/validators';
+// import { validateUrl } from '../../../../../../utils/validators';
 
 interface IProps {
   handleSubmit: (a: any) => void,
@@ -23,31 +23,36 @@ interface IProps {
 
 
 // const validate = (values: Object, props: Props) => {
-const validate = (values: any, props: IProps) => {
-  const errors: any = {};
-  const coCandidatesErrors = [];
-  const { name, informationUrl, coCandidates } = values;
-  if (!name) {
-    errors.name = <Trans>general.required</Trans>
-  }
-  if (informationUrl && !validateUrl(informationUrl)) {
-    errors.informationUrl = <Trans>formErrors.invalidUrl</Trans>
-  }
-  const coCandErrors = coCandidates.map((coCandidate: any, index: any) => {
-    if (!coCandidate.name) {
-      return { name: <Trans>general.required</Trans> }
-    }
-    return null;
-  });
-  if (coCandidatesErrors.length) {
-    errors.coCandidates = coCandErrors;
-  }
-  return errors;
-};
+// const validate = (values: any, props: IProps) => {
+//   const errors: any = {};
+//   const coCandidatesErrors = [];
+//   const { name, informationUrl, coCandidates } = values;
+//   if (!name) {
+//     errors.name = <Trans>general.required</Trans>
+//   }
+//   if (informationUrl && !validateUrl(informationUrl)) {
+//     errors.informationUrl = <Trans>formErrors.invalidUrl</Trans>
+//   }
+//   const coCandErrors = coCandidates.map((coCandidate: any, index: any) => {
+//     if (!coCandidate.name) {
+//       return { name: <Trans>general.required</Trans> }
+//     }
+//     return null;
+//   });
+//   if (coCandidatesErrors.length) {
+//     errors.coCandidates = coCandErrors;
+//   }
+//   return errors;
+// };
 
 
 const PrefTeamElecCandForm = (props: IProps) =>  {
-  const { t, cancelAction, initialValues, deleteAction} = props;
+  const {
+    t,
+    cancelAction,
+    initialValues,
+    // deleteAction
+  } = props;
   return (
     <Form
       onSubmit={props.handleSubmit}
@@ -55,7 +60,13 @@ const PrefTeamElecCandForm = (props: IProps) =>  {
       initialValues={initialValues}
       render={(formProps) => {
         const {
-          handleSubmit, reset, submitting, pristine, values, invalid, errors,
+          handleSubmit,
+          // reset,
+          // submitting,
+          pristine,
+          // values,
+          // invalid,
+          // errors,
           valid
         } = formProps;
         return (

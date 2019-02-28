@@ -2,13 +2,12 @@
 import * as React from 'react';
 import { Form, FormRenderProps, FormSpy, Field } from 'react-final-form';
 
-import { getSupportedLanguages } from 'utils/i18n';
+import { getSupportedLanguages } from '../../../../../utils/i18n';
 import { translate } from 'react-i18next';
 import { i18n } from 'i18next';
-import { FormField, FormButtons, TextInput, SelectDropDown} from 'components/form';
+import { FormField, FormButtons, TextInput, SelectDropDown} from '../../../../../components/form';
 
-import { isObjEmpty } from 'utils/helpers';
-// import i18next = require('i18next');
+import { isObjEmpty } from '../../../../../utils/helpers';
 
 interface IProps {
   submitAction: (v: any) => any;
@@ -29,7 +28,7 @@ const buildDropdownOptions = (options: any[], lang: string) => {
 };
 
 export const getCurrentValues = (
-  valueObject: object
+  valueObject: any
 ): Array<string | number> => {
   let currentValues: any[] = [];
   if (valueObject) {
@@ -115,7 +114,7 @@ const renderOptionFields = (
           <Field
             label={node.name[lang]}
             name={`option${index + 2}ou`}
-            component={SelectDropDown}
+            component={SelectDropDown as any}
             options={ouOptions}
             large={true}
             isSearchable={true}
@@ -128,7 +127,7 @@ const renderOptionFields = (
         <FormField key={index}>
           <Field
             name={`option${index + 2}name`}
-            component={TextInput}
+            component={TextInput as any}
             label={node.name[lang]}
             placeholder={'Velg'}
           />
@@ -140,7 +139,7 @@ const renderOptionFields = (
       <FormField inline key={index}>
         <Field
           label={node.name[lang]}
-          component={SelectDropDown}
+          component={SelectDropDown as any}
           name={`option${index + 2}`}
           placeholder={t('general.select')}
           options={nodeOptions}
@@ -150,7 +149,7 @@ const renderOptionFields = (
   });
 };
 
-const getDerivedValues = (values: object, settings: any, ouLists: any) => {
+const getDerivedValues = (values: any, settings: any, ouLists: any) => {
   let ou = null;
   let name = null;
 
@@ -198,7 +197,7 @@ const internalSubmit = (
     submitAction(Object.assign({}, restSettings, { ouId: ou.id }));
   } else if (ou && name) {
     if (typeof name === 'string') {
-      const nameObj = {};
+      const nameObj: any = {};
       getSupportedLanguages().forEach(lang => {
         nameObj[lang] = name;
       });
@@ -309,7 +308,7 @@ const NewElectionForm = (props: IProps) => {
                   const keptValues = Object.keys(formValues).filter(
                     key => key <= changedValue
                   );
-                  const updatedValues = {};
+                  const updatedValues: any = {};
                   keptValues.forEach(key => {
                     updatedValues[key] = formValues[key];
                   });
@@ -322,7 +321,7 @@ const NewElectionForm = (props: IProps) => {
                 label={templateRoot.name[lang]}
                 name="option1"
                 placeholder={t('general.select')}
-                component={SelectDropDown}
+                component={SelectDropDown as any}
                 options={buildDropdownOptions(templateRoot.options, lang)}
               />
             </FormField>

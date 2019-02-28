@@ -3,8 +3,9 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 // import { getScreenSize, mediaQueryLg, mediaQueryMd, } from "utils/responsive";
-import Loading from 'components/loading';
+import Loading from '../../../../components/loading';
 import PrefElecVote from './PrefElecVote';
+import { Election } from '../../../../interfaces';
 
 const getElectionVotingData = gql`
   query Election($id: UUID!) {

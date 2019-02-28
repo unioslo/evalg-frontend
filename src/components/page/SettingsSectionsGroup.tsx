@@ -6,6 +6,8 @@ import {
 } from './SettingsSection';
 import { SettingsSection } from '.';
 
+import { ElectionGroup } from '../../interfaces';
+
 const styles = (theme: any) => ({});
 
 const buildInitialDisplayStatuses = (

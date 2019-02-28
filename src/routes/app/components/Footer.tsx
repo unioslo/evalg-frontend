@@ -8,8 +8,8 @@ import {
   appTechnicalSupportEmail,
   appTermsAndPrivacylink,
   appCookiesInformationLink,
-} from 'appConfig';
-import Link from 'components/link';
+} from '../../../appConfig';
+import Link from '../../../components/link';
 
 const styles = (theme: any) => ({
   wrapper: {
@@ -168,4 +168,4 @@ const Footer = (props: IProps) => {
   );
 };
 
-export default translate()(injectSheet(styles)(Footer));
+export default translate()(injectSheet(styles as any)(Footer));

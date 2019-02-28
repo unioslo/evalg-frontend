@@ -2,8 +2,10 @@ import * as React from 'react';
 import { translate, Trans } from 'react-i18next';
 import { i18n } from 'i18next';
 
-import Text from 'components/text';
-import { InfoList, InfoListItem } from 'components/infolist';
+import Text from '../../../../../../components/text';
+import { InfoList, InfoListItem } from '../../../../../../components/infolist';
+import { ElectionGroup } from '../../../../../../interfaces';
+
 
 interface IProps {
   electionGroup: ElectionGroup,
@@ -22,7 +24,7 @@ const BaseElectionSettingsValues: React.SFC<IProps> = (props) => {
           <Trans>election.noActiveElections</Trans>
         </InfoListItem>
       )}
-      {activeElections.map((election, index) => {
+      {activeElections.map((election: any,  index: any) => {
         return (
           <InfoListItem key={index}>
             {election.name[lang]}:{' '}

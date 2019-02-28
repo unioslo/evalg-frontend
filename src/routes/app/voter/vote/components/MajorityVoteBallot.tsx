@@ -1,10 +1,10 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 
-import { Button, ButtonContainer } from 'components/button';
-import Link from 'components/link';
-import { PageSection } from 'components/page';
-import { ScreenSizeConsumer } from 'providers/ScreenSize';
+import { Button, ButtonContainer } from '../../../../../components/button';
+import Link from '../../../../../components/link';
+import { PageSection } from '../../../../../components/page';
+import { ScreenSizeConsumer } from '../../../../../providers/ScreenSize';
 import {
   CandidateList,
   CandidateListItem,
@@ -14,6 +14,7 @@ import {
 import HelpSubSection from './HelpSubSection';
 import MandatePeriodText from './MandatePeriodText';
 import injectSheet from 'react-jss';
+import { Candidate, Election } from '../../../../../interfaces';
 
 const helpTextTags = [
   'voter.majorityVoteHelpYouMaySelectOnlyOne',
@@ -43,8 +44,8 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
   const canSubmit = selectedCandidateIndex !== -1;
   const ballotActions = (
     <ButtonContainer alignLeft={true}>
-      <Link to="/voter">
-        <Button text={<Trans>general.back</Trans>} secondary={true} />
+      <Link to="/voter" >
+        <Button text={<Trans>general.back</Trans>} secondary={true} action={()=>null}/>
       </Link>
       <Button
         text={<Trans>election.showBallot</Trans>}
@@ -82,6 +83,7 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
                     <ToggleSelectIcon
                       selected={index === selectedCandidateIndex}
                       action={selectAction}
+                      flexRight={false}
                     />
                     <CandidateInfo candidate={c} infoUrl={true} />
                   </CandidateListItem>

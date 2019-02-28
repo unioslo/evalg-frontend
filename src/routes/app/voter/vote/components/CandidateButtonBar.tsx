@@ -1,7 +1,7 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
-import Icon from 'components/icon';
+import Icon from '../../../../../components/icon';
 
 const styles = (theme: any) => ({
   actionButton: {
@@ -92,4 +92,4 @@ const CandidateButtonBar: React.SFC<IProps> = props => {
   )
 }
 
-export default injectSheet(styles)(CandidateButtonBar);
+export default injectSheet(styles as any)(CandidateButtonBar);

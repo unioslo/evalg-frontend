@@ -123,4 +123,4 @@ export const TableCell = (props: IProps) => {
   }
 };
 
-export default injectSheet(styles)(TableCell);
+export default injectSheet(styles as any)(TableCell);

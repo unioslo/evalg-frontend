@@ -2,10 +2,11 @@ import * as React from 'react';
 import { translate } from 'react-i18next';
 import { TranslateHocProps } from 'react-i18next/src/translate';
 
-import { shuffleArray } from 'utils/helpers';
-import { Page, } from 'components/page'
+import { shuffleArray } from '../../../../utils/helpers';
+import { Page, } from '../../../../components/page'
 import PrefElecBallot from './components/PrefElecBallot';
 import PrefElecReview from './components/PrefElecReview';
+import { Election, Candidate } from '../../../../interfaces';
 
 function moveArrayItem(arr: any[], oldIndex: number, newIndex: number) {
   if (newIndex >= arr.length) {
@@ -22,7 +23,7 @@ const dummySubmit = () => console.error('SUBMIT!')
 
 interface IProps extends TranslateHocProps {
   election: Election,
-  electionName: NameFields
+  electionName: any
 }
 
 interface IState {
