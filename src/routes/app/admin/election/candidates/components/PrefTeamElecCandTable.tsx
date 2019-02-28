@@ -1,14 +1,13 @@
-/* @flow */
 import * as React from 'react';
 import { translate, Trans } from 'react-i18next';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import Text from 'components/text';
-import Link from 'components/link';
-import ActionText from 'components/actiontext';
-import ActionItem from 'components/actionitem';
-import { PageSection } from 'components/page';
+import Text from '../../../../../../components/text';
+import Link from '../../../../../../components/link';
+import ActionText from '../../../../../../components/actiontext';
+import ActionItem from '../../../../../../components/actionitem';
+import { PageSection } from '../../../../../../components/page';
 import {
   Table,
   TableHeader,
@@ -17,8 +16,8 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from 'components/table';
-import Icon from 'components/icon';
+} from '../../../../../../components/table';
+import Icon from '../../../../../../components/icon';
 
 import PrefTeamElecCandForm from './PrefTeamElecCandForm';
 import NoCandidatesRow from './NoCandidatesRow';
@@ -69,29 +68,26 @@ const deleteCandidate = gql`
   }
 `;
 
-type Props = {
-  children?: ReactChildren,
-  electionGroup: Object,
-  createCandidate: Function,
-  updateCandidate: Function,
-  createCoCandidate: Function,
-  updateCoCandidate: Function,
+interface IProps {
+  children?: any,
+  electionGroup: any,
+  createCandidate?: (a: any) => void,
+  updateCandidate?: (a: any) => void,
+  createCoCandidate?: (a: any) => void,
+  updateCoCandidate?: (a: any) => void,
 };
 
-type State = {
+interface IState {
   newFormTopActive: boolean,
   newFormBottomActive: boolean,
   editCandidateId: number,
 };
 
-class PrefTeamElecCandTable extends React.Component<Props, State> {
-  state: State;
-  setNewFormsInactive: Function;
-  setNewFormTopActive: Function;
-  setNewFormBottomActive: Function;
-  setEditId: Function;
+class PrefTeamElecCandTable extends React.Component<IProps, IState> {
+  state: IState;
+  removeEmptyCoCandidates: (e: any) => any;
 
-  constructor(props: Props) {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       newFormBottomActive: false,
@@ -119,16 +115,16 @@ class PrefTeamElecCandTable extends React.Component<Props, State> {
     this.setState({ newFormTopActive: false, newFormBottomActive: false });
   }
 
-  setEditId(id) {
+  setEditId(id: any) {
     this.setNewFormsInactive();
     this.setState({ editCandidateId: id });
   }
 
-  removeCoCandidatesWithoutName(newCandidateSubmitValues) {
+  removeCoCandidatesWithoutName(newCandidateSubmitValues: any) {
     return {
       ...newCandidateSubmitValues,
       coCandidates: newCandidateSubmitValues.coCandidates.filter(
-        coCandidate => coCandidate.name
+        (coCandidate: any) => coCandidate.name
       ),
     };
   }
@@ -144,7 +140,7 @@ class PrefTeamElecCandTable extends React.Component<Props, State> {
         </PageSection>
       );
     }
-    const candidates = candidateList.candidates.map(candidate => ({
+    const candidates = candidateList.candidates.map((candidate: any) => ({
       id: candidate.id,
       name: candidate.name,
       coCandidates: candidate.meta.coCandidates
@@ -184,7 +180,7 @@ class PrefTeamElecCandTable extends React.Component<Props, State> {
               >
                 {addCand => (
                   <TableRow>
-                    <TableCell colspan="3">
+                    <TableCell colspan={3}>
                       <PrefTeamElecCandForm
                         initialValues={newCandidateValues}
                         handleSubmit={values => {
@@ -204,11 +200,11 @@ class PrefTeamElecCandTable extends React.Component<Props, State> {
             )}
             {candidates.length === 0 ? <NoCandidatesRow colSpan={3} /> : null}
             {candidates.length > 0
-              ? candidates.map((candidate, index) => {
+              ? candidates.map((candidate: any, index: any) => {
                   if (candidate.id === this.state.editCandidateId) {
                     return (
                       <TableRow key={index}>
-                        <TableCell colspan="3">
+                        <TableCell colspan={3}>
                           <Mutation
                             mutation={deleteCandidate}
                             refetchQueries={() => ['electionGroup']}
@@ -224,7 +220,7 @@ class PrefTeamElecCandTable extends React.Component<Props, State> {
                                       <Trans>election.editCandidate</Trans>
                                     }
                                     initialValues={{ ...candidate }}
-                                    handleSubmit={values => {
+                                    handleSubmit={(values: any) => {
                                       values = this.removeCoCandidatesWithoutName(
                                         values
                                       );
@@ -261,7 +257,7 @@ class PrefTeamElecCandTable extends React.Component<Props, State> {
                       </TableCell>
                       <TableCell>
                         <Text>
-                          {coCandidates.map((coCandidate, i) => {
+                          {coCandidates.map((coCandidate: any, i: any) => {
                             if (i === coCandidates.length - 1) {
                               return coCandidate.name;
                             }
@@ -289,10 +285,10 @@ class PrefTeamElecCandTable extends React.Component<Props, State> {
                   refetchQueries={() => ['electionGroup']}
                 >
                   {addCand => (
-                    <TableCell colspan="3">
+                    <TableCell colspan={3}>
                       <PrefTeamElecCandForm
                         initialValues={newCandidateValues}
-                        handleSubmit={values => {
+                        handleSubmit={(values: any) => {
                           values = this.removeCoCandidatesWithoutName(values);
                           addCand({ variables: values });
                           this.setNewFormsInactive();
@@ -306,7 +302,7 @@ class PrefTeamElecCandTable extends React.Component<Props, State> {
                   )}
                 </Mutation>
               ) : (
-                <TableCell colspan="3">
+                <TableCell colspan={3}>
                   <ActionText action={this.setNewFormBottomActive.bind(this)}>
                     <Trans>election.addPrefTeamCandidate</Trans>
                   </ActionText>

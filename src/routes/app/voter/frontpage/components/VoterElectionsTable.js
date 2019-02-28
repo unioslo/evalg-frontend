@@ -16,15 +16,14 @@ import {
   TableRow,
   TableCell,
 } from 'components/table';
-import { allEqualForAttrs } from 'utils';
 
-type Props = {
-  electionGroups: Array<ElectionGroup>,
-  noElectionsText: ReactElement,
-  i18n: Object,
-};
+// type Props = {
+//   electionGroups: Array<ElectionGroup>,
+//   noElectionsText: ReactElement,
+//   i18n: Object,
+// };
 
-const VoterElectionsTable = (props: Props) => {
+const VoterElectionsTable = (props) => {
   const lang = props.i18n.language;
   const { electionGroups, i18n, noElectionsText } = props;
 

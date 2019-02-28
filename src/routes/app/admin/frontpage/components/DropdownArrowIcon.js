@@ -1,12 +1,11 @@
-/* @flow */
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
-type Props = {
-  selected?: boolean,
-  action: Function,
-  classes: Object
-}
+// type Props = {
+//   selected?: boolean,
+//   action: Function,
+//   classes: Object
+// }
 
 const styles = theme => ({
   arrow: {
@@ -20,7 +19,7 @@ const styles = theme => ({
   }
 })
 
-const TableCellDropdownArrow = (props: Props) => {
+const TableCellDropdownArrow = (props) => {
   let transform = 'translate(0, 2)';
   if (props.selected) {
     transform = 'translate(-5, 0) rotate(90, 6, 12)';

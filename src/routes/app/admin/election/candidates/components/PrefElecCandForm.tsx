@@ -1,4 +1,3 @@
-/* @flow */
 import * as React from 'react';
 import { Form, Field } from 'react-final-form';
 import { Trans, translate } from 'react-i18next';
@@ -7,22 +6,25 @@ import {
   TableRowForm, TableRowFormFields,
   FormButtons, FormField, FormErrorMsg,
   TextInputRF, DropDownRF
-} from 'components/form';
+} from '../../../../../../components/form';
+import { i18n } from 'i18next';
 
-type Props = {
-  handleSubmit: Function,
-  cancelAction: Function,
-  deleteAction: Function,
-  formHeader: ReactElement | string,
-  listDict: Object,
-  i18n: Object,
-  t: Function,
-  candidate: Object,
+interface IProps {
+  handleSubmit: (e: any) => void,
+  cancelAction: (id: any) => void,
+  deleteAction?: () => void,
+  formHeader: any | string,
+  listDict: any,
+  i18n: i18n,
+  t: (s: string) => string,
+  candidate: any,
+  options?: any[];
 }
 
 
-const validate = (lang: string, t: Function) => (values: Object) => {
-  const errors = {};
+// const validate = (lang: string, t: Function) => (values: Object) => {
+const validate = (lang: string, t: (s: string) => string) => (values: any) => {
+  const errors: any = {};
   if (!values.name) {
     errors.name =
       <span>
@@ -52,7 +54,9 @@ const validate = (lang: string, t: Function) => (values: Object) => {
 };
 
 
-class PrefElecCandForm extends React.Component<Props> {
+class PrefElecCandForm extends React.Component<IProps> {
+
+
   render() {
     const {
       t, cancelAction, listDict, candidate
@@ -72,7 +76,7 @@ class PrefElecCandForm extends React.Component<Props> {
         onSubmit={this.props.handleSubmit}
         validate={validate(lang, t)}
         initialValues={this.props.candidate}
-        render={(formProps: Object) => {
+        render={(formProps) => {
           const {
             handleSubmit, reset, submitting, pristine, values, invalid, errors,
             valid, touched
@@ -85,14 +89,14 @@ class PrefElecCandForm extends React.Component<Props> {
                     <Field
                       name="name"
                       component={TextInputRF}
-                      large
+                      large={true}
                       placeholder={t('election.candidateNamePlaceHolder')}
                     />
                   </FormField>
                   <FormField inline>
                     <Field
                       name="gender"
-                      component={DropDownRF}
+                      component={DropDownRF as any}
                       options={genderOptions}
                       placeholder={t('general.gender')}
                     />
@@ -100,7 +104,7 @@ class PrefElecCandForm extends React.Component<Props> {
                   <FormField inline>
                     <Field
                       name="listId"
-                      component={DropDownRF}
+                      component={DropDownRF as any}
                       options={candListOptions}
                       large
                       placeholder={t('general.group')}
@@ -108,7 +112,7 @@ class PrefElecCandForm extends React.Component<Props> {
                   </FormField>
                 </TableRowFormFields>
                 {!pristine && errors._errors && Object.keys(errors._errors).map((field, index) => {
-                  if (touched[field]) {
+                  if (touched && touched[field]) {
                     return <FormErrorMsg key={index} msg={errors._errors[field]} />;
                   }
                 })}

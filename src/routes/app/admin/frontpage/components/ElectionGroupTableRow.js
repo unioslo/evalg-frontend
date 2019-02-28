@@ -13,14 +13,14 @@ import { Date, Time } from 'components/i18n';
 
 import { allEqual } from 'utils';
 
-type Props = {
-  elGrp: ElectionGroup,
-  selected?: boolean,
-  selectAction: Function,
-  i18n: Object,
-};
+// type Props = {
+//   elGrp: ElectionGroup,
+//   selected?: boolean,
+//   selectAction: Function,
+//   i18n: Object,
+// };
 
-class ElGrpTableRow extends React.Component<Props> {
+class ElGrpTableRow extends React.Component {
   render() {
     const lang = this.props.i18n.language;
     const { elGrp } = this.props;

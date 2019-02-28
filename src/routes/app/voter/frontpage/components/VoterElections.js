@@ -8,16 +8,16 @@ import { MobileDropDown, MobileDropdownItem } from 'components/dropdownMenu';
 import { TabSelector, Tab } from './TabSelector';
 import { ScreenSizeConsumer } from 'providers/ScreenSize';
 
-type Props = {
-  electionGroups: Array<ElectionGroup>,
-};
+// type Props = {
+//   electionGroups: Array<ElectionGroup>,
+// };
 
-type State = {
-  electionStatusFilter: string,
-};
+// type State = {
+//   electionStatusFilter: string,
+// };
 
-class VoterElections extends React.Component<Props, State> {
-  constructor(props: Props) {
+class VoterElections extends React.Component {
+  constructor(props) {
     super(props);
     this.setElectionStatusFilter = this.setElectionStatusFilter.bind(this);
     this.filterElectionGroups = this.filterElectionGroups.bind(this);

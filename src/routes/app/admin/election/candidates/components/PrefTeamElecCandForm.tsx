@@ -1,20 +1,30 @@
-/* @flow */
 import * as React from 'react';
 import { Form, Field } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
-import arrayMutators from 'final-form-arrays'
+// import arrayMutators from 'final-form-arrays'
 import { Trans, translate } from 'react-i18next';
 
-import ActionText from 'components/actiontext';
+import ActionText from '../../../../../../components/actiontext';
 import {
   TableRowForm, TableRowFormFields,
   FormButtons, FormField, FormFieldGroup, TextInputRF
-} from 'components/form';
+} from '../../../../../../components/form';
 
-import { validateUrl } from 'utils/validators';
+import { validateUrl } from '../../../../../../utils/validators';
 
-const validate = (values: Object, props: Props) => {
-  const errors = {};
+interface IProps {
+  handleSubmit: (a: any) => void,
+  cancelAction: (id: any) => void,
+  deleteAction?: () => void,
+  initialValues: object,
+  formHeader: any | string,
+  t: (s: string) => string,
+}
+
+
+// const validate = (values: Object, props: Props) => {
+const validate = (values: any, props: IProps) => {
+  const errors: any = {};
   const coCandidatesErrors = [];
   const { name, informationUrl, coCandidates } = values;
   if (!name) {
@@ -23,7 +33,7 @@ const validate = (values: Object, props: Props) => {
   if (informationUrl && !validateUrl(informationUrl)) {
     errors.informationUrl = <Trans>formErrors.invalidUrl</Trans>
   }
-  const coCandErrors = coCandidates.map((coCandidate, index) => {
+  const coCandErrors = coCandidates.map((coCandidate: any, index: any) => {
     if (!coCandidate.name) {
       return { name: <Trans>general.required</Trans> }
     }
@@ -35,23 +45,15 @@ const validate = (values: Object, props: Props) => {
   return errors;
 };
 
-type Props = {
-  handleSubmit: Function,
-  cancelAction: Function,
-  deleteAction: Function,
-  initialValues: Object,
-  formHeader: ReactElement | string,
-  t: Function
-}
 
-const PrefTeamElecCandForm = (props: Props) =>  {
+const PrefTeamElecCandForm = (props: IProps) =>  {
   const { t, cancelAction, initialValues, deleteAction} = props;
   return (
-    <Form 
+    <Form
       onSubmit={props.handleSubmit}
-      mutators={arrayMutators}
+      // mutators={arrayMutators}
       initialValues={initialValues}
-      render={(formProps: Object) => {
+      render={(formProps) => {
         const {
           handleSubmit, reset, submitting, pristine, values, invalid, errors,
           valid

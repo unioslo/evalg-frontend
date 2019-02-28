@@ -3,7 +3,7 @@ import * as React from 'react';
 import throttle from 'lodash/throttle';
 import injectSheet from 'react-jss';
 
-import { objPropsToArray } from 'utils';
+// import { objPropsToArray } from 'utils';
 
 import { PageSubSection } from 'components/page';
 import Text from 'components/text';
@@ -38,29 +38,28 @@ const styles = theme => ({
   }
 })
 
-type Props = {
-  closeAction: Function,
-  adminPersons: Array<Object>,
-  adminGroups: Array<Object>,
-  classes: Object,
-  searchPersons: Function,
-  searchGroups: Function,
-  addAction: Function,
-  removeAction: Function
-};
+// type Props = {
+//   closeAction: Function,
+//   adminPersons: Array<Object>,
+//   adminGroups: Array<Object>,
+//   classes: Object,
+//   searchPersons: Function,
+//   searchGroups: Function,
+//   addAction: Function,
+//   removeAction: Function
+// };
 
-type State = {
-  adminPersonFilter: string,
-  adminGroupFilter: string,
-  personMatches: Array<Object>,
-  groupMatches: Array<Object>
-}
+// type State = {
+//   adminPersonFilter: string,
+//   adminGroupFilter: string,
+//   personMatches: Array<Object>,
+//   groupMatches: Array<Object>
+// }
 
-class AdminRolesForm extends React.Component<Props, State> {
-  handlePersonSearch: Function;
-  handleGroupSearch: Function;
+// class AdminRolesForm extends React.Component<Props, State> {
+class AdminRolesForm extends React.Component {
 
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
       adminPersonFilter: '', adminGroupFilter: '',
@@ -98,14 +97,14 @@ class AdminRolesForm extends React.Component<Props, State> {
     })
   }
 
-  handleAdminPersonFilterUpdate(value: string) {
+  handleAdminPersonFilterUpdate(value) {
     this.setState({ adminPersonFilter: value });
     if (value.length > 1) {
       this.handlePersonSearch(value);
     }
   }
 
-  handleAdminGroupFilterUpdate(value: string) {
+  handleAdminGroupFilterUpdate(value) {
     this.setState({ adminGroupFilter: value });
     if (value.length > 1) {
       this.handleGroupSearch(value);

@@ -9,10 +9,12 @@ import InfoPage from './info';
 import CandidatesPage from './candidates';
 import PollbooksPage from './pollbooks';
 import StatusPage from './status';
-import Loading from 'components/loading';
+// import Loading from 'components/loading';
+import Loading from '../../../../components/loading';
 import { History, Location } from 'history';
 import { i18n } from 'i18next';
-import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
+// import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
+import { electionGroupWithOrderedElections } from '../../../../utils/processGraphQLData';
 
 const electionGroupQuery = gql`
   query electionGroup($id: UUID!) {
@@ -99,7 +101,7 @@ interface IProps {
   location: Location;
   match: match<{ groupId: string }>;
   history: History;
-  electionGroup: ElectionGroup;
+  electionGroup: any;
   i18n: i18n;
 }
 
@@ -127,7 +129,7 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
           <ElectionNavBar
             path={props.location.pathname}
             groupId={props.match.params.groupId}
-            lang={lang}
+            // lang={lang}
           />
           <Route
             exact={true}

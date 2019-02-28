@@ -1,3 +1,6 @@
+import { Election, ElectionGroup } from '../interfaces';
+
+
 const multipleElectionsSortingOrder = [
   'Academic staff',
   'Temporary academic staff',

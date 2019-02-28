@@ -2,14 +2,14 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import { Trans } from 'react-i18next';;
 
-type Props = {
-  children: React.ChildrenArray<any>,
-  classes: Object
-}
+// type Props = {
+//   children: React.ChildrenArray<any>,
+//   classes: Object
+// }
 
-type State = {
-  open: boolean
-}
+// type State = {
+//   open: boolean
+// }
 
 const styles = theme => ({
   mobileMenu: {
@@ -66,8 +66,8 @@ const styles = theme => ({
 });
 
 
-class MobileMenu extends React.Component<Props, State> {
-  constructor(props: Props) {
+class MobileMenu extends React.Component {
+  constructor(props) {
     super(props);
     this.state = { open: false }
   }
@@ -84,7 +84,7 @@ class MobileMenu extends React.Component<Props, State> {
     document.removeEventListener('mousedown', this.handleClickOutside.bind(this));
   }
 
-  handleClickOutside(event: Event) {
+  handleClickOutside(event) {
     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
       this.setState({ open: false });
     }

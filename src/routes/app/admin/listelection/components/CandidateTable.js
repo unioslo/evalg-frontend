@@ -2,7 +2,6 @@
 import * as React from 'react';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 
-import { Trans } from 'react-i18next';;
 import Table from 'components/table/Table';
 import TableHeader from 'components/table/TableHeader';
 import TableHeaderRow from 'components/table/TableHeaderRow';
@@ -18,33 +17,34 @@ import TableCell from 'components/table/TableCell';
 import Icon from 'components/icon';
 
 import { filterObjPropValue } from 'utils/filterFunctions';
+import { Trans } from 'react-i18next';;
 
-type Props = {
-  candidates: Array<ListElectionCandidate>
-}
+// type Props = {
+//   candidates: Array<ListElectionCandidate>
+// }
 
-type SortableTableBodyProps = {
-  candidates: Array<ListElectionCandidate>,
-  setNameFilter: Function,
-  setDepartmentFilter: Function
-}
+// type SortableTableBodyProps = {
+//   candidates: Array<ListElectionCandidate>,
+//   setNameFilter: Function,
+//   setDepartmentFilter: Function
+// }
 
-type SortableCandidateProps = {
-  candidate: ListElectionCandidate
-}
+// type SortableCandidateProps = {
+//   candidate: ListElectionCandidate
+// }
 
-type SortableCandidateContext = {
-  manager: any,
-  t: Function
-}
+// type SortableCandidateContext = {
+//   manager: any,
+//   t: Function
+// }
 
-type Indices = {
-  oldIndex: number,
-  newIndex: number
-}
+// type Indices = {
+//   oldIndex: number,
+//   newIndex: number
+// }
 
 const SortableCandidate = SortableElement(
-  (props: SortableCandidateProps, ctx: SortableCandidateContext) => {
+  (props, ctx) => {
     const candidate = props.candidate;
     return (
       <TableRow>
@@ -80,7 +80,7 @@ const SortableCandidate = SortableElement(
     )
   }, { withRef: true });
 
-const SortableTableBody = SortableContainer((props: SortableTableBodyProps) => {
+const SortableTableBody = SortableContainer((props) => {
   return (
     <TableBody>
       <TableRow>
@@ -103,14 +103,14 @@ const SortableTableBody = SortableContainer((props: SortableTableBodyProps) => {
 
 
 class CandidateTable extends React.Component {
-  props: Props;
-  context: Context;
-  state: {
-    nameFilter: string,
-    departmentFilter: string,
-    candidates: Array<ListElectionCandidate>
-  };
-  constructor(props: Props, context: Context) {
+  // props: Props;
+  // context: Context;
+  // state: {
+  //   nameFilter: string,
+  //   departmentFilter: string,
+  //   candidates: Array<ListElectionCandidate>
+  // };
+  constructor(props, context) {
     super(props);
     this.state = {
       nameFilter: '',
@@ -118,14 +118,14 @@ class CandidateTable extends React.Component {
       candidates: this.sortCandidatesByRank(props.candidates)
     };
   }
-  componentWillReceiveProps(nextProps: Props) {
+  componentWillReceiveProps(nextProps) {
     if (this.state.candidates !== nextProps.candidates) {
       this.setState({
         candidates: this.sortCandidatesByRank(nextProps.candidates)
       });
     }
   }
-  onSortEnd(indices: Indices) {
+  onSortEnd(indices) {
     const { oldIndex, newIndex } = indices;
     const newCandidateList = arrayMove(this.state.candidates, oldIndex, newIndex);
     newCandidateList.forEach((candidate, index) => candidate.rank = index + 1);
@@ -133,32 +133,32 @@ class CandidateTable extends React.Component {
       candidates: newCandidateList
     });
   };
-  setNameFilter(event: Object) {
+  setNameFilter(event) {
     this.setState({ nameFilter: event.target.value })
   }
-  setDepartmentFilter(event: Object) {
+  setDepartmentFilter(event) {
     this.setState({ departmentFilter: event.target.value })
   }
   filterCandidatesByName(
-    candidates: Array<ListElectionCandidate>
-  ): Array<ListElectionCandidate> {
+    candidates
+  ) {
     return filterObjPropValue(candidates, 'name', this.state.nameFilter);
   }
   filterCandidatesByDepartment(
-    candidates: Array<ListElectionCandidate>
-  ): Array<ListElectionCandidate> {
+    candidates
+  ) {
     return filterObjPropValue(candidates, 'department', this.state.departmentFilter);
   }
   filterCandidates(
-    candidates: Array<ListElectionCandidate>
-  ): Array<ListElectionCandidate> {
+    candidates
+  ) {
     return this.filterCandidatesByName(
       this.filterCandidatesByDepartment(candidates)
     );
   }
   sortCandidatesByRank(
-    candidates: Array<ListElectionCandidate>
-  ): Array<ListElectionCandidate> {
+    candidates
+  ) {
     return candidates.sort((a, b) => {
       if (a.rank < b.rank) {
         return -1;
@@ -169,7 +169,7 @@ class CandidateTable extends React.Component {
       return 0;
     });
   }
-  cancelSort(event: Object) {
+  cancelSort(event) {
     if (this.state.nameFilter !== '' || this.state.departmentFilter !== '') {
       return true;
     }

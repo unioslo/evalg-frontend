@@ -22,13 +22,13 @@ const styles = theme => ({
   }
 });
 
-type ListItemProps = {
-  electionGroup: ElectionGroup,
-  lang: string,
-  classes: Object
-}
+// type ListItemProps = {
+//   electionGroup: ElectionGroup,
+//   lang: string,
+//   classes: Object
+// }
 
-const VoterElectionsListItem = (props: ListItemProps) => {
+const VoterElectionsListItem = (props) => {
   const { electionGroup, lang } = props;
   const election = electionGroup.elections[0];
   const canVote = true;
@@ -74,14 +74,14 @@ const VoterElectionsListItem = (props: ListItemProps) => {
   )
 };
 
-type ListProps = {
-  electionGroups: Array<ElectionGroup>,
-  noElectionsText: ReactElement,
-  i18n: object,
-  classes: Object
-}
+// type ListProps = {
+//   electionGroups: Array<ElectionGroup>,
+//   noElectionsText: ReactElement,
+//   i18n: object,
+//   classes: Object
+// }
 
-const VoterElectionsList = (props: ListProps) => {
+const VoterElectionsList = (props) => {
   const { electionGroups, elections, noElectionsText, classes } = props;
   const lang = props.i18n.language;
   if (electionGroups.length === 0) {

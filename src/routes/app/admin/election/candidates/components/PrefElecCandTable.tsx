@@ -1,15 +1,14 @@
-/* @flow */
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 
-import { objPropsToArray } from 'utils';
+import { objPropsToArray } from '../../../../../../utils';
 
-import { PageSection } from 'components/page';
-import Text from 'components/text';
+import { PageSection } from '../../../../../../components/page';
+import Text from '../../../../../../components/text';
 import { Trans, translate } from 'react-i18next';
-import { ElectionButton, ElectionButtonContainer } from 'components/button';
+import { ElectionButton, ElectionButtonContainer } from '../../../../../../components/button';
 import {
   Table,
   TableHeader,
@@ -18,14 +17,15 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from 'components/table';
+} from '../../../../../../components/table';
 
-import ActionText from 'components/actiontext';
-import { DropDown, TextInput } from 'components/form';
+import ActionText from '../../../../../../components/actiontext';
+import { DropDown, DropDownRF, TextInput } from '../../../../../../components/form';
 
 import NoCandidatesRow from './NoCandidatesRow';
 import NoCandidatesFoundRow from './NoCandidatesFoundRow';
 import PrefElecCandForm from './PrefElecCandForm';
+import { i18n } from 'i18next';
 
 const addPrefElecCandidate = gql`
   mutation AddPrefElecCandidate(
@@ -33,7 +33,7 @@ const addPrefElecCandidate = gql`
     $gender: String!,
     $informationUrl: String
     $listId: UUID!) {
-    
+
     addPrefElecCandidate(
       name: $name,
       gender: $gender,
@@ -51,7 +51,7 @@ const updatePrefElecCandidate = gql`
     $gender: String!,
     $informationUrl: String
     $listId: UUID!) {
-    
+
     updatePrefElecCandidate(
       id: $id,
       name: $name,
@@ -72,8 +72,11 @@ const deleteCandidate = gql`
 `
 
 
-const getFilteredCandidates = ((candidates: Array<Object>, nameFilter: string,
-  genderFilter: string, listFilter: string) => {
+const getFilteredCandidates = ((
+  candidates: any[],
+  nameFilter: string,
+  genderFilter: string,
+  listFilter: string) => {
   return candidates.filter(candidate => {
     const { name, meta, listId } = candidate;
     const gender = meta ? meta.gender : null;
@@ -90,7 +93,7 @@ const getFilteredCandidates = ((candidates: Array<Object>, nameFilter: string,
   })
 });
 
-const buildGenderFilterOptions = (t) => {
+const buildGenderFilterOptions = (t: (s: string) => string) => {
   return [
     { name: t('general.all'), value: 'all' },
     { name: t('general.male'), value: 'male' },
@@ -98,7 +101,11 @@ const buildGenderFilterOptions = (t) => {
   ]
 };
 
-const buildListFilterOptions = (listDict, lang, t) => {
+const buildListFilterOptions = (
+  listDict: any,
+  lang: string,
+  t: (s: string) => string
+  ) => {
   const filterOptions = [];
   filterOptions.push({ name: t('general.all'), value: 'all' });
   Object.keys(listDict).forEach(id => {
@@ -107,14 +114,14 @@ const buildListFilterOptions = (listDict, lang, t) => {
   return filterOptions;
 };
 
-type Props = {
-  children?: ReactChildren,
-  electionGroup: Object,
-  t: Function,
-  i18n: Object,
+interface IProps {
+  children?: any,
+  electionGroup: any,
+  t: (s: string) => string,
+  i18n: i18n,
 };
 
-type State = {
+interface IState {
   newFormListId: string,
   editCandidateId: string,
   nameFilter: string,
@@ -122,11 +129,11 @@ type State = {
   listFilter: string
 }
 
-class PrefElecCandTable extends React.Component<Props, State> {
-  closeEditForm: Function;
-  closeNewForm: Function;
+class PrefElecCandTable extends React.Component<IProps, IState> {
+  // closeEditForm: Function;
+  // closeNewForm: Function;
 
-  constructor(props: Props) {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       newFormListId: '',
@@ -157,15 +164,15 @@ class PrefElecCandTable extends React.Component<Props, State> {
     this.setState({ editCandidateId: '' });
   }
 
-  handleNameFilterChange(nameFilter) {
+  handleNameFilterChange(nameFilter: string) {
     this.setState({ nameFilter });
   }
 
-  handleGenderFilterChange(genderFilter) {
+  handleGenderFilterChange(genderFilter: string) {
     this.setState({ genderFilter });
   }
 
-  handleListFilterChange(listFilter) {
+  handleListFilterChange(listFilter: string) {
     this.setState({ listFilter });
   }
 
@@ -191,12 +198,12 @@ class PrefElecCandTable extends React.Component<Props, State> {
       )
     }
 
-    const unFilteredCandidates = [];
-    const listDict = {};
-    elections.forEach(e => {
-      e.lists.forEach(l => {
+    const unFilteredCandidates: object[] = [];
+    const listDict: any = {};
+    elections.forEach((e: any) => {
+      e.lists.forEach((l: any) => {
         listDict[l.id] = l;
-        l.candidates.forEach(c => {
+        l.candidates.forEach((c: any) => {
           unFilteredCandidates.push({
             id: c.id,
             name: c.name,
@@ -229,7 +236,7 @@ class PrefElecCandTable extends React.Component<Props, State> {
                 {(updateCandidate) => (
                   <PageSection desc={pageDesc}>
                     <ElectionButtonContainer>
-                      {elections.map((election, index) => {
+                      {elections.map((election: any, index: any) => {
                         const { seats, substitutes } =
                           election.meta.candidateRules;
                         // TBD: Should this be only seats?
@@ -272,7 +279,8 @@ class PrefElecCandTable extends React.Component<Props, State> {
                                 name={t('general.name')}
                                 placeholder={t('general.name')}
                                 value={this.state.nameFilter}
-                                disabled={this.state.newFormListId}
+                                // js->tsx TODO, disabled needs to be bool..
+                                // disabled={this.state.newFormListId}
                                 narrow
                               />
                             </TableCell>
@@ -281,7 +289,8 @@ class PrefElecCandTable extends React.Component<Props, State> {
                                 options={genderFilterOptions}
                                 onChange={this.handleGenderFilterChange.bind(this)}
                                 placeholder={t('general.gender')}
-                                disabled={this.state.newFormListId}
+                                // js->tsx TODO, disabled needs to be bool..
+                                // disabled={this.state.newFormListId}
                                 value={this.state.genderFilter}
                               />
                             </TableCell>
@@ -290,17 +299,18 @@ class PrefElecCandTable extends React.Component<Props, State> {
                                 options={listFilterOptions}
                                 onChange={this.handleListFilterChange.bind(this)}
                                 placeholder={t('general.group')}
-                                disabled={this.state.newFormListId}
+                                // js->tsx TODO, disabled needs to be bool..
+                                // disabled={this.state.newFormListId}
                                 value={this.state.listFilter}
                                 large
                               />
                             </TableCell>
-                            <TableCell />
+                            {/* <TableCell /> */}
                           </TableRow>
                         }
                         {this.state.newFormListId ?
                           <TableRow>
-                            <TableCell colspan="4">
+                            <TableCell colspan={4}>
                               <PrefElecCandForm
                                 listDict={listDict}
                                 candidate={{ listId: this.state.newFormListId }}
@@ -314,7 +324,7 @@ class PrefElecCandTable extends React.Component<Props, State> {
                             </TableCell>
                           </TableRow> : null
                         }
-                        {unFilteredCandidates === 0 ?
+                        {!unFilteredCandidates ?
                           <NoCandidatesRow colSpan={4} /> : null
                         }
                         {unFilteredCandidates.length > 0 ?
@@ -326,7 +336,7 @@ class PrefElecCandTable extends React.Component<Props, State> {
                             if (candidate.id === this.state.editCandidateId) {
                               return (
                                 <TableRow key={index}>
-                                  <TableCell colspan="4">
+                                  <TableCell colspan={4}>
                                     <PrefElecCandForm
                                       listDict={listDict}
                                       candidate={candidate}

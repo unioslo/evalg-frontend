@@ -34,8 +34,8 @@ const snakeToCamel = (str: string) => {
   return str.replace(/(_\w)/g, m => m[1].toUpperCase());
 };
 
-const convertObjProps = (obj: object, func: (arg: any) => any): object => {
-  const newObj = {};
+const convertObjProps = (obj: any, func: (arg: any) => any): object => {
+  const newObj: any = {};
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
       if (isObject(obj[key])) {
@@ -62,7 +62,7 @@ export const objPropsToCamelCase = (obj: object): object => {
   return convertObjProps(obj, snakeToCamel);
 };
 
-export const objPropsToArray = (obj: object): any[] => {
+export const objPropsToArray = (obj: any): any[] => {
   return Object.keys(obj).map(key => obj[key]);
 };
 
@@ -102,7 +102,7 @@ export const findObjIndex = (array: Array<{ id: string }>, id: string) => {
   return null;
 };
 
-export const objsEqual = (a: object, b: object) => {
+export const objsEqual = (a: any, b: any) => {
   const aProps = Object.getOwnPropertyNames(a);
   const bProps = Object.getOwnPropertyNames(b);
   if (aProps.length !== bProps.length) {

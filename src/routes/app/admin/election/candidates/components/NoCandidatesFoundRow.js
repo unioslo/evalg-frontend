@@ -1,18 +1,15 @@
-/* @flow */
 import * as React from 'react';
 
 import Text from 'components/text'
-import { Trans } from 'react-i18next';;
-import {
-  TableRow,
-  TableCell
-} from 'components/table';
+import { TableRow, TableCell } from 'components/table';
+import { Trans } from 'react-i18next';
 
-type Props = {
-  colSpan: number
-}
+// type Props = {
+//   colSpan: number
+// }
 
-const NoCandidatesFoundRow = (props: Props) => {
+// const NoCandidatesFoundRow = (props: Props) => {
+const NoCandidatesFoundRow = (props) => {
   return (
     <TableRow>
       <TableCell colspan={props.colSpan}>

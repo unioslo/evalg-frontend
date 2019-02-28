@@ -1,7 +1,6 @@
-/* @flow */
 
 export const filterObjPropValue = (
-  inputArray: Array<Object>,
+  inputArray: any[],
   attribute: string,
   filterValue: string,
 ) => {
@@ -13,7 +12,7 @@ export const filterObjPropValue = (
 };
 
 export const filterObjSubPropValue = (
-  inputArray: Array<Object>,
+  inputArray: any[],
   subArray: string,
   attribute: string,
   filterValue: string,
@@ -31,7 +30,7 @@ export const filterObjSubPropValue = (
 };
 
 export const filterEqualsValue = (
-  inputArray: Array<Object>,
+  inputArray: any[],
   attribute: string,
   filterValue: string,
 ) => {

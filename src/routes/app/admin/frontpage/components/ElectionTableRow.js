@@ -10,12 +10,12 @@ import VoteStatus from './VoteStatus';
 
 import { Date, Time } from 'components/i18n';
 
-type Props = {
-  election: Election,
-  i18n: Object
-};
+// type Props = {
+//   election: Election,
+//   i18n: Object
+// };
 
-class ElectionTableRow extends React.Component<Props> {
+class ElectionTableRow extends React.Component {
   render() {
     const { election } = this.props;
     const lang = this.props.i18n.language;

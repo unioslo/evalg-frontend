@@ -17,7 +17,7 @@ import ElectionTableRow from './ElectionTableRow';
 import Link from 'components/link';
 import { Trans } from 'react-i18next';
 
-import { objPropsToArray } from 'utils';
+// import { objPropsToArray } from 'utils';
 import injectSheet from 'react-jss';
 
 const styles = theme => ({
@@ -26,24 +26,23 @@ const styles = theme => ({
   },
 });
 
-type Props = {
-  electionGroups: Object,
-};
+// type Props = {
+//   electionGroups: Object,
+// };
 
-type State = {
-  selectedElection: string,
-};
+// type State = {
+//   selectedElection: string,
+// };
 
-class ManageElectionsTable extends React.Component<Props, State> {
-  setSelected: Function;
+class ManageElectionsTable extends React.Component {
 
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = { selectedElection: '' };
     this.setSelected = this.setSelected.bind(this);
   }
 
-  setSelected(electionId: string) {
+  setSelected(electionId) {
     if (electionId === this.state.selectedElection) {
       this.setState({ selectedElection: '' });
     } else {
