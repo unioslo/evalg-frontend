@@ -333,7 +333,7 @@ export default {
     prefElecRankCandidatesShort:
       'Du rangerer kandidatene ved å trykke på dem i prioritert rekkefølge. Rekkefølgen kan gjøres om på underveis.',
     reviewBallot:
-      'Se over stemmeseddelen din nedenfor. Bekreft deretter stemmen, eller gå tilbake for å gjøre endringer.',
+      'Se over stemmeseddelen din nedenfor. Lever deretter stemmen, eller gå tilbake for å gjøre endringer.',
   },
   voterGroupSelect: {
     andCloses: 'og stenger',

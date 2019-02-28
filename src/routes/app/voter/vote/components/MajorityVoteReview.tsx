@@ -4,15 +4,26 @@ import injectSheet from 'react-jss';
 
 import { PageSection, PageSubSection } from 'components/page';
 import Button, { ButtonContainer } from 'components/button';
+import { CandidateInfo } from './CandidateList';
 
 const styles = (theme: any) => ({
-  candidateList: {},
-  listItem: {
-    alignItems: 'center',
-    display: 'flex',
+  ingress: {
+    ...theme.ingress,
   },
-  rank: {
-    fontSize: '2.2rem',
+  chosenCandidateText: {
+    marginTop: '2rem',
+    fontStyle: 'italic',
+  },
+  chosenCandidateContainer: {
+    marginTop: '1.5rem',
+    marginBottom: '3rem',
+    border: '1px solid #CCC',
+    padding: '1rem 1.5rem',
+  },
+  blanVoteTextContainer: {
+    marginTop: '2rem',
+    marginBottom: '3rem',
+    fontSize: '1.8rem',
   },
 });
 
@@ -30,9 +41,10 @@ const MajorityVoteReview: React.SFC<IReviewProps> = props => {
     isBlankVote,
     onGoBackToBallot,
     submitAction,
+    classes,
   } = props;
   const reviewActions = (
-    <ButtonContainer alignLeft={true}>
+    <ButtonContainer alignLeft>
       <Button
         secondary
         text={<Trans>general.back</Trans>}
@@ -46,13 +58,26 @@ const MajorityVoteReview: React.SFC<IReviewProps> = props => {
   );
   return (
     <PageSection>
-      <Trans>voter.reviewBallot</Trans>
+      <div className={classes.ingress}>
+        <Trans>voter.reviewBallot</Trans>
+      </div>
       <PageSubSection header={<Trans>election.ballot</Trans>}>
         {isBlankVote ? (
-          <Trans>election.blankVote</Trans>
+          <div className={classes.blanVoteTextContainer}>
+            <Trans>election.blankVote</Trans>
+          </div>
         ) : (
           <>
-            <Trans>voter.chosenCandidate</Trans>: {selectedCandidate.name}
+            <p className={classes.chosenCandidateText}>
+              <Trans>voter.chosenCandidate</Trans>:
+            </p>
+            <div className={classes.chosenCandidateContainer}>
+              <CandidateInfo
+                candidate={selectedCandidate}
+                infoUrl
+                noLeftPadding
+              />
+            </div>
           </>
         )}
         {reviewActions}

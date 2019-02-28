@@ -330,7 +330,7 @@ export default {
     prefElecRankCandidatesShort:
       'Rank the candidates as preferred by selection them in the preferred order. You may change the order of already selected candidates as you go along.',
     reviewBallot:
-      'Review your ballot below, then confirm your vote or go back to make changes.',
+      'Review your ballot below, then deliver your vote or go back to make changes.',
   },
   voterGroupSelect: {
     andCloses: 'and closes',
