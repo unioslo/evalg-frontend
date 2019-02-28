@@ -1,7 +1,7 @@
 import React from 'react';
 import injectSheet from 'react-jss';
 
-import Icon from 'components/icon';
+import Icon from '../../components/icon';
 
 const subtaskWorkingStateIconStyles = (theme: any) => ({
   iconContainer: {
@@ -66,6 +66,6 @@ const SubtaskWorkingStateIcon = ({
   </>
 );
 
-export default injectSheet(subtaskWorkingStateIconStyles)(
+export default injectSheet(subtaskWorkingStateIconStyles as any)(
   SubtaskWorkingStateIcon
 );

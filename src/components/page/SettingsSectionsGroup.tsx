@@ -28,7 +28,7 @@ interface IProps {
   settingsSectionsContents: ISettingsSectionContents[];
   electionGroupData: ElectionGroup;
   startWithDirectedFlowActive: boolean;
-  initialDisplayStatuses: SettingsSectionDisplayStatus[];
+  initialDisplayStatuses?: SettingsSectionDisplayStatus[];
   onSettingsWasSaved: () => void;
 }
 
