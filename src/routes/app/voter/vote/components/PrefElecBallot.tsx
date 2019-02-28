@@ -101,11 +101,11 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                         type="rankCircle"
                         custom={{
                           nr: index + 1,
-                          small: screenSize !== 'sm',
+                          small: screenSize !== 'mobile' && screenSize !== 'sm',
                         }}
                       />
                       <CandidateInfo candidate={c} infoUrl={true} />
-                      {screenSize === 'sm' ? (
+                      {screenSize === 'mobile' || screenSize === 'sm' ? (
                         <ToggleSelectIcon
                           flexRight
                           selected={index === this.state.activeCandIndex}
@@ -129,7 +129,11 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                   <CandidateListItem key={`unselected-${index}`}>
                     <Icon
                       type="addCircle"
-                      custom={screenSize !== 'sm' ? 'small' : false}
+                      custom={
+                        screenSize !== 'mobile' && screenSize !== 'sm'
+                          ? 'small'
+                          : false
+                      }
                       onClick={onAddCandidate.bind(this, c)}
                     />
                     <CandidateInfo candidate={c} infoUrl={true} />
@@ -142,7 +146,8 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                 onReviewBallot={onReviewBallot}
               />
 
-              {screenSize === 'sm' && this.state.activeCandIndex !== -1 ? (
+              {(screenSize === 'mobile' || screenSize === 'sm') &&
+              this.state.activeCandIndex !== -1 ? (
                 <CandidateButtonBar
                   upAction={this.promoteSelectedCandidate}
                   downAction={this.demoteSelectedCandidate}

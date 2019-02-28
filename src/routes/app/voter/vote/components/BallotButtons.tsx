@@ -18,7 +18,7 @@ const BallotButtons: React.SFC<IProps> = ({
 }) => (
   <ScreenSizeConsumer>
     {({ screenSize }) =>
-      screenSize === 'sm' ? (
+      (screenSize === 'mobile') ? (
         <>
           <ButtonContainer>
             <Link to="/voter">

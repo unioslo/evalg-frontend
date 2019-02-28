@@ -55,6 +55,7 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
           </div>
           <HelpSubSection
             header={<Trans>voter.majorityVoteHelpHeader</Trans>}
+            desc={<Trans>voter.majorityVoteHelpDesc</Trans>}
             helpTextTags={helpTextTags}
           >
             <CandidateList>
@@ -69,13 +70,21 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
                     {index === selectedCandidateIndex ? (
                       <Icon
                         type="radioButtonCircleSelected"
-                        custom={screenSize !== 'sm' ? { small: true } : false}
+                        custom={
+                          screenSize !== 'mobile' && screenSize !== 'sm'
+                            ? { small: true }
+                            : false
+                        }
                         onClick={toggleSelectAction}
                       />
                     ) : (
                       <Icon
                         type="radioButtonCircle"
-                        custom={screenSize !== 'sm' ? { small: true } : false}
+                        custom={
+                          screenSize !== 'mobile' && screenSize !== 'sm'
+                            ? { small: true }
+                            : false
+                        }
                         onClick={toggleSelectAction}
                       />
                     )}
