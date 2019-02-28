@@ -45,7 +45,10 @@ const styles = (theme: any) => ({
     paddingTop: '0.75rem',
   },
   candidateList: {
-    marginTop: '2rem',
+    marginTop: '1.5rem',
+    [theme.breakpoints.notMobileQuery]: {
+      marginTop: '3rem',
+    },
   },
   desktopButtons: {
     display: 'grid',
@@ -59,11 +62,14 @@ const styles = (theme: any) => ({
   },
   listItem: {
     alignItems: 'center',
-    borderBottom: '1px solid #CCC',
+    borderBottom: '2px solid #CCC',
     display: 'flex',
-    padding: '0.75rem 0',
-    '&:first-child': {
-      borderTop: '1px solid #CCC',
+    padding: '1.2rem 0',
+    [theme.breakpoints.notMobileQuery]: {
+      borderBottom: '1px solid #CCC',
+      '&:first-child': {
+        borderTop: '1px solid #CCC',
+      },
     },
   },
   toggleSelectionIconFlexRight: {
