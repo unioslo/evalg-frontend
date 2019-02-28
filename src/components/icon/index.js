@@ -149,6 +149,37 @@ const getIcon = (type: string, classes: Object, custom: any) => {
           </g>
         </svg>
       );
+    case 'radioButtonCircle':
+      const radioButtonCircleCls = classNames({
+        [classes.radioButtonCircle]: true,
+        [classes.radioButtonCircleSmall]: custom.small,
+      });
+      return (
+        <svg className={radioButtonCircleCls} viewBox="0 0 46 46">
+          <g stroke="none" strokeWidth="1" fill="none">
+            <circle strokeWidth="3" cx="23" cy="23" r="20" />
+          </g>
+        </svg>
+      );
+    case 'radioButtonCircleSelected':
+      const radioButtonCircleSelectedCls = classNames({
+        [classes.radioButtonCircle]: true,
+        [classes.radioButtonCircleSelected]: true,
+        [classes.radioButtonCircleSmall]: custom.small,
+      });
+      return (
+        <svg className={radioButtonCircleSelectedCls} viewBox="0 0 46 46">
+          <g stroke="none" strokeWidth="1" fill="none">
+            <circle strokeWidth="3" cx="23" cy="23" r="20" />
+          </g>
+          <path
+            className="checkMarkPath"
+            fill="#FFF"
+            fillRule="evenodd"
+            d="M0 8.287l6.993 7.627L19.43 3.27 16.207 0l-9.23 9.36-3.486-3.882z"
+          />
+        </svg>
+      );
     case 'clipboard':
       return (
         <svg viewBox="0 0 1000 1000" className={classes.clipBoard}>
@@ -410,6 +441,33 @@ const styles = theme => ({
   plusSignIcon: {
     fill: theme.colors.darkTurquoise,
   },
+  radioButtonCircle: {
+    height: '46px',
+    width: '46px',
+    '& circle': {
+      stroke: theme.colors.lightTurquoise,
+    },
+    '&:hover': {
+      cursor: 'pointer',
+      '& circle': {
+        strokeWidth: '5px',
+        stroke: theme.colors.darkTurquoise,
+      },
+    },
+    '& .checkMarkPath': {
+      transform: 'translate(8px, 11px) scale(1.5)',
+    },
+  },
+  radioButtonCircleSelected: {
+    '& circle': {
+      stroke: theme.colors.darkTurquoise,
+      fill: theme.colors.darkTurquoise,
+    },
+  },
+  radioButtonCircleSmall: {
+    height: '32px',
+    width: '32px',
+  },
   remove: {
     height: '25px',
   },
@@ -477,7 +535,6 @@ const styles = theme => ({
     fill: 'red',
   },
 });
-
 
 type Props = {
   type: string,

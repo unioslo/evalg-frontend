@@ -2,16 +2,17 @@ import React from 'react';
 import { Trans } from 'react-i18next';
 
 import { PageSection } from 'components/page';
+import Icon from 'components/icon';
 import {
   CandidateList,
   CandidateListItem,
   CandidateInfo,
-  ToggleSelectIcon,
 } from './CandidateList';
 import HelpSubSection from './HelpSubSection';
 import MandatePeriodText from './MandatePeriodText';
 import injectSheet from 'react-jss';
 import BallotButtons from './BallotButtons';
+import { ScreenSizeConsumer } from 'providers/ScreenSize';
 
 const helpTextTags = [
   'voter.majorityVoteHelpYouMaySelectOnlyOne',
@@ -43,42 +44,55 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
   const canSubmit = selectedCandidateIndex !== -1;
 
   return (
-    <PageSection>
-      <div className={classes.mandatePeriodTextDesktop}>
-        <MandatePeriodText election={election} longDate />
-      </div>
-      <div className={classes.mandatePeriodTextMobile}>
-        <MandatePeriodText election={election} />
-      </div>
-      <HelpSubSection
-        header={<Trans>voter.majorityVoteHelpHeader</Trans>}
-        helpTextTags={helpTextTags}
-      >
-        <CandidateList>
-          {candidates.map((c, index) => {
-            let selectAction = () => onSelectCandidate(index);
-            if (selectedCandidateIndex === index) {
-              selectAction = onDeselectCandidate;
-            }
+    <ScreenSizeConsumer>
+      {({ screenSize }) => (
+        <PageSection>
+          <div className={classes.mandatePeriodTextDesktop}>
+            <MandatePeriodText election={election} longDate />
+          </div>
+          <div className={classes.mandatePeriodTextMobile}>
+            <MandatePeriodText election={election} />
+          </div>
+          <HelpSubSection
+            header={<Trans>voter.majorityVoteHelpHeader</Trans>}
+            helpTextTags={helpTextTags}
+          >
+            <CandidateList>
+              {candidates.map((candidate, index) => {
+                let toggleSelectAction = () => onSelectCandidate(index);
+                if (selectedCandidateIndex === index) {
+                  toggleSelectAction = onDeselectCandidate;
+                }
 
-            return (
-              <CandidateListItem key={index}>
-                <ToggleSelectIcon
-                  selected={index === selectedCandidateIndex}
-                  action={selectAction}
-                />
-                <CandidateInfo candidate={c} infoUrl={true} />
-              </CandidateListItem>
-            );
-          })}
-        </CandidateList>
-        <BallotButtons
-          canSubmit={canSubmit}
-          onReviewBallot={onReviewBallot}
-          onBlankVote={onBlankVote}
-        />
-      </HelpSubSection>
-    </PageSection>
+                return (
+                  <CandidateListItem key={index}>
+                    {index === selectedCandidateIndex ? (
+                      <Icon
+                        type="radioButtonCircleSelected"
+                        custom={screenSize !== 'sm' ? { small: true } : false}
+                        onClick={toggleSelectAction}
+                      />
+                    ) : (
+                      <Icon
+                        type="radioButtonCircle"
+                        custom={screenSize !== 'sm' ? { small: true } : false}
+                        onClick={toggleSelectAction}
+                      />
+                    )}
+                    <CandidateInfo candidate={candidate} infoUrl={true} />
+                  </CandidateListItem>
+                );
+              })}
+            </CandidateList>
+            <BallotButtons
+              canSubmit={canSubmit}
+              onReviewBallot={onReviewBallot}
+              onBlankVote={onBlankVote}
+            />
+          </HelpSubSection>
+        </PageSection>
+      )}
+    </ScreenSizeConsumer>
   );
 };
 
