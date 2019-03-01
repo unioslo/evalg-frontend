@@ -129,20 +129,18 @@ const getIcon = (type: string, classes: Object, custom: any) => {
         [classes.smallCircle]: custom,
       });
       return (
-        <svg className={addCircleCls} viewBox="0 0 42 42">
+        <svg className={addCircleCls} viewBox="0 0 46 46">
           <g stroke="none" strokeWidth="1" fill="none">
-            <circle stroke="#8ECED9" strokeWidth="2" cx="21" cy="21" r="20" />
+            <circle strokeWidth="2" cx="23" cy="23" r="20" />
             <rect
-              fill="#8ECED9"
-              x="18.538743"
-              y="7.5649828"
+              x="20.538743"
+              y="9.5649828"
               width="5.25"
               height="26.0562731"
             />
             <rect
-              fill="#8ECED9"
-              x="8.14"
-              y="17.9749828"
+              x="10.14"
+              y="19.9749828"
               height="5.25"
               width="26.0562731"
             />
@@ -374,8 +372,24 @@ const getIcon = (type: string, classes: Object, custom: any) => {
 
 const styles = theme => ({
   addCircle: {
-    height: '42px',
-    width: '42px',
+    height: '46px',
+    width: '46px',
+    '& circle': {
+      stroke: theme.colors.lightTurquoise,
+    },
+    '& rect': {
+      fill: theme.colors.lightTurquoise,
+    },
+    '&:hover': {
+      cursor: 'pointer',
+      '& circle': {
+        strokeWidth: '3px',
+        stroke: theme.colors.darkTurquoise,
+      },
+      '& rect': {
+        fill: theme.colors.darkTurquoise,
+      },
+    },
   },
   arrowSmall: {
     width: '14px',
@@ -497,8 +511,8 @@ const styles = theme => ({
     fill: theme.colors.darkTurquoise,
   },
   smallCircle: {
-    height: '28px !important',
-    width: '28px !important',
+    height: '36px !important',
+    width: '36px !important',
   },
   smallIcon: {
     height: '14px !important',
