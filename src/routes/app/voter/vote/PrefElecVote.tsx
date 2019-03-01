@@ -62,7 +62,7 @@ class PrefElecVote extends React.Component<IProps, IState> {
       <Page header={this.props.electionName[lang]}>
         {this.state.isReviewingBallot ? (
           <PrefElecReview
-            candidates={this.state.selectedCandidates}
+            selectedCandidates={this.state.selectedCandidates}
             unselectedCandidates={
               unselectedCandidates === undefined ? [] : unselectedCandidates
             }
