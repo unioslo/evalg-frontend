@@ -42,6 +42,7 @@ class PrefElecVote extends React.Component<IProps, IState> {
     this.handleAddCandidate = this.handleAddCandidate.bind(this);
     this.handleMoveCandidate = this.handleMoveCandidate.bind(this);
     this.handleRemoveCandidate = this.handleRemoveCandidate.bind(this);
+    this.handleResetBallot = this.handleResetBallot.bind(this);
     this.handleReviewBallot = this.handleReviewBallot.bind(this);
     this.handleBlankVote = this.handleBlankVote.bind(this);
     this.handleGoBackToBallot = this.handleGoBackToBallot.bind(this);
@@ -77,6 +78,7 @@ class PrefElecVote extends React.Component<IProps, IState> {
             onAddCandidate={this.handleAddCandidate}
             onRemoveCandidate={this.handleRemoveCandidate}
             onMoveCandidate={this.handleMoveCandidate}
+            onResetBallot={this.handleResetBallot}
             onBlankVote={this.handleBlankVote}
             onReviewBallot={this.handleReviewBallot}
           />
@@ -93,9 +95,9 @@ class PrefElecVote extends React.Component<IProps, IState> {
   }
 
   private handleAddCandidate(candidate: Candidate) {
-    this.setState({
-      selectedCandidates: this.state.selectedCandidates.concat([candidate]),
-    });
+    this.setState(currState => ({
+      selectedCandidates: currState.selectedCandidates.concat([candidate]),
+    }));
   }
 
   private handleRemoveCandidate(candidate: Candidate) {
@@ -112,6 +114,10 @@ class PrefElecVote extends React.Component<IProps, IState> {
     );
     moveArrayItem(arrayCopy, oldIndex, newIndex);
     this.setState({ selectedCandidates: arrayCopy });
+  }
+
+  private handleResetBallot() {
+    this.setState({ selectedCandidates: [] });
   }
 
   private handleReviewBallot() {

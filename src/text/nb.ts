@@ -322,7 +322,8 @@ export default {
     editVote: 'Rediger stemme',
     majorityVoteHelpHeader: 'Velg en kandidat',
     majorityVoteHelpDesc: 'Velg kandidaten du vil stemme på.',
-    majorityVoteHelpYouMaySelectOnlyOne: 'Dette er et flertallsvalg, og du kan kun velge en kandidat.',
+    majorityVoteHelpYouMaySelectOnlyOne:
+      'Dette er et flertallsvalg, og du kan kun velge en kandidat.',
     prefElecDesc:
       'Marker kandidatene du vil stemme på, i prioritert rekkefølge.',
     prefElecNrOfCandidates: 'Du kan stemme på så mange kandidater du vil.',
@@ -332,6 +333,7 @@ export default {
       'Ranger kandidaten du foretrekker mest som nummer 1 (ditt førstevalg). Hvis denne kandidaten ikke får nok stemmer totalt sett, vil stemmen du ga vedkommende overføres til den du eventuelt har rangert som nummer 2, og så videre.',
     prefElecRankCandidatesShort:
       'Du rangerer kandidatene ved å trykke på dem i prioritert rekkefølge. Rekkefølgen kan gjøres om på underveis.',
+    resetPrefElecBallot: 'Tilbakestill',
     reviewBallot:
       'Se over stemmeseddelen din nedenfor. Lever deretter stemmen, eller gå tilbake for å gjøre endringer.',
   },

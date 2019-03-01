@@ -20,6 +20,7 @@ import HelpSubSection from './HelpSubSection';
 import MandatePeriodText from './MandatePeriodText';
 import injectSheet from 'react-jss';
 import BallotButtons from './BallotButtons';
+import Button, { ButtonContainer } from 'components/button';
 
 const helpTextTags = [
   'voter.prefElecNrOfCandidates',
@@ -35,6 +36,7 @@ interface IProps {
   onAddCandidate: (c: Candidate) => void;
   onRemoveCandidate: (c: Candidate) => void;
   onMoveCandidate: (oldIndex: number, newIndex: number) => void;
+  onResetBallot: () => void;
   onBlankVote: () => void;
   onReviewBallot: () => void;
   classes: any;
@@ -63,11 +65,31 @@ class PrefElecBallot extends React.Component<IProps, IState> {
       onAddCandidate,
       onRemoveCandidate,
       onMoveCandidate,
+      onResetBallot,
       onBlankVote,
       onReviewBallot,
       classes,
     } = this.props;
     const canSubmit = selectedCandidates.length > 0;
+
+    const mobileResetButton = (
+      <ScreenSizeConsumer>
+        {({ screenSize }) =>
+          (screenSize === 'mobile' || screenSize === 'sm') && (
+            <ButtonContainer>
+              <Button
+                text={<Trans>voter.resetPrefElecBallot</Trans>}
+                action={onResetBallot}
+                disabled={selectedCandidates.length === 0}
+                secondary
+                fillWidth={screenSize === 'mobile'}
+                centerContent={screenSize === 'mobile'}
+              />
+            </ButtonContainer>
+          )
+        }
+      </ScreenSizeConsumer>
+    );
 
     return (
       <ScreenSizeConsumer>
@@ -84,6 +106,7 @@ class PrefElecBallot extends React.Component<IProps, IState> {
               desc={<Trans>voter.prefElecDesc</Trans>}
               helpTextTags={helpTextTags}
             >
+              {mobileResetButton}
               <CandidateList>
                 {selectedCandidates.map((c, index) => {
                   let selectAction = this.selectCandidate.bind(this, index);

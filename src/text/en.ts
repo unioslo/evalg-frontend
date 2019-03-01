@@ -318,7 +318,8 @@ export default {
     editVote: 'Edit vote',
     majorityVoteHelpHeader: 'Choose one candidate',
     majorityVoteHelpDesc: 'Choose the candidate you would like to vote for.',
-    majorityVoteHelpYouMaySelectOnlyOne: 'This is a majority vote election, and you may select only one candidate.',
+    majorityVoteHelpYouMaySelectOnlyOne:
+      'This is a majority vote election, and you may select only one candidate.',
     prefElecDesc:
       'Choose the candidates you would like to vote for, in prioritized order.',
     prefElecNrOfCandidates:
@@ -326,9 +327,10 @@ export default {
     prefElecOnlySelectedGetVote:
       'It is only the candidates you select that will receive a vote.',
     prefElecRankCandidates:
-      'Rank the candidate you prefer the most as number 1. If the candidate ranked as number 1 doesn\'t recieve enough votes in total, and you have ranked another candidate as number 2, your vote for candidate number 1 will be transferred to candidate number 2, and so on.',
+      "Rank the candidate you prefer the most as number 1. If the candidate ranked as number 1 doesn't recieve enough votes in total, and you have ranked another candidate as number 2, your vote for candidate number 1 will be transferred to candidate number 2, and so on.",
     prefElecRankCandidatesShort:
       'Rank the candidates as preferred by selection them in the preferred order. You may change the order of already selected candidates as you go along.',
+    resetPrefElecBallot: 'Reset',
     reviewBallot:
       'Review your ballot below, then deliver your vote or go back to make changes.',
   },
