@@ -8,7 +8,7 @@ import { translate } from 'react-i18next';
 import { Classes } from 'jss';
 import { i18n } from 'i18next';
 
-// import css from './react-datepicker.min.css';
+import './react-datepicker.min.css';
 
 const styles = (theme: any) => ({
   dateInput: {
