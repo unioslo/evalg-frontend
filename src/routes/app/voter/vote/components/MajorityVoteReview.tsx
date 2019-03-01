@@ -43,7 +43,7 @@ const MajorityVoteReview: React.SFC<IReviewProps> = props => {
     submitAction,
     classes,
   } = props;
-  const reviewActions = (
+  const reviewButtons = (
     <ButtonContainer alignLeft>
       <Button
         secondary
@@ -80,7 +80,7 @@ const MajorityVoteReview: React.SFC<IReviewProps> = props => {
             </div>
           </>
         )}
-        {reviewActions}
+        {reviewButtons}
       </PageSubSection>
     </PageSection>
   );
