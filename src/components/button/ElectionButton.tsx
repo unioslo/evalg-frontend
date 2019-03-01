@@ -144,8 +144,8 @@ const ElectionButton = (props: IProps) => {
   )
 };
 
-const StyledContainer = injectSheet(styles as any)(ElectionButtonContainer);
-const StyledElectionButton = injectSheet(styles as any)(ElectionButton);
+const StyledContainer = injectSheet(styles)(ElectionButtonContainer);
+const StyledElectionButton = injectSheet(styles)(ElectionButton);
 
 export {
   StyledContainer as ElectionButtonContainer,

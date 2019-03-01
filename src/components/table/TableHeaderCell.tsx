@@ -52,4 +52,4 @@ const TableHeaderCell = (props: IProps) => {
   )
 };
 
-export default injectSheet(styles as any)(TableHeaderCell);
+export default injectSheet(styles)(TableHeaderCell);

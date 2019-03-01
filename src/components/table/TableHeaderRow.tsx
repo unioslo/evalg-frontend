@@ -22,4 +22,4 @@ const TableHeaderRow = (props: IProps) => {
   )
 };
 
-export default injectSheet(styles as any)(TableHeaderRow);
+export default injectSheet(styles)(TableHeaderRow);

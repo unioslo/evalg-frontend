@@ -168,4 +168,4 @@ const Footer = (props: IProps) => {
   );
 };
 
-export default translate()(injectSheet(styles as any)(Footer));
+export default translate()(injectSheet(styles)(Footer));

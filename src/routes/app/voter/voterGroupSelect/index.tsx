@@ -408,4 +408,4 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
   }
 }
 
-export default injectSheet(styles as any)(translate()(VoterGroupSelectPage));
+export default injectSheet(styles)(translate()(VoterGroupSelectPage));

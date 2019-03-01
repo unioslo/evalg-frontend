@@ -127,7 +127,7 @@ const CheckBox = (props: IProps) => {
   );
 };
 
-const StyledCheckBox = injectSheet(styles as any)(CheckBox);
+const StyledCheckBox = injectSheet(styles)(CheckBox);
 
 interface IRFProps {
   input: {
@@ -156,6 +156,6 @@ const CheckBoxRF = (props: IRFProps) => {
   );
 };
 
-const StyledCheckBoxRF = injectSheet(styles as any)(CheckBoxRF);
+const StyledCheckBoxRF = injectSheet(styles)(CheckBoxRF);
 
 export { StyledCheckBox as CheckBox, StyledCheckBoxRF as CheckBoxRF };

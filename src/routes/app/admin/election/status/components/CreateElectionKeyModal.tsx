@@ -426,6 +426,6 @@ public:${publicKey}`.trim();
   }
 }
 
-export default injectSheet(styles as any)(
+export default injectSheet(styles)(
   translate()(withApollo(CreateElectionKeyModal))
 );

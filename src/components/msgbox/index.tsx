@@ -130,5 +130,5 @@ class MsgBox extends React.Component<IProps, IState> {
   }
 }
 
-const StyledMsgBox = injectSheet(styles as any)(MsgBox);
+const StyledMsgBox = injectSheet(styles)(MsgBox);
 export { StyledMsgBox as MsgBox };

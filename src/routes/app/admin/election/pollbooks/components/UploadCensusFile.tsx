@@ -352,4 +352,4 @@ class UploadCensusFileModal extends React.Component<
   }
 }
 
-export default injectSheet(styles as any)(translate()(UploadCensusFileModal));
+export default injectSheet(styles)(translate()(UploadCensusFileModal));

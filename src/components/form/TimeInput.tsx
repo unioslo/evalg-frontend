@@ -314,7 +314,7 @@ class TimeInput extends React.Component<IProps, IState> {
   }
 }
 
-const TimeInputHOC = translate()(injectSheet(styles as any)(TimeInput));
+const TimeInputHOC = translate()(injectSheet(styles)(TimeInput));
 
 export default TimeInputHOC;
 

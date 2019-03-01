@@ -103,4 +103,4 @@ const Modal = (props: IProps) => {
   );
 };
 
-export default injectSheet(styles as any)(Modal);
+export default injectSheet(styles)(Modal);

@@ -74,4 +74,4 @@ const FormField = (props: IProps) => {
   )
 };
 
-export default injectSheet(styles as any)(FormField);
+export default injectSheet(styles)(FormField);

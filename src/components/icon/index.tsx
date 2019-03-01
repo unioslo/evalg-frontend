@@ -501,4 +501,4 @@ const Icon = (props: IProps) => {
   );
 };
 
-export default injectSheet(styles as any)(Icon);
+export default injectSheet(styles)(Icon);

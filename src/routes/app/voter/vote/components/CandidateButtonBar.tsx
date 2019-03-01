@@ -92,4 +92,4 @@ const CandidateButtonBar: React.SFC<IProps> = props => {
   )
 }
 
-export default injectSheet(styles as any)(CandidateButtonBar);
+export default injectSheet(styles)(CandidateButtonBar);

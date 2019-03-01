@@ -75,4 +75,4 @@ const FormButtons = (props: IProps) => {
   );
 };
 
-export default injectSheet(styles as any)(FormButtons);
+export default injectSheet(styles)(FormButtons);

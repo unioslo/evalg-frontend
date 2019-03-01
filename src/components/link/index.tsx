@@ -107,4 +107,4 @@ const Link = (props: IProps) => {
   }
 };
 
-export default injectSheet(styles as any)(Link);
+export default injectSheet(styles)(Link);

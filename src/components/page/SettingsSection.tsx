@@ -131,4 +131,4 @@ const SettingsSection: React.SFC<IProps> = props => {
   );
 };
 
-export default injectSheet(styles as any)(SettingsSection);
+export default injectSheet(styles)(SettingsSection);

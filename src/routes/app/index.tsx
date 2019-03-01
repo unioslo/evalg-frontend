@@ -67,7 +67,7 @@ const logout: React.SFC<IStyleProp> = (props: IStyleProp) => {
     </div>
   );
 };
-const styledLogout = injectSheet(styles as any)(logout)
+const styledLogout = injectSheet(styles)(logout)
 
 const App: React.SFC<IProps> = (props: IProps) => {
   const { authManager, classes } = props;
@@ -90,5 +90,5 @@ const App: React.SFC<IProps> = (props: IProps) => {
   );
 };
 
-const styledApp = injectSheet(styles as any)(translate()(App));
+const styledApp = injectSheet(styles)(translate()(App));
 export default styledApp;

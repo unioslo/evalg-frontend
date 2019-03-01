@@ -34,4 +34,4 @@ const Table = (props: IProps) => {
   return <table className={cls}>{props.children}</table>;
 };
 
-export default injectSheet(styles as any)(Table);
+export default injectSheet(styles)(Table);

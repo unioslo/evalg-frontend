@@ -115,8 +115,8 @@ const MobileDropdownItem = (props: IItemProps) => {
   )
 };
 
-const StyledMobileDropDown = injectSheet(styles as any)(MobileDropDown);
-const StyledMobileDropdownItem = injectSheet(styles as any)(MobileDropdownItem);
+const StyledMobileDropDown = injectSheet(styles)(MobileDropDown);
+const StyledMobileDropdownItem = injectSheet(styles)(MobileDropdownItem);
 
 export {
   StyledMobileDropDown as MobileDropDown,

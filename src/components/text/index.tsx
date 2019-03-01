@@ -109,10 +109,10 @@ const H3 = ({ classes, children }: IHeader) => (
   <h3 className={classes.h2}>{children}</h3>
 );
 
-const StyledH1 = injectSheet(styles as any)(H1);
-const StyledH2 = injectSheet(styles as any)(H2);
-const StyledH3 = injectSheet(styles as any)(H3);
+const StyledH1 = injectSheet(styles)(H1);
+const StyledH2 = injectSheet(styles)(H2);
+const StyledH3 = injectSheet(styles)(H3);
 
-export default injectSheet(styles as any)(Text);
+export default injectSheet(styles)(Text);
 
 export { StyledH1 as H1, StyledH2 as H2, StyledH3 as H3 };
