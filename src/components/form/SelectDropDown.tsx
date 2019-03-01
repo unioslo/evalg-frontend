@@ -53,7 +53,9 @@ class SelectDropDown extends React.Component<IProps> {
         },
         backgroundColor: state.isSelected ? lightBlueGrey : '#fff',
         color: greyishBrown,
-        borderBottom: 'solid 1px #ddd;',
+        '&:not(:last-child)': {
+          borderBottom: 'solid 1px #ddd;',
+        },
       }),
       control: (provided: any, state: any) => ({
         ...provided,

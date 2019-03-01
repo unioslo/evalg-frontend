@@ -79,6 +79,7 @@ const theme = {
     md: '768px',
     mdQuery: '@media (min-width:768px)',
     sm: '480px',
+    notMobileQuery: '@media (min-width:480px)',
   },
   btnBorderWidth: '0.3rem',
   btnDefDisabledColor: blueGreyish,

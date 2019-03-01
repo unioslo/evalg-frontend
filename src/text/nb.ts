@@ -313,26 +313,29 @@ export default {
       'Valget må ha minimum like mange kandidater per gruppe som angitt under <1>valginnstillinger</1>.',
   },
   voter: {
-    canVoteBlank: 'Det kan også stemme blankt.',
+    canVoteBlank: 'Du kan også stemme blankt.',
     castVote: 'Avgi stemme',
     chooseCandidates: 'Velg kandidater',
     chosenCandidate: 'Valgt kandidat',
     crossedCandidates: 'Kandidater strøket fra listen',
     cumulate: 'Ekstra stemme',
     editVote: 'Rediger stemme',
-    majorityVoteHelpHeader: 'Velg kandidaten du vil stemme på',
-    majorityVoteHelpYouMaySelectOnlyOne: 'Dette er et flertallsvalg, og du kan kun velge en kandidat.',
+    majorityVoteHelpHeader: 'Velg en kandidat',
+    majorityVoteHelpDesc: 'Velg kandidaten du vil stemme på.',
+    majorityVoteHelpYouMaySelectOnlyOne:
+      'Dette er et flertallsvalg, og du kan kun velge en kandidat.',
     prefElecDesc:
-      'Marker hvilke kandidater du vil stemme på, i prioritert rekkefølge.',
+      'Marker kandidatene du vil stemme på, i prioritert rekkefølge.',
     prefElecNrOfCandidates: 'Du kan stemme på så mange kandidater du vil.',
     prefElecOnlySelectedGetVote:
       'Det er bare kandidatene du markererer som får en stemme.',
     prefElecRankCandidates:
-      'Ranger kandidaten du foretrekker mest som nummer 1 (ditt førstevalg). Hvis denne kandidaten ikke får nok stemmer totalt sett, vil stemmen du ga vedkommende overføres til den du eventuelt har rangert som nummber 2, og så videre.',
+      'Ranger kandidaten du foretrekker mest som nummer 1 (ditt førstevalg). Hvis denne kandidaten ikke får nok stemmer totalt sett, vil stemmen du ga vedkommende overføres til den du eventuelt har rangert som nummer 2, og så videre.',
     prefElecRankCandidatesShort:
       'Du rangerer kandidatene ved å trykke på dem i prioritert rekkefølge. Rekkefølgen kan gjøres om på underveis.',
+    resetPrefElecBallot: 'Tilbakestill',
     reviewBallot:
-      'Se over stemmeseddelen din nedenfor. Bekreft deretter stemmen, eller gå tilbake for å gjøre endringer.',
+      'Se over stemmeseddelen din nedenfor. Lever deretter stemmen, eller gå tilbake for å gjøre endringer.',
   },
   voterGroupSelect: {
     andCloses: 'og stenger',

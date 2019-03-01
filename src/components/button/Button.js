@@ -45,6 +45,9 @@ const styles = theme => ({
     '&$primary': {
       background: theme.btnDefDisabledColor
     },
+    '&$secondary': {
+      color: theme.btnDefDisabledColor,
+    },
     borderColor: theme.btnDefDisabledColor,
     // color: theme.btnDefDisabledTextColor, // this makes secondary button text dissapear when disabled
     cursor: 'not-allowed',
@@ -58,6 +61,12 @@ const styles = theme => ({
   iconSmallMargin: {
     marginLeft: '1rem',
   },
+  fillWidth: {
+    flex: '1 0 auto',
+  },
+  centerContent: {
+    justifyContent: 'center',
+  }
 });
 
 type Props = {
@@ -68,6 +77,8 @@ type Props = {
   iconRight?: string,
   smallText?: boolean,
   wide?: boolean,
+  fillWidth?: boolean,
+  centerContent?: boolean,
   text: string | ReactElement,
   classes: Object
 }
@@ -81,7 +92,9 @@ const Button = (props: Props) => {
     [classes.primary]: !props.secondary,
     [classes.secondary]: props.secondary,
     [classes.smallText]: props.smallText,
-    [classes.wide]: props.wide
+    [classes.wide]: props.wide,
+    [classes.fillWidth]: props.fillWidth,
+    [classes.centerContent]: props.centerContent,
   });
 
   return (

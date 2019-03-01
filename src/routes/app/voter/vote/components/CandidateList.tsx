@@ -39,13 +39,22 @@ const styles = (theme: any) => ({
   candidateInfo: {
     fontSize: '1.8rem',
     paddingLeft: '1rem',
+    [theme.breakpoints.notMobileQuery]: {
+      paddingLeft: '2.2rem',
+    },
+  },
+  candidateInfoNoLeftPadding: {
+    paddingLeft: 0,
   },
   candidateInfoSubText: {
     fontSize: '1.4rem',
     paddingTop: '0.75rem',
   },
   candidateList: {
-    marginTop: '2rem',
+    marginTop: '1.5rem',
+    [theme.breakpoints.notMobileQuery]: {
+      marginTop: '3rem',
+    },
   },
   desktopButtons: {
     display: 'grid',
@@ -56,12 +65,19 @@ const styles = (theme: any) => ({
     display: 'flex',
     flex: 1,
     justifyContent: 'flex-end',
+    marginLeft: '3rem',
   },
   listItem: {
     alignItems: 'center',
-    borderBottom: '1px solid #CCC',
+    borderBottom: '2px solid #CCC',
     display: 'flex',
-    padding: '0.75rem 0',
+    padding: '1.2rem 0',
+    [theme.breakpoints.notMobileQuery]: {
+      borderBottom: '1px solid #CCC',
+      '&:first-child': {
+        borderTop: '1px solid #CCC',
+      },
+    },
   },
   toggleSelectionIconFlexRight: {
     alignItems: 'flex-end',
@@ -97,6 +113,7 @@ interface IInfoProps {
   infoUrl?: boolean;
   listName?: boolean;
   metaFields?: string[];
+  noLeftPadding?: boolean;
   t: TranslationFunction;
 }
 
@@ -104,9 +121,14 @@ const CandidateInfo: React.SFC<IInfoProps & TranslateHocProps> = props => {
   const lang = props.i18n ? props.i18n.language : 'nb';
   const { candidate, classes } = props;
   const { coCandidates } = candidate.meta;
+  const candidateInfoCls = classNames({
+    [classes.candidateInfo]: true,
+    [classes.candidateInfoNoLeftPadding]: props.noLeftPadding,
+  });
+
   return (
-    <div className={classes.candidateInfo}>
-      <div>{candidate.name}</div>
+    <div className={candidateInfoCls}>
+      <div className={classes.candidateInfoName}>{candidate.name}</div>
       {coCandidates && coCandidates.length > 0 && (
         <div className={classes.candidateInfoSubText}>
           <Trans>election.coCandidates</Trans>:{' '}

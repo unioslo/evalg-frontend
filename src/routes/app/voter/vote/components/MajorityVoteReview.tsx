@@ -4,56 +4,83 @@ import injectSheet from 'react-jss';
 
 import { PageSection, PageSubSection } from 'components/page';
 import Button, { ButtonContainer } from 'components/button';
+import { CandidateInfo } from './CandidateList';
 
 const styles = (theme: any) => ({
-  candidateList: {},
-  listItem: {
-    alignItems: 'center',
-    display: 'flex',
+  ingress: {
+    ...theme.ingress,
   },
-  rank: {
-    fontSize: '2.2rem',
+  chosenCandidateText: {
+    marginTop: '2rem',
+    fontStyle: 'italic',
+  },
+  chosenCandidateContainer: {
+    marginTop: '1.5rem',
+    marginBottom: '3rem',
+    border: '1px solid #CCC',
+    padding: '1rem 1.5rem',
+  },
+  blanVoteTextContainer: {
+    marginTop: '2rem',
+    marginBottom: '3rem',
+    fontSize: '1.8rem',
   },
 });
 
 interface IReviewProps {
-  backAction: () => void;
   submitAction: () => void;
   selectedCandidate: Candidate;
-  blankVote: boolean;
-  toggleReviewAction: () => void;
+  isBlankVote: boolean;
+  onGoBackToBallot: () => void;
   classes: any;
 }
 
 const MajorityVoteReview: React.SFC<IReviewProps> = props => {
   const {
     selectedCandidate,
-    blankVote,
-    toggleReviewAction,
+    isBlankVote,
+    onGoBackToBallot,
     submitAction,
+    classes,
   } = props;
-  const reviewActions = (
-    <ButtonContainer alignLeft={true}>
+  const reviewButtons = (
+    <ButtonContainer alignLeft>
       <Button
         secondary
-        text={<Trans>voter.editVote</Trans>}
-        action={toggleReviewAction}
+        text={<Trans>general.back</Trans>}
+        action={onGoBackToBallot}
       />
-      <Button text={<Trans>voter.castVote</Trans>} action={submitAction} />
+      <Button
+        text={<Trans>election.deliverVote</Trans>}
+        action={submitAction}
+      />
     </ButtonContainer>
   );
   return (
     <PageSection>
-      <Trans>voter.reviewBallot</Trans>
+      <div className={classes.ingress}>
+        <Trans>voter.reviewBallot</Trans>
+      </div>
       <PageSubSection header={<Trans>election.ballot</Trans>}>
-        {blankVote ? (
-          <Trans>voter.blankVote</Trans>
+        {isBlankVote ? (
+          <div className={classes.blanVoteTextContainer}>
+            <Trans>election.blankVote</Trans>
+          </div>
         ) : (
           <>
-            <Trans>voter.chosenCandidate</Trans>: {selectedCandidate.name}
+            <p className={classes.chosenCandidateText}>
+              <Trans>voter.chosenCandidate</Trans>:
+            </p>
+            <div className={classes.chosenCandidateContainer}>
+              <CandidateInfo
+                candidate={selectedCandidate}
+                infoUrl
+                noLeftPadding
+              />
+            </div>
           </>
         )}
-        {reviewActions}
+        {reviewButtons}
       </PageSubSection>
     </PageSection>
   );

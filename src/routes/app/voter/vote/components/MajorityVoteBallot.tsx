@@ -1,19 +1,18 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 
-import { Button, ButtonContainer } from 'components/button';
-import Link from 'components/link';
 import { PageSection } from 'components/page';
-import { ScreenSizeConsumer } from 'providers/ScreenSize';
+import Icon from 'components/icon';
 import {
   CandidateList,
   CandidateListItem,
   CandidateInfo,
-  ToggleSelectIcon,
 } from './CandidateList';
 import HelpSubSection from './HelpSubSection';
 import MandatePeriodText from './MandatePeriodText';
 import injectSheet from 'react-jss';
+import BallotButtons from './BallotButtons';
+import { ScreenSizeConsumer } from 'providers/ScreenSize';
 
 const helpTextTags = [
   'voter.majorityVoteHelpYouMaySelectOnlyOne',
@@ -23,10 +22,11 @@ const helpTextTags = [
 interface IProps {
   candidates: Candidate[];
   selectedCandidateIndex: number;
-  selectCandidate: (selectedCandidateIndex: number) => void;
-  deselectCandidate: () => void;
+  onSelectCandidate: (selectedCandidateIndex: number) => void;
+  onDeselectCandidate: () => void;
   election: Election;
-  toggleReviewAction: () => void;
+  onReviewBallot: () => void;
+  onBlankVote: () => void;
   classes: any;
 }
 
@@ -34,25 +34,14 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
   const {
     candidates,
     selectedCandidateIndex,
-    selectCandidate,
-    deselectCandidate,
-    toggleReviewAction,
+    onSelectCandidate,
+    onDeselectCandidate,
+    onReviewBallot,
+    onBlankVote,
     election,
     classes,
   } = props;
   const canSubmit = selectedCandidateIndex !== -1;
-  const ballotActions = (
-    <ButtonContainer alignLeft={true}>
-      <Link to="/voter">
-        <Button text={<Trans>general.back</Trans>} secondary={true} />
-      </Link>
-      <Button
-        text={<Trans>election.showBallot</Trans>}
-        disabled={!canSubmit}
-        action={toggleReviewAction}
-      />
-    </ButtonContainer>
-  );
 
   return (
     <ScreenSizeConsumer>
@@ -66,29 +55,49 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
           </div>
           <HelpSubSection
             header={<Trans>voter.majorityVoteHelpHeader</Trans>}
+            desc={<Trans>voter.majorityVoteHelpDesc</Trans>}
             helpTextTags={helpTextTags}
           >
-            {screenSize === 'sm' ? ballotActions : null}
-
             <CandidateList>
-              {candidates.map((c, index) => {
-                let selectAction = () => selectCandidate(index);
+              {candidates.map((candidate, index) => {
+                let toggleSelectAction = () => onSelectCandidate(index);
                 if (selectedCandidateIndex === index) {
-                  selectAction = deselectCandidate;
+                  toggleSelectAction = onDeselectCandidate;
                 }
 
                 return (
                   <CandidateListItem key={index}>
-                    <ToggleSelectIcon
-                      selected={index === selectedCandidateIndex}
-                      action={selectAction}
-                    />
-                    <CandidateInfo candidate={c} infoUrl={true} />
+                    {index === selectedCandidateIndex ? (
+                      <Icon
+                        type="radioButtonCircleSelected"
+                        custom={
+                          screenSize !== 'mobile' && screenSize !== 'sm'
+                            ? { small: true }
+                            : false
+                        }
+                        onClick={toggleSelectAction}
+                      />
+                    ) : (
+                      <Icon
+                        type="radioButtonCircle"
+                        custom={
+                          screenSize !== 'mobile' && screenSize !== 'sm'
+                            ? { small: true }
+                            : false
+                        }
+                        onClick={toggleSelectAction}
+                      />
+                    )}
+                    <CandidateInfo candidate={candidate} infoUrl={true} />
                   </CandidateListItem>
                 );
               })}
             </CandidateList>
-            {ballotActions}
+            <BallotButtons
+              canSubmit={canSubmit}
+              onReviewBallot={onReviewBallot}
+              onBlankVote={onBlankVote}
+            />
           </HelpSubSection>
         </PageSection>
       )}

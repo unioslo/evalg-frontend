@@ -5,169 +5,87 @@ import { TranslateHocProps } from 'react-i18next/src/translate';
 import injectSheet from 'react-jss';
 import { Button, ButtonContainer } from 'components/button';
 import { PageSection, PageSubSection, PageParagraph } from 'components/page';
-import DropdownArrowIcon from 'components/icons/DropdownArrowIcon';
+import {
+  CandidateList,
+  CandidateListItem,
+  CandidateInfo,
+} from './CandidateList';
 
 const styles = (theme: any) => ({
-  candidateName: {
-    fontSize: '1.6rem',
-  },
-  listName: {
-    fontSize: '1.4rem',
-    paddingTop: '0.5rem',
-  },
-  infoContainer: {
-    paddingLeft: '2rem',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  crossedInfoContainer: {
-    paddingLeft: '3.3rem',
-    display: 'flex',
-    flexDirection: 'column',
-    color: theme.lightDarkWhite,
-    fontStyle: 'italic',
-  },
-  listItem: {
-    alignItems: 'center',
-    borderBottom: '1px solid #CCC',
-    display: 'flex',
-    padding: '0.75rem 0',
+  ingress: {
+    ...theme.ingress,
   },
   rank: {
     fontSize: '2.4rem',
+    paddingRight: '1rem',
+  },
+  blanVoteTextContainer: {
+    marginTop: '2rem',
+    marginBottom: '3rem',
+    fontSize: '1.8rem',
   },
 });
 
-interface IBallotProps extends TranslateHocProps {
-  candidates: Candidate[];
+interface IReviewProps extends TranslateHocProps {
+  selectedCandidates: Candidate[];
+  isBlankVote: boolean;
+  onGoBackToBallot: () => void;
+  onSubmitBallot: () => void;
   classes: any;
 }
 
-interface ICrossedBallotProps extends TranslateHocProps {
-  unselectedCandidates: Candidate[];
-  classes: any;
-}
-
-const BlankBallot = () => (
-  <div>
-    <Trans>election.blankVote</Trans>
-  </div>
-);
-
-const Ballot = ({ classes, candidates, i18n }: IBallotProps) => {
-  const lang = i18n && i18n.language ? i18n.language : 'nb';
-  return (
-    <ul>
-      {candidates.map((c, index) => {
+const PrefElecReview: React.SFC<IReviewProps> = ({
+  selectedCandidates,
+  isBlankVote,
+  onGoBackToBallot,
+  onSubmitBallot,
+  classes,
+}) => {
+  const ballot = (
+    <CandidateList>
+      {selectedCandidates.map((candidate, index) => {
         const rankNr = index + 1;
         return (
-          <li key={index} className={classes.listItem}>
+          <CandidateListItem key={index}>
             <div className={classes.rank}>{rankNr}</div>
-            <div className={classes.infoContainer}>
-              <div className={classes.candidateName}>{c.name}</div>
-              <div className={classes.listName}>{c.list.name[lang]}</div>
-            </div>
-          </li>
+            <CandidateInfo candidate={candidate} infoUrl />
+          </CandidateListItem>
         );
       })}
-    </ul>
+    </CandidateList>
   );
-};
 
-// TODO: Should the crossed ballot be shuffled?
-const CrossedBallot = ({
-  classes,
-  unselectedCandidates,
-  i18n,
-}: ICrossedBallotProps) => {
-  const lang = i18n && i18n.language ? i18n.language : 'nb';
+  const blankBallot = (
+    <div className={classes.blanVoteTextContainer}>
+      <Trans>election.blankVote</Trans>
+    </div>
+  );
+
+  const reviewButtons = (
+    <ButtonContainer alignLeft>
+      <Button
+        secondary
+        text={<Trans>general.back</Trans>}
+        action={onGoBackToBallot}
+      />
+      <Button
+        text={<Trans>election.deliverVote</Trans>}
+        action={onSubmitBallot}
+      />
+    </ButtonContainer>
+  );
+
   return (
-    <ul>
-      {unselectedCandidates.map((c, index) => {
-        return (
-          <li key={index} className={classes.listItem}>
-            <div className={classes.crossedInfoContainer}>
-              <div className={classes.candidateName}>{c.name}</div>
-              <div className={classes.listName}>{c.list.name[lang]}</div>
-            </div>
-          </li>
-        );
-      })}
-    </ul>
+    <PageSection>
+      <div className={classes.ingress}>
+        <Trans>voter.reviewBallot</Trans>
+      </div>
+      <PageSubSection header={<Trans>election.ballot</Trans>}>
+        {isBlankVote ? blankBallot : <PageParagraph>{ballot}</PageParagraph>}
+        {reviewButtons}
+      </PageSubSection>
+    </PageSection>
   );
 };
-
-interface IReviewProps extends TranslateHocProps {
-  backAction: () => void;
-  submitAction: () => void;
-  candidates: Candidate[];
-  unselectedCandidates: Candidate[];
-  isVoteBlank: boolean;
-  classes: any;
-}
-
-interface IReviewState {
-  showUnselectedCandidates: boolean;
-}
-
-class PrefElecReview extends React.Component<IReviewProps, IReviewState> {
-  constructor(props: IReviewProps) {
-    super(props);
-    this.state = { showUnselectedCandidates: false };
-    this.toggleShowUnselectedCandidates = this.toggleShowUnselectedCandidates.bind(
-      this
-    );
-  }
-  public render() {
-    return (
-      <PageSection>
-        <Trans>voter.reviewBallot</Trans>
-        <PageSubSection header={<Trans>election.ballot</Trans>}>
-          {this.props.isVoteBlank ? (
-            BlankBallot()
-          ) : (
-            <>
-              <PageParagraph>
-                <Ballot {...this.props} />
-              </PageParagraph>
-              <PageParagraph
-                header={
-                  <>
-                    <DropdownArrowIcon
-                      selected={this.state.showUnselectedCandidates}
-                      action={this.toggleShowUnselectedCandidates}
-                    />
-                    <Trans>voter.crossedCandidates</Trans>
-                  </>
-                }
-              >
-                {this.state.showUnselectedCandidates
-                  ? CrossedBallot(this.props)
-                  : null}
-              </PageParagraph>
-            </>
-          )}
-
-          <ButtonContainer alignLeft={true}>
-            <Button
-              action={this.props.backAction}
-              text={<Trans>general.back</Trans>}
-              secondary={true}
-            />
-            <Button
-              action={this.props.submitAction}
-              text={<Trans>election.deliverVote</Trans>}
-            />
-          </ButtonContainer>
-        </PageSubSection>
-      </PageSection>
-    );
-  }
-  private toggleShowUnselectedCandidates(this: any) {
-    this.setState({
-      showUnselectedCandidates: !this.state.showUnselectedCandidates,
-    });
-  }
-}
 
 export default injectSheet(styles)(translate()(PrefElecReview));
