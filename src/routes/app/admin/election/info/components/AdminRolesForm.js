@@ -114,7 +114,10 @@ class AdminRolesForm extends React.Component {
     const {
       closeAction, classes, addAction, removeAction, adminPersons, adminGroups
     } = this.props;
-    const { adminPersonFilter, adminGroupFilter } = this.state;
+    const {
+      // adminPersonFilter,
+      adminGroupFilter
+    } = this.state;
     return (
       <div>
         <PageSubSection

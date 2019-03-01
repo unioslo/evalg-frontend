@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import injectSheet from 'react-jss';
 import { Trans, translate } from 'react-i18next';
 
-import { objPropsToArray } from 'utils';
+// import { objPropsToArray } from 'utils';
 import Loading from 'components/loading';
 import Page from 'components/page/Page';
 import { PageSection } from 'components/page';

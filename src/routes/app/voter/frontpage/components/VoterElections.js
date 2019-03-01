@@ -69,6 +69,8 @@ class VoterElections extends React.Component {
             case 'closed':
               noElectionsText = <Trans>general.noClosedElections</Trans>;
               break;
+            default:
+              break;
           }
 
           if (['md', 'lg'].indexOf(screenSize) !== -1) {
@@ -109,6 +111,8 @@ class VoterElections extends React.Component {
               break;
             case 'closed':
               dropdownText = <Trans>electionStatus.closedElections</Trans>;
+              break;
+            default:
               break;
           }
 
