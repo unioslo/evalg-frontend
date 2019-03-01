@@ -3,6 +3,7 @@ import { translate, Trans } from 'react-i18next';
 import { i18n } from 'i18next';
 import { Form, Field, FormRenderProps } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
+import arrayMutators from 'final-form-arrays';
 
 import Text from '../../../../../../components/text';
 import {
@@ -264,6 +265,7 @@ class VotingPeriodForm extends React.Component<IProps> {
     return (
       <Form
         onSubmit={this.handleSubmit}
+        mutators={{...arrayMutators}}
         validate={validate(lang)}
         initialValues={initialValues}
         // tslint:disable-next-line:jsx-no-lambda

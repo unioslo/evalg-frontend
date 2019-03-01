@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Form, Field } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
-// import arrayMutators from 'final-form-arrays'
+import arrayMutators from 'final-form-arrays'
 import { Trans, translate } from 'react-i18next';
 
 import ActionText from '../../../../../../components/actiontext';
@@ -56,7 +56,7 @@ const PrefTeamElecCandForm = (props: IProps) =>  {
   return (
     <Form
       onSubmit={props.handleSubmit}
-      // mutators={arrayMutators}
+      mutators={{...arrayMutators}}
       initialValues={initialValues}
       render={(formProps) => {
         const {

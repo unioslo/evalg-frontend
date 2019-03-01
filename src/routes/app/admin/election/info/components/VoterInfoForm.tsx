@@ -183,7 +183,7 @@ class VoterInfoForm extends React.Component<IProps> {
         onSubmit={this.handleSubmit}
         validate={validate(lang)}
         initialValues={initialValues}
-        mutators={arrayMutators as any}
+        mutators={{...arrayMutators}}
         // tslint:disable-next-line:jsx-no-lambda
         render={(formProps: FormRenderProps) => {
           const {

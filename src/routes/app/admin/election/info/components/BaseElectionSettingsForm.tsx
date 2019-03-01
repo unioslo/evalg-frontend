@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
+import arrayMutators from 'final-form-arrays';
 import { translate, Trans } from 'react-i18next';
 import { i18n } from 'i18next';
 
@@ -82,10 +83,11 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
 
   render() {
     const lang = this.props.i18n.language;
-    const elections: any = this.initialValues;
+    const elections: any = this.initialValues.elections;
     return (
       <Form
         onSubmit={this.handleFormSubmit}
+        mutators={{...arrayMutators}}
         initialValues={this.initialValues}
         validate={validate}
       >
