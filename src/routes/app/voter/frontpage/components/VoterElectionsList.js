@@ -82,8 +82,8 @@ const VoterElectionsListItem = (props) => {
 // }
 
 const VoterElectionsList = (props) => {
-  const { electionGroups, elections, noElectionsText, classes } = props;
-  const lang = props.i18n.language;
+  const { electionGroups, noElectionsText, classes } = props;
+  // const lang = props.i18n.language;
   if (electionGroups.length === 0) {
     return (
       <p>{noElectionsText}</p>

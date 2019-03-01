@@ -52,7 +52,7 @@ class VoterElections extends React.Component {
     return (
       <ScreenSizeConsumer>
         {({ screenSize }) => {
-          const { electionGroups, elections } = this.props;
+          const { electionGroups } = this.props;
           const groups = this.filterElectionGroups(
             electionGroups,
             this.state.electionStatusFilter

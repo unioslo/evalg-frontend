@@ -25,7 +25,7 @@ import {
 
 const VoterElectionsTable = (props) => {
   const lang = props.i18n.language;
-  const { electionGroups, i18n, noElectionsText } = props;
+  const { electionGroups, noElectionsText } = props;
 
   const dateTimeToMarkup = dateTime => (
     <React.Fragment>
