@@ -124,7 +124,7 @@ class PrefElecCandForm extends React.Component<IProps> {
                   if (touched && touched[field]) {
                     return <FormErrorMsg key={index} msg={errors._errors[field]} />;
                   } else {
-                    return <React.Fragment/>;
+                    return <React.Fragment key={index}/>;
                   }
                 })}
                 <FormButtons

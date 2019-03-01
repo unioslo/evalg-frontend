@@ -9,11 +9,90 @@ import { FieldRenderProps } from 'react-final-form';
 import { Classes } from 'jss';
 
 
-const styles = () => {
-  a: {
-    test: 1
-  }
-}
+const styles = (theme: any) => ({
+  dropdown: {
+    position: 'relative',
+    '&:hover': {
+      cursor: 'pointer',
+    },
+  },
+  dropDownNoRelativePositionOfListOnMobile: {
+    position: 'static',
+    [theme.breakpoints.mdQuery]: {
+      position: 'relative',
+    },
+  },
+  dropdownNormal: {
+    width: theme.dropDownWidth,
+    fontSize: theme.formFieldFontSize,
+    color: theme.formFieldTextColor,
+    backgroundColor: theme.colors.white,
+  },
+  dropdownInline: {
+    display: 'inline-block',
+    width: 'fit-content',
+    color: theme.inlineDropdownTextColor,
+    background: 'url("/dropdownarrow.svg") no-repeat right 7px top 50%',
+    backgroundSize: '14px 9px',
+    backgroundColor: theme.colors.white,
+    fontFamily: 'inherit',
+    fontSize: 'inherit',
+    border: 0,
+    borderBottomWidth: '2px',
+    borderBottomStyle: 'dotted',
+    borderBottomColor: theme.inlineDropdownBottomBorderColor,
+    '& .inlineOptionNameText': {
+      marginRight: 30,
+    },
+  },
+  large: {
+    width: theme.dropDownWidthLarge,
+  },
+  list: {
+    position: 'absolute',
+    left: 0,
+    top: '9.6rem',
+    fontFamily: 'Arial, sans-serif',
+    borderRadius: theme.formFieldBorderRadius,
+    listStyleType: 'none',
+    minWidth: theme.dropDownWidth,
+    maxHeight: theme.dropDownListMaxHeight,
+    zIndex: 100,
+    background: theme.colors.white,
+    border: theme.formFieldBorder,
+    borderColor: theme.formFieldBorderColor,
+  },
+  listNoLabel: {
+    top: '4.6rem',
+  },
+  listScroll: {
+    overflowY: 'scroll',
+  },
+  listLarge: {
+    width: theme.dropDownWidthLarge,
+  },
+  listItem: {
+    borderBottom: `0.1rem solid ${theme.formFieldBorderColor}`,
+    padding: `0.7rem ${theme.formFieldHorizontalPadding}`,
+    minHeight: '3rem',
+    '&:hover': {
+      background: theme.lightBlueGray,
+      cursor: 'pointer',
+    },
+    '&:last-child': {
+      borderBottom: 0,
+    },
+  },
+  secondaryLine: {
+    color: theme.dropDownSecondaryLineColor,
+  },
+  input: {
+    backgroundImage: 'url("/dropdownarrow.svg")',
+    backgroundPosition: 'right 13px top 50%',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '14px 9px',
+  },
+});
 
 
 
