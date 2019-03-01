@@ -32,7 +32,6 @@
     "graphql": "^14.1.1",
     "graphql-tag": "^2.10.1",
     "i18next": "^11.6.0",
-    "jest": "^23.6.0",
     "js-nacl": "^1.2.2",
     "jwt-decode": "^2.2.0",
     "lodash.throttle": "^4.1.1",
