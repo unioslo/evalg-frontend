@@ -65,6 +65,7 @@ const styles = (theme: any) => ({
     display: 'flex',
     flex: 1,
     justifyContent: 'flex-end',
+    marginLeft: '3rem',
   },
   listItem: {
     alignItems: 'center',
