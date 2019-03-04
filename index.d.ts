@@ -14,6 +14,9 @@ interface EvalgClientState {
     selectedPollBookID: string;
     notInPollBookJustification: string;
   };
+  signedInPerson: {
+    personId: string;
+  };
   admin: { isCreatingNewElection: boolean };
 }
 
@@ -92,7 +95,7 @@ interface Election {
   status: ElectionStatusType;
   pollbooks: IPollBook[];
   meta: ElectionMetaData;
-  electionGroup?: ElectionGroup;
+  electionGroup: ElectionGroup;
   active: boolean;
   mandatePeriodStart: string;
   mandatePeriodEnd: string;
