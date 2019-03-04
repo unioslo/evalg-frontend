@@ -116,7 +116,7 @@ const buildListFilterOptions = (
 };
 
 interface IProps {
-  children: React.ReactNode,
+  children?: React.ReactNode,
   electionGroup: ElectionGroup,
   t: TranslationFunction,
   i18n: i18n,
