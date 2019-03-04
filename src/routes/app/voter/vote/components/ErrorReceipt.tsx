@@ -3,6 +3,7 @@ import injectSheet from 'react-jss';
 import { Trans, translate } from 'react-i18next';
 import { TranslateHocProps } from 'react-i18next/src/translate';
 import Link from '../../../../../components/link';
+import { Classes } from 'jss';
 
 const styles = (theme: any) => ({
   header: {
@@ -16,7 +17,7 @@ const styles = (theme: any) => ({
 });
 
 interface IProps extends TranslateHocProps {
-  classes?: any;
+  classes: Classes;
 }
 
 const Receipt = ({ classes }: IProps) => {
