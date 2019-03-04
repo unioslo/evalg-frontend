@@ -1,5 +1,4 @@
 import 'react-app-polyfill/ie11';
-import 'array-includes';
 
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
@@ -22,6 +21,9 @@ import theme from './theme';
 
 import { oidcConfig, graphqlBackend } from './appConfig';
 import { withClientState } from 'apollo-link-state';
+
+import polyfills from './utils/polyfills';
+polyfills();
 
 const storeToken = (props: any) => (user: User) => {
   sessionStorage.setItem(
