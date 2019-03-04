@@ -4,7 +4,7 @@ import { Form, FormRenderProps, FormSpy, Field } from 'react-final-form';
 
 import { getSupportedLanguages } from '../../../../../utils/i18n';
 import { translate } from 'react-i18next';
-import { i18n } from 'i18next';
+import { i18n, TranslationFunction } from 'i18next';
 import { FormField, FormButtons, TextInput, SelectDropDown} from '../../../../../components/form';
 
 import { isObjEmpty } from '../../../../../utils/helpers';
@@ -15,7 +15,7 @@ interface IProps {
   cancelAction: () => void;
   updateValues: (newVals: any) => void;
   initialValues: object;
-  t: (v: string) => string;
+  t: TranslationFunction;
   i18n: i18n;
 }
 
@@ -102,7 +102,7 @@ const renderOptionFields = (
   nodeList: any[],
   ouLists: any,
   currentSettings: any,
-  t: (v: string) => string,
+  t: TranslationFunction,
   lang: string
 ) => {
   return nodeList.map((node, index) => {

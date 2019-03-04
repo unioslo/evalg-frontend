@@ -1,11 +1,6 @@
 import * as React from 'react';
 import ReactClipboardButton from 'react-clipboard.js';
-import Icon from 'components/icon';
-
-// type Props = {
-//   text: ReactElement | string,
-//   data: string
-// }
+import Icon from '../../components/icon';
 
 const ClipboardButton = (props) => {
   const { text, data } = props;
@@ -19,6 +14,5 @@ const ClipboardButton = (props) => {
     </ReactClipboardButton>
   )
 };
-
 
 export default ClipboardButton;

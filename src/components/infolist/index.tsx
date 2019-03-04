@@ -34,7 +34,7 @@ const styles = (theme: any) => ({
 })
 
 interface IListProps {
-  children?: any,
+  children?: React.ReactNode,
   classes: Classes,
 }
 
@@ -49,7 +49,7 @@ const InfoList = (props: IListProps) => {
 const StyledInfoList = injectSheet(styles)(InfoList);
 
 interface IListItemProps {
-  children?: any,
+  children?: React.ReactNode,
   smallText?: boolean,
   bulleted?: boolean,
   classes: Classes,

@@ -6,7 +6,7 @@ import injectSheet from 'react-jss';
 import classNames from 'classnames';
 import { translate } from 'react-i18next';
 import { Classes } from 'jss';
-import { i18n } from 'i18next';
+import { i18n, TranslationFunction } from 'i18next';
 
 import './react-datepicker.min.css';
 
@@ -63,7 +63,7 @@ interface IProps {
   name: string;
   lang?: string;
   label?: any;
-  t: Function;
+  t: TranslationFunction;
   small?: boolean;
   error?: any;
   classes: Classes;

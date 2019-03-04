@@ -25,7 +25,8 @@ import { DropDown, TextInput } from '../../../../../../components/form';
 import NoCandidatesRow from './NoCandidatesRow';
 import NoCandidatesFoundRow from './NoCandidatesFoundRow';
 import PrefElecCandForm from './PrefElecCandForm';
-import { i18n } from 'i18next';
+import { i18n, TranslationFunction } from 'i18next';
+import { ElectionGroup } from '../../../../../../interfaces';
 
 const addPrefElecCandidate = gql`
   mutation AddPrefElecCandidate(
@@ -115,9 +116,9 @@ const buildListFilterOptions = (
 };
 
 interface IProps {
-  children?: any,
-  electionGroup: any,
-  t: (s: string) => string,
+  children: React.ReactNode,
+  electionGroup: ElectionGroup,
+  t: TranslationFunction,
   i18n: i18n,
 };
 

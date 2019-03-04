@@ -5,7 +5,7 @@ import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
 interface IProps {
-  children?: any,
+  children?: React.ReactNode,
   smlTopMargin?: boolean,
   noTopMargin?: boolean,
   classes: Classes,

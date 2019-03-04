@@ -21,6 +21,7 @@ import Icon from '../../../../../../components/icon';
 
 import PrefTeamElecCandForm from './PrefTeamElecCandForm';
 import NoCandidatesRow from './NoCandidatesRow';
+import { ElectionGroup } from '../../../../../../interfaces';
 
 const addTeamPrefElecCandidate = gql`
   mutation AddTeamPrefElecCandidate(
@@ -69,8 +70,8 @@ const deleteCandidate = gql`
 `;
 
 interface IProps {
-  children?: any,
-  electionGroup: any,
+  children?: React.ReactNode,
+  electionGroup: ElectionGroup,
   createCandidate?: (a: any) => void,
   updateCandidate?: (a: any) => void,
   createCoCandidate?: (a: any) => void,

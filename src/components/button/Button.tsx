@@ -73,7 +73,7 @@ interface IProps {
   classes: Classes,
 }
 
-const Button = (props: IProps) => {
+const Button: React.SFC<IProps> = (props) => {
   const { classes } = props;
   const btnClassNames = classNames({
     [classes.button]: true,

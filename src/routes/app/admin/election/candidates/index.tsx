@@ -6,10 +6,10 @@ import PrefElecCandTable from './components/PrefElecCandTable';
 import PrefTeamElecCandTable from './components/PrefTeamElecCandTable';
 import Button, { ButtonContainer } from '../../../../../components/button';
 import { Redirect } from 'react-router';
+import { ElectionGroup } from '../../../../../interfaces';
 
 interface IProps {
-  children?: any,
-  electionGroup: any,
+  electionGroup: ElectionGroup,
 };
 
 interface IState {

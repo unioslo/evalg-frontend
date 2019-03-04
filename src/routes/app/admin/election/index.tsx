@@ -15,6 +15,7 @@ import { History, Location } from 'history';
 import { i18n } from 'i18next';
 // import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
 import { electionGroupWithOrderedElections } from '../../../../utils/processGraphQLData';
+import { ElectionGroup } from '../../../../interfaces';
 
 const electionGroupQuery = gql`
   query electionGroup($id: UUID!) {
@@ -101,7 +102,7 @@ interface IProps {
   location: Location;
   match: match<{ groupId: string }>;
   history: History;
-  electionGroup: any;
+  electionGroup: ElectionGroup;
   i18n: i18n;
 }
 

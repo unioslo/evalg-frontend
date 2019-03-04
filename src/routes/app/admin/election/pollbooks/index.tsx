@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as React from 'react';
 import { Mutation, Query } from 'react-apollo';
 import { Field, Form } from 'react-final-form';
-import { Trans, translate } from 'react-i18next';
+import { Trans, translate, TranslationFunction } from 'react-i18next';
 
 import { orderMultipleElections } from '../../../../../utils/processGraphQLData';
 import AddVoter from './components/AddVoter';
@@ -34,6 +34,7 @@ import UploadCensusFileModal, {
 } from './components/UploadCensusFile';
 
 import { DropDownOption, Election, IVoter, IPerson } from '../../../../../interfaces';
+import { i18n } from 'i18next';
 
 const updateVoterPollBook = gql`
   mutation UpdateVoterPollBook($id: UUID!, $pollbookId: UUID!) {
@@ -188,8 +189,8 @@ const UpdateVoterForm: React.SFC<IUpdateVoterForm> = props => {
 };
 
 interface IProps {
-  t: (t: string) => string;
-  i18n: any;
+  t: TranslationFunction;
+  i18n: i18n;
   groupId: string;
 }
 

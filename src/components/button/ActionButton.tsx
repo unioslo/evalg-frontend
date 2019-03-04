@@ -1,10 +1,11 @@
 /* @flow */
 import * as React from 'react';
 import injectSheet from 'react-jss';
+import { Classes } from 'jss';
 
 interface IProps {
   text: string;
-  classes: any;
+  classes: Classes;
 }
 
 const styles = (theme: any) => ({
@@ -25,7 +26,7 @@ const styles = (theme: any) => ({
   },
 });
 
-const ActionButton = (props: IProps) => {
+const ActionButton: React.SFC<IProps> = (props) => {
   const { classes } = props;
   return (
     <svg

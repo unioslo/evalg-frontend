@@ -15,7 +15,7 @@ import Button, { ButtonContainer } from '../../../../components/button';
 import MandatePeriodText from '../vote/components/MandatePeriodText';
 import { orderMultipleElections } from '../../../../utils/processGraphQLData';
 import { Date, Time } from '../../../../components/i18n';
-import { Election } from '../../../../interfaces';
+import { Election, ElectionGroup, IPollBook } from '../../../../interfaces';
 
 
 const styles = (theme: any) => ({
@@ -197,11 +197,11 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
             return 'Error';
           }
 
-          const electionGroup: any = data.electionGroup;
-          const electionGroupName: any = electionGroup.name[lang];
+          const electionGroup: ElectionGroup = data.electionGroup;
+          const electionGroupName: string = electionGroup.name[lang];
           const elections: Election[] = electionGroup.elections;
 
-          let pollbooks: any[];
+          let pollbooks: IPollBook[];
           let electionForSelectedPollbook: Election;
           let electionForSelectedPollbookIsOngoing = true;
 

@@ -16,6 +16,7 @@ import VoterInfoSettingsSection from './components/VoterInfoSettings';
 import AdminRolesSettingsSection from './components/AdminRolesSettings';
 import SettingsSectionsGroup from '../../../../../components/page/SettingsSectionsGroup';
 import { Query, withApollo, WithApolloClient } from 'react-apollo';
+import { ElectionGroup } from '../../../../../interfaces';
 // import { ElectionGroup } from '../../../../../interfaces';
 
 const isCreatingNewElectionQuery = gql`
@@ -34,7 +35,7 @@ const defaultSettingsSectionsContents: ISettingsSectionContents[] = [
 ];
 
 interface IProps {
-  electionGroupData: any;
+  electionGroupData: ElectionGroup;
   isNewElection?: boolean;
   handleUpdate?: () => Promise<any>; // TODO: Isn't used. Delete?
   history: History;

@@ -4,7 +4,7 @@ import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
 type IProps = {
-  children?: any,
+  children?: React.ReactNode,
   inline?: boolean,
   noTopMargin?: boolean,
   smallBottomMargin?: boolean,

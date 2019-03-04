@@ -2,7 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import injectSheet from 'react-jss';
-import { translate } from 'react-i18next';
+import { translate, TranslationFunction } from 'react-i18next';
 import { Classes } from 'jss';
 
 const calculatePath = (groupId: string | number ) => (subRoute: string | number) => (
@@ -73,7 +73,7 @@ const ElectionNavBarSection = (props: ISectionProps) => {
 interface IProps {
   groupId: number | string,
   path: string,
-  t: (s: string) => string,
+  t: TranslationFunction,
   classes: Classes,
 };
 

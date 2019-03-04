@@ -9,7 +9,7 @@ import classNames from 'classnames';
 // })
 
 type IProps = {
-  children?: any,
+  children?: React.ReactNode[],
 }
 
 const ElectionButtonContainer = (props: IProps) => {

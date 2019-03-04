@@ -16,6 +16,7 @@ import {
 import { InfoList, InfoListItem } from '../../../../../../components/infolist';
 import { allEqualForAttrs } from '../../../../../../utils';
 import { i18n } from 'i18next';
+import { ElectionGroup, Election } from '../../../../../../interfaces';
 
 interface IVotingPeriodProps {
   elections: any[],
@@ -122,7 +123,7 @@ const NoActiveElections: React.SFC<IVotingPeriodProps> = (props: IVotingPeriodPr
   );
 };
 
-const getVotingInfoComponent = (grpType: any, elections: any) => {
+const getVotingInfoComponent = (grpType: string, elections: Election[]) => {
   if (elections.length === 0) {
     return NoActiveElections;
   } else if (grpType === 'multiple_elections') {
@@ -132,8 +133,8 @@ const getVotingInfoComponent = (grpType: any, elections: any) => {
 };
 
 interface IProps {
-  electionGroup: any,
-  activeElections: any[],
+  electionGroup: ElectionGroup,
+  activeElections: Election[],
   i18n: i18n,
 };
 

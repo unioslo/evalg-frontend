@@ -73,11 +73,11 @@ const styles = (theme: any) => ({
 })
 
 interface IContainerProps {
-  children?: any,
   classes: Classes,
+  children: React.ReactNode[],
 }
 
-const ElectionButtonContainer = (props: IContainerProps) => {
+const ElectionButtonContainer: React.SFC<IContainerProps> = (props) => {
   let spaceBetween = false;
   const { children, classes } = props;
   if (children && children.length && children.length > 2) {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 
 interface IProps {
-  children?: any,
+  children?: React.ReactNode,
   inline?: boolean,
   flex?: boolean,
   flexGrow?: boolean,

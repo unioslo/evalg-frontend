@@ -42,7 +42,7 @@ const styles = (theme: any) => ({
 interface IProps {
   to: string,
   external?: boolean,
-  children?: any,
+  children?: React.ReactNode,
   marginRight?: boolean,
   noExternalIcon?: boolean,
   mail?: boolean,

@@ -2,8 +2,7 @@
 import * as React from 'react';
 
 interface IProps {
-  // children?: React.ChildrenArray<any>
-  children?: any,
+  children?: React.ReactNode,
 }
 
 export const TableBody = (props: IProps) => {

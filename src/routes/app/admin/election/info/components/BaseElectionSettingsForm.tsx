@@ -71,6 +71,7 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
+  // TODO fix type here, was {elections: ElectionBaseSettingsInput[]}
   async handleFormSubmit(submitValues: any) {
     this.isSubmitting = true;
     await this.props.onSubmit(buildSubmitPayload(submitValues));

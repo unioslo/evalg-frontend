@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
-import { translate } from 'react-i18next';
+import { translate, TranslationFunction } from 'react-i18next';
 import injectSheet from 'react-jss';
 
 import Icon from '../icon';
@@ -80,7 +80,7 @@ interface IProps {
   value: string,
   onChange: (event: any) => void,
   name: string,
-  t: (v: string) => string,
+  t: TranslationFunction,
   label?: any,
   small?: boolean,
   error?: any,

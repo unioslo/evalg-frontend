@@ -8,7 +8,7 @@ import {
   FormRenderProps,
   FieldRenderProps,
 } from 'react-final-form';
-import { Trans, translate } from 'react-i18next';
+import { Trans, translate, TranslationFunction } from 'react-i18next';
 import { ApolloQueryResult } from 'apollo-client';
 
 import Button from '../../../../../../components/button';
@@ -93,7 +93,7 @@ interface IProps {
   header: string | React.ReactElement<any>;
   pollBooks: any;
   i18n: any;
-  t: (t: string) => string;
+  t: TranslationFunction;
   groupId: string;
   refetchData?: (
     variables?: { id: string } | undefined

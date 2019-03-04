@@ -61,7 +61,7 @@ const styles = (theme: any) => ({
 });
 
 interface IProps {
-  children?: any,
+  children?: React.ReactNode,
   closeAction?: (a: any) => void,
   buttons: any[],
   header: any | string,

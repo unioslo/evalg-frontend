@@ -4,7 +4,6 @@ import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
 interface IProps {
-  children?: any,
   alignLeft?: boolean,
   noTopMargin?: boolean,
   smlTopMargin?: boolean,
@@ -58,7 +57,7 @@ const styles = (theme: any) => ({
   }
 });
 
-const ButtonContainer = (props: IProps) => {
+const ButtonContainer: React.SFC<IProps> = (props) => {
   const { classes } = props;
   const cls = classNames({
     [classes.btnContainer]: true,
