@@ -7,14 +7,16 @@ import { i18n, TranslationFunction } from 'i18next';
 import { translate, Trans } from 'react-i18next';
 import injectSheet from 'react-jss';
 
-import Loading from 'components/loading';
-import Link from 'components/link';
-import { Page, PageSection } from 'components/page';
-import { DropDown } from 'components/form';
-import Button, { ButtonContainer } from 'components/button';
+import Loading from '../../../../components/loading';
+import Link from '../../../../components/link';
+import { Page, PageSection } from '../../../../components/page';
+import { DropDown } from '../../../../components/form';
+import Button, { ButtonContainer } from '../../../../components/button';
 import MandatePeriodText from '../vote/components/MandatePeriodText';
-import { orderMultipleElections } from 'utils/processGraphQLData';
-import { Date, Time } from 'components/i18n';
+import { orderMultipleElections } from '../../../../utils/processGraphQLData';
+import { Date, Time } from '../../../../components/i18n';
+import { Election, ElectionGroup, IPollBook } from '../../../../interfaces';
+
 
 const styles = (theme: any) => ({
   dropDownSelectionText: {
@@ -196,7 +198,7 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
           }
 
           const electionGroup: ElectionGroup = data.electionGroup;
-          const electionGroupName = electionGroup.name[lang];
+          const electionGroupName: string = electionGroup.name[lang];
           const elections: Election[] = electionGroup.elections;
 
           let pollbooks: IPollBook[];
@@ -228,7 +230,7 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
 
           const dropdown = (
             <DropDown
-              options={pollbooks.map((pollbook, index) => ({
+              options={pollbooks.map((pollbook: any, index: any) => ({
                 value: index,
                 name: pollbook.name[lang],
                 secondaryLine: this.hasRightToVote(index)

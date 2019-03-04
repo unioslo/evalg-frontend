@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf } from '@kadira/storybook';
 
 import ManageElectionsTable from './ManageElectionsTable';
 import electionGroups from '../../../../../test/mockData/adminElectionGroups';

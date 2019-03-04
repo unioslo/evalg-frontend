@@ -2,9 +2,10 @@
 import * as React from 'react';
 import { Trans } from 'react-i18next';
 
-import Icon from 'components/icon';
-import { PageSection } from 'components/page';
-import { ScreenSizeConsumer } from 'providers/ScreenSize';
+import Button, { ButtonContainer } from '../../../../../components/button';
+import Icon from '../../../../../components/icon';
+import { PageSection } from '../../../../../components/page';
+import { ScreenSizeConsumer } from '../../../../../providers/ScreenSize';
 import CandidateButtonBar from './CandidateButtonBar';
 import {
   CandidateInfo,
@@ -20,7 +21,6 @@ import HelpSubSection from './HelpSubSection';
 import MandatePeriodText from './MandatePeriodText';
 import injectSheet from 'react-jss';
 import BallotButtons from './BallotButtons';
-import Button, { ButtonContainer } from 'components/button';
 
 const helpTextTags = [
   'voter.prefElecNrOfCandidates',
@@ -28,6 +28,8 @@ const helpTextTags = [
   'voter.prefElecOnlySelectedGetVote',
   'voter.canVoteBlank',
 ];
+import { Election, Candidate } from '../../../../../interfaces';
+
 
 interface IProps {
   selectedCandidates: Candidate[];

@@ -4,11 +4,8 @@ import Text from 'components/text';
 import { Trans } from 'react-i18next';
 import { PageSubSection } from 'components/page';
 
-type Props = {
-  roles: Object
-}
 
-const AdminRolesValues = (props: Props) => {
+const AdminRolesValues = (props) => {
   const { roles } = props;
   const adminRoles = roles.filter(role => role.role === 'election-admin');
   const adminRoleNames = adminRoles.map(role => {

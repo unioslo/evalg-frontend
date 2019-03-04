@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { mount, shallow } from 'enzyme';
+import PrimaryButton from './PrimaryButton';
+import { shallow } from 'enzyme';
 import chai from 'chai'
 import chaiEnzyme from 'chai-enzyme';
 import sinon from 'sinon';
@@ -7,7 +8,6 @@ import sinon from 'sinon';
 chai.use(chaiEnzyme());
 const expect = chai.expect;
 
-import PrimaryButton from './PrimaryButton';
 
 describe('<PrimaryButton />', () => {
   it('should call the button action function when clicked', () => {

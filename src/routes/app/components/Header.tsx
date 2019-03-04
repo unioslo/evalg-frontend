@@ -1,13 +1,13 @@
 import * as React from 'react';
 import gql from 'graphql-tag';
 import injectSheet from 'react-jss';
-import Link from 'components/link';
+import Link from '../../../components/link';
 import LanguageToggler from './LanguageToggler';
 import { Trans, translate } from 'react-i18next';
 import { DesktopMenu, DesktopMenuItem } from './DesktopMenu';
 import { MobileMenu, MobileMenuItem } from './MobileMenu';
-import { UserContext } from 'providers/UserContext';
-import { H1 } from 'components/text';
+import { UserContext } from '../../../providers/UserContext';
+import { H1 } from '../../../components/text';
 import { Query } from 'react-apollo';
 import { Route, Switch } from 'react-router';
 
@@ -15,7 +15,7 @@ import { ApolloConsumer } from 'react-apollo';
 import { IAuthenticatorContext } from 'react-oidc/lib/makeAuth';
 import { ApolloClient } from 'apollo-client';
 import createBrowserHistory from 'history/createBrowserHistory';
-import { appHelpLink } from 'appConfig';
+import { appHelpLink } from '../../../appConfig';
 
 const styles = (theme: any) => ({
   logoBar: {

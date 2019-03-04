@@ -6,6 +6,8 @@ import {
 } from './SettingsSection';
 import { SettingsSection } from '.';
 
+import { ElectionGroup } from '../../interfaces';
+
 const styles = (theme: any) => ({});
 
 const buildInitialDisplayStatuses = (
@@ -28,7 +30,7 @@ interface IProps {
   settingsSectionsContents: ISettingsSectionContents[];
   electionGroupData: ElectionGroup;
   startWithDirectedFlowActive: boolean;
-  initialDisplayStatuses: SettingsSectionDisplayStatus[];
+  initialDisplayStatuses?: SettingsSectionDisplayStatus[];
   onSettingsWasSaved: () => void;
 }
 

@@ -1,14 +1,18 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 
-import { ScreenSizeConsumer } from 'providers/ScreenSize';
-import Button, { ButtonContainer } from 'components/button';
-import Link from 'components/link';
+import { ScreenSizeConsumer } from '../../../../../providers/ScreenSize';
+import Button, { ButtonContainer } from '../../../../../components/button';
+import Link from '../../../../../components/link';
 
 interface IProps {
   canSubmit: boolean;
   onReviewBallot: () => void;
   onBlankVote: () => void;
+}
+
+const dummy = () => {
+  return null;
 }
 
 const BallotButtons: React.SFC<IProps> = ({
@@ -22,7 +26,12 @@ const BallotButtons: React.SFC<IProps> = ({
         <>
           <ButtonContainer>
             <Link to="/voter">
-              <Button text={<Trans>general.back</Trans>} secondary />
+              <Button
+                text={<Trans>general.back</Trans>}
+                // Todo fix
+                action={dummy}
+                secondary
+              />
             </Link>
             <Button
               text={<Trans>election.showBallot</Trans>}
@@ -43,7 +52,12 @@ const BallotButtons: React.SFC<IProps> = ({
       ) : (
         <ButtonContainer alignLeft>
           <Link to="/voter">
-            <Button text={<Trans>general.back</Trans>} secondary />
+            <Button
+              text={<Trans>general.back</Trans>}
+              // Todo fix
+              action={dummy}
+              secondary
+            />
           </Link>
           <Button
             text={<Trans>election.blankVote</Trans>}

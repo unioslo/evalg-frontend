@@ -13,6 +13,8 @@ import 'core-js/es6/map';
 import 'core-js/es6/weak-map';
 import 'core-js/es6/set';
 
+import 'react-app-polyfill/ie11';
+
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
@@ -26,13 +28,13 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { makeAuthenticator, makeUserManager, Callback } from 'react-oidc';
 import { User } from 'oidc-client';
 
-import { ScreenSizeProvider } from 'providers/ScreenSize';
-import { UserContextProvider } from 'providers/UserContext';
+import { ScreenSizeProvider } from './providers/ScreenSize';
+import { UserContextProvider } from './providers/UserContext';
 import i18n from './i18n';
 import App from './routes/app';
 import theme from './theme';
 
-import { oidcConfig, graphqlBackend } from 'appConfig';
+import { oidcConfig, graphqlBackend } from './appConfig';
 import { withClientState } from 'apollo-link-state';
 
 const storeToken = (props: any) => (user: User) => {

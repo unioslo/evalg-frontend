@@ -3,8 +3,9 @@ import { translate, Trans } from 'react-i18next';
 import { i18n } from 'i18next';
 import { Form, Field, FormRenderProps } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
+import arrayMutators from 'final-form-arrays';
 
-import Text from 'components/text';
+import Text from '../../../../../../components/text';
 import {
   DateInputRF,
   FormErrorMsg,
@@ -12,7 +13,7 @@ import {
   FormFieldGroup,
   RadioButtonGroup,
   TimeInputRF,
-} from 'components/form';
+} from '../../../../../../components/form';
 
 import {
   Table,
@@ -22,9 +23,10 @@ import {
   TableHeaderCell,
   TableHeaderRow,
   TableRow,
-} from 'components/table';
+} from '../../../../../../components/table';
 
-import FormButtons from 'components/form/FormButtons';
+import FormButtons from '../../../../../../components/form/FormButtons';
+import { Election } from '../../../../../../interfaces';
 
 const SingleElectionForm = () => {
   return (
@@ -72,7 +74,7 @@ const MultipleElectionsForm = ({
 }: {
   lang: string;
   hasMultipleTimes: boolean;
-  elections: Election[];
+  elections: any[];
 }) => (
   <>
     <FormField>
@@ -118,14 +120,14 @@ const MultipleElectionsForm = ({
                   </TableCell>
                   <TableCell>
                     <FormFieldGroup>
-                      <FormField inline={true} noBottomMargin={true}>
+                      <FormField inline={true} smallBottomMargin={true}>
                         <Field
                           name={`${election}.startDate`}
                           component={DateInputRF as any}
                           small={true}
                         />
                       </FormField>
-                      <FormField inline={true} noBottomMargin={true}>
+                      <FormField inline={true} smallBottomMargin={true}>
                         <Field
                           name={`${election}.startTime`}
                           component={TimeInputRF as any}
@@ -136,14 +138,14 @@ const MultipleElectionsForm = ({
                   </TableCell>
                   <TableCell>
                     <FormFieldGroup>
-                      <FormField inline={true} noBottomMargin={true}>
+                      <FormField inline={true} smallBottomMargin={true}>
                         <Field
                           name={`${election}.endDate`}
                           component={DateInputRF as any}
                           small={true}
                         />
                       </FormField>
-                      <FormField inline={true} noBottomMargin={true}>
+                      <FormField inline={true} smallBottomMargin={true}>
                         <Field
                           name={`${election}.endTime`}
                           component={TimeInputRF as any}
@@ -263,6 +265,7 @@ class VotingPeriodForm extends React.Component<IProps> {
     return (
       <Form
         onSubmit={this.handleSubmit}
+        mutators={{...arrayMutators}}
         validate={validate(lang)}
         initialValues={initialValues}
         // tslint:disable-next-line:jsx-no-lambda

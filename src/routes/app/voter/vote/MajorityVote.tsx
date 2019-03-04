@@ -2,17 +2,18 @@ import * as React from 'react';
 import { translate } from 'react-i18next';
 import { TranslateHocProps } from 'react-i18next/src/translate';
 
-import { Page } from 'components/page';
+import { Page } from '../../../../components/page';
 
-import { shuffleArray } from 'utils/helpers';
+import { shuffleArray } from '../../../../utils/helpers';
 import MajorityVoteReview from './components/MajorityVoteReview';
 import MajorityVoteBallot from './components/MajorityVoteBallot';
+import { Candidate, Election } from '../../../../interfaces';
 
 const dummySubmit = () => console.error('SUBMIT!');
 
 interface IProps extends TranslateHocProps {
   election: Election;
-  electionName: NameFields;
+  electionName: any;
 }
 
 interface IState {
@@ -68,7 +69,7 @@ class MajorityVote extends React.Component<IProps, IState> {
       </Page>
     );
   }
-  
+
   private handleSelectCandidate(selectedCandidateIndex: number) {
     this.setState(currState => ({
       selectedCandidateIndex,

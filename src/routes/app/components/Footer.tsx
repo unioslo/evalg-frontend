@@ -8,8 +8,8 @@ import {
   appTechnicalSupportEmail,
   appTermsAndPrivacylink,
   appCookiesInformationLink,
-} from 'appConfig';
-import Link from 'components/link';
+} from '../../../appConfig';
+import Link from '../../../components/link';
 
 const styles = (theme: any) => ({
   wrapper: {

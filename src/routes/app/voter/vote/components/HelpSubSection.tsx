@@ -2,10 +2,11 @@ import * as React from 'react';
 import { Trans } from 'react-i18next';
 import injectSheet from 'react-jss';
 
-import Icon from 'components/icon';
-import { InfoList, InfoListItem } from 'components/infolist';
-import { PageSubSection } from 'components/page';
-import { ScreenSizeConsumer } from 'providers/ScreenSize';
+import Icon from '../../../../../components/icon';
+import { InfoList, InfoListItem } from '../../../../../components/infolist'
+import { PageSubSection } from '../../../../../components/page';
+import { ScreenSizeConsumer } from '../../../../../providers/ScreenSize';
+import { Classes } from 'jss';
 
 const styles = (theme: any) => ({
   header: theme.subSectionHeader,
@@ -24,10 +25,10 @@ const styles = (theme: any) => ({
 });
 
 interface IHelpSubProps {
-  classes: any;
-  header: React.ReactNode;
-  helpTextTags: string[];
-  desc: React.ReactNode;
+  classes: Classes,
+  header: React.ReactNode
+  helpTextTags: string[]
+  desc?: React.ReactNode
 }
 
 interface IHelpSubState {

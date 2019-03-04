@@ -2,13 +2,14 @@ import * as React from 'react';
 
 import { Trans } from 'react-i18next';
 
-import Button, { ButtonContainer } from 'components/button';
-import Modal from 'components/modal';
-import { InfoList, InfoListItem } from 'components/infolist';
-import { PageSection } from 'components/page';
-import Text from 'components/text';
-import Link from 'components/link';
+import Button, { ButtonContainer } from '../../../../../../components/button';
+import Modal from '../../../../../../components/modal';
+import { InfoList, InfoListItem } from '../../../../../../components/infolist';
+import { PageSection } from '../../../../../../components/page';
+import Text from '../../../../../../components/text';
+import Link from '../../../../../../components/link';
 import CreateElectionKeyModal from './CreateElectionKeyModal';
+import { ElectionGroup } from '../../../../../../interfaces';
 
 const setKeySafeStatuses = ['draft', 'announced'];
 

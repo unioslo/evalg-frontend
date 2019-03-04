@@ -1,11 +1,10 @@
-/* @flow */
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
-type Props = {
-  children: React.ChildrenArray<any>,
-  classes: Object
-};
+// type Props = {
+//   children: React.ChildrenArray<any>,
+//   classes: Object
+// };
 
 const styles = theme => ({
   wrapper: {
@@ -24,7 +23,7 @@ const styles = theme => ({
   },
 });
 
-const Content = ({ classes, children }: Props) => {
+const Content = ({ classes, children }) => {
   return (
     <div className={classes.wrapper}>
       <div className={classes.container}>

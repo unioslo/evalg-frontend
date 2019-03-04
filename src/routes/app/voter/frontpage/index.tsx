@@ -3,9 +3,10 @@ import * as React from 'react';
 import { Query } from 'react-apollo';
 import { Trans, translate } from 'react-i18next';
 
-import { Page, PageSection } from 'components/page';
+import { Page, PageSection } from '../../../../components/page';
 import VoterElections from './components/VoterElections';
-import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
+import { electionGroupWithOrderedElections } from '../../../../utils/processGraphQLData';
+import { ElectionGroup } from '../../../../interfaces';
 
 const electionGroupsQuery = gql`
   query {

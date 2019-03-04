@@ -1,4 +1,3 @@
-/* @flow */
 import * as React from 'react';
 import { Trans } from 'react-i18next';
 
@@ -8,12 +7,12 @@ import VotesSection from './components/VotesSection';
 import ElectionKeySection from './components/ElectionKeySection';
 import CountVotesSection from './components/CountVotesSection';
 
-type Props = {
-  electionGroup: ElectionGroup,
-  refetchElectionGroupFunction: Function,
-};
+// type Props = {
+//   electionGroup: ElectionGroup,
+//   refetchElectionGroupFunction: Function,
+// };
 
-class StatusPage extends React.Component<Props> {
+class StatusPage extends React.Component {
   render() {
     const { electionGroup, refetchElectionGroupFunction } = this.props;
     return (

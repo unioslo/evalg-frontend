@@ -1,14 +1,8 @@
-/* @flow */
 import * as React from 'react';
 import ReactClipboardButton from 'react-clipboard.js';
-import Icon from 'components/icon';
+import Icon from '../../components/icon';
 
-type Props = {
-  text: ReactElement | string,
-  data: string
-}
-
-const ClipboardButton = (props: Props) => {
+const ClipboardButton = (props) => {
   const { text, data } = props;
   return (
     <ReactClipboardButton data-clipboard-text={data}
@@ -20,6 +14,5 @@ const ClipboardButton = (props: Props) => {
     </ReactClipboardButton>
   )
 };
-
 
 export default ClipboardButton;

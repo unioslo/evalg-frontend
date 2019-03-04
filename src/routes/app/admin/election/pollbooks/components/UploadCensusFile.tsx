@@ -8,14 +8,14 @@ import {
   FormRenderProps,
   FieldRenderProps,
 } from 'react-final-form';
-import { Trans, translate } from 'react-i18next';
+import { Trans, translate, TranslationFunction } from 'react-i18next';
 import { ApolloQueryResult } from 'apollo-client';
 
-import Button from 'components/button';
-import { FormField } from 'components/form';
-import { RadioButtonGroup } from 'components/form';
-import Modal from 'components/modal';
-import { restBackend } from 'appConfig';
+import Button from '../../../../../../components/button';
+import { FormField } from '../../../../../../components/form';
+import { RadioButtonGroup } from '../../../../../../components/form';
+import Modal from '../../../../../../components/modal';
+import { restBackend } from '../../../../../../appConfig';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
@@ -91,9 +91,9 @@ interface IProps {
   closeAction: (proc: IReturnStatus) => void;
   // submitAction: (valus: any) => void,
   header: string | React.ReactElement<any>;
-  pollBooks: {};
+  pollBooks: any;
   i18n: any;
-  t: (t: string) => string;
+  t: TranslationFunction;
   groupId: string;
   refetchData?: (
     variables?: { id: string } | undefined
@@ -104,17 +104,17 @@ interface IProps {
 interface IState {
   censusFile: File | null;
   fileName: string;
-  // pollbook: IPollBook,
+  // pollbook: any,
 }
 
 interface IHTMLInputEvent extends React.FormEvent {
   target: HTMLInputElement & EventTarget;
 }
 
-interface IFormSubmit {
-  pollbookId: string;
-  censusFile: string;
-}
+// interface IFormSubmit {
+//   pollbookId: string;
+//   censusFile: string;
+// }
 
 export interface IReturnStatus {
   parseCompleded: boolean;
@@ -146,7 +146,7 @@ class UploadCensusFileModal extends React.Component<
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
-  public onSubmit(values: IFormSubmit) {
+  public onSubmit(values: any) {
     const {
       i18n: { language: lang },
     } = this.props;

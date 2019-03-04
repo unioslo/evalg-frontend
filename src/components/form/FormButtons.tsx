@@ -2,7 +2,7 @@
 import * as React from 'react';
 
 import { Trans } from 'react-i18next';
-import Button, { ButtonContainer } from 'components/button';
+import Button, { ButtonContainer } from '../../components/button';
 import injectSheet from 'react-jss';
 
 const styles = (theme: any) => ({
@@ -28,9 +28,9 @@ const styles = (theme: any) => ({
 
 interface IProps {
   saveAction: (submitValues: any) => void;
-  closeAction: () => void;
+  closeAction: (id: any) => void;
   submitDisabled: boolean;
-  cancelDisabled: boolean;
+  cancelDisabled?: boolean;
   submitting?: boolean;
   entityAction?: any;
   entityText?: React.ReactNode | string;

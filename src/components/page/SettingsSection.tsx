@@ -3,8 +3,10 @@ import { Trans } from 'react-i18next';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import ActionText from 'components/actiontext';
-import Text from 'components/text';
+import ActionText from '../../components/actiontext';
+import Text from '../../components/text';
+
+import { ElectionGroup } from '../../interfaces';
 
 const styles = (theme: any) => ({
   section: {

@@ -6,9 +6,11 @@ import { ApolloConsumer } from 'react-apollo';
 import { Trans, translate } from 'react-i18next';
 import injectSheet from 'react-jss';
 
-import ActionText from 'components/actiontext';
-import { FormButtons } from 'components/form';
+import ActionText from '../../../../../../components/actiontext';
+import { FormButtons } from '../../../../../../components/form';
 import AutoCompleteDropDown from '../../components/AutoCompleteDropDown';
+
+import { IVoter, IPollBook, IPerson } from '../../../../../../interfaces';
 
 const styles = (theme: any) => ({
   item: {
@@ -36,7 +38,7 @@ interface IProps {
   submitAction: (values: any) => void;
   deletePollbookAction: () => void;
   registeredVoters: IVoter[];
-  initialValues: any;
+  initialValues?: any;
   pollbook: IPollBook;
   i18n: any;
   classes: any;
@@ -47,7 +49,7 @@ interface Istate {
   newPersonsToAddList: IPerson[];
   addablePersonsFromSearch: IPerson[];
   personFilter: string;
-  pollbook: IPollBook;
+  pollbook: any;
 }
 
 interface IPersonQueryResult {

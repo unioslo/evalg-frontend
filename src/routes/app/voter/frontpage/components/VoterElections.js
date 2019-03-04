@@ -8,16 +8,16 @@ import { MobileDropDown, MobileDropdownItem } from 'components/dropdownMenu';
 import { TabSelector, Tab } from './TabSelector';
 import { ScreenSizeConsumer } from 'providers/ScreenSize';
 
-type Props = {
-  electionGroups: Array<ElectionGroup>,
-};
+// type Props = {
+//   electionGroups: Array<ElectionGroup>,
+// };
 
-type State = {
-  electionStatusFilter: string,
-};
+// type State = {
+//   electionStatusFilter: string,
+// };
 
-class VoterElections extends React.Component<Props, State> {
-  constructor(props: Props) {
+class VoterElections extends React.Component {
+  constructor(props) {
     super(props);
     this.setElectionStatusFilter = this.setElectionStatusFilter.bind(this);
     this.filterElectionGroups = this.filterElectionGroups.bind(this);
@@ -52,7 +52,7 @@ class VoterElections extends React.Component<Props, State> {
     return (
       <ScreenSizeConsumer>
         {({ screenSize }) => {
-          const { electionGroups, elections } = this.props;
+          const { electionGroups } = this.props;
           const groups = this.filterElectionGroups(
             electionGroups,
             this.state.electionStatusFilter
@@ -68,6 +68,8 @@ class VoterElections extends React.Component<Props, State> {
               break;
             case 'closed':
               noElectionsText = <Trans>general.noClosedElections</Trans>;
+              break;
+            default:
               break;
           }
 
@@ -109,6 +111,8 @@ class VoterElections extends React.Component<Props, State> {
               break;
             case 'closed':
               dropdownText = <Trans>electionStatus.closedElections</Trans>;
+              break;
+            default:
               break;
           }
 

@@ -3,13 +3,16 @@ import { Trans } from 'react-i18next';
 import { translate } from 'react-i18next';
 import { TranslateHocProps } from 'react-i18next/src/translate';
 import injectSheet from 'react-jss';
-import { Button, ButtonContainer } from 'components/button';
-import { PageSection, PageSubSection, PageParagraph } from 'components/page';
+
+import { Button, ButtonContainer } from '../../../../../components/button';
+import { PageSection, PageSubSection, PageParagraph } from '../../../../../components/page';
 import {
   CandidateList,
   CandidateListItem,
   CandidateInfo,
 } from './CandidateList';
+
+import { Candidate } from '../../../../../interfaces';
 
 const styles = (theme: any) => ({
   ingress: {

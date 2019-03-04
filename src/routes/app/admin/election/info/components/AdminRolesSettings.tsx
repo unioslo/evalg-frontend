@@ -4,8 +4,14 @@ import gql from 'graphql-tag';
 
 import AdminRolesValues from './AdminRolesValues';
 import AdminRolesForm from './AdminRolesForm';
-import { IActiveComponentProps, IInactiveComponentProps, ISettingsSectionContents } from 'components/page/SettingsSection';
+import {
+  IActiveComponentProps,
+  IInactiveComponentProps,
+  ISettingsSectionContents
+} from '../../../../../../components/page/SettingsSection';
 import { Trans } from 'react-i18next';
+
+import { ElectionGroup } from '../../../../../../interfaces'
 
 const searchPersonQuery = gql`
   query searchPerson($val: String!) {

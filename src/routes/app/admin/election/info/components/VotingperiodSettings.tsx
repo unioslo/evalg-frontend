@@ -5,7 +5,7 @@ import {
   ISODateTimeToTimeZoneAdjustedISODate,
   ISODateTimeToTimeZoneAdjustedTime,
   DateAndTimeToISODTWithTimeZonedOffset,
-} from 'utils';
+} from '../../../../../../utils';
 
 import VotingPeriodForm from './VotingPeriodForm';
 import VotingPeriodValues from './VotingPeriodValues';
@@ -13,8 +13,13 @@ import {
   IActiveComponentProps,
   IInactiveComponentProps,
   ISettingsSectionContents,
-} from 'components/page/SettingsSection';
+} from '../../../../../../components/page/SettingsSection';
 import { Trans } from 'react-i18next';
+import {
+  Election,
+  ElectionGroup,
+  ElectionVotingPeriodInput
+} from '../../../../../../interfaces';
 
 interface IVotingPeriodSettings {
   hasMultipleTimes: boolean;

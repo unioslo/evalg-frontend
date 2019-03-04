@@ -1,4 +1,3 @@
-/* @flow */
 import * as React from 'react';
 
 import { Trans } from 'react-i18next';
@@ -9,7 +8,7 @@ import Text from 'components/text';
 import Link from 'components/link';
 import ActionText from 'components/actiontext';
 
-const renderAnnounceButton = (action: Function) => (
+const renderAnnounceButton = (action) => (
   <Button
     key="announce"
     text={<Trans>election.announceElectionConfirm</Trans>}
@@ -17,7 +16,7 @@ const renderAnnounceButton = (action: Function) => (
   />
 );
 
-const renderUnannounceButton = (action: Function) => (
+const renderUnannounceButton = (action) => (
   <Button
     key="unannounce"
     text={<Trans>election.unannounceElectionConfirm</Trans>}
@@ -25,7 +24,7 @@ const renderUnannounceButton = (action: Function) => (
   />
 );
 
-const renderCancelButton = (action: Function) => (
+const renderCancelButton = (action) => (
   <Button
     key="cancel"
     text={<Trans>general.cancel</Trans>}
@@ -34,22 +33,22 @@ const renderCancelButton = (action: Function) => (
   />
 );
 
-type Props = {
-  electionGroup: ElectionGroup,
-  announceAction: Function,
-  unannounceAction: Function
-};
+// type Props = {
+//   electionGroup: ElectionGroup,
+//   announceAction: Function,
+//   unannounceAction: Function
+// };
 
-type State = {
-  showConfirmAnnounceModal: boolean,
-  showConfirmUnannounceModal: boolean,
-  showAnnounceModal: boolean,
-  showUnannounceModal: boolean,
-};
+// type State = {
+//   showConfirmAnnounceModal: boolean,
+//   showConfirmUnannounceModal: boolean,
+//   showAnnounceModal: boolean,
+//   showUnannounceModal: boolean,
+// };
 
 
-class AnnounceElectionGroup extends React.Component<Props, State> {
-  constructor(props: Props) {
+class AnnounceElectionGroup extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
       showAnnounceModal: false,

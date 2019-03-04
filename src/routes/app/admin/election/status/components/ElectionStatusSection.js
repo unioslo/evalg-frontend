@@ -1,4 +1,3 @@
-/* @flow */
 import gql from 'graphql-tag';
 import * as React from 'react';
 import { Mutation } from 'react-apollo';
@@ -43,17 +42,17 @@ const unannounceElectionGroup = gql`
   }
 `;
 
-type Props = {
-  electionGroup: ElectionGroup,
-  i18n: Object
-};
+// type Props = {
+//   electionGroup: ElectionGroup,
+//   i18n: Object
+// };
 
 const blockerToTranslation = {
   'missing-key': 'blockerMissingKey',
   'start-must-be-before-end': 'blockerStartBeforeEnd',
 };
 
-class ElectionStatusSection extends React.Component<Props> {
+class ElectionStatusSection extends React.Component {
   renderPublicationBlockers() {
     const { publicationBlockers } = this.props.electionGroup;
     return (

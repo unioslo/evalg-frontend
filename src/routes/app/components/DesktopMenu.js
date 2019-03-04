@@ -1,10 +1,10 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
 
-type Props = {
-  children: ReactChildren,
-  classes: Object
-}
+// type Props = {
+//   children: ReactChildren,
+//   classes: Object
+// }
 
 const styles = theme => ({
   menu: {

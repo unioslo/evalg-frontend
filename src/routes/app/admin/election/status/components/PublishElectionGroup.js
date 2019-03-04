@@ -1,4 +1,3 @@
-/* @flow */
 import * as React from 'react';
 
 import Text from 'components/text';
@@ -8,7 +7,7 @@ import Button, { ButtonContainer } from 'components/button'
 import Modal from 'components/modal';
 // import Icon from 'components/icon';
 
-const renderPublishButton = (action: Function) => (
+const renderPublishButton = (action) => (
   <Button
     key="publish"
     text={<Trans>election.publish</Trans>}
@@ -16,7 +15,7 @@ const renderPublishButton = (action: Function) => (
   />
 );
 
-const renderUnpublishButton = (action: Function) => (
+const renderUnpublishButton = (action) => (
   <Button
     key="unpublish"
     text={<Trans>election.unpublishElection</Trans>}
@@ -24,7 +23,7 @@ const renderUnpublishButton = (action: Function) => (
   />
 );
 
-const renderCancelButton = (action: Function) => (
+const renderCancelButton = (action) => (
   <Button
     key="cancel"
     text={<Trans>general.cancel</Trans>}
@@ -42,21 +41,21 @@ const renderCancelButton = (action: Function) => (
 //   />
 // );
 
-type Props = {
-  electionGroup: ElectionGroup,
-  publishAction: Function,
-  unpublishAction: Function
-}
+// type Props = {
+//   electionGroup: ElectionGroup,
+//   publishAction: Function,
+//   unpublishAction: Function
+// }
 
-type State = {
-  showPublishModal: boolean,
-  showUnpublishModal: boolean,
-}
+// type State = {
+//   showPublishModal: boolean,
+//   showUnpublishModal: boolean,
+// }
 
 
-class PublishElectionGroup extends React.Component<Props, State> {
+class PublishElectionGroup extends React.Component {
 
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
       showPublishModal: false,

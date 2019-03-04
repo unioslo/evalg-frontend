@@ -2,13 +2,13 @@
 import * as React from 'react';
 import Text from 'components/text';
 
-type Props = {
-  votesOutsideCensus: number,
-  totalVotes: number,
-  preposition: string | ReactElement
-}
+// type Props = {
+//   votesOutsideCensus: number,
+//   totalVotes: number,
+//   preposition: string | ReactElement
+// }
 
-const VoteStatus = (props: Props) => {
+const VoteStatus = (props) => {
   const {votesOutsideCensus, totalVotes, preposition} = props;
   return (
     <div>

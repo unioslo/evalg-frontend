@@ -2,10 +2,11 @@ import * as React from 'react';
 import { translate } from 'react-i18next';
 import { TranslateHocProps } from 'react-i18next/src/translate';
 
-import { shuffleArray } from 'utils/helpers';
-import { Page } from 'components/page';
+import { shuffleArray } from '../../../../utils/helpers';
+import { Page, } from '../../../../components/page'
 import PrefElecBallot from './components/PrefElecBallot';
 import PrefElecReview from './components/PrefElecReview';
+import { Election, Candidate } from '../../../../interfaces';
 
 function moveArrayItem(arr: any[], oldIndex: number, newIndex: number) {
   if (newIndex >= arr.length) {
@@ -19,8 +20,8 @@ function moveArrayItem(arr: any[], oldIndex: number, newIndex: number) {
 }
 
 interface IProps extends TranslateHocProps {
-  election: Election;
-  electionName: NameFields;
+  election: Election,
+  electionName: any
 }
 
 interface IState {
@@ -63,9 +64,11 @@ class PrefElecVote extends React.Component<IProps, IState> {
         {this.state.isReviewingBallot ? (
           <PrefElecReview
             selectedCandidates={this.state.selectedCandidates}
-            unselectedCandidates={
-              unselectedCandidates === undefined ? [] : unselectedCandidates
-            }
+
+            // TODO fix: unselectedCandidates does not exist on PrefElecReview
+            // unselectedCandidates={
+            //   unselectedCandidates === undefined ? [] : unselectedCandidates
+            // }
             isBlankVote={this.state.isBlankVote}
             onGoBackToBallot={this.handleGoBackToBallot}
             onSubmitBallot={this.handleSubmitBallot}

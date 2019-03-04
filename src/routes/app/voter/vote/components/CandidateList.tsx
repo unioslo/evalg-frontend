@@ -4,9 +4,11 @@ import { TranslateHocProps } from 'react-i18next/src/translate';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import Icon from 'components/icon';
-import Link from 'components/link';
-import { joinStringsWithCommaAndAnd } from 'utils';
+import Icon from '../../../../../components/icon';
+import Link from '../../../../../components/link';
+import { joinStringsWithCommaAndAnd } from '../../../../../utils';
+import { Candidate } from '../../../../../interfaces';
+
 
 const styles = (theme: any) => ({
   button: {
@@ -108,7 +110,7 @@ const CandidateListItem: React.SFC<IListItemProps> = props => (
 const HOCCandidateListItem = injectSheet(styles)(CandidateListItem);
 
 interface IInfoProps {
-  candidate: Candidate;
+  candidate: Candidate | null;
   classes: any;
   infoUrl?: boolean;
   listName?: boolean;
@@ -119,7 +121,8 @@ interface IInfoProps {
 
 const CandidateInfo: React.SFC<IInfoProps & TranslateHocProps> = props => {
   const lang = props.i18n ? props.i18n.language : 'nb';
-  const { candidate, classes } = props;
+  const { classes } = props;
+  const candidate: any = props.candidate;
   const { coCandidates } = candidate.meta;
   const candidateInfoCls = classNames({
     [classes.candidateInfo]: true,
@@ -133,7 +136,7 @@ const CandidateInfo: React.SFC<IInfoProps & TranslateHocProps> = props => {
         <div className={classes.candidateInfoSubText}>
           <Trans>election.coCandidates</Trans>:{' '}
           {joinStringsWithCommaAndAnd(
-            coCandidates.map(coCandidate => coCandidate.name),
+            coCandidates.map((coCandidate: any) => coCandidate.name),
             props.t
           )}
         </div>

@@ -1,4 +1,3 @@
-/* @flow */
 import * as React from 'react';
 import DropDownBase from 'components/baseComponents/DropDownBase';
 import injectSheet from 'react-jss';
@@ -64,50 +63,49 @@ const styles = theme => ({
   },
 });
 
-const filterObjects = (
-  objects: Array<Object>,
-  filter: string,
-  filterOn: Array<string>
-) => {
-  // We don't want to return anything if the user hasn't typed in a filter yet.
-  if (filter === '') {
-    return [];
-  }
-  return objects.filter(obj => {
-    for (let i = 0; i < filterOn.length; i++) {
-      let value = '';
-      if (typeof filterOn[i] === 'string') {
-        value = obj[filterOn[i]];
-      } else if (Array.isArray(filterOn[i])) {
-        const values = filterOn[i].map(attr => obj[attr]);
-        value = values.join(' ');
-      }
-      if (typeof value === 'string' && value.toLowerCase().includes(filter)) {
-        return true;
-      }
-    }
-    return false;
-  });
-};
+// const filterObjects = (
+//   objects,
+//   filter,
+//   filterOn
+// ) => {
+//   // We don't want to return anything if the user hasn't typed in a filter yet.
+//   if (filter === '') {
+//     return [];
+//   }
+//   return objects.filter(obj => {
+//     for (let i = 0; i < filterOn.length; i++) {
+//       let value = '';
+//       if (typeof filterOn[i] === 'string') {
+//         value = obj[filterOn[i]];
+//       } else if (Array.isArray(filterOn[i])) {
+//         const values = filterOn[i].map(attr => obj[attr]);
+//         value = values.join(' ');
+//       }
+//       if (typeof value === 'string' && value.toLowerCase().includes(filter)) {
+//         return true;
+//       }
+//     }
+//     return false;
+//   });
+// };
 
-type Props = {
-  userInput: string,
-  objects: Array<Object>,
-  objRenderer: Function,
-  onChange: Function,
-  buttonAction: Function,
-  buttonText: ReactElement | string,
-  classes: Object,
-};
+// type Props = {
+//   userInput: string,
+//   objects: Array<Object>,
+//   objRenderer: Function,
+//   onChange: Function,
+//   buttonAction: Function,
+//   buttonText: ReactElement | string,
+//   classes: Object,
+// };
 
 class AutoCompleteDropDown extends DropDownBase {
-  props: Props;
 
-  handleSelect(obj: Object) {
+  handleSelect(obj) {
     this.setState({ selected: obj });
   }
 
-  handleOnChange(e: any) {
+  handleOnChange(e) {
     this.props.onChange(e.target.value);
     this.setState({ selected: null });
   }

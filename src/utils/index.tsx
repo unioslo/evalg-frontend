@@ -1,6 +1,6 @@
 import { makeElObj, makeElObjData } from './makeElectionObjects';
 import moment from 'moment-timezone';
-import { appTimezone } from 'appConfig';
+import { appTimezone } from '../appConfig';
 
 import {
   isObjEmpty,

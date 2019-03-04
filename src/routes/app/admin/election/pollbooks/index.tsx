@@ -2,22 +2,22 @@ import gql from 'graphql-tag';
 import * as React from 'react';
 import { Mutation, Query } from 'react-apollo';
 import { Field, Form } from 'react-final-form';
-import { Trans, translate } from 'react-i18next';
+import { Trans, translate, TranslationFunction } from 'react-i18next';
 
-import { orderMultipleElections } from 'utils/processGraphQLData';
+import { orderMultipleElections } from '../../../../../utils/processGraphQLData';
 import AddVoter from './components/AddVoter';
-import ActionText from 'components/actiontext';
+import ActionText from '../../../../../components/actiontext';
 import Button, {
   ActionButton,
   ElectionButton,
   ElectionButtonContainer,
   ButtonContainer,
-} from 'components/button';
-import { DropDownRF, FormButtons } from 'components/form';
-import Link from 'components/link';
-import { MsgBox } from 'components/msgbox';
-import { ConfirmModal } from 'components/modal';
-import { Page, PageSection } from 'components/page';
+} from '../../../../../components/button';
+import { DropDownRF, FormButtons } from '../../../../../components/form';
+import Link from '../../../../../components/link';
+import { MsgBox } from '../../../../../components/msgbox';
+import { ConfirmModal } from '../../../../../components/modal';
+import { Page, PageSection } from '../../../../../components/page';
 import {
   Table,
   TableBody,
@@ -26,12 +26,15 @@ import {
   TableHeaderCell,
   TableHeaderRow,
   TableRow,
-} from 'components/table';
-import Text from 'components/text';
+} from '../../../../../components/table';
+import Text from '../../../../../components/text';
 import { Redirect } from 'react-router';
 import UploadCensusFileModal, {
   IReturnStatus,
 } from './components/UploadCensusFile';
+
+import { DropDownOption, Election, IVoter, IPerson } from '../../../../../interfaces';
+import { i18n } from 'i18next';
 
 const updateVoterPollBook = gql`
   mutation UpdateVoterPollBook($id: UUID!, $pollbookId: UUID!) {
@@ -145,7 +148,7 @@ const addVoter = gql`
 const refetchQueries = () => ['electionGroupVoters'];
 
 interface IUpdateVoterForm {
-  submitAction: (o: object) => void;
+  submitAction: (o: any) => void;
   closeAction: () => void;
   deleteAction: () => void;
   options: DropDownOption[];
@@ -165,7 +168,7 @@ const UpdateVoterForm: React.SFC<IUpdateVoterForm> = props => {
     const { handleSubmit, pristine, valid } = formProps;
     return (
       <form onSubmit={handleSubmit}>
-        <Field name="pollbookId" component={DropDownRF} options={options} />
+        <Field name="pollbookId" component={DropDownRF as any} options={options} />
         <FormButtons
           saveAction={handleSubmit}
           closeAction={closeAction}
@@ -186,8 +189,8 @@ const UpdateVoterForm: React.SFC<IUpdateVoterForm> = props => {
 };
 
 interface IProps {
-  t: (t: string) => string;
-  i18n: any;
+  t: TranslationFunction;
+  i18n: i18n;
   groupId: string;
 }
 
@@ -325,14 +328,14 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
               : electionsRaw;
 
           const voters: IVoter[] = [];
-          const pollBookDict = {};
-          const pollBookRadioButtonOptions = {};
+          const pollBookDict: any = {};
+          const pollBookRadioButtonOptions: any = {};
           const pollBookOptions: DropDownOption[] = [];
 
           elections.forEach((el: Election) => {
-            el.pollbooks.forEach(pollBook => {
+            el.pollbooks.forEach((pollBook: any) => {
               pollBookDict[pollBook.id] = pollBook;
-              pollBook.voters.forEach(voter => {
+              pollBook.voters.forEach((voter: any) => {
                 voters.push(voter);
               });
               pollBookOptions.push({
@@ -348,14 +351,13 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
           });
           const pollbookButtons: JSX.Element[] = [];
           elections.forEach((e, index) => {
-            e.pollbooks.forEach((pollbook, i) => {
+            e.pollbooks.forEach((pollbook: any, i: any) => {
               pollbookButtons.push(
                 <ElectionButton
                   hoverText={<Trans>census.addPerson</Trans>}
                   name={pollbook.name[lang]}
                   key={`${index}${i}`}
                   count={pollbook.voters.length}
-                  minCount={false}
                   action={this.showNewVoterForm.bind(this, pollbook.id)}
                   active={e.active}
                 />
@@ -624,7 +626,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                 </Table>
               </PageSection>
 
-              <ButtonContainer alignRight={true} topMargin={true}>
+              <ButtonContainer alignRight={true} noTopMargin={false}>
                 <Button
                   text={
                     <span>

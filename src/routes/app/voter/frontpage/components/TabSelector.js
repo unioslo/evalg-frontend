@@ -28,12 +28,12 @@ const styles = theme => ({
 })
 
 
-type Props = {
-  children: ReactChildren,
-  classes: Object
-}
+// type Props = {
+//   children: ReactChildren,
+//   classes: Object
+// }
 
-const TabSelector = (props: Props) => {
+const TabSelector = (props) => {
   return (
     <ul className={props.classes.tabSelector}>
       {props.children}
@@ -43,14 +43,14 @@ const TabSelector = (props: Props) => {
 
 const StyledTabSelector = injectSheet(styles)(TabSelector);
 
-type TabProps = {
-  text: string,
-  onClick: Function,
-  active?: boolean,
-  classes: Object
-}
+// type TabProps = {
+//   text: string,
+//   onClick: Function,
+//   active?: boolean,
+//   classes: Object
+// }
 
-const Tab = (props: TabProps) => {
+const Tab = (props) => {
   const cls = classNames({
     [props.classes.tab]: true,
     [props.classes.tabActive]: props.active

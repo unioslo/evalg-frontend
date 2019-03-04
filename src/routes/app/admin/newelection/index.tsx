@@ -3,12 +3,13 @@ import * as React from 'react';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import Page from 'components/page/Page';
-import { PageSection } from 'components/page';
+import Page from '../../../../components/page/Page';
+import { PageSection } from '../../../../components/page';
 import NewElectionForm from './components/NewElectionForm';
 import { Trans } from 'react-i18next';
 import { ApolloClient } from 'apollo-client';
 import { History } from 'history';
+import { EvalgClientState } from '../../../../interfaces';
 
 const electionTemplateQuery = gql`
   query {
@@ -93,13 +94,13 @@ class NewElection extends React.Component<IProps, IState> {
   }
 
   public onCreateCompleted(data: any, client: ApolloClient<EvalgClientState>) {
-    
+
     const localStateData = {
       // TODO: find out how to not need __typename here
       admin: { isCreatingNewElection: true, __typename: 'admin' },
     };
     client.writeData({ data: localStateData });
-    
+
     const { electionGroup } = data.createNewElectionGroup;
     this.props.history.push(`/admin/elections/${electionGroup.id}/info`);
   }

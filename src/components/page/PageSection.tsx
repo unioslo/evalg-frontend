@@ -93,7 +93,7 @@ const StyledSection = injectSheet(styles)(PageSection);
 
 interface ISubProps {
   classes: any;
-  header: React.ReactNode;
+  header?: React.ReactNode;
   notBoldHeader?: boolean;
   customHeader?: boolean;
 }
