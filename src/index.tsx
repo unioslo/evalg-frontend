@@ -76,6 +76,10 @@ const constructApolloClient = () => {
       selectedPollBookID: '',
       notInPollBookJustification: '',
     },
+    signedInPerson: {
+      __typename: 'signedInPerson',
+      personId: '',
+    },
     admin: { __typename: 'admin', isCreatingNewElection: false },
   };
 

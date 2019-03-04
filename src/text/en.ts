@@ -120,6 +120,15 @@ export default {
     createNewElection: 'Create new election',
     deleteCandidate: 'Delete candidate',
     deliverVote: 'Deliver vote',
+    receiptForvoteHeader: 'Thank you for voting.',
+    receiptForvoteBody:
+      'You can change your vote by voting again, as long as the election is in progress.',
+    receiptGoToFrontpage: 'Go to front page',
+    receiptLogout: 'log out',
+    receiptOr: 'or',
+    receiptErrorHeader: 'An error has occured.',
+    receiptErrorBody:
+      'An error occoured while delivering your vote. Please try again later.',
     draft: 'Draft',
     editBoardLeaderCandidate: 'Edit candidate and cocandidates',
     editCandidate: 'Edit candidate',

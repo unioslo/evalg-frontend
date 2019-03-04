@@ -122,6 +122,15 @@ export default {
     createNewElection: 'Opprett nytt valg',
     deleteCandidate: 'Slett kandidat',
     deliverVote: 'Lever stemme',
+    receiptForvoteHeader: 'Takk for din stemme.',
+    receiptForvoteBody:
+      'Dersom du ønsker å endre stemmen din kan du gjøre dette fra forsiden så lenge valget pågår.',
+    receiptGoToFrontpage: 'Gå til forside',
+    receiptLogout: 'logg ut',
+    receiptOr: 'eller',
+    receiptErrorHeader: 'En feil har oppstått.',
+    receiptErrorBody:
+      'En feil inntraff ved levering av din stemme. Vennligst prøv igjen senere.',
     draft: 'Utkast',
     editBoardLeaderCandidate: 'Endre kandidat og medkandidater',
     editCandidate: 'Endre kandidat',

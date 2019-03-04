@@ -1,0 +1,41 @@
+import * as React from 'react';
+import injectSheet from 'react-jss';
+import { Trans, translate } from 'react-i18next';
+import { TranslateHocProps } from 'react-i18next/src/translate';
+import Link from '../../../../../components/link';
+import { Classes } from 'jss';
+
+const styles = (theme: any) => ({
+  header: { marginTop: '3rem', marginLeft: '1rem' },
+  body: { marginTop: '3rem', marginLeft: '1rem' },
+  footer: { marginTop: '3rem', marginLeft: '1rem' },
+});
+
+interface IProps extends TranslateHocProps {
+  classes: Classes;
+}
+
+const Receipt = ({ classes }: IProps) => {
+  return (
+    <div>
+      <div className={classes.header}>
+        <Trans>election.receiptForvoteHeader</Trans>
+      </div>
+      <div className={classes.body}>
+        <Trans>election.receiptForvoteBody</Trans>
+      </div>
+      <div className={classes.footer}>
+        <Link to={'/'}>
+          <Trans>election.receiptGoToFrontpage</Trans>
+        </Link>{' '}
+        <Trans>election.receiptOr</Trans>{' '}
+        <Link to={'/logout'}>
+          <Trans>election.receiptLogout</Trans>
+        </Link>
+        .
+      </div>
+    </div>
+  );
+};
+
+export default injectSheet(styles)(translate()(Receipt));
