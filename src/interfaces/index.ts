@@ -8,6 +8,7 @@ export interface EvalgClientState {
 }
 
 export interface NameFields {
+  [key:string]: string,
   nb: string;
   nn: string;
   en: string;
