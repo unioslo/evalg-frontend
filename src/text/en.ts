@@ -47,6 +47,15 @@ export default {
       activateKeyErrorHasVotes:
         'Changing the election key is not permitted, because votes has been recieved in the election.',
     },
+    backendErrors: {
+      unknown: 'An unknown error has occurred.',
+      cannotChangeKeyIfPastStart:
+        'Changing the election key is not permitted, because the election is ongoing.',
+      cannotChangeKeyIfPublished:
+        'Changing the election key is not permitted, because the election is published.',
+      cannotChangeKeyIfVotesExist:
+        'Changing the election key is not permitted, because a vote has been cast.',
+    },
   },
   candidate: {
     infoLinkText: 'More about the candidate',

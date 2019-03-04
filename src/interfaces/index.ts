@@ -1,4 +1,3 @@
-
 export interface EvalgClientState {
   voter: {
     selectedPollBookID: string;
@@ -7,8 +6,14 @@ export interface EvalgClientState {
   admin: { isCreatingNewElection: boolean };
 }
 
+export interface IMutationResponse {
+  success: boolean;
+  code: string | null;
+  message: string | null;
+}
+
 export interface NameFields {
-  [key:string]: string,
+  [key: string]: string;
   nb: string;
   nn: string;
   en: string;
