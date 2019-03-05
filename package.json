@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@types/classnames": "^2.2.7",
+    "@types/file-saver": "^2.0.0",
     "@types/graphql": "^14.0.5",
     "@types/jest": "24.0.9",
     "@types/lodash": "^4.14.120",
@@ -25,7 +26,9 @@
     "apollo-link-state": "^0.4.2",
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
+    "core-js": "^2.6.5",
     "date-fns": "^2.0.0-alpha.27",
+    "file-saver": "^2.0.1",
     "final-form": "^4.11.0",
     "final-form-arrays": "^1.1.1",
     "graphql": "^14.1.1",
