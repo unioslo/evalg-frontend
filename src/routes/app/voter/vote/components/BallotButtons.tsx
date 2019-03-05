@@ -6,73 +6,67 @@ import Button, { ButtonContainer } from '../../../../../components/button';
 import Link from '../../../../../components/link';
 
 interface IProps {
-  canSubmit: boolean;
+  reviewBallotEnabled: boolean;
   onReviewBallot: () => void;
   onBlankVote: () => void;
 }
 
-const dummy = () => {
-  return null;
-}
-
 const BallotButtons: React.SFC<IProps> = ({
-  canSubmit,
+  reviewBallotEnabled,
   onReviewBallot,
   onBlankVote,
-}) => (
-  <ScreenSizeConsumer>
-    {({ screenSize }) =>
-      (screenSize === 'mobile') ? (
-        <>
-          <ButtonContainer>
-            <Link to="/voter">
-              <Button
-                text={<Trans>general.back</Trans>}
-                // Todo fix
-                action={dummy}
-                secondary
-              />
-            </Link>
-            <Button
-              text={<Trans>election.showBallot</Trans>}
-              disabled={!canSubmit}
-              action={onReviewBallot}
-            />
+}) => {
+  const backButton = (
+    <Link to="/voter">
+      <Button text={<Trans>general.back</Trans>} secondary />
+    </Link>
+  );
+  const blankVoteButtonForScreenSize = (screenSize: string) => (
+    <Button
+      text={<Trans>election.blankVote</Trans>}
+      action={onBlankVote}
+      secondary
+      fillWidth={screenSize === 'mobile'}
+      centerContent={screenSize === 'mobile'}
+    />
+  );
+  const reviewBallotButtonForScreenSize = (screenSize: string) => (
+    <Button
+      text={
+        screenSize === 'mobile' || screenSize === 'sm' ? (
+          <Trans>voter.reviewBallotMobile</Trans>
+        ) : (
+          <Trans>voter.reviewBallot</Trans>
+        )
+      }
+      disabled={!reviewBallotEnabled}
+      action={onReviewBallot}
+    />
+  );
+
+  return (
+    <ScreenSizeConsumer>
+      {({ screenSize }) =>
+        screenSize === 'mobile' ? (
+          <>
+            <ButtonContainer>
+              {backButton}
+              {reviewBallotButtonForScreenSize(screenSize)}
+            </ButtonContainer>
+            <ButtonContainer>
+              {blankVoteButtonForScreenSize(screenSize)}
+            </ButtonContainer>
+          </>
+        ) : (
+          <ButtonContainer alignLeft>
+            {backButton}
+            {blankVoteButtonForScreenSize(screenSize)}
+            {reviewBallotButtonForScreenSize(screenSize)}
           </ButtonContainer>
-          <ButtonContainer>
-            <Button
-              text={<Trans>election.blankVote</Trans>}
-              action={onBlankVote}
-              secondary
-              fillWidth
-              centerContent
-            />
-          </ButtonContainer>
-        </>
-      ) : (
-        <ButtonContainer alignLeft>
-          <Link to="/voter">
-            <Button
-              text={<Trans>general.back</Trans>}
-              // Todo fix
-              action={dummy}
-              secondary
-            />
-          </Link>
-          <Button
-            text={<Trans>election.blankVote</Trans>}
-            action={onBlankVote}
-            secondary
-          />
-          <Button
-            text={<Trans>election.showBallot</Trans>}
-            disabled={!canSubmit}
-            action={onReviewBallot}
-          />
-        </ButtonContainer>
-      )
-    }
-  </ScreenSizeConsumer>
-);
+        )
+      }
+    </ScreenSizeConsumer>
+  );
+};
 
 export default BallotButtons;
