@@ -10,6 +10,7 @@ import { CandidateInfo } from './CandidateList';
 const styles = (theme: any) => ({
   ingress: {
     ...theme.ingress,
+    maxWidth: '63rem',
   },
   chosenCandidateText: {
     marginTop: '2rem',
@@ -51,16 +52,13 @@ const MajorityVoteReview: React.SFC<IReviewProps> = props => {
         text={<Trans>general.back</Trans>}
         action={onGoBackToBallot}
       />
-      <Button
-        text={<Trans>election.deliverVote</Trans>}
-        action={submitAction}
-      />
+      <Button text={<Trans>voter.submitVote</Trans>} action={submitAction} />
     </ButtonContainer>
   );
   return (
-    <PageSection>
+    <PageSection noBorder>
       <div className={classes.ingress}>
-        <Trans>voter.reviewBallot</Trans>
+        <Trans>voter.reviewBallotIngressText</Trans>
       </div>
       <PageSubSection header={<Trans>election.ballot</Trans>}>
         {isBlankVote ? (

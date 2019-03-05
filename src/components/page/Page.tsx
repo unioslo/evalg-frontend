@@ -11,7 +11,6 @@ const styles = (theme: any) => ({
     display: 'block',
     [theme.breakpoints.mdQuery]: {
       marginTop: '5rem',
-      marginBottom: '5rem',
     },
   },
   header: {

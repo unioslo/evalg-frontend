@@ -65,7 +65,7 @@ const VoterFrontPage: React.SFC = () => (
       }
       return (
         <Page header={<Trans>general.welcome</Trans>}>
-          <PageSection desc={<Trans>general.frontPageDesc</Trans>}>
+          <PageSection desc={<Trans>general.frontPageDesc</Trans>} noBorder>
             <VoterElections
               electionGroups={data.electionGroups
                 .map((eg: ElectionGroup) =>
