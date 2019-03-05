@@ -5,6 +5,8 @@ import classNames from 'classnames';
 import gql from 'graphql-tag';
 import { withApollo, WithApolloClient } from 'react-apollo';
 
+import { IMutationResponse } from '../../../../../../interfaces';
+
 import { sleep, translateBackendError } from '../../../../../../utils';
 import { getCryptoEngine } from '../../../../../../cryptoEngines';
 import Modal from '../../../../../../components/modal';
@@ -96,13 +98,19 @@ const styles = (theme: any) => ({
   },
 });
 
-const setElectionKey = gql`
-  mutation SetElectionGroupKey($id: UUID!, $key: String!) {
-    setElectionGroupKey(id: $id, key: $key) {
-      ok
+const setElectionGroupKeyMutation = gql`
+  mutation SetElectionGroupKey($id: UUID!, $publicKey: String!) {
+    setElectionGroupKey(id: $id, publicKey: $publicKey) {
+      success
+      code
+      message
     }
   }
 `;
+
+interface ISetElectionGroupKeyResponse {
+  setElectionGroupKey: IMutationResponse;
+}
 
 interface IKeyPair {
   publicKey: string;
@@ -178,46 +186,65 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
       });
     } catch (error) {
       const t = this.props.t;
-      this.setState({
-        isGeneratingKey: false,
-        errorMessage: `${t('admin.errors.generateKeyError')}\n${t(
+      this.setState({ isGeneratingKey: false });
+      this.showError(
+        `${t('admin.errors.generateKeyError')}\n${t(
           'general.errorMessage'
-        )}: ${error}`,
-      });
+        )}: ${error}`
+      );
     }
+  };
+
+  showError = async (message: string) => {
+    this.setState({
+      errorMessage: message,
+    });
   };
 
   activateKey = async () => {
     this.setState({
       isActivatingKey: true,
     });
-    try {
-      await this.props.client.mutate({
-        mutation: setElectionKey,
+    await this.props.client
+      .mutate<ISetElectionGroupKeyResponse>({
+        mutation: setElectionGroupKeyMutation,
         variables: {
           id: this.props.electionGroupId,
-          key: this.state.publicKey,
+          publicKey: this.state.publicKey,
         },
+      })
+      .then(result => {
+        const response =
+          result && result.data && result.data.setElectionGroupKey;
+
+        if (!response || response.success === false) {
+          let errorMessage = this.props.t(
+            'admin.errors.activateKeyErrorGeneral'
+          );
+          if (response && response.code) {
+            errorMessage = translateBackendError(response.code, this.props.t);
+          }
+          this.setState({ isActivatingKey: false });
+          this.showError(errorMessage);
+        } else {
+          this.keyActivated();
+        }
+      })
+      .catch(error => {
+        this.setState({ isActivatingKey: false });
+        this.showError(this.props.t('admin.errors.activateKeyErrorGeneral'));
       });
-      this.setState({
-        secretKey: '',
-        isActivatingKey: false,
-        hasActivatedNewKey: true,
-      });
-      // Sleep while playing checkmark animation
-      await sleep(1300);
-      this.props.onCloseModal();
-    } catch (error) {
-      const t = this.props.t;
-      let errorMessage = translateBackendError(error.toString(), t);
-      if (errorMessage === '') {
-        errorMessage = t('admin.errors.activateKeyErrorGeneral');
-      }
-      this.setState({
-        isActivatingKey: false,
-        errorMessage,
-      });
-    }
+  };
+
+  keyActivated = async () => {
+    this.setState({
+      secretKey: '',
+      isActivatingKey: false,
+      hasActivatedNewKey: true,
+    });
+    // Sleep while playing checkmark animation
+    await sleep(1300);
+    this.props.onCloseModal();
   };
 
   render() {

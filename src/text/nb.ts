@@ -42,9 +42,14 @@ export default {
       generateKeyError: 'Noe gikk galt under generering av nøkkelpar.',
       activateKeyErrorGeneral:
         'Noe gikk galt under opplasting og aktivering av offentlig nøkkel. Sjekk internett-tilkoblingen, lukk dialogboksen og prøv på nytt.',
-      activateKeyErrorUnsafeStatus:
-        'Det er ikke tillatt å endre valgnøkkelen nå, på grunn av valgets status. Trykk avbryt og kontroller at valget ikke er publisert.',
-      activateKeyErrorHasVotes:
+    },
+    backendErrors: {
+      unknown: 'En uventet feil har oppstått.',
+      cannotChangeKeyIfPastStart:
+        'Det er ikke tillatt å endre valgnøkkelen fordi valget pågår.',
+      cannotChangeKeyIfPublished:
+        'Det er ikke tillatt å endre valgnøkkelen fordi valget er publisert.',
+      cannotChangeKeyIfVotesExist:
         'Det er ikke tillatt å endre valgnøkkelen fordi det er avgitt stemmer i valget.',
     },
   },
