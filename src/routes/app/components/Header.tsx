@@ -78,7 +78,6 @@ const sayMyName = gql`
   query {
     viewer {
       person {
-        id
         displayName
       }
     }
@@ -266,15 +265,6 @@ const UserNameAndLogout = () => {
                           if (loading || error) {
                             return null;
                           } else {
-                            client.writeData({
-                              data: {
-                                signedInPerson: {
-                                  personId: data.viewer.person.id,
-                                  __typename: 'signedInPerson',
-                                },
-                              },
-                            });
-                            // TODO: Make this happen only on onload
                             return <>{data.viewer.person.displayName}</>;
                           }
                         }}

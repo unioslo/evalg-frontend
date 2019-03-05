@@ -166,22 +166,14 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
   ) {
     // Write "selectedPollBookID" and conditionally "notInPollBookJustification"
     // to local cache, to send with vote later.
-    apolloClient.writeData({
-      data: { voter: { selectedPollBookID, __typename: 'voter' } },
-    });
+    apolloClient.writeData({ data: { selectedPollBookID } });
     if (
       !this.hasRightToVote(this.state.selectedPollBookIndex) &&
       notInPollBookJustification
     ) {
-      apolloClient.writeData({
-        data: { voter: { notInPollBookJustification, __typename: 'voter' } },
-      });
+      apolloClient.writeData({ data: { notInPollBookJustification } });
     } else if (this.hasRightToVote(this.state.selectedPollBookIndex)) {
-      apolloClient.writeData({
-        data: {
-          voter: { notInPollBookJustification: '', __typename: 'voter' },
-        },
-      });
+      apolloClient.writeData({ data: { notInPollBookJustification: '' } });
     }
     this.props.history.push(proceedToLink);
   }
