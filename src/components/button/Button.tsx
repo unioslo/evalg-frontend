@@ -18,12 +18,11 @@ const styles = (theme: any) => ({
     fontSize: '2rem',
     height: '6rem',
     lineHeight: 0.9,
-    padding: '1.5rem 2rem',
+    padding: '0 2rem',
     transition: 'background 100ms ease-in',
     [theme.breakpoints.mdQuery]: {
       fontSize: '1.8rem',
       height: '5rem',
-      //padding: '2rem 1.5rem',
     },
   },
   wide: {
@@ -71,7 +70,7 @@ const styles = (theme: any) => ({
 });
 
 interface IProps {
-  action: (event: any) => void,
+  action?: (event: any) => void,
   secondary?: boolean,
   disabled?: boolean,
   iconLeft?: string,
