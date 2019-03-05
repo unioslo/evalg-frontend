@@ -15,23 +15,23 @@ const styles = (theme: any) => ({
     justifyContent: 'center'
   },
   rectangle: {
-    fill: theme.adminNavBarColor
+    fill: theme.stepperColor
   },
   sectionNumber: {
     fontSize: '2.4rem',
     fontWeight: 'bold'
   },
   sectionNumberActive: {
-    fill: theme.adminNavBarSectionTextColorActive
+    fill: theme.stepperSectionTextColorActive
   },
   sectionNumberInactive: {
-    fill: theme.adminNavBarSectionTextColorInactive
+    fill: theme.stepperSectionTextColorInactive
   },
   sectionCircleActive: {
-    fill: theme.adminNavBarSectionCircleColorActive
+    fill: theme.stepperSectionCircleColorActive
   },
   sectionCircleInactive: {
-    fill: theme.adminNavBarSectionCircleColorInactive
+    fill: theme.stepperSectionCircleColorInactive
   }
 })
 
