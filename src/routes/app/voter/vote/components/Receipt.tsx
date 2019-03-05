@@ -21,18 +21,18 @@ const Receipt: React.SFC<IProps> = ({ classes }) => {
   return (
     <PageSection noBorder>
       <div className={classes.receiptTextBox}>
-        <Trans>election.receiptForvoteHeader</Trans>
+        <Trans>voter.receiptThankYou</Trans>
         <br />
         <br />
-        <Trans>election.receiptForvoteBody</Trans>
+        <Trans>voter.receiptVotingAgainInfo</Trans>
         <br/>
         <br/>
       <Link to={'/'}>
-        <Trans>election.receiptGoToFrontpage</Trans>
+        <Trans>voter.receiptGoToFrontpage</Trans>
       </Link>{' '}
-      <Trans>election.receiptOr</Trans>{' '}
+      <Trans>voter.receiptOr</Trans>{' '}
       <Link to={'/logout'}>
-        <Trans>election.receiptLogout</Trans>
+        <Trans>voter.receiptLogout</Trans>
       </Link>
       .
       </div>

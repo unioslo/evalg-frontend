@@ -128,7 +128,6 @@ export default {
     contactForElectorsPlaceholder: 'E-mail address or webpage',
     createNewElection: 'Create new election',
     deleteCandidate: 'Delete candidate',
-    deliverVote: 'Deliver vote',
     draft: 'Draft',
     editBoardLeaderCandidate: 'Edit candidate and cocandidates',
     editCandidate: 'Edit candidate',
@@ -185,7 +184,6 @@ export default {
     selectParish: 'Parish',
     selectType: 'Choose election type',
     settings: 'election settings',
-    showBallot: 'Show ballot',
     singleVotingPeriod: 'Same voting period for all groups',
     status: 'Status',
     statusCanAnnounce: 'You can make the voting period visible for the voters',
@@ -339,9 +337,24 @@ export default {
       "Rank the candidate you prefer the most as number 1. If the candidate ranked as number 1 doesn't recieve enough votes in total, and you have ranked another candidate as number 2, your vote for candidate number 1 will be transferred to candidate number 2, and so on.",
     prefElecRankCandidatesShort:
       'Rank the candidates as preferred by selection them in the preferred order. You may change the order of already selected candidates as you go along.',
+    receiptThankYou: 'Thank you for voting.',
+    receiptVotingAgainInfo:
+      'As long as the election is in progress, you may change your vote by going to the front page and voting again.',
+    receiptGoToFrontpage: 'Go to the front page',
+    receiptLogout: 'log out',
+    receiptOr: 'or',
+    receiptErrorHeader: 'An error has occured.',
+    receiptErrorBody:
+      'An error occoured while delivering your vote. Please try again later.',
     resetPrefElecBallot: 'Reset',
-    reviewBallot:
+    reviewBallot: 'Review ballot',
+    reviewBallotMobile: 'Review ballot',
+    reviewBallotIngressText:
       'Review your ballot below, then deliver your vote or go back to make changes.',
+    stepperStep1: 'Fill out ballot',
+    stepperStep2: 'Review ballot',
+    stepperStep3: 'Receipt',
+    submitVote: 'Submit vote',
   },
   voterGroupSelect: {
     andCloses: 'and closes',
