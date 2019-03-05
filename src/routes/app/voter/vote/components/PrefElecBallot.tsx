@@ -166,7 +166,7 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                 ))}
               </CandidateList>
               <BallotButtons
-                canSubmit={canSubmit}
+                reviewBallotEnabled={canSubmit}
                 onBlankVote={onBlankVote}
                 onReviewBallot={onReviewBallot}
               />
