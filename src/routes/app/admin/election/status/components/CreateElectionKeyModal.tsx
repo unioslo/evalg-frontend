@@ -4,6 +4,7 @@ import injectSheet from 'react-jss';
 import classNames from 'classnames';
 import gql from 'graphql-tag';
 import { withApollo, WithApolloClient } from 'react-apollo';
+import FileSaver from 'file-saver';
 
 import { IMutationResponse } from '../../../../../../interfaces';
 
@@ -69,12 +70,6 @@ const styles = (theme: any) => ({
 
   infoList: {
     maxWidth: '100rem',
-  },
-
-  buttonAnchorWrapper: {
-    '&:hover': {
-      textDecoration: 'none',
-    },
   },
 
   animatedCheckmarkSvg: {
@@ -165,6 +160,12 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
     this.generateElectionKey();
   }
 
+  showError = async (message: string) => {
+    this.setState({
+      errorMessage: message,
+    });
+  };
+
   checkIfAllowedToActivateKey = () => {
     this.setState(currState => ({
       isAllowedToActivateKey:
@@ -195,10 +196,15 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
     }
   };
 
-  showError = async (message: string) => {
-    this.setState({
-      errorMessage: message,
+  downloadKeyFile = () => {
+    const electionKeyFileContents = `
+secret:${this.state.secretKey}\r\npublic:${this.state.publicKey}`.trim();
+
+    const blob = new Blob([electionKeyFileContents], {
+      type: 'text/plain;charset=utf-8',
     });
+    FileSaver.saveAs(blob, 'electionKey.txt');
+    this.setState({ hasDownloadedKey: true }, this.checkIfAllowedToActivateKey);
   };
 
   activateKey = async () => {
@@ -251,8 +257,6 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
     const { isReplacingOldKey, onCloseModal, t, classes } = this.props;
 
     const {
-      publicKey,
-      secretKey,
       isGeneratingKey,
       isActivatingKey,
       hasDownloadedKey,
@@ -263,10 +267,6 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
     } = this.state;
 
     const errorMessageValue = errorMessage ? true : false;
-
-    const electionKeyFileContents = `
-secret:${secretKey}
-public:${publicKey}`.trim();
 
     const animatedCheckmarkSvg = (
       <svg
@@ -367,25 +367,11 @@ public:${publicKey}`.trim();
                 1
               </div>
               <ButtonContainer center noTopMargin>
-                <a
-                  href={`data:text/plain;charset=utf-8,${encodeURIComponent(
-                    electionKeyFileContents
-                  )}`}
-                  key="download"
-                  className={classes.buttonAnchorWrapper}
-                  download="electionKey.txt"
-                >
-                  <Button
-                    action={() =>
-                      this.setState(
-                        { hasDownloadedKey: true },
-                        this.checkIfAllowedToActivateKey
-                      )
-                    }
-                    disabled={isGeneratingKey || errorMessageValue}
-                    text={downloadKeyButtonContent}
-                  />
-                </a>
+                <Button
+                  action={this.downloadKeyFile}
+                  disabled={isGeneratingKey || errorMessageValue}
+                  text={downloadKeyButtonContent}
+                />
               </ButtonContainer>
             </div>
 
