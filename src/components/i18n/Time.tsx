@@ -1,12 +1,12 @@
 /* @flow */
 import * as React from 'react';
 import { translate, Trans } from 'react-i18next';
-import moment from 'moment-timezone';
+import moment, { Moment } from 'moment-timezone';
 import { appTimezone } from '../../appConfig';
 import { i18n } from 'i18next';
 
 interface IProps {
-  dateTime: string,
+  dateTime: Moment | string,
   i18n: i18n,
 };
 
