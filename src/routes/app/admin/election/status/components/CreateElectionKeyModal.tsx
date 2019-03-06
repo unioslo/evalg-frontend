@@ -52,7 +52,7 @@ const styles = (theme: any) => ({
 
   workingSpinner: {
     position: 'relative',
-    top: -5,
+    top: -1,
     marginLeft: 10,
     marginRight: -2,
     display: 'inline-block',
@@ -74,8 +74,7 @@ const styles = (theme: any) => ({
 
   animatedCheckmarkSvg: {
     position: 'relative',
-    top: '-22px',
-    marginRight: '-13px',
+    marginLeft: '13px',
 
     '& .checkmarkPath': {
       strokeWidth: 5,
@@ -272,9 +271,9 @@ secret:${this.state.secretKey}\r\npublic:${this.state.publicKey}`.trim();
       <svg
         className={classes.animatedCheckmarkSvg}
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 52 52"
-        width="56"
-        height="56"
+        viewBox="12 12 30 30"
+        width="26"
+        height="26"
       >
         <path
           className="checkmarkPath"
