@@ -3,10 +3,12 @@ import { translate } from 'react-i18next';
 import { TranslateHocProps } from 'react-i18next/src/translate';
 
 import { shuffleArray } from '../../../../utils/helpers';
-import { Page, } from '../../../../components/page'
+import { Page } from '../../../../components/page';
 import PrefElecBallot from './components/PrefElecBallot';
 import PrefElecReview from './components/PrefElecReview';
-import { Election, Candidate } from '../../../../interfaces';
+import { Election, Candidate, NameFields } from '../../../../interfaces';
+import VotingStepper, { VotingStep } from './components/VotingStepper';
+import Receipt from './components/Receipt';
 
 function moveArrayItem(arr: any[], oldIndex: number, newIndex: number) {
   if (newIndex >= arr.length) {
@@ -20,34 +22,26 @@ function moveArrayItem(arr: any[], oldIndex: number, newIndex: number) {
 }
 
 interface IProps extends TranslateHocProps {
-  election: Election,
-  electionName: any
+  election: Election;
+  electionName: NameFields;
 }
 
 interface IState {
   selectedCandidates: Candidate[];
   shuffledCandidates: Candidate[];
-  isReviewingBallot: boolean;
   isBlankVote: boolean;
+  currentStep: VotingStep;
 }
 
 class PrefElecVote extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      isReviewingBallot: false,
-      isBlankVote: false,
-      selectedCandidates: [],
       shuffledCandidates: shuffleArray(props.election.lists[0].candidates),
+      selectedCandidates: [],
+      isBlankVote: false,
+      currentStep: VotingStep.Step1FillOutBallot,
     };
-    this.handleAddCandidate = this.handleAddCandidate.bind(this);
-    this.handleMoveCandidate = this.handleMoveCandidate.bind(this);
-    this.handleRemoveCandidate = this.handleRemoveCandidate.bind(this);
-    this.handleResetBallot = this.handleResetBallot.bind(this);
-    this.handleReviewBallot = this.handleReviewBallot.bind(this);
-    this.handleBlankVote = this.handleBlankVote.bind(this);
-    this.handleGoBackToBallot = this.handleGoBackToBallot.bind(this);
-    this.handleSubmitBallot = this.handleSubmitBallot.bind(this);
   }
   public render() {
     const unselectedCandidates = this.state.shuffledCandidates.filter(
@@ -58,85 +52,94 @@ class PrefElecVote extends React.Component<IProps, IState> {
     if (i18n && i18n.language) {
       lang = i18n.language;
     }
+    const { currentStep } = this.state;
+    const isCandidateSelected = this.state.selectedCandidates.length > 0;
+    const isStepperStep1Clickable =
+      this.state.currentStep === VotingStep.Step1FillOutBallot ||
+      this.state.currentStep === VotingStep.Step2ReviewBallot;
 
     return (
-      <Page header={this.props.electionName[lang]}>
-        {this.state.isReviewingBallot ? (
-          <PrefElecReview
-            selectedCandidates={this.state.selectedCandidates}
-
-            // TODO fix: unselectedCandidates does not exist on PrefElecReview
-            // unselectedCandidates={
-            //   unselectedCandidates === undefined ? [] : unselectedCandidates
-            // }
-            isBlankVote={this.state.isBlankVote}
-            onGoBackToBallot={this.handleGoBackToBallot}
-            onSubmitBallot={this.handleSubmitBallot}
-          />
-        ) : (
-          <PrefElecBallot
-            selectedCandidates={this.state.selectedCandidates}
-            unselectedCandidates={unselectedCandidates}
-            election={this.props.election}
-            onAddCandidate={this.handleAddCandidate}
-            onRemoveCandidate={this.handleRemoveCandidate}
-            onMoveCandidate={this.handleMoveCandidate}
-            onResetBallot={this.handleResetBallot}
-            onBlankVote={this.handleBlankVote}
-            onReviewBallot={this.handleReviewBallot}
-          />
-        )}
-      </Page>
+      <>
+        <VotingStepper
+          currentStep={currentStep}
+          isStep1Clickable={isStepperStep1Clickable}
+          onClickStep1={this.handleGoBackToBallot}
+        />
+        <Page header={this.props.electionName[lang]}>
+          {currentStep === VotingStep.Step1FillOutBallot && (
+            <PrefElecBallot
+              selectedCandidates={this.state.selectedCandidates}
+              unselectedCandidates={unselectedCandidates}
+              election={this.props.election}
+              onAddCandidate={this.handleAddCandidate}
+              onRemoveCandidate={this.handleRemoveCandidate}
+              onMoveCandidate={this.handleMoveCandidate}
+              onResetBallot={this.handleResetBallot}
+              onBlankVote={this.handleBlankVote}
+              reviewBallotEnabled={isCandidateSelected}
+              onReviewBallot={this.handleReviewBallot}
+            />
+          )}
+          {currentStep === VotingStep.Step2ReviewBallot && (
+            <PrefElecReview
+              selectedCandidates={this.state.selectedCandidates}
+              isBlankVote={this.state.isBlankVote}
+              onGoBackToBallot={this.handleGoBackToBallot}
+              onSubmitVote={this.handleSubmitVote}
+            />
+          )}
+          {currentStep === VotingStep.Step3Receipt && <Receipt />}
+        </Page>
+      </>
     );
   }
-  private handleSubmitBallot() {
-    if (this.state.isBlankVote) {
-      // TODO: Submit blank ballot
-    } else {
-      // TODO: Submit ballot
-    }
-  }
 
-  private handleAddCandidate(candidate: Candidate) {
+  handleAddCandidate = (candidate: Candidate) => {
     this.setState(currState => ({
       selectedCandidates: currState.selectedCandidates.concat([candidate]),
     }));
-  }
+  };
 
-  private handleRemoveCandidate(candidate: Candidate) {
+  handleRemoveCandidate = (candidate: Candidate) => {
     const selectedCandidates = this.state.selectedCandidates.filter(
       c => c !== candidate
     );
     this.setState({ selectedCandidates });
-  }
+  };
 
-  private handleMoveCandidate(oldIndex: number, newIndex: number) {
+  handleMoveCandidate = (oldIndex: number, newIndex: number) => {
     const emptyArray: Candidate[] = [];
     const arrayCopy: Candidate[] = emptyArray.concat(
       this.state.selectedCandidates
     );
     moveArrayItem(arrayCopy, oldIndex, newIndex);
     this.setState({ selectedCandidates: arrayCopy });
-  }
+  };
 
-  private handleResetBallot() {
+  handleResetBallot = () => {
     this.setState({ selectedCandidates: [] });
-  }
+  };
 
-  private handleReviewBallot() {
-    this.setState({ isReviewingBallot: true });
-  }
+  handleReviewBallot = () => {
+    this.setState({ currentStep: VotingStep.Step2ReviewBallot });
+  };
 
-  private handleGoBackToBallot() {
+  handleGoBackToBallot = () => {
     this.setState({
-      isReviewingBallot: false,
+      currentStep: VotingStep.Step1FillOutBallot,
       isBlankVote: false,
     });
-  }
+  };
 
-  private handleBlankVote() {
+  handleBlankVote = () => {
     this.setState({ isBlankVote: true }, this.handleReviewBallot);
-  }
+  };
+
+  handleSubmitVote = () => {
+    // TODO
+    console.log('Submitting vote...');
+    this.setState({ currentStep: VotingStep.Step3Receipt });
+  };
 }
 
 export default translate()(PrefElecVote);
