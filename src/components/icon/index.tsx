@@ -138,12 +138,7 @@ const getIcon = (type: string, classes: Classes, custom: any) => {
               width="5.25"
               height="26.0562731"
             />
-            <rect
-              x="10.14"
-              y="19.9749828"
-              height="5.25"
-              width="26.0562731"
-            />
+            <rect x="10.14" y="19.9749828" height="5.25" width="26.0562731" />
           </g>
         </svg>
       );
@@ -363,7 +358,7 @@ const getIcon = (type: string, classes: Classes, custom: any) => {
         </svg>
       );
     default:
-      if (process.env["NODE_ENV"] !== 'production') {
+      if (process.env['NODE_ENV'] !== 'production') {
         console.error(`Icon not found: ${type}`);
       }
       return <span>Icon not found: {type}</span>;
@@ -382,12 +377,16 @@ const styles = (theme: any) => ({
     },
     '&:hover': {
       cursor: 'pointer',
-      '& circle': {
-        strokeWidth: '3px',
-        stroke: theme.colors.darkTurquoise,
-      },
-      '& rect': {
-        fill: theme.colors.darkTurquoise,
+    },
+    '@media (hover: hover)': {  // to avoid "sticky" hover effects on mobile
+      '&:hover': {
+        '& circle': {
+          strokeWidth: '3px',
+          stroke: theme.colors.darkTurquoise,
+        },
+        '& rect': {
+          fill: theme.colors.darkTurquoise,
+        },
       },
     },
   },
@@ -463,9 +462,13 @@ const styles = (theme: any) => ({
     },
     '&:hover': {
       cursor: 'pointer',
-      '& circle': {
-        strokeWidth: '5px',
-        stroke: theme.colors.darkTurquoise,
+    },
+    '@media (hover: hover)': {  // to avoid "sticky" hover effects on mobile
+      '&:hover': {
+        '& circle': {
+          strokeWidth: '5px',
+          stroke: theme.colors.darkTurquoise,
+        },
       },
     },
     '& .checkMarkPath': {
@@ -550,14 +553,13 @@ const styles = (theme: any) => ({
   },
 });
 
-
 interface IProps {
-  type: string,
-  marginRight?: boolean,
-  onClick?: (event: any) => void,
-  classes: Classes,
-  custom?: any,
-};
+  type: string;
+  marginRight?: boolean;
+  onClick?: (event: any) => void;
+  classes: Classes;
+  custom?: any;
+}
 
 const Icon = (props: IProps) => {
   const { type, classes, custom } = props;
