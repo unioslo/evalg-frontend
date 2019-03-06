@@ -46,7 +46,7 @@ interface ISectionProps {
   classes: Classes;
 }
 
-const StepperSection = (props: ISectionProps) => {
+const StepperSection: React.SFC<ISectionProps> = props => {
   const {
     translateX,
     translateY,
