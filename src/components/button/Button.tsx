@@ -15,6 +15,7 @@ const styles = (theme: any) => ({
     borderRadius: '0.4rem',
     cursor: 'pointer',
     display: 'flex',
+    alignItems: 'center',
     fontSize: '2rem',
     height: '6rem',
     lineHeight: 0.9,
