@@ -1,4 +1,3 @@
-// import classNames from 'classnames';
 import * as React from 'react';
 import { Trans } from 'react-i18next';
 
@@ -40,6 +39,7 @@ interface IProps {
   onMoveCandidate: (oldIndex: number, newIndex: number) => void;
   onResetBallot: () => void;
   onBlankVote: () => void;
+  reviewBallotEnabled: boolean;
   onReviewBallot: () => void;
   classes: any;
 }
@@ -52,11 +52,6 @@ class PrefElecBallot extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = { activeCandIndex: -1 };
-    this.promoteSelectedCandidate = this.promoteSelectedCandidate.bind(this);
-    this.demoteSelectedCandidate = this.demoteSelectedCandidate.bind(this);
-    this.selectCandidate = this.selectCandidate.bind(this);
-    this.deselectCandidate = this.deselectCandidate.bind(this);
-    this.removeCandidate = this.removeCandidate.bind(this);
   }
 
   public render() {
@@ -69,10 +64,10 @@ class PrefElecBallot extends React.Component<IProps, IState> {
       onMoveCandidate,
       onResetBallot,
       onBlankVote,
+      reviewBallotEnabled,
       onReviewBallot,
       classes,
     } = this.props;
-    const canSubmit = selectedCandidates.length > 0;
 
     const mobileResetButton = (
       <ScreenSizeConsumer>
@@ -96,7 +91,7 @@ class PrefElecBallot extends React.Component<IProps, IState> {
     return (
       <ScreenSizeConsumer>
         {({ screenSize }) => (
-          <PageSection>
+          <PageSection noBorder>
             <div className={classes.mandatePeriodTextDesktop}>
               <MandatePeriodText election={election} longDate />
             </div>
@@ -166,7 +161,7 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                 ))}
               </CandidateList>
               <BallotButtons
-                reviewBallotEnabled={canSubmit}
+                reviewBallotEnabled={reviewBallotEnabled}
                 onBlankVote={onBlankVote}
                 onReviewBallot={onReviewBallot}
               />
@@ -192,15 +187,15 @@ class PrefElecBallot extends React.Component<IProps, IState> {
     );
   }
 
-  private selectCandidate(index: number) {
+  selectCandidate = (index: number) => {
     this.setState({ activeCandIndex: index });
   }
 
-  private deselectCandidate() {
+  deselectCandidate = () => {
     this.setState({ activeCandIndex: -1 });
   }
 
-  private promoteSelectedCandidate() {
+  promoteSelectedCandidate = () => {
     this.props.onMoveCandidate(
       this.state.activeCandIndex,
       this.state.activeCandIndex - 1
@@ -208,7 +203,7 @@ class PrefElecBallot extends React.Component<IProps, IState> {
     this.setState({ activeCandIndex: this.state.activeCandIndex - 1 });
   }
 
-  private demoteSelectedCandidate() {
+  demoteSelectedCandidate = () => {
     this.props.onMoveCandidate(
       this.state.activeCandIndex,
       this.state.activeCandIndex + 1
@@ -216,7 +211,7 @@ class PrefElecBallot extends React.Component<IProps, IState> {
     this.setState({ activeCandIndex: this.state.activeCandIndex + 1 });
   }
 
-  private removeCandidate() {
+  removeCandidate = () => {
     const candidate = this.props.selectedCandidates[this.state.activeCandIndex];
     this.props.onRemoveCandidate(candidate);
     this.setState({ activeCandIndex: -1 });
