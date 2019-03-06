@@ -1,12 +1,12 @@
 /* @flow */
 import * as React from 'react';
 import { Trans, translate } from 'react-i18next';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 
-import Text from 'components/text';
-import { Date, Time } from 'components/i18n';
-import Button from 'components/button';
-import Link from 'components/link';
+import Text from '../../../../../components/text';
+import { Date, Time } from '../../../../../components/i18n';
+import Button from '../../../../../components/button';
+import Link from '../../../../../components/link';
 import {
   Table,
   TableHeader,
@@ -15,19 +15,21 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from 'components/table';
+} from '../../../../../components/table';
+import { i18n } from 'i18next';
+import { ElectionGroup } from '../../../../../interfaces';
 
-// type Props = {
-//   electionGroups: Array<ElectionGroup>,
-//   noElectionsText: ReactElement,
-//   i18n: Object,
-// };
+interface IProps {
+  electionGroups: Array<ElectionGroup>;
+  noElectionsText: React.ReactElement;
+  i18n: i18n;
+};
 
-const VoterElectionsTable = (props) => {
+const VoterElectionsTable: React.SFC<IProps> = (props) => {
   const lang = props.i18n.language;
   const { electionGroups, noElectionsText } = props;
 
-  const dateTimeToMarkup = dateTime => (
+  const dateTimeToMarkup = (dateTime: Moment | string) => (
     <React.Fragment>
       <Text>
         <Date dateTime={dateTime} longDate />
@@ -66,8 +68,8 @@ const VoterElectionsTable = (props) => {
           </TableRow>
         )}
         {electionGroups.map((group, index) => {
-          let startTime;
-          let endTime;
+          let startTime: Moment | string;
+          let endTime: Moment | string;
 
           if (group.elections.length === 1) {
             startTime = group.elections[0].start;

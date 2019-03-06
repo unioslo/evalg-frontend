@@ -2,8 +2,9 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
+import { Classes } from 'jss';
 
-const styles = theme => ({
+const styles = (theme: any) => ({
   tab: {
     '&:hover': {
       cursor: 'pointer'
@@ -28,12 +29,12 @@ const styles = theme => ({
 })
 
 
-// type Props = {
-//   children: ReactChildren,
-//   classes: Object
-// }
+interface IProps {
+  children: React.ReactNode;
+  classes: Classes;
+}
 
-const TabSelector = (props) => {
+const TabSelector: React.SFC<IProps> = (props) => {
   return (
     <ul className={props.classes.tabSelector}>
       {props.children}
@@ -41,16 +42,15 @@ const TabSelector = (props) => {
   )
 };
 
-const StyledTabSelector = injectSheet(styles)(TabSelector);
 
-// type TabProps = {
-//   text: string,
-//   onClick: Function,
-//   active?: boolean,
-//   classes: Object
-// }
+interface ITabProps {
+  text: string | React.ReactElement;
+  onClick: () => void;
+  active?: boolean;
+  classes: Classes;
+}
 
-const Tab = (props) => {
+const Tab: React.SFC<ITabProps> = (props) => {
   const cls = classNames({
     [props.classes.tab]: true,
     [props.classes.tabActive]: props.active
@@ -62,6 +62,7 @@ const Tab = (props) => {
   )
 };
 
-const StyledTab = injectSheet(styles)(Tab);
 
+const StyledTab = injectSheet(styles)(Tab);
+const StyledTabSelector = injectSheet(styles)(TabSelector);
 export { StyledTab as Tab, StyledTabSelector as TabSelector }

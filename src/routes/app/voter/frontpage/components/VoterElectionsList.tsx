@@ -2,11 +2,14 @@ import * as React from 'react';
 import { Trans, translate } from 'react-i18next';
 import injectSheet from 'react-jss';
 
-import Button, { ButtonContainer } from 'components/button';
-import { Date, Time } from 'components/i18n';
-import Link from 'components/link';
+import Button, { ButtonContainer } from '../../../../../components/button';
+import { Date, Time } from '../../../../../components/i18n';
+import Link from '../../../../../components/link';
+import { ElectionGroup } from '../../../../../interfaces';
+import { Classes } from 'jss';
+import { i18n } from 'i18next';
 
-const styles = theme => ({
+const styles = (theme: any) => ({
   list: {
     width: '100%',
     listStyleType: 'none',
@@ -22,13 +25,13 @@ const styles = theme => ({
   }
 });
 
-// type ListItemProps = {
-//   electionGroup: ElectionGroup,
-//   lang: string,
-//   classes: Object
-// }
+interface IListItemProps {
+  electionGroup: ElectionGroup;
+  lang: string;
+  classes: Classes;
+}
 
-const VoterElectionsListItem = (props) => {
+const VoterElectionsListItem: React.SFC<IListItemProps> = (props) => {
   const { electionGroup, lang } = props;
   const election = electionGroup.elections[0];
   const canVote = true;
@@ -74,14 +77,14 @@ const VoterElectionsListItem = (props) => {
   )
 };
 
-// type ListProps = {
-//   electionGroups: Array<ElectionGroup>,
-//   noElectionsText: ReactElement,
-//   i18n: object,
-//   classes: Object
-// }
+interface IListProps {
+  electionGroups: Array<ElectionGroup>;
+  noElectionsText: React.ReactElement;
+  i18n: i18n
+  classes: Classes;
+}
 
-const VoterElectionsList = (props) => {
+const VoterElectionsList: React.SFC<IListProps> = (props) => {
   const { electionGroups, noElectionsText, classes } = props;
   // const lang = props.i18n.language;
   if (electionGroups.length === 0) {

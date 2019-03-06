@@ -1,23 +1,25 @@
 import * as React from 'react';
 import { Trans } from 'react-i18next';
 
-import Text from 'components/text';
+import Text from '../../../../../components/text';
 import VoterElectionsList from './VoterElectionsList';
 import VoterElectionsTable from './VoterElectionsTable';
-import { MobileDropDown, MobileDropdownItem } from 'components/dropdownMenu';
+import { MobileDropDown, MobileDropdownItem } from '../../../../../components/dropdownMenu';
 import { TabSelector, Tab } from './TabSelector';
-import { ScreenSizeConsumer } from 'providers/ScreenSize';
+import { ScreenSizeConsumer } from '../../../../../providers/ScreenSize';
+import { ElectionGroup } from '../../../../../interfaces';
 
-// type Props = {
-//   electionGroups: Array<ElectionGroup>,
-// };
+interface IProps {
+  electionGroups: ElectionGroup[]
+};
 
-// type State = {
-//   electionStatusFilter: string,
-// };
+interface IState {
+  electionStatusFilter: string;
+};
 
-class VoterElections extends React.Component {
-  constructor(props) {
+class VoterElections extends React.Component<IProps, IState> {
+
+  constructor(props: IProps) {
     super(props);
     this.setElectionStatusFilter = this.setElectionStatusFilter.bind(this);
     this.filterElectionGroups = this.filterElectionGroups.bind(this);
@@ -25,11 +27,11 @@ class VoterElections extends React.Component {
     this.state = { electionStatusFilter: 'ongoing' };
   }
 
-  setElectionStatusFilter(value) {
+  setElectionStatusFilter(value: string) {
     this.setState({ electionStatusFilter: value });
   }
 
-  filterElectionGroups(electionGroups, filter) {
+  filterElectionGroups(electionGroups: ElectionGroup[], filter: string) {
     const statusesForFilter = {
       ongoing: ['ongoing'],
       announced: ['announced', 'published'],
@@ -58,7 +60,7 @@ class VoterElections extends React.Component {
             this.state.electionStatusFilter
           );
 
-          let noElectionsText;
+          let noElectionsText: React.ReactElement;
           switch (this.state.electionStatusFilter) {
             case 'ongoing':
               noElectionsText = <Trans>general.noOngoingElections</Trans>;
@@ -70,6 +72,7 @@ class VoterElections extends React.Component {
               noElectionsText = <Trans>general.noClosedElections</Trans>;
               break;
             default:
+              noElectionsText = <React.Fragment></React.Fragment>
               break;
           }
 
@@ -113,6 +116,7 @@ class VoterElections extends React.Component {
               dropdownText = <Trans>electionStatus.closedElections</Trans>;
               break;
             default:
+              dropdownText = <React.Fragment></React.Fragment>
               break;
           }
 
