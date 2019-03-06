@@ -22,7 +22,7 @@ const styles = (theme: any) => ({
     border: '1px solid #CCC',
     padding: '1rem 1.5rem',
   },
-  blanVoteTextContainer: {
+  blankVoteTextContainer: {
     marginTop: '2rem',
     marginBottom: '3rem',
     fontSize: '1.8rem',
@@ -30,10 +30,10 @@ const styles = (theme: any) => ({
 });
 
 interface IReviewProps {
-  submitAction: () => void;
   selectedCandidate: Candidate | null;
   isBlankVote: boolean;
   onGoBackToBallot: () => void;
+  onSubmitVote: () => void;
   classes: any;
 }
 
@@ -42,9 +42,16 @@ const MajorityVoteReview: React.SFC<IReviewProps> = props => {
     selectedCandidate,
     isBlankVote,
     onGoBackToBallot,
-    submitAction,
+    onSubmitVote,
     classes,
   } = props;
+
+  const blankBallot = (
+    <div className={classes.blankVoteTextContainer}>
+      <Trans>election.blankVote</Trans>
+    </div>
+  );
+
   const reviewButtons = (
     <ButtonContainer alignLeft>
       <Button
@@ -52,7 +59,7 @@ const MajorityVoteReview: React.SFC<IReviewProps> = props => {
         text={<Trans>general.back</Trans>}
         action={onGoBackToBallot}
       />
-      <Button text={<Trans>voter.submitVote</Trans>} action={submitAction} />
+      <Button text={<Trans>voter.submitVote</Trans>} action={onSubmitVote} />
     </ButtonContainer>
   );
   return (
@@ -62,9 +69,7 @@ const MajorityVoteReview: React.SFC<IReviewProps> = props => {
       </div>
       <PageSubSection header={<Trans>election.ballot</Trans>}>
         {isBlankVote ? (
-          <div className={classes.blanVoteTextContainer}>
-            <Trans>election.blankVote</Trans>
-          </div>
+          blankBallot
         ) : (
           <>
             <p className={classes.chosenCandidateText}>

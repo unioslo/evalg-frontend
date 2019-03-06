@@ -16,9 +16,9 @@ interface IProps extends TranslateHocProps {
 }
 
 interface IState {
-  selectedCandidate: Candidate | null;
-  selectedCandidateIndex: number;
   shuffledCandidates: Candidate[];
+  selectedCandidateIndex: number;
+  selectedCandidate: Candidate | null;
   isBlankVote: boolean;
   currentStep: VotingStep;
 }
@@ -27,9 +27,9 @@ class MajorityVote extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      selectedCandidate: null,
-      selectedCandidateIndex: -1,
       shuffledCandidates: shuffleArray(props.election.lists[0].candidates),
+      selectedCandidateIndex: -1,
+      selectedCandidate: null,
       isBlankVote: false,
       currentStep: VotingStep.Step1FillOutBallot,
     };
@@ -70,8 +70,8 @@ class MajorityVote extends React.Component<IProps, IState> {
             <MajorityVoteReview
               selectedCandidate={this.state.selectedCandidate}
               isBlankVote={this.state.isBlankVote}
-              submitAction={this.handleSubmitVote}
               onGoBackToBallot={this.handleGoBackToBallot}
+              onSubmitVote={this.handleSubmitVote}
             />
           )}
           {currentStep === VotingStep.Step3Receipt && <Receipt />}
