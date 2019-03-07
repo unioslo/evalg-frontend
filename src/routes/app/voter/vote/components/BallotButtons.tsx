@@ -3,23 +3,26 @@ import { Trans } from 'react-i18next';
 
 import { ScreenSizeConsumer } from '../../../../../providers/ScreenSize';
 import Button, { ButtonContainer } from '../../../../../components/button';
-import Link from '../../../../../components/link';
 
 interface IProps {
-  reviewBallotEnabled: boolean;
-  onReviewBallot: () => void;
+  onGoBackToSelectVoterGroup: () => void;
   onBlankVote: () => void;
+  onReviewBallot: () => void;
+  reviewBallotEnabled: boolean;
 }
 
 const BallotButtons: React.SFC<IProps> = ({
+  onGoBackToSelectVoterGroup,
+  onBlankVote,
   reviewBallotEnabled,
   onReviewBallot,
-  onBlankVote,
 }) => {
   const backButton = (
-    <Link to="/voter">
-      <Button text={<Trans>general.back</Trans>} secondary />
-    </Link>
+    <Button
+      text={<Trans>general.back</Trans>}
+      action={onGoBackToSelectVoterGroup}
+      secondary
+    />
   );
   const blankVoteButtonForScreenSize = (screenSize: string) => (
     <Button

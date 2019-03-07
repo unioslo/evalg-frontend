@@ -9,6 +9,7 @@ import PrefElecReview from './components/PrefElecReview';
 import { Election, Candidate, NameFields } from '../../../../interfaces';
 import VotingStepper, { VotingStep } from './components/VotingStepper';
 import Receipt from './components/Receipt';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 function moveArrayItem(arr: any[], oldIndex: number, newIndex: number) {
   if (newIndex >= arr.length) {
@@ -33,16 +34,27 @@ interface IState {
   currentStep: VotingStep;
 }
 
-class PrefElecVote extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
+class PrefElecVote extends React.Component<
+  IProps & RouteComponentProps,
+  IState
+> {
+  scrollToDivRef: React.RefObject<HTMLDivElement>;
+
+  constructor(props: IProps & RouteComponentProps) {
     super(props);
     this.state = {
       shuffledCandidates: shuffleArray(props.election.lists[0].candidates),
       selectedCandidates: [],
       isBlankVote: false,
-      currentStep: VotingStep.Step1FillOutBallot,
+      currentStep: VotingStep.Step2FillBallot,
     };
+    this.scrollToDivRef = React.createRef();
   }
+
+  componentDidMount() {
+    this.scrollToTop();
+  }
+
   public render() {
     const unselectedCandidates = this.state.shuffledCandidates.filter(
       c => this.state.selectedCandidates.indexOf(c) === -1
@@ -54,19 +66,17 @@ class PrefElecVote extends React.Component<IProps, IState> {
     }
     const { currentStep } = this.state;
     const isCandidateSelected = this.state.selectedCandidates.length > 0;
-    const isStepperStep1Clickable =
-      this.state.currentStep === VotingStep.Step1FillOutBallot ||
-      this.state.currentStep === VotingStep.Step2ReviewBallot;
 
     return (
       <>
         <VotingStepper
           currentStep={currentStep}
-          isStep1Clickable={isStepperStep1Clickable}
-          onClickStep1={this.handleGoBackToBallot}
+          onClickStep1={this.handleGoBackToSelectVoterGroup}
+          onClickStep2={this.handleGoBackToBallot}
+          scrollToDivRef={this.scrollToDivRef}
         />
         <Page header={this.props.electionName[lang]}>
-          {currentStep === VotingStep.Step1FillOutBallot && (
+          {currentStep === VotingStep.Step2FillBallot && (
             <PrefElecBallot
               selectedCandidates={this.state.selectedCandidates}
               unselectedCandidates={unselectedCandidates}
@@ -77,10 +87,11 @@ class PrefElecVote extends React.Component<IProps, IState> {
               onResetBallot={this.handleResetBallot}
               onBlankVote={this.handleBlankVote}
               reviewBallotEnabled={isCandidateSelected}
+              onGoBackToSelectVoterGroup={this.handleGoBackToSelectVoterGroup}
               onReviewBallot={this.handleReviewBallot}
             />
           )}
-          {currentStep === VotingStep.Step2ReviewBallot && (
+          {currentStep === VotingStep.Step3ReviewBallot && (
             <PrefElecReview
               selectedCandidates={this.state.selectedCandidates}
               isBlankVote={this.state.isBlankVote}
@@ -88,11 +99,17 @@ class PrefElecVote extends React.Component<IProps, IState> {
               onSubmitVote={this.handleSubmitVote}
             />
           )}
-          {currentStep === VotingStep.Step3Receipt && <Receipt />}
+          {currentStep === VotingStep.Step4Receipt && <Receipt />}
         </Page>
       </>
     );
   }
+
+  scrollToTop = () => {
+    if (this.scrollToDivRef.current) {
+      this.scrollToDivRef.current.scrollIntoView();
+    }
+  };
 
   handleAddCandidate = (candidate: Candidate) => {
     this.setState(currState => ({
@@ -121,25 +138,42 @@ class PrefElecVote extends React.Component<IProps, IState> {
   };
 
   handleReviewBallot = () => {
-    this.setState({ currentStep: VotingStep.Step2ReviewBallot });
+    this.scrollToTop();
+    this.setState({ currentStep: VotingStep.Step3ReviewBallot });
   };
 
   handleGoBackToBallot = () => {
+    this.scrollToTop();
     this.setState({
-      currentStep: VotingStep.Step1FillOutBallot,
+      currentStep: VotingStep.Step2FillBallot,
       isBlankVote: false,
     });
   };
 
   handleBlankVote = () => {
-    this.setState({ isBlankVote: true }, this.handleReviewBallot);
+    this.setState(
+      { isBlankVote: true, selectedCandidates: [] },
+      this.handleReviewBallot
+    );
+  };
+
+  handleGoBackToSelectVoterGroup = () => {
+    if (this.props.election.electionGroup) {
+      this.props.history.push(
+        `/voter/election-groups/${
+          this.props.election.electionGroup.id
+        }/select-voting-group`
+      );
+    }
   };
 
   handleSubmitVote = () => {
+    this.scrollToTop();
     // TODO
     console.log('Submitting vote...');
-    this.setState({ currentStep: VotingStep.Step3Receipt });
+    this.setState({ currentStep: VotingStep.Step4Receipt });
   };
 }
 
-export default translate()(PrefElecVote);
+const hm = withRouter(PrefElecVote);
+export default translate()(hm);

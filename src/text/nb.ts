@@ -350,9 +350,10 @@ export default {
     reviewBallotMobile: 'Se stemmeseddel',
     reviewBallotIngressText:
       'Se over stemmeseddelen din nedenfor. Lever deretter stemmen, eller gå tilbake for å gjøre endringer.',
-    stepperStep1: 'Fyll ut stemmeseddel',
-    stepperStep2: 'Se over stemmeseddel',
-    stepperStep3: 'Kvittering',
+    stepperStep1: 'Stemmerett',
+    stepperStep2: 'Fyll ut stemmeseddel',
+    stepperStep3: 'Se over stemmeseddel',
+    stepperStep4: 'Kvittering',
     submitVote: 'Lever stemme',
   },
   voterGroupSelect: {

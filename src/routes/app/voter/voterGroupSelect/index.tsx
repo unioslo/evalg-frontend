@@ -16,7 +16,7 @@ import MandatePeriodText from '../vote/components/MandatePeriodText';
 import { orderMultipleElections } from '../../../../utils/processGraphQLData';
 import { Date, Time } from '../../../../components/i18n';
 import { Election, ElectionGroup, IPollBook } from '../../../../interfaces';
-
+import VotingStepper from '../vote/components/VotingStepper';
 
 const styles = (theme: any) => ({
   dropDownSelectionText: {
@@ -43,10 +43,14 @@ const styles = (theme: any) => ({
   electionGroupInfoSection: {
     marginBottom: '3rem',
     [theme.breakpoints.mdQuery]: {
-      marginBottom: '6rem',
+      marginBottom: '5rem',
     },
   },
-  votingRightsSection: {},
+  votingRightsSection: {
+    [theme.breakpoints.mdQuery]: {
+      marginBottom: '5rem',
+    },
+  },
   notInPollBookJustificationTextArea: {
     width: '100%',
     padding: 10,
@@ -129,6 +133,8 @@ interface IState {
 // In the first case, choosing a voter group is in effect choosing an election.
 
 class VoterGroupSelectPage extends React.Component<IProps, IState> {
+  scrollToDivRef: React.RefObject<HTMLDivElement>;
+
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -140,6 +146,13 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
       this
     );
     this.handleProceed = this.handleProceed.bind(this);
+    this.scrollToDivRef = React.createRef();
+  }
+
+  componentDidMount() {
+    if (this.scrollToDivRef.current) {
+      this.scrollToDivRef.current.scrollIntoView();
+    }
   }
 
   public hasRightToVote(selectedPollBookIndex: number): boolean {
@@ -180,7 +193,6 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
 
   public render() {
     const lang = this.props.i18n.language;
-    const history = this.props.history;
     const classes = this.props.classes;
     const t = this.props.t;
 
@@ -339,68 +351,77 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
           }
 
           return (
-            <Page header={electionGroupName}>
-              <PageSection noBorder={true}>
-                <div className={classes.electionGroupInfoSection}>
-                  <div className={classes.mandatePeriodTextDesktop}>
-                    <MandatePeriodText
-                      election={electionForSelectedPollbook}
-                      longDate
-                    />
+            <>
+              <VotingStepper
+                currentStep={1}
+                scrollToDivRef={this.scrollToDivRef}
+              />
+              <Page header={electionGroupName}>
+                <PageSection noBorder={true}>
+                  <div className={classes.electionGroupInfoSection}>
+                    <div className={classes.mandatePeriodTextDesktop}>
+                      <MandatePeriodText
+                        election={electionForSelectedPollbook}
+                        longDate
+                      />
+                    </div>
+
+                    <div className={classes.mandatePeriodTextMobile}>
+                      <MandatePeriodText
+                        election={electionForSelectedPollbook}
+                      />
+                    </div>
+
+                    {electionForSelectedPollbook.informationUrl && (
+                      <p>
+                        <Trans>voterGroupSelect.moreAboutTheElection</Trans>:{' '}
+                        <Link
+                          to={electionForSelectedPollbook.informationUrl}
+                          external
+                        >
+                          {electionForSelectedPollbook.informationUrl}
+                        </Link>
+                      </p>
+                    )}
                   </div>
 
-                  <div className={classes.mandatePeriodTextMobile}>
-                    <MandatePeriodText election={electionForSelectedPollbook} />
-                  </div>
-
-                  {electionForSelectedPollbook.informationUrl && (
-                    <p>
-                      <Trans>voterGroupSelect.moreAboutTheElection</Trans>:{' '}
-                      <Link
-                        to={electionForSelectedPollbook.informationUrl}
-                        external
-                      >
-                        {electionForSelectedPollbook.informationUrl}
-                      </Link>
+                  <div className={classes.votingRightsSection}>
+                    <p className={classes.subheading}>{subheading}</p>
+                    <div className={classes.dropDownSelectionText}>
+                      <span className="beforeDropdownText">
+                        {beforeDropDownText}
+                      </span>
+                      {dropdown} {afterDropDownText}
+                    </div>
+                    <p className={classes.additionalInformationParagraph}>
+                      {additionalInformation}
                     </p>
-                  )}
-                </div>
-
-                <div className="votingRightsSection">
-                  <p className={classes.subheading}>{subheading}</p>
-                  <div className={classes.dropDownSelectionText}>
-                    <span className="beforeDropdownText">
-                      {beforeDropDownText}
-                    </span>
-                    {dropdown} {afterDropDownText}
+                    {extraElements}
                   </div>
-                  <p className={classes.additionalInformationParagraph}>
-                    {additionalInformation}
-                  </p>
-                  {extraElements}
-                </div>
 
-                <ButtonContainer alignLeft={true}>
-                  <Button
-                    text={<Trans>general.back</Trans>}
-                    action={history.goBack}
-                    secondary={true}
-                  />
-                  <Button
-                    text={<Trans>general.proceed</Trans>}
-                    action={() =>
-                      this.handleProceed(
-                        proceedToLink,
-                        pollbooks[this.state.selectedPollBookIndex].id,
-                        this.state.notInPollBookJustification,
-                        client
-                      )
-                    }
-                    disabled={!electionForSelectedPollbookIsOngoing}
-                  />
-                </ButtonContainer>
-              </PageSection>
-            </Page>
+                  <ButtonContainer alignLeft={true}>
+                    <Link to="/voter">
+                      <Button
+                        text={<Trans>general.back</Trans>}
+                        secondary={true}
+                      />
+                    </Link>
+                    <Button
+                      text={<Trans>general.proceed</Trans>}
+                      action={() =>
+                        this.handleProceed(
+                          proceedToLink,
+                          pollbooks[this.state.selectedPollBookIndex].id,
+                          this.state.notInPollBookJustification,
+                          client
+                        )
+                      }
+                      disabled={!electionForSelectedPollbookIsOngoing}
+                    />
+                  </ButtonContainer>
+                </PageSection>
+              </Page>
+            </>
           );
         }}
       </Query>

@@ -1,73 +1,102 @@
 import React from 'react';
-import { Trans, translate, TranslationFunction } from 'react-i18next';
+import { translate, TranslationFunction } from 'react-i18next';
 
-import { Stepper, StepperSection } from '../../../../../components/stepper';
+import { Stepper, StepperItem } from '../../../../../components/stepper';
 import { ScreenSizeConsumer } from '../../../../../providers/ScreenSize';
 import MobileStepper from '../../../../../components/stepper/MobileStepper';
+import { i18n } from 'i18next';
 
 export enum VotingStep {
-  Step1FillOutBallot = 1,
-  Step2ReviewBallot,
-  Step3Receipt,
+  Step1SelectVoterGroup = 1,
+  Step2FillBallot,
+  Step3ReviewBallot,
+  Step4Receipt,
 }
 
 interface IProps {
   currentStep: VotingStep;
-  isStep1Clickable: boolean;
-  onClickStep1: () => void;
+  onClickStep1?: () => void;
+  onClickStep2?: () => void;
+  scrollToDivRef?: React.RefObject<HTMLDivElement>;
+  i18n: i18n;
   t: TranslationFunction;
 }
 
 const VotingStepper: React.SFC<IProps> = ({
   currentStep,
-  isStep1Clickable,
   onClickStep1,
+  onClickStep2,
+  scrollToDivRef,
+  i18n,
   t,
 }) => {
+  const lang = i18n.language || 'nb';
+
+  const isStepperStep1Clickable =
+    currentStep === VotingStep.Step2FillBallot ||
+    currentStep === VotingStep.Step3ReviewBallot;
+  const isStepperStep2Clickable = currentStep === VotingStep.Step3ReviewBallot;
+  const isSteps1To3Disabled = currentStep === VotingStep.Step4Receipt;
+
+  const stepperItemsProps = [
+    {
+      translateX: 4,
+      onClick: onClickStep1,
+      isClickable: isStepperStep1Clickable,
+      isDisabled: isSteps1To3Disabled,
+    },
+    {
+      translateX: lang === 'nb' ? 188 : 230,
+      onClick: onClickStep2,
+      isClickable: isStepperStep2Clickable,
+      isDisabled: isSteps1To3Disabled,
+    },
+    {
+      translateX: lang === 'nb' ? 444 : 464,
+      isDisabled: isSteps1To3Disabled,
+    },
+    {
+      translateX: lang === 'nb' ? 710 : 700,
+    },
+  ];
+
   const desktopVotingStepper = (
     <Stepper>
-      <StepperSection
-        translateX="4"
-        translateY="3"
-        number="1"
-        desc={<Trans>voter.stepperStep1</Trans>}
-        active={currentStep === VotingStep.Step1FillOutBallot}
-        clickable={isStep1Clickable}
-        onClick={onClickStep1}
-      />
-      <StepperSection
-        translateX="337"
-        translateY="3"
-        number="2"
-        desc={<Trans>voter.stepperStep2</Trans>}
-        active={currentStep === VotingStep.Step2ReviewBallot}
-      />
-      <StepperSection
-        translateX="670"
-        translateY="3"
-        number="3"
-        desc={<Trans>voter.stepperStep3</Trans>}
-        active={currentStep === VotingStep.Step3Receipt}
-      />
+      {stepperItemsProps.map((stepperItemProps, index) => (
+        <StepperItem
+          translateX={stepperItemProps.translateX}
+          translateY={3}
+          number={index + 1}
+          itemText={t(`voter.stepperStep${index + 1}`)}
+          itemTextLeftPadding={12}
+          active={currentStep === index + 1}
+          clickable={stepperItemProps.isClickable}
+          disabled={stepperItemProps.isDisabled}
+          onClick={stepperItemProps.onClick}
+        />
+      ))}
     </Stepper>
   );
 
   let currentStepText;
   switch (currentStep) {
-    case VotingStep.Step1FillOutBallot:
+    case VotingStep.Step1SelectVoterGroup:
       currentStepText = t('voter.stepperStep1');
       break;
-    case VotingStep.Step2ReviewBallot:
+    case VotingStep.Step2FillBallot:
       currentStepText = t('voter.stepperStep2');
       break;
-    case VotingStep.Step3Receipt:
+    case VotingStep.Step3ReviewBallot:
       currentStepText = t('voter.stepperStep3');
+      break;
+    case VotingStep.Step4Receipt:
+      currentStepText = t('voter.stepperStep4');
       break;
   }
 
   const mobileVotingStepper = (
     <MobileStepper
-      numberOfSteps={3}
+      numberOfSteps={4}
       currentStepNumber={currentStep}
       stepText={currentStepText}
       // nextStepsToTheRight
@@ -75,13 +104,16 @@ const VotingStepper: React.SFC<IProps> = ({
   );
 
   return (
-    <ScreenSizeConsumer>
-      {({ screenSize }) =>
-        screenSize === 'md' || screenSize === 'lg'
-          ? desktopVotingStepper
-          : mobileVotingStepper
-      }
-    </ScreenSizeConsumer>
+    <>
+      <div ref={scrollToDivRef} style={{ height: '1rem' }} />
+      <ScreenSizeConsumer>
+        {({ screenSize }) =>
+          screenSize === 'md' || screenSize === 'lg'
+            ? desktopVotingStepper
+            : mobileVotingStepper
+        }
+      </ScreenSizeConsumer>
+    </>
   );
 };
 
