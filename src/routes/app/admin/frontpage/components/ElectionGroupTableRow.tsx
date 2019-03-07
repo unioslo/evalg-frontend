@@ -1,34 +1,33 @@
-/* @flow */
 import * as React from 'react';
 import { Trans, translate } from 'react-i18next';
+import { i18n } from 'i18next';
 
-import TableRow from 'components/table/TableRow';
-import TableCell from 'components/table/TableCell';
-import Text from 'components/text';
+import { TableRow, TableCell } from '../../../../../components/table';
+import Text from '../../../../../components/text';
 import VoteStatus from './VoteStatus';
-import ElectionStatus from 'components/electionStatus';
-import DropdownArrowIcon from 'components/icons/DropdownArrowIcon';
+import ElectionStatus from '../../../../../components/electionStatus';
+import DropdownArrowIcon from '../../../../../components/icons/DropdownArrowIcon';
+import { ElectionGroup } from '../../../../../interfaces';
 
-import { Date, Time } from 'components/i18n';
+import { Date, Time } from '../../../../../components/i18n';
+import { allEqual } from '../../../../../utils';
 
-import { allEqual } from 'utils';
+interface IProps {
+  elGrp: ElectionGroup;
+  selected?: boolean;
+  selectAction: Function;
+  i18n: i18n;
+}
 
-// type Props = {
-//   elGrp: ElectionGroup,
-//   selected?: boolean,
-//   selectAction: Function,
-//   i18n: Object,
-// };
-
-class ElGrpTableRow extends React.Component {
+class ElectionGroupTableRow extends React.Component<IProps> {
   render() {
     const lang = this.props.i18n.language;
     const { elGrp } = this.props;
     let totalVotes = 0;
     let totalVotesOutsideCensus = 0;
-    const startTimes = [];
-    const endTimes = [];
-    const statuses = [];
+    const startTimes: string[] = [];
+    const endTimes: string[] = [];
+    const statuses: string[] = [];
     const { elections } = elGrp;
     const activeElections = elections.filter(e => e.active);
     const hasActiveElections = activeElections.length > 0;
@@ -61,7 +60,7 @@ class ElGrpTableRow extends React.Component {
             {sharedStartTime ? (
               <TableCell>
                 <Text>
-                  <Date dateTime={activeElections[0].start} />
+                  <Date dateTime={activeElections[0].start} longDate />
                 </Text>
                 <Text size="small">
                   <Time dateTime={activeElections[0].start} />
@@ -77,7 +76,7 @@ class ElGrpTableRow extends React.Component {
             {sharedEndTime ? (
               <TableCell>
                 <Text>
-                  <Date dateTime={activeElections[0].end} />
+                  <Date dateTime={activeElections[0].end} longDate />
                 </Text>
                 <Text size="small">
                   <Time dateTime={activeElections[0].end} />
@@ -119,4 +118,4 @@ class ElGrpTableRow extends React.Component {
   }
 }
 
-export default translate()(ElGrpTableRow);
+export default translate()(ElectionGroupTableRow);

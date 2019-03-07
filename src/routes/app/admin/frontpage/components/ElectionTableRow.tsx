@@ -1,21 +1,22 @@
-/* @flow */
 import * as React from 'react';
 import { translate, Trans } from 'react-i18next';
+import { i18n } from 'i18next';
 
-import Text from 'components/text';
-import { TableRow, TableCell } from 'components/table';
+import Text from '../../../../../components/text';
+import { TableRow, TableCell } from '../../../../../components/table';
 
-import ElectionStatus from 'components/electionStatus';
+import { Election } from '../../../../../interfaces';
+import ElectionStatus from '../../../../../components/electionStatus';
 import VoteStatus from './VoteStatus';
 
-import { Date, Time } from 'components/i18n';
+import { Date, Time } from '../../../../../components/i18n';
 
-// type Props = {
-//   election: Election,
-//   i18n: Object
-// };
+interface IProps {
+  election: Election;
+  i18n: i18n;
+}
 
-class ElectionTableRow extends React.Component {
+class ElectionTableRow extends React.Component<IProps> {
   render() {
     const { election } = this.props;
     const lang = this.props.i18n.language;
@@ -26,13 +27,11 @@ class ElectionTableRow extends React.Component {
       <TableRow>
         <TableCell noBorder />
         <TableCell>
-          <Text>
-            {election.name[lang]}
-          </Text>
+          <Text>{election.name[lang]}</Text>
         </TableCell>
         <TableCell>
           <Text>
-            <Date dateTime={election.start} />
+            <Date dateTime={election.start} longDate />
           </Text>
           <Text size="small">
             <Time dateTime={election.start} />
@@ -40,7 +39,7 @@ class ElectionTableRow extends React.Component {
         </TableCell>
         <TableCell>
           <Text>
-            <Date dateTime={election.end} />
+            <Date dateTime={election.end} longDate />
           </Text>
           <Text size="small">
             <Time dateTime={election.end} />
@@ -57,7 +56,7 @@ class ElectionTableRow extends React.Component {
           <ElectionStatus status={election.status} />
         </TableCell>
       </TableRow>
-    )
+    );
   }
 }
 
