@@ -4,7 +4,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { translate } from 'react-i18next';
 
-import ElectionNavBar from './components/ElectionNavBar';
+import AdminStepper from './components/AdminStepper';
 import InfoPage from './info';
 import CandidatesPage from './candidates';
 import PollbooksPage from './pollbooks';
@@ -127,10 +127,9 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
       // const lang = props.i18n.language;
       return (
         <>
-          <ElectionNavBar
+          <AdminStepper
             path={props.location.pathname}
             groupId={props.match.params.groupId}
-            // lang={lang}
           />
           <Route
             exact={true}

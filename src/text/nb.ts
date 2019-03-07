@@ -126,7 +126,6 @@ export default {
     contactForElectorsPlaceholder: 'E-postadresse eller nettside',
     createNewElection: 'Opprett nytt valg',
     deleteCandidate: 'Slett kandidat',
-    deliverVote: 'Lever stemme',
     draft: 'Utkast',
     editBoardLeaderCandidate: 'Endre kandidat og medkandidater',
     editCandidate: 'Endre kandidat',
@@ -182,7 +181,6 @@ export default {
     selectParish: 'Valgkrets',
     selectType: 'Velg valgordning',
     settings: 'valginnstillinger',
-    showBallot: 'Vis stemmeseddel',
     singleVotingPeriod: 'Felles stemmeperiode for alle velgergrupper',
     status: 'Status',
     statusCanAnnounce:
@@ -338,9 +336,24 @@ export default {
       'Ranger kandidaten du foretrekker mest som nummer 1 (ditt førstevalg). Hvis denne kandidaten ikke får nok stemmer totalt sett, vil stemmen du ga vedkommende overføres til den du eventuelt har rangert som nummer 2, og så videre.',
     prefElecRankCandidatesShort:
       'Du rangerer kandidatene ved å trykke på dem i prioritert rekkefølge. Rekkefølgen kan gjøres om på underveis.',
+    receiptThankYou: 'Takk for din stemme.',
+    receiptVotingAgainInfo:
+      'Dersom du ønsker å endre stemmen din kan du gjøre dette fra forsiden så lenge valget pågår.',
+    receiptGoToFrontpage: 'Gå til forsiden',
+    receiptLogout: 'logg ut',
+    receiptOr: 'eller',
+    receiptErrorHeader: 'En feil har oppstått.',
+    receiptErrorBody:
+      'En feil inntraff ved levering av din stemme. Vennligst prøv igjen senere.',
     resetPrefElecBallot: 'Tilbakestill',
-    reviewBallot:
+    reviewBallot: 'Se over stemmeseddel',
+    reviewBallotMobile: 'Se stemmeseddel',
+    reviewBallotIngressText:
       'Se over stemmeseddelen din nedenfor. Lever deretter stemmen, eller gå tilbake for å gjøre endringer.',
+    stepperStep1: 'Fyll ut stemmeseddel',
+    stepperStep2: 'Se over stemmeseddel',
+    stepperStep3: 'Kvittering',
+    submitVote: 'Lever stemme',
   },
   voterGroupSelect: {
     andCloses: 'og stenger',

@@ -64,12 +64,12 @@ const colors = {
 
 const theme = {
   actionTextColor: blueish,
-  adminNavBarColor: lightTurquoise,
-  adminNavBarSectionCircleColorActive: darkTurquoise,
-  adminNavBarSectionCircleColorInactive: white,
-  adminNavBarSectionDescTextColor: lightBlack,
-  adminNavBarSectionTextColorActive: white,
-  adminNavBarSectionTextColorInactive: lightGray,
+  stepperColor: lightTurquoise,
+  stepperSectionCircleColorActive: darkTurquoise,
+  stepperSectionCircleColorInactive: white,
+  stepperSectionDescTextColor: lightBlack,
+  stepperSectionTextColorActive: white,
+  stepperSectionTextColorInactive: lightGray,
   appMaxWidth: '110rem',
   backArrowColor: darkTurquoise,
   borderColor: lighterGray,

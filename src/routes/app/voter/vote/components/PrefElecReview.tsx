@@ -5,7 +5,11 @@ import { TranslateHocProps } from 'react-i18next/src/translate';
 import injectSheet from 'react-jss';
 
 import { Button, ButtonContainer } from '../../../../../components/button';
-import { PageSection, PageSubSection, PageParagraph } from '../../../../../components/page';
+import {
+  PageSection,
+  PageSubSection,
+  PageParagraph,
+} from '../../../../../components/page';
 import {
   CandidateList,
   CandidateListItem,
@@ -17,12 +21,13 @@ import { Candidate } from '../../../../../interfaces';
 const styles = (theme: any) => ({
   ingress: {
     ...theme.ingress,
+    maxWidth: '63rem',
   },
   rank: {
     fontSize: '2.4rem',
     paddingRight: '1rem',
   },
-  blanVoteTextContainer: {
+  blankVoteTextContainer: {
     marginTop: '2rem',
     marginBottom: '3rem',
     fontSize: '1.8rem',
@@ -33,7 +38,7 @@ interface IReviewProps extends TranslateHocProps {
   selectedCandidates: Candidate[];
   isBlankVote: boolean;
   onGoBackToBallot: () => void;
-  onSubmitBallot: () => void;
+  onSubmitVote: () => void;
   classes: any;
 }
 
@@ -41,7 +46,7 @@ const PrefElecReview: React.SFC<IReviewProps> = ({
   selectedCandidates,
   isBlankVote,
   onGoBackToBallot,
-  onSubmitBallot,
+  onSubmitVote,
   classes,
 }) => {
   const ballot = (
@@ -59,7 +64,7 @@ const PrefElecReview: React.SFC<IReviewProps> = ({
   );
 
   const blankBallot = (
-    <div className={classes.blanVoteTextContainer}>
+    <div className={classes.blankVoteTextContainer}>
       <Trans>election.blankVote</Trans>
     </div>
   );
@@ -72,16 +77,16 @@ const PrefElecReview: React.SFC<IReviewProps> = ({
         action={onGoBackToBallot}
       />
       <Button
-        text={<Trans>election.deliverVote</Trans>}
-        action={onSubmitBallot}
+        text={<Trans>voter.submitVote</Trans>}
+        action={onSubmitVote}
       />
     </ButtonContainer>
   );
 
   return (
-    <PageSection>
+    <PageSection noBorder>
       <div className={classes.ingress}>
-        <Trans>voter.reviewBallot</Trans>
+        <Trans>voter.reviewBallotIngressText</Trans>
       </div>
       <PageSubSection header={<Trans>election.ballot</Trans>}>
         {isBlankVote ? blankBallot : <PageParagraph>{ballot}</PageParagraph>}

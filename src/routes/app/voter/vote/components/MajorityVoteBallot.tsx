@@ -26,6 +26,7 @@ interface IProps {
   onSelectCandidate: (selectedCandidateIndex: number) => void;
   onDeselectCandidate: () => void;
   election: Election;
+  reviewBallotEnabled: boolean;
   onReviewBallot: () => void;
   onBlankVote: () => void;
   classes: any;
@@ -37,17 +38,17 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
     selectedCandidateIndex,
     onSelectCandidate,
     onDeselectCandidate,
+    reviewBallotEnabled,
     onReviewBallot,
     onBlankVote,
     election,
     classes,
   } = props;
-  const canSubmit = selectedCandidateIndex !== -1;
 
   return (
     <ScreenSizeConsumer>
       {({ screenSize }) => (
-        <PageSection>
+        <PageSection noBorder>
           <div className={classes.mandatePeriodTextDesktop}>
             <MandatePeriodText election={election} longDate />
           </div>
@@ -95,7 +96,7 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
               })}
             </CandidateList>
             <BallotButtons
-              canSubmit={canSubmit}
+              reviewBallotEnabled={reviewBallotEnabled}
               onReviewBallot={onReviewBallot}
               onBlankVote={onBlankVote}
             />
