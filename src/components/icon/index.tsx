@@ -378,7 +378,8 @@ const styles = (theme: any) => ({
     '&:hover': {
       cursor: 'pointer',
     },
-    '@media (hover: hover)': {  // to avoid "sticky" hover effects on mobile
+    [`@media (hover: hover) and ${theme.breakpoints.mdQuery}`]: {
+      // to avoid "sticky" hover effects on mobile
       '&:hover': {
         '& circle': {
           strokeWidth: '3px',
@@ -463,7 +464,8 @@ const styles = (theme: any) => ({
     '&:hover': {
       cursor: 'pointer',
     },
-    '@media (hover: hover)': {  // to avoid "sticky" hover effects on mobile
+    [`@media (hover: hover) and ${theme.breakpoints.mdQuery}`]: {
+      // to avoid "sticky" hover effects on mobile
       '&:hover': {
         '& circle': {
           strokeWidth: '5px',
