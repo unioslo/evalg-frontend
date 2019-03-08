@@ -58,6 +58,8 @@ const constructApolloClient = () => {
 
   const cache = new InMemoryCache();
 
+  // TODO: remove the "as type" when it's been fixed upstream
+  // https://github.com/apollographql/apollo-cache-persist/pull/58
   persistCache({
     cache: cache,
     storage: window.localStorage as PersistentStorage<
