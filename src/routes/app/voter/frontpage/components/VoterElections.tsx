@@ -10,11 +10,11 @@ import {
 } from '../../../../../components/dropdownMenu';
 import { TabSelector, Tab } from './TabSelector';
 import { ScreenSizeConsumer } from '../../../../../providers/ScreenSize';
-import { ElectionGroup, IPollBook } from '../../../../../interfaces';
+import { ElectionGroup } from '../../../../../interfaces';
 
 interface IProps {
   electionGroups: ElectionGroup[];
-  votersForPerson: IPollBook[];
+  canVoteElectionGroups: string[];
 }
 
 interface IState {
@@ -63,10 +63,6 @@ class VoterElections extends React.Component<IProps, IState> {
             this.state.electionStatusFilter
           );
 
-          const canVoteGroups = this.props.votersForPerson.map(
-            a => a.election.electionGroup.id
-          );
-
           let noElectionsText: React.ReactElement;
           switch (this.state.electionStatusFilter) {
             case 'ongoing':
@@ -105,7 +101,7 @@ class VoterElections extends React.Component<IProps, IState> {
                 </TabSelector>
                 <VoterElectionsTable
                   electionGroups={groups}
-                  canVoteElectionGroups={canVoteGroups}
+                  canVoteElectionGroups={this.props.canVoteElectionGroups}
                   noElectionsText={noElectionsText}
                 />
               </div>
@@ -159,7 +155,7 @@ class VoterElections extends React.Component<IProps, IState> {
               </MobileDropDown>
               <VoterElectionsList
                 electionGroups={groups}
-                canVoteElectionGroups={canVoteGroups}
+                canVoteElectionGroups={this.props.canVoteElectionGroups}
                 noElectionsText={noElectionsText}
               />
             </div>

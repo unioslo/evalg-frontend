@@ -9,7 +9,6 @@ import { electionGroupWithOrderedElections } from '../../../../utils/processGrap
 import {
   ElectionGroup,
   VotersForPerson,
-  IPollBook,
   SignedInPerson,
 } from '../../../../interfaces';
 
@@ -94,7 +93,7 @@ type PropsInternal = WithApolloClient<IProps>;
 
 interface IState {
   personId: string;
-  personElections: IPollBook[] | null;
+  canVoteElectionGroups: string[] | null;
 }
 
 interface IViwerReturn {
@@ -111,7 +110,7 @@ class VoterFrontPage extends React.Component<PropsInternal, IState> {
 
     this.state = {
       personId: '',
-      personElections: null,
+      canVoteElectionGroups: null,
     };
   }
 
@@ -125,9 +124,8 @@ class VoterFrontPage extends React.Component<PropsInternal, IState> {
         query: getSignedInPersonId,
       });
       this.setState({ personId: person.data.signedInPerson.personId });
-      console.error(person);
     } catch (err) {
-      this.setState({ personElections: [] });
+      this.setState({ canVoteElectionGroups: [] });
       return;
     }
 
@@ -137,14 +135,16 @@ class VoterFrontPage extends React.Component<PropsInternal, IState> {
         variables: { id: this.state.personId },
       });
       if (elections.data.votersForPerson === null) {
-        this.setState({ personElections: [] });
+        this.setState({ canVoteElectionGroups: [] });
       } else {
         this.setState({
-          personElections: elections.data.votersForPerson.map(a => a.pollbook),
+          canVoteElectionGroups: elections.data.votersForPerson.map(
+            voter => voter.pollbook.election.electionGroup.id
+          ),
         });
       }
     } catch (err) {
-      this.setState({ personElections: [] });
+      this.setState({ canVoteElectionGroups: [] });
     }
   }
 
@@ -152,14 +152,14 @@ class VoterFrontPage extends React.Component<PropsInternal, IState> {
     return (
       <Query query={electionGroupsQuery}>
         {({ data, loading, error }) => {
-          if (loading || error || this.state.personElections === null) {
+          if (loading || error || this.state.canVoteElectionGroups === null) {
             return null;
           }
           return (
             <Page header={<Trans>general.welcome</Trans>}>
               <PageSection desc={<Trans>general.frontPageDesc</Trans>} noBorder>
                 <VoterElections
-                  votersForPerson={this.state.personElections}
+                  canVoteElectionGroups={this.state.canVoteElectionGroups}
                   electionGroups={data.electionGroups
                     .map((eg: ElectionGroup) =>
                       electionGroupWithOrderedElections(eg, {
