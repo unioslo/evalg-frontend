@@ -10,7 +10,7 @@ import {
   ElectionGroup,
   VotersForPerson,
   IPollBook,
-  Viewer,
+  SignedInPerson,
 } from '../../../../interfaces';
 
 const electionGroupsQuery = gql`
@@ -67,7 +67,6 @@ const votersForPersonQuery = gql`
     votersForPerson(id: $id) {
       pollbook {
         id
-        name
         election {
           id
           name
@@ -83,10 +82,8 @@ const votersForPersonQuery = gql`
 // Get id of signed in person
 const getSignedInPersonId = gql`
   query {
-    viewer {
-      person {
-        id
-      }
+    signedInPerson @client {
+      personId
     }
   }
 `;
@@ -101,7 +98,7 @@ interface IState {
 }
 
 interface IViwerReturn {
-  viewer: Viewer;
+  signedInPerson: SignedInPerson;
 }
 
 interface IVotersForPersonReturn {
@@ -127,7 +124,8 @@ class VoterFrontPage extends React.Component<PropsInternal, IState> {
       const person = await this.props.client.query<IViwerReturn>({
         query: getSignedInPersonId,
       });
-      this.setState({ personId: person.data.viewer.person.id });
+      this.setState({ personId: person.data.signedInPerson.personId });
+      console.error(person);
     } catch (err) {
       this.setState({ personElections: [] });
       return;
