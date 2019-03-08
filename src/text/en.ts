@@ -351,7 +351,7 @@ export default {
     reviewBallotMobile: 'Review ballot',
     reviewBallotIngressText:
       'Review your ballot below, then submit your vote or go back to make changes.',
-    stepperStep1: 'Voting rights',
+    stepperStep1: 'Right to vote',
     stepperStep2: 'Fill out ballot',
     stepperStep3: 'Review ballot',
     stepperStep4: 'Receipt',
