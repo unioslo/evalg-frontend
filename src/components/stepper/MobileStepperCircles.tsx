@@ -4,7 +4,7 @@ import { Classes } from 'jss';
 import classNames from 'classnames';
 
 const styles = (theme: any) => ({
-  mobileStepper: {
+  mobileStepperCircles: {
     width: '100%',
     marginBottom: '2rem',
     marginLeft: 'auto',
@@ -12,9 +12,6 @@ const styles = (theme: any) => ({
     '& svg': {
       width: '100%',
       height: 56,
-      '& rect': {
-        width: '100%',
-      },
     },
   },
   rectangle: {
@@ -29,6 +26,12 @@ const styles = (theme: any) => ({
   },
   stepText: {
     fontSize: '1.8rem',
+    '@media (max-width:355px)': {
+      fontSize: '1.5rem',
+    },
+  },
+  stepTextSmall: {
+    fontSize: '1.5rem',
   },
   sectionNumberActive: {
     fill: theme.stepperSectionTextColorActive,
@@ -41,6 +44,9 @@ const styles = (theme: any) => ({
   },
   sectionCircleInactive: {
     fill: theme.stepperSectionCircleColorInactive,
+    stroke: theme.stepperSectionTextColorInactive,
+    strokeWidth: 1,
+    r: 24.5,
   },
 });
 
@@ -48,20 +54,12 @@ interface IProps {
   numberOfSteps: number;
   currentStepNumber: number;
   stepText: string;
-  nextStepsToTheRight?: boolean;
   title?: string;
   classes: Classes;
 }
 
-const MobileStepper: React.SFC<IProps> = props => {
-  const {
-    numberOfSteps,
-    currentStepNumber,
-    stepText,
-    nextStepsToTheRight,
-    title,
-    classes,
-  } = props;
+const MobileStepperCircles: React.SFC<IProps> = props => {
+  const { numberOfSteps, currentStepNumber, stepText, title, classes } = props;
 
   let stepNumbers = [];
   for (let i = 1; i <= numberOfSteps; i++) {
@@ -77,9 +75,9 @@ const MobileStepper: React.SFC<IProps> = props => {
   const firstCircleXOffset = 4;
   const circleRadius = 25;
   const circleDiameter = 50;
-  const nextCircleXOffset = 39;
+  const nextCircleXOffset = 15;
   const numberXPos = 18;
-  const stepTextLeftPad = 15;
+  const stepTextLeftPad = 12;
 
   const stepTextXOffset =
     firstCircleXOffset +
@@ -88,10 +86,17 @@ const MobileStepper: React.SFC<IProps> = props => {
     stepTextLeftPad;
 
   return (
-    <div className={classes.mobileStepper}>
+    <div className={classes.mobileStepperCircles}>
       <svg>
         {title && <title>{title}</title>}
-        <rect className={classes.rectangle} x="0" y="0" height="56" rx="28" />
+        <rect
+          className={classes.rectangle}
+          x="0"
+          y="0"
+          height="56"
+          width="100%"
+          rx="28"
+        />
         {leftStepNumbers.map((stepNumber, index) => {
           const circleXOffset =
             firstCircleXOffset + circleRadius + nextCircleXOffset * index;
@@ -125,42 +130,41 @@ const MobileStepper: React.SFC<IProps> = props => {
             </React.Fragment>
           );
         })}
-        {nextStepsToTheRight && (
-          <svg className={classes.rightCirclesSvg} x="100%" y={topPadding}>
-            {rightStepNumbers.map((stepNumber, index) => {
-              const circleXNegativeOffset =
-                firstCircleXOffset +
-                circleRadius +
-                nextCircleXOffset * (rightStepNumbers.length - 1 - index);
 
-              const numberXNegativeOffset =
-                firstCircleXOffset +
-                (circleDiameter - numberXPos) +
-                nextCircleXOffset * (rightStepNumbers.length - 1 - index);
+        <svg className={classes.rightCirclesSvg} x="100%" y={topPadding}>
+          {rightStepNumbers.map((stepNumber, index) => {
+            const circleXNegativeOffset =
+              firstCircleXOffset +
+              circleRadius +
+              nextCircleXOffset * (rightStepNumbers.length - 1 - index);
 
-              const numberClassNames = classNames({
-                [classes.sectionNumber]: true,
-                [classes.sectionNumberInactive]: true,
-              });
+            const numberXNegativeOffset =
+              firstCircleXOffset +
+              (circleDiameter - numberXPos) +
+              nextCircleXOffset * (rightStepNumbers.length - 1 - index);
 
-              return (
-                <React.Fragment key={index}>
-                  <circle
-                    className={classes.sectionCircleInactive}
-                    cx={-circleXNegativeOffset}
-                    cy={circleRadius}
-                    r={circleRadius}
-                  />
-                  <text className={numberClassNames}>
-                    <tspan x={-numberXNegativeOffset} y="34">
-                      {stepNumber}
-                    </tspan>
-                  </text>
-                </React.Fragment>
-              );
-            })}
-          </svg>
-        )}
+            const numberClassNames = classNames({
+              [classes.sectionNumber]: true,
+              [classes.sectionNumberInactive]: true,
+            });
+
+            return (
+              <React.Fragment key={index}>
+                <circle
+                  className={classes.sectionCircleInactive}
+                  cx={-circleXNegativeOffset}
+                  cy={circleRadius}
+                  r={circleRadius}
+                />
+                <text className={numberClassNames}>
+                  <tspan x={-numberXNegativeOffset} y="34">
+                    {stepNumber}
+                  </tspan>
+                </text>
+              </React.Fragment>
+            );
+          })}
+        </svg>
 
         <text className={classes.stepText}>
           <tspan x={stepTextXOffset} y="35">
@@ -172,4 +176,4 @@ const MobileStepper: React.SFC<IProps> = props => {
   );
 };
 
-export default injectSheet(styles)(MobileStepper);
+export default injectSheet(styles)(MobileStepperCircles);
