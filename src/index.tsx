@@ -4,7 +4,7 @@ import 'core-js';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
 import * as React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import * as ReactDOM from 'react-dom';
@@ -22,6 +22,8 @@ import theme from './theme';
 
 import { oidcConfig, graphqlBackend } from './appConfig';
 import { withClientState } from 'apollo-link-state';
+import { persistCache } from 'apollo-cache-persist';
+import { PersistentStorage, PersistedData } from 'apollo-cache-persist/types';
 
 const storeToken = (props: any) => (user: User) => {
   sessionStorage.setItem(
@@ -55,6 +57,13 @@ const constructApolloClient = () => {
   });
 
   const cache = new InMemoryCache();
+
+  persistCache({
+    cache: cache,
+    storage: window.localStorage as PersistentStorage<
+      PersistedData<NormalizedCacheObject>
+    >,
+  });
 
   const defaults = {
     voter: {
