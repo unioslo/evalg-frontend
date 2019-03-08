@@ -4,21 +4,24 @@ import { Trans } from 'react-i18next';
 import Text from '../../../../../components/text';
 import VoterElectionsList from './VoterElectionsList';
 import VoterElectionsTable from './VoterElectionsTable';
-import { MobileDropDown, MobileDropdownItem } from '../../../../../components/dropdownMenu';
+import {
+  MobileDropDown,
+  MobileDropdownItem,
+} from '../../../../../components/dropdownMenu';
 import { TabSelector, Tab } from './TabSelector';
 import { ScreenSizeConsumer } from '../../../../../providers/ScreenSize';
-import { ElectionGroup } from '../../../../../interfaces';
+import { ElectionGroup, IPollBook } from '../../../../../interfaces';
 
 interface IProps {
-  electionGroups: ElectionGroup[]
-};
+  electionGroups: ElectionGroup[];
+  votersForPerson: IPollBook[];
+}
 
 interface IState {
   electionStatusFilter: string;
-};
+}
 
 class VoterElections extends React.Component<IProps, IState> {
-
   constructor(props: IProps) {
     super(props);
     this.setElectionStatusFilter = this.setElectionStatusFilter.bind(this);
@@ -60,6 +63,10 @@ class VoterElections extends React.Component<IProps, IState> {
             this.state.electionStatusFilter
           );
 
+          const canVoteGroups = this.props.votersForPerson.map(
+            a => a.election.electionGroup.id
+          );
+
           let noElectionsText: React.ReactElement;
           switch (this.state.electionStatusFilter) {
             case 'ongoing':
@@ -72,7 +79,7 @@ class VoterElections extends React.Component<IProps, IState> {
               noElectionsText = <Trans>general.noClosedElections</Trans>;
               break;
             default:
-              noElectionsText = <React.Fragment></React.Fragment>
+              noElectionsText = <React.Fragment />;
               break;
           }
 
@@ -98,6 +105,7 @@ class VoterElections extends React.Component<IProps, IState> {
                 </TabSelector>
                 <VoterElectionsTable
                   electionGroups={groups}
+                  canVoteElectionGroups={canVoteGroups}
                   noElectionsText={noElectionsText}
                 />
               </div>
@@ -116,7 +124,7 @@ class VoterElections extends React.Component<IProps, IState> {
               dropdownText = <Trans>electionStatus.closedElections</Trans>;
               break;
             default:
-              dropdownText = <React.Fragment></React.Fragment>
+              dropdownText = <React.Fragment />;
               break;
           }
 
@@ -151,6 +159,7 @@ class VoterElections extends React.Component<IProps, IState> {
               </MobileDropDown>
               <VoterElectionsList
                 electionGroups={groups}
+                canVoteElectionGroups={canVoteGroups}
                 noElectionsText={noElectionsText}
               />
             </div>

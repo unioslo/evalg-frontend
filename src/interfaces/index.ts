@@ -3,7 +3,29 @@ export interface EvalgClientState {
     selectedPollBookID: string;
     notInPollBookJustification: string;
   };
+  signedInPerson: SignedInPerson;
   admin: { isCreatingNewElection: boolean };
+}
+
+export interface SignedInPerson {
+  __typename: 'signedInPerson';
+  displayName?: string;
+  personId: string;
+}
+
+export interface Viewer {
+  person: IPerson;
+}
+
+export interface VotersForPerson {
+  id: string;
+  tag: string;
+  idType: string;
+  idValue: string;
+  manual: boolean;
+  verified: boolean;
+  pollbookID: string;
+  pollbook: IPollBook;
 }
 
 export interface IMutationResponse {
@@ -51,6 +73,7 @@ export interface IPollBook {
   weight: number;
   priority: number;
   voters: IVoter[];
+  election: Election;
 }
 
 export interface Candidate {
@@ -88,7 +111,7 @@ export interface Election {
   status: ElectionStatusType;
   pollbooks: IPollBook[];
   meta: ElectionMetaData;
-  electionGroup?: ElectionGroup;
+  electionGroup: ElectionGroup;
   active: boolean;
   mandatePeriodStart: string;
   mandatePeriodEnd: string;

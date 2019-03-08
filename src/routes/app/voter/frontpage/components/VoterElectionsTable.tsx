@@ -21,11 +21,12 @@ import { ElectionGroup } from '../../../../../interfaces';
 
 interface IProps {
   electionGroups: Array<ElectionGroup>;
+  canVoteElectionGroups: string[];
   noElectionsText: React.ReactElement;
   i18n: i18n;
-};
+}
 
-const VoterElectionsTable: React.SFC<IProps> = (props) => {
+const VoterElectionsTable: React.SFC<IProps> = props => {
   const lang = props.i18n.language;
   const { electionGroups, noElectionsText } = props;
 
@@ -81,7 +82,11 @@ const VoterElectionsTable: React.SFC<IProps> = (props) => {
             endTime = moment.max(...group.elections.map(e => moment(e.end)));
           }
 
-          const canVote = true;
+          let canVote = false;
+          if (props.canVoteElectionGroups.includes(group.id)) {
+            canVote = true;
+          }
+
           const hasVoted = false;
           return (
             <TableRow key={index} tall>

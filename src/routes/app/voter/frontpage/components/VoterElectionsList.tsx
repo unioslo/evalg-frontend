@@ -28,13 +28,14 @@ const styles = (theme: any) => ({
 interface IListItemProps {
   electionGroup: ElectionGroup;
   lang: string;
+  canVote: boolean;
   classes: Classes;
 }
 
 const VoterElectionsListItem: React.SFC<IListItemProps> = (props) => {
-  const { electionGroup, lang } = props;
+  const { electionGroup, lang, canVote } = props;
   const election = electionGroup.elections[0];
-  const canVote = true;
+
   // We need data from the non-existing ballot-module to discern this
   // properly
   const hasVoted = false;
@@ -79,6 +80,8 @@ const VoterElectionsListItem: React.SFC<IListItemProps> = (props) => {
 
 interface IListProps {
   electionGroups: Array<ElectionGroup>;
+  canVoteElectionGroups: string[];
+
   noElectionsText: React.ReactElement;
   i18n: i18n
   classes: Classes;
@@ -95,9 +98,12 @@ const VoterElectionsList: React.SFC<IListProps> = (props) => {
   return (
     <ul className={classes.list}>
       {electionGroups.map((group, index) =>
+
+
         <VoterElectionsListItem
           classes={classes}
           electionGroup={group}
+          canVote={props.canVoteElectionGroups.includes(group.id)}
           lang={props.i18n.language}
           key={index}
         />
