@@ -1,10 +1,12 @@
 import React from 'react';
 import { translate, TranslationFunction } from 'react-i18next';
-
-import { Stepper, StepperItem } from '../../../../../components/stepper';
-import { ScreenSizeConsumer } from '../../../../../providers/ScreenSize';
-import MobileStepper from '../../../../../components/stepper/MobileStepper';
 import { i18n } from 'i18next';
+
+import { appMobileVotingStepperVariant } from './../../../../../appConfig';
+import { Stepper, StepperItem } from '../../../../../components/stepper';
+import MobileStepperCircles from '../../../../../components/stepper/MobileStepperCircles';
+import { ScreenSizeConsumer } from '../../../../../providers/ScreenSize';
+import MobileStepperSimple from '../../../../../components/stepper/MobileStepperSimple';
 
 export enum VotingStep {
   Step1SelectVoterGroup = 1,
@@ -94,14 +96,27 @@ const VotingStepper: React.SFC<IProps> = ({
       break;
   }
 
-  const mobileVotingStepper = (
-    <MobileStepper
-      numberOfSteps={4}
-      currentStepNumber={currentStep}
-      stepText={currentStepText}
-      // nextStepsToTheRight
-    />
-  );
+  let mobileVotingStepper: React.ReactNode;
+  switch (appMobileVotingStepperVariant) {
+    case 'circles':
+      mobileVotingStepper = (
+        <MobileStepperCircles
+          numberOfSteps={4}
+          currentStepNumber={currentStep}
+          stepText={currentStepText}
+        />
+      );
+      break;
+    case 'simple':
+      mobileVotingStepper = (
+        <MobileStepperSimple
+          numberOfSteps={4}
+          currentStepNumber={currentStep}
+          stepText={currentStepText}
+        />
+      );
+      break;
+  }
 
   return (
     <>
