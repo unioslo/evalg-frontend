@@ -1,5 +1,5 @@
-/* @flow */
 import * as React from 'react';
+import { Trans } from 'react-i18next';
 
 import {
   Table,
@@ -9,40 +9,40 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from 'components/table';
+} from '../../../../../components/table';
 
-import Icon from 'components/icon';
+import Icon from '../../../../../components/icon';
 import ElectionGroupTableRow from './ElectionGroupTableRow';
 import ElectionTableRow from './ElectionTableRow';
-import Link from 'components/link';
-import { Trans } from 'react-i18next';
+import Link from '../../../../../components/link';
+import { ElectionGroup } from '../../../../../interfaces';
 
-// import { objPropsToArray } from 'utils';
+import { Classes } from 'jss';
 import injectSheet from 'react-jss';
 
-const styles = theme => ({
+const styles = (theme: any) => ({
   votesOutsideCensusColumnHeader: {
     width: '8rem',
   },
 });
 
-// type Props = {
-//   electionGroups: Object,
-// };
+interface IProps {
+  electionGroups: ElectionGroup[];
+  classes: Classes;
+}
 
-// type State = {
-//   selectedElection: string,
-// };
+interface IState {
+  selectedElection: string;
+}
 
-class ManageElectionsTable extends React.Component {
-
-  constructor(props) {
+class ManageElectionsTable extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = { selectedElection: '' };
     this.setSelected = this.setSelected.bind(this);
   }
 
-  setSelected(electionId) {
+  setSelected(electionId: string) {
     if (electionId === this.state.selectedElection) {
       this.setState({ selectedElection: '' });
     } else {
@@ -53,14 +53,9 @@ class ManageElectionsTable extends React.Component {
     const { electionGroups, classes } = this.props;
     if (electionGroups.length === 0) {
       return (
-        <div>
-          <h2 className="content--header">
-            <Trans>election.manageableElections</Trans>
-          </h2>
-          <p>
-            <Trans>election.noManageableElections</Trans>
-          </p>
-        </div>
+        <p>
+          <Trans>election.noManageableElections</Trans>
+        </p>
       );
     }
     return (
@@ -110,7 +105,7 @@ class ManageElectionsTable extends React.Component {
               {selected && (
                 <TableRow thickBorder noHoverBg>
                   <TableCell />
-                  <TableCell colspan="5" greyBg alignRight>
+                  <TableCell colspan={5} greyBg alignRight>
                     <Link
                       to={`/admin/elections/${elGrp.id}/status`}
                       marginRight

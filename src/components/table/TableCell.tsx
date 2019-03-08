@@ -4,16 +4,16 @@ import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
 interface IProps {
-  children: any,
-  alignCenter?: boolean,
-  alignRight?: boolean,
-  noPadding?: boolean,
-  noBorder?: boolean,
-  greyBg?: boolean,
-  relative?: boolean,
-  colspan?: number,
-  topPadding?: boolean,
-  classes: Classes,
+  children?: any;
+  alignCenter?: boolean;
+  alignRight?: boolean;
+  noPadding?: boolean;
+  noBorder?: boolean;
+  greyBg?: boolean;
+  relative?: boolean;
+  colspan?: number;
+  topPadding?: boolean;
+  classes: Classes;
 }
 
 const styles = (theme: any) => ({
@@ -21,47 +21,47 @@ const styles = (theme: any) => ({
     borderBottom: `1px solid ${theme.tableCandidateBottomBorderColor}`,
     userSelect: 'none',
     '&:first-child': {
-      paddingLeft: theme.tableHorizontalPadding
+      paddingLeft: theme.tableHorizontalPadding,
     },
     '&:last-child': {
-      paddingRight: theme.tableHorizontalPadding
-    }
+      paddingRight: theme.tableHorizontalPadding,
+    },
   },
   noPadding: {
     paddingLeft: '0 !important',
-    paddingRight: '0 !important'
+    paddingRight: '0 !important',
   },
   alignCenter: {
-    textAlign: 'center'
+    textAlign: 'center',
   },
   alignRight: {
-    textAlign: 'right'
+    textAlign: 'right',
   },
   noborder: {
-    borderBottom: '0'
+    borderBottom: '0',
   },
   topPadding: {
-    paddingTop: '3rem'
+    paddingTop: '3rem',
   },
   greyBg: {
-    background: theme.tableCellGreyBgColor
+    background: theme.tableCellGreyBgColor,
   },
   relative: {
-    position: 'relative'
+    position: 'relative',
   },
   dropdownArrow: {
     display: 'inline-block',
     '&:hover': {
-      cursor: 'pointer'
-    }
+      cursor: 'pointer',
+    },
   },
   infoUrl: {
     display: 'block',
     color: theme.actionTextColor,
-    fontSize: '1.4rem'
+    fontSize: '1.4rem',
   },
   searchFilter: {
-    width: '22rem !important'
+    width: '22rem !important',
   },
   //nameInput: {
   //  height: '4.5rem',
@@ -105,7 +105,7 @@ export const TableCell = (props: IProps) => {
     [classes.noPadding]: props.noBorder,
     [classes.greyBg]: props.greyBg,
     [classes.relative]: props.relative,
-    [classes.topPadding]: props.topPadding
+    [classes.topPadding]: props.topPadding,
   });
   if (props.colspan) {
     return (
@@ -113,13 +113,8 @@ export const TableCell = (props: IProps) => {
         {props.children}
       </td>
     );
-  }
-  else {
-    return (
-      <td className={cls}>
-        {props.children}
-      </td>
-    )
+  } else {
+    return <td className={cls}>{props.children}</td>;
   }
 };
 
