@@ -66,6 +66,7 @@ const VotingStepper: React.SFC<IProps> = ({
     <Stepper>
       {stepperItemsProps.map((stepperItemProps, index) => (
         <StepperItem
+          key={index}
           translateX={stepperItemProps.translateX}
           translateY={3}
           number={index + 1}

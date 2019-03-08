@@ -1,22 +1,16 @@
 import React from 'react';
-import { ApolloClient } from 'apollo-client';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
-import { History } from 'history';
 import { i18n, TranslationFunction } from 'i18next';
 import { translate, Trans } from 'react-i18next';
 import injectSheet from 'react-jss';
 
-import Loading from '../../../../components/loading';
+import { Election, IPollBook } from '../../../../interfaces';
+
 import Link from '../../../../components/link';
-import { Page, PageSection } from '../../../../components/page';
+import { PageSection } from '../../../../components/page';
 import { DropDown } from '../../../../components/form';
 import Button, { ButtonContainer } from '../../../../components/button';
 import MandatePeriodText from '../vote/components/MandatePeriodText';
-import { orderMultipleElections } from '../../../../utils/processGraphQLData';
 import { Date, Time } from '../../../../components/i18n';
-import { Election, ElectionGroup, IPollBook } from '../../../../interfaces';
-import VotingStepper from '../vote/components/VotingStepper';
 
 const styles = (theme: any) => ({
   dropDownSelectionText: {
@@ -83,35 +77,14 @@ const styles = (theme: any) => ({
   },
 });
 
-const getElectionGroupData = gql`
-  query ElectionGroupData($id: UUID!) {
-    electionGroup(id: $id) {
-      id
-      name
-      description
-      type
-      elections {
-        id
-        name
-        active
-        status
-        start
-        end
-        mandatePeriodStart
-        mandatePeriodEnd
-        informationUrl
-        pollbooks {
-          id
-          name
-        }
-      }
-    }
-  }
-`;
-
 interface IProps {
-  electionGroupId: string;
-  history: History;
+  electionGroupType: string;
+  activeElections: Election[];
+  onProceed: (
+    selectedElectionIndex: number,
+    selectedPollBookId: string,
+    notInPollBookJustification: string
+  ) => void;
   i18n: i18n;
   t: TranslationFunction;
   classes: any;
@@ -133,298 +106,222 @@ interface IState {
 // In the first case, choosing a voter group is in effect choosing an election.
 
 class VoterGroupSelectPage extends React.Component<IProps, IState> {
-  scrollToDivRef: React.RefObject<HTMLDivElement>;
+  readonly state = {
+    selectedPollBookIndex: 0,
+    notInPollBookJustification: '',
+  };
 
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      selectedPollBookIndex: 0,
-      notInPollBookJustification: '',
-    };
-    this.handleSelectVoterGroup = this.handleSelectVoterGroup.bind(this);
-    this.handlenotInPollBookJustificationChange = this.handlenotInPollBookJustificationChange.bind(
-      this
-    );
-    this.handleProceed = this.handleProceed.bind(this);
-    this.scrollToDivRef = React.createRef();
-  }
-
-  componentDidMount() {
-    if (this.scrollToDivRef.current) {
-      this.scrollToDivRef.current.scrollIntoView();
-    }
-  }
-
-  public hasRightToVote(selectedPollBookIndex: number): boolean {
+  hasRightToVote = (pollBookIndex: number): boolean => {
     // Dummy implementation. TODO: Check for which voter group / poll book
     // an actual logged in user has right to vote.
-    return selectedPollBookIndex === 0;
-  }
+    return pollBookIndex === 0;
+  };
 
-  public handleSelectVoterGroup(selectedPollBookIndex: number) {
+  handleSelectVoterGroup = (selectedPollBookIndex: number) => {
     this.setState({ selectedPollBookIndex });
-  }
+  };
 
-  public handlenotInPollBookJustificationChange(
+  handlenotInPollBookJustificationChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
-  ) {
+  ) => {
     this.setState({ notInPollBookJustification: event.target.value });
-  }
+  };
 
-  public handleProceed(
-    proceedToLink: string,
-    selectedPollBookID: string,
-    notInPollBookJustification: string,
-    apolloClient: ApolloClient<any>
-  ) {
-    // Write "selectedPollBookID" and conditionally "notInPollBookJustification"
-    // to local cache, to send with vote later.
-    apolloClient.writeData({ data: { selectedPollBookID } });
-    if (
-      !this.hasRightToVote(this.state.selectedPollBookIndex) &&
-      notInPollBookJustification
-    ) {
-      apolloClient.writeData({ data: { notInPollBookJustification } });
-    } else if (this.hasRightToVote(this.state.selectedPollBookIndex)) {
-      apolloClient.writeData({ data: { notInPollBookJustification: '' } });
-    }
-    this.props.history.push(proceedToLink);
-  }
+  handleProceed = (
+    selectedElectionIndex: number,
+    selectedPollBookId: string,
+    notInPollBookJustification: string
+  ) => {
+    this.props.onProceed(
+      selectedElectionIndex,
+      selectedPollBookId,
+      this.hasRightToVote(this.state.selectedPollBookIndex)
+        ? ''
+        : notInPollBookJustification
+    );
+  };
 
   public render() {
     const lang = this.props.i18n.language;
     const classes = this.props.classes;
     const t = this.props.t;
 
+    const { electionGroupType, activeElections } = this.props;
+
+    let pollbooks: IPollBook[];
+    let electionForSelectedPollbook: Election;
+    let electionForSelectedPollbookIndex: number;
+    let electionForSelectedPollbookIsOngoing = true;
+
+    if (electionGroupType === 'multiple_elections') {
+      pollbooks = activeElections.map(election => election.pollbooks[0]);
+
+      electionForSelectedPollbookIndex = this.state.selectedPollBookIndex;
+      electionForSelectedPollbook =
+        activeElections[electionForSelectedPollbookIndex];
+
+      if (electionForSelectedPollbook.status !== 'ongoing') {
+        electionForSelectedPollbookIsOngoing = false;
+      }
+    } else {
+      pollbooks = activeElections[0].pollbooks;
+      electionForSelectedPollbook = activeElections[0];
+      electionForSelectedPollbookIndex = 0;
+    }
+
+    const dropdown = (
+      <DropDown
+        options={pollbooks.map((pollbook: any, index: any) => ({
+          value: index,
+          name: pollbook.name[lang],
+          secondaryLine: this.hasRightToVote(index)
+            ? t('voterGroupSelect.youAreOnTheElectoralRoll')
+            : null,
+        }))}
+        value={this.state.selectedPollBookIndex}
+        onChange={this.handleSelectVoterGroup}
+        inline
+        noRelativePositionOfListOnMobile
+      />
+    );
+
+    let subheading: React.ReactNode = null;
+    let beforeDropDownText: React.ReactNode = null;
+    let afterDropDownText: React.ReactNode = null;
+    let additionalInformation: React.ReactNode = null;
+    let extraElements: React.ReactNode = null;
+
+    if (electionForSelectedPollbookIsOngoing) {
+      if (this.hasRightToVote(this.state.selectedPollBookIndex)) {
+        subheading = (
+          <Trans>voterGroupSelect.registeredInSelectedGroupHeading</Trans>
+        );
+        beforeDropDownText = (
+          <Trans>
+            voterGroupSelect.registeredInSelectedGroupBeforeDropdownText
+          </Trans>
+        );
+      } else {
+        subheading = (
+          <Trans>voterGroupSelect.notRegisteredInSelectedGroupHeading</Trans>
+        );
+        beforeDropDownText = (
+          <Trans>
+            voterGroupSelect.notRegisteredInSelectedGroupBeforeDropdownText
+          </Trans>
+        );
+        additionalInformation = (
+          <Trans>voterGroupSelect.notRegisteredInSelectedGroupInfoText</Trans>
+        );
+        extraElements = (
+          <textarea
+            value={this.state.notInPollBookJustification}
+            onChange={this.handlenotInPollBookJustificationChange}
+            className={classes.notInPollBookJustificationTextArea}
+            placeholder={t('voterGroupSelect.writeJustification')}
+            rows={6}
+          />
+        );
+      }
+    } else {
+      if (electionForSelectedPollbook.status === 'published') {
+        subheading = <Trans>voterGroupSelect.electionNotYetOpen</Trans>;
+        beforeDropDownText = <Trans>voterGroupSelect.theElectionFor</Trans>;
+        afterDropDownText = (
+          <>
+            <Trans>voterGroupSelect.opens</Trans>{' '}
+            <Date dateTime={electionForSelectedPollbook.start} longDate />{' '}
+            <Time dateTime={electionForSelectedPollbook.start} />.
+          </>
+        );
+        additionalInformation = (
+          <>
+            <Trans>voterGroupSelect.theElectionFor</Trans>{' '}
+            {pollbooks[this.state.selectedPollBookIndex].name[
+              lang
+            ].toLowerCase()}{' '}
+            <Trans>voterGroupSelect.opens</Trans>{' '}
+            <Date dateTime={electionForSelectedPollbook.start} longDate />{' '}
+            <Time dateTime={electionForSelectedPollbook.start} />{' '}
+            <Trans>voterGroupSelect.andCloses</Trans>{' '}
+            <Date dateTime={electionForSelectedPollbook.end} longDate />{' '}
+            <Time dateTime={electionForSelectedPollbook.end} />.
+          </>
+        );
+      } else if (electionForSelectedPollbook.status === 'closed') {
+        subheading = <Trans>voterGroupSelect.electionClosed</Trans>;
+        beforeDropDownText = <Trans>voterGroupSelect.theElectionFor</Trans>;
+        afterDropDownText = (
+          <>
+            <Trans>voterGroupSelect.wasClosed</Trans>{' '}
+            <Date dateTime={electionForSelectedPollbook.end} longDate />{' '}
+            <Time dateTime={electionForSelectedPollbook.end} />.
+          </>
+        );
+      } else {
+        subheading = <Trans>voterGroupSelect.electionNotOpen</Trans>;
+        beforeDropDownText = <Trans>voterGroupSelect.theElectionFor</Trans>;
+        afterDropDownText = (
+          <>
+            <Trans>voterGroupSelect.isNotOpen</Trans> .
+          </>
+        );
+      }
+    }
+
     return (
-      <Query
-        query={getElectionGroupData}
-        variables={{ id: this.props.electionGroupId }}
-      >
-        {({ data, loading, error, client }) => {
-          if (loading) {
-            return <Loading />;
-          }
-          if (error) {
-            return 'Error';
-          }
-
-          const electionGroup: ElectionGroup = data.electionGroup;
-          const electionGroupName: string = electionGroup.name[lang];
-          const elections: Election[] = electionGroup.elections;
-
-          let pollbooks: IPollBook[];
-          let electionForSelectedPollbook: Election;
-          let electionForSelectedPollbookIsOngoing = true;
-
-          if (electionGroup.type === 'multiple_elections') {
-            const activeOrderedElections = orderMultipleElections(
-              elections
-            ).filter(e => e.active);
-
-            pollbooks = activeOrderedElections.map(
-              election => election.pollbooks[0]
-            );
-
-            electionForSelectedPollbook =
-              activeOrderedElections[this.state.selectedPollBookIndex];
-
-            if (electionForSelectedPollbook.status !== 'ongoing') {
-              electionForSelectedPollbookIsOngoing = false;
-            }
-          } else {
-            pollbooks = elections[0].pollbooks;
-            electionForSelectedPollbook = elections[0];
-          }
-          const proceedToLink = `/voter/elections/${
-            electionForSelectedPollbook.id
-          }/vote`;
-
-          const dropdown = (
-            <DropDown
-              options={pollbooks.map((pollbook: any, index: any) => ({
-                value: index,
-                name: pollbook.name[lang],
-                secondaryLine: this.hasRightToVote(index)
-                  ? t('voterGroupSelect.youAreOnTheElectoralRoll')
-                  : null,
-              }))}
-              value={this.state.selectedPollBookIndex}
-              onChange={this.handleSelectVoterGroup}
-              inline
-              noRelativePositionOfListOnMobile
+      <PageSection noBorder={true}>
+        <div className={classes.electionGroupInfoSection}>
+          <div className={classes.mandatePeriodTextDesktop}>
+            <MandatePeriodText
+              election={electionForSelectedPollbook}
+              longDate
             />
-          );
+          </div>
 
-          let subheading: React.ReactNode = null;
-          let beforeDropDownText: React.ReactNode = null;
-          let afterDropDownText: React.ReactNode = null;
-          let additionalInformation: React.ReactNode = null;
-          let extraElements: React.ReactNode = null;
+          <div className={classes.mandatePeriodTextMobile}>
+            <MandatePeriodText election={electionForSelectedPollbook} />
+          </div>
 
-          if (electionForSelectedPollbookIsOngoing) {
-            if (this.hasRightToVote(this.state.selectedPollBookIndex)) {
-              subheading = (
-                <Trans>voterGroupSelect.registeredInSelectedGroupHeading</Trans>
-              );
-              beforeDropDownText = (
-                <Trans>
-                  voterGroupSelect.registeredInSelectedGroupBeforeDropdownText
-                </Trans>
-              );
-            } else {
-              subheading = (
-                <Trans>
-                  voterGroupSelect.notRegisteredInSelectedGroupHeading
-                </Trans>
-              );
-              beforeDropDownText = (
-                <Trans>
-                  voterGroupSelect.notRegisteredInSelectedGroupBeforeDropdownText
-                </Trans>
-              );
-              additionalInformation = (
-                <Trans>
-                  voterGroupSelect.notRegisteredInSelectedGroupInfoText
-                </Trans>
-              );
-              extraElements = (
-                <textarea
-                  value={this.state.notInPollBookJustification}
-                  onChange={this.handlenotInPollBookJustificationChange}
-                  className={classes.notInPollBookJustificationTextArea}
-                  placeholder={t('voterGroupSelect.writeJustification')}
-                  rows={6}
-                />
-              );
+          {electionForSelectedPollbook.informationUrl && (
+            <p>
+              <Trans>voterGroupSelect.moreAboutTheElection</Trans>:{' '}
+              <Link to={electionForSelectedPollbook.informationUrl} external>
+                {electionForSelectedPollbook.informationUrl}
+              </Link>
+            </p>
+          )}
+        </div>
+
+        <div className={classes.votingRightsSection}>
+          <p className={classes.subheading}>{subheading}</p>
+          <div className={classes.dropDownSelectionText}>
+            <span className="beforeDropdownText">{beforeDropDownText}</span>
+            {dropdown} {afterDropDownText}
+          </div>
+          <p className={classes.additionalInformationParagraph}>
+            {additionalInformation}
+          </p>
+          {extraElements}
+        </div>
+
+        <ButtonContainer alignLeft={true}>
+          <Link to="/voter">
+            <Button text={<Trans>general.back</Trans>} secondary={true} />
+          </Link>
+          <Button
+            text={<Trans>general.proceed</Trans>}
+            action={() =>
+              this.handleProceed(
+                electionForSelectedPollbookIndex,
+                pollbooks[this.state.selectedPollBookIndex].id,
+                this.state.notInPollBookJustification
+              )
             }
-          } else {
-            if (electionForSelectedPollbook.status === 'published') {
-              subheading = <Trans>voterGroupSelect.electionNotYetOpen</Trans>;
-              beforeDropDownText = (
-                <Trans>voterGroupSelect.theElectionFor</Trans>
-              );
-              afterDropDownText = (
-                <>
-                  <Trans>voterGroupSelect.opens</Trans>{' '}
-                  <Date dateTime={electionForSelectedPollbook.start} longDate />{' '}
-                  <Time dateTime={electionForSelectedPollbook.start} />.
-                </>
-              );
-              additionalInformation = (
-                <>
-                  <Trans>voterGroupSelect.theElectionFor</Trans>{' '}
-                  {pollbooks[this.state.selectedPollBookIndex].name[
-                    lang
-                  ].toLowerCase()}{' '}
-                  <Trans>voterGroupSelect.opens</Trans>{' '}
-                  <Date dateTime={electionForSelectedPollbook.start} longDate />{' '}
-                  <Time dateTime={electionForSelectedPollbook.start} />{' '}
-                  <Trans>voterGroupSelect.andCloses</Trans>{' '}
-                  <Date dateTime={electionForSelectedPollbook.end} longDate />{' '}
-                  <Time dateTime={electionForSelectedPollbook.end} />.
-                </>
-              );
-            } else if (electionForSelectedPollbook.status === 'closed') {
-              subheading = <Trans>voterGroupSelect.electionClosed</Trans>;
-              beforeDropDownText = (
-                <Trans>voterGroupSelect.theElectionFor</Trans>
-              );
-              afterDropDownText = (
-                <>
-                  <Trans>voterGroupSelect.wasClosed</Trans>{' '}
-                  <Date dateTime={electionForSelectedPollbook.end} longDate />{' '}
-                  <Time dateTime={electionForSelectedPollbook.end} />.
-                </>
-              );
-            } else {
-              subheading = <Trans>voterGroupSelect.electionNotOpen</Trans>;
-              beforeDropDownText = (
-                <Trans>voterGroupSelect.theElectionFor</Trans>
-              );
-              afterDropDownText = (
-                <>
-                  <Trans>voterGroupSelect.isNotOpen</Trans> .
-                </>
-              );
-            }
-          }
-
-          return (
-            <>
-              <VotingStepper
-                currentStep={1}
-                scrollToDivRef={this.scrollToDivRef}
-              />
-              <Page header={electionGroupName}>
-                <PageSection noBorder={true}>
-                  <div className={classes.electionGroupInfoSection}>
-                    <div className={classes.mandatePeriodTextDesktop}>
-                      <MandatePeriodText
-                        election={electionForSelectedPollbook}
-                        longDate
-                      />
-                    </div>
-
-                    <div className={classes.mandatePeriodTextMobile}>
-                      <MandatePeriodText
-                        election={electionForSelectedPollbook}
-                      />
-                    </div>
-
-                    {electionForSelectedPollbook.informationUrl && (
-                      <p>
-                        <Trans>voterGroupSelect.moreAboutTheElection</Trans>:{' '}
-                        <Link
-                          to={electionForSelectedPollbook.informationUrl}
-                          external
-                        >
-                          {electionForSelectedPollbook.informationUrl}
-                        </Link>
-                      </p>
-                    )}
-                  </div>
-
-                  <div className={classes.votingRightsSection}>
-                    <p className={classes.subheading}>{subheading}</p>
-                    <div className={classes.dropDownSelectionText}>
-                      <span className="beforeDropdownText">
-                        {beforeDropDownText}
-                      </span>
-                      {dropdown} {afterDropDownText}
-                    </div>
-                    <p className={classes.additionalInformationParagraph}>
-                      {additionalInformation}
-                    </p>
-                    {extraElements}
-                  </div>
-
-                  <ButtonContainer alignLeft={true}>
-                    <Link to="/voter">
-                      <Button
-                        text={<Trans>general.back</Trans>}
-                        secondary={true}
-                      />
-                    </Link>
-                    <Button
-                      text={<Trans>general.proceed</Trans>}
-                      action={() =>
-                        this.handleProceed(
-                          proceedToLink,
-                          pollbooks[this.state.selectedPollBookIndex].id,
-                          this.state.notInPollBookJustification,
-                          client
-                        )
-                      }
-                      disabled={!electionForSelectedPollbookIsOngoing}
-                    />
-                  </ButtonContainer>
-                </PageSection>
-              </Page>
-            </>
-          );
-        }}
-      </Query>
+            disabled={!electionForSelectedPollbookIsOngoing}
+          />
+        </ButtonContainer>
+      </PageSection>
     );
   }
 }
