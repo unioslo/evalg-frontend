@@ -22,7 +22,7 @@ const styles = (theme: any) => ({
     borderBottom: `3px solid ${theme.colors.lightBlueGray}`,
     paddingTop: '1.5rem',
     paddingBottom: '3rem',
-  }
+  },
 });
 
 interface IListItemProps {
@@ -32,7 +32,7 @@ interface IListItemProps {
   classes: Classes;
 }
 
-const VoterElectionsListItem: React.SFC<IListItemProps> = (props) => {
+const VoterElectionsListItem: React.SFC<IListItemProps> = props => {
   const { electionGroup, lang, canVote } = props;
   const election = electionGroup.elections[0];
 
@@ -42,40 +42,43 @@ const VoterElectionsListItem: React.SFC<IListItemProps> = (props) => {
 
   return (
     <li className={props.classes.listItem}>
-      <h3><b>{electionGroup.name[lang]}</b></h3>
+      <h3>
+        <b>{electionGroup.name[lang]}</b>
+      </h3>
       <div>
         <div>
           <Trans>election.opens</Trans>:&nbsp;
-          <Date dateTime={election.start} longDate />&nbsp;
+          <Date dateTime={election.start} longDate />
+          &nbsp;
           <Time dateTime={election.start} />
         </div>
         <div>
           <Trans>election.closes</Trans>:&nbsp;
-          <Date dateTime={election.end} longDate />&nbsp;
+          <Date dateTime={election.end} longDate />
+          &nbsp;
           <Time dateTime={election.end} />
         </div>
         <div>
           <Trans>election.rightToVote</Trans>:&nbsp;
-          {canVote ? <Trans>general.yes</Trans> :
-            <Trans>general.no</Trans>
-          }
+          {canVote ? <Trans>general.yes</Trans> : <Trans>general.no</Trans>}
         </div>
       </div>
       <ButtonContainer alignLeft>
-        <Link to={`/voter/election-groups/${electionGroup.id}/select-voting-group`}>
-          {!hasVoted ?
-            <Button
-              text={<Trans>election.voteNow</Trans>}
-            /> :
+        <Link
+          to={`/voter/election-groups/${electionGroup.id}/select-voting-group`}
+        >
+          {!hasVoted ? (
+            <Button text={<Trans>election.voteNow</Trans>} />
+          ) : (
             <Button
               secondary={true}
               text={<Trans>election.changeVote</Trans>}
             />
-          }
+          )}
         </Link>
       </ButtonContainer>
     </li>
-  )
+  );
 };
 
 interface IListProps {
@@ -83,23 +86,19 @@ interface IListProps {
   canVoteElectionGroups: string[];
 
   noElectionsText: React.ReactElement;
-  i18n: i18n
+  i18n: i18n;
   classes: Classes;
 }
 
-const VoterElectionsList: React.SFC<IListProps> = (props) => {
+const VoterElectionsList: React.SFC<IListProps> = props => {
   const { electionGroups, noElectionsText, classes } = props;
   // const lang = props.i18n.language;
   if (electionGroups.length === 0) {
-    return (
-      <p>{noElectionsText}</p>
-    )
+    return <p>{noElectionsText}</p>;
   }
   return (
     <ul className={classes.list}>
-      {electionGroups.map((group, index) =>
-
-
+      {electionGroups.map((group, index) => (
         <VoterElectionsListItem
           classes={classes}
           electionGroup={group}
@@ -107,9 +106,9 @@ const VoterElectionsList: React.SFC<IListProps> = (props) => {
           lang={props.i18n.language}
           key={index}
         />
-      )}
+      ))}
     </ul>
-  )
+  );
 };
 
 export default injectSheet(styles)(translate()(VoterElectionsList));
