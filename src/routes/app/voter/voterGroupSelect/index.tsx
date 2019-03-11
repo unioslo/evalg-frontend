@@ -38,13 +38,13 @@ const getSignedInPersonId = gql`
   }
 `;
 
-interface IViwerReturn {
+type IViwerReturn = {
   signedInPerson: SignedInPerson;
-}
+};
 
-interface IVotersForPersonReturn {
+type IVotersForPersonReturn = {
   votersForPerson: VotersForPerson[];
-}
+};
 
 const styles = (theme: any) => ({
   dropDownSelectionText: {
@@ -111,7 +111,7 @@ const styles = (theme: any) => ({
   },
 });
 
-interface IProps {
+type IProps = {
   electionGroupType: string;
   activeElections: Election[];
   onProceed: (
@@ -122,16 +122,16 @@ interface IProps {
   i18n: i18n;
   t: TranslationFunction;
   classes: any;
-}
+};
 
 type PropsInternal = WithApolloClient<IProps>;
 
-interface IState {
+type IState = {
   selectedPollBookIndex: number;
   notInPollBookJustification: string;
   personId: string;
   voters: VotersForPerson[];
-}
+};
 
 // Page for selecting voter group / velgergruppe in between selecting an election on the voter
 // front page, and voting in a particular election.
