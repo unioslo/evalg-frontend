@@ -1,3 +1,5 @@
+// Local state stuff
+
 export interface EvalgClientState {
   voter: {
     selectedPollBookID: string;
@@ -13,11 +15,13 @@ export interface SignedInPerson {
   personId: string;
 }
 
-export interface Viewer {
-  person: IPerson;
-}
+// Graphql entity types
 
-export interface VotersForPerson {
+export type Viewer = {
+  person: IPerson;
+};
+
+export type VotersForPerson = {
   id: string;
   tag: string;
   idType: string;
@@ -26,7 +30,23 @@ export interface VotersForPerson {
   verified: boolean;
   pollbookID: string;
   pollbook: IPollBook;
-}
+};
+
+// Query responses
+
+export type ViewerResponse = {
+  signedInPerson: SignedInPerson;
+};
+
+export type VotersForPersonResponse = {
+  votersForPerson: VotersForPerson[];
+};
+
+export type QueryResponse<T> = {
+  data: T;
+};
+
+// Mutation response
 
 export interface IMutationResponse {
   success: boolean;

@@ -8,9 +8,11 @@ import VoterElections from './components/VoterElections';
 import { electionGroupWithOrderedElections } from '../../../../utils/processGraphQLData';
 import {
   ElectionGroup,
-  VotersForPerson,
-  SignedInPerson,
+  ViewerResponse,
+  VotersForPersonResponse,
+  QueryResponse,
 } from '../../../../interfaces';
+import { getSignedInPersonId } from '../../../../common-queries';
 
 const electionGroupsQuery = gql`
   query electionGroups {
@@ -78,34 +80,15 @@ const votersForPersonQuery = gql`
   }
 `;
 
-// Get id of signed in person
-const getSignedInPersonId = gql`
-  query {
-    signedInPerson @client {
-      personId
-    }
-  }
-`;
-
 interface IProps {}
-
-type PropsInternal = WithApolloClient<IProps>;
 
 interface IState {
   personId: string;
   canVoteElectionGroups: string[] | null;
 }
 
-interface IViwerReturn {
-  signedInPerson: SignedInPerson;
-}
-
-interface IVotersForPersonReturn {
-  votersForPerson: VotersForPerson[];
-}
-
-class VoterFrontPage extends React.Component<PropsInternal, IState> {
-  constructor(props: PropsInternal) {
+class VoterFrontPage extends React.Component<WithApolloClient<IProps>, IState> {
+  constructor(props: WithApolloClient<IProps>) {
     super(props);
 
     this.state = {
@@ -119,18 +102,17 @@ class VoterFrontPage extends React.Component<PropsInternal, IState> {
   }
 
   async getPersonElections() {
-    try {
-      const person = await this.props.client.query<IViwerReturn>({
-        query: getSignedInPersonId,
-      });
-      this.setState({ personId: person.data.signedInPerson.personId });
-    } catch (err) {
+    const handleSuccess = (p: QueryResponse<ViewerResponse>) => {
+      this.setState({ personId: p.data.signedInPerson.personId });
+    };
+    const handleFailure = (error: any) => {
       this.setState({ canVoteElectionGroups: [] });
       return;
-    }
+    };
+    await getSignedInPersonId(this.props.client, handleSuccess, handleFailure);
 
     try {
-      const elections = await this.props.client.query<IVotersForPersonReturn>({
+      const elections = await this.props.client.query<VotersForPersonResponse>({
         query: votersForPersonQuery,
         variables: { id: this.state.personId },
       });

@@ -9,8 +9,11 @@ import {
   Election,
   IPollBook,
   VotersForPerson,
-  SignedInPerson,
+  ViewerResponse,
+  VotersForPersonResponse,
+  QueryResponse,
 } from '../../../../interfaces';
+import { getSignedInPersonId } from '../../../../common-queries';
 
 import Link from '../../../../components/link';
 import { PageSection } from '../../../../components/page';
@@ -28,23 +31,6 @@ const votersForPersonQuery = gql`
     }
   }
 `;
-
-// Get id of signed in person
-const getSignedInPersonId = gql`
-  query {
-    signedInPerson @client {
-      personId
-    }
-  }
-`;
-
-type IViwerReturn = {
-  signedInPerson: SignedInPerson;
-};
-
-type IVotersForPersonReturn = {
-  votersForPerson: VotersForPerson[];
-};
 
 const styles = (theme: any) => ({
   dropDownSelectionText: {
@@ -124,8 +110,6 @@ type IProps = {
   classes: any;
 };
 
-type PropsInternal = WithApolloClient<IProps>;
-
 type IState = {
   selectedPollBookIndex: number;
   notInPollBookJustification: string;
@@ -143,7 +127,10 @@ type IState = {
 // and the relevant voter groups is given by the names of the pollbooks in the single election.
 // In the first case, choosing a voter group is in effect choosing an election.
 
-class VoterGroupSelectPage extends React.Component<PropsInternal, IState> {
+class VoterGroupSelectPage extends React.Component<
+  WithApolloClient<IProps>,
+  IState
+> {
   readonly state = {
     selectedPollBookIndex: 0,
     notInPollBookJustification: '',
@@ -156,17 +143,16 @@ class VoterGroupSelectPage extends React.Component<PropsInternal, IState> {
   }
 
   async getPersonId() {
-    try {
-      const person = await this.props.client.query<IViwerReturn>({
-        query: getSignedInPersonId,
-      });
-      this.setState({ personId: person.data.signedInPerson.personId });
-    } catch (error) {
+    const handleSuccess = (p: QueryResponse<ViewerResponse>) => {
+      this.setState({ personId: p.data.signedInPerson.personId });
+    };
+    const handleFailure = (error: any) => {
       // TODO: Render proper error
-    }
+    };
+    await getSignedInPersonId(this.props.client, handleSuccess, handleFailure);
 
     try {
-      const v = await this.props.client.query<IVotersForPersonReturn>({
+      const v = await this.props.client.query<VotersForPersonResponse>({
         query: votersForPersonQuery,
         variables: { id: this.state.personId },
       });
