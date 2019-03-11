@@ -65,17 +65,17 @@ class PrefElecVote extends React.Component<
             onRemoveCandidate={this.handleRemoveCandidate}
             onMoveCandidate={this.handleMoveCandidate}
             onResetBallot={this.handleResetBallot}
-            onBlankVote={this.handleBlankVote}
             reviewBallotEnabled={isCandidateSelected}
             onGoBackToSelectVoterGroup={this.props.onGoBackToSelectVoterGroup}
-            onReviewBallot={this.props.onProceedToReview}
+            onBlankVote={this.handleBlankVoteAndProceedToReview}
+            onReviewBallot={this.handleProceedToReview}
           />
         )}
         {ballotStep === BallotStep.ReviewBallot && (
           <PrefElecReview
             selectedCandidates={this.state.selectedCandidates}
             isBlankVote={this.state.isBlankVote}
-            onGoBackToBallot={this.handleGoBackToBallot}
+            onGoBackToBallot={this.props.onGoBackToBallot}
             onSubmitVote={this.handleSubmitVote}
           />
         )}
@@ -109,20 +109,15 @@ class PrefElecVote extends React.Component<
     this.setState({ selectedCandidates: [] });
   };
 
-  handleGoBackToBallot = () => {
-    this.setState(
-      {
-        isBlankVote: false,
-      },
-      this.props.onGoBackToBallot
-    );
-  };
-
-  handleBlankVote = () => {
+  handleBlankVoteAndProceedToReview = () => {
     this.setState(
       { isBlankVote: true, selectedCandidates: [] },
       this.props.onProceedToReview
     );
+  };
+
+  handleProceedToReview = () => {
+    this.setState({ isBlankVote: false }, this.props.onProceedToReview);
   };
 
   handleSubmitVote = () => {
