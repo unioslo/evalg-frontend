@@ -8,8 +8,8 @@ import VoterElections from './components/VoterElections';
 import { electionGroupWithOrderedElections } from '../../../../utils/processGraphQLData';
 import {
   ElectionGroup,
-  VotersForPerson,
-  SignedInPerson,
+  IViwerReturn,
+  IVotersForPersonReturn,
 } from '../../../../interfaces';
 import { getSignedInPersonId } from '../../../../gql';
 
@@ -81,23 +81,13 @@ const votersForPersonQuery = gql`
 
 interface IProps {}
 
-type PropsInternal = WithApolloClient<IProps>;
-
 interface IState {
   personId: string;
   canVoteElectionGroups: string[] | null;
 }
 
-interface IViwerReturn {
-  signedInPerson: SignedInPerson;
-}
-
-interface IVotersForPersonReturn {
-  votersForPerson: VotersForPerson[];
-}
-
-class VoterFrontPage extends React.Component<PropsInternal, IState> {
-  constructor(props: PropsInternal) {
+class VoterFrontPage extends React.Component<WithApolloClient<IProps>, IState> {
+  constructor(props: WithApolloClient<IProps>) {
     super(props);
 
     this.state = {

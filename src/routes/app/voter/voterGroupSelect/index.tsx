@@ -9,7 +9,8 @@ import {
   Election,
   IPollBook,
   VotersForPerson,
-  SignedInPerson,
+  IViwerReturn,
+  IVotersForPersonReturn,
 } from '../../../../interfaces';
 import { getSignedInPersonId } from '../../../../gql';
 
@@ -29,14 +30,6 @@ const votersForPersonQuery = gql`
     }
   }
 `;
-
-type IViwerReturn = {
-  signedInPerson: SignedInPerson;
-};
-
-type IVotersForPersonReturn = {
-  votersForPerson: VotersForPerson[];
-};
 
 const styles = (theme: any) => ({
   dropDownSelectionText: {
@@ -116,8 +109,6 @@ type IProps = {
   classes: any;
 };
 
-type PropsInternal = WithApolloClient<IProps>;
-
 type IState = {
   selectedPollBookIndex: number;
   notInPollBookJustification: string;
@@ -135,7 +126,10 @@ type IState = {
 // and the relevant voter groups is given by the names of the pollbooks in the single election.
 // In the first case, choosing a voter group is in effect choosing an election.
 
-class VoterGroupSelectPage extends React.Component<PropsInternal, IState> {
+class VoterGroupSelectPage extends React.Component<
+  WithApolloClient<IProps>,
+  IState
+> {
   readonly state = {
     selectedPollBookIndex: 0,
     notInPollBookJustification: '',
