@@ -71,7 +71,7 @@ interface IState {
   notInPollBookJustification: string;
 }
 
-class VotingProcessPage extends React.Component<IProps, IState> {
+class VotingPage extends React.Component<IProps, IState> {
   scrollToDivRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   readonly state: IState = {
@@ -249,4 +249,4 @@ class VotingProcessPage extends React.Component<IProps, IState> {
   }
 }
 
-export default translate()(VotingProcessPage);
+export default translate()(VotingPage);

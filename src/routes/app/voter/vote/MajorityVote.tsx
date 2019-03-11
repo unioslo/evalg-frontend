@@ -51,17 +51,17 @@ class MajorityVote extends React.Component<
             election={this.props.election}
             onSelectCandidate={this.handleSelectCandidate}
             onDeselectCandidate={this.handleDeselectCandidate}
-            onBlankVote={this.handleBlankVote}
             reviewBallotEnabled={isCandidateSelected}
             onGoBackToSelectVoterGroup={this.props.onGoBackToSelectVoterGroup}
-            onReviewBallot={this.props.onProceedToReview}
+            onBlankVote={this.handleBlankVoteAndProceedToReview}
+            onReviewBallot={this.handleProceedToReview}
           />
         )}
         {ballotStep === BallotStep.ReviewBallot && (
           <MajorityVoteReview
             selectedCandidate={this.state.selectedCandidate}
             isBlankVote={this.state.isBlankVote}
-            onGoBackToBallot={this.handleGoBackToBallot}
+            onGoBackToBallot={this.props.onGoBackToBallot}
             onSubmitVote={this.handleSubmitVote}
           />
         )}
@@ -80,11 +80,7 @@ class MajorityVote extends React.Component<
     this.setState({ selectedCandidateIndex: -1 });
   };
 
-  handleGoBackToBallot = () => {
-    this.setState({ isBlankVote: false }, this.props.onGoBackToBallot);
-  };
-
-  handleBlankVote = () => {
+  handleBlankVoteAndProceedToReview = () => {
     this.setState(
       {
         isBlankVote: true,
@@ -93,6 +89,10 @@ class MajorityVote extends React.Component<
       },
       this.props.onProceedToReview
     );
+  };
+
+  handleProceedToReview = () => {
+    this.setState({ isBlankVote: false }, this.props.onProceedToReview);
   };
 
   handleSubmitVote = () => {
