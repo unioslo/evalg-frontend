@@ -70,7 +70,7 @@ const styles = (theme: any) => ({
     fontSize: theme.navFontSize,
     [theme.breakpoints.mdQuery]: {
       display: 'none',
-    }
+    },
   },
 });
 
@@ -113,7 +113,7 @@ const Header = ({ classes }: IProps) => {
                 <Route
                   path="/"
                   render={() => (
-                    <Link to="/voter" inheritColor noUnderline>
+                    <Link to="/" inheritColor noUnderline>
                       <H1>eValg</H1>
                     </Link>
                   )}
@@ -126,13 +126,13 @@ const Header = ({ classes }: IProps) => {
                   <Route
                     path="/admin"
                     render={() => (
-                      <Link to="/voter" inheritColor>
+                      <Link to="/" inheritColor>
                         <Trans>general.frontPage</Trans>
                       </Link>
                     )}
                   />
                   <Route
-                    path="/voter"
+                    path="/"
                     render={() => (
                       <Link to="/admin" inheritColor>
                         <Trans>general.administerElections</Trans>
@@ -156,13 +156,13 @@ const Header = ({ classes }: IProps) => {
                   <Route
                     path="/admin"
                     render={() => (
-                      <Link to="/voter" inheritColor>
+                      <Link to="/" inheritColor>
                         <Trans>general.frontPage</Trans>
                       </Link>
                     )}
                   />
                   <Route
-                    path="/voter"
+                    path="/"
                     render={() => (
                       <Link to="/admin" inheritColor>
                         <Trans>general.administerElections</Trans>

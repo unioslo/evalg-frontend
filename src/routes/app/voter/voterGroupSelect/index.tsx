@@ -306,7 +306,7 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
         </div>
 
         <ButtonContainer alignLeft={true}>
-          <Link to="/voter">
+          <Link to="/">
             <Button text={<Trans>general.back</Trans>} secondary={true} />
           </Link>
           <Button

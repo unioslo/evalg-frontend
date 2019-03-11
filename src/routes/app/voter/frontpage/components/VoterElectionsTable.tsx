@@ -106,7 +106,7 @@ const VoterElectionsTable: React.SFC<IProps> = props => {
               </TableCell>
               <TableCell noPadding>
                 {!hasVoted ? (
-                  <Link to={`/voter/vote/${group.id}`}>
+                  <Link to={`/vote/${group.id}`}>
                     <Trans>election.voteNow</Trans>
                   </Link>
                 ) : (
