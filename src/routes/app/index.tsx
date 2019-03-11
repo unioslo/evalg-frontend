@@ -41,13 +41,13 @@ const styles = {
   },
 };
 
-interface IProps extends RouteComponentProps {
+interface IFrontPageProps extends RouteComponentProps {
   classes: Classes;
   authManager: any;
   i18n: i18n;
 }
 
-const FrontPage: React.FunctionComponent<IProps> = props => (
+const FrontPage: React.FunctionComponent<IFrontPageProps> = props => (
   <UserContext.Consumer>
     {context => {
       if (context.user) {
@@ -86,7 +86,13 @@ const logout: React.FunctionComponent<IStyleProp> = props => {
 };
 const styledLogout = injectSheet(styles)(logout);
 
-const App: React.FunctionComponent<IProps> = props => {
+interface IAppProps {
+  classes: Classes;
+  authManager: any;
+  i18n: i18n;
+}
+
+const App: React.FunctionComponent<IAppProps> = props => {
   const { authManager, classes } = props;
   const ProtectedAdmin = authEnabled ? authManager(<Admin />) : Admin;
   const ProtectedVoter = authEnabled ? authManager(<Voter />) : Voter;
@@ -107,5 +113,5 @@ const App: React.FunctionComponent<IProps> = props => {
   );
 };
 
-const styledApp = injectSheet(styles)(translate()(withRouter(App)));
+const styledApp = injectSheet(styles)(translate()(App));
 export default styledApp;
