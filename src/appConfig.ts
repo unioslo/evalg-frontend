@@ -38,3 +38,6 @@ export const appTechnicalSupportEmail: string = 'it-support@uio.no';
 export const appServiceOwnerLink: string = 'https://www.usit.uio.no/om/organisasjon/bnt/usitint/';
 export const appTermsAndPrivacylink: string = '#TODO';
 export const appCookiesInformationLink: string = '#TODO';
+
+/* Feature toggles */
+export const appMobileVotingStepperVariant: 'simple' | 'circles' = 'circles';

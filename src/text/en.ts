@@ -350,10 +350,11 @@ export default {
     reviewBallot: 'Review ballot',
     reviewBallotMobile: 'Review ballot',
     reviewBallotIngressText:
-      'Review your ballot below, then deliver your vote or go back to make changes.',
-    stepperStep1: 'Fill out ballot',
-    stepperStep2: 'Review ballot',
-    stepperStep3: 'Receipt',
+      'Review your ballot below, then submit your vote or go back to make changes.',
+    stepperStep1: 'Right to vote',
+    stepperStep2: 'Fill out ballot',
+    stepperStep3: 'Review ballot',
+    stepperStep4: 'Receipt',
     submitVote: 'Submit vote',
   },
   voterGroupSelect: {

@@ -35,31 +35,35 @@ const styles = (theme: any) => ({
   },
 });
 
-interface ISectionProps {
-  translateX: string;
-  translateY: string;
-  number: string;
-  desc: any;
+interface IStepperItemProps {
+  translateX: number;
+  translateY: number;
+  number: number;
+  itemText: string;
+  itemTextLeftPadding?: number;
   active: boolean;
   clickable?: boolean;
+  disabled?: boolean;
   onClick?: () => void;
   classes: Classes;
 }
 
-const StepperSection: React.SFC<ISectionProps> = props => {
+const StepperItem: React.SFC<IStepperItemProps> = props => {
   const {
     translateX,
     translateY,
     number,
-    desc,
+    itemText,
+    itemTextLeftPadding,
     active,
     clickable,
+    disabled,
     onClick,
     classes,
   } = props;
 
   const handleClick = () => {
-    if (clickable && onClick) {
+    if (clickable && !disabled && onClick) {
       onClick();
     }
   };
@@ -77,15 +81,19 @@ const StepperSection: React.SFC<ISectionProps> = props => {
     [classes.sectionCircleInactive]: !active,
   });
 
+  const circleRadius = 50;
+  const itemTextLeftPad = itemTextLeftPadding ? itemTextLeftPadding : 15;
+
   return (
     <g
       className={gClassNames}
       onClick={handleClick}
       transform={'translate(' + translateX + ', ' + translateY + ')'}
+      opacity={disabled ? 0.75 : 'inherit'}
     >
-      <text>
-        <tspan x="65" y="31">
-          {desc}
+      <text style={{ fontStyle: disabled ? 'italic' : 'inherit' }}>
+        <tspan x={circleRadius + itemTextLeftPad} y="31">
+          {itemText}
         </tspan>
       </text>
       <circle className={circleClassNames} cx="25" cy="25" r="25" />
@@ -123,7 +131,7 @@ const Stepper: React.SFC<IProps> = props => {
   );
 };
 
-const StyledStepperSection = injectSheet(styles)(StepperSection);
+const StyledStepperItem = injectSheet(styles)(StepperItem);
 const StyledStepper = injectSheet(styles)(Stepper);
 
-export { StyledStepperSection as StepperSection, StyledStepper as Stepper };
+export { StyledStepperItem as StepperItem, StyledStepper as Stepper };

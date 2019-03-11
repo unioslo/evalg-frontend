@@ -68,9 +68,8 @@ const MajorityVoteReview: React.SFC<IReviewProps> = props => {
         <Trans>voter.reviewBallotIngressText</Trans>
       </div>
       <PageSubSection header={<Trans>election.ballot</Trans>}>
-        {isBlankVote ? (
-          blankBallot
-        ) : (
+        {isBlankVote && blankBallot}
+        {!isBlankVote && selectedCandidate && (
           <>
             <p className={classes.chosenCandidateText}>
               <Trans>voter.chosenCandidate</Trans>:

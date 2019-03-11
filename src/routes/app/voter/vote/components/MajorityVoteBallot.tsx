@@ -27,6 +27,7 @@ interface IProps {
   onDeselectCandidate: () => void;
   election: Election;
   reviewBallotEnabled: boolean;
+  onGoBackToSelectVoterGroup: () => void;
   onReviewBallot: () => void;
   onBlankVote: () => void;
   classes: any;
@@ -39,6 +40,7 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
     onSelectCandidate,
     onDeselectCandidate,
     reviewBallotEnabled,
+    onGoBackToSelectVoterGroup,
     onReviewBallot,
     onBlankVote,
     election,
@@ -95,12 +97,13 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
                 );
               })}
             </CandidateList>
-            <BallotButtons
-              reviewBallotEnabled={reviewBallotEnabled}
-              onReviewBallot={onReviewBallot}
-              onBlankVote={onBlankVote}
-            />
           </HelpSubSection>
+          <BallotButtons
+            onGoBackToSelectVoterGroup={onGoBackToSelectVoterGroup}
+            onBlankVote={onBlankVote}
+            reviewBallotEnabled={reviewBallotEnabled}
+            onReviewBallot={onReviewBallot}
+          />
         </PageSection>
       )}
     </ScreenSizeConsumer>

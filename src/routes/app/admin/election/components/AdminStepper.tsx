@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { translate, TranslationFunction } from 'react-i18next';
 
-import { Stepper, StepperSection } from '../../../../../components/stepper';
+import { Stepper, StepperItem } from '../../../../../components/stepper';
 
 const calculatePath = (groupId: string | number) => (
   subRoute: string | number
@@ -21,38 +21,38 @@ const AdminStepper: React.SFC<IProps> = props => {
   return (
     <Stepper>
       <Link to={linkGenerator('info')}>
-        <StepperSection
-          translateX="4"
-          translateY="3"
-          number="1"
-          desc={t('election.electionInfo')}
+        <StepperItem
+          translateX={4}
+          translateY={3}
+          number={1}
+          itemText={t('election.electionInfo')}
           active={activeSection === 'info'}
         />
       </Link>
       <Link to={linkGenerator('candidates')}>
-        <StepperSection
-          translateX="234"
-          translateY="3"
-          number="2"
-          desc={t('election.candidates')}
+        <StepperItem
+          translateX={234}
+          translateY={3}
+          number={2}
+          itemText={t('election.candidates')}
           active={activeSection === 'candidates'}
         />
       </Link>
       <Link to={linkGenerator('pollbooks')}>
-        <StepperSection
-          translateX="464"
-          translateY="3"
-          number="3"
-          desc={t('election.censuses')}
+        <StepperItem
+          translateX={464}
+          translateY={3}
+          number={3}
+          itemText={t('election.censuses')}
           active={activeSection === 'pollbooks'}
         />
       </Link>
       <Link to={linkGenerator('status')}>
-        <StepperSection
-          translateX="694"
-          translateY="3"
-          number="4"
-          desc={t('election.electionStatus')}
+        <StepperItem
+          translateX={694}
+          translateY={3}
+          number={4}
+          itemText={t('election.electionStatus')}
           active={activeSection === 'status'}
         />
       </Link>
