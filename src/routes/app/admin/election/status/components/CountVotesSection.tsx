@@ -1,8 +1,7 @@
 import * as React from 'react';
 
-import Text from 'components/text';
-import { PageSection } from 'components/page';
-
+import Text from '../../../../../../components/text';
+import { PageSection } from '../../../../../../components/page';
 
 class CountVotesSection extends React.Component {
   render() {
@@ -10,7 +9,7 @@ class CountVotesSection extends React.Component {
       <PageSection header="Opptelling">
         <Text>Her telles det.</Text>
       </PageSection>
-    )
+    );
   }
 }
 

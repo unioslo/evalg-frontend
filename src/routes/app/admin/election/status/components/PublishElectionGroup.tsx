@@ -1,13 +1,12 @@
 import * as React from 'react';
-
-import Text from 'components/text';
 import { Trans } from 'react-i18next';
-import Button, { ButtonContainer } from 'components/button'
-// import { PageSubSection } from 'components/page';
-import Modal from 'components/modal';
-// import Icon from 'components/icon';
 
-const renderPublishButton = (action) => (
+import Text from '../../../../../../components/text';
+import Button, { ButtonContainer } from '../../../../../../components/button';
+import Modal from '../../../../../../components/modal';
+import { ElectionGroup } from '../../../../../../interfaces';
+
+const renderPublishButton = (action: any) => (
   <Button
     key="publish"
     text={<Trans>election.publish</Trans>}
@@ -15,7 +14,7 @@ const renderPublishButton = (action) => (
   />
 );
 
-const renderUnpublishButton = (action) => (
+const renderUnpublishButton = (action: any) => (
   <Button
     key="unpublish"
     text={<Trans>election.unpublishElection</Trans>}
@@ -23,7 +22,7 @@ const renderUnpublishButton = (action) => (
   />
 );
 
-const renderCancelButton = (action) => (
+const renderCancelButton = (action: any) => (
   <Button
     key="cancel"
     text={<Trans>general.cancel</Trans>}
@@ -32,30 +31,19 @@ const renderCancelButton = (action) => (
   />
 );
 
-// const renderCloseButton = (action: Function) => (
-//   <Button
-//     key="finished"
-//     text={ <Trans>general.close</Trans> }
-//     action={ action }
-//     secondary
-//   />
-// );
+interface IProps {
+  electionGroup: ElectionGroup;
+  publishAction: Function;
+  unpublishAction: Function;
+}
 
-// type Props = {
-//   electionGroup: ElectionGroup,
-//   publishAction: Function,
-//   unpublishAction: Function
-// }
+interface IState {
+  showPublishModal: boolean;
+  showUnpublishModal: boolean;
+}
 
-// type State = {
-//   showPublishModal: boolean,
-//   showUnpublishModal: boolean,
-// }
-
-
-class PublishElectionGroup extends React.Component {
-
-  constructor(props) {
+class PublishElectionGroup extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       showPublishModal: false,
@@ -64,7 +52,7 @@ class PublishElectionGroup extends React.Component {
   }
 
   showPublishModal() {
-    this.setState({ showPublishModal: true })
+    this.setState({ showPublishModal: true });
   }
 
   closePublishModal() {
@@ -80,27 +68,31 @@ class PublishElectionGroup extends React.Component {
     return (
       <div>
         <ButtonContainer alignLeft smlTopMargin>
-          <Button text={<Trans>election.publishElection</Trans>}
-            action={this.showPublishModal.bind(this)} />
+          <Button
+            text={<Trans>election.publishElection</Trans>}
+            action={this.showPublishModal.bind(this)}
+          />
         </ButtonContainer>
-        {this.state.showPublishModal &&
-          <Modal header={<Trans>election.publishElection</Trans>}
+        {this.state.showPublishModal && (
+          <Modal
+            header={<Trans>election.publishElection</Trans>}
             buttons={[
               renderCancelButton(this.closePublishModal.bind(this)),
-              renderPublishButton(this.handlePublish.bind(this))
+              renderPublishButton(this.handlePublish.bind(this)),
             ]}
-            closeAction={this.closePublishModal.bind(this)}>
+            closeAction={this.closePublishModal.bind(this)}
+          >
             <Text>
               <Trans>election.publishElectionModalInfo</Trans>
             </Text>
           </Modal>
-        }
+        )}
       </div>
-    )
+    );
   }
 
   showUnpublishModal() {
-    this.setState({ showUnpublishModal: true })
+    this.setState({ showUnpublishModal: true });
   }
 
   closeUnpublishModal() {
@@ -116,24 +108,28 @@ class PublishElectionGroup extends React.Component {
     return (
       <div>
         <ButtonContainer alignLeft smlTopMargin>
-          <Button text={<Trans>election.unpublishElection</Trans>}
+          <Button
+            text={<Trans>election.unpublishElection</Trans>}
             action={this.showUnpublishModal.bind(this)}
-            secondary />
+            secondary
+          />
         </ButtonContainer>
-        {this.state.showUnpublishModal &&
-          <Modal header={<Trans>election.unpublishElection</Trans>}
+        {this.state.showUnpublishModal && (
+          <Modal
+            header={<Trans>election.unpublishElection</Trans>}
             buttons={[
               renderCancelButton(this.closeUnpublishModal.bind(this)),
-              renderUnpublishButton(this.handleUnpublish.bind(this))
+              renderUnpublishButton(this.handleUnpublish.bind(this)),
             ]}
-            closeAction={this.closeUnpublishModal.bind(this)}>
+            closeAction={this.closeUnpublishModal.bind(this)}
+          >
             <Text>
               <Trans>election.unpublishElectionModalInfo</Trans>
             </Text>
           </Modal>
-        }
+        )}
       </div>
-    )
+    );
   }
   render() {
     const { electionGroup } = this.props;
@@ -145,6 +141,5 @@ class PublishElectionGroup extends React.Component {
     );
   }
 }
-
 
 export default PublishElectionGroup;

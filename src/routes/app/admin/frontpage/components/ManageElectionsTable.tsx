@@ -104,7 +104,7 @@ class ManageElectionsTable extends React.Component<IProps, IState> {
                 })}
               {selected && (
                 <TableRow thickBorder noHoverBg>
-                  <TableCell />
+                  <TableCell greyBg />
                   <TableCell colspan={5} greyBg alignRight>
                     <Link
                       to={`/admin/elections/${elGrp.id}/status`}
