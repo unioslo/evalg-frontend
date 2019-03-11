@@ -17,11 +17,11 @@ export interface SignedInPerson {
 
 // Graphql entity types
 
-export interface Viewer {
+export type Viewer = {
   person: IPerson;
-}
+};
 
-export interface VotersForPerson {
+export type VotersForPerson = {
   id: string;
   tag: string;
   idType: string;
@@ -30,19 +30,19 @@ export interface VotersForPerson {
   verified: boolean;
   pollbookID: string;
   pollbook: IPollBook;
-}
+};
 
 // Query responses
 
-export type IViwerReturn = {
+export type ViewerResponse = {
   signedInPerson: SignedInPerson;
 };
 
-export type IVotersForPersonReturn = {
+export type VotersForPersonResponse = {
   votersForPerson: VotersForPerson[];
 };
 
-export type IQueryResponse<T> = {
+export type QueryResponse<T> = {
   data: T;
 };
 

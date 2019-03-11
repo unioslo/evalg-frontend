@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { IViwerReturn, IQueryResponse } from '../interfaces';
+import { ViewerResponse, QueryResponse } from '../interfaces';
 import ApolloClient from 'apollo-client';
 
 const getSignedInPersonIdQuery = gql`
@@ -12,11 +12,11 @@ const getSignedInPersonIdQuery = gql`
 
 export async function getSignedInPersonId(
   client: ApolloClient<any>,
-  onSuccess: (data: IQueryResponse<IViwerReturn>) => void,
+  onSuccess: (data: QueryResponse<ViewerResponse>) => void,
   onFailure: (error: any) => void
 ) {
   try {
-    const person = await client.query<IViwerReturn>({
+    const person = await client.query<ViewerResponse>({
       query: getSignedInPersonIdQuery,
     });
     return onSuccess(person);

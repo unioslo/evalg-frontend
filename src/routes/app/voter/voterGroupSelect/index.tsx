@@ -9,9 +9,9 @@ import {
   Election,
   IPollBook,
   VotersForPerson,
-  IViwerReturn,
-  IVotersForPersonReturn,
-  IQueryResponse,
+  ViewerResponse,
+  VotersForPersonResponse,
+  QueryResponse,
 } from '../../../../interfaces';
 import { getSignedInPersonId } from '../../../../common-queries';
 
@@ -143,7 +143,7 @@ class VoterGroupSelectPage extends React.Component<
   }
 
   async getPersonId() {
-    const handleSuccess = (p: IQueryResponse<IViwerReturn>) => {
+    const handleSuccess = (p: QueryResponse<ViewerResponse>) => {
       this.setState({ personId: p.data.signedInPerson.personId });
     };
     const handleFailure = (error: any) => {
@@ -152,7 +152,7 @@ class VoterGroupSelectPage extends React.Component<
     await getSignedInPersonId(this.props.client, handleSuccess, handleFailure);
 
     try {
-      const v = await this.props.client.query<IVotersForPersonReturn>({
+      const v = await this.props.client.query<VotersForPersonResponse>({
         query: votersForPersonQuery,
         variables: { id: this.state.personId },
       });

@@ -8,9 +8,9 @@ import VoterElections from './components/VoterElections';
 import { electionGroupWithOrderedElections } from '../../../../utils/processGraphQLData';
 import {
   ElectionGroup,
-  IViwerReturn,
-  IVotersForPersonReturn,
-  IQueryResponse,
+  ViewerResponse,
+  VotersForPersonResponse,
+  QueryResponse,
 } from '../../../../interfaces';
 import { getSignedInPersonId } from '../../../../common-queries';
 
@@ -102,7 +102,7 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>, IState> {
   }
 
   async getPersonElections() {
-    const handleSuccess = (p: IQueryResponse<IViwerReturn>) => {
+    const handleSuccess = (p: QueryResponse<ViewerResponse>) => {
       this.setState({ personId: p.data.signedInPerson.personId });
     };
     const handleFailure = (error: any) => {
@@ -112,7 +112,7 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>, IState> {
     await getSignedInPersonId(this.props.client, handleSuccess, handleFailure);
 
     try {
-      const elections = await this.props.client.query<IVotersForPersonReturn>({
+      const elections = await this.props.client.query<VotersForPersonResponse>({
         query: votersForPersonQuery,
         variables: { id: this.state.personId },
       });
