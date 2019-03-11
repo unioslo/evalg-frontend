@@ -91,8 +91,6 @@ const App: React.FunctionComponent<IProps> = props => {
   const ProtectedAdmin = authEnabled ? authManager(<Admin />) : Admin;
   const ProtectedVoter = authEnabled ? authManager(<Voter />) : Voter;
 
-  console.error(props);
-
   return (
     <div className={classes.ie11ExtraFlexContainer}>
       <div className={classes.app}>
