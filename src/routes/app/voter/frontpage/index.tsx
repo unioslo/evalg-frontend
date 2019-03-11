@@ -11,6 +11,7 @@ import {
   VotersForPerson,
   SignedInPerson,
 } from '../../../../interfaces';
+import { getSignedInPersonId } from '../../../../gql';
 
 const electionGroupsQuery = gql`
   query electionGroups {
@@ -74,15 +75,6 @@ const votersForPersonQuery = gql`
           }
         }
       }
-    }
-  }
-`;
-
-// Get id of signed in person
-const getSignedInPersonId = gql`
-  query {
-    signedInPerson @client {
-      personId
     }
   }
 `;

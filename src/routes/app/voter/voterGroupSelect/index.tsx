@@ -11,6 +11,7 @@ import {
   VotersForPerson,
   SignedInPerson,
 } from '../../../../interfaces';
+import { getSignedInPersonId } from '../../../../gql';
 
 import Link from '../../../../components/link';
 import { PageSection } from '../../../../components/page';
@@ -25,15 +26,6 @@ const votersForPersonQuery = gql`
       pollbook {
         id
       }
-    }
-  }
-`;
-
-// Get id of signed in person
-const getSignedInPersonId = gql`
-  query {
-    signedInPerson @client {
-      personId
     }
   }
 `;
