@@ -280,6 +280,7 @@ export default {
     help: 'Hjelp',
     hide: 'Skjul',
     hideDetails: 'Skjul detaljer',
+    login: 'Logg inn',
     logout: 'Logg ut',
     logoutInProgress: 'Vi arbeider med å logge deg ut av systemet',
     male: 'Mann',
