@@ -64,7 +64,7 @@ const VoterElectionsListItem: React.SFC<IListItemProps> = props => {
         </div>
       </div>
       <ButtonContainer alignLeft>
-        <Link to={`/voter/vote/${electionGroup.id}`}>
+        <Link to={`/vote/${electionGroup.id}`}>
           {!hasVoted ? (
             <Button text={<Trans>election.voteNow</Trans>} />
           ) : (

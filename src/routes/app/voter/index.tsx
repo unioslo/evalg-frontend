@@ -14,8 +14,8 @@ const renderVotingPage = ({
 const VoterRoute: React.SFC = () => {
   return (
     <>
-      <Route exact={true} path="/voter" component={VoterFrontPage} />
-      <Route path="/voter/vote/:electionGroupId" render={renderVotingPage} />
+      <Route exact={true} path="/" component={VoterFrontPage} />
+      <Route path="/vote/:electionGroupId" render={renderVotingPage} />
     </>
   );
 };
