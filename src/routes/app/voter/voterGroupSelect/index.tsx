@@ -11,8 +11,9 @@ import {
   VotersForPerson,
   IViwerReturn,
   IVotersForPersonReturn,
+  IQueryResponse,
 } from '../../../../interfaces';
-import { getSignedInPersonId } from '../../../../gql';
+import { getSignedInPersonId } from '../../../../common-queries';
 
 import Link from '../../../../components/link';
 import { PageSection } from '../../../../components/page';
@@ -142,14 +143,13 @@ class VoterGroupSelectPage extends React.Component<
   }
 
   async getPersonId() {
-    try {
-      const person = await this.props.client.query<IViwerReturn>({
-        query: getSignedInPersonId,
-      });
-      this.setState({ personId: person.data.signedInPerson.personId });
-    } catch (error) {
+    const handleSuccess = (p: IQueryResponse<IViwerReturn>) => {
+      this.setState({ personId: p.data.signedInPerson.personId });
+    };
+    const handleFailure = (error: any) => {
       // TODO: Render proper error
-    }
+    };
+    await getSignedInPersonId(this.props.client, handleSuccess, handleFailure);
 
     try {
       const v = await this.props.client.query<IVotersForPersonReturn>({

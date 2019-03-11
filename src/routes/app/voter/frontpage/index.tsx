@@ -10,8 +10,9 @@ import {
   ElectionGroup,
   IViwerReturn,
   IVotersForPersonReturn,
+  IQueryResponse,
 } from '../../../../interfaces';
-import { getSignedInPersonId } from '../../../../gql';
+import { getSignedInPersonId } from '../../../../common-queries';
 
 const electionGroupsQuery = gql`
   query electionGroups {
@@ -101,15 +102,14 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>, IState> {
   }
 
   async getPersonElections() {
-    try {
-      const person = await this.props.client.query<IViwerReturn>({
-        query: getSignedInPersonId,
-      });
-      this.setState({ personId: person.data.signedInPerson.personId });
-    } catch (err) {
+    const handleSuccess = (p: IQueryResponse<IViwerReturn>) => {
+      this.setState({ personId: p.data.signedInPerson.personId });
+    };
+    const handleFailure = (error: any) => {
       this.setState({ canVoteElectionGroups: [] });
       return;
-    }
+    };
+    await getSignedInPersonId(this.props.client, handleSuccess, handleFailure);
 
     try {
       const elections = await this.props.client.query<IVotersForPersonReturn>({

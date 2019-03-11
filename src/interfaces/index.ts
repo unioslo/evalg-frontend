@@ -42,6 +42,10 @@ export type IVotersForPersonReturn = {
   votersForPerson: VotersForPerson[];
 };
 
+export type IQueryResponse<T> = {
+  data: T;
+};
+
 // Mutation response
 
 export interface IMutationResponse {
