@@ -2,13 +2,13 @@ import * as React from 'react';
 import { Route, RouteComponentProps } from 'react-router-dom';
 
 import VoterFrontPage from './frontpage';
-import VotingProcessPage from './vote';
+import VotingPage from './vote';
 
 const renderVotingPage = ({
   match,
 }: RouteComponentProps<{ electionGroupId: string }>) => {
   const { electionGroupId } = match.params;
-  return <VotingProcessPage electionGroupId={electionGroupId} />;
+  return <VotingPage electionGroupId={electionGroupId} />;
 };
 
 const VoterRoute: React.SFC = () => {
