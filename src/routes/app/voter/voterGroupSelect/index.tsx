@@ -1,9 +1,16 @@
+import gql from 'graphql-tag';
 import React from 'react';
 import { i18n, TranslationFunction } from 'i18next';
 import { translate, Trans } from 'react-i18next';
 import injectSheet from 'react-jss';
+import { WithApolloClient, withApollo } from 'react-apollo';
 
-import { Election, IPollBook } from '../../../../interfaces';
+import {
+  Election,
+  IPollBook,
+  VotersForPerson,
+  SignedInPerson,
+} from '../../../../interfaces';
 
 import Link from '../../../../components/link';
 import { PageSection } from '../../../../components/page';
@@ -11,6 +18,33 @@ import { DropDown } from '../../../../components/form';
 import Button, { ButtonContainer } from '../../../../components/button';
 import MandatePeriodText from '../vote/components/MandatePeriodText';
 import { Date, Time } from '../../../../components/i18n';
+
+const votersForPersonQuery = gql`
+  query votersForPerson($id: UUID!) {
+    votersForPerson(id: $id) {
+      pollbook {
+        id
+      }
+    }
+  }
+`;
+
+// Get id of signed in person
+const getSignedInPersonId = gql`
+  query {
+    signedInPerson @client {
+      personId
+    }
+  }
+`;
+
+interface IViwerReturn {
+  signedInPerson: SignedInPerson;
+}
+
+interface IVotersForPersonReturn {
+  votersForPerson: VotersForPerson[];
+}
 
 const styles = (theme: any) => ({
   dropDownSelectionText: {
@@ -90,9 +124,13 @@ interface IProps {
   classes: any;
 }
 
+type PropsInternal = WithApolloClient<IProps>;
+
 interface IState {
   selectedPollBookIndex: number;
   notInPollBookJustification: string;
+  personId: string;
+  voters: VotersForPerson[];
 }
 
 // Page for selecting voter group / velgergruppe in between selecting an election on the voter
@@ -105,16 +143,44 @@ interface IState {
 // and the relevant voter groups is given by the names of the pollbooks in the single election.
 // In the first case, choosing a voter group is in effect choosing an election.
 
-class VoterGroupSelectPage extends React.Component<IProps, IState> {
+class VoterGroupSelectPage extends React.Component<PropsInternal, IState> {
   readonly state = {
     selectedPollBookIndex: 0,
     notInPollBookJustification: '',
+    personId: '',
+    voters: [],
   };
 
+  componentDidMount() {
+    this.getPersonId();
+  }
+
+  async getPersonId() {
+    try {
+      const person = await this.props.client.query<IViwerReturn>({
+        query: getSignedInPersonId,
+      });
+      this.setState({ personId: person.data.signedInPerson.personId });
+    } catch (error) {
+      // TODO: Render proper error
+    }
+
+    try {
+      const v = await this.props.client.query<IVotersForPersonReturn>({
+        query: votersForPersonQuery,
+        variables: { id: this.state.personId },
+      });
+
+      this.setState({ voters: v.data.votersForPerson });
+    } catch (error) {
+      // TODO: Render proper error
+    }
+  }
+
   hasRightToVote = (pollBookIndex: number): boolean => {
-    // Dummy implementation. TODO: Check for which voter group / poll book
-    // an actual logged in user has right to vote.
-    return pollBookIndex === 0;
+    const { pollbooks } = this.getCommonVars();
+    const voters: VotersForPerson[] = this.state.voters;
+    return voters.map(x => x.pollbook.id).includes(pollbooks[pollBookIndex].id);
   };
 
   handleSelectVoterGroup = (selectedPollBookIndex: number) => {
@@ -141,11 +207,7 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
     );
   };
 
-  public render() {
-    const lang = this.props.i18n.language;
-    const classes = this.props.classes;
-    const t = this.props.t;
-
+  private getCommonVars() {
     const { electionGroupType, activeElections } = this.props;
 
     let pollbooks: IPollBook[];
@@ -168,6 +230,25 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
       electionForSelectedPollbook = activeElections[0];
       electionForSelectedPollbookIndex = 0;
     }
+    return {
+      pollbooks,
+      electionForSelectedPollbook,
+      electionForSelectedPollbookIndex,
+      electionForSelectedPollbookIsOngoing,
+    };
+  }
+
+  public render() {
+    const lang = this.props.i18n.language;
+    const classes = this.props.classes;
+    const t = this.props.t;
+
+    const {
+      pollbooks,
+      electionForSelectedPollbook,
+      electionForSelectedPollbookIndex,
+      electionForSelectedPollbookIsOngoing,
+    } = this.getCommonVars();
 
     const dropdown = (
       <DropDown
@@ -326,4 +407,6 @@ class VoterGroupSelectPage extends React.Component<IProps, IState> {
   }
 }
 
-export default injectSheet(styles)(translate()(VoterGroupSelectPage));
+export default injectSheet(styles)(
+  translate()(withApollo(VoterGroupSelectPage))
+);
