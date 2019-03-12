@@ -68,6 +68,7 @@ interface IState {
   currentStep: VotingStep;
   voteElection: Election | null;
   selectedPollBookId: string;
+  voterId: string;
   notInPollBookJustification: string;
 }
 
@@ -78,6 +79,7 @@ class VotingPage extends React.Component<IProps, IState> {
     currentStep: VotingStep.Step1SelectVoterGroup,
     voteElection: null,
     selectedPollBookId: '',
+    voterId: '',
     notInPollBookJustification: '',
   };
 
@@ -120,12 +122,14 @@ class VotingPage extends React.Component<IProps, IState> {
     activeElections: Election[],
     selectedElectionIndex: number,
     selectedPollBookId: string,
+    voterId: string,
     notInPollBookJustification: string
   ) => {
     this.setState(
       {
         voteElection: activeElections[selectedElectionIndex],
         selectedPollBookId,
+        voterId,
         notInPollBookJustification,
       },
       this.goToStep2
@@ -216,12 +220,14 @@ class VotingPage extends React.Component<IProps, IState> {
                     onProceed={(
                       selectedElectionIndex,
                       selectedPollBookID,
+                      voterId,
                       notInPollBookJustification
                     ) =>
                       this.handleProceedFromSelectVoterGroup(
                         activeElections,
                         selectedElectionIndex,
                         selectedPollBookID,
+                        voterId,
                         notInPollBookJustification
                       )
                     }
