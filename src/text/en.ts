@@ -317,6 +317,8 @@ export default {
       'The election must have at least as many candidates per voter group as stated in {{infoLink}}.',
   },
   voter: {
+    error: 'An error has occurred',
+    errorInfo: 'Please contact the service owner',
     canVoteBlank: 'You may also cast a blank vote.',
     castVote: 'Cast vote',
     chooseCandidates: 'Choose candidates',
