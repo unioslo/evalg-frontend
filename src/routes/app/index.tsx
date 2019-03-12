@@ -93,7 +93,7 @@ const App: React.FunctionComponent<IAppProps> = props => {
         <Content>
           <UserContext.Consumer>
             {context => {
-              if (context.user) {
+              if (context.user || !authEnabled) {
                 return <Route path="/" component={ProtectedVoter} />;
               } else {
                 return (
