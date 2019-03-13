@@ -25,6 +25,7 @@ import { Date, Time } from '../../../../components/i18n';
 const votersForPersonQuery = gql`
   query votersForPerson($id: UUID!) {
     votersForPerson(id: $id) {
+      id
       pollbook {
         id
       }
@@ -103,6 +104,7 @@ type IProps = {
   onProceed: (
     selectedElectionIndex: number,
     selectedPollBookId: string,
+    voterId: string,
     notInPollBookJustification: string
   ) => void;
   i18n: i18n;
@@ -163,6 +165,20 @@ class VoterGroupSelectPage extends React.Component<
     }
   }
 
+  getVoterId = (pollBookIndex: number) => {
+    const { pollbooks } = this.getCommonVars();
+    const voters: VotersForPerson[] = this.state.voters;
+    const filteredVoters = voters.filter(
+      x => x.pollbook.id === pollbooks[pollBookIndex].id
+    );
+
+    if (filteredVoters.length === 1) {
+      return filteredVoters[0].id;
+    } else {
+      return '';
+    }
+  };
+
   hasRightToVote = (pollBookIndex: number): boolean => {
     const { pollbooks } = this.getCommonVars();
     const voters: VotersForPerson[] = this.state.voters;
@@ -182,11 +198,13 @@ class VoterGroupSelectPage extends React.Component<
   handleProceed = (
     selectedElectionIndex: number,
     selectedPollBookId: string,
+    voterId: string,
     notInPollBookJustification: string
   ) => {
     this.props.onProceed(
       selectedElectionIndex,
       selectedPollBookId,
+      voterId,
       this.hasRightToVote(this.state.selectedPollBookIndex)
         ? ''
         : notInPollBookJustification
@@ -382,6 +400,7 @@ class VoterGroupSelectPage extends React.Component<
               this.handleProceed(
                 electionForSelectedPollbookIndex,
                 pollbooks[this.state.selectedPollBookIndex].id,
+                this.getVoterId(this.state.selectedPollBookIndex),
                 this.state.notInPollBookJustification
               )
             }

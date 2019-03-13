@@ -1,10 +1,17 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { Query, WithApolloClient, withApollo } from 'react-apollo';
 import { translate } from 'react-i18next';
 import { TranslateHocProps } from 'react-i18next/src/translate';
 
-import { ElectionGroup, Election } from '../../../../interfaces';
+import {
+  ElectionGroup,
+  Election,
+  IMutationResponse,
+  QueryResponse,
+  ViewerResponse,
+  IVoter,
+} from '../../../../interfaces';
 
 import VotingStepper, { VotingStep } from './components/VotingStepper';
 import VoterGroupSelect from '../voterGroupSelect';
@@ -14,6 +21,8 @@ import { orderMultipleElections } from '../../../../utils/processGraphQLData';
 import PrefElecVote from './PrefElecVote';
 import MajorityVote from './MajorityVote';
 import Receipt from './components/Receipt';
+import Error from './components/Error';
+import { getSignedInPersonId } from '../../../../common-queries';
 
 const getElectionGroupVotingData = gql`
   query ElectionGroupVotingData($id: UUID!) {
@@ -55,10 +64,34 @@ const getElectionGroupVotingData = gql`
   }
 `;
 
+const submitVoteMutation = gql`
+  mutation submitVote($voterId: UUID!, $ballot: JSONString!) {
+    vote(voterId: $voterId, ballot: $ballot) {
+      ok
+    }
+  }
+`;
+
+const addVoterMutation = gql`
+  mutation addVoter($personId: UUID!, $pollbookId: UUID!) {
+    addVoter(personId: $personId, pollbookId: $pollbookId) {
+      id
+    }
+  }
+`;
+
 export enum BallotStep {
   FillOutBallot,
   ReviewBallot,
 }
+
+type VoteResponse = {
+  vote: IMutationResponse;
+};
+
+type AddVoterResponse = {
+  addVoter: IVoter;
+};
 
 interface IProps extends TranslateHocProps {
   electionGroupId: string;
@@ -68,17 +101,23 @@ interface IState {
   currentStep: VotingStep;
   voteElection: Election | null;
   selectedPollBookId: string;
+  voterId: string;
+  personId: string;
   notInPollBookJustification: string;
+  errorOccurred: boolean;
 }
 
-class VotingPage extends React.Component<IProps, IState> {
+class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
   scrollToDivRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   readonly state: IState = {
     currentStep: VotingStep.Step1SelectVoterGroup,
     voteElection: null,
     selectedPollBookId: '',
+    voterId: '',
+    personId: '',
     notInPollBookJustification: '',
+    errorOccurred: false,
   };
 
   componentDidMount() {
@@ -116,34 +155,93 @@ class VotingPage extends React.Component<IProps, IState> {
     this.setState({ currentStep: VotingStep.Step4Receipt }, this.scrollToTop);
   };
 
+  showError = () => {
+    this.setState({ errorOccurred: true }, this.scrollToTop);
+  };
+
   handleProceedFromSelectVoterGroup = (
     activeElections: Election[],
     selectedElectionIndex: number,
     selectedPollBookId: string,
+    voterId: string,
     notInPollBookJustification: string
   ) => {
     this.setState(
       {
         voteElection: activeElections[selectedElectionIndex],
         selectedPollBookId,
+        voterId,
         notInPollBookJustification,
       },
       this.goToStep2
     );
   };
 
-  handleSubmitVote = (ballotData: object) => {
+  async handleSubmitVote(ballotData: object) {
+    let voterId = '';
+    if (this.state.voterId) {
+      voterId = this.state.voterId;
+    } else {
+      const handleSuccess = (p: QueryResponse<ViewerResponse>) => {
+        this.setState({ personId: p.data.signedInPerson.personId });
+      };
+      const handleFailure = (error: any) => {};
+
+      await getSignedInPersonId(
+        this.props.client,
+        handleSuccess,
+        handleFailure
+      );
+
+      await this.props.client
+        .mutate<AddVoterResponse>({
+          mutation: addVoterMutation,
+          variables: {
+            personId: this.state.personId,
+            pollbookId: this.state.selectedPollBookId,
+          },
+        })
+        .then(result => {
+          if (result.errors) {
+            this.showError();
+          } else if (result.data) {
+            voterId = result.data.addVoter.id;
+          }
+        })
+        .catch(error => {
+          this.showError();
+        });
+    }
+
     const voteData = {
       electionId: this.state.voteElection ? this.state.voteElection.id : null,
       selectedPollbookId: this.state.selectedPollBookId,
       notInPollbookJustification: this.state.notInPollBookJustification,
       ballotData,
     };
-    const voteDataJSON = JSON.stringify(voteData, null, 2);
-    console.log('Mock submitting vote:');
-    console.log(voteDataJSON);
-    this.goToStep4();
-  };
+    const voteDataJSON = JSON.stringify(voteData);
+
+    await this.props.client
+      .mutate<VoteResponse>({
+        mutation: submitVoteMutation,
+        variables: {
+          voterId: voterId,
+          ballot: voteDataJSON,
+        },
+      })
+      .then(result => {
+        const response = result && result.data && result.data.vote;
+
+        if (!response) {
+          this.showError();
+        } else {
+          this.goToStep4();
+        }
+      })
+      .catch(error => {
+        this.showError();
+      });
+  }
 
   render() {
     const { currentStep } = this.state;
@@ -200,7 +298,9 @@ class VotingPage extends React.Component<IProps, IState> {
             }
           }
 
-          return (
+          return this.state.errorOccurred ? (
+            <Error />
+          ) : (
             <>
               <VotingStepper
                 currentStep={currentStep}
@@ -216,12 +316,14 @@ class VotingPage extends React.Component<IProps, IState> {
                     onProceed={(
                       selectedElectionIndex,
                       selectedPollBookID,
+                      voterId,
                       notInPollBookJustification
                     ) =>
                       this.handleProceedFromSelectVoterGroup(
                         activeElections,
                         selectedElectionIndex,
                         selectedPollBookID,
+                        voterId,
                         notInPollBookJustification
                       )
                     }
@@ -236,7 +338,7 @@ class VotingPage extends React.Component<IProps, IState> {
                       onProceedToReview={this.goToStep3}
                       onGoBackToSelectVoterGroup={this.goToStep1}
                       onGoBackToBallot={this.goToStep2}
-                      onSubmitVote={this.handleSubmitVote}
+                      onSubmitVote={this.handleSubmitVote.bind(this)}
                     />
                   )}
                 {currentStep === VotingStep.Step4Receipt && <Receipt />}
@@ -249,4 +351,4 @@ class VotingPage extends React.Component<IProps, IState> {
   }
 }
 
-export default translate()(VotingPage);
+export default translate()(withApollo(VotingPage));

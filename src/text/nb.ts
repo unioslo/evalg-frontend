@@ -317,6 +317,8 @@ export default {
       'Valget må ha minimum like mange kandidater per gruppe som angitt under <1>valginnstillinger</1>.',
   },
   voter: {
+    error: 'En feil har oppstått',
+    errorInfo: 'Vennligst kontakt ansvarlig for tjenesten',
     canVoteBlank: 'Du kan også stemme blankt.',
     castVote: 'Avgi stemme',
     chooseCandidates: 'Velg kandidater',
