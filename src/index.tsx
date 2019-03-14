@@ -62,7 +62,7 @@ const constructApolloClient = () => {
   // https://github.com/apollographql/apollo-cache-persist/pull/58
   persistCache({
     cache: cache,
-    storage: window.localStorage as PersistentStorage<
+    storage: window.sessionStorage as PersistentStorage<
       PersistedData<NormalizedCacheObject>
     >,
   });
