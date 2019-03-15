@@ -57,32 +57,45 @@ export default {
     infoLinkText: 'Mer om kandidaten',
   },
   census: {
-    aboutCensusFiles: 'For informasjon om manntallsfiler se',
+    aboutCensusFiles: 'Les om manntallsfiler',
+    addedIdTypeWithIdValue: 'La til {{ idType }} {{ idValue }}',
     addPerson: 'Legg til person',
+    addPersonInCensusFor: 'Legg til person i manntallet for',
     addPersonHelpText:
       'Du kan også legge inn flere personer separert med komma',
     addPersonInputPlaceholder: 'Skriv inn brukernavn, navn eller fødselsnummer',
     addPersonModalHeader: 'Legg til personer i manntallet',
-    addPersons: 'Legg til personer i {{pollbookName}}',
+    addPersons: 'Legg til personer',
+    addPersonsInPollbook: 'Legg til personer i {{pollbookName}}',
     addTo: 'Legg til',
     censusPageDesc: 'Her kan du opprette og administrere manntall.',
     censusType: 'Type manntall',
     chooseFile: 'Velg fil for opplasting',
     deleteCensus: 'Slett manntall',
+    deleteFromCensus: 'Slett fra manntall',
     deletePersonConfirmationModalText:
-      'Er du sikker på at du vil slette {{personName}} fra «{{pollbookName}}»?',
+      'Er du sikker på at du vil slette personen med {{idType}} {{idValue}} fra «{{pollbookName}}»?',
     deletePersonConfirmationModalTitle: 'Bekreft sletting',
+    deletePersonsInPollbook: 'Tøm manntall',
     deletePollbookConfirmationModalText:
       'Er du sikker på at du vil slette velgergruppen «{{pollbookName}}» ({{num}} {{of}})?',
     deletePollbookConfirmationModalTitle: 'Bekreft sletting',
     group: 'Gruppe',
-    person: 'Person',
-    persons: 'Personer',
+    idType: 'ID-type',
+    idTypes: {
+      uid: 'Brukernavn',
+      nin: 'Fødselsnummer',
+      feide_id: 'Feide-ID',
+    },
+    idValue: 'ID-verdi',
+    person: 'person',
+    persons: 'personer',
     uploadCensusFileButton: 'Last opp manntallsfil',
-    uploadCensusFileHeader: 'Last opp manntal fra fil',
+    uploadCensusFileHeader: 'Last opp manntall fra fil',
     uploadOkMsg: '{{nr}} personer ble lagt til i gruppen {{pollbookName}}',
     uploadServerError:
       'Feilmelding fra tjener. Greide ikke å laste inn manntall',
+    usernameOrBirthNumber: 'Brukernavn eller fødselsnummer',
   },
   election: {
     activeElectionsHeader:
@@ -195,7 +208,7 @@ export default {
     statusOpensAutomatically:
       'Valget er publisert og vil starte automatisk til angitt tidspunkt.',
     statusThisIsMissing: 'Dette mangler',
-    toDate: 'Til Dato',
+    toDate: 'Til dato',
     unannounceElectionConfirm: 'Fjern fra forsiden',
     unannounceElectionHeader: 'Fjern valget fra forsiden',
     unannounceElectionInfoOne:
@@ -251,6 +264,10 @@ export default {
     invalidDates: 'Starttid må være tidligere enn sluttid.',
     invalidEmail: 'Ugyldig epostadresse.',
     invalidUrl: 'Ugyldig url.',
+    censusAddVoter: {
+      birthNumberIncorrectNumberOfDigits: 'Fødselsnummer må være 11 sifre',
+      usernameCannotStartWithNumber: 'Brukernavn kan ikke starte med et tall',
+    },
   },
   general: {
     add: 'Legg til',

@@ -83,8 +83,19 @@ export interface IPerson {
 
 export interface IVoter {
   id: string;
-  person: IPerson;
+  idType: string;
+  idValue: string;
+  verified: boolean;
+  manual: boolean;
   pollbookId: string;
+  reason?: string;
+  votes: IVote[];
+}
+
+export interface IVote {
+  voterId: string;
+  ballotId: string;
+  voter: IVoter;
 }
 
 export interface IPollBook {

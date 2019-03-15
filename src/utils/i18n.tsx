@@ -29,3 +29,21 @@ export const joinStringsWithCommaAndAnd = (
     }`;
   }
 };
+
+export const getTranslationsForVoterIdType = (t: TranslationFunction) => ({
+  uid: t('census.idTypes.uid'),
+  nin: t('census.idTypes.nin'),
+  feide_id: t('census.idTypes.feide_id'),
+});
+
+let translationsForVoterIdType: { uid: string, nin: string, feide_id: string };
+
+export const getVoterIdTypeDisplayName = (
+  voterId: string,
+  t: TranslationFunction
+) => {
+  if (!translationsForVoterIdType) {
+    translationsForVoterIdType = getTranslationsForVoterIdType(t);
+  }
+  return translationsForVoterIdType[voterId] || voterId;
+};

@@ -65,7 +65,7 @@ class SettingsSectionsGroup extends React.Component<IProps, IState> {
       displayStatuses = this.setAllSectionsToInactive(displayStatuses);
       this.setState({ displayStatuses });
     }
-  }
+  };
 
   updateUIAfterCancelSettings = () => {
     this.deactivateDirectedFlow();
@@ -117,18 +117,22 @@ class SettingsSectionsGroup extends React.Component<IProps, IState> {
   };
 
   render() {
-    return this.props.settingsSectionsContents.map((sectionContents, index) => (
-      <SettingsSection
-        key={sectionContents.sectionName}
-        sectionIndex={index}
-        settingsSectionContents={sectionContents}
-        electionGroupData={this.props.electionGroupData}
-        displayStatus={this.state.displayStatuses[index]}
-        onSetActive={this.handleManuallySetSectionActive}
-        onSubmitSettingsSection={this.handleSettingsWasSaved}
-        onCloseSettingsSection={this.updateUIAfterCancelSettings}
-      />
-    ));
+    return (
+      <div>
+        {this.props.settingsSectionsContents.map((sectionContents, index) => (
+          <SettingsSection
+            key={sectionContents.sectionName}
+            sectionIndex={index}
+            settingsSectionContents={sectionContents}
+            electionGroupData={this.props.electionGroupData}
+            displayStatus={this.state.displayStatuses[index]}
+            onSetActive={this.handleManuallySetSectionActive}
+            onSubmitSettingsSection={this.handleSettingsWasSaved}
+            onCloseSettingsSection={this.updateUIAfterCancelSettings}
+          />
+        ))}
+      </div>
+    );
   }
 }
 

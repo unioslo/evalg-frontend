@@ -61,32 +61,44 @@ export default {
     infoLinkText: 'More about the candidate',
   },
   census: {
-    aboutCensusFiles:
-      'For more information about the census files (norwegian only)',
+    aboutCensusFiles: 'About census files (in Norwegian)',
+    addedIdTypeWithIdValue: 'Added {{ idType }} {{ idValue }}',
     addPerson: 'Add person',
+    addPersonInCensusFor: 'Add person in the census for',
     addPersonHelpText:
       'You can also add multiple persons, separated by a comma',
     addPersonInputPlaceholder: 'Enter username, name or social security number',
     addPersonModalHeader: 'Add persons to the census',
-    addPersons: 'Add persons in {{pollbookName}}',
+    addPersons: 'Add persons',
+    addPersonsInPollbook: 'Add persons in {{pollbookName}}',
     addTo: 'Add',
     censusPageDesc: 'Here you can create and administer censuses.',
     censusType: 'Pollbook type',
     chooseFile: 'Choose file to upload',
     deleteCensus: 'Delete census',
+    deleteFromCensus: 'Delete from census',
     deletePersonConfirmationModalText:
-      'Are you sure you want to delete {{personName}} from “{{pollbookName}}”?',
+      'Are you sure you want to delete the person with {{idType}} {{idValue}} from “{{pollbookName}}”?',
     deletePersonConfirmationModalTitle: 'Confirm deletion',
+    deletePersonsInPollbook: 'Empty census',
     deletePollbookConfirmationModalText:
       'Are you sure you want to delete the pollbook “{{pollbookName}}” ({{num}} {{of}})?',
     deletePollbookConfirmationModalTitle: 'Confirm deleteion',
     group: 'Group',
-    person: 'Person',
-    persons: 'Persons',
+    idType: 'ID-type',
+    idTypes: {
+      uid: 'Username',
+      nin: 'Norwegian birth number',
+      feide_id: 'Feide-ID',
+    },
+    idValue: 'ID-value',
+    person: 'person',
+    persons: 'persons',
     uploadCensusFileButton: 'Upload census file',
     uploadCensusFileHeader: 'Upload census from file',
     uploadOkMsg: 'Added {{nr}} persons to the group {{pollbookName}}',
     uploadServerError: 'Error from server. Census file parsing failed',
+    usernameOrBirthNumber: 'Username or birth number',
   },
   election: {
     activeElectionsHeader:
@@ -251,6 +263,10 @@ export default {
     invalidDates: 'Start time must be before closing time.',
     invalidEmail: 'Invalid email address.',
     invalidUrl: 'Invalid url.',
+    censusAddVoter: {
+      birthNumberIncorrectNumberOfDigits: 'Birth number must be 11 digits',
+      usernameCannotStartWithNumber: 'A username cannot start with a digit',
+    },
   },
   general: {
     add: 'Add',

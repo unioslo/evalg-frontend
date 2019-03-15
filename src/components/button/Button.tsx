@@ -17,13 +17,13 @@ const styles = (theme: any) => ({
     display: 'flex',
     alignItems: 'center',
     fontSize: '2rem',
-    height: '6rem',
+    height: (props: IProps) => props.height ? props.height : '6rem',
     lineHeight: 0.9,
     padding: '0 2rem',
     transition: 'background 100ms ease-in',
     [theme.breakpoints.mdQuery]: {
       fontSize: '1.8rem',
-      height: '5rem',
+      height: (props: IProps) => props.height ? props.height : '5rem',
     },
   },
   wide: {
@@ -80,6 +80,7 @@ interface IProps {
   wide?: boolean,
   fillWidth?: boolean,
   centerContent?: boolean,
+  height?: string,
   text: string | any,
   classes: Classes,
 }

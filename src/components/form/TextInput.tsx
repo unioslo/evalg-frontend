@@ -29,6 +29,7 @@ interface IProps {
   hasFocus?: boolean;
   hideErrors?: boolean;
   disabled?: boolean;
+  inputRef?: React.RefObject<HTMLInputElement>;
 }
 
 const styles = (theme: any) => ({
@@ -163,6 +164,7 @@ const TextInput = (props: IProps) => {
         autoCapitalize="none"
         autoComplete="off"
         autoCorrect="off"
+        ref={props.inputRef}
       />
       {!!label && (
         <label htmlFor={id} className={labelClassNames}>

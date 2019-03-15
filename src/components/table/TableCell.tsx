@@ -13,6 +13,8 @@ interface IProps {
   relative?: boolean;
   colspan?: number;
   topPadding?: boolean;
+  verticalAlignTop?: boolean;
+  maxWidth?: string;
   classes: Classes;
 }
 
@@ -26,6 +28,7 @@ const styles = (theme: any) => ({
     '&:last-child': {
       paddingRight: theme.tableHorizontalPadding,
     },
+    maxWidth: (props: IProps) => props.maxWidth,
   },
   noPadding: {
     paddingLeft: '0 !important',
@@ -41,7 +44,10 @@ const styles = (theme: any) => ({
     borderBottom: '0',
   },
   topPadding: {
-    paddingTop: '3rem',
+    paddingTop: '3rem !important',
+  },
+  verticalAlignTop: {
+    verticalAlign: 'top',
   },
   greyBg: {
     background: theme.tableCellGreyBgColor,
@@ -106,6 +112,7 @@ export const TableCell = (props: IProps) => {
     [classes.greyBg]: props.greyBg,
     [classes.relative]: props.relative,
     [classes.topPadding]: props.topPadding,
+    [classes.verticalAlignTop]: props.verticalAlignTop,
   });
   if (props.colspan) {
     return (

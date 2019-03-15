@@ -90,7 +90,7 @@ const VoterElectionsTable: React.SFC<IProps> = props => {
           const hasVoted = false;
           return (
             <TableRow key={index} tall>
-              <TableCell>
+              <TableCell maxWidth='50rem'>
                 <Text>{group.name[lang]}</Text>
               </TableCell>
               <TableCell>{dateTimeToMarkup(startTime)}</TableCell>
