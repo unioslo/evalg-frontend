@@ -12,7 +12,7 @@ const styles = (theme: any) => ({
     display: 'flex',
   },
   header: {
-    marginBottom: '1rem',
+    marginBottom: '2rem',
   },
 });
 
