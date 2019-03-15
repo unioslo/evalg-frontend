@@ -41,3 +41,4 @@ export const appCookiesInformationLink: string = '#TODO';
 
 /* Feature toggles */
 export const appMobileVotingStepperVariant: 'simple' | 'circles' = 'circles';
+export const sectionBottomBorderStyle: 'original' | 'stylish' = 'stylish';

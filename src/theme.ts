@@ -1,3 +1,5 @@
+import { sectionBottomBorderStyle } from './appConfig';
+
 const black = '#000000';
 const lightBlack = '#222222';
 const darkGray = '#2D2D2E';
@@ -151,8 +153,9 @@ const theme = {
   secondaryBtnBgColor: white,
   secondaryBtnBorderColor: lightTurquoise,
   secondaryBtnColor: darkBlueGreen,
-  sectionBorderColor: lightBlueGray,
-  sectionBorderWidth: '1rem',
+  sectionBorderColor:
+    sectionBottomBorderStyle === 'original' ? lightBlueGray : darkTurquoise,
+  sectionBorderWidth: sectionBottomBorderStyle === 'original' ? '1rem' : '2px',
   sectionBorderStyle: 'solid',
   subSectionHeader: {
     fontSize: '2.2rem',

@@ -13,9 +13,11 @@ const styles = (theme: any) => ({
     color: theme.colors.greyishBrown,
     padding: `${theme.contentVertPadding} ${theme.contentHorPadding}`,
     [theme.breakpoints.mdQuery]: {
-      borderBottom: `${theme.sectionBorderWidth} ${theme.sectionBorderStyle} ${
-        theme.sectionBorderColor
-      }`,
+      '&:not(:last-child)': {
+        borderBottom: `${theme.sectionBorderWidth} ${theme.sectionBorderStyle} ${
+          theme.sectionBorderColor
+        }`,
+      },
       padding: `${theme.contentVertMdPadding} ${theme.contentHorMdPadding}`,
     },
   },
