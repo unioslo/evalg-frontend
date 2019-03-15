@@ -3,6 +3,7 @@ import Icon from '../../components/icon';
 
 import injectSheet from 'react-jss';
 
+const defaultTimeoutSec = 10;
 
 const styles = () => ({
   info: {
@@ -55,12 +56,10 @@ const styles = () => ({
     marginRight: '20px',
     marginLeft: 'auto',
   },
-
 });
 
-
 interface IProps {
-  msg: string | React.ReactElement<any>;
+  msg: string | React.ReactNode;
   timeout: boolean;
   timeoutSec?: number;
   classes: any;
@@ -80,14 +79,14 @@ class MsgBox extends React.Component<IProps, IState> {
       display: true,
     };
 
-    this.closeBox = this.closeBox.bind(this)
+    this.closeBox = this.closeBox.bind(this);
   }
 
   public componentDidMount() {
     // TODO fadeout?
 
     if (this.props.timeout) {
-      const waitTime = (this.props.timeoutSec || 10) * 1000;
+      const waitTime = (this.props.timeoutSec || defaultTimeoutSec) * 1000;
       this.timerHandle = setTimeout(() => {
         this.setState({ display: false });
         this.timerHandle = null;
@@ -103,24 +102,21 @@ class MsgBox extends React.Component<IProps, IState> {
   }
 
   public closeBox() {
-    this.setState({display: false})
+    this.setState({ display: false });
   }
 
   public render() {
-
     const { classes } = this.props;
 
     if (this.state.display) {
       return (
         <div className={classes.info}>
           <div className={classes.infoIconMargins}>
-            <Icon type="infoMsgBox"/>
+            <Icon type="infoMsgBox" />
           </div>
-          <span className={classes.msg}>
-            {this.props.msg}
-          </span>
+          <span className={classes.msg}>{this.props.msg}</span>
           <div className={classes.closeIconMargins}>
-            <Icon type="closeMsgBox" onClick={this.closeBox}/>
+            <Icon type="closeMsgBox" onClick={this.closeBox} />
           </div>
         </div>
       );
