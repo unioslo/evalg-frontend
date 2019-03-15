@@ -52,7 +52,7 @@ class ElectionGroupTableRow extends React.Component<IProps> {
         <TableCell noBorder>
           <DropdownArrowIcon selected={this.props.selected} />
         </TableCell>
-        <TableCell>
+        <TableCell  maxWidth='38rem'>
           <Text bold>{elGrp.name[lang]}</Text>
         </TableCell>
         {hasActiveElections ? (
