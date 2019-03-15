@@ -18,26 +18,26 @@ const styles = (theme: any) => ({
     padding: '1.6rem',
   },
   buttonComplete: {
-    background: theme.colors.lightBlueGray
+    background: theme.colors.lightBlueGray,
   },
   buttonActive: {
     border: `2px solid ${theme.colors.lightTurquoise}`,
     '&:hover': {
       border: `2px solid ${theme.colors.darkTurquoise}`,
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     '&:hover $hoverText': {
-      display: 'flex'
+      display: 'flex',
     },
   },
   text: {
     fontSize: '1.4rem',
     fontWeight: 'bold',
     color: theme.colors.lighterGray,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   textComplete: {
-    color: theme.colors.darkGreyishBrown
+    color: theme.colors.darkGreyishBrown,
   },
   hoverText: {
     display: 'none',
@@ -51,7 +51,7 @@ const styles = (theme: any) => ({
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: '1.8rem',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   counter: {
     fontSize: '1.4rem',
@@ -59,25 +59,25 @@ const styles = (theme: any) => ({
     marginTop: '0.8rem',
   },
   container: {
-    display: 'flex'
+    display: 'flex',
   },
   containerMargin: {
     '& $wrapper': {
-      marginRight: '4rem'
-    }
+      marginRight: '4rem',
+    },
   },
   containerSpaceBetween: {
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
-  wrapper: {}
-})
+  wrapper: {},
+});
 
 interface IContainerProps {
-  classes: Classes,
-  children: React.ReactNode[],
+  classes: Classes;
+  children: React.ReactNode[];
 }
 
-const ElectionButtonContainer: React.SFC<IContainerProps> = (props) => {
+const ElectionButtonContainer: React.SFC<IContainerProps> = props => {
   let spaceBetween = false;
   const { children, classes } = props;
   if (children && children.length && children.length > 2) {
@@ -86,31 +86,32 @@ const ElectionButtonContainer: React.SFC<IContainerProps> = (props) => {
   const cls = classNames({
     [classes.container]: true,
     [classes.containerMargin]: !spaceBetween,
-    [classes.containerSpaceBetween]: spaceBetween
+    [classes.containerSpaceBetween]: spaceBetween,
   });
-  return (
-    <div className={cls}>
-      {children}
-    </div>
-  );
+  return <div className={cls}>{children}</div>;
 };
 
-
 interface IProps {
-  name: string,
-  count: number,
-  minCount?: number,
-  counterTextTag?: string,
-  hoverText: any | string,
-  action: (event: any) => void,
-  active?: boolean,
-  classes: Classes
+  name: string;
+  count: number;
+  minCount?: number;
+  counterTextTag?: string;
+  hoverText: any | string;
+  action: (event: any) => void;
+  active?: boolean;
+  classes: Classes;
 }
 
 const ElectionButton = (props: IProps) => {
   const {
-    hoverText, name, count, minCount, counterTextTag, action, active,
-    classes
+    hoverText,
+    name,
+    count,
+    minCount,
+    counterTextTag,
+    action,
+    active,
+    classes,
   } = props;
   let hasCompleteStatus = false;
 
@@ -121,11 +122,11 @@ const ElectionButton = (props: IProps) => {
   const elButtonClasses = classNames({
     [classes.button]: true,
     [classes.buttonActive]: active,
-    [classes.buttonComplete]: hasCompleteStatus
+    [classes.buttonComplete]: hasCompleteStatus,
   });
   const elButtonTextClasses = classNames({
     [classes.text]: true,
-    [classes.textComplete]: hasCompleteStatus
+    [classes.textComplete]: hasCompleteStatus,
   });
   return (
     <div className={classes.wrapper}>
@@ -133,15 +134,19 @@ const ElectionButton = (props: IProps) => {
         <div className={classes.hoverText} onClick={action}>
           {hoverText}
         </div>
-        <span className={elButtonTextClasses}>{name} ({count})</span>
+        <span className={elButtonTextClasses}>
+          {name} ({count})
+        </span>
       </div>
-      {active && counterTextTag &&
+      {active && counterTextTag && (
         <div className={classes.counter}>
-          <Trans values={{ minCount }} count={count}>{counterTextTag}</Trans>
+          <Trans values={{ minCount }} count={count}>
+            {counterTextTag}
+          </Trans>
         </div>
-      }
+      )}
     </div>
-  )
+  );
 };
 
 const StyledContainer = injectSheet(styles)(ElectionButtonContainer);
@@ -149,5 +154,5 @@ const StyledElectionButton = injectSheet(styles)(ElectionButton);
 
 export {
   StyledContainer as ElectionButtonContainer,
-  StyledElectionButton as ElectionButton
-}
+  StyledElectionButton as ElectionButton,
+};
