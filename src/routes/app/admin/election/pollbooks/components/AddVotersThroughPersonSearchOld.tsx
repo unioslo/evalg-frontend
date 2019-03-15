@@ -89,7 +89,11 @@ class AddVoter extends React.Component<IProps, Istate> {
 
     this.state = {
       personFilter: '',
-      personsAlreadyInPollbook: registeredVoters.map(voter => voter.person),
+      personsAlreadyInPollbook: registeredVoters.map(voter => ({
+        id: '',
+        displayName: voter.idValue,
+        nin: '',
+      })),
       newPersonsToAddList: [],
       addablePersonsFromSearch: [],
       pollbook: props.pollbook,
@@ -148,7 +152,7 @@ class AddVoter extends React.Component<IProps, Istate> {
       <>
         <strong>
           <Trans values={{ pollbookName: this.state.pollbook.name[lang] }}>
-            census.addPersons
+            census.addPersonsInPollbook
           </Trans>
         </strong>
         {this.state.newPersonsToAddList.map((person, index) => (
