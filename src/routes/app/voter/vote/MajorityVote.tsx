@@ -84,8 +84,6 @@ class MajorityVote extends React.Component<
     this.setState(
       {
         isBlankVote: true,
-        selectedCandidateIndex: -1,
-        selectedCandidate: null,
       },
       this.props.onProceedToReview
     );
@@ -99,8 +97,9 @@ class MajorityVote extends React.Component<
     this.props.onSubmitVote({
       voteType: 'majorityVote',
       isBlankVote: this.state.isBlankVote,
-      candidateId:
-        this.state.selectedCandidate && this.state.selectedCandidate.id,
+      candidateId: this.state.isBlankVote
+        ? null
+        : this.state.selectedCandidate && this.state.selectedCandidate.id,
     });
   };
 }
