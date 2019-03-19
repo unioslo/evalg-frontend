@@ -16,6 +16,7 @@ import { IAuthenticatorContext } from 'react-oidc/lib/makeAuth';
 import { ApolloClient } from 'apollo-client';
 import createBrowserHistory from 'history/createBrowserHistory';
 import { appHelpLink } from '../../../appConfig';
+import { Classes } from 'jss';
 
 const styles = (theme: any) => ({
   logoBar: {
@@ -86,7 +87,7 @@ const sayMyName = gql`
 `;
 
 interface IProps {
-  classes?: any;
+  classes: Classes;
 }
 
 const Header = ({ classes }: IProps) => {

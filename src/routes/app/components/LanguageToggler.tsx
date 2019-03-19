@@ -8,7 +8,6 @@ const styles = () => ({
 });
 
 class Toggler extends React.Component<any> {
-
   render() {
     const classes = this.props.classes;
     return (
@@ -18,9 +17,11 @@ class Toggler extends React.Component<any> {
           return (
             <a
               className={classes.languageToggler}
-              onClick={() =>
-                i18n.changeLanguage(currentLang === 'nb' ? 'en' : 'nb')
-              }
+              onClick={() => {
+                const newLanguage = currentLang === 'nb' ? 'en' : 'nb';
+                i18n.changeLanguage(newLanguage);
+                document.documentElement.lang = newLanguage;
+              }}
             >
               {currentLang === 'nb' ? 'English' : 'Norsk'}
             </a>

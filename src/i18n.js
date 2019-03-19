@@ -1,4 +1,4 @@
-import i18n from "i18next";
+import i18n from 'i18next';
 import textsEn from 'text/en';
 import textsNb from 'text/nb';
 
@@ -6,26 +6,26 @@ i18n.init({
   // we init with resources
   resources: {
     en: {
-      translations: textsEn
+      translations: textsEn,
     },
     nb: {
-      translations: textsNb
-    }
+      translations: textsNb,
+    },
   },
-  fallbackLng: "en",
+  fallbackLng: 'nb',
   debug: process.NODE_ENV !== 'production',
 
-  ns: ["translations"],
-  defaultNS: "translations",
+  ns: ['translations'],
+  defaultNS: 'translations',
 
   interpolation: {
     escapeValue: false, // not needed for react!!
-    formatSeparator: ","
+    formatSeparator: ',',
   },
 
   react: {
-    wait: true
-  }
+    wait: true,
+  },
 });
 
 export default i18n;
