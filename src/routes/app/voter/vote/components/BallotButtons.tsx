@@ -53,11 +53,11 @@ const BallotButtons: React.SFC<IProps> = ({
         screenSize === 'mobile' ? (
           <>
             <ButtonContainer>
-              {backButton}
-              {reviewBallotButtonForScreenSize(screenSize)}
+              {blankVoteButtonForScreenSize(screenSize)}
             </ButtonContainer>
             <ButtonContainer>
-              {blankVoteButtonForScreenSize(screenSize)}
+              {backButton}
+              {reviewBallotButtonForScreenSize(screenSize)}
             </ButtonContainer>
           </>
         ) : (
