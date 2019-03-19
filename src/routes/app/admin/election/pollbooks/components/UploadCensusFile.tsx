@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-// import { Trans } from 'react-i18next';
-import axios from 'axios';
 import {
   Form,
   Field,
@@ -9,13 +7,15 @@ import {
   FieldRenderProps,
 } from 'react-final-form';
 import { Trans, translate, TranslationFunction } from 'react-i18next';
+import gql from 'graphql-tag';
 import { ApolloQueryResult } from 'apollo-client';
+import { withApollo, WithApolloClient } from 'react-apollo';
 
+import { translateBackendError } from '../../../../../../utils';
 import Button from '../../../../../../components/button';
 import { FormField } from '../../../../../../components/form';
 import { RadioButtonGroup } from '../../../../../../components/form';
 import Modal from '../../../../../../components/modal';
-import { restBackend } from '../../../../../../appConfig';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
@@ -87,9 +87,30 @@ const styles = (theme: any) => ({
   },
 });
 
+const UploadCensusFileMutation = gql`
+  mutation($censusFile: Upload!, $pollbookId: UUID!) {
+    uploadCensusFile(censusFile: $censusFile, pollbookId: $pollbookId) {
+      success
+      code
+      message
+      numOk
+      numFailed
+    }
+  }
+`;
+
+interface IUploadCensusFileResponse {
+  uploadCensusFile: {
+    success: boolean;
+    code?: string;
+    message?: string;
+    numOk?: number;
+    numFailed?: number;
+  };
+}
+
 interface IProps {
-  closeAction: (proc: IReturnStatus) => void;
-  // submitAction: (valus: any) => void,
+  closeAction: (proc: IUploadCensusFileModalStatus) => void;
   header: string | React.ReactElement<any>;
   pollBooks: any;
   i18n: any;
@@ -101,41 +122,37 @@ interface IProps {
   classes: any;
 }
 
+type PropsInternal = WithApolloClient<IProps>;
+
 interface IState {
   censusFile: File | null;
-  fileName: string;
-  // pollbook: any,
+  fileName?: string;
+  isUploading: boolean;
 }
 
 interface IHTMLInputEvent extends React.FormEvent {
   target: HTMLInputElement & EventTarget;
 }
 
-// interface IFormSubmit {
-//   pollbookId: string;
-//   censusFile: string;
-// }
-
-export interface IReturnStatus {
-  parseCompleded: boolean;
-  showMsg: boolean;
-  ok: number;
-  failed: number;
-  error_msg: string,
-  pollBookName: string;
+export interface IUploadCensusFileModalStatus {
+  success: boolean;
+  message?: string;
+  numOk?: number;
+  numFailed?: number;
 }
 
 class UploadCensusFileModal extends React.Component<
-  IProps,
+  PropsInternal,
   IState,
   IHTMLInputEvent
 > {
-  constructor(props: IProps) {
+  constructor(props: PropsInternal) {
     super(props);
 
     this.state = {
       censusFile: null,
       fileName: '',
+      isUploading: false,
     };
 
     this.renderForm = this.renderForm.bind(this);
@@ -146,46 +163,72 @@ class UploadCensusFileModal extends React.Component<
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
-  public onSubmit(values: any) {
-    const {
-      i18n: { language: lang },
-    } = this.props;
+  async onSubmit(values: any) {
+    this.setState({
+      isUploading: true,
+    });
+    const lang: string = this.props.i18n.language;
+    await this.props.client
+      .mutate<IUploadCensusFileResponse>({
+        mutation: UploadCensusFileMutation,
+        variables: {
+          censusFile: this.state.censusFile,
+          pollbookId: values.pollbookId,
+        },
+      })
+      .then(result => {
+        const response = result && result.data && result.data.uploadCensusFile;
 
-    const data = new FormData();
+        this.setState({ isUploading: false });
 
-    if (this.state.censusFile !== null) {
-      data.append('census_file', this.state.censusFile);
-    }
-    data.append('pollbook_id', values.pollbookId);
-
-    axios
-      .create({ baseURL: restBackend })
-      .post('upload/', data)
-      .then(response => {
-        const ret: IReturnStatus = {
-          parseCompleded: true,
-          showMsg: true,
-          ok: response.data.ok,
-          failed: response.data.failed,
-          error_msg: '',
-          pollBookName: this.props.pollBooks[values.pollbookId].name[lang],
-        };
-        if (this.props.refetchData !== undefined) {
-          this.props.refetchData();
+        if (!response || response.success === false) {
+          let errorMessage = this.props.t('census.errors.backend.unknown');
+          if (response && response.code) {
+            errorMessage = translateBackendError(
+              response.code,
+              this.props.t,
+              'census.errors.backend',
+              {
+                mimetype: this.state.censusFile && this.state.censusFile.type,
+              }
+            );
+          }
+          const status: IUploadCensusFileModalStatus = {
+            success: false,
+            message: errorMessage,
+          };
+          this.props.closeAction(status);
+        } else {
+          if (this.props.refetchData !== undefined) {
+            this.props.refetchData();
+          }
+          const feedbackTemplate = response.numFailed
+            ? 'uploadSuccessfulWithFailures'
+            : 'uploadSuccessful';
+          const message = this.props.t(`census.${feedbackTemplate}`, {
+            numOk: response.numOk,
+            numFailed: response.numFailed,
+            pollbookName: this.props.pollBooks[values.pollbookId].name[lang],
+          });
+          const status: IUploadCensusFileModalStatus = {
+            success: true,
+            message,
+            numOk: response.numOk,
+            numFailed: response.numFailed,
+          };
+          this.props.closeAction(status);
         }
-        this.props.closeAction(ret);
       })
       .catch(error => {
-
-        const ret: IReturnStatus = {
-          parseCompleded: false,
-          showMsg: true,
-          ok: 0,
-          failed: 0,
-          error_msg: error.response.details,
-          pollBookName: this.props.pollBooks[values.pollbookId].name[lang],
+        this.setState({ isUploading: false });
+        const errorMessage = this.props.t('census.errors.backend.unknown');
+        const status: IUploadCensusFileModalStatus = {
+          success: false,
+          message: errorMessage,
+          numOk: 0,
+          numFailed: 0,
         };
-        this.props.closeAction(ret);
+        this.props.closeAction(status);
       });
   }
 
@@ -212,20 +255,10 @@ class UploadCensusFileModal extends React.Component<
     document.removeEventListener('keydown', this.handleKeyPress);
   }
 
-  /**
-   * Close the modal on escape
-   */
   private handleKeyPress(e: KeyboardEvent) {
+    // Close the modal on escape
     if (e.keyCode === 27) {
-      const status: IReturnStatus = {
-        parseCompleded: false,
-        showMsg: false,
-        ok: 0,
-        failed: 0,
-        error_msg: '',
-        pollBookName: '',
-      };
-
+      const status: IUploadCensusFileModalStatus = { success: false };
       this.props.closeAction(status);
     }
   }
@@ -289,13 +322,11 @@ class UploadCensusFileModal extends React.Component<
         text={<Trans>general.upload</Trans>}
         disabled={pristine || invalid}
         action={submitWrapper}
-        key="SaveButton"
+        key="saveButton"
       />
     );
 
-    /**
-     * Create the pollbook radiobutton options
-     */
+    // Create the pollbook radio button options
     const pollBookOptions: any = [];
     Object.keys(this.props.pollBooks).forEach(pollBookID => {
       if (this.props.pollBooks[pollBookID].active) {
@@ -335,7 +366,7 @@ class UploadCensusFileModal extends React.Component<
             <div className={this.props.classes.size}>
               <input
                 className={this.props.classes.fileNameBox}
-                name="test"
+                name="filename"
                 type="text"
                 value={this.state.fileName}
                 disabled={true}
@@ -352,4 +383,6 @@ class UploadCensusFileModal extends React.Component<
   }
 }
 
-export default injectSheet(styles)(translate()(UploadCensusFileModal));
+export default injectSheet(styles)(
+  translate()(withApollo(UploadCensusFileModal))
+);

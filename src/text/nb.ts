@@ -37,20 +37,24 @@ export default {
         'Sørg for at nøkkelen er lagret et sikkert sted. Uten nøkkelen kan ikke stemmene telles opp.',
       cannotReplaceBecauseUnsafeStatus:
         'For å opprette en ny valgnøkkel som erstatter den gamle valgnøkkelen må du først avpublisere valget. Det vil ikke være mulig å erstatte valgnøkkelen dersom det er avgitt stemmer i valget.',
+      errors: {
+        generateKeyError: 'Noe gikk galt under generering av nøkkelpar.',
+        backend: {
+          unknown:
+            'En uventet feil oppstod under opplasting og aktivering av offentlig nøkkel.',
+          cannotChangeKeyIfPastStart:
+            'Det er ikke tillatt å endre valgnøkkelen fordi valget pågår.',
+          cannotChangeKeyIfPublished:
+            'Det er ikke tillatt å endre valgnøkkelen fordi valget er publisert.',
+          cannotChangeKeyIfVotesExist:
+            'Det er ikke tillatt å endre valgnøkkelen fordi det er avgitt stemmer i valget.',
+        },
+      },
     },
+  },
+  backend: {
     errors: {
-      generateKeyError: 'Noe gikk galt under generering av nøkkelpar.',
-      activateKeyErrorGeneral:
-        'Noe gikk galt under opplasting og aktivering av offentlig nøkkel. Sjekk internett-tilkoblingen, lukk dialogboksen og prøv på nytt.',
-    },
-    backendErrors: {
       unknown: 'En uventet feil har oppstått.',
-      cannotChangeKeyIfPastStart:
-        'Det er ikke tillatt å endre valgnøkkelen fordi valget pågår.',
-      cannotChangeKeyIfPublished:
-        'Det er ikke tillatt å endre valgnøkkelen fordi valget er publisert.',
-      cannotChangeKeyIfVotesExist:
-        'Det er ikke tillatt å endre valgnøkkelen fordi det er avgitt stemmer i valget.',
     },
   },
   candidate: {
@@ -92,10 +96,20 @@ export default {
     persons: 'personer',
     uploadCensusFileButton: 'Last opp manntallsfil',
     uploadCensusFileHeader: 'Last opp manntall fra fil',
-    uploadOkMsg: '{{nr}} personer ble lagt til i gruppen {{pollbookName}}',
-    uploadServerError:
-      'Feilmelding fra tjener. Greide ikke å laste inn manntall',
+    uploadSuccessful:
+      '{{numOk}} personer ble lagt til i velgergruppen «{{pollbookName}}».',
+    uploadSuccessfulWithFailures:
+      '{{numOk}} personer ble lagt til i velgergruppen «{{pollbookName}}». {{numFailed}} rader fra manntallsfilen ble forkastet, sannsynligvis fordi de allerede fantes i manntallet.',
     usernameOrBirthNumber: 'Brukernavn eller fødselsnummer',
+    errors: {
+      backend: {
+        unknown: 'En uventet feil oppstod ved opplasting av manntall.',
+        pollbookNotFound:
+          'Velgergruppen du forsøkte å knytte manntallet til eksisterer ikke lenger.',
+        unsupportedFileType:
+          'En feil oppstod ved lesing av filen. Filen inneholder ugyldige rader, eller filtypen «{{mimetype}}» støttes ikke.',
+      },
+    },
   },
   election: {
     activeElectionsHeader:

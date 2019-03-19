@@ -188,7 +188,7 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
       const t = this.props.t;
       this.setState({ isGeneratingKey: false });
       this.showError(
-        `${t('admin.errors.generateKeyError')}\n${t(
+        `${t('admin.electionKey.errors.generateKeyError')}\n${t(
           'general.errorMessage'
         )}: ${error}`
       );
@@ -223,11 +223,13 @@ secret:${this.state.secretKey}\r\npublic:${this.state.publicKey}`.trim();
           result && result.data && result.data.setElectionGroupKey;
 
         if (!response || response.success === false) {
-          let errorMessage = this.props.t(
-            'admin.errors.activateKeyErrorGeneral'
-          );
+          let errorMessage = this.props.t('admin.electionKey.backend.unknown');
           if (response && response.code) {
-            errorMessage = translateBackendError(response.code, this.props.t);
+            errorMessage = translateBackendError(
+              response.code,
+              this.props.t,
+              'admin.electionKey.errors.backend'
+            );
           }
           this.setState({ isActivatingKey: false });
           this.showError(errorMessage);
@@ -237,7 +239,7 @@ secret:${this.state.secretKey}\r\npublic:${this.state.publicKey}`.trim();
       })
       .catch(error => {
         this.setState({ isActivatingKey: false });
-        this.showError(this.props.t('admin.errors.activateKeyErrorGeneral'));
+        this.showError(this.props.t('admin.electionKey.backend.unknown'));
       });
   };
 

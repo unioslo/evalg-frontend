@@ -7,11 +7,14 @@ export const getSupportedLanguages = (): string[] => {
 
 export const translateBackendError = (
   errorCode: string,
-  t: TranslationFunction
+  t: TranslationFunction,
+  codePrefix = 'backend.errors',
+  ...rest: any
 ) => {
-  const errorCodeKey = `admin.backendErrors.${camelCase(errorCode)}`;
-  const unknownKey = 'admin.backendErrors.unknown';
-  return t([errorCodeKey, unknownKey]);
+  const errorCodeKey = `${codePrefix}.${camelCase(errorCode)}`;
+  const unknownCategorizedKey = `$(codePrefix).unknown`;
+  const unknownKey = 'backend.errors.unknown';
+  return t([errorCodeKey, unknownCategorizedKey, unknownKey], ...rest);
 };
 
 export const joinStringsWithCommaAndAnd = (

@@ -27,14 +27,12 @@ import {
 import Text from '../../../../../components/text';
 import { Redirect } from 'react-router';
 import UploadCensusFileModal, {
-  IReturnStatus,
+  IUploadCensusFileModalStatus,
 } from './components/UploadCensusFile';
 
 import { DropDownOption, Election, IVoter } from '../../../../../interfaces';
 import { i18n } from 'i18next';
-import {
-  getVoterIdTypeDisplayName,
-} from '../../../../../utils/i18n';
+import { getVoterIdTypeDisplayName } from '../../../../../utils/i18n';
 import {
   VoterGroupActionPanel,
   VoterGroupActionPanelContainer,
@@ -318,23 +316,13 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
     });
   }
 
-  closeUploadCensusFileModal(props: IReturnStatus) {
+  closeUploadCensusFileModal(result: IUploadCensusFileModalStatus) {
     this.setState({
       showUploadCensusFileModal: false,
     });
 
-    if (props.showMsg) {
-      let msg: string | React.ReactElement<any> = '';
-      if (props.parseCompleded) {
-        msg = (
-          <Trans values={{ nr: props.ok, pollbookName: props.pollBookName }}>
-            census.uploadOkMsg
-          </Trans>
-        );
-      } else {
-        msg = <Trans>census.uploadServerError</Trans>;
-      }
-      this.showMessageBox(msg);
+    if (result.message) {
+      this.showMessageBox(result.message);
     }
   }
 

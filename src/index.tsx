@@ -3,7 +3,7 @@ import 'core-js';
 
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
-import { HttpLink } from 'apollo-link-http';
+import { createUploadLink } from 'apollo-upload-client';
 import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
 import * as React from 'react';
 import { ApolloProvider } from 'react-apollo';
@@ -40,7 +40,8 @@ const callback = (props: any) => (
 );
 
 const constructApolloClient = () => {
-  const httpLink = new HttpLink({ uri: graphqlBackend });
+  // uploadLink extends HttpLink from 'apollo-link-http'
+  const uploadLink: ApolloLink = createUploadLink({ uri: graphqlBackend });
 
   const authMiddleware = new ApolloLink((operation, forward) => {
     operation.setContext(({ headers = {} }) => ({
@@ -88,7 +89,7 @@ const constructApolloClient = () => {
   });
 
   const client = new ApolloClient({
-    link: ApolloLink.from([stateLink, authMiddleware, httpLink]),
+    link: ApolloLink.from([stateLink, authMiddleware, uploadLink]),
     cache,
   });
 
