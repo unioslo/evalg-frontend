@@ -251,7 +251,7 @@ const validate = (electionTemplate: any) => (values: object) => {
   return {};
 };
 
-function NewElectionForm(props: IProps) {
+const NewElectionForm: React.FunctionComponent<IProps> = (props: IProps) => {
   const { electionTemplate, submitAction, cancelAction } = props;
 
   const { templateRoot, ouLists } = electionTemplate;
@@ -342,6 +342,6 @@ function NewElectionForm(props: IProps) {
       }}
     />
   );
-}
+};
 
 export default NewElectionForm;

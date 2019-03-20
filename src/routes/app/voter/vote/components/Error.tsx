@@ -17,7 +17,7 @@ interface IProps {
   classes: Classes;
 }
 
-function Error(props: IProps) {
+const Error: React.FunctionComponent<IProps> = (props: IProps) => {
   const { t } = useTranslation();
   const { classes } = props;
 
@@ -36,6 +36,6 @@ function Error(props: IProps) {
       </div>
     </PageSection>
   );
-}
+};
 
 export default injectSheet(styles)(Error);

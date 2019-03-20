@@ -24,7 +24,9 @@ interface IProps {
   noElectionsText: React.ReactElement;
 }
 
-function VoterElectionsTable(props: IProps) {
+const VoterElectionsTable: React.FunctionComponent<IProps> = (
+  props: IProps
+) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
   const { electionGroups, noElectionsText } = props;
@@ -111,6 +113,6 @@ function VoterElectionsTable(props: IProps) {
       </TableBody>
     </Table>
   );
-}
+};
 
 export default VoterElectionsTable;

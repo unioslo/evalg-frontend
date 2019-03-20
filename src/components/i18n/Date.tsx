@@ -9,7 +9,7 @@ interface IProps {
   longDate: boolean;
 }
 
-export default function Date(props: IProps) {
+const Date: React.FunctionComponent<IProps> = (props: IProps) => {
   const { i18n, t } = useTranslation();
 
   if (!props.dateTime) {
@@ -20,4 +20,6 @@ export default function Date(props: IProps) {
     ? moment.tz(props.dateTime, appTimezone).format('LL')
     : moment.tz(props.dateTime, appTimezone).format('L');
   return <span>{date}</span>;
-}
+};
+
+export default Date;

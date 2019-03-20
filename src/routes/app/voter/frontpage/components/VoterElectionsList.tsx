@@ -31,7 +31,9 @@ interface IListItemProps {
   classes: Classes;
 }
 
-function VoterElectionsListItem(props: IListItemProps) {
+const VoterElectionsListItem: React.FunctionComponent<IListItemProps> = (
+  props: IListItemProps
+) => {
   const { electionGroup, lang, canVote } = props;
   const { t } = useTranslation();
   const election = electionGroup.elections[0];
@@ -74,7 +76,7 @@ function VoterElectionsListItem(props: IListItemProps) {
       </ButtonContainer>
     </li>
   );
-}
+};
 
 interface IListProps {
   electionGroups: Array<ElectionGroup>;
@@ -83,7 +85,9 @@ interface IListProps {
   classes: Classes;
 }
 
-export function VoterElectionsList(props: IListProps) {
+const VoterElectionsList: React.FunctionComponent<IListProps> = (
+  props: IListProps
+) => {
   const { electionGroups, noElectionsText, classes } = props;
   const { i18n } = useTranslation();
 
@@ -104,6 +108,6 @@ export function VoterElectionsList(props: IListProps) {
       ))}
     </ul>
   );
-}
+};
 
 export default injectSheet(styles)(VoterElectionsList);

@@ -139,12 +139,12 @@ interface IProps {
   activeElections: Election[];
 }
 
-function VotingPeriodValues(props: IProps) {
+const VotingPeriodValues: React.FunctionComponent<IProps> = (props: IProps) => {
   const { i18n } = useTranslation();
 
   const { electionGroup: grp, activeElections } = props;
   const VotingTimes = getVotingInfoComponent(grp.type, activeElections);
   return <VotingTimes elections={activeElections} lang={i18n.language} />;
-}
+};
 
 export default VotingPeriodValues;

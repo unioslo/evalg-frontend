@@ -14,7 +14,7 @@ interface IProps {
   election: Election;
 }
 
-function ElectionTableRow(props: IProps) {
+const ElectionTableRow: React.FunctionComponent<IProps> = (props: IProps) => {
   const { election } = props;
   const { i18n, t } = useTranslation();
   const lang = i18n.language;
@@ -57,6 +57,6 @@ function ElectionTableRow(props: IProps) {
       </TableCell>
     </TableRow>
   );
-}
+};
 
 export default ElectionTableRow;
