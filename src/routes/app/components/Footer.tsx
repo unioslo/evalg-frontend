@@ -79,7 +79,7 @@ interface IProps {
   classes: any;
 }
 
-function Footer(props: IProps) {
+const Footer: React.FunctionComponent<IProps> = (props: IProps) => {
   const { classes } = props;
   const { t } = useTranslation();
 
@@ -161,6 +161,6 @@ function Footer(props: IProps) {
       )}
     </React.Fragment>
   );
-}
+};
 
 export default injectSheet(styles)(Footer);

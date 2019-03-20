@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 
-function Toggler() {
+const Toggler: React.FunctionComponent = () => {
   const { i18n } = useTranslation();
 
   const toggleLanguage = () => {
@@ -15,6 +15,6 @@ function Toggler() {
       {i18n.language === 'nb' ? 'English' : 'Norsk'}
     </a>
   );
-}
+};
 
 export default Toggler;

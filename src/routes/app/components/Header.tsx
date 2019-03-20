@@ -90,7 +90,7 @@ interface IProps {
   classes: Classes;
 }
 
-function Header(props: IProps) {
+const Header: React.FunctionComponent<IProps> = (props: IProps) => {
   const { classes } = props;
   const { t } = useTranslation();
 
@@ -215,7 +215,7 @@ function Header(props: IProps) {
       </div>
     </header>
   );
-}
+};
 
 const logout = (
   context: IAuthenticatorContext,
@@ -228,7 +228,7 @@ const logout = (
   history.push('/logout');
 };
 
-function MobileLogout() {
+const MobileLogout: React.FunctionComponent = () => {
   const { t } = useTranslation();
   return (
     <ApolloConsumer>
@@ -253,9 +253,9 @@ function MobileLogout() {
       }}
     </ApolloConsumer>
   );
-}
+};
 
-function UserNameAndLogout() {
+const UserNameAndLogout: React.FunctionComponent = () => {
   const { t } = useTranslation();
   return (
     <ApolloConsumer>
@@ -302,6 +302,6 @@ function UserNameAndLogout() {
       }}
     </ApolloConsumer>
   );
-}
+};
 
 export default injectSheet(styles)(Header);

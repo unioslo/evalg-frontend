@@ -17,7 +17,9 @@ interface IProps {
   selectAction: Function;
 }
 
-function ElectionGroupTableRow(props: IProps) {
+const ElectionGroupTableRow: React.FunctionComponent<IProps> = (
+  props: IProps
+) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
   const { elGrp } = props;
@@ -107,6 +109,6 @@ function ElectionGroupTableRow(props: IProps) {
       )}
     </TableRow>
   );
-}
+};
 
 export default ElectionGroupTableRow;

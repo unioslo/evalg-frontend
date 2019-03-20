@@ -13,7 +13,7 @@ const prefixes: any = {
   nb: 'kl',
 };
 
-export default function Time(props: IProps) {
+const Time: React.FunctionComponent<IProps> = (props: IProps) => {
   const { i18n, t } = useTranslation();
 
   if (!props.dateTime) {
@@ -23,4 +23,6 @@ export default function Time(props: IProps) {
   const lang = i18n.language;
   const time = moment.tz(props.dateTime, appTimezone).format('LT');
   return <span>{`${prefixes[lang]} ${time}`}</span>;
-}
+};
+
+export default Time;

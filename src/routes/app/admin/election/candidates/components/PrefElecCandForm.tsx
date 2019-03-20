@@ -22,7 +22,6 @@ interface IProps {
   options?: any[];
 }
 
-// const validate = (lang: string, t: Function) => (values: Object) => {
 const validate = (lang: string, t: (s: string) => string) => (values: any) => {
   const errors: any = {};
   if (!values.name) {
@@ -53,7 +52,7 @@ const validate = (lang: string, t: (s: string) => string) => (values: any) => {
   return {};
 };
 
-function PrefElecCandForm(props: IProps) {
+const PrefElecCandForm: React.FunctionComponent<IProps> = (props: IProps) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
 
@@ -144,6 +143,6 @@ function PrefElecCandForm(props: IProps) {
       }}
     />
   );
-}
+};
 
 export default PrefElecCandForm;

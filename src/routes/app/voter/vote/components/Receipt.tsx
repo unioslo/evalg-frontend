@@ -16,7 +16,7 @@ interface IProps {
   classes: Classes;
 }
 
-function Receipt(props: IProps) {
+const Receipt: React.FunctionComponent<IProps> = (props: IProps) => {
   const { classes } = props;
   const { t } = useTranslation();
 
@@ -35,6 +35,6 @@ function Receipt(props: IProps) {
       </div>
     </PageSection>
   );
-}
+};
 
 export default injectSheet(styles)(Receipt);

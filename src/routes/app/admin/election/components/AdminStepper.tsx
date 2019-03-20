@@ -13,7 +13,7 @@ interface IProps {
   path: string;
 }
 
-function AdminStepper(props: IProps) {
+const AdminStepper: React.FunctionComponent<IProps> = (props: IProps) => {
   const { groupId, path } = props;
   const { t } = useTranslation();
   const activeSection = path.split('/').pop();
@@ -58,6 +58,6 @@ function AdminStepper(props: IProps) {
       </Link>
     </Stepper>
   );
-}
+};
 
 export default AdminStepper;

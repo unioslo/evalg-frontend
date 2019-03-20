@@ -47,7 +47,9 @@ interface IProps {
 //   return errors;
 // };
 
-function PrefTeamElecCandForm(props: IProps) {
+const PrefTeamElecCandForm: React.FunctionComponent<IProps> = (
+  props: IProps
+) => {
   const {
     cancelAction,
     initialValues,
@@ -150,6 +152,6 @@ function PrefTeamElecCandForm(props: IProps) {
       }}
     />
   );
-}
+};
 
 export default PrefTeamElecCandForm;

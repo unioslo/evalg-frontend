@@ -45,7 +45,9 @@ interface IFrontPageProps {
   // classes: Classes;
 }
 
-function FrontPage(props: IFrontPageProps) {
+const FrontPage: React.FunctionComponent<IFrontPageProps> = (
+  props: IFrontPageProps
+) => {
   const { t } = useTranslation();
 
   return (
@@ -54,13 +56,13 @@ function FrontPage(props: IFrontPageProps) {
       <Link to="/login">{t('general.login')}</Link>
     </div>
   );
-}
+};
 
 interface IStyleProp {
   classes: Classes;
 }
 
-function logout(props: IStyleProp) {
+const logout: React.FunctionComponent<IStyleProp> = (props: IStyleProp) => {
   const { t } = useTranslation();
   window.location.href = oidcLogoutUrl;
   return (
@@ -71,7 +73,7 @@ function logout(props: IStyleProp) {
       {t('general.logoutInProgress')}
     </div>
   );
-}
+};
 const styledLogout = injectSheet(styles)(logout);
 
 interface IAppProps {
@@ -79,7 +81,7 @@ interface IAppProps {
   authManager: any;
 }
 
-function App(props: IAppProps) {
+const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
   const { authManager, classes } = props;
   const ProtectedAdmin = authEnabled ? authManager(<AdminRoute />) : AdminRoute;
   const ProtectedVoter = authEnabled ? authManager(<VoterRoute />) : VoterRoute;
@@ -110,7 +112,7 @@ function App(props: IAppProps) {
       </div>
     </div>
   );
-}
+};
 
 const styledApp = injectSheet(styles)(App);
 export default styledApp;

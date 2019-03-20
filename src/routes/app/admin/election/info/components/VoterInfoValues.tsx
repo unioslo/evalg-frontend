@@ -116,7 +116,7 @@ interface IProps {
   elections: Array<Election>;
 }
 
-function VoterInfoValues(props: IProps) {
+const VoterInfoValues: React.FunctionComponent<IProps> = (props: IProps) => {
   const { elections } = props;
   const electionGroup: any = props.electionGroup;
   const { i18n } = useTranslation();
@@ -206,6 +206,6 @@ function VoterInfoValues(props: IProps) {
       </PageSubSection>
     </React.Fragment>
   );
-}
+};
 
 export default VoterInfoValues;
