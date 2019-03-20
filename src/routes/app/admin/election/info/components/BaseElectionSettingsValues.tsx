@@ -1,49 +1,47 @@
 import * as React from 'react';
-import { translate, Trans } from 'react-i18next';
-import { i18n } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 import Text from '../../../../../../components/text';
 import { InfoList, InfoListItem } from '../../../../../../components/infolist';
 import { ElectionGroup } from '../../../../../../interfaces';
+import { WithTranslation } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
+interface IProps extends WithTranslation {
+  electionGroup: ElectionGroup;
+}
 
-interface IProps {
-  electionGroup: ElectionGroup,
-  i18n: i18n,
-};
-
-const BaseElectionSettingsValues: React.SFC<IProps> = (props) => {
-  const lang = props.i18n.language;
+const BaseElectionSettingsValues: React.SFC<IProps> = props => {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
   const { elections } = props.electionGroup;
   const activeElections = elections.filter(e => e.active);
   const hasGenderQuota = props.electionGroup.hasGenderQuota;
   return (
     <InfoList>
       {activeElections.length === 0 && (
-        <InfoListItem>
-          <Trans>election.noActiveElections</Trans>
-        </InfoListItem>
+        <InfoListItem>{t('election.noActiveElections')}</InfoListItem>
       )}
-      {activeElections.map((election: any,  index: any) => {
+      {activeElections.map((election: any, index: any) => {
         return (
           <InfoListItem key={index}>
             {election.name[lang]}:{' '}
             <Text bold={true} inline={true}>
               {election.meta.candidateRules.seats}&nbsp;
-              <Trans>election.candidatesShort</Trans>,&nbsp;
+              {t('election.candidatesShort')},&nbsp;
               {election.meta.candidateRules.substitutes}&nbsp;
-              <Trans>election.coCandidatesShort</Trans>
+              {t('election.coCandidatesShort')}
             </Text>
           </InfoListItem>
         );
       })}
       {hasGenderQuota && (
         <InfoListItem smallText={true}>
-          <Trans>election.hasGenderQuota</Trans>
+          {t('election.hasGenderQuota')}
         </InfoListItem>
       )}
     </InfoList>
   );
 };
 
-export default translate()(BaseElectionSettingsValues);
+export default withTranslation()(BaseElectionSettingsValues);

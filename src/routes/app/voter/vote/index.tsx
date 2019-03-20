@@ -1,8 +1,7 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { Query, WithApolloClient, withApollo } from 'react-apollo';
-import { translate } from 'react-i18next';
-import { TranslateHocProps } from 'react-i18next/src/translate';
+import { withTranslation, WithTranslation } from 'react-i18next';
 
 import {
   ElectionGroup,
@@ -93,7 +92,7 @@ type AddVoterResponse = {
   addVoter: IVoter;
 };
 
-interface IProps extends TranslateHocProps {
+interface IProps extends WithTranslation {
   electionGroupId: string;
 }
 
@@ -351,4 +350,4 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
   }
 }
 
-export default translate()(withApollo(VotingPage));
+export default withTranslation()(withApollo(VotingPage));

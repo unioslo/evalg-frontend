@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { Trans } from 'react-i18next';
-import { translate } from 'react-i18next';
-import { TranslateHocProps } from 'react-i18next/src/translate';
+import { WithTranslation, withTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
 
 import { Button, ButtonContainer } from '../../../../../components/button';
@@ -17,6 +15,7 @@ import {
 } from './CandidateList';
 
 import { Candidate } from '../../../../../interfaces';
+import { Classes } from 'jss';
 
 const styles = (theme: any) => ({
   ingress: {
@@ -34,12 +33,12 @@ const styles = (theme: any) => ({
   },
 });
 
-interface IReviewProps extends TranslateHocProps {
+interface IReviewProps extends WithTranslation {
   selectedCandidates: Candidate[];
   isBlankVote: boolean;
   onGoBackToBallot: () => void;
   onSubmitVote: () => void;
-  classes: any;
+  classes: Classes;
 }
 
 const PrefElecReview: React.SFC<IReviewProps> = ({
@@ -48,6 +47,7 @@ const PrefElecReview: React.SFC<IReviewProps> = ({
   onGoBackToBallot,
   onSubmitVote,
   classes,
+  t,
 }) => {
   const ballot = (
     <CandidateList>
@@ -65,30 +65,23 @@ const PrefElecReview: React.SFC<IReviewProps> = ({
 
   const blankBallot = (
     <div className={classes.blankVoteTextContainer}>
-      <Trans>election.blankVote</Trans>
+      {t('election.blankVote')}
     </div>
   );
 
   const reviewButtons = (
     <ButtonContainer alignLeft>
-      <Button
-        secondary
-        text={<Trans>general.back</Trans>}
-        action={onGoBackToBallot}
-      />
-      <Button
-        text={<Trans>voter.submitVote</Trans>}
-        action={onSubmitVote}
-      />
+      <Button secondary text={t('general.back')} action={onGoBackToBallot} />
+      <Button text={t('voter.submitVote')} action={onSubmitVote} />
     </ButtonContainer>
   );
 
   return (
     <PageSection noBorder>
       <div className={classes.ingress}>
-        <Trans>voter.reviewBallotIngressText</Trans>
+        {t('voter.reviewBallotIngressText')}
       </div>
-      <PageSubSection header={<Trans>election.ballot</Trans>}>
+      <PageSubSection header={t('election.ballot')}>
         {isBlankVote ? blankBallot : <PageParagraph>{ballot}</PageParagraph>}
         {reviewButtons}
       </PageSubSection>
@@ -96,4 +89,4 @@ const PrefElecReview: React.SFC<IReviewProps> = ({
   );
 };
 
-export default injectSheet(styles)(translate()(PrefElecReview));
+export default injectSheet(styles)(withTranslation()(PrefElecReview));

@@ -1,31 +1,37 @@
 import i18n from 'i18next';
-import textsEn from 'text/en';
-import textsNb from 'text/nb';
+import XHR from 'i18next-xhr-backend';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import { initReactI18next } from 'react-i18next';
 
-i18n.init({
-  // we init with resources
-  resources: {
-    en: {
-      translations: textsEn,
+i18n
+  .use(XHR)
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    fallbackLng: {
+      no: ['nb'],
+      'en-US': ['en'],
+      default: ['nb'],
     },
-    nb: {
-      translations: textsNb,
+    debug: process.NODE_ENV !== 'production',
+
+    backend: {
+      loadPath: '/locales/{{lng}}/{{ns}}.json',
     },
-  },
-  fallbackLng: 'nb',
-  debug: process.NODE_ENV !== 'production',
 
-  ns: ['translations'],
-  defaultNS: 'translations',
+    ns: ['translation'],
+    defaultNS: 'translation',
+    fallbackNS: 'translation',
 
-  interpolation: {
-    escapeValue: false, // not needed for react!!
-    formatSeparator: ',',
-  },
+    interpolation: {
+      escapeValue: false, // not needed for react as it escapes by default
+      formatSeparator: ',',
+    },
+    keySeparator: '.', // we do not use keys in form messages.welcome
 
-  react: {
-    wait: true,
-  },
-});
+    react: {
+      wait: true,
+    },
+  });
 
 export default i18n;

@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import injectSheet from 'react-jss';
 import Link from '../../../components/link';
 import LanguageToggler from './LanguageToggler';
-import { Trans, translate } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { DesktopMenu, DesktopMenuItem } from './DesktopMenu';
 import { MobileMenu, MobileMenuItem } from './MobileMenu';
 import { UserContext } from '../../../providers/UserContext';
@@ -90,7 +90,10 @@ interface IProps {
   classes: Classes;
 }
 
-const Header = ({ classes }: IProps) => {
+function Header(props: IProps) {
+  const { classes } = props;
+  const { t } = useTranslation();
+
   return (
     <header>
       <div className={classes.logoBarWrapper}>
@@ -128,7 +131,7 @@ const Header = ({ classes }: IProps) => {
                     path="/admin"
                     render={() => (
                       <Link to="/" inheritColor>
-                        <Trans>general.frontPage</Trans>
+                        {t('general.frontPage')}
                       </Link>
                     )}
                   />
@@ -136,7 +139,7 @@ const Header = ({ classes }: IProps) => {
                     path="/"
                     render={() => (
                       <Link to="/admin" inheritColor>
-                        <Trans>general.administerElections</Trans>
+                        {t('general.administerElections')}
                       </Link>
                     )}
                   />
@@ -144,7 +147,7 @@ const Header = ({ classes }: IProps) => {
               </MobileMenuItem>
               <MobileMenuItem>
                 <Link inheritColor external noExternalIcon to={appHelpLink}>
-                  <Trans>general.help</Trans>
+                  {t('general.help')}
                 </Link>
               </MobileMenuItem>
               <MobileMenuItem>
@@ -158,7 +161,7 @@ const Header = ({ classes }: IProps) => {
                     path="/admin"
                     render={() => (
                       <Link to="/" inheritColor>
-                        <Trans>general.frontPage</Trans>
+                        {t('general.frontPage')}
                       </Link>
                     )}
                   />
@@ -166,7 +169,7 @@ const Header = ({ classes }: IProps) => {
                     path="/"
                     render={() => (
                       <Link to="/admin" inheritColor>
-                        <Trans>general.administerElections</Trans>
+                        {t('general.administerElections')}
                       </Link>
                     )}
                   />
@@ -174,7 +177,7 @@ const Header = ({ classes }: IProps) => {
               </DesktopMenuItem>
               <DesktopMenuItem>
                 <Link inheritColor external noExternalIcon to={appHelpLink}>
-                  <Trans>general.help</Trans>
+                  {t('general.help')}
                 </Link>
               </DesktopMenuItem>
               <DesktopMenuItem>
@@ -188,7 +191,7 @@ const Header = ({ classes }: IProps) => {
                 path="/admin"
                 render={() => (
                   <p className={classes.desc}>
-                    <Trans>general.headerSubtitleAdmin</Trans>
+                    {t('general.headerSubtitleAdmin')}
                   </p>
                 )}
               />
@@ -196,7 +199,7 @@ const Header = ({ classes }: IProps) => {
                 path="/"
                 render={() => (
                   <p className={classes.desc}>
-                    <Trans>general.headerSubtitleVoter</Trans>
+                    {t('general.headerSubtitleVoter')}
                   </p>
                 )}
               />
@@ -212,7 +215,7 @@ const Header = ({ classes }: IProps) => {
       </div>
     </header>
   );
-};
+}
 
 const logout = (
   context: IAuthenticatorContext,
@@ -225,7 +228,8 @@ const logout = (
   history.push('/logout');
 };
 
-const MobileLogout = () => {
+function MobileLogout() {
+  const { t } = useTranslation();
   return (
     <ApolloConsumer>
       {client => {
@@ -236,7 +240,7 @@ const MobileLogout = () => {
                 return (
                   <MobileMenuItem>
                     <a onClick={logout(context, client)}>
-                      <Trans>general.logout</Trans>
+                      {t('general.logout')}
                     </a>
                   </MobileMenuItem>
                 );
@@ -249,9 +253,10 @@ const MobileLogout = () => {
       }}
     </ApolloConsumer>
   );
-};
+}
 
-const UserNameAndLogout = () => {
+function UserNameAndLogout() {
+  const { t } = useTranslation();
   return (
     <ApolloConsumer>
       {client => {
@@ -283,7 +288,7 @@ const UserNameAndLogout = () => {
                     </DesktopMenuItem>
                     <DesktopMenuItem>
                       <a onClick={logout(context, client)}>
-                        <Trans>general.logout</Trans>
+                        {t('general.logout')}
                       </a>
                     </DesktopMenuItem>
                   </>
@@ -297,6 +302,6 @@ const UserNameAndLogout = () => {
       }}
     </ApolloConsumer>
   );
-};
+}
 
-export default injectSheet(styles)(translate()(Header));
+export default injectSheet(styles)(Header);

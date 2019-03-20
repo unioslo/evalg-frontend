@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
-import { translate, TranslationFunction } from 'react-i18next';
 import injectSheet from 'react-jss';
 
 import Icon from '../icon';
 import TextInput from './TextInput';
 import { Classes } from 'jss';
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 const styles = (theme: any) => ({
   outerContainer: {
@@ -17,7 +17,7 @@ const styles = (theme: any) => ({
   },
   timeInput: {
     background: 'url("/clock.svg") no-repeat 90% 50%',
-    backgroundSize: '16px 16px'
+    backgroundSize: '16px 16px',
   },
   timePicker: {
     position: 'absolute',
@@ -28,7 +28,7 @@ const styles = (theme: any) => ({
     height: '11.6rem',
     border: `${theme.formFieldBorder} ${theme.formFieldBorderColor}`,
     borderRadius: theme.formFieldBorderRadius,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   timePickerNoLabel: {
     top: '4.6rem',
@@ -38,11 +38,11 @@ const styles = (theme: any) => ({
     textAlign: 'center',
     display: 'inline-block',
     '&:first-child': {
-      marginLeft: 0
+      marginLeft: 0,
     },
     '&:last-child': {
-      marginRight: 0
-    }
+      marginRight: 0,
+    },
   },
   timePickerInput: {
     width: '5.2rem',
@@ -58,8 +58,8 @@ const styles = (theme: any) => ({
     transition: `border-color ${theme.formFieldFocusTransition}`,
     '&:focus': {
       borderColor: theme.formFieldBorderActiveColor,
-      transition: `border-color ${theme.formFieldFocusTransition}`
-    }
+      transition: `border-color ${theme.formFieldFocusTransition}`,
+    },
   },
   timePickerSeparator: {
     position: 'relative',
@@ -72,26 +72,25 @@ const styles = (theme: any) => ({
     cursor: 'pointer',
     display: 'flex',
     height: '1.8rem',
-    justifyContent: 'center'
-  }
-})
+    justifyContent: 'center',
+  },
+});
 
-interface IProps {
-  value: string,
-  onChange: (event: any) => void,
-  name: string,
-  t: TranslationFunction,
-  label?: any,
-  small?: boolean,
-  error?: any,
-  classes: Classes,
-};
+interface IProps extends WithTranslation {
+  value: string;
+  onChange: (event: any) => void;
+  name: string;
+  label?: any;
+  small?: boolean;
+  error?: any;
+  classes: Classes;
+}
 
 interface IState {
-  hourValue: string,
-  minuteValue: string,
-  hasFocus: boolean,
-  inputValue: any,
+  hourValue: string;
+  minuteValue: string;
+  hasFocus: boolean;
+  inputValue: any;
 }
 
 class TimeInput extends React.Component<IProps, IState> {
@@ -115,10 +114,10 @@ class TimeInput extends React.Component<IProps, IState> {
     this.decrementMinuteValue = this.decrementMinuteValue.bind(this);
     this.state = {
       hasFocus: false,
-      hourValue: "",
-      minuteValue: "",
-      inputValue: ''
-    }
+      hourValue: '',
+      minuteValue: '',
+      inputValue: '',
+    };
   }
 
   componentWillMount() {
@@ -127,12 +126,13 @@ class TimeInput extends React.Component<IProps, IState> {
       this.setState({
         hourValue: hrMinValues[0],
         minuteValue: hrMinValues[1],
-        inputValue: `${hrMinValues[0]}:${hrMinValues[1]}`
+        inputValue: `${hrMinValues[0]}:${hrMinValues[1]}`,
       });
-    }
-    else {
+    } else {
       this.setState({
-        hourValue: "00", minuteValue: "00", inputValue: ""
+        hourValue: '00',
+        minuteValue: '00',
+        inputValue: '',
       });
     }
   }
@@ -160,7 +160,7 @@ class TimeInput extends React.Component<IProps, IState> {
     this.setState({
       inputValue: `${hourValue}:${minuteValue}`,
       hourValue,
-      minuteValue
+      minuteValue,
     });
   }
 
@@ -191,9 +191,8 @@ class TimeInput extends React.Component<IProps, IState> {
     const hourValue = parseInt(this.state.hourValue, 10);
     let newHourValue = null;
     if (hourValue === 23) {
-      newHourValue = "00";
-    }
-    else {
+      newHourValue = '00';
+    } else {
       newHourValue = this.intToString(hourValue + 1);
     }
     this.handleChangedValue(newHourValue, this.state.minuteValue);
@@ -204,10 +203,9 @@ class TimeInput extends React.Component<IProps, IState> {
     const hourValue = parseInt(this.state.hourValue, 10);
     let newHourValue = null;
     if (hourValue === 0) {
-      newHourValue = "23";
-    }
-    else {
-      newHourValue = this.intToString(hourValue - 1)
+      newHourValue = '23';
+    } else {
+      newHourValue = this.intToString(hourValue - 1);
     }
     this.handleChangedValue(newHourValue, this.state.minuteValue);
   }
@@ -217,9 +215,8 @@ class TimeInput extends React.Component<IProps, IState> {
     let newMinuteValue = null;
     const minuteValue = parseInt(this.state.minuteValue, 10);
     if (minuteValue === 59) {
-      newMinuteValue = "00";
-    }
-    else {
+      newMinuteValue = '00';
+    } else {
       newMinuteValue = this.intToString(minuteValue + 1);
     }
     this.handleChangedValue(this.state.hourValue, newMinuteValue);
@@ -230,9 +227,8 @@ class TimeInput extends React.Component<IProps, IState> {
     let newMinuteValue = null;
     const minuteValue = parseInt(this.state.minuteValue, 10);
     if (minuteValue === 0) {
-      newMinuteValue = "59";
-    }
-    else {
+      newMinuteValue = '59';
+    } else {
       newMinuteValue = this.intToString(minuteValue - 1);
     }
     this.handleChangedValue(this.state.hourValue, newMinuteValue);
@@ -243,12 +239,14 @@ class TimeInput extends React.Component<IProps, IState> {
     const { hasFocus, inputValue } = this.state;
     const timepickerClassNames = classNames({
       [classes.timePicker]: true,
-      [classes.timePickerNoLabel]: !label
+      [classes.timePickerNoLabel]: !label,
     });
     return (
       <div className={classes.outerContainer}>
-        <div className={classes.innerContainer}
-          ref={(node) => (this.wrapperRef = node)}>
+        <div
+          className={classes.innerContainer}
+          ref={node => (this.wrapperRef = node)}
+        >
           <TextInput
             name={name}
             className={classes.timeInput}
@@ -263,15 +261,21 @@ class TimeInput extends React.Component<IProps, IState> {
           />
           <TransitionGroup>
             <CSSTransition
-            classNames="fade-in-and-out"
-            timeout={{ enter: 500, exit: 500 }}>
+              classNames="fade-in-and-out"
+              timeout={{ enter: 500, exit: 500 }}
+            >
               <div>
-                {hasFocus &&
-                  <div className={timepickerClassNames} >
+                {hasFocus && (
+                  <div className={timepickerClassNames}>
                     <div className={classes.timePickerInputContainer}>
-                      <div className={classes.timePickerIcon}
-                        onClick={this.incrementHourValue} >
-                        <Icon type="upArrowSmall" onClick={this.incrementHourValue} />
+                      <div
+                        className={classes.timePickerIcon}
+                        onClick={this.incrementHourValue}
+                      >
+                        <Icon
+                          type="upArrowSmall"
+                          onClick={this.incrementHourValue}
+                        />
                       </div>
                       <input
                         type="text"
@@ -280,15 +284,19 @@ class TimeInput extends React.Component<IProps, IState> {
                         value={this.state.hourValue}
                         onChange={this.handleHourChange}
                       />
-                      <div className={classes.timePickerIcon}
-                        onClick={this.decrementHourValue} >
+                      <div
+                        className={classes.timePickerIcon}
+                        onClick={this.decrementHourValue}
+                      >
                         <Icon type="downArrowSmall" />
                       </div>
                     </div>
                     <div className={classes.timePickerSeparator}>:</div>
                     <div className={classes.timePickerInputContainer}>
-                      <div className={classes.timePickerIcon}
-                        onClick={this.incrementMinuteValue} >
+                      <div
+                        className={classes.timePickerIcon}
+                        onClick={this.incrementMinuteValue}
+                      >
                         <Icon type="upArrowSmall" />
                       </div>
                       <input
@@ -298,38 +306,39 @@ class TimeInput extends React.Component<IProps, IState> {
                         value={this.state.minuteValue}
                         onChange={this.handleMinuteChange}
                       />
-                      <div className={classes.timePickerIcon}
-                        onClick={this.decrementMinuteValue} >
+                      <div
+                        className={classes.timePickerIcon}
+                        onClick={this.decrementMinuteValue}
+                      >
                         <Icon type="downArrowSmall" />
                       </div>
                     </div>
                   </div>
-                }
+                )}
               </div>
             </CSSTransition>
           </TransitionGroup>
         </div>
       </div>
-    )
+    );
   }
 }
 
-const TimeInputHOC = translate()(injectSheet(styles)(TimeInput));
+const TimeInputHOC = withTranslation()(injectSheet(styles)(TimeInput));
 
 export default TimeInputHOC;
-
 
 /* Redux Form Wrapper */
 
 interface IRFProps {
   input: {
-    value: string,
-    onChange: (event: any) => void,
-    name: string,
-  },
-  meta: { error: any },
-  label?: any,
-  small?: boolean
+    value: string;
+    onChange: (event: any) => void;
+    name: string;
+  };
+  meta: { error: any };
+  label?: any;
+  small?: boolean;
 }
 
 export const TimeInputRF = (props: IRFProps) => {
@@ -342,5 +351,5 @@ export const TimeInputRF = (props: IRFProps) => {
       error={meta.error}
       {...restProps}
     />
-  )
+  );
 };

@@ -6,7 +6,7 @@ import {
   FormRenderProps,
   FieldRenderProps,
 } from 'react-final-form';
-import { Trans, translate, TranslationFunction } from 'react-i18next';
+import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 import gql from 'graphql-tag';
 import { ApolloQueryResult } from 'apollo-client';
 import { withApollo, WithApolloClient } from 'react-apollo';
@@ -109,12 +109,10 @@ interface IUploadCensusFileResponse {
   };
 }
 
-interface IProps {
+interface IProps extends WithTranslation {
   closeAction: (proc: IUploadCensusFileModalStatus) => void;
   header: string | React.ReactElement<any>;
   pollBooks: any;
-  i18n: any;
-  t: TranslationFunction;
   groupId: string;
   refetchData?: (
     variables?: { id: string } | undefined
@@ -298,9 +296,8 @@ class UploadCensusFileModal extends React.Component<
 
   private renderForm(formProps: FormRenderProps) {
     const { handleSubmit, pristine, invalid } = formProps;
-    const {
-      i18n: { language: lang },
-    } = this.props;
+    const { i18n } = this.props;
+    const lang = i18n.language;
 
     // Wrapper to call preventDefault on submit
     const submitWrapper = (event: React.SyntheticEvent<HTMLFormElement>) => {
@@ -384,5 +381,5 @@ class UploadCensusFileModal extends React.Component<
 }
 
 export default injectSheet(styles)(
-  translate()(withApollo(UploadCensusFileModal))
+  withTranslation()(withApollo(UploadCensusFileModal))
 );

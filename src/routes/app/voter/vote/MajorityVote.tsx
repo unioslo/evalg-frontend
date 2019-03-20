@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { translate } from 'react-i18next';
-import { TranslateHocProps } from 'react-i18next/src/translate';
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 import { shuffleArray } from '../../../../utils/helpers';
 import MajorityVoteReview from './components/MajorityVoteReview';
@@ -9,7 +8,7 @@ import { Candidate, Election } from '../../../../interfaces';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { BallotStep } from '.';
 
-interface IProps extends TranslateHocProps {
+interface IProps extends WithTranslation {
   election: Election;
   ballotStep: BallotStep;
   onProceedToReview: () => void;
@@ -104,4 +103,4 @@ class MajorityVote extends React.Component<
   };
 }
 
-export default translate()(withRouter(MajorityVote));
+export default withTranslation()(withRouter(MajorityVote));

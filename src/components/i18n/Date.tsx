@@ -1,25 +1,23 @@
 import * as React from 'react';
-import { translate, Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import moment, { Moment } from 'moment-timezone';
 import 'moment/locale/nb';
 import { appTimezone } from '../../appConfig';
-import { i18n } from 'i18next';
 
 interface IProps {
-  dateTime: Moment | string,
-  longDate: boolean,
-  i18n: i18n,
-};
+  dateTime: Moment | string;
+  longDate: boolean;
+}
 
-const Date = (props: IProps) => {
+export default function Date(props: IProps) {
+  const { i18n, t } = useTranslation();
+
   if (!props.dateTime) {
-    return <Trans>election.valueNotSet</Trans>;
+    return <span>{t('election.valueNotSet')}</span>;
   }
-  moment.locale(props.i18n.language);
+  moment.locale(i18n.language);
   const date = props.longDate
     ? moment.tz(props.dateTime, appTimezone).format('LL')
     : moment.tz(props.dateTime, appTimezone).format('L');
   return <span>{date}</span>;
-};
-
-export default translate()(Date);
+}

@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { translate, Trans } from 'react-i18next';
+import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 import Page from '../../../../../components/page/Page';
 import { PageSection } from '../../../../../components/page';
 import Text from '../../../../../components/text';
 import Button, { ButtonContainer } from '../../../../../components/button';
 import { History } from 'history';
-import { i18n } from 'i18next';
 import gql from 'graphql-tag';
 
 import { ISettingsSectionContents } from '../../../../../components/page/SettingsSection';
@@ -34,12 +33,11 @@ const defaultSettingsSectionsContents: ISettingsSectionContents[] = [
   AdminRolesSettingsSection,
 ];
 
-interface IProps {
+interface IProps extends WithTranslation {
   electionGroupData: ElectionGroup;
   isNewElection?: boolean;
   handleUpdate?: () => Promise<any>; // TODO: Isn't used. Delete?
   history: History;
-  i18n: i18n;
 }
 
 type PropsInternal = WithApolloClient<IProps>;
@@ -79,7 +77,8 @@ class InfoPage extends React.Component<PropsInternal> {
   render() {
     const { id: groupId } = this.props.electionGroupData;
 
-    const lang = this.props.i18n.language;
+    const { i18n } = this.props;
+    const lang = i18n.language;
     const history = this.props.history;
 
     const proceedToCandiates = () => {
@@ -115,8 +114,9 @@ class InfoPage extends React.Component<PropsInternal> {
                 }
                 action={proceedToCandiates}
                 disabled={
-                  this.props.electionGroupData.elections.filter((e: any) => e.active)
-                    .length === 0
+                  this.props.electionGroupData.elections.filter(
+                    (e: any) => e.active
+                  ).length === 0
                 }
                 iconRight="mainArrow"
               />
@@ -128,4 +128,4 @@ class InfoPage extends React.Component<PropsInternal> {
   }
 }
 
-export default translate()(withApollo(InfoPage));
+export default withTranslation()(withApollo(InfoPage));

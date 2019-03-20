@@ -4,9 +4,8 @@ import nb from 'date-fns/locale/nb';
 import moment from 'moment';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
-import { translate } from 'react-i18next';
+import { WithTranslation, withTranslation } from 'react-i18next';
 import { Classes } from 'jss';
-import { i18n, TranslationFunction } from 'i18next';
 
 import './react-datepicker.min.css';
 
@@ -55,7 +54,7 @@ const styles = (theme: any) => ({
   },
 });
 
-interface IProps {
+interface IProps extends WithTranslation {
   value: string;
   onChange: (event: any) => void;
   onFocus: Function;
@@ -63,11 +62,9 @@ interface IProps {
   name: string;
   lang?: string;
   label?: any;
-  t: TranslationFunction;
   small?: boolean;
   error?: any;
   classes: Classes;
-  i18n: i18n;
 }
 
 interface IState {
@@ -156,7 +153,7 @@ class DateInput extends React.Component<IProps, IState> {
   }
 }
 
-const DateInputHOC = injectSheet(styles)(translate()(DateInput));
+const DateInputHOC = injectSheet(styles)(withTranslation()(DateInput));
 
 export default DateInputHOC;
 

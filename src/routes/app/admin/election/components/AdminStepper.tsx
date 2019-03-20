@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { translate, TranslationFunction } from 'react-i18next';
 
 import { Stepper, StepperItem } from '../../../../../components/stepper';
+import { useTranslation } from 'react-i18next';
 
 const calculatePath = (groupId: string | number) => (
   subRoute: string | number
@@ -11,11 +11,11 @@ const calculatePath = (groupId: string | number) => (
 interface IProps {
   groupId: number | string;
   path: string;
-  t: TranslationFunction;
 }
 
-const AdminStepper: React.SFC<IProps> = props => {
-  const { groupId, path, t } = props;
+function AdminStepper(props: IProps) {
+  const { groupId, path } = props;
+  const { t } = useTranslation();
   const activeSection = path.split('/').pop();
   const linkGenerator = calculatePath(groupId);
   return (
@@ -58,6 +58,6 @@ const AdminStepper: React.SFC<IProps> = props => {
       </Link>
     </Stepper>
   );
-};
+}
 
-export default translate()(AdminStepper);
+export default AdminStepper;

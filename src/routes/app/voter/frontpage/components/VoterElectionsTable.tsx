@@ -1,6 +1,6 @@
 /* @flow */
 import * as React from 'react';
-import { Trans, translate } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import moment, { Moment } from 'moment';
 
 import Text from '../../../../../components/text';
@@ -16,18 +16,17 @@ import {
   TableRow,
   TableCell,
 } from '../../../../../components/table';
-import { i18n } from 'i18next';
 import { ElectionGroup } from '../../../../../interfaces';
 
 interface IProps {
   electionGroups: Array<ElectionGroup>;
   canVoteElectionGroups: string[];
   noElectionsText: React.ReactElement;
-  i18n: i18n;
 }
 
-const VoterElectionsTable: React.SFC<IProps> = props => {
-  const lang = props.i18n.language;
+function VoterElectionsTable(props: IProps) {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
   const { electionGroups, noElectionsText } = props;
 
   const dateTimeToMarkup = (dateTime: Moment | string) => (
@@ -45,18 +44,10 @@ const VoterElectionsTable: React.SFC<IProps> = props => {
     <Table>
       <TableHeader key="thead">
         <TableHeaderRow>
-          <TableHeaderCell>
-            <Trans>election.election</Trans>
-          </TableHeaderCell>
-          <TableHeaderCell>
-            <Trans>election.opens</Trans>
-          </TableHeaderCell>
-          <TableHeaderCell>
-            <Trans>election.closes</Trans>
-          </TableHeaderCell>
-          <TableHeaderCell>
-            <Trans>election.rightToVote</Trans>
-          </TableHeaderCell>
+          <TableHeaderCell>{t('election.election')}</TableHeaderCell>
+          <TableHeaderCell>{t('election.opens')}</TableHeaderCell>
+          <TableHeaderCell>{t('election.closes')}</TableHeaderCell>
+          <TableHeaderCell>{t('election.rightToVote')}</TableHeaderCell>
           <TableHeaderCell />
         </TableHeaderRow>
       </TableHeader>
@@ -90,29 +81,25 @@ const VoterElectionsTable: React.SFC<IProps> = props => {
           const hasVoted = false;
           return (
             <TableRow key={index} tall>
-              <TableCell maxWidth='50rem'>
+              <TableCell maxWidth="50rem">
                 <Text>{group.name[lang]}</Text>
               </TableCell>
               <TableCell>{dateTimeToMarkup(startTime)}</TableCell>
               <TableCell>{dateTimeToMarkup(endTime)}</TableCell>
               <TableCell alignCenter={true}>
-                <Text>
-                  {canVote ? (
-                    <Trans>general.yes</Trans>
-                  ) : (
-                    <Trans>general.no</Trans>
-                  )}
-                </Text>
+                {canVote ? (
+                  <Text>{t('general.yes')}</Text>
+                ) : (
+                  <Text>{t('general.no')}</Text>
+                )}
               </TableCell>
               <TableCell noPadding>
                 {!hasVoted ? (
-                  <Link to={`/vote/${group.id}`}>
-                    <Trans>election.voteNow</Trans>
-                  </Link>
+                  <Link to={`/vote/${group.id}`}>{t('election.voteNow')}</Link>
                 ) : (
                   <Button
                     secondary={true}
-                    text={<Trans>election.changeVote</Trans>}
+                    text={t('election.changeVote')}
                     wide={true}
                     action={() => console.error('CHANGE VOTE')}
                   />
@@ -124,6 +111,6 @@ const VoterElectionsTable: React.SFC<IProps> = props => {
       </TableBody>
     </Table>
   );
-};
+}
 
-export default translate()(VoterElectionsTable);
+export default VoterElectionsTable;

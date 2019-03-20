@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { translate, Trans } from 'react-i18next';
 
 import Page from '../../../../../components/page/Page';
 import PrefElecCandTable from './components/PrefElecCandTable';
@@ -7,13 +6,14 @@ import PrefTeamElecCandTable from './components/PrefTeamElecCandTable';
 import Button, { ButtonContainer } from '../../../../../components/button';
 import { Redirect } from 'react-router';
 import { ElectionGroup } from '../../../../../interfaces';
+import { withTranslation, WithTranslation } from 'react-i18next';
 
-interface IProps {
-  electionGroup: ElectionGroup,
-};
+interface IProps extends WithTranslation {
+  electionGroup: ElectionGroup;
+}
 
 interface IState {
-  proceed: boolean,
+  proceed: boolean;
 }
 
 const determineCandidatePage = (grpType: string, metaData: any) => {
@@ -31,7 +31,7 @@ class CandidatesPage extends React.Component<IProps, IState> {
   state = { proceed: false };
 
   render() {
-    const { electionGroup } = this.props;
+    const { electionGroup, t } = this.props;
     const { elections, id: groupId } = electionGroup;
 
     if (elections.length === 0) {
@@ -40,15 +40,15 @@ class CandidatesPage extends React.Component<IProps, IState> {
     const { type, meta } = electionGroup;
     const CandidatePage = determineCandidatePage(type, meta);
     return (
-      <Page header={<Trans>election.candidates</Trans>}>
+      <Page header={t('election.candidates')}>
         <CandidatePage electionGroup={electionGroup} />
 
         <ButtonContainer alignRight={true} noTopMargin={false}>
           <Button
             text={
               <span>
-                <Trans>election.goTo</Trans>&nbsp;
-                <Trans>election.censuses</Trans>
+                {t('election.goTo')}&nbsp;
+                {t('election.censuses')}
               </span>
             }
             action={() => this.setState({ proceed: true })}
@@ -63,4 +63,4 @@ class CandidatesPage extends React.Component<IProps, IState> {
   }
 }
 
-export default translate()(CandidatesPage);
+export default withTranslation()(CandidatesPage);

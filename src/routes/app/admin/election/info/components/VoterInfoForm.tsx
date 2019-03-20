@@ -2,8 +2,7 @@ import * as React from 'react';
 import arrayMutators from 'final-form-arrays';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
-import { Trans, translate, TranslationFunction } from 'react-i18next';
-import { i18n } from 'i18next';
+import { Trans } from 'react-i18next';
 
 import {
   DateInputRF,
@@ -31,6 +30,8 @@ import { PageSubSection } from '../../../../../../components/page';
 import Text from '../../../../../../components/text';
 
 import { ElectionGroup } from '../../../../../../interfaces';
+import { WithTranslation } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 const validate = (lang: string) => (values: any) => {
   const elecErrors: any[] = [];
@@ -144,13 +145,11 @@ const validate = (lang: string) => (values: any) => {
   return { elections: elecErrors, formErrors };
 };
 
-interface IProps {
+interface IProps extends WithTranslation {
   electionGroup: ElectionGroup;
   initialValues: any;
   onSubmit: (submitValues: any) => void;
   closeAction: () => void;
-  t: TranslationFunction;
-  i18n: i18n;
 }
 
 class VoterInfoForm extends React.Component<IProps> {
@@ -167,9 +166,9 @@ class VoterInfoForm extends React.Component<IProps> {
   }
 
   render() {
-    const { initialValues, closeAction, t } = this.props;
+    const { initialValues, closeAction, i18n, t } = this.props;
+    const lang = i18n.language;
     const electionGroup: any = this.props.electionGroup;
-    const lang = this.props.i18n.language;
     const { elections } = initialValues;
     if (elections.length === 0) {
       return (
@@ -183,7 +182,7 @@ class VoterInfoForm extends React.Component<IProps> {
         onSubmit={this.handleSubmit}
         validate={validate(lang)}
         initialValues={initialValues}
-        mutators={{...arrayMutators}}
+        mutators={{ ...arrayMutators }}
         // tslint:disable-next-line:jsx-no-lambda
         render={(formProps: FormRenderProps) => {
           const {
@@ -484,4 +483,4 @@ class VoterInfoForm extends React.Component<IProps> {
   }
 }
 
-export default translate()(VoterInfoForm);
+export default withTranslation()(VoterInfoForm);
