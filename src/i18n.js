@@ -27,7 +27,7 @@ i18n
       escapeValue: false, // not needed for react as it escapes by default
       formatSeparator: ',',
     },
-    keySeparator: '.', // we do not use keys in form messages.welcome
+    keySeparator: '.',
 
     react: {
       wait: true,
