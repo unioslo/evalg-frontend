@@ -32,13 +32,17 @@
     },
     "errors": {
       "generateKeyError": "Noe gikk galt under generering av nøkkelpar.",
-      "activateKeyErrorGeneral": "Noe gikk galt under opplasting og aktivering av offentlig nøkkel. Sjekk internett-tilkoblingen, lukk dialogboksen og prøv på nytt."
-    },
-    "backendErrors": {
-      "unknown": "En uventet feil har oppstått.",
-      "cannotChangeKeyIfPastStart": "Det er ikke tillatt å endre valgnøkkelen fordi valget pågår.",
-      "cannotChangeKeyIfPublished": "Det er ikke tillatt å endre valgnøkkelen fordi valget er publisert.",
-      "cannotChangeKeyIfVotesExist": "Det er ikke tillatt å endre valgnøkkelen fordi det er avgitt stemmer i valget."
+      "backend": {
+        "unknown": "En uventet feil oppstod under opplasting og aktivering av offentlig nøkkel.",
+        "cannotChangeKeyIfPastStart": "Det er ikke tillatt å endre valgnøkkelen fordi valget pågår.",
+        "cannotChangeKeyIfPublished": "Det er ikke tillatt å endre valgnøkkelen fordi valget er publisert.",
+        "cannotChangeKeyIfVotesExist": "Det er ikke tillatt å endre valgnøkkelen fordi det er avgitt stemmer i valget."
+      }
+    }
+  },
+  "backend": {
+    "errors": {
+      "unknown": "En uventet feil har oppstått."
     }
   },
   "candidate": {
@@ -77,9 +81,16 @@
     "persons": "personer",
     "uploadCensusFileButton": "Last opp manntallsfil",
     "uploadCensusFileHeader": "Last opp manntall fra fil",
-    "uploadOkMsg": "{{nr}} personer ble lagt til i gruppen {{pollbookName}}",
-    "uploadServerError": "Feilmelding fra tjener. Greide ikke å laste inn manntall",
-    "usernameOrBirthNumber": "Brukernavn eller fødselsnummer"
+    "uploadSuccessful": "{{numOk}} personer ble lagt til i velgergruppen «{{pollbookName}}».",
+    "uploadSuccessfulWithFailures": "{{numOk}} personer ble lagt til i velgergruppen «{{pollbookName}}». {{numFailed}} rader fra manntallsfilen ble forkastet, sannsynligvis fordi de allerede fantes i manntallet.",
+    "usernameOrBirthNumber": "Brukernavn eller fødselsnummer",
+    "errors": {
+      "backend": {
+        "unknown": "En uventet feil oppstod ved opplasting av manntall.",
+        "pollbookNotFound": "Velgergruppen du forsøkte å knytte manntallet til eksisterer ikke lenger.",
+        "unsupportedFileType": "En feil oppstod ved lesing av filen. Filen inneholder ugyldige rader, eller filtypen «{{mimetype}}» støttes ikke."
+      }
+    }
   },
   "election": {
     "activeElectionsHeader": "Hvilke grupper skal representeres og hvor mange kandidater skal velges fra hver av gruppene?",
@@ -96,8 +107,8 @@
     "announceElectionInfoTwo": "Merk at valget ikke kan starte før det oppfyller minimumskravene og publisering er godkjent av valgansvarlig.",
     "announceElectionReadMore": "Les mer om synliggjøring av valget",
     "ballot": "Stemmeseddel",
-    "blockerMissingKey": "Valgnøkkel",
     "blankVote": "Blank stemme",
+    "blockerMissingKey": "Valgnøkkel",
     "blockerStartBeforeEnd": "Starttid må være før sluttid",
     "blockerUnknown": "Noe uventet er galt",
     "candidate": "Kandidat",

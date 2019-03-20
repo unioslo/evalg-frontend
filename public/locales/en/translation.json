@@ -32,15 +32,17 @@
     },
     "errors": {
       "generateKeyError": "Something went wrong when generating a key pair.",
-      "activateKeyErrorGeneral": "Something went wrong when trying to upload and activate the public key. Check your Internet connection, close this dialog, and try again.",
-      "activateKeyErrorUnsafeStatus": "Changing the election key is not permitted, because of the current status of the election. Press cancel and check that the election is not published.",
-      "activateKeyErrorHasVotes": "Changing the election key is not permitted, because votes has been recieved in the election."
-    },
-    "backendErrors": {
-      "unknown": "An unknown error has occurred.",
-      "cannotChangeKeyIfPastStart": "Changing the election key is not permitted, because the election is ongoing.",
-      "cannotChangeKeyIfPublished": "Changing the election key is not permitted, because the election is published.",
-      "cannotChangeKeyIfVotesExist": "Changing the election key is not permitted, because a vote has been cast."
+      "backend": {
+        "unknown": "An unknown error occurred while uploading or activating the public key.",
+        "cannotChangeKeyIfPastStart": "Changing the election key is not permitted, because the election is ongoing.",
+        "cannotChangeKeyIfPublished": "Changing the election key is not permitted, because the election is published.",
+        "cannotChangeKeyIfVotesExist": "Changing the election key is not permitted, because a vote has been cast."
+      }
+    }
+  },
+  "backend": {
+    "errors": {
+      "unknown": "An unknown error occurred."
     }
   },
   "candidate": {
@@ -79,9 +81,16 @@
     "persons": "persons",
     "uploadCensusFileButton": "Upload census file",
     "uploadCensusFileHeader": "Upload census from file",
-    "uploadOkMsg": "Added {{nr}} persons to the group {{pollbookName}}",
-    "uploadServerError": "Error from server. Census file parsing failed",
-    "usernameOrBirthNumber": "Username or birth number"
+    "uploadSuccessful": "Added {{numOk}} persons to the group “{{pollbookName}}“.",
+    "uploadSuccessfulWithFailures": "Added {{numOk}} persons to the group “{{pollbookName}}“. {{numFailed}} rows from the census file were discarded, probably because they already were in the census.",
+    "usernameOrBirthNumber": "Username or birth number",
+    "errors": {
+      "backend": {
+        "unknown": "An unexpected error occurred while uploading or parsing the census file.",
+        "pollbookNotFound": "The group no longer exists.",
+        "unsupportedFileType": "An error occurred while parsing the census file. It contains invalid data, or the file type “{{mimetype}}“ is unsupported."
+      }
+    }
   },
   "election": {
     "activeElectionsHeader": "Which groups should be represented, and how many candidates shall be elected from each of the groups?",
