@@ -60,25 +60,23 @@ interface AddVoterFormProps {
 const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
   const classes = props.classes;
 
-  const [feedback, setFeedback] = useState({ text: '', isError: false });
-  const scrollDiv = useRef<HTMLDivElement>(null);
+  const [feedback, setFeedback] = useState({ text: '', isBackendError: false });
   const inputEl = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // scrollDiv.current && scrollDiv.current.scrollIntoView(); // focusing on input (next line) seems to do the job at least in chrome
     inputEl.current && inputEl.current.focus();
-    setFeedback({ text: '', isError: false });
+    setFeedback({ text: '', isBackendError: false });
   }, [props.pollbook.id]);
 
   return (
     <>
-      <div ref={scrollDiv} />
       <TableRow verticalPadding={true}>
         <TableCell colspan={4}>
           <Mutation mutation={addVoterById} refetchQueries={refetchQueries}>
             {add => {
-              const addAndClose = async (values: any) => {
+              const addPersonAndSetFeedback = async (values: any) => {
                 const idValue = values.idValue;
+                if (!idValue) return;
                 const idType = idValue.match(/^\d{11}$/) ? 'nin' : 'uid';
                 const idTypeDisplayName = getVoterIdTypeDisplayName(
                   idType,
@@ -96,30 +94,36 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
                     idType: idTypeDisplayName,
                     idValue,
                   });
-                  setFeedback({ text: feedback, isError: false });
+                  setFeedback({ text: feedback, isBackendError: false });
                 } catch (error) {
                   setFeedback({
                     text:
                       error.toString() +
                       ` (idType: ${idTypeDisplayName}, idValue: ${idValue})`,
-                    isError: true,
+                    isBackendError: true,
                   });
                 }
               };
               return (
                 <Form
-                  onSubmit={addAndClose}
+                  onSubmit={addPersonAndSetFeedback}
                   validate={validate(props.lang, props.t)}
-                  initialValues={{ idValue: '' }}
                   render={formProps => {
                     const {
                       handleSubmit,
                       errors,
                       valid,
+                      pristine,
                       touched,
                       submitting,
                       form,
                     } = formProps;
+
+                    const showValidationErrorFeedback =
+                      !pristine &&
+                      errors._errors &&
+                      touched &&
+                      touched['idValue'];
 
                     return (
                       <form
@@ -152,7 +156,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
                             <Button
                               height="4.5rem"
                               action={handleSubmit}
-                              disabled={!valid}
+                              disabled={pristine || !valid}
                               text={
                                 submitting ? (
                                   <>
@@ -173,11 +177,11 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
                             className={classNames({
                               [classes.feedback]: true,
                               [classes.feedbackError]:
-                                feedback.isError ||
-                                (errors && touched && touched['idValue']),
+                                feedback.isBackendError ||
+                                showValidationErrorFeedback,
                             })}
                           >
-                            {errors && touched && touched['idValue']
+                            {showValidationErrorFeedback
                               ? errors._errors.idValue
                               : feedback.text}
                           </div>
@@ -203,12 +207,15 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
 };
 
 const validate = (lang: string, t: i18n.TFunction) => (values: object) => {
-  const { idValue } = values as { idValue: string };
+  if (!values.hasOwnProperty('idValue')) {
+    return {};
+  }
 
+  const { idValue } = values as { idValue: string };
   const errors: object = {};
 
   if (!idValue) {
-    errors['idValue'] = t('general.required');
+    return {};
   } else if (!idValue.match(/^\d{11}$/) && !idValue.match(/^[a-zæøå]+/)) {
     if (idValue.match(/^\d+$/) && !idValue.match(/^\d{11}$/)) {
       errors['idValue'] = t(
