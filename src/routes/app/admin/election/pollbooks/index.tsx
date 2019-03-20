@@ -396,7 +396,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                   <Trans>census.aboutCensusFiles</Trans>
                 </Link>
               </PageSection>
-              <PageSection noBorder header={<Trans>election.census</Trans>}>
+              <PageSection noBorder>
                 <VoterGroupActionPanelContainer>
                   {voterGroupActionPanels}
                 </VoterGroupActionPanelContainer>
