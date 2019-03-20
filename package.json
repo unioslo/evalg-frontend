@@ -50,6 +50,7 @@
     "react-dom": "^16.8.2",
     "react-final-form": "^3.7.0",
     "react-final-form-arrays": "^1.1.0",
+    "react-helmet": "^5.2.0",
     "react-i18next": "^10.5.2",
     "react-jss": "^8.6.1",
     "react-oidc": "^0.3.1",
@@ -77,6 +78,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@types/i18next-xhr-backend": "^1.4.2"
+    "@types/i18next-xhr-backend": "^1.4.2",
+    "@types/react-helmet": "^5.0.8"
   }
 }

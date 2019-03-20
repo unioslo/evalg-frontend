@@ -20,6 +20,8 @@ import { H1 } from '../../components/text';
 import { UserContext } from '../../providers/UserContext';
 import { useTranslation } from 'react-i18next';
 
+import { Helmet } from 'react-helmet';
+
 const styles = {
   ie11ExtraFlexContainer: {
     // https://github.com/philipwalton/flexbugs#flexbug-3
@@ -86,9 +88,12 @@ const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
   const ProtectedAdmin = authEnabled ? authManager(<AdminRoute />) : AdminRoute;
   const ProtectedVoter = authEnabled ? authManager(<VoterRoute />) : VoterRoute;
 
+  const { i18n } = useTranslation();
+
   return (
     <div className={classes.ie11ExtraFlexContainer}>
       <div className={classes.app}>
+        <Helmet htmlAttributes={{ lang: i18n.language }} />
         <Header />
         <Content>
           <UserContext.Consumer>
