@@ -140,14 +140,6 @@ const electionGroupQuery = gql`
   }
 `;
 
-// const addVoter = gql`
-//   mutation addVoter($personId: UUID!, $pollbookId: UUID!) {
-//     addVoter(personId: $personId, pollbookId: $pollbookId) {
-//       ok
-//     }
-//   }
-// `;
-
 const refetchQueries = () => ['electionGroupVoters'];
 
 interface IUpdateVoterForm {
@@ -367,10 +359,11 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
               });
             });
           const voterGroupActionPanels: JSX.Element[] = [];
-          elections.forEach((e, index) => {
-            e.pollbooks.forEach((pollbook: any, i: any) => {
+          elections.forEach(e => {
+            e.pollbooks.forEach(pollbook => {
               voterGroupActionPanels.push(
                 <VoterGroupActionPanel
+                  key={pollbook.id}
                   voterGroupName={pollbook.name[lang]}
                   addAction={this.showNewVoterForm.bind(this, pollbook.id)}
                   addActionText={t('census.addPerson')}
@@ -385,6 +378,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
               );
             });
           });
+
           return (
             <Page header={<Trans>election.censuses</Trans>}>
               <PageSection noBorder desc={<Trans>census.censusPageDesc</Trans>}>
@@ -482,7 +476,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                     </TableHeaderRow>
                   </TableHeader>
                   <TableBody>
-                    {this.state.showAddVoterPollbookId && (
+                    {!!this.state.showAddVoterPollbookId && (
                       <AddVoterForm
                         pollbook={
                           pollBookDict[this.state.showAddVoterPollbookId]
@@ -493,7 +487,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                       />
                     )}
 
-                    {voters.map((voter, index) => {
+                    {voters.map(voter => {
                       if (voter.id === this.state.updateVoterId) {
                         return (
                           <TableRow key={voter.id} verticalPadding={true}>
