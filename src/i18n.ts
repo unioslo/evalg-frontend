@@ -13,6 +13,7 @@ i18n
       'en-US': ['en'],
       default: ['nb'],
     },
+    whitelist: ['nb', 'en'],
     debug: process.env.NODE_ENV !== 'production',
 
     backend: {
