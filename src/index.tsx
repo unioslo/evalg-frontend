@@ -8,7 +8,6 @@ import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
 import * as React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import * as ReactDOM from 'react-dom';
-import { I18nextProvider } from 'react-i18next';
 import { ThemeProvider } from 'react-jss';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { makeAuthenticator, makeUserManager, Callback } from 'react-oidc';
@@ -16,7 +15,6 @@ import { User } from 'oidc-client';
 
 import { ScreenSizeProvider } from './providers/ScreenSize';
 import { UserContextProvider } from './providers/UserContext';
-import i18n from './i18n';
 import App from './routes/app';
 import theme from './theme';
 
@@ -24,6 +22,9 @@ import { oidcConfig, graphqlBackend } from './appConfig';
 import { withClientState } from 'apollo-link-state';
 import { persistCache } from 'apollo-cache-persist';
 import { PersistentStorage, PersistedData } from 'apollo-cache-persist/types';
+import Spinner from './components/animations/Spinner';
+
+import './i18n';
 
 const storeToken = (props: any) => (user: User) => {
   sessionStorage.setItem(
@@ -107,13 +108,13 @@ const appRoot = () => {
         <Route path="/callback" render={callback} />
         <ApolloProvider client={constructApolloClient()}>
           <ThemeProvider theme={theme}>
-            <I18nextProvider i18n={i18n} initialLanguage="nb">
-              <ScreenSizeProvider>
-                <UserContextProvider userManager={userManager}>
+            <ScreenSizeProvider>
+              <UserContextProvider userManager={userManager}>
+                <React.Suspense fallback={<Spinner />}>
                   <App authManager={protector} />
-                </UserContextProvider>
-              </ScreenSizeProvider>
-            </I18nextProvider>
+                </React.Suspense>
+              </UserContextProvider>
+            </ScreenSizeProvider>
           </ThemeProvider>
         </ApolloProvider>
       </Switch>

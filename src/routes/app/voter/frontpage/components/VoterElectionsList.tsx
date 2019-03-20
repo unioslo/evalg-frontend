@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Trans, translate } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
 
 import Button, { ButtonContainer } from '../../../../../components/button';
@@ -7,7 +7,6 @@ import { Date, Time } from '../../../../../components/i18n';
 import Link from '../../../../../components/link';
 import { ElectionGroup } from '../../../../../interfaces';
 import { Classes } from 'jss';
-import { i18n } from 'i18next';
 
 const styles = (theme: any) => ({
   list: {
@@ -32,8 +31,9 @@ interface IListItemProps {
   classes: Classes;
 }
 
-const VoterElectionsListItem: React.SFC<IListItemProps> = props => {
+function VoterElectionsListItem(props: IListItemProps) {
   const { electionGroup, lang, canVote } = props;
+  const { t } = useTranslation();
   const election = electionGroup.elections[0];
 
   // We need data from the non-existing ballot-module to discern this
@@ -47,49 +47,46 @@ const VoterElectionsListItem: React.SFC<IListItemProps> = props => {
       </h3>
       <div>
         <div>
-          <Trans>election.opens</Trans>:&nbsp;
+          {t('election.opens')}:&nbsp;
           <Date dateTime={election.start} longDate />
           &nbsp;
           <Time dateTime={election.start} />
         </div>
         <div>
-          <Trans>election.closes</Trans>:&nbsp;
+          {t('election.closes')}:&nbsp;
           <Date dateTime={election.end} longDate />
           &nbsp;
           <Time dateTime={election.end} />
         </div>
         <div>
-          <Trans>election.rightToVote</Trans>:&nbsp;
-          {canVote ? <Trans>general.yes</Trans> : <Trans>general.no</Trans>}
+          {t('election.rightToVote')}:&nbsp;
+          {canVote ? t('general.yes') : t('general.no')}
         </div>
       </div>
       <ButtonContainer alignLeft>
         <Link to={`/vote/${electionGroup.id}`}>
           {!hasVoted ? (
-            <Button text={<Trans>election.voteNow</Trans>} />
+            <Button text={t('election.voteNow')} />
           ) : (
-            <Button
-              secondary={true}
-              text={<Trans>election.changeVote</Trans>}
-            />
+            <Button secondary={true} text={t('election.changeVote')} />
           )}
         </Link>
       </ButtonContainer>
     </li>
   );
-};
+}
 
 interface IListProps {
   electionGroups: Array<ElectionGroup>;
   canVoteElectionGroups: string[];
-
   noElectionsText: React.ReactElement;
-  i18n: i18n;
   classes: Classes;
 }
 
-const VoterElectionsList: React.SFC<IListProps> = props => {
+export function VoterElectionsList(props: IListProps) {
   const { electionGroups, noElectionsText, classes } = props;
+  const { i18n } = useTranslation();
+
   // const lang = props.i18n.language;
   if (electionGroups.length === 0) {
     return <p>{noElectionsText}</p>;
@@ -101,12 +98,12 @@ const VoterElectionsList: React.SFC<IListProps> = props => {
           classes={classes}
           electionGroup={group}
           canVote={props.canVoteElectionGroups.includes(group.id)}
-          lang={props.i18n.language}
+          lang={i18n.language}
           key={index}
         />
       ))}
     </ul>
   );
-};
+}
 
-export default injectSheet(styles)(translate()(VoterElectionsList));
+export default injectSheet(styles)(VoterElectionsList);

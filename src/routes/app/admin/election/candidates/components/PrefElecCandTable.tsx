@@ -7,7 +7,7 @@ import { Mutation } from 'react-apollo';
 
 import { PageSection } from '../../../../../../components/page';
 import Text from '../../../../../../components/text';
-import { Trans, translate } from 'react-i18next';
+import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 import {
   ElectionButton,
   ElectionButtonContainer,
@@ -28,7 +28,6 @@ import { DropDown, TextInput } from '../../../../../../components/form';
 import NoCandidatesRow from './NoCandidatesRow';
 import NoCandidatesFoundRow from './NoCandidatesFoundRow';
 import PrefElecCandForm from './PrefElecCandForm';
-import { i18n, TranslationFunction } from 'i18next';
 import { ElectionGroup } from '../../../../../../interfaces';
 
 const addPrefElecCandidate = gql`
@@ -98,7 +97,7 @@ const getFilteredCandidates = (
   });
 };
 
-const buildGenderFilterOptions = (t: TranslationFunction) => {
+const buildGenderFilterOptions = (t: (s: string) => string) => {
   return [
     { name: t('general.all'), value: 'all' },
     { name: t('general.male'), value: 'male' },
@@ -119,11 +118,9 @@ const buildListFilterOptions = (
   return filterOptions;
 };
 
-interface IProps {
+interface IProps extends WithTranslation {
   children?: React.ReactNode;
   electionGroup: ElectionGroup;
-  t: TranslationFunction;
-  i18n: i18n;
 }
 
 interface IState {
@@ -183,8 +180,8 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { electionGroup: elGrp, t } = this.props;
-    const lang = this.props.i18n.language;
+    const { electionGroup: elGrp, t, i18n } = this.props;
+    const lang = i18n.language;
     const { elections } = elGrp;
 
     const pageDesc = (
@@ -442,4 +439,4 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
   }
 }
 
-export default translate()(PrefElecCandTable);
+export default withTranslation()(PrefElecCandTable);

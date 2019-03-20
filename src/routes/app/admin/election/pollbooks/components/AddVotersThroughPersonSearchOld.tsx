@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import throttle from 'lodash/throttle';
 import * as React from 'react';
 import { ApolloConsumer } from 'react-apollo';
-import { Trans, translate } from 'react-i18next';
+import { WithTranslation, withTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
 
 import ActionText from '../../../../../../components/actiontext';
@@ -33,14 +33,13 @@ const searchPersonQuery = gql`
   }
 `;
 
-interface IProps {
+interface IProps extends WithTranslation {
   closeAction: () => void;
   submitAction: (values: any) => void;
   deletePollbookAction: () => void;
   registeredVoters: IVoter[];
   initialValues?: any;
   pollbook: IPollBook;
-  i18n: any;
   classes: any;
 }
 
@@ -139,27 +138,23 @@ class AddVoter extends React.Component<IProps, Istate> {
   };
 
   render() {
-    const {
-      closeAction,
-      deletePollbookAction,
-      i18n: { language: lang },
-      classes,
-    } = this.props;
+    const { closeAction, deletePollbookAction, classes, i18n, t } = this.props;
+    const lang = i18n.language;
 
     const renderPerson = (p: IPerson) => p.displayName;
 
     return (
       <>
         <strong>
-          <Trans values={{ pollbookName: this.state.pollbook.name[lang] }}>
-            census.addPersonsInPollbook
-          </Trans>
+          {t('census.addPersonsInPollbook', {
+            pollbookName: this.state.pollbook.name[lang],
+          })}
         </strong>
         {this.state.newPersonsToAddList.map((person, index) => (
           <div key={person.id} className={classes.item}>
             <div className={classes.itemName}>{renderPerson(person)}</div>
             <ActionText action={() => this.removePersonFromAddList(index)}>
-              <Trans>general.remove</Trans>
+              {t('general.remove')}
             </ActionText>
           </div>
         ))}
@@ -170,7 +165,7 @@ class AddVoter extends React.Component<IProps, Istate> {
               userInput={this.state.personFilter}
               onChange={this.handlePersonFilterUpdate.bind(self, client)}
               buttonAction={this.addPersonToAddList}
-              buttonText={<Trans>general.add</Trans>}
+              buttonText={t('general.add')}
               objRenderer={renderPerson}
             />
           )}
@@ -180,11 +175,11 @@ class AddVoter extends React.Component<IProps, Istate> {
           closeAction={closeAction}
           submitDisabled={this.state.newPersonsToAddList.length === 0}
           entityAction={deletePollbookAction}
-          entityText={<Trans>census.deleteCensus</Trans>}
+          entityText={t('census.deleteCensus')}
         />
       </>
     );
   }
 }
 
-export default injectSheet(styles)(translate()(AddVoter));
+export default injectSheet(styles)(withTranslation()(AddVoter));

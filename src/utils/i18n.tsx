@@ -1,5 +1,5 @@
-import { TranslationFunction } from 'i18next';
 import camelCase from 'lodash/camelCase';
+import i18n from 'i18next';
 
 export const getSupportedLanguages = (): string[] => {
   return ['nb', 'en', 'nn'];
@@ -7,7 +7,7 @@ export const getSupportedLanguages = (): string[] => {
 
 export const translateBackendError = (
   errorCode: string,
-  t: TranslationFunction,
+  t: i18n.TFunction,
   codePrefix = 'backend.errors',
   ...rest: any
 ) => {
@@ -19,7 +19,7 @@ export const translateBackendError = (
 
 export const joinStringsWithCommaAndAnd = (
   strings: string[],
-  t: TranslationFunction
+  t: i18n.TFunction
 ) => {
   if (strings.length === 0) {
     return '';
@@ -33,17 +33,17 @@ export const joinStringsWithCommaAndAnd = (
   }
 };
 
-export const getTranslationsForVoterIdType = (t: TranslationFunction) => ({
+export const getTranslationsForVoterIdType = (t: i18n.TFunction) => ({
   uid: t('census.idTypes.uid'),
   nin: t('census.idTypes.nin'),
   feide_id: t('census.idTypes.feide_id'),
 });
 
-let translationsForVoterIdType: { uid: string, nin: string, feide_id: string };
+let translationsForVoterIdType: { uid: string; nin: string; feide_id: string };
 
 export const getVoterIdTypeDisplayName = (
   voterId: string,
-  t: TranslationFunction
+  t: i18n.TFunction
 ) => {
   if (!translationsForVoterIdType) {
     translationsForVoterIdType = getTranslationsForVoterIdType(t);

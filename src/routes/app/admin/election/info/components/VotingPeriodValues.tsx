@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { translate, Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { Time, Date } from '../../../../../../components/i18n';
 import Text from '../../../../../../components/text';
@@ -15,16 +15,16 @@ import {
 
 import { InfoList, InfoListItem } from '../../../../../../components/infolist';
 import { allEqualForAttrs } from '../../../../../../utils';
-import { i18n } from 'i18next';
 import { ElectionGroup, Election } from '../../../../../../interfaces';
 
 interface IVotingPeriodProps {
-  elections: any[],
-  lang: string,
+  elections: any[];
+  lang: string;
 }
 
-const MultipleVotingPeriods: React.SFC<IVotingPeriodProps> = (props: IVotingPeriodProps) => {
-
+const MultipleVotingPeriods: React.SFC<IVotingPeriodProps> = (
+  props: IVotingPeriodProps
+) => {
   const { elections, lang } = props;
 
   const makeTableRow = (
@@ -91,9 +91,9 @@ const MultipleVotingPeriods: React.SFC<IVotingPeriodProps> = (props: IVotingPeri
   );
 };
 
-
-
-const SingleVotingPeriod: React.SFC<IVotingPeriodProps> = (props: IVotingPeriodProps) => {
+const SingleVotingPeriod: React.SFC<IVotingPeriodProps> = (
+  props: IVotingPeriodProps
+) => {
   const { elections } = props;
   return (
     <InfoList>
@@ -115,7 +115,9 @@ const SingleVotingPeriod: React.SFC<IVotingPeriodProps> = (props: IVotingPeriodP
   );
 };
 
-const NoActiveElections: React.SFC<IVotingPeriodProps> = (props: IVotingPeriodProps) => {
+const NoActiveElections: React.SFC<IVotingPeriodProps> = (
+  props: IVotingPeriodProps
+) => {
   return (
     <p>
       <Trans>election.noActiveElections</Trans>
@@ -133,15 +135,16 @@ const getVotingInfoComponent = (grpType: string, elections: Election[]) => {
 };
 
 interface IProps {
-  electionGroup: ElectionGroup,
-  activeElections: Election[],
-  i18n: i18n,
-};
+  electionGroup: ElectionGroup;
+  activeElections: Election[];
+}
 
-const VotingPeriodValues = (props: IProps) => {
+function VotingPeriodValues(props: IProps) {
+  const { i18n } = useTranslation();
+
   const { electionGroup: grp, activeElections } = props;
   const VotingTimes = getVotingInfoComponent(grp.type, activeElections);
-  return <VotingTimes elections={activeElections} lang={props.i18n.language} />;
-};
+  return <VotingTimes elections={activeElections} lang={i18n.language} />;
+}
 
-export default translate()(VotingPeriodValues);
+export default VotingPeriodValues;

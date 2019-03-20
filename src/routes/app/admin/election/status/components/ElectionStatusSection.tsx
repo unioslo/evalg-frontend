@@ -1,8 +1,7 @@
 import gql from 'graphql-tag';
 import * as React from 'react';
 import { Mutation } from 'react-apollo';
-import { Trans, translate } from 'react-i18next';
-import { i18n } from 'i18next';
+import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 
 import Text from '../../../../../../components/text';
 import { PageSection, PageSubSection } from '../../../../../../components/page';
@@ -44,9 +43,8 @@ const UnannounceElectionGroupMutation = gql`
   }
 `;
 
-interface IProps {
+interface IProps extends WithTranslation {
   electionGroup: ElectionGroup;
-  i18n: i18n;
 }
 
 const blockerToTranslation = {
@@ -212,4 +210,4 @@ class ElectionStatusSection extends React.Component<IProps> {
   }
 }
 
-export default translate()(ElectionStatusSection);
+export default withTranslation()(ElectionStatusSection);

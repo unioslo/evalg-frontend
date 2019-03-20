@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import React from 'react';
 import { Mutation, Query } from 'react-apollo';
 import { Field, Form } from 'react-final-form';
-import { Trans, translate, TranslationFunction } from 'react-i18next';
+import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 
 import { orderMultipleElections } from '../../../../../utils/processGraphQLData';
 import ActionText from '../../../../../components/actiontext';
@@ -31,7 +31,6 @@ import UploadCensusFileModal, {
 } from './components/UploadCensusFile';
 
 import { DropDownOption, Election, IVoter } from '../../../../../interfaces';
-import { i18n } from 'i18next';
 import { getVoterIdTypeDisplayName } from '../../../../../utils/i18n';
 import {
   VoterGroupActionPanel,
@@ -196,9 +195,7 @@ const UpdateVoterForm: React.SFC<IUpdateVoterForm> = props => {
   );
 };
 
-interface IProps {
-  t: TranslationFunction;
-  i18n: i18n;
+interface IProps extends WithTranslation {
   groupId: string;
 }
 
@@ -327,10 +324,8 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
   }
 
   render() {
-    const {
-      t,
-      i18n: { language: lang },
-    } = this.props;
+    const { t, i18n } = this.props;
+    const lang = i18n.language;
 
     return (
       <Query query={electionGroupQuery} variables={{ id: this.props.groupId }}>
@@ -662,4 +657,4 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
   }
 }
 
-export default translate()(ElectionGroupCensuses);
+export default withTranslation()(ElectionGroupCensuses);

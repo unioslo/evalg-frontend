@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
-import { TranslationFunction } from 'react-i18next';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 import { Form, Field } from 'react-final-form';
@@ -18,6 +17,7 @@ import Button, { ButtonContainer } from '../../../../../../components/button';
 import { IPollBook } from '../../../../../../interfaces';
 import { getVoterIdTypeDisplayName } from '../../../../../../utils/i18n';
 import Spinner from '../../../../../../components/animations/Spinner';
+import i18n from 'i18next';
 
 const addVoterById = gql`
   mutation addVoterById(
@@ -51,7 +51,8 @@ const styles = (theme: any) => ({
 interface AddVoterFormProps {
   pollbook: IPollBook;
   onClose: () => void;
-  t: TranslationFunction;
+  // TODO, get the t function from useTranslations
+  t: i18n.TFunction;
   lang: string;
   classes: Classes;
 }
@@ -201,7 +202,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
   );
 };
 
-const validate = (lang: string, t: TranslationFunction) => (values: object) => {
+const validate = (lang: string, t: i18n.TFunction) => (values: object) => {
   const { idValue } = values as { idValue: string };
 
   const errors: object = {};

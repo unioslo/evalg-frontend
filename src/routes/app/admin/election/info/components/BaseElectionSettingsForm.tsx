@@ -2,8 +2,6 @@ import * as React from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
 import arrayMutators from 'final-form-arrays';
-import { translate, Trans } from 'react-i18next';
-import { i18n } from 'i18next';
 
 import {
   Table,
@@ -18,7 +16,11 @@ import {
 import { CheckBoxRF } from '../../../../../../components/form';
 import { NumberInputRF, FormButtons } from '../../../../../../components/form';
 import { PageSubSection } from '../../../../../../components/page';
-import { ElectionBaseSettingsInput, ElectionGroup } from '../../../../../../interfaces';
+import {
+  ElectionBaseSettingsInput,
+  ElectionGroup,
+} from '../../../../../../interfaces';
+import { withTranslation, WithTranslation } from 'react-i18next';
 
 export interface IElectionsBaseSettings {
   elections: ElectionBaseSettingsInput[];
@@ -54,11 +56,10 @@ const buildSubmitPayload = (
   })),
 });
 
-interface IProps {
+interface IProps extends WithTranslation {
   electionGroup: ElectionGroup;
   onSubmit: (electionBaseSettings: IElectionsBaseSettings) => any;
   closeAction: () => void;
-  i18n: i18n;
 }
 
 class BaseElectionSettingsForm extends React.Component<IProps> {
@@ -83,22 +84,18 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
   }
 
   render() {
-    const lang = this.props.i18n.language;
+    const { i18n, t } = this.props;
+    const lang = i18n.language;
     const elections: any = this.initialValues.elections;
     return (
       <Form
         onSubmit={this.handleFormSubmit}
-        mutators={{...arrayMutators}}
+        mutators={{ ...arrayMutators }}
         initialValues={this.initialValues}
         validate={validate}
       >
         {(formProps: FormRenderProps) => {
-          const {
-            handleSubmit,
-            values,
-            valid,
-            submitting,
-          } = formProps;
+          const { handleSubmit, values, valid, submitting } = formProps;
           return (
             // TODO: There should probably be a generalized "table builder" component that takes table headings
             // and table cell content as props.
@@ -106,14 +103,12 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
               <Table>
                 <TableHeader>
                   <TableHeaderRow>
+                    <TableHeaderCell>{t('election.group')}</TableHeaderCell>
                     <TableHeaderCell>
-                      <Trans>election.group</Trans>
+                      {t('election.nrOfCandidates')}
                     </TableHeaderCell>
                     <TableHeaderCell>
-                      <Trans>election.nrOfCandidates</Trans>
-                    </TableHeaderCell>
-                    <TableHeaderCell>
-                      <Trans>election.nrOfCoCandidates</Trans>
+                      {t('election.nrOfCoCandidates')}
                     </TableHeaderCell>
                   </TableHeaderRow>
                 </TableHeader>
@@ -156,12 +151,12 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
                   )}
                 </FieldArray>
               </Table>
-              <PageSubSection header={<Trans>election.quotas</Trans>}>
+              <PageSubSection header={t('election.quotas')}>
                 <Field
                   name="hasGenderQuota"
                   component={CheckBoxRF as any}
                   type="checkbox"
-                  label={<Trans>election.hasGenderQuota</Trans>}
+                  label={t('election.hasGenderQuota')}
                 />
               </PageSubSection>
               <FormButtons
@@ -178,4 +173,4 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
   }
 }
 
-export default translate()(BaseElectionSettingsForm);
+export default withTranslation()(BaseElectionSettingsForm);

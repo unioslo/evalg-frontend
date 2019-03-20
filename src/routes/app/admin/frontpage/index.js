@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import injectSheet from 'react-jss';
-import { Trans, translate } from 'react-i18next';
+import { Trans, withTranslation } from 'react-i18next';
 
 // import { objPropsToArray } from 'utils';
 import Loading from 'components/loading';
@@ -115,4 +115,4 @@ const AdminFrontPage = props => (
   </Query>
 );
 
-export default translate()(injectSheet(styles)(AdminFrontPage));
+export default injectSheet(styles)(withTranslation()(AdminFrontPage));

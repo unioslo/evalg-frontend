@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Route, match } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { translate } from 'react-i18next';
 
 import AdminStepper from './components/AdminStepper';
 import InfoPage from './info';
@@ -12,7 +11,6 @@ import StatusPage from './status';
 // import Loading from 'components/loading';
 import Loading from '../../../../components/loading';
 import { History, Location } from 'history';
-import { i18n } from 'i18next';
 // import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
 import { electionGroupWithOrderedElections } from '../../../../utils/processGraphQLData';
 import { ElectionGroup } from '../../../../interfaces';
@@ -103,7 +101,6 @@ interface IProps {
   match: match<{ groupId: string }>;
   history: History;
   electionGroup: ElectionGroup;
-  i18n: i18n;
 }
 
 // tslint:disable:jsx-no-lambda
@@ -175,4 +172,4 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
   </Query>
 );
 
-export default translate()(AdminElection);
+export default AdminElection;

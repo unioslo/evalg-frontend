@@ -1,31 +1,37 @@
-import i18n from "i18next";
-import textsEn from 'text/en';
-import textsNb from 'text/nb';
+import i18n from 'i18next';
+import XHR from 'i18next-xhr-backend';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import { initReactI18next } from 'react-i18next';
 
-i18n.init({
-  // we init with resources
-  resources: {
-    en: {
-      translations: textsEn
+i18n
+  .use(XHR)
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    fallbackLng: {
+      no: ['nb'],
+      'en-US': ['en'],
+      default: ['nb'],
     },
-    nb: {
-      translations: textsNb
-    }
-  },
-  fallbackLng: "en",
-  debug: process.NODE_ENV !== 'production',
+    debug: process.NODE_ENV !== 'production',
 
-  ns: ["translations"],
-  defaultNS: "translations",
+    backend: {
+      loadPath: '/locales/{{lng}}/{{ns}}.json',
+    },
 
-  interpolation: {
-    escapeValue: false, // not needed for react!!
-    formatSeparator: ","
-  },
+    ns: ['translation'],
+    defaultNS: 'translation',
+    fallbackNS: 'translation',
 
-  react: {
-    wait: true
-  }
-});
+    interpolation: {
+      escapeValue: false, // not needed for react as it escapes by default
+      formatSeparator: ',',
+    },
+    keySeparator: '.',
+
+    react: {
+      wait: true,
+    },
+  });
 
 export default i18n;
