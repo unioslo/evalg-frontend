@@ -125,15 +125,16 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
                       touched &&
                       touched['idValue'];
 
+                    const handleSubmitAndReset = async (e: any) => {
+                      e.preventDefault();
+                      await handleSubmit();
+                      if (valid) {
+                        form.reset();
+                      }
+                    };
+
                     return (
-                      <form
-                        onSubmit={async (event: any) => {
-                          await handleSubmit(event);
-                          if (valid) {
-                            form.reset();
-                          }
-                        }}
-                      >
+                      <form onSubmit={handleSubmitAndReset}>
                         <TableRowForm
                           header={
                             props.t('census.addPersonInCensusFor') +
@@ -155,7 +156,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
                             </FormField>
                             <Button
                               height="4.5rem"
-                              action={handleSubmit}
+                              action={handleSubmitAndReset}
                               disabled={pristine || !valid}
                               text={
                                 submitting ? (
