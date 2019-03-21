@@ -36,9 +36,8 @@ class ElectionGroupTableRow extends React.Component<IProps> {
       startTimes.push(e.start);
       endTimes.push(e.end);
       statuses.push(e.status);
-      // TODO: Fetch votes from ballot API when ready
-      totalVotes = 0;
-      totalVotesOutsideCensus = 0;
+      totalVotes += e.voteCount.total;
+      totalVotesOutsideCensus += e.voteCount.needApproval;
     });
     const sharedStartTime = allEqual(startTimes);
     const sharedEndTime = allEqual(endTimes);

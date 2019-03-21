@@ -55,6 +55,12 @@ const electionGroupsQuery = gql`
         status
         publishedAt
         cancelledAt
+        voteCount {
+          approved
+          needApproval
+          omitted
+          total
+        }
       }
     }
   }

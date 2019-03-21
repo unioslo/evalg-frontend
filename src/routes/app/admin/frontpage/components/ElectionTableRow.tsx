@@ -20,9 +20,6 @@ class ElectionTableRow extends React.Component<IProps> {
   render() {
     const { election } = this.props;
     const lang = this.props.i18n.language;
-    // TODO: Insert proper values from ballot-api when ready
-    const totalVotes = 0;
-    const votesOutsideCensus = 0;
     return (
       <TableRow>
         <TableCell noBorder />
@@ -47,8 +44,8 @@ class ElectionTableRow extends React.Component<IProps> {
         </TableCell>
         <TableCell>
           <VoteStatus
-            totalVotes={totalVotes}
-            votesOutsideCensus={votesOutsideCensus}
+            totalVotes={election.voteCount.total}
+            votesOutsideCensus={election.voteCount.needApproval}
             preposition={<Trans>general.of</Trans>}
           />
         </TableCell>

@@ -96,6 +96,14 @@ export interface IPollBook {
   election: Election;
 }
 
+export interface IVoteCount {
+  id: string;
+  approved: number;
+  needApproval: number;
+  omitted: number;
+  total: number;
+}
+
 export interface Candidate {
   id: string;
   name: string;
@@ -126,8 +134,7 @@ export interface Election {
   name: NameFields;
   start: string;
   end: string;
-  votesOutsideCensus: number;
-  totalVotes: number;
+  voteCount: IVoteCount;
   status: ElectionStatusType;
   pollbooks: IPollBook[];
   meta: ElectionMetaData;
