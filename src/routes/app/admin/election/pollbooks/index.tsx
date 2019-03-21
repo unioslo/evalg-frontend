@@ -1,58 +1,33 @@
 import gql from 'graphql-tag';
 import React from 'react';
 import { Mutation, Query } from 'react-apollo';
-import { Field, Form } from 'react-final-form';
 import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 
 import { orderMultipleElections } from '../../../../../utils/processGraphQLData';
-import ActionText from '../../../../../components/actiontext';
 import Button, {
   ActionButton,
   ButtonContainer,
 } from '../../../../../components/button';
-import { DropDownRF, FormButtons } from '../../../../../components/form';
 import Link from '../../../../../components/link';
 import { MsgBox } from '../../../../../components/msgbox';
 import { ConfirmModal } from '../../../../../components/modal';
 import { Page, PageSection } from '../../../../../components/page';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHeader,
-  TableHeaderCell,
-  TableHeaderRow,
-  TableRow,
-} from '../../../../../components/table';
-import Text from '../../../../../components/text';
 import { Redirect } from 'react-router';
 import UploadCensusFileModal, {
   IUploadCensusFileModalStatus,
 } from './components/UploadCensusFile';
 
-import { DropDownOption, Election, IVoter } from '../../../../../interfaces';
-import { getVoterIdTypeDisplayName } from '../../../../../utils/i18n';
+import {
+  DropDownOption,
+  Election,
+  IVoter,
+  IPollBook,
+} from '../../../../../interfaces';
 import {
   VoterGroupActionPanel,
   VoterGroupActionPanelContainer,
 } from '../components/VoterGroupActionsPanel';
-import AddVoterForm from './components/AddVoterForm';
-
-const updateVoterPollBook = gql`
-  mutation UpdateVoterPollBook($id: UUID!, $pollbookId: UUID!) {
-    updateVoterPollbook(id: $id, pollbookId: $pollbookId) {
-      ok
-    }
-  }
-`;
-
-const deleteVoter = gql`
-  mutation DeleteVoter($id: UUID!) {
-    deleteVoter(id: $id) {
-      ok
-    }
-  }
-`;
+import CensusTable from './components/CensusTable';
 
 const deleteVotersInPollbook = gql`
   mutation DeleteVotersInPollBook($id: UUID!) {
@@ -142,58 +117,13 @@ const electionGroupQuery = gql`
 
 const refetchQueries = () => ['electionGroupVoters'];
 
-interface IUpdateVoterForm {
-  submitAction: (o: any) => void;
-  closeAction: () => void;
-  deleteAction: () => void;
-  options: DropDownOption[];
-  initialValues: object;
-}
-
-const UpdateVoterForm: React.SFC<IUpdateVoterForm> = props => {
-  const {
-    closeAction,
-    deleteAction,
-    options,
-    submitAction,
-    initialValues,
-  } = props;
-
-  const renderForm = (formProps: any) => {
-    const { handleSubmit, pristine, valid } = formProps;
-    return (
-      <form onSubmit={handleSubmit}>
-        <Field
-          name="pollbookId"
-          component={DropDownRF as any}
-          options={options}
-        />
-        <FormButtons
-          saveAction={handleSubmit}
-          closeAction={closeAction}
-          submitDisabled={pristine || !valid}
-          entityAction={deleteAction}
-          entityText={<Trans>census.deleteFromCensus</Trans>}
-        />
-      </form>
-    );
-  };
-  return (
-    <Form
-      onSubmit={submitAction}
-      initialValues={initialValues}
-      render={renderForm}
-    />
-  );
-};
-
 interface IProps extends WithTranslation {
   groupId: string;
 }
 
 interface IState {
   pollBookId: string;
-  showAddVoterPollbookId: string;
+  addVoterPollbookId: string;
   updateVoterId: string;
   showDeleteVoter: boolean;
   showDeletePollbook: boolean;
@@ -206,104 +136,56 @@ interface IState {
 }
 
 class ElectionGroupCensuses extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      pollBookId: '',
-      showAddVoterPollbookId: '',
-      showDeletePollbook: false,
-      showDeleteVoter: false,
-      deleteVotersPollbookId: '',
-      updateVoterId: '',
-      proceed: false,
-      showUploadCensusFileModal: false,
-      showUploadMsgBox: false,
-      uploadMsg: '',
-      addVoterFeedback: '',
-    };
-    this.closeUpdateVoterForm = this.closeUpdateVoterForm.bind(this);
-    this.showDeletePersonConfirmation = this.showDeletePersonConfirmation.bind(
-      this
-    );
-    this.hideDeletePersonConfirmation = this.hideDeletePersonConfirmation.bind(
-      this
-    );
-    this.showDeletePollbookConfirmation = this.showDeletePollbookConfirmation.bind(
-      this
-    );
-    this.hideDeletePollbookConfirmation = this.hideDeletePollbookConfirmation.bind(
-      this
-    );
-    this.closeNewVoterForm = this.closeNewVoterForm.bind(this);
-    this.showUploadCensusFileModal = this.showUploadCensusFileModal.bind(this);
-    this.closeUploadCensusFileModal = this.closeUploadCensusFileModal.bind(
-      this
-    );
-  }
+  state = {
+    pollBookId: '',
+    addVoterPollbookId: '',
+    showDeletePollbook: false,
+    showDeleteVoter: false,
+    deleteVotersPollbookId: '',
+    updateVoterId: '',
+    proceed: false,
+    showUploadCensusFileModal: false,
+    showUploadMsgBox: false,
+    uploadMsg: '',
+    addVoterFeedback: '',
+  };
 
-  addVoterFormRef: React.RefObject<any> = React.createRef();
+  handleShowAddVoterForm = (pollbookId: string) => {
+    this.setState({ addVoterPollbookId: pollbookId });
+  };
 
-  showNewVoterForm(pollbookId: string) {
-    this.closeUpdateVoterForm();
-    this.setState({ showAddVoterPollbookId: pollbookId });
-  }
+  handleCloseAddVoterForm = () => {
+    this.setState({ addVoterPollbookId: '' });
+  };
 
-  showDeleteVotersInPollbookModal(pollbookId: string) {
-    this.closeNewVoterForm();
-    this.closeUpdateVoterForm();
+  handleShowDeleteVotersInPollbookModal = (pollbookId: string) => {
+    this.handleCloseAddVoterForm();
     this.setState({
-      showDeletePollbook: true,
       deleteVotersPollbookId: pollbookId,
     });
-  }
+  };
 
-  closeNewVoterForm() {
-    this.setState({ showAddVoterPollbookId: '' });
-  }
-
-  showDeletePersonConfirmation() {
-    this.setState({ showDeleteVoter: true });
-  }
-
-  hideDeletePersonConfirmation() {
-    this.setState({ showDeleteVoter: false });
-  }
-
-  showDeletePollbookConfirmation() {
-    this.setState({ showDeletePollbook: true });
-  }
-
-  hideDeletePollbookConfirmation() {
-    this.setState({ showDeletePollbook: false });
-  }
-  showUpdateVoterForm(voterId: string) {
-    this.closeNewVoterForm();
-    this.setState({ updateVoterId: voterId });
-  }
-
-  closeUpdateVoterForm() {
-    this.setState({ updateVoterId: '' });
-  }
+  handleHideDeleteVotersInPollbookModal = () => {
+    this.setState({ deleteVotersPollbookId: '' });
+  };
 
   handleProceed = () => {
     this.setState({ proceed: true });
   };
 
-  showMessageBox(msg: any) {
+  showMessageBox = (msg: any) => {
     this.setState({
       showUploadMsgBox: true,
       uploadMsg: msg,
     });
-  }
+  };
 
-  showUploadCensusFileModal() {
-    this.closeUpdateVoterForm();
-
+  showUploadCensusFileModal = () => {
     this.setState({
       showUploadCensusFileModal: true,
       showUploadMsgBox: false,
     });
-  }
+  };
 
   closeUploadCensusFileModal(result: IUploadCensusFileModalStatus) {
     this.setState({
@@ -332,15 +214,17 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
               ? orderMultipleElections(electionsRaw)
               : electionsRaw;
 
+          const pollBooks: IPollBook[] = [];
           const voters: IVoter[] = [];
-          const pollBookDict: any = {};
+          const pollBookDict: { [pollbookId: string]: IPollBook } = {};
           const pollBookOptions: DropDownOption[] = [];
           const pollBookRadioButtonOptions: any = {};
 
           elections
             .filter(e => e.active)
             .forEach((e: Election) => {
-              e.pollbooks.forEach((pollBook: any) => {
+              e.pollbooks.forEach(pollBook => {
+                pollBooks.push(pollBook);
                 pollBookDict[pollBook.id] = pollBook;
                 pollBook.voters
                   .filter((v: any) => v.verified)
@@ -365,12 +249,11 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                 <VoterGroupActionPanel
                   key={pollbook.id}
                   voterGroupName={pollbook.name[lang]}
-                  addAction={this.showNewVoterForm.bind(this, pollbook.id)}
+                  addAction={() => this.handleShowAddVoterForm(pollbook.id)}
                   addActionText={t('census.addPerson')}
-                  removeAllAction={this.showDeleteVotersInPollbookModal.bind(
-                    this,
-                    pollbook.id
-                  )}
+                  removeAllAction={() =>
+                    this.handleShowDeleteVotersInPollbookModal(pollbook.id)
+                  }
                   removeAllActionText={t('census.deletePersonsInPollbook')}
                   count={pollbook.voters.filter((v: any) => v.verified).length}
                   active={e.active}
@@ -405,7 +288,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                   <MsgBox msg={this.state.uploadMsg} timeout={true} />
                 )}
 
-                {this.state.showDeletePollbook && (
+                {!!this.state.deleteVotersPollbookId && (
                   <Mutation
                     mutation={deleteVotersInPollbook}
                     refetchQueries={refetchQueries}
@@ -417,13 +300,20 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                             id: this.state.deleteVotersPollbookId,
                           },
                         });
-                        this.hideDeletePollbookConfirmation();
-                        this.closeNewVoterForm();
+                        this.handleHideDeleteVotersInPollbookModal();
+                        this.handleCloseAddVoterForm();
                       };
+                      const deletePollbook =
+                        pollBookDict[this.state.deleteVotersPollbookId];
+                      const deletePollbookNumberOfVoters =
+                        deletePollbook.voters.length;
+
                       return (
                         <ConfirmModal
                           confirmAction={deletePollbookAndClose}
-                          closeAction={this.hideDeletePollbookConfirmation}
+                          closeAction={
+                            this.handleHideDeleteVotersInPollbookModal
+                          }
                           header={
                             <Trans>
                               census.deletePollbookConfirmationModalTitle
@@ -432,21 +322,13 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                           body={
                             <Trans
                               values={{
-                                num:
-                                  pollBookDict[
-                                    this.state.deleteVotersPollbookId
-                                  ].voters.length,
+                                num: deletePollbookNumberOfVoters,
                                 of: t(
-                                  pollBookDict[
-                                    this.state.deleteVotersPollbookId
-                                  ].voters.length === 1
+                                  deletePollbookNumberOfVoters === 1
                                     ? 'census.person'
                                     : 'census.persons'
                                 ).toLowerCase(),
-                                pollbookName:
-                                  pollBookDict[
-                                    this.state.deleteVotersPollbookId
-                                  ].name[lang],
+                                pollbookName: deletePollbook.name[lang],
                               }}
                             >
                               census.deletePollbookConfirmationModalText
@@ -460,162 +342,16 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                   </Mutation>
                 )}
 
-                <Table>
-                  <TableHeader>
-                    <TableHeaderRow>
-                      <TableHeaderCell>
-                        <Trans>census.idType</Trans>
-                      </TableHeaderCell>
-                      <TableHeaderCell>
-                        <Trans>census.idValue</Trans>
-                      </TableHeaderCell>
-                      <TableHeaderCell>
-                        <Trans>census.group</Trans>
-                      </TableHeaderCell>
-                      <TableHeaderCell />
-                    </TableHeaderRow>
-                  </TableHeader>
-                  <TableBody>
-                    {!!this.state.showAddVoterPollbookId && (
-                      <AddVoterForm
-                        pollbook={
-                          pollBookDict[this.state.showAddVoterPollbookId]
-                        }
-                        onClose={this.closeNewVoterForm}
-                        t={t}
-                        lang={lang}
-                      />
-                    )}
-
-                    {voters.map(voter => {
-                      if (voter.id === this.state.updateVoterId) {
-                        return (
-                          <TableRow key={voter.id} verticalPadding={true}>
-                            <TableCell topPadding verticalAlignTop>
-                              <Text>
-                                {getVoterIdTypeDisplayName(voter.idType, t)}
-                              </Text>
-                            </TableCell>
-                            <TableCell topPadding verticalAlignTop>
-                              <Text>{voter.idValue}</Text>
-                            </TableCell>
-                            <TableCell colspan={2}>
-                              <Mutation
-                                mutation={updateVoterPollBook}
-                                refetchQueries={refetchQueries}
-                              >
-                                {updateVoter => {
-                                  const update = (values: {
-                                    id: string;
-                                    pollbookId: string;
-                                  }) => {
-                                    updateVoter({ variables: values });
-                                    this.closeUpdateVoterForm();
-                                  };
-                                  return (
-                                    <UpdateVoterForm
-                                      initialValues={{
-                                        pollbookId: voter.pollbookId,
-                                        id: voter.id,
-                                      }}
-                                      submitAction={update}
-                                      closeAction={this.closeUpdateVoterForm}
-                                      options={pollBookOptions}
-                                      deleteAction={
-                                        this.showDeletePersonConfirmation
-                                      }
-                                    />
-                                  );
-                                }}
-                              </Mutation>
-                              {this.state.showDeleteVoter && (
-                                <Mutation
-                                  mutation={deleteVoter}
-                                  refetchQueries={refetchQueries}
-                                >
-                                  {del => {
-                                    const deleteAndClose = () => {
-                                      del({ variables: { id: voter.id } });
-                                      this.hideDeletePersonConfirmation();
-                                    };
-                                    return (
-                                      <ConfirmModal
-                                        confirmAction={deleteAndClose}
-                                        closeAction={
-                                          this.hideDeletePersonConfirmation
-                                        }
-                                        header={
-                                          <Trans>
-                                            census.deletePersonConfirmationModalTitle
-                                          </Trans>
-                                        }
-                                        body={
-                                          <Trans
-                                            values={{
-                                              idType: getVoterIdTypeDisplayName(
-                                                voter.idType,
-                                                t
-                                              ).toLowerCase(),
-                                              idValue: voter.idValue,
-                                              pollbookName:
-                                                pollBookDict[voter.pollbookId]
-                                                  .name[lang],
-                                            }}
-                                          >
-                                            census.deletePersonConfirmationModalText
-                                          </Trans>
-                                        }
-                                        confirmText={
-                                          <Trans>general.delete</Trans>
-                                        }
-                                        closeText={
-                                          <Trans>general.cancel</Trans>
-                                        }
-                                      />
-                                    );
-                                  }}
-                                </Mutation>
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      } else {
-                        return (
-                          <TableRow key={voter.id} actionTextOnHover={true}>
-                            <TableCell>
-                              <Text>
-                                {getVoterIdTypeDisplayName(voter.idType, t)}
-                              </Text>
-                            </TableCell>
-                            <TableCell>
-                              <Text>{voter.idValue}</Text>
-                            </TableCell>
-                            <TableCell>
-                              <Text>
-                                {pollBookDict[voter.pollbookId].name[lang]}
-                              </Text>
-                            </TableCell>
-                            <TableCell alignRight={true}>
-                              <Text>
-                                <ActionText
-                                  action={this.showUpdateVoterForm.bind(
-                                    this,
-                                    voter.id
-                                  )}
-                                >
-                                  <Trans>general.edit</Trans>
-                                </ActionText>
-                              </Text>
-                            </TableCell>
-                          </TableRow>
-                        );
-                      }
-                    })}
-                  </TableBody>
-                </Table>
+                <CensusTable
+                  pollBooks={pollBooks}
+                  addVoterPollbookId={this.state.addVoterPollbookId}
+                  onCloseAddVoterForm={this.handleCloseAddVoterForm}
+                  t={t}
+                  lang={lang}
+                />
               </PageSection>
 
-              <ButtonContainer alignRight={true} noTopMargin={false}>
+              <ButtonContainer alignRight>
                 <Button
                   text={
                     <span>
