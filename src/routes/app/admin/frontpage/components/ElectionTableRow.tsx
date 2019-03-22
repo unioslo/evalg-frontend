@@ -18,11 +18,6 @@ const ElectionTableRow: React.FunctionComponent<IProps> = (props: IProps) => {
   const { election } = props;
   const { i18n, t } = useTranslation();
   const lang = i18n.language;
-
-  // TODO: Insert proper values from ballot-api when ready
-  const totalVotes = 0;
-  const votesOutsideCensus = 0;
-
   return (
     <TableRow>
       <TableCell noBorder />
@@ -47,8 +42,8 @@ const ElectionTableRow: React.FunctionComponent<IProps> = (props: IProps) => {
       </TableCell>
       <TableCell>
         <VoteStatus
-          totalVotes={totalVotes}
-          votesOutsideCensus={votesOutsideCensus}
+          totalVotes={election.voteCount.total}
+          votesOutsideCensus={election.voteCount.needApproval}
           preposition={t('general.of')}
         />
       </TableCell>
