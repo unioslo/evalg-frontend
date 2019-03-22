@@ -188,8 +188,8 @@ const CensusTable: React.FunctionComponent<IProps> = ({
         {filteredVotersToShow.map(voter => {
           if (voter.id === updateVoterId && !addVoterPollbookId) {
             return (
-              <>
-                <TableRow key={voter.id} verticalPadding={true}>
+              <React.Fragment key={voter.id}>
+                <TableRow verticalPadding={true}>
                   <TableCell topPadding verticalAlignTop>
                     <Text>{getVoterIdTypeDisplayName(voter.idType, t)}</Text>
                   </TableCell>
@@ -268,7 +268,7 @@ const CensusTable: React.FunctionComponent<IProps> = ({
                     }}
                   </Mutation>
                 )}
-              </>
+              </React.Fragment>
             );
           } else {
             return (
