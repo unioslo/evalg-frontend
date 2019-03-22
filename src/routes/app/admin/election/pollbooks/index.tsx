@@ -187,7 +187,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
     });
   };
 
-  closeUploadCensusFileModal(result: IUploadCensusFileModalStatus) {
+  closeUploadCensusFileModal = (result: IUploadCensusFileModalStatus) => {
     this.setState({
       showUploadCensusFileModal: false,
     });
@@ -195,7 +195,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
     if (result.message) {
       this.showMessageBox(result.message);
     }
-  }
+  };
 
   render() {
     const { t, i18n } = this.props;
@@ -288,60 +288,6 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                   <MsgBox msg={this.state.uploadMsg} timeout={true} />
                 )}
 
-                {!!this.state.deleteVotersPollbookId && (
-                  <Mutation
-                    mutation={deleteVotersInPollbook}
-                    refetchQueries={refetchQueries}
-                  >
-                    {del => {
-                      const deletePollbookAndClose = () => {
-                        del({
-                          variables: {
-                            id: this.state.deleteVotersPollbookId,
-                          },
-                        });
-                        this.handleHideDeleteVotersInPollbookModal();
-                        this.handleCloseAddVoterForm();
-                      };
-                      const deletePollbook =
-                        pollBookDict[this.state.deleteVotersPollbookId];
-                      const deletePollbookNumberOfVoters =
-                        deletePollbook.voters.length;
-
-                      return (
-                        <ConfirmModal
-                          confirmAction={deletePollbookAndClose}
-                          closeAction={
-                            this.handleHideDeleteVotersInPollbookModal
-                          }
-                          header={
-                            <Trans>
-                              census.deletePollbookConfirmationModalTitle
-                            </Trans>
-                          }
-                          body={
-                            <Trans
-                              values={{
-                                num: deletePollbookNumberOfVoters,
-                                of: t(
-                                  deletePollbookNumberOfVoters === 1
-                                    ? 'census.person'
-                                    : 'census.persons'
-                                ).toLowerCase(),
-                                pollbookName: deletePollbook.name[lang],
-                              }}
-                            >
-                              census.deletePollbookConfirmationModalText
-                            </Trans>
-                          }
-                          confirmText={<Trans>general.delete</Trans>}
-                          closeText={<Trans>general.cancel</Trans>}
-                        />
-                      );
-                    }}
-                  </Mutation>
-                )}
-
                 <CensusTable
                   pollBooks={pollBooks}
                   addVoterPollbookId={this.state.addVoterPollbookId}
@@ -372,6 +318,58 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                   groupId={this.props.groupId}
                   refetchData={refetch}
                 />
+              )}
+
+              {!!this.state.deleteVotersPollbookId && (
+                <Mutation
+                  mutation={deleteVotersInPollbook}
+                  refetchQueries={refetchQueries}
+                >
+                  {del => {
+                    const deletePollbookAndClose = () => {
+                      del({
+                        variables: {
+                          id: this.state.deleteVotersPollbookId,
+                        },
+                      });
+                      this.handleHideDeleteVotersInPollbookModal();
+                      this.handleCloseAddVoterForm();
+                    };
+                    const deletePollbook =
+                      pollBookDict[this.state.deleteVotersPollbookId];
+                    const deletePollbookNumberOfVoters =
+                      deletePollbook.voters.length;
+
+                    return (
+                      <ConfirmModal
+                        confirmAction={deletePollbookAndClose}
+                        closeAction={this.handleHideDeleteVotersInPollbookModal}
+                        header={
+                          <Trans>
+                            census.deletePollbookConfirmationModalTitle
+                          </Trans>
+                        }
+                        body={
+                          <Trans
+                            values={{
+                              num: deletePollbookNumberOfVoters,
+                              of: t(
+                                deletePollbookNumberOfVoters === 1
+                                  ? 'census.person'
+                                  : 'census.persons'
+                              ).toLowerCase(),
+                              pollbookName: deletePollbook.name[lang],
+                            }}
+                          >
+                            census.deletePollbookConfirmationModalText
+                          </Trans>
+                        }
+                        confirmText={<Trans>general.delete</Trans>}
+                        closeText={<Trans>general.cancel</Trans>}
+                      />
+                    );
+                  }}
+                </Mutation>
               )}
 
               {this.state.proceed && (
