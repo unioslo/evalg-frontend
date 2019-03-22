@@ -1,7 +1,6 @@
 import gql from 'graphql-tag';
 import React from 'react';
-import { i18n, TranslationFunction } from 'i18next';
-import { translate, Trans } from 'react-i18next';
+import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
 import { WithApolloClient, withApollo } from 'react-apollo';
 
@@ -98,7 +97,7 @@ const styles = (theme: any) => ({
   },
 });
 
-type IProps = {
+interface IProps extends WithTranslation {
   electionGroupType: string;
   activeElections: Election[];
   onProceed: (
@@ -107,10 +106,8 @@ type IProps = {
     voterId: string,
     notInPollBookJustification: string
   ) => void;
-  i18n: i18n;
-  t: TranslationFunction;
   classes: any;
-};
+}
 
 type IState = {
   selectedPollBookIndex: number;
@@ -413,5 +410,5 @@ class VoterGroupSelectPage extends React.Component<
 }
 
 export default injectSheet(styles)(
-  translate()(withApollo(VoterGroupSelectPage))
+  withTranslation()(withApollo(VoterGroupSelectPage))
 );

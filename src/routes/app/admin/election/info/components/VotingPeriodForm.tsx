@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { translate, Trans } from 'react-i18next';
-import { i18n } from 'i18next';
+import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 import { Form, Field, FormRenderProps } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
 import arrayMutators from 'final-form-arrays';
@@ -224,12 +223,11 @@ const validate = (lang: string) => (values: any) => {
   return errors;
 };
 
-interface IProps {
+interface IProps extends WithTranslation {
   onSubmit: (submitValues: any) => void;
   closeAction: () => void;
   electionType: string;
   initialValues: any;
-  i18n: i18n;
 }
 
 class VotingPeriodForm extends React.Component<IProps> {
@@ -250,8 +248,8 @@ class VotingPeriodForm extends React.Component<IProps> {
   }
 
   public render() {
-    const { closeAction, electionType, initialValues } = this.props;
-    const lang = this.props.i18n.language;
+    const { closeAction, electionType, initialValues, i18n } = this.props;
+    const lang = i18n.language;
     const { elections } = initialValues;
     const PeriodForm = determineFormType(electionType, initialValues.elections);
 
@@ -265,7 +263,7 @@ class VotingPeriodForm extends React.Component<IProps> {
     return (
       <Form
         onSubmit={this.handleSubmit}
-        mutators={{...arrayMutators}}
+        mutators={{ ...arrayMutators }}
         validate={validate(lang)}
         initialValues={initialValues}
         // tslint:disable-next-line:jsx-no-lambda
@@ -303,4 +301,4 @@ class VotingPeriodForm extends React.Component<IProps> {
   }
 }
 
-export default translate()(VotingPeriodForm);
+export default withTranslation()(VotingPeriodForm);

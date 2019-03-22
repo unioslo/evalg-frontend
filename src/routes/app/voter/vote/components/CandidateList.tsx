@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Trans, translate, TranslationFunction } from 'react-i18next';
-import { TranslateHocProps } from 'react-i18next/src/translate';
+import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
@@ -8,7 +7,6 @@ import Icon from '../../../../../components/icon';
 import Link from '../../../../../components/link';
 import { joinStringsWithCommaAndAnd } from '../../../../../utils';
 import { Candidate } from '../../../../../interfaces';
-
 
 const styles = (theme: any) => ({
   button: {
@@ -109,17 +107,16 @@ const CandidateListItem: React.SFC<IListItemProps> = props => (
 
 const HOCCandidateListItem = injectSheet(styles)(CandidateListItem);
 
-interface IInfoProps {
+interface IInfoProps extends WithTranslation {
   candidate: Candidate | null;
   classes: any;
   infoUrl?: boolean;
   listName?: boolean;
   metaFields?: string[];
   noLeftPadding?: boolean;
-  t: TranslationFunction;
 }
 
-const CandidateInfo: React.SFC<IInfoProps & TranslateHocProps> = props => {
+const CandidateInfo: React.SFC<IInfoProps> = props => {
   const lang = props.i18n ? props.i18n.language : 'nb';
   const { classes } = props;
   const candidate: any = props.candidate;
@@ -163,7 +160,7 @@ const CandidateInfo: React.SFC<IInfoProps & TranslateHocProps> = props => {
   );
 };
 
-const HOCCandidateInfo = injectSheet(styles)(translate()(CandidateInfo));
+const HOCCandidateInfo = injectSheet(styles)(withTranslation()(CandidateInfo));
 
 interface IRankProps {
   classes: any;
@@ -276,23 +273,23 @@ const DownArrow: React.SFC<IButtonProps> = props => (
 
 const HOCDownArrow = injectSheet(styles)(DownArrow);
 
-const CumulateButton: React.SFC<IButtonProps & TranslateHocProps> = props => (
+const CumulateButton: React.SFC<IButtonProps> = props => (
   <div className={props.classes.buttonCumulate} onClick={props.onClick}>
     <Icon type="star" custom={{ color: 'teal', small: true }} />
     <Trans>voter.cumulate</Trans>
   </div>
 );
 
-const HOCCumulateButton = injectSheet(styles)(translate()(CumulateButton));
+const HOCCumulateButton = injectSheet(styles)(CumulateButton);
 
-const RemoveButton: React.SFC<IButtonProps & TranslateHocProps> = props => (
+const RemoveButton: React.SFC<IButtonProps> = props => (
   <div className={props.classes.buttonRemove} onClick={props.onClick}>
     <Icon type="remove" custom={{ color: 'teal', small: true }} />
     <Trans>general.remove</Trans>
   </div>
 );
 
-const HOCRemoveButton = injectSheet(styles)(translate()(RemoveButton));
+const HOCRemoveButton = injectSheet(styles)(RemoveButton);
 
 export {
   HOCCandidateInfo as CandidateInfo,

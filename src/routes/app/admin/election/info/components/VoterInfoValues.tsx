@@ -1,6 +1,6 @@
 /* @flow */
 import React from 'react';
-import { Trans, translate } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 import Text from '../../../../../../components/text';
 import Link from '../../../../../../components/link';
@@ -9,7 +9,6 @@ import { PageSubSection } from '../../../../../../components/page';
 import { InfoList, InfoListItem } from '../../../../../../components/infolist';
 import { allEqualForAttrs } from '../../../../../../utils';
 import { Election, ElectionGroup } from '../../../../../../interfaces';
-import { i18n } from 'i18next';
 
 const valueNotSet = (
   <b>
@@ -112,16 +111,16 @@ const informationUrlMultiple = (elections: Array<Election>, lang: string) => (
   </InfoList>
 );
 
-type Props = {
-  electionGroup: ElectionGroup,
-  elections: Array<Election>,
-  i18n: i18n,
-};
+interface IProps {
+  electionGroup: ElectionGroup;
+  elections: Array<Election>;
+}
 
-const VoterInfoValues = (props: Props) => {
+const VoterInfoValues: React.FunctionComponent<IProps> = (props: IProps) => {
   const { elections } = props;
-  const electionGroup: any = props.electionGroup
-  const lang = props.i18n.language;
+  const electionGroup: any = props.electionGroup;
+  const { i18n } = useTranslation();
+  const lang = i18n.language;
   let mandatePeriodInfo = null;
   let contact = null;
   let informationUrl = null;
@@ -149,7 +148,7 @@ const VoterInfoValues = (props: Props) => {
   } else {
     if (
       elections.length > 1 && // to not present the value as "shared" if there
-                              // is only one active election
+      // is only one active election
       allEqualForAttrs(elections, ['mandatePeriodStart', 'mandatePeriodEnd'])
     ) {
       mandatePeriodInfo = (
@@ -209,4 +208,4 @@ const VoterInfoValues = (props: Props) => {
   );
 };
 
-export default translate()(VoterInfoValues);
+export default VoterInfoValues;

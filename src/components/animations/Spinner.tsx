@@ -7,9 +7,11 @@ const styles = () => ({
   spinner: {
     position: 'relative',
     display: 'inline-block',
-    width: '2.5rem',
-    height: '2.5rem',
-    border: '3px solid rgba(255,255,255)',
+    width: (props: IProps) => props.size ? props.size : '2.5rem',
+    height: (props: IProps) => props.size ? props.size : '2.5rem',
+    marginLeft: (props: IProps) => props.marginLeft ? props.marginLeft : 0,
+    border: '3px solid rgba(255,255,255, .3)',
+    borderWidth: (props: IProps) => props.thin ? '2px' : '3px',
     borderRadius: '50%',
     borderTopColor: '#fff',
     animation: 'spin 0.8s linear infinite',
@@ -25,6 +27,9 @@ const styles = () => ({
 
 interface IProps {
   darkStyle?: boolean;
+  size?: string;
+  thin?: boolean;
+  marginLeft?: string;
   classes: any;
 }
 

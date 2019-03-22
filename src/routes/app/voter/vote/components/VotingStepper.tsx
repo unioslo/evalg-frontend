@@ -1,6 +1,5 @@
 import React from 'react';
-import { translate, TranslationFunction } from 'react-i18next';
-import { i18n } from 'i18next';
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 import { appMobileVotingStepperVariant } from './../../../../../appConfig';
 import { Stepper, StepperItem } from '../../../../../components/stepper';
@@ -15,13 +14,11 @@ export enum VotingStep {
   Step4Receipt,
 }
 
-interface IProps {
+interface IProps extends WithTranslation {
   currentStep: VotingStep;
   onClickStep1?: () => void;
   onClickStep2?: () => void;
   scrollToDivRef?: React.RefObject<HTMLDivElement>;
-  i18n: i18n;
-  t: TranslationFunction;
 }
 
 const VotingStepper: React.SFC<IProps> = ({
@@ -95,6 +92,8 @@ const VotingStepper: React.SFC<IProps> = ({
     case VotingStep.Step4Receipt:
       currentStepText = t('voter.stepperStep4');
       break;
+    default:
+      currentStepText = '';
   }
 
   let mobileVotingStepper: React.ReactNode;
@@ -133,4 +132,4 @@ const VotingStepper: React.SFC<IProps> = ({
   );
 };
 
-export default translate()(VotingStepper);
+export default withTranslation()(VotingStepper);

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
-import { Trans, translate } from 'react-i18next';
-import { TranslateHocProps } from 'react-i18next/src/translate';
+import { useTranslation } from 'react-i18next';
 import Link from '../../../../../components/link';
 import { Classes } from 'jss';
 import { PageSection } from '../../../../../components/page';
@@ -14,33 +13,29 @@ const styles = (theme: any) => ({
   h1: { fontSize: '10rem' },
 });
 
-interface IProps extends TranslateHocProps {
+interface IProps {
   classes: Classes;
 }
 
-const Error: React.SFC<IProps> = ({ classes }) => {
+const Error: React.FunctionComponent<IProps> = (props: IProps) => {
+  const { t } = useTranslation();
+  const { classes } = props;
+
   return (
     <PageSection noBorder>
       <div className={classes.receiptTextBox}>
-        <h1>
-          <Trans>voter.error</Trans>
-        </h1>
+        <h1>{t('voter.error')}</h1>
         <br />
         <br />
-        <Trans>voter.errorInfo</Trans>
+        {t('voter.errorInfo')}
         <br />
         <br />
-        <Link to={'/'}>
-          <Trans>voter.receiptGoToFrontpage</Trans>
-        </Link>{' '}
-        <Trans>voter.receiptOr</Trans>{' '}
-        <Link to={'/logout'}>
-          <Trans>voter.receiptLogout</Trans>
-        </Link>
-        .
+        <Link to={'/'}>{t('voter.receiptGoToFrontpage')}</Link>{' '}
+        {t('voter.receiptOr')}{' '}
+        <Link to={'/logout'}>{t('voter.receiptLogout')}</Link>.
       </div>
     </PageSection>
   );
 };
 
-export default injectSheet(styles)(translate()(Error));
+export default injectSheet(styles)(Error);

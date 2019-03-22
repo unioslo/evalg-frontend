@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trans, translate, TranslationFunction } from 'react-i18next';
+import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 import gql from 'graphql-tag';
@@ -111,11 +111,10 @@ interface IKeyPair {
   secretKey: string;
 }
 
-interface IProps {
+interface IProps extends WithTranslation {
   electionGroupId: string;
   isReplacingOldKey: boolean;
   onCloseModal: () => void;
-  t: TranslationFunction;
   classes: any;
 }
 
@@ -185,10 +184,10 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
         publicKey: keys.publicKey,
       });
     } catch (error) {
-      const t = this.props.t;
+      const { t } = this.props;
       this.setState({ isGeneratingKey: false });
       this.showError(
-        `${t('admin.errors.generateKeyError')}\n${t(
+        `${t('admin.electionKey.errors.generateKeyError')}\n${t(
           'general.errorMessage'
         )}: ${error}`
       );
@@ -207,6 +206,8 @@ secret:${this.state.secretKey}\r\npublic:${this.state.publicKey}`.trim();
   };
 
   activateKey = async () => {
+    const { t } = this.props;
+
     this.setState({
       isActivatingKey: true,
     });
@@ -223,11 +224,13 @@ secret:${this.state.secretKey}\r\npublic:${this.state.publicKey}`.trim();
           result && result.data && result.data.setElectionGroupKey;
 
         if (!response || response.success === false) {
-          let errorMessage = this.props.t(
-            'admin.errors.activateKeyErrorGeneral'
-          );
+          let errorMessage = t('admin.electionKey.backend.unknown');
           if (response && response.code) {
-            errorMessage = translateBackendError(response.code, this.props.t);
+            errorMessage = translateBackendError(
+              response.code,
+              this.props.t,
+              'admin.electionKey.errors.backend'
+            );
           }
           this.setState({ isActivatingKey: false });
           this.showError(errorMessage);
@@ -237,7 +240,7 @@ secret:${this.state.secretKey}\r\npublic:${this.state.publicKey}`.trim();
       })
       .catch(error => {
         this.setState({ isActivatingKey: false });
-        this.showError(this.props.t('admin.errors.activateKeyErrorGeneral'));
+        this.showError(t('admin.electionKey.backend.unknown'));
       });
   };
 
@@ -253,7 +256,7 @@ secret:${this.state.secretKey}\r\npublic:${this.state.publicKey}`.trim();
   };
 
   render() {
-    const { isReplacingOldKey, onCloseModal, t, classes } = this.props;
+    const { isReplacingOldKey, onCloseModal, classes, t } = this.props;
 
     const {
       isGeneratingKey,
@@ -439,5 +442,5 @@ secret:${this.state.secretKey}\r\npublic:${this.state.publicKey}`.trim();
 }
 
 export default injectSheet(styles)(
-  translate()(withApollo(CreateElectionKeyModal))
+  withTranslation()(withApollo(CreateElectionKeyModal))
 );

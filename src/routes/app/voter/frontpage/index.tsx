@@ -1,7 +1,6 @@
 import gql from 'graphql-tag';
 import * as React from 'react';
 import { Query, WithApolloClient, withApollo } from 'react-apollo';
-import { Trans, translate } from 'react-i18next';
 
 import { Page, PageSection } from '../../../../components/page';
 import VoterElections from './components/VoterElections';
@@ -13,6 +12,8 @@ import {
   QueryResponse,
 } from '../../../../interfaces';
 import { getSignedInPersonId } from '../../../../common-queries';
+import { WithTranslation } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 
 const electionGroupsQuery = gql`
   query electionGroups {
@@ -80,7 +81,7 @@ const votersForPersonQuery = gql`
   }
 `;
 
-interface IProps {}
+interface IProps extends WithTranslation {}
 
 interface IState {
   personId: string;
@@ -131,6 +132,7 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>, IState> {
   }
 
   render() {
+    const { t } = this.props;
     return (
       <Query query={electionGroupsQuery}>
         {({ data, loading, error }) => {
@@ -138,8 +140,8 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>, IState> {
             return null;
           }
           return (
-            <Page header={<Trans>general.welcome</Trans>}>
-              <PageSection desc={<Trans>general.frontPageDesc</Trans>} noBorder>
+            <Page header={t('general.welcome')}>
+              <PageSection desc={t('general.frontPageDesc')} noBorder>
                 <VoterElections
                   canVoteElectionGroups={this.state.canVoteElectionGroups}
                   electionGroups={data.electionGroups
@@ -159,4 +161,4 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>, IState> {
   }
 }
 
-export default translate()(withApollo(VoterFrontPage));
+export default withApollo(withTranslation()(VoterFrontPage));

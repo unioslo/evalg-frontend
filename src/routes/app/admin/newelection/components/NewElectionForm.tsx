@@ -3,11 +3,15 @@ import * as React from 'react';
 import { Form, FormRenderProps, FormSpy, Field } from 'react-final-form';
 
 import { getSupportedLanguages } from '../../../../../utils/i18n';
-import { translate } from 'react-i18next';
-import { i18n, TranslationFunction } from 'i18next';
-import { FormField, FormButtons, TextInput, SelectDropDown} from '../../../../../components/form';
+import {
+  FormField,
+  FormButtons,
+  TextInput,
+  SelectDropDown,
+} from '../../../../../components/form';
 
 import { isObjEmpty } from '../../../../../utils/helpers';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
   submitAction: (v: any) => any;
@@ -15,21 +19,21 @@ interface IProps {
   cancelAction: () => void;
   updateValues: (newVals: any) => void;
   initialValues: object;
-  t: TranslationFunction;
-  i18n: i18n;
 }
 
 const buildDropdownOptions = (options: any[], lang: string) => {
   // Create the drop down options
-  return options.map((option, index) => ({
-    label: option.name[lang] + ( option.externalId ? ' (' + option.externalId + ')' : ''),
-    value: index,
-  })).sort((a,b) => (a.label > b.label ? 1 : -1));
+  return options
+    .map((option, index) => ({
+      label:
+        option.name[lang] +
+        (option.externalId ? ' (' + option.externalId + ')' : ''),
+      value: index,
+    }))
+    .sort((a, b) => (a.label > b.label ? 1 : -1));
 };
 
-export const getCurrentValues = (
-  valueObject: any
-): Array<string | number> => {
+export const getCurrentValues = (valueObject: any): Array<string | number> => {
   let currentValues: any[] = [];
   if (valueObject) {
     currentValues = Object.keys(valueObject).map(key => valueObject[key]);
@@ -38,10 +42,7 @@ export const getCurrentValues = (
   return currentValues;
 };
 
-const getNodeListAndSettings = (
-  currentValues: any[],
-  templateRoot: any
-) => {
+const getNodeListAndSettings = (currentValues: any[], templateRoot: any) => {
   // Generates a list of the settings nodes
   const nodeList: any[] = [];
   let settings: any = {};
@@ -80,7 +81,8 @@ const getNodeListAndSettings = (
         }
         // If ouListsLevel is set to 1 (the root-node in the OU tree), we
         // simply skip the OU-search node
-        if (!(
+        if (
+          !(
             settings.ouTag &&
             settings.ouTag === 'root' &&
             nextNode.searchInOuTree
@@ -102,7 +104,7 @@ const renderOptionFields = (
   nodeList: any[],
   ouLists: any,
   currentSettings: any,
-  t: TranslationFunction,
+  t: (s: string) => string,
   lang: string
 ) => {
   return nodeList.map((node, index) => {
@@ -249,11 +251,13 @@ const validate = (electionTemplate: any) => (values: object) => {
   return {};
 };
 
-const NewElectionForm = (props: IProps) => {
-  const { electionTemplate, submitAction, cancelAction, t } = props;
+const NewElectionForm: React.FunctionComponent<IProps> = (props: IProps) => {
+  const { electionTemplate, submitAction, cancelAction } = props;
 
   const { templateRoot, ouLists } = electionTemplate;
-  const lang = props.i18n.language;
+
+  const { i18n, t } = useTranslation();
+  const lang = i18n.language;
 
   return (
     <Form
@@ -326,7 +330,6 @@ const NewElectionForm = (props: IProps) => {
               />
             </FormField>
 
-
             {renderOptionFields(nodeList, ouLists, settings, t, lang)}
 
             <FormButtons
@@ -341,4 +344,4 @@ const NewElectionForm = (props: IProps) => {
   );
 };
 
-export default translate()(NewElectionForm);
+export default NewElectionForm;

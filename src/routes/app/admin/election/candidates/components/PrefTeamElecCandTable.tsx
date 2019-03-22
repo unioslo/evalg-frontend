@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { translate, Trans } from 'react-i18next';
+import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -69,20 +69,20 @@ const deleteCandidate = gql`
   }
 `;
 
-interface IProps {
-  children?: React.ReactNode,
-  electionGroup: ElectionGroup,
-  createCandidate?: (a: any) => void,
-  updateCandidate?: (a: any) => void,
-  createCoCandidate?: (a: any) => void,
-  updateCoCandidate?: (a: any) => void,
-};
+interface IProps extends WithTranslation {
+  children?: React.ReactNode;
+  electionGroup: ElectionGroup;
+  createCandidate?: (a: any) => void;
+  updateCandidate?: (a: any) => void;
+  createCoCandidate?: (a: any) => void;
+  updateCoCandidate?: (a: any) => void;
+}
 
 interface IState {
-  newFormTopActive: boolean,
-  newFormBottomActive: boolean,
-  editCandidateId: number,
-};
+  newFormTopActive: boolean;
+  newFormBottomActive: boolean;
+  editCandidateId: number;
+}
 
 class PrefTeamElecCandTable extends React.Component<IProps, IState> {
   state: IState;
@@ -317,4 +317,4 @@ class PrefTeamElecCandTable extends React.Component<IProps, IState> {
   }
 }
 
-export default translate()(PrefTeamElecCandTable);
+export default withTranslation()(PrefTeamElecCandTable);

@@ -2,9 +2,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 
 import { Classes } from 'jss';
-import { i18n } from 'i18next';
 import { Route } from 'react-router-dom';
-import { Trans, translate } from 'react-i18next';
 
 import Content from './components/Content';
 import Footer from './components/Footer';
@@ -20,6 +18,9 @@ import { oidcLogoutUrl } from '../../appConfig';
 // import { UserContext } from '../../providers/UserContext';
 import { H1 } from '../../components/text';
 import { UserContext } from '../../providers/UserContext';
+import { useTranslation } from 'react-i18next';
+
+import { Helmet } from 'react-helmet';
 
 const styles = {
   ie11ExtraFlexContainer: {
@@ -44,32 +45,34 @@ const styles = {
 
 interface IFrontPageProps {
   // classes: Classes;
-  i18n: i18n;
 }
 
-const FrontPage: React.FunctionComponent<IFrontPageProps> = props => (
-  <div style={{ fontSize: '3rem' }}>
-    <H1>
-      <Trans>general.welcome</Trans>
-    </H1>
-    <Link to="/login">
-      <Trans>general.login</Trans>
-    </Link>
-  </div>
-);
+const FrontPage: React.FunctionComponent<IFrontPageProps> = (
+  props: IFrontPageProps
+) => {
+  const { t } = useTranslation();
+
+  return (
+    <div style={{ fontSize: '3rem' }}>
+      <H1>{t('general.welcome')}</H1>
+      <Link to="/login">{t('general.login')}</Link>
+    </div>
+  );
+};
 
 interface IStyleProp {
   classes: Classes;
 }
 
-const logout: React.FunctionComponent<IStyleProp> = props => {
+const logout: React.FunctionComponent<IStyleProp> = (props: IStyleProp) => {
+  const { t } = useTranslation();
   window.location.href = oidcLogoutUrl;
   return (
     <div className={props.classes.logout}>
       <div className={props.classes.spinBox}>
         <Spinner darkStyle={true} />
       </div>
-      <Trans>general.logoutInProgress</Trans>
+      {t('general.logoutInProgress')}
     </div>
   );
 };
@@ -78,31 +81,27 @@ const styledLogout = injectSheet(styles)(logout);
 interface IAppProps {
   classes: Classes;
   authManager: any;
-  i18n: i18n;
 }
 
-const App: React.FunctionComponent<IAppProps> = props => {
+const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
   const { authManager, classes } = props;
   const ProtectedAdmin = authEnabled ? authManager(<AdminRoute />) : AdminRoute;
   const ProtectedVoter = authEnabled ? authManager(<VoterRoute />) : VoterRoute;
 
+  const { i18n } = useTranslation();
+
   return (
     <div className={classes.ie11ExtraFlexContainer}>
       <div className={classes.app}>
+        <Helmet htmlAttributes={{ lang: i18n.language }} />
         <Header />
         <Content>
           <UserContext.Consumer>
-            {context => {
+            {(context: any) => {
               if (context.user || !authEnabled) {
                 return <Route path="/" component={ProtectedVoter} />;
               } else {
-                return (
-                  <Route
-                    exact={true}
-                    path="/"
-                    component={translate()(FrontPage)}
-                  />
-                );
+                return <Route exact={true} path="/" component={FrontPage} />;
               }
             }}
           </UserContext.Consumer>
@@ -120,5 +119,5 @@ const App: React.FunctionComponent<IAppProps> = props => {
   );
 };
 
-const styledApp = injectSheet(styles)(translate()(App));
+const styledApp = injectSheet(styles)(App);
 export default styledApp;

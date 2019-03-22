@@ -1,6 +1,5 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
-import { Trans, translate } from 'react-i18next';
 
 import {
   appStagingWarning,
@@ -10,6 +9,7 @@ import {
   appCookiesInformationLink,
 } from '../../../appConfig';
 import Link from '../../../components/link';
+import { useTranslation } from 'react-i18next';
 
 const styles = (theme: any) => ({
   wrapper: {
@@ -79,8 +79,9 @@ interface IProps {
   classes: any;
 }
 
-const Footer = (props: IProps) => {
+const Footer: React.FunctionComponent<IProps> = (props: IProps) => {
   const { classes } = props;
+  const { t } = useTranslation();
 
   return (
     <React.Fragment>
@@ -89,9 +90,7 @@ const Footer = (props: IProps) => {
           <div className={classes.logoOffsetContainer}>
             <div className={classes.contentContainer}>
               <section className={classes.footerSection}>
-                <header>
-                  <Trans>footer.termsHeader</Trans>
-                </header>
+                <header>{t('footer.termsHeader')}</header>
                 <div className="content">
                   <div>
                     <Link
@@ -101,11 +100,11 @@ const Footer = (props: IProps) => {
                       underline
                       to={appTermsAndPrivacylink}
                     >
-                      <Trans>footer.termsAndPrivacyLink</Trans>
+                      {t('footer.termsAndPrivacyLink')}
                     </Link>
                   </div>
                   <div>
-                    <Trans>footer.evalgUses</Trans>{' '}
+                    {t('footer.evalgUses')}{' '}
                     <Link
                       external
                       noExternalIcon
@@ -113,18 +112,16 @@ const Footer = (props: IProps) => {
                       underline
                       to={appCookiesInformationLink}
                     >
-                      <Trans>footer.cookiesInformationLink</Trans>
+                      {t('footer.cookiesInformationLink')}
                     </Link>
                   </div>
                 </div>
               </section>
               <section className={classes.footerSection}>
-                <header>
-                  <Trans>footer.contactSectionHeader</Trans>
-                </header>
+                <header>{t('footer.contactSectionHeader')}</header>
                 <div className="content">
                   <div>
-                    <Trans>footer.technicalSupport</Trans>:{' '}
+                    {t('footer.technicalSupport')}:{' '}
                     <Link
                       mail
                       to={appTechnicalSupportEmail}
@@ -137,9 +134,7 @@ const Footer = (props: IProps) => {
                 </div>
               </section>
               <section className={classes.footerSection}>
-                <header>
-                  <Trans>footer.responsibleOrganizationHeader</Trans>
-                </header>
+                <header>{t('footer.responsibleOrganizationHeader')}</header>
                 <div className="content">
                   <div>
                     <Link
@@ -149,7 +144,7 @@ const Footer = (props: IProps) => {
                       underline
                       to={appServiceOwnerLink}
                     >
-                      <Trans>footer.serviceOwnerLink</Trans>
+                      {t('footer.serviceOwnerLink')}
                     </Link>
                   </div>
                 </div>
@@ -168,4 +163,4 @@ const Footer = (props: IProps) => {
   );
 };
 
-export default translate()(injectSheet(styles)(Footer));
+export default injectSheet(styles)(Footer);

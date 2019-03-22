@@ -1,8 +1,7 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { Query, WithApolloClient, withApollo } from 'react-apollo';
-import { translate } from 'react-i18next';
-import { TranslateHocProps } from 'react-i18next/src/translate';
+import { withTranslation, WithTranslation } from 'react-i18next';
 
 import {
   ElectionGroup,
@@ -93,7 +92,7 @@ type AddVoterResponse = {
   addVoter: IVoter;
 };
 
-interface IProps extends TranslateHocProps {
+interface IProps extends WithTranslation {
   electionGroupId: string;
 }
 
@@ -273,28 +272,28 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
 
           let VotingComponent: any;
           if (this.state.voteElection) {
-            const election = this.state.voteElection;
-            const { candidateType } = election.meta;
-            const { voting } = election.meta.ballotRules;
+            const voteElection = this.state.voteElection;
+            const { candidateType } = voteElection.meta;
+            const { voting } = voteElection.meta.ballotRules;
 
             if (voting === 'rank_candidates') {
               if (
                 candidateType === 'single' ||
                 candidateType === 'single_team'
               ) {
-                VotingComponent = PrefElecVote;
-
                 // TODO: This might not be how we wan't to decide when to use majority vote ballot
-                if (election.lists[0].candidates.length <= 2) {
+                if (voteElection.lists[0].candidates.length <= 2) {
                   VotingComponent = MajorityVote;
+                } else {
+                  VotingComponent = PrefElecVote;
                 }
               } else {
-                // Unknown election type
+                return <div>Unknown meta.candidateType: {candidateType}</div>;
               }
             } else if (voting === 'list') {
-              // List election
+              return <div>List election voting not implemented</div>;
             } else {
-              // Unknown election type
+              return <div>Unknown meta.ballotRules.voting type: {voting}</div>;
             }
           }
 
@@ -351,4 +350,4 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
   }
 }
 
-export default translate()(withApollo(VotingPage));
+export default withTranslation()(withApollo(VotingPage));

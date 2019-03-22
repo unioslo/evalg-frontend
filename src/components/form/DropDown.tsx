@@ -187,7 +187,7 @@ class DropDown extends DropDownBase<IProps> {
       inline, // if inline is true, searchable has no effect
       noRelativePositionOfListOnMobile,
       searchable,
-      // disabled,
+      disabled,
       value,
       name,
       // meta,
@@ -251,7 +251,7 @@ class DropDown extends DropDownBase<IProps> {
             name={nameValue}
             label={label}
             touched={touched}
-            // disabled={disabled}
+            disabled={disabled}
             error={error}
             onBlur={this.handleOnBlur.bind(this)}
             className={classes.input}

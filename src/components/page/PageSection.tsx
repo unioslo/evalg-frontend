@@ -26,9 +26,11 @@ const styles = (theme: any) => ({
     color: theme.colors.greyishBrown,
     padding: `${theme.contentVertPadding} ${theme.contentHorPadding}`,
     [theme.breakpoints.mdQuery]: {
-      borderBottom: `${theme.sectionBorderWidth} ${theme.sectionBorderStyle} ${
-        theme.sectionBorderColor
-      }`,
+      '&:not(:last-child)': {
+        borderBottom: `${theme.sectionBorderWidth} ${
+          theme.sectionBorderStyle
+        } ${theme.sectionBorderColor}`,
+      },
       padding: `4rem ${theme.contentHorMdPadding} 4rem`,
     },
   },
@@ -39,7 +41,7 @@ const styles = (theme: any) => ({
     paddingTop: 0,
   },
   noBorder: {
-    border: 0,
+    border: '0 !important',
   },
   subSection: {
     marginTop: '3rem',

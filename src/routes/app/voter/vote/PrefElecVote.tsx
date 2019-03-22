@@ -110,10 +110,7 @@ class PrefElecVote extends React.Component<
   };
 
   handleBlankVoteAndProceedToReview = () => {
-    this.setState(
-      { isBlankVote: true, selectedCandidates: [] },
-      this.props.onProceedToReview
-    );
+    this.setState({ isBlankVote: true }, this.props.onProceedToReview);
   };
 
   handleProceedToReview = () => {
@@ -124,7 +121,9 @@ class PrefElecVote extends React.Component<
     this.props.onSubmitVote({
       voteType: 'prefElecVote',
       isBlankVote: this.state.isBlankVote,
-      rankedCandidateIds: this.state.selectedCandidates.map(c => c.id),
+      rankedCandidateIds: this.state.isBlankVote
+        ? []
+        : this.state.selectedCandidates.map(c => c.id),
     });
   };
 }
