@@ -26,6 +26,8 @@ import { getVoterIdTypeDisplayName } from '../../../../../../utils/i18n';
 import { FormButtons, DropDownRF } from '../../../../../../components/form';
 import { ConfirmModal } from '../../../../../../components/modal';
 
+const N_RECORDS_TO_SHOW_INCREMENT = 50;
+
 const updateVoterPollBook = gql`
   mutation UpdateVoterPollBook($id: UUID!, $pollbookId: UUID!) {
     updateVoterPollbook(id: $id, pollbookId: $pollbookId) {
@@ -104,25 +106,11 @@ const CensusTable: React.FunctionComponent<IProps> = ({
   t,
   lang,
 }) => {
-  const voters: IVoter[] = [];
-  const pollBookDict: { [pollbookId: string]: IPollBook } = {};
-  const pollBookOptions: DropDownOption[] = [];
-
-  pollBooks.forEach(pollBook => {
-    pollBookDict[pollBook.id] = pollBook;
-    pollBook.voters
-      .filter(voter => voter.verified)
-      .forEach(voter => {
-        voters.push(voter);
-      });
-    pollBookOptions.push({
-      name: pollBook.name[lang],
-      value: pollBook.id,
-    });
-  });
-
   const [updateVoterId, setUpdateVoterId] = useState('');
   const [deleteVoterId, setDeleteVoterId] = useState('');
+  const [nRecordsToShow, setNRecordsToShow] = useState(
+    N_RECORDS_TO_SHOW_INCREMENT
+  );
 
   const handleShowUpdateVoterFormForVoterId = (voterId: string) => {
     onCloseAddVoterForm();
@@ -140,6 +128,36 @@ const CensusTable: React.FunctionComponent<IProps> = ({
   const handleHideDeleteVoterModal = () => {
     setDeleteVoterId('');
   };
+
+  const handleIncreaseNRecordsToShow = () => {
+    setNRecordsToShow(nRecordsToShow + N_RECORDS_TO_SHOW_INCREMENT);
+  };
+
+  const voters: IVoter[] = [];
+  const pollBookDict: { [pollbookId: string]: IPollBook } = {};
+  const pollBookOptions: DropDownOption[] = [];
+
+  pollBooks.forEach(pollBook => {
+    pollBookDict[pollBook.id] = pollBook;
+    pollBook.voters
+      .filter(voter => voter.verified)
+      .forEach(voter => {
+        voters.push(voter);
+      });
+    pollBookOptions.push({
+      name: pollBook.name[lang],
+      value: pollBook.id,
+    });
+  });
+
+  const filteredVoters = [...voters];
+  const filteredVotersToShow = filteredVoters.slice(0, nRecordsToShow);
+
+  const nRecordsShowing = Math.min(nRecordsToShow, filteredVoters.length);
+  const nMoreRecordsToShowOnNextIncrease = Math.min(
+    N_RECORDS_TO_SHOW_INCREMENT,
+    filteredVoters.length - nRecordsToShow
+  );
 
   return (
     <Table>
@@ -167,7 +185,7 @@ const CensusTable: React.FunctionComponent<IProps> = ({
           />
         )}
 
-        {voters.map(voter => {
+        {filteredVotersToShow.map(voter => {
           if (voter.id === updateVoterId && !addVoterPollbookId) {
             return (
               <>
@@ -279,6 +297,21 @@ const CensusTable: React.FunctionComponent<IProps> = ({
             );
           }
         })}
+        <TableRow>
+          <TableCell colspan={4}>
+            {t('census.showingNOfNRecords', {
+              nRecordsShowing,
+              nRecordsTotal: filteredVoters.length,
+            })}{' '}
+            {nMoreRecordsToShowOnNextIncrease > 0 && (
+              <ActionText bottom action={handleIncreaseNRecordsToShow}>
+                {t('census.showMoreRecordsPrompt', {
+                  nMoreRecordsToShow: nMoreRecordsToShowOnNextIncrease,
+                })}
+              </ActionText>
+            )}
+          </TableCell>
+        </TableRow>
       </TableBody>
     </Table>
   );
