@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
+import debounce from 'lodash/debounce';
 import { Trans, TranslationFunction } from 'react-i18next';
-import { Field, Form } from 'react-final-form';
 
 import {
   IPollBook,
@@ -10,6 +10,9 @@ import {
   DropDownOption,
 } from '../../../../../../interfaces';
 
+import CensusTableFiltersRow from './CensusTableFiltersRow';
+import AddVoterForm from './AddVoterForm';
+import UpdateVoterForm from './UpdateVoterForm';
 import {
   Table,
   TableHeader,
@@ -19,11 +22,9 @@ import {
   TableRow,
   TableCell,
 } from '../../../../../../components/table';
-import AddVoterForm from './AddVoterForm';
 import Text from '../../../../../../components/text';
 import ActionText from '../../../../../../components/actiontext';
 import { getVoterIdTypeDisplayName } from '../../../../../../utils/i18n';
-import { FormButtons, DropDownRF } from '../../../../../../components/form';
 import { ConfirmModal } from '../../../../../../components/modal';
 
 const N_RECORDS_TO_SHOW_INCREMENT = 50;
@@ -44,52 +45,15 @@ const deleteVoter = gql`
   }
 `;
 
+const handleIdValueFilterChangeDebounced = debounce(
+  (idValueFilter: string, filters, setFilters) => {
+    setFilters(Object.assign({}, filters, { idValueFilter }));
+  },
+  200,
+  { trailing: true }
+);
+
 const refetchQueries = () => ['electionGroupVoters'];
-
-interface IUpdateVoterForm {
-  submitAction: (o: any) => void;
-  closeAction: () => void;
-  deleteAction: () => void;
-  options: DropDownOption[];
-  initialValues: object;
-}
-
-const UpdateVoterForm: React.SFC<IUpdateVoterForm> = props => {
-  const {
-    closeAction,
-    deleteAction,
-    options,
-    submitAction,
-    initialValues,
-  } = props;
-
-  const renderForm = (formProps: any) => {
-    const { handleSubmit, pristine, valid } = formProps;
-    return (
-      <form onSubmit={handleSubmit}>
-        <Field
-          name="pollbookId"
-          component={DropDownRF as any}
-          options={options}
-        />
-        <FormButtons
-          saveAction={handleSubmit}
-          closeAction={closeAction}
-          submitDisabled={pristine || !valid}
-          entityAction={deleteAction}
-          entityText={<Trans>census.deleteFromCensus</Trans>}
-        />
-      </form>
-    );
-  };
-  return (
-    <Form
-      onSubmit={submitAction}
-      initialValues={initialValues}
-      render={renderForm}
-    />
-  );
-};
 
 interface IProps {
   pollBooks: IPollBook[];
@@ -106,27 +70,26 @@ const CensusTable: React.FunctionComponent<IProps> = ({
   t,
   lang,
 }) => {
-  const [showNewVoterForm, setShowNewVoterForm] = useState(false);
+  // const [showNewVoterForm, setShowNewVoterForm] = useState(false);
   const [voterToUpdateId, setVoterToUpdateId] = useState('');
   const [voterToDelete, setVoterToDelete] = useState<null | IVoter>(null);
   const [nRecordsToShow, setNRecordsToShow] = useState(
     N_RECORDS_TO_SHOW_INCREMENT
   );
+  const [filters, setFilters] = useState({
+    idTypeFilter: '',
+    idValueFilter: '',
+    pollbookFilter: '',
+  });
 
   useEffect(() => {
     if (addVoterPollbookId) {
       handleCloseUpdateVoterForm();
-      setShowNewVoterForm(true);
     }
   }, [addVoterPollbookId]);
 
-  const handleCloseAddVoterForm = () => {
-    setShowNewVoterForm(false);
-    onCloseAddVoterForm();
-  };
-
   const handleShowUpdateVoterFormForVoterId = (voterId: string) => {
-    handleCloseAddVoterForm();
+    onCloseAddVoterForm();
     setVoterToUpdateId(voterId);
   };
 
@@ -146,7 +109,30 @@ const CensusTable: React.FunctionComponent<IProps> = ({
     setNRecordsToShow(nRecordsToShow + N_RECORDS_TO_SHOW_INCREMENT);
   };
 
-  const voters: IVoter[] = [];
+  const resetNRecordsToShow = () => {
+    setNRecordsToShow(N_RECORDS_TO_SHOW_INCREMENT);
+  };
+
+  const handleIdTypeFilterChange = (idTypeFilter: string) => {
+    setFilters(Object.assign({}, filters, { idTypeFilter }));
+    resetNRecordsToShow();
+  };
+
+  const handleIdValueFilterChange = (idValueFilter: string) => {
+    handleIdValueFilterChangeDebounced(idValueFilter, filters, setFilters);
+    resetNRecordsToShow();
+  };
+
+  const handlePollbookFilterChange = (pollbookFilter: string) => {
+    setFilters(Object.assign({}, filters, { pollbookFilter }));
+    resetNRecordsToShow();
+  };
+
+  const handleResetFilters = () => {
+    setFilters({ idTypeFilter: '', idValueFilter: '', pollbookFilter: '' });
+  };
+
+  const unfilteredVoters: IVoter[] = [];
   const pollBookDict: { [pollbookId: string]: IPollBook } = {};
   const pollBookOptions: DropDownOption[] = [];
 
@@ -155,7 +141,7 @@ const CensusTable: React.FunctionComponent<IProps> = ({
     pollBook.voters
       .filter(voter => voter.verified)
       .forEach(voter => {
-        voters.push(voter);
+        unfilteredVoters.push(voter);
       });
     pollBookOptions.push({
       name: pollBook.name[lang],
@@ -163,7 +149,29 @@ const CensusTable: React.FunctionComponent<IProps> = ({
     });
   });
 
-  const filteredVoters = [...voters];
+  const filteredVoters = unfilteredVoters.filter(voter => {
+    if (
+      filters.idTypeFilter &&
+      filters.idTypeFilter !== 'all' &&
+      voter.idType !== filters.idTypeFilter
+    ) {
+      return false;
+    }
+    if (
+      filters.idValueFilter &&
+      !voter.idValue.toLowerCase().includes(filters.idValueFilter.toLowerCase())
+    ) {
+      return false;
+    }
+    if (
+      filters.pollbookFilter &&
+      filters.pollbookFilter !== 'all' &&
+      voter.pollbookId !== filters.pollbookFilter
+    ) {
+      return false;
+    }
+    return true;
+  });
   const filteredVotersToShow = filteredVoters.slice(0, nRecordsToShow);
 
   const nRecordsShowing = Math.min(nRecordsToShow, filteredVoters.length);
@@ -171,6 +179,30 @@ const CensusTable: React.FunctionComponent<IProps> = ({
     N_RECORDS_TO_SHOW_INCREMENT,
     filteredVoters.length - nRecordsToShow
   );
+
+  const pollbookFilterOptions = [];
+  pollbookFilterOptions.push({ name: t('general.all'), value: 'all' });
+  Object.keys(pollBookDict).forEach(id => {
+    pollbookFilterOptions.push({
+      name: pollBookDict[id].name[lang],
+      value: id,
+    });
+  });
+
+  const idTypes: string[] = [];
+  const idTypeFilterOptions: { name: string; value: string }[] = [];
+  for (const voter of unfilteredVoters) {
+    if (!idTypes.includes(voter.idType)) {
+      idTypes.push(voter.idType);
+    }
+  }
+  idTypeFilterOptions.push({ name: t('general.all'), value: 'all' });
+  for (const idType of idTypes) {
+    idTypeFilterOptions.push({
+      name: getVoterIdTypeDisplayName(idType, t),
+      value: idType,
+    });
+  }
 
   return (
     <>
@@ -190,10 +222,25 @@ const CensusTable: React.FunctionComponent<IProps> = ({
           </TableHeaderRow>
         </TableHeader>
         <TableBody>
-          {showNewVoterForm && !!addVoterPollbookId && (
+          {unfilteredVoters.length > 0 && (
+            <CensusTableFiltersRow
+              idTypeFilter={filters.idTypeFilter}
+              pollbookFilter={filters.pollbookFilter}
+              idTypeFilterOptions={idTypeFilterOptions}
+              pollbookFilterOptions={pollbookFilterOptions}
+              onIdTypeFilterChange={handleIdTypeFilterChange}
+              onIdValueFilterChange={handleIdValueFilterChange}
+              onPollbookFilterChange={handlePollbookFilterChange}
+              onResetFilters={handleResetFilters}
+              disabled={!!addVoterPollbookId}
+              t={t}
+            />
+          )}
+
+          {!!addVoterPollbookId && (
             <AddVoterForm
               pollbook={pollBookDict[addVoterPollbookId]}
-              onClose={handleCloseAddVoterForm}
+              onClose={onCloseAddVoterForm}
               t={t}
               lang={lang}
             />
