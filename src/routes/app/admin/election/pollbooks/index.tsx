@@ -28,6 +28,7 @@ import {
   VoterGroupActionPanelContainer,
 } from '../components/VoterGroupActionsPanel';
 import CensusTable from './components/CensusTable';
+import Spinner from '../../../../../components/animations/Spinner';
 
 const deleteVotersInPollbook = gql`
   mutation DeleteVotersInPollBook($id: UUID!) {
@@ -204,8 +205,18 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
     return (
       <Query query={electionGroupQuery} variables={{ id: this.props.groupId }}>
         {({ data, loading, error, refetch }) => {
-          if (loading || error) {
-            return null;
+          if (error) {
+            return 'Error';
+          }
+          if (loading) {
+            return (
+              <Page header={<Trans>election.censuses</Trans>}>
+                <PageSection>
+                  <Spinner size="2rem" darkStyle marginRight="1rem" />
+                  <Trans>census.loading</Trans>
+                </PageSection>
+              </Page>
+            );
           }
 
           const electionsRaw: Election[] = data.electionGroup.elections;
