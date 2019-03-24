@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TranslationFunction } from 'i18next';
+import i18n from 'i18next';
 import { TableRow, TableCell } from '../../../../../../components/table';
 import { DropDown, TextInput } from '../../../../../../components/form';
 import ActionText from '../../../../../../components/actiontext';
@@ -14,7 +14,7 @@ interface IFiltersRowProps {
   onPollbookFilterChange: (idTypeFilter: string) => void;
   onResetFilters: () => void;
   disabled?: boolean;
-  t: TranslationFunction;
+  t: i18n.TFunction;
 }
 
 const CensusTableFiltersRow: React.FunctionComponent<IFiltersRowProps> = ({

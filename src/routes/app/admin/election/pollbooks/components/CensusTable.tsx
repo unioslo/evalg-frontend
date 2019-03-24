@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import debounce from 'lodash/debounce';
-import { Trans, TranslationFunction } from 'react-i18next';
+import { Trans } from 'react-i18next';
+import i18n from 'i18next';
 
 import {
   IPollBook,
@@ -59,7 +60,7 @@ interface IProps {
   pollBooks: IPollBook[];
   addVoterPollbookId: string;
   onCloseAddVoterForm: () => void;
-  t: TranslationFunction;
+  t: i18n.TFunction;
   lang: string;
 }
 
