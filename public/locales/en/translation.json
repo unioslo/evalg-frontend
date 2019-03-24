@@ -77,8 +77,12 @@
       "feide_id": "Feide-ID"
     },
     "idValue": "ID-value",
+    "loading": "Loading censuses. This may take some time...",
     "person": "person",
     "persons": "persons",
+    "resetFilters": "Reset filters",
+    "showingNOfNRecords": "Showing {{ nRecordsShowing }} of {{ nRecordsTotal }} records.",
+    "showMoreRecordsPrompt": "Show {{ nMoreRecordsToShow }} more records.",
     "uploadCensusFileButton": "Upload census file",
     "uploadCensusFileHeader": "Upload census from file",
     "uploadSuccessful": "Added {{numOk}} persons to the group “{{pollbookName}}“.",

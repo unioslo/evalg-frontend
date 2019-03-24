@@ -77,8 +77,12 @@
       "feide_id": "Feide-ID"
     },
     "idValue": "ID-verdi",
+    "loading": "Laster inn manntall. Dette kan ta litt tid...",
     "person": "person",
     "persons": "personer",
+    "resetFilters": "Tilbakestill filtre",
+    "showingNOfNRecords": "Viser {{ nRecordsShowing }} av {{ nRecordsTotal }} oppføringer.",
+    "showMoreRecordsPrompt": "Vis {{ nMoreRecordsToShow }} flere oppføringer.",
     "uploadCensusFileButton": "Last opp manntallsfil",
     "uploadCensusFileHeader": "Last opp manntall fra fil",
     "uploadSuccessful": "{{numOk}} personer ble lagt til i velgergruppen «{{pollbookName}}».",
