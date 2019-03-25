@@ -10,8 +10,26 @@ import Text from '../../../../../../components/text';
 import Link from '../../../../../../components/link';
 import CreateElectionKeyModal from './CreateElectionKeyModal';
 import { ElectionGroup } from '../../../../../../interfaces';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+import { Date, Time } from '../../../../../../components/i18n';
 
 const setKeySafeStatuses = ['draft', 'announced'];
+
+const electionGroupKeyMetaQuery = gql`
+  query electionGroupKeyMeta($id: UUID!) {
+    electionGroupKeyMeta(id: $id) {
+      generatedAt
+      generatedBy {
+        id
+        identifiers {
+          idType
+          idValue
+        }
+      }
+    }
+  }
+`;
 
 interface IProps {
   electionGroup: ElectionGroup;
@@ -93,8 +111,51 @@ class ElectionKeySection extends React.Component<IProps, IState> {
           ) : (
             <>
               <Text marginBottom>
-                <Trans>admin.electionKey.createdBy</Trans> [brukernavn] [dato]
-                kl [klokkeslett].
+                <Query
+                  query={electionGroupKeyMetaQuery}
+                  variables={{ id: electionGroup.id }}
+                >
+                  {({ loading, error, data }) => {
+                    if (error) return null;
+                    if (loading || !data) return null;
+
+                    const generatedAt = data.electionGroupKeyMeta.generatedAt;
+                    const generatedBy = data.electionGroupKeyMeta.generatedBy;
+                    let who = '';
+
+                    if (generatedBy) {
+                      const identifiers = generatedBy.identifiers;
+
+                      for (let id of identifiers) {
+                        if (id.idType === 'feide_id') {
+                          who = id.idValue;
+                          break;
+                        }
+                      }
+                      if (!who) {
+                        // Fallback to uid
+                        for (let id of identifiers) {
+                          if (id.idType === 'uid') {
+                            who = id.idValue;
+                            break;
+                          }
+                        }
+                      }
+                      if (!who) {
+                        // fallback to person UUID
+                        who = generatedBy.id;
+                      }
+                    }
+                    return (
+                      <>
+                        <Trans>admin.electionKey.createdBy</Trans>{' '}
+                        <span>{who}</span> (
+                        <Date dateTime={generatedAt} longDate />{' '}
+                        <Time dateTime={generatedAt} />)
+                      </>
+                    );
+                  }}
+                </Query>
                 <br />
                 <Trans>admin.electionKey.publicKeyCaption</Trans>:{' '}
                 {this.state.showPublicKey ? (
