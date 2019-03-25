@@ -132,9 +132,6 @@ interface IState {
 }
 
 class PrefElecCandTable extends React.Component<IProps, IState> {
-  // closeEditForm: Function;
-  // closeNewForm: Function;
-
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -171,7 +168,6 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
   }
 
   handleGenderFilterChange(genderFilter: string) {
-    console.log(genderFilter);
     this.setState({ genderFilter });
   }
 

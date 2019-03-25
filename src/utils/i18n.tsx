@@ -42,11 +42,11 @@ export const getTranslationsForVoterIdType = (t: i18n.TFunction) => ({
 let translationsForVoterIdType: { uid: string; nin: string; feide_id: string };
 
 export const getVoterIdTypeDisplayName = (
-  voterId: string,
+  voterIdType: string,
   t: i18n.TFunction
 ) => {
   if (!translationsForVoterIdType) {
     translationsForVoterIdType = getTranslationsForVoterIdType(t);
   }
-  return translationsForVoterIdType[voterId] || voterId;
+  return translationsForVoterIdType[voterIdType] || voterIdType;
 };

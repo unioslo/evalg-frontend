@@ -39,6 +39,7 @@
     "i18next-xhr-backend": "^2.0.1",
     "js-nacl": "^1.2.2",
     "jwt-decode": "^2.2.0",
+    "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.23",
