@@ -18,7 +18,7 @@
       "modalDownloadKey": "Last ned valgnøkkel",
       "modalDownloadNewKey": "Last ned ny valgnøkkel",
       "modalInfoListHeader": "Viktig om valgnøkkelen:",
-      "modalInfoBullet1": "Uten valgnøkkelen er det ikke mulig å telle opp stemmene. Det anbefales å ta en sikkerhetskopi av valgnøkkel-filen.",
+      "modalInfoBullet1": "Uten valgnøkkelen kan du ikke telle opp stemmene. Ta en sikkerhetskopi av valgnøkkel-filen.",
       "modalInfoBullet2": "Valgnøkkelen du er i ferd med å aktivere kan ikke lastes ned på nytt senere. Inntil valget starter kan du imidlertid erstatte den aktive valgnøkkelen med en ny.",
       "modalMoreInfoLink": "Mer informasjon og tips",
       "modalCheckboxLabel": "Jeg forstår at valget ikke kan telles opp uten valgnøkkelen.",
@@ -26,17 +26,17 @@
       "createdBy": "Valgnøkkel ble opprettet av",
       "readMore": "Les mer om nøkkelhåndtering",
       "save": "Lagre nøkkel",
-      "infoListCanReplace": "Frem til det er avgitt stemmer har du mulighet til å opprette en ny valgnøkkel som erstatter den gamle. Merk: Hvis valget er publisert eller pågår må du avpublisere valget før du kan erstatte valgnøkkelen.",
-      "infoListKeepItSafe": "Sørg for at nøkkelen er lagret et sikkert sted. Uten nøkkelen kan ikke stemmene telles opp.",
-      "cannotReplaceBecauseUnsafeStatus": "For å opprette en ny valgnøkkel som erstatter den gamle valgnøkkelen må du først avpublisere valget. Det vil ikke være mulig å erstatte valgnøkkelen dersom det er avgitt stemmer i valget."
+      "infoListCanReplace": "Du kan opprette en ny valgnøkkel frem til det er avgitt stemmer i valget, men da kan ikke den gamle valgnøkkelen brukes lenger. Merk: Du må avpublisere valget før du kan erstatte valgnøkkelen.",
+      "infoListKeepItSafe": "Sørg for at valgnøkkelen er lagret et sikkert sted. Uten valgnøkkelen kan ikke valget telles opp.",
+      "cannotReplaceBecauseUnsafeStatus": "Du må avpublisere valget før du kan opprette en ny valgnøkkel. Hvis det er avgitt stemmer i valget kan du ikke opprette en ny valgnøkkel."
     },
     "errors": {
       "generateKeyError": "Noe gikk galt under generering av nøkkelpar.",
       "backend": {
         "unknown": "En uventet feil oppstod under opplasting og aktivering av offentlig nøkkel.",
-        "cannotChangeKeyIfPastStart": "Det er ikke tillatt å endre valgnøkkelen fordi valget pågår.",
-        "cannotChangeKeyIfPublished": "Det er ikke tillatt å endre valgnøkkelen fordi valget er publisert.",
-        "cannotChangeKeyIfVotesExist": "Det er ikke tillatt å endre valgnøkkelen fordi det er avgitt stemmer i valget."
+        "cannotChangeKeyIfPastStart": "Du kan ikke endre valgnøkkelen fordi valget pågår.",
+        "cannotChangeKeyIfPublished": "Du kan ikke endre valgnøkkelen fordi valget er publisert.",
+        "cannotChangeKeyIfVotesExist": "Du kan ikke endre valgnøkkelen fordi det er avgitt stemmer i valget."
       }
     }
   },
@@ -168,11 +168,11 @@
     "noActiveVoterGroups": "Ingen aktive velgergrupper",
     "noCandidatesDefined": "Det er ingen kandidater i listen.",
     "noCandidatesFound": "Ingen kandidater tilfredstiller søkekriteriene.",
-    "noManageableElections": "Det er for øyeblikket ingen valg hvor du er registrert som administrator.",
+    "noManageableElections": "Du er ikke registrert som administrator i noen valg.",
     "nrOfCandidates": "Antall faste representanter",
     "nrOfCoCandidates": "Antall vararepresentanter",
     "opens": "Åpnes",
-    "prefTeamHeader": "Her kan du legge til og administrere kandidater og medkandidater som stiller til valg.",
+    "prefTeamHeader": "Legg til og administrer kandidater og medkandidater som stiller til valg.",
     "publish": "Publiser",
     "publishElection": "Publiser valget",
     "publishElectionModalInfo": "Valget vil være synlig for velgerne og åpner automatisk til angitt tidspunkt.",
@@ -197,8 +197,8 @@
     "toDate": "Til dato",
     "unannounceElectionConfirm": "Fjern fra forsiden",
     "unannounceElectionHeader": "Fjern valget fra forsiden",
-    "unannounceElectionInfoOne": "Valget og stemmeperioden for valget blir usynlig på forsiden hos velgerne.",
-    "unannounceElectionInfoTwo": "Du vil kunne gjøre valget synlig igjen senere hvis du ønsker det.",
+    "unannounceElectionInfoOne": "Valget og stemmeperioden for valget blir fjernet fra forsiden til velgerne.",
+    "unannounceElectionInfoTwo": "Du kan synliggjøre valget igjen senere, hvis du ønsker det.",
     "unpublish": "Avpubliser",
     "unpublishElection": "Avpubliser valget",
     "unpublishElectionModalInfo": "Valget vil ikke åpne automatisk.",
@@ -217,7 +217,7 @@
     "votes": "Stemmer",
     "votesOutsideCensus": "Stemmer utenfor manntallet",
     "votingPeriod": "Stemmeperiode",
-    "votingPeriodSubHeader": "I hvilken tidsperiode skal valget være åpent for velgerne?"
+    "votingPeriodSubHeader": "Når skal valget være åpent for velgerne?"
   },
   "electionStatus": {
     "announced": "Utkast (annonsert)",
@@ -241,9 +241,9 @@
     "serviceOwnerLink": "Seksjon for integrasjon og elektroniske identiteter (INT)"
   },
   "formErrors": {
-    "invalidDates": "Starttid må være tidligere enn sluttid.",
+    "invalidDates": "Starttid må være før sluttid.",
     "invalidEmail": "Ugyldig epostadresse.",
-    "invalidUrl": "Ugyldig url.",
+    "invalidUrl": "Ugyldig lenke.",
     "censusAddVoter": {
       "birthNumberIncorrectNumberOfDigits": "Fødselsnummer må være 11 sifre",
       "usernameCannotStartWithNumber": "Brukernavn kan ikke starte med et tall"
@@ -279,7 +279,7 @@
     "hideDetails": "Skjul detaljer",
     "login": "Logg inn",
     "logout": "Logg ut",
-    "logoutInProgress": "Vi arbeider med å logge deg ut av systemet",
+    "logoutInProgress": "Vi logger deg ut av systemet",
     "male": "Mann",
     "menu": "Meny",
     "name": "Navn",
@@ -309,7 +309,7 @@
     "yes": "Ja"
   },
   "prefElec": {
-    "candPageDesc": "Her legger du til kandidater som stiller for de ulike velgergruppene.<0></0>\nValget må ha minimum like mange kandidater per gruppe som angitt under <1>valginnstillinger</1>."
+    "candPageDesc": "Her legger du til kandidater som stiller for de ulike velgergruppene.<0></0>\nValget må ha minst like mange kandidater per gruppe som angitt under <1>valginnstillinger</1>."
   },
   "voter": {
     "error": "En feil har oppstått",
@@ -335,7 +335,7 @@
     "receiptLogout": "logg ut",
     "receiptOr": "eller",
     "receiptErrorHeader": "En feil har oppstått.",
-    "receiptErrorBody": "En feil inntraff ved levering av din stemme. Vennligst prøv igjen senere.",
+    "receiptErrorBody": "En feil oppsto ved levering av din stemme. Vennligst prøv igjen senere.",
     "resetPrefElecBallot": "Tilbakestill",
     "reviewBallot": "Se over stemmeseddel",
     "reviewBallotMobile": "Se stemmeseddel",
@@ -344,7 +344,7 @@
     "stepperStep2": "Fyll ut stemmeseddel",
     "stepperStep3": "Se over stemmeseddel",
     "stepperStep4": "Kvittering",
-    "submitVote": "Lever stemme"
+    "submitVote": "Lever stemmeseddel"
   },
   "voterGroupSelect": {
     "andCloses": "og stenger",
@@ -355,7 +355,7 @@
     "moreAboutTheElection": "Mer om valget",
     "notRegisteredInSelectedGroupHeading": "Har du valgt riktig manntall?",
     "notRegisteredInSelectedGroupBeforeDropdownText": "Du er ikke i manntallet for",
-    "notRegisteredInSelectedGroupInfoText": "Du er ikke registert i dette manntallet. Du kan allikevel gå videre og stemme som om du var i manntallet.\nValgstyret for valget vil avgjøre om din stemme skal telles med basert på dine tilknytninger ved UiO.\nDu kan oppgi din stillingskode eller annen relevant informasjon under.",
+    "notRegisteredInSelectedGroupInfoText": "Du er ikke registert i dette manntallet. Du kan likevel gå videre og stemme som om du var i manntallet.\nValgstyret for valget vil avgjøre om din stemme skal telles med basert på din tilknytning til UiO.\nDu kan oppgi din stillingskode eller annen relevant informasjon under.",
     "opens": "åpner",
     "registeredInSelectedGroupHeading": "Du har stemmerett",
     "registeredInSelectedGroupBeforeDropdownText": "Du er i manntallet for",
