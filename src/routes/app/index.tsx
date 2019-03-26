@@ -7,8 +7,9 @@ import { Route } from 'react-router-dom';
 import Content from './components/Content';
 import Footer from './components/Footer';
 import Header from './components/Header';
-import Link from '../../components/link';
 import Spinner from '../../components/animations/Spinner';
+import Link from '../../components/link';
+import { H1 } from '../../components/text';
 
 import AdminRoute from './admin';
 import VoterRoute from './voter';
@@ -16,11 +17,12 @@ import VoterRoute from './voter';
 import { authEnabled } from '../../appConfig';
 import { oidcLogoutUrl } from '../../appConfig';
 // import { UserContext } from '../../providers/UserContext';
-import { H1 } from '../../components/text';
 import { UserContext } from '../../providers/UserContext';
 import { useTranslation } from 'react-i18next';
 
 import { Helmet } from 'react-helmet';
+
+import VoterFrontPage from './voter/frontpage';
 
 const styles = {
   ie11ExtraFlexContainer: {
@@ -43,13 +45,7 @@ const styles = {
   },
 };
 
-interface IFrontPageProps {
-  // classes: Classes;
-}
-
-const FrontPage: React.FunctionComponent<IFrontPageProps> = (
-  props: IFrontPageProps
-) => {
+const FrontPage: React.FunctionComponent<{}> = () => {
   const { t } = useTranslation();
 
   return (
@@ -92,7 +88,6 @@ const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
     }
     const Comp = props.component;
     const Component = authEnabled ? authManager(<Comp />) : Comp;
-
     return <Component />;
   };
 
@@ -106,10 +101,16 @@ const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
         <Content>
           <UserContext.Consumer>
             {(context: any) => {
-              if (context.user || !authEnabled) {
-                return (
+              return (
+                <>
+                  {context.user || !authEnabled ? (
+                    <Route exact={true} path="/" component={VoterFrontPage} />
+                  ) : (
+                    <Route exact={true} path="/" component={FrontPage} />
+                  )}
+
                   <Route
-                    path="/"
+                    path="/vote/:electionGroupId"
                     render={(props: any) => (
                       <ProtectedComponent
                         {...props}
@@ -118,25 +119,17 @@ const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
                       />
                     )}
                   />
-                );
-              } else {
-                return <Route exact={true} path="/" component={FrontPage} />;
-              }
-            }}
-          </UserContext.Consumer>
-          <UserContext.Consumer>
-            {(context: any) => {
-              return (
-                <Route
-                  path="/admin"
-                  render={(props: any) => (
-                    <ProtectedComponent
-                      {...props}
-                      component={AdminRoute}
-                      userContext={context.user}
-                    />
-                  )}
-                />
+                  <Route
+                    path="/admin"
+                    render={(props: any) => (
+                      <ProtectedComponent
+                        {...props}
+                        component={AdminRoute}
+                        userContext={context.user}
+                      />
+                    )}
+                  />
+                </>
               );
             }}
           </UserContext.Consumer>
