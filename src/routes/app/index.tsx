@@ -85,8 +85,15 @@ interface IAppProps {
 
 const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
   const { authManager, classes } = props;
-  const ProtectedAdmin = authEnabled ? authManager(<AdminRoute />) : AdminRoute;
-  const ProtectedVoter = authEnabled ? authManager(<VoterRoute />) : VoterRoute;
+
+  const ProtectedComponent = (props: any) => {
+    sessionStorage.setItem('login_redirect', props.location.pathname);
+
+    const Component = authEnabled
+      ? authManager(<props.component />)
+      : props.component;
+    return <Component />;
+  };
 
   const { i18n } = useTranslation();
 
@@ -99,13 +106,25 @@ const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
           <UserContext.Consumer>
             {(context: any) => {
               if (context.user || !authEnabled) {
-                return <Route path="/" component={ProtectedVoter} />;
+                return (
+                  <Route
+                    path="/"
+                    render={(props: any) => (
+                      <ProtectedComponent {...props} component={VoterRoute} />
+                    )}
+                  />
+                );
               } else {
                 return <Route exact={true} path="/" component={FrontPage} />;
               }
             }}
           </UserContext.Consumer>
-          <Route path="/admin" component={ProtectedAdmin} />
+          <Route
+            path="/admin"
+            render={(props: any) => (
+              <ProtectedComponent {...props} component={AdminRoute} />
+            )}
+          />
           <Route exact={true} path="/logout" component={styledLogout} />
           <Route
             exact={true}
