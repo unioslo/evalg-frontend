@@ -31,7 +31,10 @@ const storeToken = (props: any) => (user: User) => {
     'evalg-token',
     user.token_type + ' ' + user.access_token
   );
-  props.history.push('/');
+  const loginFrom = sessionStorage.getItem('login_redirect');
+  const redirect = loginFrom ? loginFrom : '/';
+  props.history.push(redirect);
+  sessionStorage.removeItem('login_redirect');
 };
 
 const userManager = makeUserManager(oidcConfig);

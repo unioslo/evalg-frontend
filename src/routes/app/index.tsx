@@ -85,8 +85,16 @@ interface IAppProps {
 
 const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
   const { authManager, classes } = props;
-  const ProtectedAdmin = authEnabled ? authManager(<AdminRoute />) : AdminRoute;
-  const ProtectedVoter = authEnabled ? authManager(<VoterRoute />) : VoterRoute;
+
+  const ProtectedComponent = (props: any) => {
+    if (!props.userContext) {
+      sessionStorage.setItem('login_redirect', props.location.pathname);
+    }
+    const Comp = props.component;
+    const Component = authEnabled ? authManager(<Comp />) : Comp;
+
+    return <Component />;
+  };
 
   const { i18n } = useTranslation();
 
@@ -99,13 +107,40 @@ const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
           <UserContext.Consumer>
             {(context: any) => {
               if (context.user || !authEnabled) {
-                return <Route path="/" component={ProtectedVoter} />;
+                return (
+                  <Route
+                    path="/"
+                    render={(props: any) => (
+                      <ProtectedComponent
+                        {...props}
+                        component={VoterRoute}
+                        userContext={context.user}
+                      />
+                    )}
+                  />
+                );
               } else {
                 return <Route exact={true} path="/" component={FrontPage} />;
               }
             }}
           </UserContext.Consumer>
-          <Route path="/admin" component={ProtectedAdmin} />
+          <UserContext.Consumer>
+            {(context: any) => {
+              return (
+                <Route
+                  path="/admin"
+                  render={(props: any) => (
+                    <ProtectedComponent
+                      {...props}
+                      component={AdminRoute}
+                      userContext={context.user}
+                    />
+                  )}
+                />
+              );
+            }}
+          </UserContext.Consumer>
+
           <Route exact={true} path="/logout" component={styledLogout} />
           <Route
             exact={true}
