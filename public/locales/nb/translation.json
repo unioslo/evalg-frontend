@@ -330,7 +330,7 @@
     "prefElecRankCandidates": "Ranger kandidaten du foretrekker mest som nummer 1 (ditt førstevalg). Hvis denne kandidaten ikke får nok stemmer totalt sett, vil stemmen du ga vedkommende overføres til den du eventuelt har rangert som nummer 2, og så videre.",
     "prefElecRankCandidatesShort": "Du rangerer kandidatene ved å trykke på dem i prioritert rekkefølge. Rekkefølgen kan gjøres om på underveis.",
     "receiptThankYou": "Takk for din stemme.",
-    "receiptVotingAgainInfo": "Dersom du ønsker å endre stemmen din kan du gjøre dette fra forsiden så lenge valget pågår.",
+    "receiptVotingAgainInfo": "Dersom du ønsker å stemme på nytt kan du gjøre dette fra forsiden så lenge valget pågår.",
     "receiptGoToFrontpage": "Gå til forsiden",
     "receiptLogout": "logg ut",
     "receiptOr": "eller",
