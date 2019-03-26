@@ -90,9 +90,8 @@ const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
     if (!props.userContext) {
       sessionStorage.setItem('login_redirect', props.location.pathname);
     }
-    const Component = authEnabled
-      ? authManager(<props.component />)
-      : props.component;
+    const Comp = props.component;
+    const Component = authEnabled ? authManager(<Comp />) : Comp;
 
     return <Component />;
   };
@@ -125,7 +124,6 @@ const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
               }
             }}
           </UserContext.Consumer>
-
           <UserContext.Consumer>
             {(context: any) => {
               return (
