@@ -87,11 +87,13 @@ const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
   const { authManager, classes } = props;
 
   const ProtectedComponent = (props: any) => {
-    sessionStorage.setItem('login_redirect', props.location.pathname);
-
+    if (!props.userContext) {
+      sessionStorage.setItem('login_redirect', props.location.pathname);
+    }
     const Component = authEnabled
       ? authManager(<props.component />)
       : props.component;
+
     return <Component />;
   };
 
@@ -110,7 +112,11 @@ const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
                   <Route
                     path="/"
                     render={(props: any) => (
-                      <ProtectedComponent {...props} component={VoterRoute} />
+                      <ProtectedComponent
+                        {...props}
+                        component={VoterRoute}
+                        userContext={context.user}
+                      />
                     )}
                   />
                 );
@@ -119,12 +125,24 @@ const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
               }
             }}
           </UserContext.Consumer>
-          <Route
-            path="/admin"
-            render={(props: any) => (
-              <ProtectedComponent {...props} component={AdminRoute} />
-            )}
-          />
+
+          <UserContext.Consumer>
+            {(context: any) => {
+              return (
+                <Route
+                  path="/admin"
+                  render={(props: any) => (
+                    <ProtectedComponent
+                      {...props}
+                      component={AdminRoute}
+                      userContext={context.user}
+                    />
+                  )}
+                />
+              );
+            }}
+          </UserContext.Consumer>
+
           <Route exact={true} path="/logout" component={styledLogout} />
           <Route
             exact={true}

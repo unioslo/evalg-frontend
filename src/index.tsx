@@ -34,7 +34,7 @@ const storeToken = (props: any) => (user: User) => {
   const loginFrom = sessionStorage.getItem('login_redirect');
   const redirect = loginFrom ? loginFrom : '/';
   props.history.push(redirect);
-  // sessionStorage.removeItem('login_redirect');
+  sessionStorage.removeItem('login_redirect');
 };
 
 const userManager = makeUserManager(oidcConfig);
