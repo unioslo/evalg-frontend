@@ -22,7 +22,7 @@ class StatusPage extends React.Component {
           electionGroup={electionGroup}
           refetchElectionGroupFunction={refetchElectionGroupFunction}
         />
-        <VotesSection />
+        <VotesSection electionGroup={electionGroup} />
         <CountVotesSection />
       </Page>
     );

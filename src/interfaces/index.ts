@@ -74,10 +74,17 @@ export interface IVoter {
   id: string;
   idType: string;
   idValue: string;
-  verified: boolean;
-  manual: boolean;
   pollbookId: string;
   pollbook: IPollBook;
+  selfAdded: boolean;
+  reviewed: boolean;
+  verified: boolean;
+  verifiedStatus:
+    | 'ADMIN_ADDED_AUTO_VERIFIED'
+    | 'ADMIN_ADDED_REJECTED'
+    | 'SELF_ADDED_NOT_REVIEWED'
+    | 'SELF_ADDED_VERIFIED'
+    | 'SELF_ADDED_REJECTED';
   reason?: string;
   votes: IVote[];
 }
