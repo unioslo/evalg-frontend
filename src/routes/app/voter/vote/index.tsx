@@ -198,6 +198,7 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
           variables: {
             personId: this.state.personId,
             pollbookId: this.state.selectedPollBookId,
+            reason: this.state.notInPollBookJustification,
           },
         })
         .then(result => {
@@ -215,7 +216,6 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
     const voteData = {
       electionId: this.state.voteElection ? this.state.voteElection.id : null,
       selectedPollbookId: this.state.selectedPollBookId,
-      notInPollbookJustification: this.state.notInPollBookJustification,
       ballotData,
     };
     const voteDataJSON = JSON.stringify(voteData);
