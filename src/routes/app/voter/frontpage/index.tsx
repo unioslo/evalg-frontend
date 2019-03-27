@@ -5,13 +5,8 @@ import { Query, WithApolloClient, withApollo } from 'react-apollo';
 import { Page, PageSection } from '../../../../components/page';
 import VoterElections from './components/VoterElections';
 import { electionGroupWithOrderedElections } from '../../../../utils/processGraphQLData';
-import {
-  ElectionGroup,
-  ViewerResponse,
-  VotersForPersonResponse,
-  QueryResponse,
-} from '../../../../interfaces';
-import { getSignedInPersonId } from '../../../../common-queries';
+import { ElectionGroup, VotersForPerson } from '../../../../interfaces';
+import { getSignedInPersonIdQuery } from '../../../../common-queries';
 import { WithTranslation } from 'react-i18next';
 import { withTranslation } from 'react-i18next';
 
@@ -83,77 +78,73 @@ const votersForPersonQuery = gql`
 
 interface IProps extends WithTranslation {}
 
-interface IState {
-  personId: string;
-  canVoteElectionGroups: string[] | null;
-}
-
-class VoterFrontPage extends React.Component<WithApolloClient<IProps>, IState> {
+class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
   constructor(props: WithApolloClient<IProps>) {
     super(props);
-
-    this.state = {
-      personId: '',
-      canVoteElectionGroups: null,
-    };
-  }
-
-  componentDidMount() {
-    this.getPersonElections();
-  }
-
-  async getPersonElections() {
-    const handleSuccess = (p: QueryResponse<ViewerResponse>) => {
-      this.setState({ personId: p.data.signedInPerson.personId });
-    };
-    const handleFailure = (error: any) => {
-      this.setState({ canVoteElectionGroups: [] });
-      return;
-    };
-    await getSignedInPersonId(this.props.client, handleSuccess, handleFailure);
-
-    try {
-      const elections = await this.props.client.query<VotersForPersonResponse>({
-        query: votersForPersonQuery,
-        variables: { id: this.state.personId },
-      });
-      if (elections.data.votersForPerson === null) {
-        this.setState({ canVoteElectionGroups: [] });
-      } else {
-        this.setState({
-          canVoteElectionGroups: elections.data.votersForPerson.map(
-            voter => voter.pollbook.election.electionGroup.id
-          ),
-        });
-      }
-    } catch (err) {
-      this.setState({ canVoteElectionGroups: [] });
-    }
   }
 
   render() {
     const { t } = this.props;
     return (
       <Query query={electionGroupsQuery}>
-        {({ data, loading, error }) => {
-          if (loading || error || this.state.canVoteElectionGroups === null) {
+        {electionGroupResult => {
+          if (electionGroupResult.loading || electionGroupResult.error) {
             return null;
           }
           return (
-            <Page header={t('general.welcome')}>
-              <PageSection desc={t('general.frontPageDesc')} noBorder>
-                <VoterElections
-                  canVoteElectionGroups={this.state.canVoteElectionGroups}
-                  electionGroups={data.electionGroups
-                    .map((eg: ElectionGroup) =>
-                      electionGroupWithOrderedElections(eg, {
-                        onlyActiveElections: true,
-                      })
-                    )
-                    .filter((eg: ElectionGroup) => eg.elections.length > 0)}
-                />
-              </PageSection>
-            </Page>
+            <Query query={getSignedInPersonIdQuery}>
+              {signedInPersonResponse => {
+                if (
+                  signedInPersonResponse.loading ||
+                  signedInPersonResponse.error
+                ) {
+                  return null;
+                }
+                return (
+                  <Query
+                    query={votersForPersonQuery}
+                    variables={{
+                      id: signedInPersonResponse.data.signedInPerson.personId,
+                    }}
+                  >
+                    {votersForPersonResponse => {
+                      if (
+                        votersForPersonResponse.loading ||
+                        votersForPersonResponse.error
+                      ) {
+                        return null;
+                      }
+                      const canVoteIn = votersForPersonResponse.data.votersForPerson.map(
+                        (voter: VotersForPerson) =>
+                          voter.pollbook.election.electionGroup.id
+                      );
+
+                      return (
+                        <Page header={t('general.welcome')}>
+                          <PageSection
+                            desc={t('general.frontPageDesc')}
+                            noBorder
+                          >
+                            <VoterElections
+                              canVoteElectionGroups={canVoteIn}
+                              electionGroups={electionGroupResult.data.electionGroups
+                                .map((eg: ElectionGroup) =>
+                                  electionGroupWithOrderedElections(eg, {
+                                    onlyActiveElections: true,
+                                  })
+                                )
+                                .filter(
+                                  (eg: ElectionGroup) => eg.elections.length > 0
+                                )}
+                            />
+                          </PageSection>
+                        </Page>
+                      );
+                    }}
+                  </Query>
+                );
+              }}
+            </Query>
           );
         }}
       </Query>

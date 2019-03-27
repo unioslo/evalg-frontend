@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import { ViewerResponse, QueryResponse } from '../interfaces';
 import ApolloClient from 'apollo-client';
 
-const getSignedInPersonIdQuery = gql`
+export const getSignedInPersonIdQuery = gql`
   query {
     signedInPerson @client {
       personId
