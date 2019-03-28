@@ -22,8 +22,6 @@ const electionGroupQuery = gql`
       name
       description
       type
-      candidateType
-      mandateType
       meta
       ouId
       publicKey
@@ -44,8 +42,6 @@ const electionGroupQuery = gql`
         name
         description
         type
-        candidateType
-        mandateType
         meta
         sequence
         start
