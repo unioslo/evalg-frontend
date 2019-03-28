@@ -9,6 +9,7 @@ import { ElectionGroup, VotersForPerson } from '../../../../interfaces';
 import { getSignedInPersonIdQuery } from '../../../../common-queries';
 import { WithTranslation } from 'react-i18next';
 import { withTranslation } from 'react-i18next';
+import Loading from '../../../../components/loading';
 
 const electionGroupsQuery = gql`
   query electionGroups {
@@ -89,7 +90,7 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
       <Query query={electionGroupsQuery}>
         {electionGroupResult => {
           if (electionGroupResult.loading || electionGroupResult.error) {
-            return null;
+            return <Loading />;
           }
           return (
             <Query query={getSignedInPersonIdQuery}>
@@ -98,7 +99,7 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
                   signedInPersonResponse.loading ||
                   signedInPersonResponse.error
                 ) {
-                  return null;
+                  return <Loading />;
                 }
                 return (
                   <Query
@@ -112,7 +113,7 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
                         votersForPersonResponse.loading ||
                         votersForPersonResponse.error
                       ) {
-                        return null;
+                        return <Loading />;
                       }
                       const canVoteIn = votersForPersonResponse.data.votersForPerson.map(
                         (voter: VotersForPerson) =>

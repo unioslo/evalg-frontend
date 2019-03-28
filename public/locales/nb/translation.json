@@ -277,6 +277,7 @@
     "help": "Hjelp",
     "hide": "Skjul",
     "hideDetails": "Skjul detaljer",
+    "loading": "Laster siden",
     "login": "Logg inn",
     "logout": "Logg ut",
     "logoutInProgress": "Vi logger deg ut av systemet",
