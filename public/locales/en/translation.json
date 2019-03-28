@@ -155,6 +155,7 @@
     "hasGenderQuota": "Election uses gender quotas",
     "linkToElection": "Link to more information about the election",
     "linkToElectionPlaceholder": "Webpage for the election",
+    "loading": "Loading election…",
     "manageElections": "Manage elections",
     "manageableElections": "Elections you can manage",
     "mandatePeriod": "Mandate period",
@@ -279,6 +280,7 @@
     "help": "Help",
     "hide": "Hide",
     "hideDetails": "Hide details",
+    "loading": "Loading page",
     "login": "Log in",
     "logout": "Log out",
     "logoutInProgress": "We are working to log you out",
@@ -310,6 +312,7 @@
     "welcome": "Welcome to eValg",
     "yes": "Yes"
   },
+  "person": { "loading": "Loading user information…" },
   "prefElec": {
     "candPageDesc": "Here you can add candidates that are electable for the various voter groups.{nl} \nThe election must have at least as many candidates per voter group as stated in {{infoLink}}."
   },
@@ -323,6 +326,7 @@
     "crossedCandidates": "Crossed candidates",
     "cumulate": "Extra vote",
     "editVote": "Edit vote",
+    "loading": "Loading voter information…",
     "majorityVoteHelpHeader": "Choose one candidate",
     "majorityVoteHelpDesc": "Choose the candidate you would like to vote for.",
     "majorityVoteHelpYouMaySelectOnlyOne": "This is a majority vote election, and you may select only one candidate.",
