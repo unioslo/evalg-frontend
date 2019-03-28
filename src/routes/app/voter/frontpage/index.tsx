@@ -10,44 +10,16 @@ import { getSignedInPersonIdQuery } from '../../../../queries';
 import { WithTranslation, Trans } from 'react-i18next';
 import { withTranslation } from 'react-i18next';
 import Loading from '../../../../components/loading';
+import { ElectionGroupFields, ElectionFields } from '../../../../fragments';
 
 const electionGroupsQuery = gql`
+  ${ElectionGroupFields}
+  ${ElectionFields}
   query electionGroups {
     electionGroups {
-      id
-      name
-      description
-      type
-      meta
-      ouId
-      publicKey
-      announcedAt
-      publishedAt
-      cancelledAt
-      deletedAt
-      status
-      cancelled
-      announced
-      published
-      deleted
+      ...ElectionGroupFields
       elections {
-        id
-        name
-        description
-        type
-        meta
-        sequence
-        start
-        end
-        informationUrl
-        contact
-        mandatePeriodStart
-        mandatePeriodEnd
-        groupId
-        active
-        status
-        publishedAt
-        cancelledAt
+        ...ElectionFields
         electionGroup {
           id
         }

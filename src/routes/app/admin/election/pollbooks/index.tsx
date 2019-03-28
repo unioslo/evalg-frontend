@@ -29,6 +29,7 @@ import {
 } from '../components/VoterGroupActionsPanel';
 import CensusTable from './components/CensusTable';
 import Spinner from '../../../../../components/animations/Spinner';
+import { ElectionGroupFields, ElectionFields } from '../../../../../fragments';
 
 const deleteVotersInPollbook = gql`
   mutation DeleteVotersInPollBook($id: UUID!) {
@@ -40,42 +41,13 @@ const deleteVotersInPollbook = gql`
 `;
 
 const electionGroupQuery = gql`
+  ${ElectionGroupFields}
+  ${ElectionFields}
   query electionGroupVoters($id: UUID!) {
     electionGroup(id: $id) {
-      id
-      name
-      description
-      type
-      meta
-      ouId
-      publicKey
-      announcedAt
-      publishedAt
-      cancelledAt
-      deletedAt
-      status
-      cancelled
-      announced
-      published
-      deleted
+      ...ElectionGroupFields
       elections {
-        id
-        name
-        description
-        type
-        meta
-        sequence
-        start
-        end
-        informationUrl
-        contact
-        mandatePeriodStart
-        mandatePeriodEnd
-        groupId
-        active
-        status
-        publishedAt
-        cancelledAt
+        ...ElectionFields
         lists {
           id
           name
