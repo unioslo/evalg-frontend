@@ -25,6 +25,7 @@ const votersForPersonQuery = gql`
   query votersForPerson($id: UUID!) {
     votersForPerson(id: $id) {
       id
+      manual
       pollbook {
         id
       }
@@ -178,7 +179,10 @@ class VoterGroupSelectPage extends React.Component<
 
   hasRightToVote = (pollBookIndex: number): boolean => {
     const { pollbooks } = this.getCommonVars();
-    const voters: VotersForPerson[] = this.state.voters;
+    const voters: VotersForPerson[] = this.state.voters.filter(
+      (voter: VotersForPerson) => voter.manual === false
+    );
+
     return voters.map(x => x.pollbook.id).includes(pollbooks[pollBookIndex].id);
   };
 
