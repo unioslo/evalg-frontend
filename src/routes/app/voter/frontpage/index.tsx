@@ -6,7 +6,7 @@ import { Page, PageSection } from '../../../../components/page';
 import VoterElections from './components/VoterElections';
 import { electionGroupWithOrderedElections } from '../../../../utils/processGraphQLData';
 import { ElectionGroup, VotersForPerson } from '../../../../interfaces';
-import { getSignedInPersonIdQuery } from '../../../../common-queries';
+import { getSignedInPersonIdQuery } from '../../../../queries';
 import { WithTranslation, Trans } from 'react-i18next';
 import { withTranslation } from 'react-i18next';
 import Loading from '../../../../components/loading';

@@ -21,7 +21,7 @@ import PrefElecVote from './PrefElecVote';
 import MajorityVote from './MajorityVote';
 import Receipt from './components/Receipt';
 import Error from './components/Error';
-import { getSignedInPersonId } from '../../../../common-queries';
+import { getSignedInPersonId } from '../../../../queries';
 
 const getElectionGroupVotingData = gql`
   query ElectionGroupVotingData($id: UUID!) {
