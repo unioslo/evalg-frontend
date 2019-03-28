@@ -14,7 +14,7 @@ import { Route, Switch } from 'react-router';
 import { ApolloConsumer } from 'react-apollo';
 import { IAuthenticatorContext } from 'react-oidc/lib/makeAuth';
 import { ApolloClient } from 'apollo-client';
-import createBrowserHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
 import { appHelpLink } from '../../../appConfig';
 import { Classes } from 'jss';
 
