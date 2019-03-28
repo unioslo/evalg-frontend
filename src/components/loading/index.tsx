@@ -15,18 +15,18 @@ const styles = {
   },
 };
 
-type StyleProp = {
+type Props = {
   classes: Classes;
 };
 
-const Loading = (props: StyleProp) => {
+const Loading: React.FunctionComponent<Props> = props => {
   const { t } = useTranslation();
   return (
     <div className={props.classes.loading}>
       <div className={props.classes.spinBox}>
         <Spinner darkStyle={true} />
       </div>
-      {t('general.loading')}
+      {props.children ? props.children : t('general.loading')}
     </div>
   );
 };

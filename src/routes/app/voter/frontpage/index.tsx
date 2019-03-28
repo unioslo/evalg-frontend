@@ -7,7 +7,7 @@ import VoterElections from './components/VoterElections';
 import { electionGroupWithOrderedElections } from '../../../../utils/processGraphQLData';
 import { ElectionGroup, VotersForPerson } from '../../../../interfaces';
 import { getSignedInPersonIdQuery } from '../../../../common-queries';
-import { WithTranslation } from 'react-i18next';
+import { WithTranslation, Trans } from 'react-i18next';
 import { withTranslation } from 'react-i18next';
 import Loading from '../../../../components/loading';
 
@@ -90,7 +90,11 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
       <Query query={electionGroupsQuery}>
         {electionGroupResult => {
           if (electionGroupResult.loading || electionGroupResult.error) {
-            return <Loading />;
+            return (
+              <Loading>
+                <Trans>election.loading</Trans>
+              </Loading>
+            );
           }
           return (
             <Query query={getSignedInPersonIdQuery}>
@@ -99,7 +103,11 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
                   signedInPersonResponse.loading ||
                   signedInPersonResponse.error
                 ) {
-                  return <Loading />;
+                  return (
+                    <Loading>
+                      <Trans>person.loading</Trans>
+                    </Loading>
+                  );
                 }
                 return (
                   <Query
@@ -113,7 +121,11 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
                         votersForPersonResponse.loading ||
                         votersForPersonResponse.error
                       ) {
-                        return <Loading />;
+                        return (
+                          <Loading>
+                            <Trans>voter.loading</Trans>
+                          </Loading>
+                        );
                       }
                       const canVoteIn = votersForPersonResponse.data.votersForPerson.map(
                         (voter: VotersForPerson) =>
