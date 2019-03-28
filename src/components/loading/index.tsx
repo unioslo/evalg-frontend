@@ -4,6 +4,7 @@ import { Classes } from 'jss';
 import { useTranslation } from 'react-i18next';
 
 import Spinner from '../animations/Spinner';
+import moment from 'moment';
 
 const styles = {
   loading: {
@@ -26,7 +27,11 @@ const Loading: React.FunctionComponent<Props> = props => {
       <div className={props.classes.spinBox}>
         <Spinner darkStyle={true} />
       </div>
-      {props.children ? props.children : t('general.loading')}
+      {moment().format('DD-MM') == '01-04'
+        ? 'Reticulating splines…'
+        : props.children
+        ? props.children
+        : t('general.loading')}
     </div>
   );
 };
