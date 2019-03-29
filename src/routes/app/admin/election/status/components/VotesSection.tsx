@@ -11,15 +11,11 @@ interface Props {
 }
 
 const VotesSection: React.FunctionComponent<Props> = ({ electionGroup }) => {
-  const electionsHasEnded = electionGroup.status === 'closed';
+  // const electionsHasEnded = electionGroup.status === 'closed';
 
   return (
     <PageSection header={<Trans>election.votes</Trans>}>
-      {electionsHasEnded ? (
-        <VotesOutsideCensusManagement electionGroup={electionGroup} />
-      ) : (
-        <Trans>election.electionNotClosed</Trans>
-      )}
+      <VotesOutsideCensusManagement electionGroupId={electionGroup.id} />
     </PageSection>
   );
 };
