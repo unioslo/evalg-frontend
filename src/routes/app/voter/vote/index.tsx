@@ -72,8 +72,8 @@ const submitVoteMutation = gql`
 `;
 
 const addVoterMutation = gql`
-  mutation addVoter($personId: UUID!, $pollbookId: UUID!) {
-    addVoter(personId: $personId, pollbookId: $pollbookId) {
+  mutation addVoter($personId: UUID!, $pollbookId: UUID!, $reason: String) {
+    addVoter(personId: $personId, pollbookId: $pollbookId, reason: $reason) {
       id
     }
   }
