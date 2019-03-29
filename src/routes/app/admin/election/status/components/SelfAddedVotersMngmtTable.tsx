@@ -186,7 +186,7 @@ const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
                                         }}
                                         bottom
                                       >
-                                        Angre
+                                        {t('general.undo').toLowerCase()}
                                       </ActionText>
                                     )}
                                   </>
