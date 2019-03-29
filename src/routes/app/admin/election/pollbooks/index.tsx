@@ -20,8 +20,8 @@ import UploadCensusFileModal, {
 import {
   DropDownOption,
   Election,
-  IVoter,
   IPollBook,
+  IVoter,
 } from '../../../../../interfaces';
 import {
   VoterGroupActionPanel,
@@ -33,7 +33,7 @@ import { ElectionGroupFields, ElectionFields } from '../../../../../fragments';
 
 const deleteVotersInPollbook = gql`
   mutation DeleteVotersInPollBook($id: UUID!) {
-    # TODO (backend): Denne sletter voters med manual=true også, og det vil vi nok ikke
+    # TODO (backend): Denne sletter voters med selfAdded=true også, og det vil vi nok ikke
     deleteVotersInPollbook(id: $id) {
       ok
     }
@@ -75,7 +75,7 @@ const electionGroupQuery = gql`
             idType
             idValue
             verified
-            manual
+            selfAdded
           }
         }
       }
@@ -179,7 +179,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
             return (
               <Page header={<Trans>election.censuses</Trans>}>
                 <PageSection>
-                  <Spinner size="2rem" darkStyle marginRight="1rem" />
+                  <Spinner size="2.2rem" darkStyle marginRight="1rem" />
                   <Trans>census.loading</Trans>
                 </PageSection>
               </Page>
@@ -193,10 +193,10 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
               : electionsRaw;
 
           const pollBooks: IPollBook[] = [];
-          const voters: IVoter[] = [];
           const pollBookDict: { [pollbookId: string]: IPollBook } = {};
           const pollBookOptions: DropDownOption[] = [];
           const pollBookRadioButtonOptions: any = {};
+          const voters: IVoter[] = [];
 
           elections
             .filter(e => e.active)
@@ -204,11 +204,6 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
               e.pollbooks.forEach(pollBook => {
                 pollBooks.push(pollBook);
                 pollBookDict[pollBook.id] = pollBook;
-                pollBook.voters
-                  .filter((v: any) => v.verified)
-                  .forEach((voter: any) => {
-                    voters.push(voter);
-                  });
                 pollBookOptions.push({
                   name: pollBook.name[lang],
                   value: pollBook.id,
@@ -218,6 +213,11 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                   value: pollBook.id,
                   active: e.active,
                 };
+                pollBook.voters
+                  .filter(voter => !voter.selfAdded)
+                  .forEach(voter => {
+                    voters.push(voter);
+                  });
               });
             });
           const voterGroupActionPanels: JSX.Element[] = [];
@@ -233,7 +233,9 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                     this.handleShowDeleteVotersInPollbookModal(pollbook.id)
                   }
                   removeAllActionText={t('census.deletePersonsInPollbook')}
-                  count={pollbook.voters.filter((v: any) => v.verified).length}
+                  count={
+                    voters.filter(v => v.pollbookId === pollbook.id).length
+                  }
                   active={e.active}
                 />
               );
@@ -268,6 +270,9 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
 
                 <CensusTable
                   pollBooks={pollBooks}
+                  pollBookDict={pollBookDict}
+                  pollBookOptions={pollBookOptions}
+                  voters={voters}
                   addVoterPollbookId={this.state.addVoterPollbookId}
                   onCloseAddVoterForm={this.handleCloseAddVoterForm}
                   t={t}
