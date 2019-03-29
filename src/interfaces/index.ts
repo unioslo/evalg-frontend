@@ -106,9 +106,11 @@ export interface IPollBook {
 
 export interface IVoteCount {
   id: string;
-  approved: number;
-  needApproval: number;
-  omitted: number;
+  selfAddedNotReviewed: number;
+  adminAddedRejected: number;
+  selfAddedRejected: number;
+  adminAddedAutoVerified: number;
+  selfAddedVerified: number;
   total: number;
 }
 
