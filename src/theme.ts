@@ -158,7 +158,7 @@ const theme = {
   sectionBorderWidth: sectionBottomBorderStyle === 'original' ? '1rem' : '3px',
   sectionBorderStyle: 'solid',
   subSectionHeader: {
-    fontSize: '2.2rem',
+    fontSize: '2rem',
     fontWeight: 'bold',
     marginBottom: '1rem',
   },
