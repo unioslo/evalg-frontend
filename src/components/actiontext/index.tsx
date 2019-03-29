@@ -14,30 +14,28 @@ const styles = (theme: any) => ({
     verticalAlign: 'super',
   },
   baseline: {
-    verticalAlign: 'inherit'
-  }
-})
+    verticalAlign: 'inherit',
+  },
+});
 
 interface IProps {
-  action?: () => void,
-  children?: React.ReactNode,
-  bottom?: boolean,
-  classes: any
+  action?: (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
+  children?: React.ReactNode;
+  bottom?: boolean;
+  classes: any;
 }
 
 const ActionText: React.SFC<IProps> = props => {
   const { classes } = props;
   const cls = classNames({
     [classes.actionText]: true,
-    [classes.baseline]: props.bottom
+    [classes.baseline]: props.bottom,
   });
   return (
-    <span className={cls}
-      onClick={props.action} >
+    <span className={cls} onClick={props.action}>
       {props.children}
     </span>
-  )
+  );
 };
-
 
 export default injectSheet(styles)(ActionText);
