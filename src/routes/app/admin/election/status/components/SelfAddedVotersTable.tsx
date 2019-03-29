@@ -54,7 +54,15 @@ const undoReviewSelfAddedVoter = gql`
 
 const refetchQueriesFunction = () => ['selfAddedVoters'];
 
-const styles = (theme: any) => ({});
+const styles = (theme: any) => ({
+  reviewButtons: {
+    display: 'flex',
+    padding: '1.5rem 0',
+  },
+  buttonSeparator: {
+    width: '3.2rem',
+  },
+});
 
 export enum VotersReviewTableAction {
   Review,
@@ -89,14 +97,14 @@ const SelfAddedVotersTable: React.FunctionComponent<Props> = ({
     <Table>
       <TableHeader>
         <TableHeaderRow>
-          <TableHeaderCell />
-          <TableHeaderCell>
+          <TableHeaderCell width="8%" />
+          <TableHeaderCell width="31%">
             <Trans>census.person</Trans>
           </TableHeaderCell>
-          <TableHeaderCell>
+          <TableHeaderCell width="31%">
             <Trans>election.voterGroup</Trans>
           </TableHeaderCell>
-          <TableHeaderCell />
+          <TableHeaderCell width="31%" />
         </TableHeaderRow>
       </TableHeader>
       <TableBody>
@@ -105,8 +113,8 @@ const SelfAddedVotersTable: React.FunctionComponent<Props> = ({
           const isSelected = voter.id === selectedVoterId;
 
           return (
-            <>
-              <TableRow key={voter.id} onClick={handleToggleVoter}>
+            <React.Fragment key={voter.id}>
+              <TableRow onClick={() => handleToggleVoter(voter.id)}>
                 <TableCell>
                   <DropdownArrowIcon selected={isSelected} />
                 </TableCell>
@@ -136,7 +144,7 @@ const SelfAddedVotersTable: React.FunctionComponent<Props> = ({
                     >
                       {(review, { loading }) => {
                         return (
-                          <>
+                          <div className={classes.reviewButtons}>
                             <Button
                               text="Avvis"
                               action={() =>
@@ -148,8 +156,10 @@ const SelfAddedVotersTable: React.FunctionComponent<Props> = ({
                                 })
                               }
                               disabled={loading}
+                              height="4rem"
                               secondary
                             />
+                            <div className={classes.buttonSeparator} />
                             <Button
                               text="Godkjenn"
                               action={() =>
@@ -161,9 +171,10 @@ const SelfAddedVotersTable: React.FunctionComponent<Props> = ({
                                 })
                               }
                               disabled={loading}
+                              height="4rem"
                             />
                             {loading && <Spinner darkStyle />}
-                          </>
+                          </div>
                         );
                       }}
                     </Mutation>
@@ -214,7 +225,7 @@ const SelfAddedVotersTable: React.FunctionComponent<Props> = ({
                     <div className={classes.justification}>
                       <p>
                         <strong>
-                          <Trans>census.justification (begrunnelse)</Trans>
+                          <Trans>census.justification</Trans>
                         </strong>
                       </p>
                       {voter.reason ? (
@@ -228,10 +239,9 @@ const SelfAddedVotersTable: React.FunctionComponent<Props> = ({
                   </TableCell>
                 </TableRow>
               )}
-            </>
+            </React.Fragment>
           );
         })}
-        <TableRow />
       </TableBody>
     </Table>
   );
