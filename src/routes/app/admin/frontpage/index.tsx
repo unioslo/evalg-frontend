@@ -23,9 +23,7 @@ const electionGroupsQuery = gql`
       elections {
         ...ElectionFields
         voteCount {
-          approved
-          needApproval
-          omitted
+          selfAddedNotReviewed
           total
         }
       }
