@@ -30,6 +30,19 @@
       "infoListKeepItSafe": "Sørg for at valgnøkkelen er lagret et sikkert sted. Uten valgnøkkelen kan ikke valget telles opp.",
       "cannotReplaceBecauseUnsafeStatus": "Du må avpublisere valget før du kan opprette en ny valgnøkkel. Hvis det er avgitt stemmer i valget kan du ikke opprette en ny valgnøkkel."
     },
+    "manageSelfAddedVoters": {
+      "approve": "Godkjenn",
+      "displayName": "Visningsnavn",
+      "idRegisteredWhenVoting": "ID registrert ved stemmegiving",
+      "justification": "Begrunnelse",
+      "loadingName": "Looking up name...",
+      "noJustificationGiven": "Ikke oppgitt",
+      "reject": "Avvis",
+      "unknownName": "Ukjent navn",
+      "votesThatMustBeConsidered": "Stemmer som må behandles",
+      "votesApprovedByTheBoard": "Stemmer godkjent av valgstyret",
+      "votesRejectedByTheBoard": "Stemmer avvist av valgstyret"
+    },
     "errors": {
       "generateKeyError": "Noe gikk galt under generering av nøkkelpar.",
       "backend": {
@@ -77,15 +90,14 @@
       "feide_id": "Feide-ID"
     },
     "idValue": "ID-verdi",
-    "justification": "Begrunnelse",
     "loading": "Laster inn manntall. Dette kan ta litt tid...",
     "loadingVotesOutsideCensus": "Laster inn stemmer utenfor manntall...",
+    "noPersons": "Ingen personer",
     "person": "Person",
     "persons": "Personer",
     "resetFilters": "Tilbakestill filtre",
     "showingNOfNRecords": "Viser {{ nRecordsShowing }} av {{ nRecordsTotal }} oppføringer.",
     "showMoreRecordsPrompt": "Vis {{ nMoreRecordsToShow }} flere oppføringer.",
-    "unknownName": "Ukjent navn",
     "uploadCensusFileButton": "Last opp manntallsfil",
     "uploadCensusFileHeader": "Last opp manntall fra fil",
     "uploadSuccessful": "{{numOk}} personer ble lagt til i velgergruppen «{{pollbookName}}».",

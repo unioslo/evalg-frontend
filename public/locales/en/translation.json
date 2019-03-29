@@ -30,6 +30,19 @@
       "infoListKeepItSafe": "Make sure the key is stored somewhere safe. Without the key, votes cannot be counted.",
       "cannotReplaceBecauseUnsafeStatus": "To create a new election key that replaces the old noe, you must first unpublish the election.\nIt's not possible to replace the election key if any votes has been recieved in the election."
     },
+    "manageSelfAddedVoters": {
+      "approve": "Approve",
+      "displayName": "Display name",
+      "idRegisteredWhenVoting": "ID given when voting",
+      "justification": "Justification",
+      "loadingName": "Henter navn...",
+      "noJustificationGiven": "Not given",
+      "reject": "Reject",
+      "unknownName": "Unknown name",
+      "votesThatMustBeConsidered": "Votes that must be considered",
+      "votesApprovedByTheBoard": "Votes approved by the electoral board",
+      "votesRejectedByTheBoard": "Votes rejected by the electoral board"
+    },
     "errors": {
       "generateKeyError": "Something went wrong when generating a key pair.",
       "backend": {
@@ -77,15 +90,14 @@
       "feide_id": "Feide-ID"
     },
     "idValue": "ID-value",
-    "justification": "Justification",
     "loading": "Loading censuses. This may take some time...",
     "loadingVotesOutsideCensus": "Loading votes outside censuses...",
+    "noPersons": "No persons",
     "person": "Person",
     "persons": "Persons",
     "resetFilters": "Reset filters",
     "showingNOfNRecords": "Showing {{ nRecordsShowing }} of {{ nRecordsTotal }} records.",
     "showMoreRecordsPrompt": "Show {{ nMoreRecordsToShow }} more records.",
-    "unknownName": "Unknown name",
     "uploadCensusFileButton": "Upload census file",
     "uploadCensusFileHeader": "Upload census from file",
     "uploadSuccessful": "Added {{numOk}} persons to the group “{{pollbookName}}“.",
