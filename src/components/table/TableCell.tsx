@@ -20,7 +20,6 @@ interface IProps {
 
 const styles = (theme: any) => ({
   cell: {
-    borderBottom: `1px solid ${theme.tableCandidateBottomBorderColor}`,
     userSelect: 'none',
     '&:first-child': {
       paddingLeft: theme.tableHorizontalPadding,
