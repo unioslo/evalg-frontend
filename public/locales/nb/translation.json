@@ -77,10 +77,11 @@
       "feide_id": "Feide-ID"
     },
     "idValue": "ID-verdi",
+    "justification": "Begrunnelse",
     "loading": "Laster inn manntall. Dette kan ta litt tid...",
     "loadingVotesOutsideCensus": "Laster inn stemmer utenfor manntall...",
-    "person": "person",
-    "persons": "personer",
+    "person": "Person",
+    "persons": "Personer",
     "resetFilters": "Tilbakestill filtre",
     "showingNOfNRecords": "Viser {{ nRecordsShowing }} av {{ nRecordsTotal }} oppføringer.",
     "showMoreRecordsPrompt": "Vis {{ nMoreRecordsToShow }} flere oppføringer.",

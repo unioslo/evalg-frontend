@@ -77,10 +77,11 @@
       "feide_id": "Feide-ID"
     },
     "idValue": "ID-value",
+    "justification": "Justification",
     "loading": "Loading censuses. This may take some time...",
     "loadingVotesOutsideCensus": "Loading votes outside censuses...",
-    "person": "person",
-    "persons": "persons",
+    "person": "Person",
+    "persons": "Persons",
     "resetFilters": "Reset filters",
     "showingNOfNRecords": "Showing {{ nRecordsShowing }} of {{ nRecordsTotal }} records.",
     "showMoreRecordsPrompt": "Show {{ nMoreRecordsToShow }} more records.",
