@@ -14,51 +14,18 @@ import { History, Location } from 'history';
 // import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
 import { electionGroupWithOrderedElections } from '../../../../utils/processGraphQLData';
 import { ElectionGroup } from '../../../../interfaces';
+import { ElectionGroupFields, ElectionFields } from '../../../../fragments';
 
 const electionGroupQuery = gql`
+  ${ElectionGroupFields}
+  ${ElectionFields}
   query electionGroup($id: UUID!) {
     electionGroup(id: $id) {
-      id
-      name
-      description
-      type
-      candidateType
-      mandateType
-      meta
-      ouId
-      publicKey
-      announcedAt
-      publishedAt
-      cancelledAt
-      deletedAt
-      status
-      cancelled
-      announced
-      published
-      announced
-      deleted
+      ...ElectionGroupFields
       announcementBlockers
       publicationBlockers
       elections {
-        id
-        name
-        description
-        type
-        candidateType
-        mandateType
-        meta
-        sequence
-        start
-        end
-        informationUrl
-        contact
-        mandatePeriodStart
-        mandatePeriodEnd
-        groupId
-        active
-        status
-        publishedAt
-        cancelledAt
+        ...ElectionFields
         lists {
           id
           name

@@ -33,8 +33,6 @@ const createNewElectionGroupMutation = gql`
         name
         description
         type
-        candidateType
-        mandateType
         meta
         ouId
         publicKey
@@ -52,8 +50,6 @@ const createNewElectionGroupMutation = gql`
           name
           description
           type
-          candidateType
-          mandateType
           meta
           sequence
           start
@@ -94,7 +90,6 @@ class NewElection extends React.Component<IProps, IState> {
   }
 
   public onCreateCompleted(data: any, client: ApolloClient<EvalgClientState>) {
-
     const localStateData = {
       // TODO: find out how to not need __typename here
       admin: { isCreatingNewElection: true, __typename: 'admin' },

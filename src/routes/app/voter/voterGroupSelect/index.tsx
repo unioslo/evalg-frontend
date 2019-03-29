@@ -12,7 +12,7 @@ import {
   VotersForPersonResponse,
   QueryResponse,
 } from '../../../../interfaces';
-import { getSignedInPersonId } from '../../../../common-queries';
+import { getSignedInPersonId } from '../../../../queries';
 
 import Link from '../../../../components/link';
 import { PageSection } from '../../../../components/page';
