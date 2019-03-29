@@ -1,42 +1,51 @@
-import React, { useState } from 'react';
+import React from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { ElectionGroup, IVoter } from '../../../../../../interfaces';
 
-import DropdownArrowIcon from '../../../../../../components/icons/DropdownArrowIcon';
-import SelfAddedVotersTable, {
+import SelfAddedVotersMngmtTable, {
   VotersReviewTableAction,
-} from './SelfAddedVotersTable';
+} from './SelfAddedVotersMngmtTable';
+import { PageExpandableSubSection } from '../../../../../../components/page/PageSection';
 
 const selfAddedVoters = gql`
-  query selfAddedVoters($electionGroupId: UUID!) {
-    selfAddedVoters(electionGroupId: $electionGroupId) {
+  query electionGroupWithSelfAddedVoters($id: UUID!) {
+    electionGroup(id: $id) {
       id
-      verifiedStatus
-      idType
-      idValue
-      reason
-      pollbook {
+      elections {
         id
-        name
+        active
+        pollbooks {
+          id
+          name
+          selfAddedVoters {
+            id
+            verifiedStatus
+            idType
+            idValue
+            reason
+            pollbook {
+              id
+              name
+            }
+          }
+        }
       }
     }
   }
 `;
 
 interface Props {
-  electionGroup: ElectionGroup;
+  electionGroupId: string;
 }
 
 const VotesOutsideCensusManagement: React.FunctionComponent<Props> = props => {
-  const [isReviewTableExpanded, setIsReviewTableExpanded] = useState(false);
-  const [isVerifiedTableExpanded, setIsVerifiedTableExpanded] = useState(false);
-  const [isRejectedTableExpanded, setIsRejectedTableExpanded] = useState(false);
+  const { t } = useTranslation();
 
   return (
-    <Query query={selfAddedVoters}>
+    <Query query={selfAddedVoters} variables={{ id: props.electionGroupId }}>
       {({ data, loading, error }) => {
         if (error) {
           return 'Error!';
@@ -46,73 +55,63 @@ const VotesOutsideCensusManagement: React.FunctionComponent<Props> = props => {
           return <Trans>census.loadingVotesOutsideCensus</Trans>;
         }
 
-        const voters = data.selfAddedVoters as IVoter[];
+        const electionGroupData = data.electionGroup as ElectionGroup;
         const notReviewedVoters: IVoter[] = [];
         const verifiedVoters: IVoter[] = [];
         const rejectedVoters: IVoter[] = [];
 
-        voters.forEach(voter => {
-          switch (voter.verifiedStatus) {
-            case 'SELF_ADDED_NOT_REVIEWED':
-              notReviewedVoters.push(voter);
-              break;
-            case 'SELF_ADDED_VERIFIED':
-              verifiedVoters.push(voter);
-              break;
-            case 'SELF_ADDED_REJECTED':
-              rejectedVoters.push(voter);
-              break;
-          }
-        });
+        electionGroupData.elections
+          .filter(e => e.active)
+          .forEach(election => {
+            election.pollbooks.forEach(pollbook => {
+              pollbook.selfAddedVoters.forEach(selfAddedVoter => {
+                switch (selfAddedVoter.verifiedStatus) {
+                  case 'VerifiedStatus.SELF_ADDED_NOT_REVIEWED':
+                    notReviewedVoters.push(selfAddedVoter);
+                    break;
+                  case 'VerifiedStatus.SELF_ADDED_VERIFIED':
+                    verifiedVoters.push(selfAddedVoter);
+                    break;
+                  case 'VerifiedStatus.SELF_ADDED_REJECTED':
+                    rejectedVoters.push(selfAddedVoter);
+                    break;
+                }
+              });
+            });
+          });
+
+        const votesToConsiderHeading = `${t(
+          'admin.manageSelfAddedVoters.votesThatMustBeConsidered'
+        )} (${notReviewedVoters.length})`;
+        const approvedVotesHeading = `${t(
+          'admin.manageSelfAddedVoters.votesApprovedByTheBoard'
+        )} (${verifiedVoters.length})`;
+        const rejectedVotesHeading = `${t(
+          'admin.manageSelfAddedVoters.votesRejectedByTheBoard'
+        )} (${rejectedVoters.length})`;
 
         return (
           <>
-            <div>
-              <div
-                onClick={() => setIsReviewTableExpanded(!isReviewTableExpanded)}
-              >
-                <DropdownArrowIcon selected={isReviewTableExpanded} /> Stemmer
-                som må behandles ({notReviewedVoters.length})
-              </div>
-              {isReviewTableExpanded && (
-                <SelfAddedVotersTable
-                  voters={notReviewedVoters}
-                  tableAction={VotersReviewTableAction.Review}
-                />
-              )}
-            </div>
-            <div>
-              <div
-                onClick={() =>
-                  setIsVerifiedTableExpanded(!isVerifiedTableExpanded)
-                }
-              >
-                <DropdownArrowIcon selected={isVerifiedTableExpanded} /> Stemmer
-                godkjent av valgstyret ({verifiedVoters.length})
-              </div>
-              {isVerifiedTableExpanded && (
-                <SelfAddedVotersTable
-                  voters={verifiedVoters}
-                  tableAction={VotersReviewTableAction.Undo}
-                />
-              )}
-            </div>
-            <div>
-              <div
-                onClick={() =>
-                  setIsRejectedTableExpanded(!isRejectedTableExpanded)
-                }
-              >
-                <DropdownArrowIcon selected={isRejectedTableExpanded} /> Stemmer
-                avvist av valgstyret ({rejectedVoters.length})
-              </div>
-              {isRejectedTableExpanded && (
-                <SelfAddedVotersTable
-                  voters={rejectedVoters}
-                  tableAction={VotersReviewTableAction.Undo}
-                />
-              )}
-            </div>
+            <PageExpandableSubSection header={votesToConsiderHeading}>
+              <SelfAddedVotersMngmtTable
+                voters={notReviewedVoters}
+                tableAction={VotersReviewTableAction.Review}
+              />
+            </PageExpandableSubSection>
+
+            <PageExpandableSubSection header={approvedVotesHeading}>
+              <SelfAddedVotersMngmtTable
+                voters={verifiedVoters}
+                tableAction={VotersReviewTableAction.Undo}
+              />
+            </PageExpandableSubSection>
+
+            <PageExpandableSubSection header={rejectedVotesHeading}>
+              <SelfAddedVotersMngmtTable
+                voters={rejectedVoters}
+                tableAction={VotersReviewTableAction.Undo}
+              />
+            </PageExpandableSubSection>
           </>
         );
       }}
