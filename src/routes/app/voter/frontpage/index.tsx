@@ -31,6 +31,7 @@ const electionGroupsQuery = gql`
 const votersForPersonQuery = gql`
   query votersForPerson($id: UUID!) {
     votersForPerson(id: $id) {
+      verified
       pollbook {
         id
         election {
@@ -95,7 +96,11 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
                           </Loading>
                         );
                       }
-                      const canVoteIn = votersForPersonResponse.data.votersForPerson.map(
+
+                      const canVoteIn = votersForPersonResponse.data.votersForPerson.filter(
+                        (voter: VotersForPerson) => voter.verified === true
+                      );
+                      const electionIds = canVoteIn.map(
                         (voter: VotersForPerson) =>
                           voter.pollbook.election.electionGroup.id
                       );
@@ -107,7 +112,7 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
                             noBorder
                           >
                             <VoterElections
-                              canVoteElectionGroups={canVoteIn}
+                              canVoteElectionGroups={electionIds}
                               electionGroups={electionGroupResult.data.electionGroups
                                 .map((eg: ElectionGroup) =>
                                   electionGroupWithOrderedElections(eg, {
