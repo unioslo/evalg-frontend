@@ -42,7 +42,7 @@ const styles = (theme: any) => ({
     }
   },
   noBorderBottom: {
-    borderBottom: 'inherit',
+    borderBottom: 'none',
   },
   tall: {
     height: '7.5rem'
