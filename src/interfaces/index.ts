@@ -21,17 +21,6 @@ export type Viewer = {
   person: IPerson;
 };
 
-export type VotersForPerson = {
-  id: string;
-  tag: string;
-  idType: string;
-  idValue: string;
-  manual: boolean;
-  verified: boolean;
-  pollbookID: string;
-  pollbook: IPollBook;
-};
-
 // Query responses
 
 export type ViewerResponse = {
@@ -39,7 +28,7 @@ export type ViewerResponse = {
 };
 
 export type VotersForPersonResponse = {
-  votersForPerson: VotersForPerson[];
+  votersForPerson: IVoter[];
 };
 
 export type QueryResponse<T> = {
@@ -88,6 +77,7 @@ export interface IVoter {
   verified: boolean;
   manual: boolean;
   pollbookId: string;
+  pollbook: IPollBook;
   reason?: string;
   votes: IVote[];
 }

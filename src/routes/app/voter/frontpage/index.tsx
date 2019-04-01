@@ -5,7 +5,7 @@ import { Query, WithApolloClient, withApollo } from 'react-apollo';
 import { Page, PageSection } from '../../../../components/page';
 import VoterElections from './components/VoterElections';
 import { electionGroupWithOrderedElections } from '../../../../utils/processGraphQLData';
-import { ElectionGroup, VotersForPerson } from '../../../../interfaces';
+import { ElectionGroup, IVoter } from '../../../../interfaces';
 import { getSignedInPersonIdQuery } from '../../../../queries';
 import { WithTranslation, Trans } from 'react-i18next';
 import { withTranslation } from 'react-i18next';
@@ -98,10 +98,10 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
                       }
 
                       const canVoteIn = votersForPersonResponse.data.votersForPerson.filter(
-                        (voter: VotersForPerson) => voter.verified === true
+                        (voter: IVoter) => voter.verified === true
                       );
                       const electionIds = canVoteIn.map(
-                        (voter: VotersForPerson) =>
+                        (voter: IVoter) =>
                           voter.pollbook.election.electionGroup.id
                       );
 
