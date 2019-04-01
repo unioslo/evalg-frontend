@@ -20,6 +20,7 @@ import { DropDown } from '../../../../components/form';
 import Button, { ButtonContainer } from '../../../../components/button';
 import MandatePeriodText from '../vote/components/MandatePeriodText';
 import { Date, Time } from '../../../../components/i18n';
+import Loading from '../../../../components/loading';
 
 const votersForPersonQuery = gql`
   query votersForPerson($id: UUID!) {
@@ -115,6 +116,7 @@ type IState = {
   notInPollBookJustification: string;
   personId: string;
   voters: IVoter[];
+  fetchingVoters: boolean;
 };
 
 // Page for selecting voter group / velgergruppe in between selecting an election on the voter
@@ -136,6 +138,7 @@ class VoterGroupSelectPage extends React.Component<
     notInPollBookJustification: '',
     personId: '',
     voters: [],
+    fetchingVoters: true,
   };
 
   componentDidMount() {
@@ -161,6 +164,7 @@ class VoterGroupSelectPage extends React.Component<
     } catch (error) {
       // TODO: Render proper error
     }
+    this.setState({ fetchingVoters: false });
   }
 
   getVoterId = (pollBookIndex: number) => {
@@ -353,6 +357,14 @@ class VoterGroupSelectPage extends React.Component<
           </>
         );
       }
+    }
+
+    if (this.state.fetchingVoters) {
+      return (
+        <Loading>
+          <Trans>voter.loading</Trans>
+        </Loading>
+      );
     }
 
     return (
