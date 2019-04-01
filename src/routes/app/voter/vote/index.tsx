@@ -79,6 +79,14 @@ const addVoterMutation = gql`
   }
 `;
 
+const updateVoterReasonMutation = gql`
+  mutation updateVoterReason($id: UUID!, $reason: String!) {
+    updateVoterReason(id: $id, reason: $reason) {
+      ok
+    }
+  }
+`;
+
 export enum BallotStep {
   FillOutBallot,
   ReviewBallot,
@@ -178,9 +186,7 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
 
   async handleSubmitVote(ballotData: object) {
     let voter = null;
-    if (this.state.voter) {
-      voter = this.state.voter;
-    } else {
+    if (!this.state.voter) {
       const handleSuccess = (p: QueryResponse<ViewerResponse>) => {
         this.setState({ personId: p.data.signedInPerson.personId });
       };
@@ -211,6 +217,27 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
         .catch(error => {
           this.showError();
         });
+    } else {
+      voter = this.state.voter;
+
+      if (voter.manual === true && voter.verified === false) {
+        await this.props.client
+          .mutate({
+            mutation: updateVoterReasonMutation,
+            variables: {
+              id: voter.id,
+              reason: this.state.notInPollBookJustification,
+            },
+          })
+          .then(result => {
+            if (result.errors) {
+              this.showError();
+            }
+          })
+          .catch(error => {
+            this.showError();
+          });
+      }
     }
 
     const voteData = {

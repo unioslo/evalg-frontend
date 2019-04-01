@@ -27,6 +27,7 @@ const votersForPersonQuery = gql`
     votersForPerson(id: $id) {
       id
       verified
+      manual
       pollbook {
         id
       }
