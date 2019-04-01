@@ -7,10 +7,10 @@ import { WithApolloClient, withApollo } from 'react-apollo';
 import {
   Election,
   IPollBook,
-  VotersForPerson,
   ViewerResponse,
   VotersForPersonResponse,
   QueryResponse,
+  IVoter,
 } from '../../../../interfaces';
 import { getSignedInPersonId } from '../../../../queries';
 
@@ -114,7 +114,7 @@ type IState = {
   selectedPollBookIndex: number;
   notInPollBookJustification: string;
   personId: string;
-  voters: VotersForPerson[];
+  voters: IVoter[];
 };
 
 // Page for selecting voter group / velgergruppe in between selecting an election on the voter
@@ -165,7 +165,7 @@ class VoterGroupSelectPage extends React.Component<
 
   getVoterId = (pollBookIndex: number) => {
     const { pollbooks } = this.getCommonVars();
-    const voters: VotersForPerson[] = this.state.voters;
+    const voters: IVoter[] = this.state.voters;
     const filteredVoters = voters.filter(
       x => x.pollbook.id === pollbooks[pollBookIndex].id
     );
@@ -179,8 +179,8 @@ class VoterGroupSelectPage extends React.Component<
 
   hasRightToVote = (pollBookIndex: number): boolean => {
     const { pollbooks } = this.getCommonVars();
-    const voters: VotersForPerson[] = this.state.voters.filter(
-      (voter: VotersForPerson) => voter.verified === true
+    const voters: IVoter[] = this.state.voters.filter(
+      (voter: IVoter) => voter.verified === true
     );
 
     return voters.map(x => x.pollbook.id).includes(pollbooks[pollBookIndex].id);
