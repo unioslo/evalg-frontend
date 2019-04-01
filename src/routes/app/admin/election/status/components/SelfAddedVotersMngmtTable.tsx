@@ -28,10 +28,6 @@ const personForVoter = gql`
     personForVoter(voterId: $voterId) {
       id
       displayName
-      principals {
-        principalId
-        principalType
-      }
     }
   }
 `;
@@ -133,14 +129,24 @@ const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
                 variables={{ voterId: voter.id }}
                 key={voter.id}
               >
-                {({ data, loading: personForVoterLoading }) => {
-                  const displayNameElement = personForVoterLoading ? (
-                    <em>{t('admin.manageSelfAddedVoters.loadingName')}</em>
-                  ) : data.personForVoter.displayName ? (
-                    data.personForVoter.displayName
-                  ) : (
-                    t('admin.manageSelfAddedVoters.unknownName')
-                  );
+                {({ data, loading: personForVoterLoading, error }) => {
+                  let displayNameElement;
+
+                  if (error) {
+                    displayNameElement = (
+                      <em>{t('admin.manageSelfAddedVoters.unknownName')}</em>
+                    );
+                  } else if (personForVoterLoading) {
+                    displayNameElement = (
+                      <em>{t('admin.manageSelfAddedVoters.loadingName')}</em>
+                    );
+                  } else {
+                    displayNameElement = data.personForVoter.displayName ? (
+                      data.personForVoter.displayName
+                    ) : (
+                      <em>{t('admin.manageSelfAddedVoters.unknownName')}</em>
+                    );
+                  }
 
                   return (
                     <>
@@ -306,9 +312,6 @@ const VoterDetails: React.FunctionComponent<VoterDetailsProps> = ({
         </p>
         <p>
           {getVoterIdTypeDisplayName(voter.idType, t)}: {voter.idValue}
-          <br />
-          <Trans>admin.manageSelfAddedVoters.displayName</Trans>:{' '}
-          {displayNameElement}
         </p>
       </div>
     </TableCell>
