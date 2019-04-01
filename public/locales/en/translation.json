@@ -32,7 +32,6 @@
     },
     "manageSelfAddedVoters": {
       "approve": "Approve",
-      "displayName": "Display name",
       "idRegisteredWhenVoting": "ID registered when voting",
       "justification": "Justification",
       "loadingName": "Henter navn...",

@@ -32,7 +32,6 @@
     },
     "manageSelfAddedVoters": {
       "approve": "Godkjenn",
-      "displayName": "Visningsnavn",
       "idRegisteredWhenVoting": "ID registrert ved stemmegiving",
       "justification": "Begrunnelse",
       "loadingName": "Looking up name...",
