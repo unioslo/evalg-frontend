@@ -220,7 +220,7 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
     } else {
       voter = this.state.voter;
 
-      if (voter.manual === true && voter.verified === false) {
+      if (voter.selfAdded && !voter.verified) {
         await this.props.client
           .mutate({
             mutation: updateVoterReasonMutation,
