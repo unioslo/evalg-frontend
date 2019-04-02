@@ -66,13 +66,13 @@ const VotesOutsideCensusManagement: React.FunctionComponent<Props> = props => {
             election.pollbooks.forEach(pollbook => {
               pollbook.selfAddedVoters.forEach(selfAddedVoter => {
                 switch (selfAddedVoter.verifiedStatus) {
-                  case 'VerifiedStatus.SELF_ADDED_NOT_REVIEWED':
+                  case 'SELF_ADDED_NOT_REVIEWED':
                     notReviewedVoters.push(selfAddedVoter);
                     break;
-                  case 'VerifiedStatus.SELF_ADDED_VERIFIED':
+                  case 'SELF_ADDED_VERIFIED':
                     verifiedVoters.push(selfAddedVoter);
                     break;
-                  case 'VerifiedStatus.SELF_ADDED_REJECTED':
+                  case 'SELF_ADDED_REJECTED':
                     rejectedVoters.push(selfAddedVoter);
                     break;
                 }

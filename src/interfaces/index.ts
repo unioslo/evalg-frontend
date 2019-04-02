@@ -80,11 +80,11 @@ export interface IVoter {
   reviewed: boolean;
   verified: boolean;
   verifiedStatus:
-    | 'VerifiedStatus.ADMIN_ADDED_AUTO_VERIFIED'
-    | 'VerifiedStatus.ADMIN_ADDED_REJECTED'
-    | 'VerifiedStatus.SELF_ADDED_NOT_REVIEWED'
-    | 'VerifiedStatus.SELF_ADDED_VERIFIED'
-    | 'VerifiedStatus.SELF_ADDED_REJECTED';
+    | 'ADMIN_ADDED_AUTO_VERIFIED'
+    | 'ADMIN_ADDED_REJECTED'
+    | 'SELF_ADDED_NOT_REVIEWED'
+    | 'SELF_ADDED_VERIFIED'
+    | 'SELF_ADDED_REJECTED';
   reason?: string;
   votes: IVote[];
 }
