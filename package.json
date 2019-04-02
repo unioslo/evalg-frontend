@@ -67,7 +67,9 @@
     "build": "npm run build:env && react-scripts build",
     "build:env": "node scripts/build-env.js",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -81,6 +83,12 @@
   "devDependencies": {
     "@types/i18next-xhr-backend": "^1.4.2",
     "@types/react-helmet": "^5.0.8",
-    "storybook": "^1.0.0"
+    "storybook": "^1.0.0",
+    "@storybook/react": "^5.0.6",
+    "@storybook/addon-actions": "^5.0.6",
+    "@storybook/addon-links": "^5.0.6",
+    "@storybook/addons": "^5.0.6",
+    "@babel/core": "^7.4.0",
+    "babel-loader": "^8.0.5"
   }
 }
