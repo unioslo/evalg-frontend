@@ -8,6 +8,7 @@ interface IProps {
   action?: () => void,
   alignCenter?: boolean,
   alignRight?: boolean,
+  width?: string;
   classes: Classes,
 }
 
@@ -21,7 +22,8 @@ const styles = (theme: any) => ({
     },
     '&:last-child': {
       paddingRight: theme.tableHorizontalPadding
-    }
+    },
+    width: (props: IProps) => props.width
   },
   alignCenter: {
     textAlign: 'center'

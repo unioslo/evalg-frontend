@@ -226,7 +226,7 @@ class VoterInfoForm extends React.Component<IProps> {
                   </FormField>
                 )}
                 {values.hasMultipleMandateTimes ? (
-                  <Table smlTopMargin={true}>
+                  <Table marginTop="2rem">
                     <TableHeader>
                       <TableHeaderRow>
                         <TableHeaderCell>

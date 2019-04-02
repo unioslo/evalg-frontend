@@ -6,8 +6,7 @@ import { Classes } from 'jss';
 
 interface IProps {
   children?: React.ReactNode,
-  smlTopMargin?: boolean,
-  noTopMargin?: boolean,
+  marginTop?: string,
   classes: Classes,
 };
 
@@ -15,13 +14,10 @@ const styles = (theme: any) => ({
   table: {
     width: '100%',
     userSelect: 'none',
-    marginTop: '4rem',
+    marginTop: (props: IProps) => props.marginTop ? props.marginTop : '4rem',
     '& th:not(:last-child), & td:not(:last-child)': {
       paddingRight: '2rem',
     },
-  },
-  smallTopMargin: {
-    marginTop: '2rem',
   },
 });
 
@@ -29,7 +25,6 @@ const Table = (props: IProps) => {
   const { classes } = props;
   const cls = classNames({
     [classes.table]: true,
-    [classes.smallTopMargin]: props.smlTopMargin,
   });
   return <table className={cls}>{props.children}</table>;
 };

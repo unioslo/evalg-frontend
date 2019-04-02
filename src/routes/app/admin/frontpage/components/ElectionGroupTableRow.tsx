@@ -37,7 +37,7 @@ const ElectionGroupTableRow: React.FunctionComponent<IProps> = (
     endTimes.push(e.end);
     statuses.push(e.status);
     totalVotes += e.voteCount.total;
-    totalVotesOutsideCensus += e.voteCount.needApproval;
+    totalVotesOutsideCensus += e.voteCount.selfAddedNotReviewed;
   });
   const sharedStartTime = allEqual(startTimes);
   const sharedEndTime = allEqual(endTimes);

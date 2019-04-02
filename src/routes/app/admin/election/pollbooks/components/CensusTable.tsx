@@ -58,6 +58,9 @@ const refetchQueries = () => ['electionGroupVoters'];
 
 interface IProps {
   pollBooks: IPollBook[];
+  pollBookDict: { [pollbookId: string]: IPollBook };
+  pollBookOptions: DropDownOption[];
+  voters: IVoter[];
   addVoterPollbookId: string;
   onCloseAddVoterForm: () => void;
   t: i18n.TFunction;
@@ -66,6 +69,9 @@ interface IProps {
 
 const CensusTable: React.FunctionComponent<IProps> = ({
   pollBooks,
+  pollBookDict,
+  pollBookOptions,
+  voters,
   addVoterPollbookId,
   onCloseAddVoterForm,
   t,
@@ -133,22 +139,7 @@ const CensusTable: React.FunctionComponent<IProps> = ({
     setFilters({ idTypeFilter: '', idValueFilter: '', pollbookFilter: '' });
   };
 
-  const unfilteredVoters: IVoter[] = [];
-  const pollBookDict: { [pollbookId: string]: IPollBook } = {};
-  const pollBookOptions: DropDownOption[] = [];
-
-  pollBooks.forEach(pollBook => {
-    pollBookDict[pollBook.id] = pollBook;
-    pollBook.voters
-      .filter(voter => voter.verified)
-      .forEach(voter => {
-        unfilteredVoters.push(voter);
-      });
-    pollBookOptions.push({
-      name: pollBook.name[lang],
-      value: pollBook.id,
-    });
-  });
+  const unfilteredVoters = voters;
 
   const filteredVoters = unfilteredVoters.filter(voter => {
     if (

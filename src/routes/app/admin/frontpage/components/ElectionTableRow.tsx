@@ -43,7 +43,7 @@ const ElectionTableRow: React.FunctionComponent<IProps> = (props: IProps) => {
       <TableCell>
         <VoteStatus
           totalVotes={election.voteCount.total}
-          votesOutsideCensus={election.voteCount.needApproval}
+          votesOutsideCensus={election.voteCount.selfAddedNotReviewed}
           preposition={t('general.of')}
         />
       </TableCell>

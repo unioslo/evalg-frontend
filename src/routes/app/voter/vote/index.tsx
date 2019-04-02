@@ -72,8 +72,8 @@ const submitVoteMutation = gql`
 `;
 
 const addVoterMutation = gql`
-  mutation addVoter($personId: UUID!, $pollbookId: UUID!) {
-    addVoter(personId: $personId, pollbookId: $pollbookId) {
+  mutation addVoter($personId: UUID!, $pollbookId: UUID!, $reason: String) {
+    addVoter(personId: $personId, pollbookId: $pollbookId, reason: $reason) {
       id
     }
   }
@@ -220,7 +220,7 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
     } else {
       voter = this.state.voter;
 
-      if (voter.manual === true && voter.verified === false) {
+      if (voter.selfAdded && !voter.verified) {
         await this.props.client
           .mutate({
             mutation: updateVoterReasonMutation,

@@ -2,7 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
 
-import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { Classes } from 'jss';
 
 const styles = (theme: any) => ({
@@ -118,6 +118,9 @@ const VoterGroupActionPanel = (props: IProps) => {
     active,
     classes,
   } = props;
+
+  const { t } = useTranslation();
+
   let hasCompleteStatus = false;
 
   if (minCount) {
@@ -139,11 +142,9 @@ const VoterGroupActionPanel = (props: IProps) => {
       <div className={classes.numberOfPersons}>
         <span className={classes.numberOfPersonsText}>
           {count}{' '}
-          {count === 1 ? (
-            <Trans>census.person</Trans>
-          ) : (
-            <Trans>census.persons</Trans>
-          )}
+          {count === 1
+            ? t('census.person').toLowerCase()
+            : t('census.persons').toLowerCase()}
         </span>
       </div>
       {active && (

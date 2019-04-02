@@ -10,6 +10,7 @@ interface IProps {
   thickBorder?: boolean,
   actionTextOnHover?: boolean,
   noHoverBg?: boolean,
+  noBorderBottom?: boolean,
   tall?: boolean,
   verticalPadding?: boolean,
   onClick?: (evnent: any) => void,
@@ -40,6 +41,9 @@ const styles = (theme: any) => ({
       backgroundColor: 'transparent'
     }
   },
+  noBorderBottom: {
+    borderBottom: 'none',
+  },
   tall: {
     height: '7.5rem'
   },
@@ -66,6 +70,7 @@ const TableRow = (props: IProps) => {
     [classes.row]: true,
     [classes.isDragged]: props.dragged,
     [classes.noHoverBg]: props.noHoverBg,
+    [classes.noBorderBottom]: props.noBorderBottom,
     [classes.thickBorder]: props.thickBorder,
     [classes.actionTextOnHover]: props.actionTextOnHover,
     [classes.verticalPadding]: props.verticalPadding,
