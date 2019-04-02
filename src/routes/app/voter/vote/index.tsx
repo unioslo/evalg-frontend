@@ -79,6 +79,14 @@ const addVoterMutation = gql`
   }
 `;
 
+const updateVoterReasonMutation = gql`
+  mutation updateVoterReason($id: UUID!, $reason: String!) {
+    updateVoterReason(id: $id, reason: $reason) {
+      ok
+    }
+  }
+`;
+
 export enum BallotStep {
   FillOutBallot,
   ReviewBallot,
@@ -100,7 +108,7 @@ interface IState {
   currentStep: VotingStep;
   voteElection: Election | null;
   selectedPollBookId: string;
-  voterId: string;
+  voter: IVoter | null;
   personId: string;
   notInPollBookJustification: string;
   errorOccurred: boolean;
@@ -113,7 +121,7 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
     currentStep: VotingStep.Step1SelectVoterGroup,
     voteElection: null,
     selectedPollBookId: '',
-    voterId: '',
+    voter: null,
     personId: '',
     notInPollBookJustification: '',
     errorOccurred: false,
@@ -162,14 +170,14 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
     activeElections: Election[],
     selectedElectionIndex: number,
     selectedPollBookId: string,
-    voterId: string,
+    voter: IVoter | null,
     notInPollBookJustification: string
   ) => {
     this.setState(
       {
         voteElection: activeElections[selectedElectionIndex],
         selectedPollBookId,
-        voterId,
+        voter,
         notInPollBookJustification,
       },
       this.goToStep2
@@ -177,10 +185,8 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
   };
 
   async handleSubmitVote(ballotData: object) {
-    let voterId = '';
-    if (this.state.voterId) {
-      voterId = this.state.voterId;
-    } else {
+    let voter = null;
+    if (!this.state.voter) {
       const handleSuccess = (p: QueryResponse<ViewerResponse>) => {
         this.setState({ personId: p.data.signedInPerson.personId });
       };
@@ -205,12 +211,33 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
           if (result.errors) {
             this.showError();
           } else if (result.data) {
-            voterId = result.data.addVoter.id;
+            voter = result.data.addVoter;
           }
         })
         .catch(error => {
           this.showError();
         });
+    } else {
+      voter = this.state.voter;
+
+      if (voter.manual === true && voter.verified === false) {
+        await this.props.client
+          .mutate({
+            mutation: updateVoterReasonMutation,
+            variables: {
+              id: voter.id,
+              reason: this.state.notInPollBookJustification,
+            },
+          })
+          .then(result => {
+            if (result.errors) {
+              this.showError();
+            }
+          })
+          .catch(error => {
+            this.showError();
+          });
+      }
     }
 
     const voteData = {
@@ -220,26 +247,30 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
     };
     const voteDataJSON = JSON.stringify(voteData);
 
-    await this.props.client
-      .mutate<VoteResponse>({
-        mutation: submitVoteMutation,
-        variables: {
-          voterId: voterId,
-          ballot: voteDataJSON,
-        },
-      })
-      .then(result => {
-        const response = result && result.data && result.data.vote;
+    if (voter) {
+      await this.props.client
+        .mutate<VoteResponse>({
+          mutation: submitVoteMutation,
+          variables: {
+            voterId: voter.id,
+            ballot: voteDataJSON,
+          },
+        })
+        .then(result => {
+          const response = result && result.data && result.data.vote;
 
-        if (!response) {
+          if (!response) {
+            this.showError();
+          } else {
+            this.goToStep4();
+          }
+        })
+        .catch(error => {
           this.showError();
-        } else {
-          this.goToStep4();
-        }
-      })
-      .catch(error => {
-        this.showError();
-      });
+        });
+    } else {
+      // TODO: Display error
+    }
   }
 
   render() {
@@ -315,14 +346,14 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
                     onProceed={(
                       selectedElectionIndex,
                       selectedPollBookID,
-                      voterId,
+                      voter,
                       notInPollBookJustification
                     ) =>
                       this.handleProceedFromSelectVoterGroup(
                         activeElections,
                         selectedElectionIndex,
                         selectedPollBookID,
-                        voterId,
+                        voter,
                         notInPollBookJustification
                       )
                     }

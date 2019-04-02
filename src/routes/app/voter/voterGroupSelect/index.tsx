@@ -27,6 +27,7 @@ const votersForPersonQuery = gql`
     votersForPerson(id: $id) {
       id
       verified
+      manual
       pollbook {
         id
       }
@@ -105,7 +106,7 @@ interface IProps extends WithTranslation {
   onProceed: (
     selectedElectionIndex: number,
     selectedPollBookId: string,
-    voterId: string,
+    voter: IVoter | null,
     notInPollBookJustification: string
   ) => void;
   classes: any;
@@ -176,7 +177,7 @@ class VoterGroupSelectPage extends React.Component<
     this.setState({ fetchingVoters: false });
   }
 
-  getVoterId = (pollBookIndex: number) => {
+  getVoter = (pollBookIndex: number) => {
     const { pollbooks } = this.getCommonVars();
     const voters: IVoter[] = this.state.voters;
     const filteredVoters = voters.filter(
@@ -184,9 +185,9 @@ class VoterGroupSelectPage extends React.Component<
     );
 
     if (filteredVoters.length === 1) {
-      return filteredVoters[0].id;
+      return filteredVoters[0];
     } else {
-      return '';
+      return null;
     }
   };
 
@@ -212,13 +213,13 @@ class VoterGroupSelectPage extends React.Component<
   handleProceed = (
     selectedElectionIndex: number,
     selectedPollBookId: string,
-    voterId: string,
+    voter: IVoter | null,
     notInPollBookJustification: string
   ) => {
     this.props.onProceed(
       selectedElectionIndex,
       selectedPollBookId,
-      voterId,
+      voter,
       this.hasRightToVote(this.state.selectedPollBookIndex)
         ? ''
         : notInPollBookJustification
@@ -422,7 +423,7 @@ class VoterGroupSelectPage extends React.Component<
               this.handleProceed(
                 electionForSelectedPollbookIndex,
                 pollbooks[this.state.selectedPollBookIndex].id,
-                this.getVoterId(this.state.selectedPollBookIndex),
+                this.getVoter(this.state.selectedPollBookIndex),
                 this.state.notInPollBookJustification
               )
             }
