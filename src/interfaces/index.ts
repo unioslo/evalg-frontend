@@ -23,16 +23,12 @@ export type Viewer = {
 
 // Query responses
 
-export type ViewerResponse = {
+export type SignedInPersonResponse = {
   signedInPerson: SignedInPerson;
 };
 
 export type VotersForPersonResponse = {
   votersForPerson: IVoter[];
-};
-
-export type QueryResponse<T> = {
-  data: T;
 };
 
 // Mutation response
