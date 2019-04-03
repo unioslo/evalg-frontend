@@ -176,9 +176,13 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
                 </Switch>
               </DesktopMenuItem>
               <DesktopMenuItem>
-                <Link inheritColor external noExternalIcon to={appHelpLink}>
-                  {t('general.help')}
-                </Link>
+                <Route
+                  render={() => (
+                  <Link inheritColor external noExternalIcon to={appHelpLink}>
+                    {t('general.help')}
+                  </Link>
+                  )}
+                />
               </DesktopMenuItem>
               <DesktopMenuItem>
                 <LanguageToggler />
@@ -219,14 +223,16 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
 
 const logout = (
   context: IAuthenticatorContext,
-  client: ApolloClient<any>
-) => () => {
-  context.signOut();
-  client.resetStore();
-  sessionStorage.clear();
-  const history = createBrowserHistory({ forceRefresh: true });
-  history.push('/logout');
-};
+  client: ApolloClient<any>,
+) => (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    event.preventDefault()
+    event.stopPropagation()
+    context.signOut();
+    client.resetStore();
+    sessionStorage.clear();
+    const history = createBrowserHistory({ forceRefresh: true });
+    history.push('/logout');
+  };
 
 const MobileLogout: React.FunctionComponent = () => {
   const { t } = useTranslation();
@@ -288,7 +294,7 @@ const UserNameAndLogout: React.FunctionComponent = () => {
                       </Query>
                     </DesktopMenuItem>
                     <DesktopMenuItem>
-                      <a onClick={logout(context, client)}>
+                      <a style={{ color: "inherit"}} onClick={logout(context, client)} href="/" >
                         {t('general.logout')}
                       </a>
                     </DesktopMenuItem>
