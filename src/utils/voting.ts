@@ -2,7 +2,6 @@ import { IVoter } from '../interfaces';
 import ApolloClient from 'apollo-client';
 import { getSignedInPersonId } from '../queries';
 import gql from 'graphql-tag';
-import { sleep } from '.';
 
 const submitVoteMutation = gql`
   mutation submitVote($voterId: UUID!, $ballot: JSONString!) {
@@ -41,8 +40,6 @@ export const submitVote = async (
   notInPollBookJustification: string,
   voter: IVoter | null
 ) => {
-  await sleep(3000);
-
   if (!voter) {
     const personId = await getSignedInPersonId(client);
 
