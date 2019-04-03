@@ -25,6 +25,7 @@ interface IProps {
   onGoBackToSelectVoterGroup: () => void;
   onGoBackToBallot: () => void;
   onSubmitVote: (ballotData: object) => void;
+  isSubmittingVote: boolean;
 }
 
 interface IState {
@@ -77,6 +78,7 @@ class PrefElecVote extends React.Component<
             isBlankVote={this.state.isBlankVote}
             onGoBackToBallot={this.props.onGoBackToBallot}
             onSubmitVote={this.handleSubmitVote}
+            isSubmittingVote={this.props.isSubmittingVote}
           />
         )}
       </>

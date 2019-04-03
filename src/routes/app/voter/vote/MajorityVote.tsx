@@ -15,6 +15,7 @@ interface IProps extends WithTranslation {
   onGoBackToSelectVoterGroup: () => void;
   onGoBackToBallot: () => void;
   onSubmitVote: (ballotData: object) => void;
+  isSubmittingVote: boolean;
 }
 
 interface IState {
@@ -62,6 +63,7 @@ class MajorityVote extends React.Component<
             isBlankVote={this.state.isBlankVote}
             onGoBackToBallot={this.props.onGoBackToBallot}
             onSubmitVote={this.handleSubmitVote}
+            isSubmittingVote={this.props.isSubmittingVote}
           />
         )}
       </>
