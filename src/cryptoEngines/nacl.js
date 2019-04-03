@@ -1,16 +1,13 @@
-/* @flow */
-
-import nacl_factory from 'js-nacl/lib/nacl_factory.js';
+import nacl from 'tweetnacl';
+import { encodeBase64 } from 'tweetnacl-util';
 
 const generateKeyPair = () => {
   return new Promise(resolve => {
-    nacl_factory.instantiate(nacl => {
-      const keyPair = {};
-      const keys = nacl.crypto_box_keypair();
-      keyPair.publicKey = nacl.to_hex(keys.boxPk);
-      keyPair.secretKey = nacl.to_hex(keys.boxSk);
-      resolve(keyPair);
-    });
+    const keyPair = {};
+    const keys = nacl.box.keyPair();
+    keyPair.publicKey = encodeBase64(keys.publicKey);
+    keyPair.secretKey = encodeBase64(keys.secretKey);
+    resolve(keyPair);
   });
 };
 

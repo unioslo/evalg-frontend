@@ -1,5 +1,6 @@
 import { cryptoVariant } from 'appConfig';
-import { naCl } from './nacl';
+// import { naCl } from './nacl';
+import { naCl } from './tweetnacl';
 
 export const getCryptoEngine = () => {
   if (!cryptoVariant) {
@@ -7,8 +8,7 @@ export const getCryptoEngine = () => {
   }
   if (cryptoVariant === 'nacl') {
     return naCl;
-  }
-  else {
+  } else {
     console.error('Unknown crypto-variant in appConfig.js');
   }
 };
