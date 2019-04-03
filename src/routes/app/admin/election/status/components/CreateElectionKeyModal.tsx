@@ -188,7 +188,7 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
       this.setState({ isGeneratingKey: false });
       this.showError(
         `${t('admin.electionKey.errors.generateKeyError')}\n${t(
-          'general.errorMessage'
+          'errors.errorMessage'
         )}: ${error}`
       );
     }

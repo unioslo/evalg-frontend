@@ -246,6 +246,10 @@
     "published": "Klart",
     "upcomingElections": "Kommende valg"
   },
+  "errors": {
+    "errorMessage": "Feilmelding",
+    "generalError": "En feil har oppstått"
+  },
   "footer": {
     "termsHeader": "Vilkår",
     "termsAndPrivacyLink": "Personvern og vilkår for bruk",
@@ -282,7 +286,6 @@
     "delete": "Slett",
     "edit": "endre",
     "email": "Epost",
-    "errorMessage": "Feilmelding",
     "female": "Kvinne",
     "finishedElections": "Avsluttede valg",
     "frontPageDesc": "Her kan du stemme i elektroniske valg.",

@@ -247,6 +247,10 @@
     "published": "Ready",
     "upcomingElections": "Upcoming elections"
   },
+  "errors": {
+    "errorMessage": "Error message",
+    "generalError": "An error has occured"
+  },
   "footer": {
     "termsHeader": "Terms",
     "termsAndPrivacyLink": "Terms of use and privacy",
@@ -284,7 +288,6 @@
     "delete": "Delete",
     "edit": "edit",
     "email": "Email",
-    "errorMessage": "Error message",
     "female": "Female",
     "finishedElections": "Finished elections",
     "frontPageDesc": "Here you can vote in electronic elections.",
