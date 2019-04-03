@@ -35,7 +35,8 @@
     "acceptance-tests",
     "webpack",
     "jest",
-    "src/setupTests.ts"
+    "src/setupTests.ts",
+    "src/stories"
   ],
   "include": [
     "src"

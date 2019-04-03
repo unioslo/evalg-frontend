@@ -11,6 +11,15 @@
 2. `nvm install --lts`
 3. `npm install`
 4. `npm start`
+5. `npm run storybook`
+
+# Storybooks
+When developing components, storybook (`npm run storybook`) can be used in
+order to view updates to components automatically.
+
+See `src/stories` for examples of how to create a story. Bear in mind that
+appropriate providers must be supplied in the decorator in
+`.storybook/config.js`
 
 ### Configuration: Environment files
 
