@@ -168,8 +168,13 @@ class VoterGroupSelectPage extends React.Component<
     }
 
     // Find and set the the first census the voter is in as selected.
-    const initiallySelectIndex = voters.findIndex(
-      (voter: IVoter) => voter.verified
+    const { EGPollbooks } = this.getCommonVars();
+    const pollbookIdsForVerifiedVoters = voters
+      .filter(voter => voter.verified)
+      .map(voter => voter.pollbook.id);
+
+    const initiallySelectIndex: number = EGPollbooks.findIndex(EGPollbook =>
+      pollbookIdsForVerifiedVoters.includes(EGPollbook.id)
     );
     if (initiallySelectIndex >= 0) {
       this.setState({ selectedPollBookIndex: initiallySelectIndex });
