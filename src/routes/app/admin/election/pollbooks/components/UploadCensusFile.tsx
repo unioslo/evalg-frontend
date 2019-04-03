@@ -179,7 +179,7 @@ class UploadCensusFileModal extends React.Component<
 
         this.setState({ isUploading: false });
 
-        if (!response || response.success === false) {
+        if (!response || !response.success) {
           let errorMessage = this.props.t('census.errors.backend.unknown');
           if (response && response.code) {
             errorMessage = translateBackendError(
@@ -309,6 +309,7 @@ class UploadCensusFileModal extends React.Component<
       <Button
         text={<Trans>general.cancel</Trans>}
         action={this.props.closeAction}
+        disabled={this.state.isUploading}
         secondary={true}
         key="cancelButton"
       />
@@ -317,7 +318,8 @@ class UploadCensusFileModal extends React.Component<
     const renderSaveFormButton = (
       <Button
         text={<Trans>general.upload</Trans>}
-        disabled={pristine || invalid}
+        disabled={pristine || invalid || this.state.isUploading}
+        showSpinner={this.state.isUploading}
         action={submitWrapper}
         key="saveButton"
       />
