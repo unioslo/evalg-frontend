@@ -27,7 +27,6 @@ const votersForPersonQuery = gql`
     votersForPerson(id: $id) {
       id
       verified
-      manual
       pollbook {
         id
       }
@@ -167,13 +166,19 @@ class VoterGroupSelectPage extends React.Component<
     }
 
     // Find and set the the first census the voter is in as selected.
-    const startIndex = this.state.voters.findIndex(
-      (voter: IVoter) => voter.verified
-    );
-    if (startIndex >= 0) {
-      this.setState({ selectedPollBookIndex: startIndex });
-    }
+    // TODO prioritize census if multiple? Now we return the first match.
+    const { pollbooks } = this.getCommonVars();
+    const voters: string[] = this.state.voters
+      .filter((voter: IVoter) => voter.verified === true)
+      .map((voter: IVoter) => voter.pollbook.id);
 
+    const initialIndex: number = pollbooks.findIndex(pollbook =>
+      voters.includes(pollbook.id)
+    );
+
+    if (initialIndex >= 0) {
+      this.setState({ selectedPollBookIndex: initialIndex });
+    }
     this.setState({ fetchingVoters: false });
   }
 
