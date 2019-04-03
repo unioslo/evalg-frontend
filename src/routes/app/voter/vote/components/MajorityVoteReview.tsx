@@ -34,6 +34,7 @@ interface IReviewProps {
   isBlankVote: boolean;
   onGoBackToBallot: () => void;
   onSubmitVote: () => void;
+  isSubmittingVote: boolean;
   classes: any;
 }
 
@@ -43,6 +44,7 @@ const MajorityVoteReview: React.SFC<IReviewProps> = props => {
     isBlankVote,
     onGoBackToBallot,
     onSubmitVote,
+    isSubmittingVote,
     classes,
   } = props;
 
@@ -58,8 +60,14 @@ const MajorityVoteReview: React.SFC<IReviewProps> = props => {
         secondary
         text={<Trans>general.back</Trans>}
         action={onGoBackToBallot}
+        disabled={isSubmittingVote}
       />
-      <Button text={<Trans>voter.submitVote</Trans>} action={onSubmitVote} />
+      <Button
+        text={<Trans>voter.submitVote</Trans>}
+        action={onSubmitVote}
+        disabled={isSubmittingVote}
+        showSpinner={isSubmittingVote}
+      />
     </ButtonContainer>
   );
   return (

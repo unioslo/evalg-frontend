@@ -19,6 +19,7 @@ interface IProps extends WithTranslation {
   onClickStep1?: () => void;
   onClickStep2?: () => void;
   scrollToDivRef?: React.RefObject<HTMLDivElement>;
+  disabled?: boolean;
 }
 
 const VotingStepper: React.SFC<IProps> = ({
@@ -26,6 +27,7 @@ const VotingStepper: React.SFC<IProps> = ({
   onClickStep1,
   onClickStep2,
   scrollToDivRef,
+  disabled,
   i18n,
   t,
 }) => {
@@ -35,7 +37,8 @@ const VotingStepper: React.SFC<IProps> = ({
     currentStep === VotingStep.Step2FillBallot ||
     currentStep === VotingStep.Step3ReviewBallot;
   const isStepperStep2Clickable = currentStep === VotingStep.Step3ReviewBallot;
-  const isSteps1To3Disabled = currentStep === VotingStep.Step4Receipt;
+  const isSteps1To3Disabled =
+    currentStep === VotingStep.Step4Receipt || disabled;
 
   const stepperItemsProps = [
     {

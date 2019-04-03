@@ -38,6 +38,7 @@ interface IReviewProps extends WithTranslation {
   isBlankVote: boolean;
   onGoBackToBallot: () => void;
   onSubmitVote: () => void;
+  isSubmittingVote: boolean;
   classes: Classes;
 }
 
@@ -46,6 +47,7 @@ const PrefElecReview: React.SFC<IReviewProps> = ({
   isBlankVote,
   onGoBackToBallot,
   onSubmitVote,
+  isSubmittingVote,
   classes,
   t,
 }) => {
@@ -71,8 +73,18 @@ const PrefElecReview: React.SFC<IReviewProps> = ({
 
   const reviewButtons = (
     <ButtonContainer alignLeft>
-      <Button secondary text={t('general.back')} action={onGoBackToBallot} />
-      <Button text={t('voter.submitVote')} action={onSubmitVote} />
+      <Button
+        secondary
+        text={t('general.back')}
+        action={onGoBackToBallot}
+        disabled={isSubmittingVote}
+      />
+      <Button
+        text={t('voter.submitVote')}
+        action={onSubmitVote}
+        disabled={isSubmittingVote}
+        showSpinner={isSubmittingVote}
+      />
     </ButtonContainer>
   );
 

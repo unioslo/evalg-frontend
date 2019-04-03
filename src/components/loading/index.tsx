@@ -11,9 +11,6 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
   },
-  spinBox: {
-    marginRight: '2rem',
-  },
 };
 
 type Props = {
@@ -24,9 +21,7 @@ const Loading: React.FunctionComponent<Props> = props => {
   const { t } = useTranslation();
   return (
     <div className={props.classes.loading}>
-      <div className={props.classes.spinBox}>
-        <Spinner darkStyle={true} />
-      </div>
+      <Spinner darkStyle marginRight="2rem" />
       {moment().format('DD-MM') == '01-04'
         ? 'Reticulating splines…'
         : props.children

@@ -3,14 +3,7 @@ import gql from 'graphql-tag';
 import { Query, WithApolloClient, withApollo } from 'react-apollo';
 import { withTranslation, WithTranslation } from 'react-i18next';
 
-import {
-  ElectionGroup,
-  Election,
-  IMutationResponse,
-  QueryResponse,
-  ViewerResponse,
-  IVoter,
-} from '../../../../interfaces';
+import { ElectionGroup, Election, IVoter } from '../../../../interfaces';
 
 import VotingStepper, { VotingStep } from './components/VotingStepper';
 import VoterGroupSelect from '../voterGroupSelect';
@@ -21,7 +14,7 @@ import PrefElecVote from './PrefElecVote';
 import MajorityVote from './MajorityVote';
 import Receipt from './components/Receipt';
 import Error from './components/Error';
-import { getSignedInPersonId } from '../../../../queries';
+import { submitVote } from '../../../../utils/voting';
 
 const getElectionGroupVotingData = gql`
   query ElectionGroupVotingData($id: UUID!) {
@@ -63,42 +56,10 @@ const getElectionGroupVotingData = gql`
   }
 `;
 
-const submitVoteMutation = gql`
-  mutation submitVote($voterId: UUID!, $ballot: JSONString!) {
-    vote(voterId: $voterId, ballot: $ballot) {
-      ok
-    }
-  }
-`;
-
-const addVoterMutation = gql`
-  mutation addVoter($personId: UUID!, $pollbookId: UUID!, $reason: String) {
-    addVoter(personId: $personId, pollbookId: $pollbookId, reason: $reason) {
-      id
-    }
-  }
-`;
-
-const updateVoterReasonMutation = gql`
-  mutation updateVoterReason($id: UUID!, $reason: String!) {
-    updateVoterReason(id: $id, reason: $reason) {
-      ok
-    }
-  }
-`;
-
 export enum BallotStep {
   FillOutBallot,
   ReviewBallot,
 }
-
-type VoteResponse = {
-  vote: IMutationResponse;
-};
-
-type AddVoterResponse = {
-  addVoter: IVoter;
-};
 
 interface IProps extends WithTranslation {
   electionGroupId: string;
@@ -111,6 +72,7 @@ interface IState {
   voter: IVoter | null;
   personId: string;
   notInPollBookJustification: string;
+  isSubmittingVote: boolean;
   errorOccurred: boolean;
 }
 
@@ -124,6 +86,7 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
     voter: null,
     personId: '',
     notInPollBookJustification: '',
+    isSubmittingVote: false,
     errorOccurred: false,
   };
 
@@ -162,7 +125,7 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
     this.setState({ currentStep: VotingStep.Step4Receipt }, this.scrollToTop);
   };
 
-  showError = () => {
+  showErrorScreen = () => {
     this.setState({ errorOccurred: true }, this.scrollToTop);
   };
 
@@ -185,92 +148,22 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
   };
 
   async handleSubmitVote(ballotData: object) {
-    let voter = null;
-    if (!this.state.voter) {
-      const handleSuccess = (p: QueryResponse<ViewerResponse>) => {
-        this.setState({ personId: p.data.signedInPerson.personId });
-      };
-      const handleFailure = (error: any) => {};
-
-      await getSignedInPersonId(
+    this.setState({ isSubmittingVote: true });
+    try {
+      await submitVote(
+        ballotData,
         this.props.client,
-        handleSuccess,
-        handleFailure
+        this.state.selectedPollBookId,
+        this.state.notInPollBookJustification,
+        this.state.voter
       );
-
-      await this.props.client
-        .mutate<AddVoterResponse>({
-          mutation: addVoterMutation,
-          variables: {
-            personId: this.state.personId,
-            pollbookId: this.state.selectedPollBookId,
-            reason: this.state.notInPollBookJustification,
-          },
-        })
-        .then(result => {
-          if (result.errors) {
-            this.showError();
-          } else if (result.data) {
-            voter = result.data.addVoter;
-          }
-        })
-        .catch(error => {
-          this.showError();
-        });
-    } else {
-      voter = this.state.voter;
-
-      if (voter.selfAdded && !voter.verified) {
-        await this.props.client
-          .mutate({
-            mutation: updateVoterReasonMutation,
-            variables: {
-              id: voter.id,
-              reason: this.state.notInPollBookJustification,
-            },
-          })
-          .then(result => {
-            if (result.errors) {
-              this.showError();
-            }
-          })
-          .catch(error => {
-            this.showError();
-          });
-      }
+    } catch (error) {
+      this.showErrorScreen();
+      if (error.message) console.error(error.message);
+      return;
     }
-
-    const voteData = {
-      electionId: this.state.voteElection ? this.state.voteElection.id : null,
-      selectedPollbookId: this.state.selectedPollBookId,
-      ballotData,
-    };
-    const voteDataJSON = JSON.stringify(voteData);
-
-    if (voter) {
-      await this.props.client
-        .mutate<VoteResponse>({
-          mutation: submitVoteMutation,
-          variables: {
-            voterId: voter.id,
-            ballot: voteDataJSON,
-          },
-        })
-        .then(result => {
-          const response = result && result.data && result.data.vote;
-
-          if (!response) {
-            this.showError();
-          } else {
-            this.goToStep4();
-          }
-        })
-        .catch(error => {
-          this.showError();
-        });
-    } else {
-      // TODO: Display error
-    }
+    this.goToStep4();
+    this.setState({ isSubmittingVote: false });
   }
 
   render() {
@@ -337,6 +230,7 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
                 onClickStep1={this.goToStep1}
                 onClickStep2={this.goToStep2}
                 scrollToDivRef={this.scrollToDivRef}
+                disabled={this.state.isSubmittingVote}
               />
               <Page header={electionGroupName}>
                 {currentStep === VotingStep.Step1SelectVoterGroup && (
@@ -369,6 +263,7 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
                       onGoBackToSelectVoterGroup={this.goToStep1}
                       onGoBackToBallot={this.goToStep2}
                       onSubmitVote={this.handleSubmitVote.bind(this)}
+                      isSubmittingVote={this.state.isSubmittingVote}
                     />
                   )}
                 {currentStep === VotingStep.Step4Receipt && <Receipt />}
