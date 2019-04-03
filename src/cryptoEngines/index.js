@@ -1,6 +1,5 @@
 import { cryptoVariant } from 'appConfig';
-// import { naCl } from './nacl';
-import { naCl } from './tweetnacl';
+import { naCl } from './nacl';
 
 export const getCryptoEngine = () => {
   if (!cryptoVariant) {
