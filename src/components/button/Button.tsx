@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import Icon from '../icon';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
+import Spinner from '../animations/Spinner';
 
 const OSXUserAgent = window.navigator.userAgent.includes('OS X');
 
@@ -74,6 +75,7 @@ interface IProps {
   action?: (event: any) => void,
   secondary?: boolean,
   disabled?: boolean,
+  showSpinner?: boolean,
   iconLeft?: string,
   iconRight?: string,
   smallText?: boolean,
@@ -117,6 +119,8 @@ const Button: React.SFC<IProps> = (props) => {
           <Icon type={props.iconRight} />
         </span>
       }
+
+      {props.showSpinner && <Spinner marginLeft="1rem" size="2.3rem" />}
 
     </button>
   )
