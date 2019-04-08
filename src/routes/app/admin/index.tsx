@@ -1,19 +1,16 @@
-/* @flow */
 import * as React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-import { authEnabled } from 'appConfig'
+import { authEnabled } from '../../../appConfig';
 
-import AdminFrontPage from './frontpage'
+import AdminFrontPage from './frontpage';
 import AdminElection from './election';
 import NewElection from './newelection';
 
-const Admin = () => {
-  const userRoles = ['admin']
-  if (authEnabled && (!userRoles.includes('admin'))) {
-    return (
-      <Redirect to="/login" />
-    );
+const Admin: React.FunctionComponent = () => {
+  const userRoles = ['admin'];
+  if (authEnabled && !userRoles.includes('admin')) {
+    return <Redirect to="/login" />;
   }
   return (
     <div>
@@ -21,7 +18,7 @@ const Admin = () => {
       <Route exact strict path="/admin/newElection" component={NewElection} />
       <Route path="/admin/elections/:groupId" component={AdminElection} />
     </div>
-  )
+  );
 };
 
 export default Admin;
