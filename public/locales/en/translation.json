@@ -28,7 +28,16 @@
       "save": "Save key",
       "infoListCanReplace": "Until votes has been recieved in the election, you may create a new election key that replaces the old one. Note: If the election is published or ongoing, you will first need to unpublish it.",
       "infoListKeepItSafe": "Make sure the key is stored somewhere safe. Without the key, votes cannot be counted.",
-      "cannotReplaceBecauseUnsafeStatus": "To create a new election key that replaces the old noe, you must first unpublish the election.\nIt's not possible to replace the election key if any votes has been recieved in the election."
+      "cannotReplaceBecauseUnsafeStatus": "To create a new election key that replaces the old noe, you must first unpublish the election.\nIt's not possible to replace the election key if any votes has been recieved in the election.",
+      "errors": {
+        "generateKeyError": "Something went wrong when generating a key pair.",
+        "backend": {
+          "unknown": "An unknown error occurred while uploading or activating the public key.",
+          "cannotChangeKeyIfPastStart": "Changing the election key is not permitted, because the election is ongoing.",
+          "cannotChangeKeyIfPublished": "Changing the election key is not permitted, because the election is published.",
+          "cannotChangeKeyIfVotesExist": "Changing the election key is not permitted, because a vote has been cast."
+        }
+      }
     },
     "manageSelfAddedVoters": {
       "approve": "Approve",
@@ -41,15 +50,6 @@
       "votesThatMustBeConsidered": "Votes that must be considered",
       "votesApprovedByTheBoard": "Votes approved by the electoral board",
       "votesRejectedByTheBoard": "Votes rejected by the electoral board"
-    },
-    "errors": {
-      "generateKeyError": "Something went wrong when generating a key pair.",
-      "backend": {
-        "unknown": "An unknown error occurred while uploading or activating the public key.",
-        "cannotChangeKeyIfPastStart": "Changing the election key is not permitted, because the election is ongoing.",
-        "cannotChangeKeyIfPublished": "Changing the election key is not permitted, because the election is published.",
-        "cannotChangeKeyIfVotesExist": "Changing the election key is not permitted, because a vote has been cast."
-      }
     }
   },
   "backend": {

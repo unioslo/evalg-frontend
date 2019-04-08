@@ -10,7 +10,6 @@ const isProduction = process.env.NODE_ENV === 'production';
 const env = isProduction ? window.ENV : process.env;
 
 /* General settings */
-export const cryptoVariant: string = 'nacl';
 export const appTimezone: string = 'Europe/Oslo';
 
 /* Backend */
@@ -41,7 +40,8 @@ export const appTechnicalSupportEmail: string = 'it-support@uio.no';
 export const appServiceOwnerLink: string =
   'https://www.usit.uio.no/om/organisasjon/bnt/usitint/';
 export const appTermsAndPrivacylink: string = '#TODO';
-export const appCookiesInformationLink: string = 'https://www.uio.no/tjenester/it/applikasjoner/e-valg/personvern/cookies.html';
+export const appCookiesInformationLink: string =
+  'https://www.uio.no/tjenester/it/applikasjoner/e-valg/personvern/cookies.html';
 
 /* Feature toggles */
 export const appMobileVotingStepperVariant: 'simple' | 'circles' = 'circles';

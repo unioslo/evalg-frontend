@@ -28,7 +28,16 @@
       "save": "Lagre nøkkel",
       "infoListCanReplace": "Du kan opprette en ny valgnøkkel frem til det er avgitt stemmer i valget, men da kan ikke den gamle valgnøkkelen brukes lenger. Merk: Du må avpublisere valget før du kan erstatte valgnøkkelen.",
       "infoListKeepItSafe": "Sørg for at valgnøkkelen er lagret et sikkert sted. Uten valgnøkkelen kan ikke valget telles opp.",
-      "cannotReplaceBecauseUnsafeStatus": "Du må avpublisere valget før du kan opprette en ny valgnøkkel. Hvis det er avgitt stemmer i valget kan du ikke opprette en ny valgnøkkel."
+      "cannotReplaceBecauseUnsafeStatus": "Du må avpublisere valget før du kan opprette en ny valgnøkkel. Hvis det er avgitt stemmer i valget kan du ikke opprette en ny valgnøkkel.",
+      "errors": {
+        "generateKeyError": "Noe gikk galt under generering av nøkkelpar.",
+        "backend": {
+          "unknown": "En uventet feil oppstod under opplasting og aktivering av offentlig nøkkel.",
+          "cannotChangeKeyIfPastStart": "Du kan ikke endre valgnøkkelen fordi valget pågår.",
+          "cannotChangeKeyIfPublished": "Du kan ikke endre valgnøkkelen fordi valget er publisert.",
+          "cannotChangeKeyIfVotesExist": "Du kan ikke endre valgnøkkelen fordi det er avgitt stemmer i valget."
+        }
+      }
     },
     "manageSelfAddedVoters": {
       "approve": "Godkjenn",
@@ -41,15 +50,6 @@
       "votesThatMustBeConsidered": "Stemmer som må behandles",
       "votesApprovedByTheBoard": "Stemmer godkjent av valgstyret",
       "votesRejectedByTheBoard": "Stemmer avvist av valgstyret"
-    },
-    "errors": {
-      "generateKeyError": "Noe gikk galt under generering av nøkkelpar.",
-      "backend": {
-        "unknown": "En uventet feil oppstod under opplasting og aktivering av offentlig nøkkel.",
-        "cannotChangeKeyIfPastStart": "Du kan ikke endre valgnøkkelen fordi valget pågår.",
-        "cannotChangeKeyIfPublished": "Du kan ikke endre valgnøkkelen fordi valget er publisert.",
-        "cannotChangeKeyIfVotesExist": "Du kan ikke endre valgnøkkelen fordi det er avgitt stemmer i valget."
-      }
     }
   },
   "backend": {
