@@ -1,7 +1,0 @@
-@import 'settings'
-
-@mixin respond-to(theme.size) {
-  @media (minWidth: map-get(theme.breakpoints, theme.size)) {
-    @content
-  }
-}
