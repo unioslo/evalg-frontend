@@ -1,27 +1,19 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
-import { Trans } from 'react-i18next';;
+import { Trans } from 'react-i18next';
+import { Classes } from 'jss';
 
-// type Props = {
-//   children: React.ChildrenArray<any>,
-//   classes: Object
-// }
-
-// type State = {
-//   open: boolean
-// }
-
-const styles = theme => ({
+const styles = (theme: any) => ({
   mobileMenu: {
     color: theme.navMenuTextColor,
     fontSize: theme.navFontSize,
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   [theme.breakpoints.mdQuery]: {
     mobileMenu: {
-      display: 'none'
-    }
+      display: 'none',
+    },
   },
   mobileMenuInner: {
     position: 'relative',
@@ -42,8 +34,8 @@ const styles = theme => ({
       height: '4px',
       background: theme.navMenuTextColor,
       marginTop: '0.3rem',
-      boxShadow: `0px 8px 0px ${theme.white}, 0px 16px 0px ${theme.white}`
-    }
+      boxShadow: `0px 8px 0px ${theme.white}, 0px 16px 0px ${theme.white}`,
+    },
   },
   menuList: {
     listStyleType: 'none',
@@ -59,21 +51,28 @@ const styles = theme => ({
     lineHeight: '2',
     paddingLeft: '1.5rem',
     '&:first-child': {
-      borderTop: 'none'
-    }
-  }
-
+      borderTop: 'none',
+    },
+  },
 });
 
+interface IProps {
+  classes: Classes;
+}
 
-class MobileMenu extends React.Component {
-  constructor(props) {
+interface IState {
+  open: boolean;
+}
+
+class MobileMenu extends React.Component<IProps, IState> {
+  wrapperRef: any;
+
+  constructor(props: IProps) {
     super(props);
-    this.state = { open: false }
-  }
+    this.state = { open: false };
 
-  handleClick() {
-    this.setState({ open: !this.state.open });
+    this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -81,10 +80,21 @@ class MobileMenu extends React.Component {
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickOutside.bind(this));
+    document.removeEventListener(
+      'mousedown',
+      this.handleClickOutside.bind(this)
+    );
   }
 
-  handleClickOutside(event) {
+  setWrapperRef(node: any) {
+    this.wrapperRef = node;
+  }
+
+  handleClick() {
+    this.setState({ open: !this.state.open });
+  }
+
+  handleClickOutside(event: any) {
     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
       this.setState({ open: false });
     }
@@ -94,35 +104,33 @@ class MobileMenu extends React.Component {
     const { classes } = this.props;
     return (
       <nav className={classes.mobileMenu}>
-        <div className={classes.inner}
-          ref={(node) => (this.wrapperRef = node)}
-          onClick={this.handleClick.bind(this)}>
+        <div
+          className={classes.inner}
+          ref={this.setWrapperRef}
+          onClick={this.handleClick}
+        >
           <Trans>general.menu</Trans>
           <div className={classes.menuIcon} />
-          {this.state.open &&
-            <ul className={classes.menuList}>
-              {this.props.children}
-            </ul>
-          }
+          {this.state.open && (
+            <ul className={classes.menuList}>{this.props.children}</ul>
+          )}
         </div>
       </nav>
-    )
+    );
   }
 }
 
-const MobileMenuItem = ({ children, classes }) => {
-  return (
-    <li className={classes.menuListItem}>
-      {children}
-    </li>
-  )
+const MobileMenuItem: React.FunctionComponent<IProps> = ({
+  children,
+  classes,
+}) => {
+  return <li className={classes.menuListItem}>{children}</li>;
 };
 
 const StyledMobileMenu = injectSheet(styles)(MobileMenu);
 const StyledMobileMenuItem = injectSheet(styles)(MobileMenuItem);
 
-
 export {
   StyledMobileMenu as MobileMenu,
-  StyledMobileMenuItem as MobileMenuItem
+  StyledMobileMenuItem as MobileMenuItem,
 };

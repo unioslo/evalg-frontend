@@ -20,7 +20,7 @@ import {
 import Icon from '../../../../../../components/icon';
 
 import PrefTeamElecCandForm from './PrefTeamElecCandForm';
-import NoCandidatesRow from './NoCandidatesRow';
+import TableRowWithText from './TableRowWithText';
 import { ElectionGroup } from '../../../../../../interfaces';
 
 const addTeamPrefElecCandidate = gql`
@@ -199,7 +199,11 @@ class PrefTeamElecCandTable extends React.Component<IProps, IState> {
                 )}
               </Mutation>
             )}
-            {candidates.length === 0 ? <NoCandidatesRow colSpan={3} /> : null}
+            {candidates.length === 0 ? (
+              <TableRowWithText colSpan={3}>
+                <Trans>election.noCandidatesDefined</Trans>
+              </TableRowWithText>
+            ) : null}
             {candidates.length > 0
               ? candidates.map((candidate: any, index: any) => {
                   if (candidate.id === this.state.editCandidateId) {

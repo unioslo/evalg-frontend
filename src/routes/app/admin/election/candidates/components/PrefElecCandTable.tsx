@@ -25,8 +25,7 @@ import {
 import ActionText from '../../../../../../components/actiontext';
 import { DropDown, TextInput } from '../../../../../../components/form';
 
-import NoCandidatesRow from './NoCandidatesRow';
-import NoCandidatesFoundRow from './NoCandidatesFoundRow';
+import TableRowWithText from './TableRowWithText';
 import PrefElecCandForm from './PrefElecCandForm';
 import { ElectionGroup } from '../../../../../../interfaces';
 
@@ -348,11 +347,15 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
                           </TableRow>
                         ) : null}
                         {!unFilteredCandidates ? (
-                          <NoCandidatesRow colSpan={4} />
+                          <TableRowWithText colSpan={4}>
+                            <Trans>election.noCandidatesDefined</Trans>
+                          </TableRowWithText>
                         ) : null}
                         {unFilteredCandidates.length > 0
                           ? candidates.length === 0 && (
-                              <NoCandidatesFoundRow colSpan={4} />
+                              <TableRowWithText colSpan={4}>
+                                <Trans>election.noCandidatesFound</Trans>
+                              </TableRowWithText>
                             )
                           : null}
                         {candidates.length > 0 &&

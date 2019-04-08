@@ -9,7 +9,7 @@ import FileSaver from 'file-saver';
 import { IMutationResponse } from '../../../../../../interfaces';
 
 import { sleep, translateBackendError } from '../../../../../../utils';
-import { getCryptoEngine } from '../../../../../../cryptoEngines';
+import { getCryptoEngine, IKeyPair } from '../../../../../../cryptoEngines';
 import Modal from '../../../../../../components/modal';
 import Button, { ButtonContainer } from '../../../../../../components/button';
 import { InfoList, InfoListItem } from '../../../../../../components/infolist';
@@ -104,11 +104,6 @@ const setElectionGroupKeyMutation = gql`
 
 interface ISetElectionGroupKeyResponse {
   setElectionGroupKey: IMutationResponse;
-}
-
-interface IKeyPair {
-  publicKey: string;
-  secretKey: string;
 }
 
 interface IProps extends WithTranslation {

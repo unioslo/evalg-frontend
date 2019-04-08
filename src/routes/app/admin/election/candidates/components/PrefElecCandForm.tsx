@@ -56,11 +56,7 @@ const PrefElecCandForm: React.FunctionComponent<IProps> = (props: IProps) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
 
-  const {
-    cancelAction,
-    listDict,
-    // candidate
-  } = props;
+  const { cancelAction, listDict } = props;
 
   const genderOptions = [
     { name: t('general.male'), value: 'male' },
@@ -78,17 +74,7 @@ const PrefElecCandForm: React.FunctionComponent<IProps> = (props: IProps) => {
       validate={validate(lang, t)}
       initialValues={props.candidate}
       render={formProps => {
-        const {
-          handleSubmit,
-          // reset,
-          // submitting,
-          pristine,
-          // values,
-          // invalid,
-          errors,
-          valid,
-          touched,
-        } = formProps;
+        const { handleSubmit, pristine, errors, valid, touched } = formProps;
         return (
           <form onSubmit={handleSubmit}>
             <TableRowForm header={props.formHeader}>
