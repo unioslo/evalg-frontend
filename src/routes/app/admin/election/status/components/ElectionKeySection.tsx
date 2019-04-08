@@ -33,9 +33,7 @@ const electionGroupKeyMetaQuery = gql`
 
 interface IProps {
   electionGroup: ElectionGroup;
-  replaceKey: boolean;
   refetchElectionGroupFunction: () => Promise<any>;
-  classes: any;
 }
 
 interface IState {
@@ -116,8 +114,12 @@ class ElectionKeySection extends React.Component<IProps, IState> {
                   variables={{ id: electionGroup.id }}
                 >
                   {({ loading, error, data }) => {
-                    if (error) return null;
-                    if (loading || !data) return null;
+                    if (error) {
+                      return null;
+                    }
+                    if (loading || !data) {
+                      return null;
+                    }
 
                     const generatedAt = data.electionGroupKeyMeta.generatedAt;
                     const generatedBy = data.electionGroupKeyMeta.generatedBy;
