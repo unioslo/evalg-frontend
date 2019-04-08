@@ -62,13 +62,14 @@ interface IProps {
 
 interface IState {
   open: boolean;
-  wrapperRef: any;
 }
 
 class MobileMenu extends React.Component<IProps, IState> {
+  wrapperRef: any;
+
   constructor(props: IProps) {
     super(props);
-    this.state = { open: false, wrapperRef: null };
+    this.state = { open: false };
 
     this.setWrapperRef = this.setWrapperRef.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -86,7 +87,7 @@ class MobileMenu extends React.Component<IProps, IState> {
   }
 
   setWrapperRef(node: any) {
-    this.setState({ wrapperRef: node });
+    this.wrapperRef = node;
   }
 
   handleClick() {
@@ -94,10 +95,7 @@ class MobileMenu extends React.Component<IProps, IState> {
   }
 
   handleClickOutside(event: any) {
-    if (
-      this.state.wrapperRef &&
-      !this.state.wrapperRef.contains(event.target)
-    ) {
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
       this.setState({ open: false });
     }
   }
