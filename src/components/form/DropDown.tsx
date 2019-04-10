@@ -8,7 +8,6 @@ import TextInput from './TextInput';
 import { FieldRenderProps } from 'react-final-form';
 import { Classes } from 'jss';
 
-
 const styles = (theme: any) => ({
   dropdown: {
     position: 'relative',
@@ -94,13 +93,11 @@ const styles = (theme: any) => ({
   },
 });
 
-
-
 interface IDropDownOption {
-  name: string,
-  secondaryLine?: string,
-  value: any,
-};
+  name: string;
+  secondaryLine?: string;
+  value: any;
+}
 
 const getValueName = (value: any, options: Array<IDropDownOption>): string => {
   for (let i = 0; i < options.length; i++) {
@@ -112,26 +109,25 @@ const getValueName = (value: any, options: Array<IDropDownOption>): string => {
 };
 
 interface IProps {
-  options: any[],
-  placeholder?: string,
+  options: any[];
+  placeholder?: string;
   // value: number,
-  value: any,
-  onBlur?: (event: any) => void,
-  onChange:(event: any) => void,
-  label?: any,
-  searchable?: boolean,
-  large?: boolean,
-  inline?: boolean,
-  noRelativePositionOfListOnMobile?: boolean,
-  name?: string,
+  value: any;
+  onBlur?: (event: any) => void;
+  onChange: (event: any) => void;
+  label?: any;
+  searchable?: boolean;
+  large?: boolean;
+  inline?: boolean;
+  noRelativePositionOfListOnMobile?: boolean;
+  name?: string;
   // meta: object,
-  classes: Classes,
+  classes: Classes;
 
   // Added in ts convertion..
-  id?: any,
-  disabled?: boolean,
-};
-
+  id?: any;
+  disabled?: boolean;
+}
 
 class DropDown extends DropDownBase<IProps> {
   // state: IDropDownState;
@@ -139,6 +135,8 @@ class DropDown extends DropDownBase<IProps> {
   constructor(props: IProps) {
     super(props);
     this.showList = this.showList.bind(this);
+    this.closeList = this.closeList.bind(this);
+    this.toggleList = this.toggleList.bind(this);
   }
 
   componentDidMount() {
@@ -167,11 +165,21 @@ class DropDown extends DropDownBase<IProps> {
     this.setState({ open: true });
   }
 
+  closeList() {
+    this.setState({ open: false });
+  }
+
+  toggleList(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    event.preventDefault();
+    this.state.open ? this.closeList() : this.showList();
+  }
+
   onInputChange(value: string) {
     this.setState({ inputValue: value });
   }
 
-  onSelect(option: IDropDownOption) {
+  onSelect(option: IDropDownOption, event: any) {
+    event.preventDefault();
     this.setState({ inputValue: option.name, open: false });
     this.props.onChange(option.value);
   }
@@ -229,7 +237,8 @@ class DropDown extends DropDownBase<IProps> {
     const nameValue: string = name ? name : '';
 
     return (
-      <div
+      <button
+        onClick={this.toggleList}
         className={dropdownClassNames}
         aria-controls={listId}
         aria-haspopup="true"
@@ -237,7 +246,7 @@ class DropDown extends DropDownBase<IProps> {
         ref={node => (this.wrapperRef = node)}
       >
         {inline ? (
-          <div onClick={this.showList}>
+          <div>
             <div className={'inlineOptionNameText'}>
               {getValueName(value, options).toLowerCase()}
             </div>
@@ -275,9 +284,21 @@ class DropDown extends DropDownBase<IProps> {
                   {validOptions.map((option, index) => {
                     return (
                       <li
-                        onClick={this.onSelect.bind(this, option)}
                         key={index}
                         className={classes.listItem}
+                        onKeyDown={(
+                          event: React.KeyboardEvent<HTMLLIElement>
+                        ) => {
+                          if (event.key === 'Enter' || event.key === ' ') {
+                            this.onSelect(option, event);
+                          }
+                        }}
+                        onClick={(
+                          event: React.MouseEvent<HTMLElement, MouseEvent>
+                        ) => {
+                          this.onSelect(option, event);
+                        }}
+                        tabIndex={0}
                       >
                         <p>{option.name}</p>
                         {option.secondaryLine && (
@@ -293,20 +314,19 @@ class DropDown extends DropDownBase<IProps> {
             </div>
           </CSSTransition>
         </TransitionGroup>
-      </div>
+      </button>
     );
   }
 }
 
-interface IRFProps extends FieldRenderProps{
-  options: IDropDownOption[],
-  placeholder: string,
-  label: any,
-  searchable?: boolean,
-  large?: boolean,
-  classes: Classes,
-};
-
+interface IRFProps extends FieldRenderProps {
+  options: IDropDownOption[];
+  placeholder: string;
+  label: any;
+  searchable?: boolean;
+  large?: boolean;
+  classes: Classes;
+}
 
 // const DropDownRF: React.SFC<IRFProps> = (props: IRFProps) => {
 const DropDownRF = (props: IRFProps) => {

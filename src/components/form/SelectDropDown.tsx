@@ -2,6 +2,7 @@ import * as React from 'react';
 import injectSheet from 'react-jss';
 import { FieldRenderProps } from 'react-final-form';
 import Select from 'react-select';
+import theme from '../../theme';
 
 const styles = (theme: any) => ({
   label: {
@@ -51,7 +52,7 @@ class SelectDropDown extends React.Component<IProps> {
           backgroundColor: lightBlueGrey,
           cursor: 'pointer',
         },
-        backgroundColor: state.isSelected ? lightBlueGrey : '#fff',
+        backgroundColor: state.isFocused ? theme.dropDownBackgroundColorFocused : '#fff',
         color: greyishBrown,
         '&:not(:last-child)': {
           borderBottom: 'solid 1px #ddd;',

@@ -398,6 +398,14 @@ const styles = (theme: any) => ({
   arrowSmallPolygon: {
     fill: theme.dropDownArrowColor,
   },
+  buttonNoStyle: {
+    background: 'none',
+    color: 'inherit',
+    border: 'none',
+    padding: '0',
+    font: 'inherit',
+    cursor: 'pointer',
+  },
   clipBoard: {
     height: '22px',
     width: '22px',
@@ -558,7 +566,7 @@ const styles = (theme: any) => ({
 interface IProps {
   type: string;
   marginRight?: boolean;
-  onClick?: (event: any) => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   classes: Classes;
   custom?: any;
 }
@@ -567,14 +575,25 @@ const Icon = (props: IProps) => {
   const { type, classes, custom } = props;
   const icon = getIcon(type, classes, custom);
   const cls = classNames({
+    [classes.buttonNoStyle]: props.onClick,
     [classes.iconContainer]: true,
     [classes.marginRight]: props.marginRight,
   });
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+    if (props.onClick) {
+      props.onClick(event);
+    }
+  };
   return (
-    <div className={cls} onClick={props.onClick}>
+    props.onClick ? 
+    <button className={cls} onClick={handleClick}>
+      {icon}
+    </button> : 
+    <div className={cls}>
       {icon}
     </div>
-  );
+);
 };
 
 export default injectSheet(styles)(Icon);

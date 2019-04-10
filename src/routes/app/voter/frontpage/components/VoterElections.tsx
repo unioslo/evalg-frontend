@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Trans } from 'react-i18next';
+import { Tabs, Tab } from 'react-bootstrap';
+import classNames from 'classnames';
 
 import Text from '../../../../../components/text';
 import VoterElectionsList from './VoterElectionsList';
@@ -8,13 +10,50 @@ import {
   MobileDropDown,
   MobileDropdownItem,
 } from '../../../../../components/dropdownMenu';
-import { TabSelector, Tab } from './TabSelector';
 import { ScreenSizeConsumer } from '../../../../../providers/ScreenSize';
 import { ElectionGroup } from '../../../../../interfaces';
+import injectSheet from 'react-jss';
+import { Classes } from 'jss';
+
+const styles = (theme: any) => ({
+  tab: {
+    '&:hover': {
+      cursor: 'pointer',
+      textDecoration: 'none',
+    },
+    '&:focus': {
+      outlineWidth: '0rem',
+    },
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '4.4rem',
+    width: '15rem',
+    color: theme.tabs.textColor,
+    background: theme.tabs.backGroundColorInactive,
+    borderBottom: `2px solid ${theme.tabs.bottomBorderColorInactive}`,
+  },
+  tabActive: {
+    fontWeight: 'bold',
+    background: theme.tabs.backGroundColorActive,
+    borderBottomColor: theme.tabs.bottomBorderColorActive,
+  },
+  tabs: {
+    '&:focus-within': {
+      outlineColor: 'rgb(163, 0, 109)',
+      outlineWidth: '0.3rem',
+      outlineStyle: 'solid',
+    },
+    background: theme.colors.blueish,
+    display: 'inline-flex',
+    fontSize: '1.5rem',
+  },
+});
 
 interface IProps {
   electionGroups: ElectionGroup[];
   canVoteElectionGroups: string[];
+  classes: Classes;
 }
 
 interface IState {
@@ -26,7 +65,6 @@ class VoterElections extends React.Component<IProps, IState> {
     super(props);
     this.setElectionStatusFilter = this.setElectionStatusFilter.bind(this);
     this.filterElectionGroups = this.filterElectionGroups.bind(this);
-
     this.state = { electionStatusFilter: 'ongoing' };
   }
 
@@ -54,6 +92,7 @@ class VoterElections extends React.Component<IProps, IState> {
   }
 
   render() {
+    const { classes } = this.props;
     return (
       <ScreenSizeConsumer>
         {({ screenSize }) => {
@@ -82,23 +121,42 @@ class VoterElections extends React.Component<IProps, IState> {
           if (['md', 'lg'].indexOf(screenSize) !== -1) {
             return (
               <div>
-                <TabSelector>
+                <Tabs
+                  defaultActiveKey="ongoing"
+                  className={classes.tabs}
+                  id="elections-tab"
+                  onSelect={(key: string) =>
+                    this.setState({ electionStatusFilter: key })
+                  }
+                >
                   <Tab
-                    text={<Trans>electionStatus.ongoingElections</Trans>}
-                    onClick={() => this.setElectionStatusFilter('ongoing')}
-                    active={this.state.electionStatusFilter === 'ongoing'}
+                    eventKey="ongoing"
+                    tabClassName={classNames({
+                      [classes.tab]: true,
+                      [classes.tabActive]:
+                        this.state.electionStatusFilter === 'ongoing',
+                    })}
+                    title={<Trans>electionStatus.ongoingElections</Trans>}
                   />
                   <Tab
-                    text={<Trans>electionStatus.upcomingElections</Trans>}
-                    onClick={() => this.setElectionStatusFilter('announced')}
-                    active={this.state.electionStatusFilter === 'announced'}
+                    eventKey="announced"
+                    tabClassName={classNames({
+                      [classes.tab]: true,
+                      [classes.tabActive]:
+                        this.state.electionStatusFilter === 'announced',
+                    })}
+                    title={<Trans>electionStatus.upcomingElections</Trans>}
                   />
                   <Tab
-                    text={<Trans>electionStatus.closedElections</Trans>}
-                    onClick={() => this.setElectionStatusFilter('closed')}
-                    active={this.state.electionStatusFilter === 'closed'}
+                    eventKey="closed"
+                    tabClassName={classNames({
+                      [classes.tab]: true,
+                      [classes.tabActive]:
+                        this.state.electionStatusFilter === 'closed',
+                    })}
+                    title={<Trans>electionStatus.closedElections</Trans>}
                   />
-                </TabSelector>
+                </Tabs>
                 <VoterElectionsTable
                   electionGroups={groups}
                   canVoteElectionGroups={this.props.canVoteElectionGroups}
@@ -166,4 +224,4 @@ class VoterElections extends React.Component<IProps, IState> {
   }
 }
 
-export default VoterElections;
+export default injectSheet(styles)(VoterElections);

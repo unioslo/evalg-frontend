@@ -101,6 +101,7 @@ const theme = {
   dropDownListItemBorderColor: darkWhite,
   dropDownTextColor: greyishBrown,
   dropDownSecondaryLineColor: gray,
+  dropDownBackgroundColorFocused: lightBlueGray,
   dropDownWidth: '22.3rem',
   editText: blueish,
   electionStatusActiveColor: lightOliveGreen,
@@ -176,6 +177,13 @@ const theme = {
   tableRowHoverColor: mediumWhite,
   tableRowMainTextColor: greyishBrown,
   tableThickBorderColor: lightBlueGray,
+  tabs : {
+    bottomBorderColorActive: darkBlueish,
+    bottomBorderColorInactive: eggWhite,
+    backGroundColorActive: lightBlueGray,
+    backGroundColorInactive: whiteGray,   
+    textColor: darkGreyishBrown,
+  }
 };
 
 export default theme;

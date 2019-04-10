@@ -270,7 +270,7 @@ class TimeInput extends React.Component<IProps, IState> {
                     <div className={classes.timePickerInputContainer}>
                       <div
                         className={classes.timePickerIcon}
-                        onClick={this.incrementHourValue}
+                        // onClick={this.incrementHourValue}
                       >
                         <Icon
                           type="upArrowSmall"
@@ -286,18 +286,20 @@ class TimeInput extends React.Component<IProps, IState> {
                       />
                       <div
                         className={classes.timePickerIcon}
-                        onClick={this.decrementHourValue}
-                      >
-                        <Icon type="downArrowSmall" />
+                        >
+                        <Icon type="downArrowSmall" 
+                         onClick={this.decrementHourValue}
+                        />
                       </div>
                     </div>
                     <div className={classes.timePickerSeparator}>:</div>
                     <div className={classes.timePickerInputContainer}>
                       <div
                         className={classes.timePickerIcon}
-                        onClick={this.incrementMinuteValue}
-                      >
-                        <Icon type="upArrowSmall" />
+                        >
+                        <Icon type="upArrowSmall" 
+                          onClick={this.incrementMinuteValue}
+                        />
                       </div>
                       <input
                         type="text"
@@ -308,9 +310,10 @@ class TimeInput extends React.Component<IProps, IState> {
                       />
                       <div
                         className={classes.timePickerIcon}
-                        onClick={this.decrementMinuteValue}
                       >
-                        <Icon type="downArrowSmall" />
+                        <Icon type="downArrowSmall" 
+                          onClick={this.decrementMinuteValue}
+                        />
                       </div>
                     </div>
                   </div>
