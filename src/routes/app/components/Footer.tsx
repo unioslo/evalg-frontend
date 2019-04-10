@@ -81,7 +81,7 @@ interface IProps {
 
 const Footer: React.FunctionComponent<IProps> = (props: IProps) => {
   const { classes } = props;
-  const { t } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   return (
     <React.Fragment>
@@ -110,7 +110,7 @@ const Footer: React.FunctionComponent<IProps> = (props: IProps) => {
                       noExternalIcon
                       inheritColor
                       underline
-                      to={appCookiesInformationLink}
+                      to={appCookiesInformationLink[i18n.language]}
                     >
                       {t('footer.cookiesInformationLink')}
                     </Link>
