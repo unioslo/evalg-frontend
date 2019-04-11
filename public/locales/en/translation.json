@@ -253,7 +253,8 @@
   },
   "footer": {
     "termsHeader": "Terms",
-    "termsAndPrivacyLink": "Terms of use and privacy",
+    "privacyPolicyLink": "Privacy policy",
+    "termsOfUseLink": "Terms of use",
     "evalgUses": "eValg uses",
     "cookiesInformationLink": "cookies",
     "contactSectionHeader": "Contact points",
