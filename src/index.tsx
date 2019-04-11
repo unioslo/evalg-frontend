@@ -1,13 +1,14 @@
 import 'react-app-polyfill/ie11';
 import 'core-js';
 
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { createUploadLink } from 'apollo-upload-client';
 import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
-import * as React from 'react';
+import { ApolloCache } from 'apollo-cache';
 import { ApolloProvider } from 'react-apollo';
-import * as ReactDOM from 'react-dom';
 import { ThemeProvider } from 'react-jss';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { makeAuthenticator, makeUserManager, Callback } from 'react-oidc';
@@ -19,7 +20,6 @@ import App from './routes/app';
 import theme from './theme';
 
 import { oidcConfig, graphqlBackend } from './appConfig';
-import { withClientState } from 'apollo-link-state';
 import { persistCache } from 'apollo-cache-persist';
 import { PersistentStorage, PersistedData } from 'apollo-cache-persist/types';
 import Spinner from './components/animations/Spinner';
@@ -35,6 +35,8 @@ const storeToken = (props: any) => (user: User) => {
   const redirect = loginFrom ? loginFrom : '/';
   props.history.push(redirect);
   sessionStorage.removeItem('login_redirect');
+
+  console.log(user);
 };
 
 const userManager = makeUserManager(oidcConfig);
@@ -42,6 +44,21 @@ const callback = (props: any) => (
   // TODO: Implement onError
   <Callback userManager={userManager} onSuccess={storeToken(props)} />
 );
+
+const initializeCache = (cache: ApolloCache<any>) => {
+  const initialCache = {
+    signedInPerson: {
+      __typename: 'signedInPerson',
+      personId: '',
+      displayName: '',
+    },
+    admin: { __typename: 'admin', isCreatingNewElection: false },
+  };
+
+  cache.writeData({
+    data: initialCache,
+  });
+};
 
 const constructApolloClient = () => {
   // uploadLink extends HttpLink from 'apollo-link-http'
@@ -72,32 +89,17 @@ const constructApolloClient = () => {
     >,
   });
 
-  const defaults = {
-    voter: {
-      __typename: 'voter',
-      selectedPollBookID: '',
-      notInPollBookJustification: '',
-    },
-    signedInPerson: {
-      __typename: 'signedInPerson',
-      personId: '',
-      displayName: '',
-    },
-    admin: { __typename: 'admin', isCreatingNewElection: false },
-  };
-
-  const stateLink = withClientState({
-    cache,
-    resolvers: null,
-    defaults,
-  });
-
   const client = new ApolloClient({
-    link: ApolloLink.from([stateLink, authMiddleware, uploadLink]),
+    link: ApolloLink.from([authMiddleware, uploadLink]),
     cache,
+    resolvers: {},
   });
 
-  // client.onResetStore(stateLink.writeDefaults); // TODO: update apollo stuff to make this work
+  initializeCache(cache);
+  client.onResetStore(() => {
+    initializeCache(cache);
+    return Promise.resolve();
+  });
 
   return client;
 };
