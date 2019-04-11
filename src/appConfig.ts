@@ -40,8 +40,10 @@ export const appTechnicalSupportEmail: string = 'it-support@uio.no';
 export const appServiceOwnerLink: string =
   'https://www.usit.uio.no/om/organisasjon/bnt/usitint/';
 export const appTermsAndPrivacylink: string = '#TODO';
-export const appCookiesInformationLink: string =
-  'https://www.uio.no/tjenester/it/applikasjoner/e-valg/personvern/cookies.html';
+export const appCookiesInformationLink = {
+  'nb': 'https://www.uio.no/tjenester/it/applikasjoner/e-valg/personvern/cookies.html',
+  'en': 'https://www.uio.no/english/services/it/adm-services/evalg/privacy/cookies.html'
+};
 
 /* Feature toggles */
 export const appMobileVotingStepperVariant: 'simple' | 'circles' = 'circles';
