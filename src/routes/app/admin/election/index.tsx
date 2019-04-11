@@ -75,6 +75,7 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
   <Query
     query={electionGroupQuery}
     variables={{ id: props.match.params.groupId }}
+    fetchPolicy="network-only"
   >
     {({ data, loading, error, refetch }) => {
       if (loading) {

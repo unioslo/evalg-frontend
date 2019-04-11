@@ -54,7 +54,7 @@ const styles = (theme: any) => ({
 const AdminFrontPage = (props: any) => {
   const { t } = props;
   return (
-    <Query query={electionGroupsQuery}>
+    <Query query={electionGroupsQuery} fetchPolicy="network-only">
       {({ loading, error, data }) => {
         if (loading) {
           return <Loading />;
