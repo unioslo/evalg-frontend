@@ -6,7 +6,7 @@ import * as ReactDOM from 'react-dom';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { createUploadLink } from 'apollo-upload-client';
-import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloCache } from 'apollo-cache';
 import { ApolloProvider } from 'react-apollo';
 import { ThemeProvider } from 'react-jss';
@@ -20,8 +20,6 @@ import App from './routes/app';
 import theme from './theme';
 
 import { oidcConfig, graphqlBackend } from './appConfig';
-import { persistCache } from 'apollo-cache-persist';
-import { PersistentStorage, PersistedData } from 'apollo-cache-persist/types';
 import Spinner from './components/animations/Spinner';
 
 import './i18n';
@@ -79,15 +77,6 @@ const constructApolloClient = () => {
   });
 
   const cache = new InMemoryCache();
-
-  // TODO: remove the "as type" when it's been fixed upstream
-  // https://github.com/apollographql/apollo-cache-persist/pull/58
-  persistCache({
-    cache: cache,
-    storage: window.sessionStorage as PersistentStorage<
-      PersistedData<NormalizedCacheObject>
-    >,
-  });
 
   const client = new ApolloClient({
     link: ApolloLink.from([authMiddleware, uploadLink]),
