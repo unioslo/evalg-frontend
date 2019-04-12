@@ -276,6 +276,7 @@ const UserNameAndLogout: React.FunctionComponent = () => {
                               data: {
                                 signedInPerson: {
                                   personId: data.viewer.person.id,
+                                  displayName: data.viewer.person.displayName,
                                   __typename: 'signedInPerson',
                                 },
                               },

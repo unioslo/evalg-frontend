@@ -56,7 +56,7 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
   render() {
     const { t } = this.props;
     return (
-      <Query query={electionGroupsQuery}>
+      <Query query={electionGroupsQuery} fetchPolicy="network-only">
         {electionGroupResult => {
           if (electionGroupResult.loading || electionGroupResult.error) {
             return (
@@ -84,6 +84,7 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
                     variables={{
                       id: signedInPersonResponse.data.signedInPerson.personId,
                     }}
+                    fetchPolicy="network-only"
                   >
                     {votersForPersonResponse => {
                       if (
