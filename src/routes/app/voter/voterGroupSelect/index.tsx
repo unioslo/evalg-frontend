@@ -416,7 +416,7 @@ class VoterGroupSelectPage extends React.Component<
         <ButtonContainer alignLeft={true}>
           <Button text={<Trans>general.back</Trans>} 
             secondary={true} 
-            action={() => {location.href='/'}} 
+            action={() => {history.back()}} 
           />
           <Button
             text={<Trans>general.proceed</Trans>}

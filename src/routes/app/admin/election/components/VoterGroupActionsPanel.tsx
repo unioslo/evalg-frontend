@@ -134,6 +134,11 @@ const VoterGroupActionPanel = (props: IProps) => {
     [classes.voterGroupPanelHasCompleteStatus]: hasCompleteStatus,
   });
 
+  const actionLinkCls = classNames({
+    [classes.actionLink]: true,
+    'button-no-style': true,
+  });
+
   return (
     <div className={voterGroupPanelCls}>
       <div className={classes.voterGroupName}>
@@ -149,11 +154,15 @@ const VoterGroupActionPanel = (props: IProps) => {
       </div>
       {active && (
         <div className={classes.actionLinks}>
-          <div className={classes.actionLink} onClick={addAction}>
-            {addActionText}
+          <div>
+            <button className={actionLinkCls} onClick={addAction}>
+              {addActionText}
+            </button>
           </div>
-          <div className={classes.actionLink} onClick={removeAllAction}>
-            {removeAllActionText}
+          <div>
+            <button className={actionLinkCls} onClick={removeAllAction}>
+              {removeAllActionText}
+            </button>
           </div>
         </div>
       )}

@@ -398,14 +398,6 @@ const styles = (theme: any) => ({
   arrowSmallPolygon: {
     fill: theme.dropDownArrowColor,
   },
-  buttonNoStyle: {
-    background: 'none',
-    color: 'inherit',
-    border: 'none',
-    padding: '0',
-    font: 'inherit',
-    cursor: 'pointer',
-  },
   clipBoard: {
     height: '22px',
     width: '22px',
@@ -566,34 +558,39 @@ const styles = (theme: any) => ({
 interface IProps {
   type: string;
   marginRight?: boolean;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onClick?: (event: React.MouseEvent<any, MouseEvent>) => void;
   classes: Classes;
   custom?: any;
+  elementType?: string;
 }
 
 const Icon = (props: IProps) => {
   const { type, classes, custom } = props;
   const icon = getIcon(type, classes, custom);
   const cls = classNames({
-    [classes.buttonNoStyle]: props.onClick,
+    "button-no-style": props.onClick,
     [classes.iconContainer]: true,
     [classes.marginRight]: props.marginRight,
   });
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleClick = (event: React.MouseEvent<any, MouseEvent>) => {
     event.preventDefault();
     if (props.onClick) {
       props.onClick(event);
     }
   };
-  return (
-    props.onClick ? 
-    <button className={cls} onClick={handleClick}>
-      {icon}
-    </button> : 
-    <div className={cls}>
-      {icon}
-    </div>
-);
+  if (props.elementType === 'button' || (props.onClick && !props.elementType)) {    
+    return (
+      <button className={cls} onClick={handleClick}>
+        {icon}
+      </button>
+    )}
+    else {
+      return (
+      <div className={cls} onClick={handleClick}>
+        {icon}
+      </div>
+      )
+    }
 };
 
 export default injectSheet(styles)(Icon);

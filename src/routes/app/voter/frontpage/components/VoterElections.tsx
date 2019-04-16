@@ -39,11 +39,6 @@ const styles = (theme: any) => ({
     borderBottomColor: theme.tabs.bottomBorderColorActive,
   },
   tabs: {
-    '&:focus-within': {
-      outlineColor: 'rgb(163, 0, 109)',
-      outlineWidth: '0.3rem',
-      outlineStyle: 'solid',
-    },
     background: theme.colors.blueish,
     display: 'inline-flex',
     fontSize: '1.5rem',

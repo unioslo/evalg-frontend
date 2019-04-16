@@ -28,13 +28,14 @@ interface IProps {
 const ActionText: React.SFC<IProps> = props => {
   const { classes } = props;
   const cls = classNames({
-    [classes.actionText]: true,
     [classes.baseline]: props.bottom,
+    [classes.actionText]: true,
+    "button-no-style": true,
   });
   return (
-    <span className={cls} onClick={props.action}>
+    <button className={cls} onClick={props.action}>
       {props.children}
-    </span>
+    </button>
   );
 };
 

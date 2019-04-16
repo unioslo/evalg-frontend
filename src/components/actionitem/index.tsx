@@ -30,14 +30,15 @@ interface IProps {
 const ActionItem: React.SFC<IProps> = (props) => {
   const { classes } = props;
   const cls = classNames({
+    "button-no-style": true,
     [classes.actionItem]: true,
     [classes.alignCenter]: props.alignCenter,
     [classes.alignRight]: props.alignRight
   });
   return (
-    <div className={cls} onClick={props.action} >
+    <button className={cls} onClick={props.action} >
       {props.children}
-    </div>
+    </button>
   )
 };
 

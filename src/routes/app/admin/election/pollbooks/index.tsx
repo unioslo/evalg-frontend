@@ -246,10 +246,14 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
             <Page header={<Trans>election.censuses</Trans>}>
               <PageSection noBorder desc={<Trans>census.censusPageDesc</Trans>}>
                 <div
-                  onClick={this.showUploadCensusFileModal}
                   style={{ marginBottom: '1.2rem' }}
-                >
-                  <ActionButton text={t('census.uploadCensusFileButton')} />
+                  >
+                  <button
+                    className="button-no-style"
+                    onClick={this.showUploadCensusFileModal}
+                    >
+                    <ActionButton text={t('census.uploadCensusFileButton')} />
+                  </button>
                 </div>
 
                 <Link

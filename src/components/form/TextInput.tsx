@@ -32,6 +32,7 @@ interface IProps {
   inputRef?: React.RefObject<HTMLInputElement>;
   containerWidth?: string;
   noInputMaxWidth?: boolean;
+  tabIndex?: number;
 }
 
 const styles = (theme: any) => ({
@@ -118,6 +119,7 @@ const TextInput = (props: IProps) => {
     labelClassName,
     large,
     touched,
+    tabIndex,
     narrow,
     disabled,
     classes,
@@ -171,6 +173,7 @@ const TextInput = (props: IProps) => {
         autoComplete="off"
         autoCorrect="off"
         ref={props.inputRef}
+        tabIndex={tabIndex}
       />
       {!!label && (
         <label htmlFor={id} className={labelClassNames}>
