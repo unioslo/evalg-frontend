@@ -69,7 +69,11 @@ const styles = (theme: any) => ({
   containerSpaceBetween: {
     justifyContent: 'space-between',
   },
-  wrapper: {},
+  wrapper: {
+    '&:focus-within $hoverText': {
+      display: 'flex',
+    },
+  },
 });
 
 interface IContainerProps {
@@ -130,10 +134,11 @@ const ElectionButton = (props: IProps) => {
   });
   return (
     <div className={classes.wrapper}>
-      <button className="button-no-style" 
-        onClick={action} 
+      <button
+        onClick={action}
+        className="button-no-style"
         tabIndex={active ? 0 : -1}
-        >
+      >
         <div className={elButtonClasses}>
           <div className={classes.hoverText}>
             {hoverText}
