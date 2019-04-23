@@ -12,6 +12,7 @@ const styles = (theme: any) => ({
     backgroundColor: 'white',
     //width: '90%',
     maxWidth: '1200px',
+    minWidth: (props: IProps) => (props.minWidth ? props.minWidth : 'inherit'),
   },
   h1: {
     fontSize: '3.6rem',
@@ -61,14 +62,15 @@ const styles = (theme: any) => ({
 });
 
 interface IProps {
-  children?: React.ReactNode,
-  closeAction?: (a: any) => void,
-  buttons: any[],
-  header: any | string,
-  hideButtons?: boolean,
-  hideTopCloseButton?: boolean,
-  classes: Classes,
-};
+  children?: React.ReactNode;
+  closeAction?: (a: any) => void;
+  buttons: any[];
+  header: any | string;
+  hideButtons?: boolean;
+  hideTopCloseButton?: boolean;
+  minWidth?: string;
+  classes: Classes;
+}
 
 const Modal = (props: IProps) => {
   const { classes } = props;
@@ -81,16 +83,14 @@ const Modal = (props: IProps) => {
             hidden: props.hideTopCloseButton,
           })}
         >
-          {(props.closeAction) && (
-            <CloseIcon closeAction={props.closeAction} />
-          )}
+          {props.closeAction && <CloseIcon closeAction={props.closeAction} />}
         </div>
         <div className={classes.content}>
           <h1 className={classes.h1}>{props.header}</h1>
           {props.children}
         </div>
         {/* {(props.hideButtons === 'undefined' || !props.hideButtons) && ( */}
-        {(!props.hideButtons) && (
+        {!props.hideButtons && (
           <div>
             <div className={classes.separator} />
             <div className={classes.buttons}>

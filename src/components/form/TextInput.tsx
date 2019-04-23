@@ -30,6 +30,8 @@ interface IProps {
   hideErrors?: boolean;
   disabled?: boolean;
   inputRef?: React.RefObject<HTMLInputElement>;
+  containerWidth?: string;
+  noInputMaxWidth?: boolean;
 }
 
 const styles = (theme: any) => ({
@@ -37,12 +39,15 @@ const styles = (theme: any) => ({
     display: 'flex',
     flexDirection: 'column',
     alignContent: 'flex-start',
+    width: (props: IProps) =>
+      props.containerWidth ? props.containerWidth : 'inherit',
   },
   textInput: {
     order: 2,
     height: theme.formFieldHeight,
     width: '100%',
-    maxWidth: '48.4rem',
+    maxWidth: (props: IProps) =>
+      props.noInputMaxWidth ? 'inherit' : '48.4rem',
     fontSize: theme.formFieldFontSize,
     color: theme.formFieldTextColor,
     border: theme.formFieldBorder,
@@ -119,6 +124,7 @@ const TextInput = (props: IProps) => {
     hasFocus,
     hideErrors,
   } = props;
+
   const extraInputClassName = className ? className : '';
   const inputClassNames = classNames({
     [classes.textInput]: true,
