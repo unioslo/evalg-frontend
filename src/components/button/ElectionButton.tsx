@@ -130,14 +130,19 @@ const ElectionButton = (props: IProps) => {
   });
   return (
     <div className={classes.wrapper}>
-      <div className={elButtonClasses}>
-        <div className={classes.hoverText} onClick={action}>
-          {hoverText}
+      <button className="button-no-style" 
+        onClick={action} 
+        tabIndex={active ? 0 : -1}
+        >
+        <div className={elButtonClasses}>
+          <div className={classes.hoverText}>
+            {hoverText}
+          </div>
+          <span className={elButtonTextClasses}>
+            {name} ({count})
+          </span>
         </div>
-        <span className={elButtonTextClasses}>
-          {name} ({count})
-        </span>
-      </div>
+      </button>
       {active && counterTextTag && (
         <div className={classes.counter}>
           <Trans values={{ minCount }} count={count}>

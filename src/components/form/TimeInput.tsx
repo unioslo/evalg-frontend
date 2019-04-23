@@ -104,7 +104,6 @@ class TimeInput extends React.Component<IProps, IState> {
   timeoutID: any;
   hourInput: any;
   minuteInput: any;
-  // handleClickOutside: Function;
   // handleHourChange: Function;
   // handleMinuteChange: Function;
   // incrementHourValue: Function;
@@ -114,7 +113,6 @@ class TimeInput extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    this.handleClickOutside = this.handleClickOutside.bind(this);
     this.handleHourChange = this.handleHourChange.bind(this);
     this.handleMinuteChange = this.handleMinuteChange.bind(this);
     this.incrementHourValue = this.incrementHourValue.bind(this);
@@ -145,20 +143,6 @@ class TimeInput extends React.Component<IProps, IState> {
         minuteValue: '00',
         inputValue: '',
       });
-    }
-  }
-
-  componentDidMount() {
-    document.addEventListener('mousedown', this.handleClickOutside);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickOutside);
-  }
-
-  handleClickOutside(event: any) {
-    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-      this.setState({ hasFocus: false });
     }
   }
 

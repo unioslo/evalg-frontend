@@ -131,12 +131,10 @@ interface IProps {
 
 class DropDown extends DropDownBase<IProps> {
   // state: IDropDownState;
-
+  timeoutID?: any;
+  
   constructor(props: IProps) {
     super(props);
-    this.showList = this.showList.bind(this);
-    this.closeList = this.closeList.bind(this);
-    this.toggleList = this.toggleList.bind(this);
   }
 
   componentDidMount() {
@@ -154,24 +152,17 @@ class DropDown extends DropDownBase<IProps> {
     }
   }
 
-  handleOnBlur() {
-    // Redux-form's onBlur will also generate a change event
-    if (this.props.onBlur) {
-      this.props.onBlur(this.props.value);
+  handleOnFocus() {
+    clearTimeout(this.timeoutID);
+    if (!this.state.open) {
+      this.setState({ open: true });
     }
   }
-
-  showList() {
-    this.setState({ open: true });
-  }
-
-  closeList() {
-    this.setState({ open: false });
-  }
-
-  toggleList(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    event.preventDefault();
-    this.state.open ? this.closeList() : this.showList();
+  
+  handleOnBlur() {
+    this.timeoutID = setTimeout(() => {
+      this.setState({ open: false });
+    }, 0);
   }
 
   onInputChange(value: string) {
@@ -237,13 +228,15 @@ class DropDown extends DropDownBase<IProps> {
     const nameValue: string = name ? name : '';
 
     return (
-      <button
-        onClick={this.toggleList}
+      <div
         className={dropdownClassNames}
         aria-controls={listId}
         aria-haspopup="true"
         aria-expanded={open}
         ref={node => (this.wrapperRef = node)}
+        onBlur={this.handleOnBlur.bind(this)}
+        onFocus={this.handleOnFocus.bind(this)}
+        tabIndex={0}
       >
         {inline ? (
           <div>
@@ -262,11 +255,10 @@ class DropDown extends DropDownBase<IProps> {
             touched={touched}
             disabled={disabled}
             error={error}
-            onBlur={this.handleOnBlur.bind(this)}
             className={classes.input}
-            onFocus={this.showList}
             onChange={searchable ? this.onInputChange.bind(this) : () => null}
             value={searchable ? inputValue : getValueName(value, options)}
+            tabIndex={-1}
           />
         )}
         <TransitionGroup>
@@ -314,7 +306,7 @@ class DropDown extends DropDownBase<IProps> {
             </div>
           </CSSTransition>
         </TransitionGroup>
-      </button>
+      </div>
     );
   }
 }
