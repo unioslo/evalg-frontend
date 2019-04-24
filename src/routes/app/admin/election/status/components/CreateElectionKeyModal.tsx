@@ -1,7 +1,6 @@
 import React from 'react';
 import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
-import classNames from 'classnames';
 import gql from 'graphql-tag';
 import { withApollo, WithApolloClient } from 'react-apollo';
 import FileSaver from 'file-saver';
@@ -15,36 +14,9 @@ import Button, { ButtonContainer } from '../../../../../../components/button';
 import { InfoList, InfoListItem } from '../../../../../../components/infolist';
 import Link from '../../../../../../components/link';
 import { CheckBox } from '../../../../../../components/form';
+import ModalSteps from './ModalSteps';
 
 const styles = (theme: any) => ({
-  steps: {
-    margin: '4rem auto',
-    width: '60rem',
-  },
-
-  stepRow: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '3.5rem',
-  },
-
-  stepNumber: {
-    width: '5.5rem',
-    height: '5.5rem',
-    flexShrink: 0,
-    marginRight: '6rem',
-    fontSize: '4rem',
-    fontWeight: 'bold',
-    color: theme.colors.lightGray,
-    textAlign: 'center',
-    border: '2px solid',
-    borderRadius: '50%',
-    paddingTop: '3px',
-    '&.active': {
-      color: theme.colors.darkTurquoise,
-    },
-  },
-
   errorMessage: {
     whiteSpace: 'pre-line',
     color: theme.colors.darkRed,
@@ -66,10 +38,6 @@ const styles = (theme: any) => ({
   },
   '@keyframes spin': {
     to: { '-webkit-transform': 'rotate(360deg)' },
-  },
-
-  infoList: {
-    maxWidth: '100rem',
   },
 
   animatedCheckmarkSvg: {
@@ -191,7 +159,9 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
 
   downloadKeyFile = () => {
     const electionKeyFileContents = `
-secret:${this.state.secretKey}\r\npublic:${this.state.publicKey}`.trim();
+Valgnøkkel / Election key:\r\n${
+      this.state.secretKey
+    }\r\nOffentlig nøkkel / Public key:\r\n${this.state.publicKey}`.trim();
 
     const blob = new Blob([electionKeyFileContents], {
       type: 'text/plain;charset=utf-8',
@@ -308,6 +278,54 @@ secret:${this.state.secretKey}\r\npublic:${this.state.publicKey}`.trim();
       <Trans>admin.electionKey.modalActivate</Trans>
     );
 
+    const step1DownloadKeyButton = (
+      <ButtonContainer center noTopMargin>
+        <Button
+          action={this.downloadKeyFile}
+          disabled={isGeneratingKey || errorMessageValue}
+          text={downloadKeyButtonContent}
+        />
+      </ButtonContainer>
+    );
+
+    const step2UnderstandCheckbox = (
+      <div
+        onClick={() => {
+          if (hasDownloadedKey) {
+            this.setState(
+              currState => ({
+                isCheckboxChecked: !currState.isCheckboxChecked,
+              }),
+              this.checkIfAllowedToActivateKey
+            );
+          }
+        }}
+      >
+        <CheckBox
+          value={isCheckboxChecked}
+          label={<Trans>admin.electionKey.modalCheckboxLabel</Trans>}
+          disabled={!hasDownloadedKey}
+          onChange={() => null}
+        />
+      </div>
+    );
+
+    const step3ActivateKeyButton = (
+      <ButtonContainer center noTopMargin>
+        <Button
+          text={activateKeyButtonContent}
+          disabled={
+            !isAllowedToActivateKey ||
+            isGeneratingKey ||
+            isActivatingKey ||
+            hasActivatedNewKey ||
+            errorMessageValue
+          }
+          action={this.activateKey}
+        />
+      </ButtonContainer>
+    );
+
     return (
       <Modal
         header={
@@ -329,103 +347,41 @@ secret:${this.state.secretKey}\r\npublic:${this.state.publicKey}`.trim();
         ]}
       >
         <>
-          <div className={classes.infoList}>
-            <InfoList>
-              <InfoListItem bulleted>
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: t('admin.electionKey.modalInfoBullet1'),
-                  }}
-                />
-              </InfoListItem>
-              <InfoListItem bulleted>
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: t('admin.electionKey.modalInfoBullet2'),
-                  }}
-                />
-              </InfoListItem>
-              <InfoListItem bulleted>
-                <Link external to="#TODO">
-                  <Trans>admin.electionKey.modalMoreInfoLink</Trans>
-                </Link>
-              </InfoListItem>
-            </InfoList>
-          </div>
-
-          <div className={classes.steps}>
-            <div className={classes.stepRow}>
-              <div
-                className={classNames({
-                  [classes.stepNumber]: true,
-                  active: !isGeneratingKey,
-                })}
-              >
-                1
-              </div>
-              <ButtonContainer center noTopMargin>
-                <Button
-                  action={this.downloadKeyFile}
-                  disabled={isGeneratingKey || errorMessageValue}
-                  text={downloadKeyButtonContent}
-                />
-              </ButtonContainer>
-            </div>
-
-            <div className={classes.stepRow}>
-              <div
-                className={classNames({
-                  [classes.stepNumber]: true,
-                  ['active']: hasDownloadedKey,
-                })}
-              >
-                2
-              </div>
-              <div
-                onClick={() => {
-                  if (hasDownloadedKey) {
-                    this.setState(
-                      currState => ({
-                        isCheckboxChecked: !currState.isCheckboxChecked,
-                      }),
-                      this.checkIfAllowedToActivateKey
-                    );
-                  }
+          <InfoList maxWidth="100rem">
+            <InfoListItem bulleted>
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: t('admin.electionKey.modalInfoBullet1'),
                 }}
-              >
-                <CheckBox
-                  value={isCheckboxChecked}
-                  label={<Trans>admin.electionKey.modalCheckboxLabel</Trans>}
-                  disabled={!hasDownloadedKey}
-                  onChange={() => null}
-                />
-              </div>
-            </div>
+              />
+            </InfoListItem>
+            <InfoListItem bulleted>
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: t('admin.electionKey.modalInfoBullet2'),
+                }}
+              />
+            </InfoListItem>
+            <InfoListItem bulleted>
+              <Link external to="#TODO">
+                <Trans>admin.electionKey.modalMoreInfoLink</Trans>
+              </Link>
+            </InfoListItem>
+          </InfoList>
 
-            <div className={classes.stepRow}>
-              <div
-                className={classNames({
-                  [classes.stepNumber]: true,
-                  active: isAllowedToActivateKey,
-                })}
-              >
-                3
-              </div>
-              <ButtonContainer center noTopMargin>
-                <Button
-                  text={activateKeyButtonContent}
-                  disabled={
-                    !isAllowedToActivateKey ||
-                    isGeneratingKey ||
-                    isActivatingKey ||
-                    hasActivatedNewKey ||
-                    errorMessageValue
-                  }
-                  action={this.activateKey}
-                />
-              </ButtonContainer>
-            </div>
-          </div>
+          <ModalSteps
+            width="60rem"
+            stepsContent={[
+              step1DownloadKeyButton,
+              step2UnderstandCheckbox,
+              step3ActivateKeyButton,
+            ]}
+            stepsActiveStatus={[
+              !isGeneratingKey,
+              hasDownloadedKey,
+              isAllowedToActivateKey,
+            ]}
+          />
 
           {errorMessage && (
             <p className={classes.errorMessage}>{errorMessage}</p>

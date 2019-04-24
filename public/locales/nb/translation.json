@@ -1,5 +1,14 @@
 {
   "admin": {
+    "counting": {
+      "modalBullet1": "Bruk valgnøkkelen nedenfor for å dekryptere stemmene og starte opptellingen.",
+      "modalBullet2FirstPart": "Valgnøkkel-filen med valgnøkkelen ble lastet ned av",
+      "electionKeyInputPlaceholder": "Lim inn valgnøkkelen her (linje 2 i valgnøkkel-filen)",
+      "modalHeader": "Opptelling",
+      "sectionHeader": "Opptelling",
+      "startCounting": "Start opptelling",
+      "submitElectionKeyButton": "Start opptelling"
+    },
     "electionKey": {
       "create": "Opprett valgnøkkel",
       "createNew": "Opprett ny valgnøkkel",

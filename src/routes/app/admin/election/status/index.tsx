@@ -25,7 +25,7 @@ const StatusPage: React.FunctionComponent<IProps> = ({
         refetchElectionGroupFunction={refetchElectionGroupFunction}
       />
       <VotesSection electionGroup={electionGroup} />
-      <CountVotesSection />
+      <CountVotesSection electionGroup={electionGroup} />
     </Page>
   );
 };

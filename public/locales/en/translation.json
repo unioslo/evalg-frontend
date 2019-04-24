@@ -1,5 +1,14 @@
 {
   "admin": {
+    "counting": {
+      "modalBullet1": "Provide the election key below to decrypt the votes and start the counting process.",
+      "modalBullet2FirstPart": "The election key file containing the election key was downloaded by",
+      "electionKeyInputPlaceholder": "Paste the election key here (line 2 in the election key file)",
+      "modalHeader": "Counting",
+      "sectionHeader": "Counting",
+      "startCounting": "Start counting",
+      "submitElectionKeyButton": "Start counting"
+    },
     "electionKey": {
       "create": "Create election key",
       "createNew": "Create new election key",
