@@ -5,7 +5,6 @@ import {
   appStagingWarning,
   appServiceOwnerLink,
   appTechnicalSupportEmail,
-  appTermsOfUseLink,
   appPrivacyPolicylink,
   appCookiesInformationLink,
 } from '../../../appConfig';
@@ -93,17 +92,6 @@ const Footer: React.FunctionComponent<IProps> = (props: IProps) => {
               <section className={classes.footerSection}>
                 <header>{t('footer.termsHeader')}</header>
                 <div className="content">
-                  <div>
-                    <Link
-                      external
-                      noExternalIcon
-                      inheritColor
-                      underline
-                      to={appTermsOfUseLink}
-                    >
-                      {t('footer.termsOfUseLink')}
-                    </Link>
-                  </div>
                   <div>
                     <Link
                       external
