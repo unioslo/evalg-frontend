@@ -98,7 +98,7 @@ const Footer: React.FunctionComponent<IProps> = (props: IProps) => {
                       noExternalIcon
                       inheritColor
                       underline
-                      to={appPrivacyPolicylink}
+                      to={appPrivacyPolicylink[i18n.language]}
                     >
                       {t('footer.privacyPolicyLink')}
                     </Link>
