@@ -261,7 +261,8 @@
   },
   "footer": {
     "termsHeader": "Vilkår",
-    "termsAndPrivacyLink": "Personvern og vilkår for bruk",
+    "privacyPolicyLink": "Personvern",
+    "termsOfUseLink": "Bruksvilkår",
     "evalgUses": "eValg bruker",
     "cookiesInformationLink": "informasjonskapsler",
     "contactSectionHeader": "Kontaktpunkter",

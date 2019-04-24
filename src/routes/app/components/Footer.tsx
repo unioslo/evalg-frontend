@@ -5,7 +5,7 @@ import {
   appStagingWarning,
   appServiceOwnerLink,
   appTechnicalSupportEmail,
-  appTermsAndPrivacylink,
+  appPrivacyPolicylink,
   appCookiesInformationLink,
 } from '../../../appConfig';
 import Link from '../../../components/link';
@@ -98,9 +98,9 @@ const Footer: React.FunctionComponent<IProps> = (props: IProps) => {
                       noExternalIcon
                       inheritColor
                       underline
-                      to={appTermsAndPrivacylink}
+                      to={appPrivacyPolicylink[i18n.language]}
                     >
-                      {t('footer.termsAndPrivacyLink')}
+                      {t('footer.privacyPolicyLink')}
                     </Link>
                   </div>
                   <div>
