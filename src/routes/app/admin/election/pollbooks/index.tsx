@@ -361,6 +361,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
 
               {this.state.proceed && (
                 <Redirect
+                  push
                   to={`/admin/elections/${this.props.groupId}/status`}
                 />
               )}
