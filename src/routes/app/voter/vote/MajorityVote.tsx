@@ -98,9 +98,9 @@ class MajorityVote extends React.Component<
     this.props.onSubmitVote({
       voteType: 'majorityVote',
       isBlankVote: this.state.isBlankVote,
-      candidateId: this.state.isBlankVote
-        ? null
-        : this.state.selectedCandidate && this.state.selectedCandidate.id,
+      rankedCandidateIds: this.state.isBlankVote
+        ? []
+        : this.state.selectedCandidate && [this.state.selectedCandidate.id],
     });
   };
 }

@@ -73,11 +73,16 @@ export const submitVote = async (
 
   const ballotDataJSON = JSON.stringify(ballotData);
 
-  await client.mutate({
+  const voteRes = await client.mutate({
     mutation: submitVoteMutation,
     variables: {
       voterId: voter.id,
       ballot: ballotDataJSON,
     },
   });
+
+  if (!voteRes.data.vote.ok) {
+    throw new Error("An error occured when voting.")
+  }
+
 };
