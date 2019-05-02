@@ -11,7 +11,7 @@ const styles = (theme: any) => ({
     marginBottom: '2rem',
   },
   input: {
-    visibility: 'hidden',
+    visibility: 'visible',
     width: '21px',
     height: '21px',
     margin: 0

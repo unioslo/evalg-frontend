@@ -217,10 +217,11 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
   );
 };
 
-const logout = (
-  context: IAuthenticatorContext,
-  client: ApolloClient<any>
-) => () => {
+const logout = (context: IAuthenticatorContext, client: ApolloClient<any>) => (
+  event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+) => {
+  event.preventDefault();
+  event.stopPropagation();
   context.signOut();
   client.resetStore();
   sessionStorage.clear();
@@ -288,7 +289,11 @@ const UserNameAndLogout: React.FunctionComponent = () => {
                       </Query>
                     </DesktopMenuItem>
                     <DesktopMenuItem>
-                      <a onClick={logout(context, client)}>
+                      <a
+                        style={{ color: 'inherit' }}
+                        onClick={logout(context, client)}
+                        href="/"
+                      >
                         {t('general.logout')}
                       </a>
                     </DesktopMenuItem>

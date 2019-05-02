@@ -26,6 +26,9 @@ const styles = (theme: any) => ({
     composes: '$button $buttonText',
     gridArea: 'remove',
   },
+  spacing: {
+    marginLeft: '0.2rem',
+  },
   buttonText: {
     alignItems: 'center',
     display: 'flex',
@@ -59,7 +62,7 @@ const styles = (theme: any) => ({
   desktopButtons: {
     display: 'grid',
     gridTemplateAreas: `'upArrow . downArrow . cumulate . remove .'`,
-    gridTemplateColumns: '2rem 5rem 2rem 5rem 14rem 5rem 7rem 3.5rem',
+    gridTemplateColumns: '2rem 5rem 2rem 5rem 14rem 5rem 7.5rem 3.5rem',
   },
   desktopButtonsContainer: {
     display: 'flex',
@@ -283,10 +286,15 @@ const CumulateButton: React.SFC<IButtonProps> = props => (
 const HOCCumulateButton = injectSheet(styles)(CumulateButton);
 
 const RemoveButton: React.SFC<IButtonProps> = props => (
-  <div className={props.classes.buttonRemove} onClick={props.onClick}>
-    <Icon type="remove" custom={{ color: 'teal', small: true }} />
+  <button 
+    className={classNames({
+      [props.classes.buttonRemove]: true,
+      "button-no-style": true})} 
+    onClick={props.onClick}>
+    <Icon type="remove" custom={{ color: 'teal', small: true }}/>
+    <div className={props.classes.spacing}/>
     <Trans>general.remove</Trans>
-  </div>
+  </button>
 );
 
 const HOCRemoveButton = injectSheet(styles)(RemoveButton);

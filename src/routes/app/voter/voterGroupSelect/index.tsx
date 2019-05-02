@@ -20,6 +20,7 @@ import MandatePeriodText from '../vote/components/MandatePeriodText';
 import { Date, Time } from '../../../../components/i18n';
 import Loading from '../../../../components/loading';
 import ErrorPageSection from '../../../../components/errors/ErrorPageSection';
+import { Redirect } from 'react-router';
 
 const votersForPersonQuery = gql`
   query votersForPerson($id: UUID!) {
@@ -116,6 +117,7 @@ type IState = {
   voters: IVoter[];
   fetchingVoters: boolean;
   error: string;
+  redirectBack: boolean;
 };
 
 // Page for selecting voter group / velgergruppe in between selecting an election on the voter
@@ -138,6 +140,7 @@ class VoterGroupSelectPage extends React.Component<
     voters: [],
     fetchingVoters: true,
     error: '',
+    redirectBack: false,
   };
 
   componentDidMount() {
@@ -414,9 +417,13 @@ class VoterGroupSelectPage extends React.Component<
         </div>
 
         <ButtonContainer alignLeft={true}>
-          <Link to="/">
-            <Button text={<Trans>general.back</Trans>} secondary={true} />
-          </Link>
+          <Button
+            text={<Trans>general.back</Trans>}
+            secondary={true}
+            action={() => {
+              this.setState({ redirectBack: true });
+            }}
+          />
           <Button
             text={<Trans>general.proceed</Trans>}
             action={() => {
@@ -443,6 +450,7 @@ class VoterGroupSelectPage extends React.Component<
             disabled={!electionForSelectedPollbookIsOngoing}
           />
         </ButtonContainer>
+        {this.state.redirectBack && <Redirect push to="/" />}
       </PageSection>
     );
   }

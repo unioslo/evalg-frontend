@@ -14,10 +14,16 @@ const styles = (theme: any) => ({
   },
   innerContainer: {
     position: 'relative',
+    '&:focus': {
+      outlineWidth: '0rem',
+    },
   },
   timeInput: {
     background: 'url("/clock.svg") no-repeat 90% 50%',
     backgroundSize: '16px 16px',
+    '&:focus': {
+      outlineWidth: '0rem',
+    },
   },
   timePicker: {
     position: 'absolute',
@@ -95,7 +101,9 @@ interface IState {
 
 class TimeInput extends React.Component<IProps, IState> {
   wrapperRef: any;
-  // handleClickOutside: Function;
+  timeoutID: any;
+  hourInput: any;
+  minuteInput: any;
   // handleHourChange: Function;
   // handleMinuteChange: Function;
   // incrementHourValue: Function;
@@ -105,7 +113,6 @@ class TimeInput extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);
-    this.handleClickOutside = this.handleClickOutside.bind(this);
     this.handleHourChange = this.handleHourChange.bind(this);
     this.handleMinuteChange = this.handleMinuteChange.bind(this);
     this.incrementHourValue = this.incrementHourValue.bind(this);
@@ -118,6 +125,8 @@ class TimeInput extends React.Component<IProps, IState> {
       minuteValue: '',
       inputValue: '',
     };
+    this.hourInput = React.createRef();
+    this.minuteInput = React.createRef();
   }
 
   componentWillMount() {
@@ -137,22 +146,21 @@ class TimeInput extends React.Component<IProps, IState> {
     }
   }
 
-  componentDidMount() {
-    document.addEventListener('mousedown', this.handleClickOutside);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickOutside);
-  }
-
-  handleClickOutside(event: any) {
-    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-      this.setState({ hasFocus: false });
+  handleOnFocus() {
+    clearTimeout(this.timeoutID);
+    if (!this.state.hasFocus) {
+      this.setState({ hasFocus: true });
+      this.timeoutID = setTimeout(() => {
+        this.hourInput.current.select();
+      }, 0);
     }
   }
 
-  handleOnFocus() {
-    this.setState({ hasFocus: true });
+  handleOnBlur() {
+    clearTimeout(this.timeoutID);
+    this.timeoutID = setTimeout(() => {
+      this.setState({ hasFocus: false });
+    }, 0);
   }
 
   handleChangedValue(hourValue: any, minuteValue: any) {
@@ -234,6 +242,26 @@ class TimeInput extends React.Component<IProps, IState> {
     this.handleChangedValue(this.state.hourValue, newMinuteValue);
   }
 
+  handleKeyDownHourValue = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      this.incrementHourValue(event);
+    } else if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      this.decrementHourValue(event);
+    }
+  };
+
+  handleKeyDownMinuteValue = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      this.incrementMinuteValue(event);
+    } else if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      this.decrementMinuteValue(event);
+    }
+  };
+
   render() {
     const { name, label, small, error, classes } = this.props;
     const { hasFocus, inputValue } = this.state;
@@ -244,6 +272,9 @@ class TimeInput extends React.Component<IProps, IState> {
     return (
       <div className={classes.outerContainer}>
         <div
+          onFocus={this.handleOnFocus.bind(this)}
+          onBlur={this.handleOnBlur.bind(this)}
+          tabIndex={hasFocus ? -1 : 0}
           className={classes.innerContainer}
           ref={node => (this.wrapperRef = node)}
         >
@@ -255,9 +286,9 @@ class TimeInput extends React.Component<IProps, IState> {
             label={label}
             error={error}
             smallLabel
+            tabIndex={-1}
             readOnly
             value={inputValue}
-            onFocus={this.handleOnFocus.bind(this)}
           />
           <TransitionGroup>
             <CSSTransition
@@ -268,49 +299,54 @@ class TimeInput extends React.Component<IProps, IState> {
                 {hasFocus && (
                   <div className={timepickerClassNames}>
                     <div className={classes.timePickerInputContainer}>
-                      <div
-                        className={classes.timePickerIcon}
-                        onClick={this.incrementHourValue}
-                      >
+                      <div className={classes.timePickerIcon}>
                         <Icon
                           type="upArrowSmall"
                           onClick={this.incrementHourValue}
+                          elementType="div"
                         />
                       </div>
                       <input
                         type="text"
                         name="hourValue"
+                        ref={this.hourInput}
                         className={classes.timePickerInput}
                         value={this.state.hourValue}
                         onChange={this.handleHourChange}
+                        onKeyDown={this.handleKeyDownHourValue}
                       />
-                      <div
-                        className={classes.timePickerIcon}
-                        onClick={this.decrementHourValue}
-                      >
-                        <Icon type="downArrowSmall" />
+                      <div className={classes.timePickerIcon}>
+                        <Icon
+                          type="downArrowSmall"
+                          onClick={this.decrementHourValue}
+                          elementType="div"
+                        />
                       </div>
                     </div>
                     <div className={classes.timePickerSeparator}>:</div>
                     <div className={classes.timePickerInputContainer}>
-                      <div
-                        className={classes.timePickerIcon}
-                        onClick={this.incrementMinuteValue}
-                      >
-                        <Icon type="upArrowSmall" />
+                      <div className={classes.timePickerIcon}>
+                        <Icon
+                          type="upArrowSmall"
+                          onClick={this.incrementMinuteValue}
+                          elementType="div"
+                        />
                       </div>
                       <input
                         type="text"
                         name="minuteValue"
+                        ref={this.minuteInput}
                         className={classes.timePickerInput}
                         value={this.state.minuteValue}
                         onChange={this.handleMinuteChange}
+                        onKeyDown={this.handleKeyDownMinuteValue}
                       />
-                      <div
-                        className={classes.timePickerIcon}
-                        onClick={this.decrementMinuteValue}
-                      >
-                        <Icon type="downArrowSmall" />
+                      <div className={classes.timePickerIcon}>
+                        <Icon
+                          type="downArrowSmall"
+                          onClick={this.decrementMinuteValue}
+                          elementType="div"
+                        />
                       </div>
                     </div>
                   </div>

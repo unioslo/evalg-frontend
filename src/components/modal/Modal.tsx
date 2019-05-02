@@ -1,6 +1,7 @@
 import * as React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
+import FocusTrap from 'focus-trap-react';
 
 import { ButtonContainer } from '../button';
 import CloseIcon from './icons/CloseIcon';
@@ -76,29 +77,30 @@ const Modal = (props: IProps) => {
   const { classes } = props;
   return (
     <div className={classes.overlay}>
-      <div className={classes.modal}>
-        <div
-          className={classNames({
-            [classes.closeIcon]: true,
-            hidden: props.hideTopCloseButton,
-          })}
-        >
-          {props.closeAction && <CloseIcon closeAction={props.closeAction} />}
-        </div>
-        <div className={classes.content}>
-          <h1 className={classes.h1}>{props.header}</h1>
-          {props.children}
-        </div>
-        {/* {(props.hideButtons === 'undefined' || !props.hideButtons) && ( */}
-        {!props.hideButtons && (
-          <div>
-            <div className={classes.separator} />
-            <div className={classes.buttons}>
-              <ButtonContainer noTopMargin>{props.buttons}</ButtonContainer>
-            </div>
+      <FocusTrap>
+        <div className={classes.modal}>
+          <div
+            className={classNames({
+              [classes.closeIcon]: true,
+              hidden: props.hideTopCloseButton,
+            })}
+          >
+            {props.closeAction && <CloseIcon closeAction={props.closeAction} />}
           </div>
-        )}
-      </div>
+          <div className={classes.content}>
+            <h1 className={classes.h1}>{props.header}</h1>
+            {props.children}
+          </div>
+          {!props.hideButtons && (
+            <div>
+              <div className={classes.separator} />
+              <div className={classes.buttons}>
+                <ButtonContainer noTopMargin>{props.buttons}</ButtonContainer>
+              </div>
+            </div>
+          )}
+        </div>
+      </FocusTrap>
     </div>
   );
 };

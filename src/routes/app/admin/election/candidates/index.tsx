@@ -56,7 +56,7 @@ class CandidatesPage extends React.Component<IProps, IState> {
           />
         </ButtonContainer>
         {this.state.proceed ? (
-          <Redirect to={`/admin/elections/${groupId}/pollbooks`} />
+          <Redirect push to={`/admin/elections/${groupId}/pollbooks`} />
         ) : null}
       </Page>
     );

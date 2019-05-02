@@ -558,23 +558,39 @@ const styles = (theme: any) => ({
 interface IProps {
   type: string;
   marginRight?: boolean;
-  onClick?: (event: any) => void;
+  onClick?: (event: React.MouseEvent<any, MouseEvent>) => void;
   classes: Classes;
   custom?: any;
+  elementType?: string;
 }
 
 const Icon = (props: IProps) => {
   const { type, classes, custom } = props;
   const icon = getIcon(type, classes, custom);
   const cls = classNames({
+    "button-no-style": props.onClick,
     [classes.iconContainer]: true,
     [classes.marginRight]: props.marginRight,
   });
-  return (
-    <div className={cls} onClick={props.onClick}>
-      {icon}
-    </div>
-  );
+  const handleClick = (event: React.MouseEvent<any, MouseEvent>) => {
+    event.preventDefault();
+    if (props.onClick) {
+      props.onClick(event);
+    }
+  };
+  if (props.elementType === 'button' || (props.onClick && !props.elementType)) {    
+    return (
+      <button className={cls} onClick={handleClick}>
+        {icon}
+      </button>
+    )}
+    else {
+      return (
+      <div className={cls} onClick={handleClick}>
+        {icon}
+      </div>
+      )
+    }
 };
 
 export default injectSheet(styles)(Icon);

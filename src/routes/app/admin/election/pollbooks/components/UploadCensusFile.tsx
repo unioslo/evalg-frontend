@@ -126,6 +126,7 @@ interface IState {
   censusFile: File | null;
   fileName?: string;
   isUploading: boolean;
+  censusFileButtonHasFocus: boolean;
 }
 
 interface IHTMLInputEvent extends React.FormEvent {
@@ -151,6 +152,7 @@ class UploadCensusFileModal extends React.Component<
       censusFile: null,
       fileName: '',
       isUploading: false,
+      censusFileButtonHasFocus: false,
     };
 
     this.renderForm = this.renderForm.bind(this);
@@ -274,7 +276,16 @@ class UploadCensusFileModal extends React.Component<
     const labelClassNames = classNames({
       [this.props.classes.button]: true,
       [this.props.classes.secondary]: true,
+      'on-focus': this.state.censusFileButtonHasFocus,
     });
+
+    const handleCensusFileOnFocus = () => {
+      this.setState({ censusFileButtonHasFocus: true });
+    };
+
+    const handleCensusFileOnBlur = () => {
+      this.setState({ censusFileButtonHasFocus: false });
+    };
 
     return (
       <div className={this.props.classes.size}>
@@ -286,6 +297,8 @@ class UploadCensusFileModal extends React.Component<
           onChange={onChangeWrapper}
           component="input"
           type="file"
+          onFocus={handleCensusFileOnFocus}
+          onBlur={handleCensusFileOnBlur}
         />
         <label htmlFor="censusFile" className={labelClassNames}>
           <Trans>general.chooseFile</Trans>
