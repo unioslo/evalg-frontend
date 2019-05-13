@@ -5,16 +5,21 @@ export const getSupportedLanguages = (): string[] => {
   return ['nb', 'en', 'nn'];
 };
 
-export const translateBackendError = (
-  errorCode: string,
-  t: i18n.TFunction,
+export const translateBackendError = ({
+  errorCode,
+  t,
   codePrefix = 'backend.errors',
-  ...rest: any
-) => {
+  tOptions,
+}: {
+  errorCode: string;
+  t: i18n.TFunction;
+  codePrefix: string;
+  tOptions?: string | i18n.TOptions<i18n.StringMap>;
+}) => {
   const errorCodeKey = `${codePrefix}.${camelCase(errorCode)}`;
-  const unknownCategorizedKey = `$(codePrefix).unknown`;
+  const unknownCategorizedKey = `${codePrefix}.unknown`;
   const unknownKey = 'backend.errors.unknown';
-  return t([errorCodeKey, unknownCategorizedKey, unknownKey], ...rest);
+  return t([errorCodeKey, unknownCategorizedKey, unknownKey], tOptions);
 };
 
 export const joinStringsWithCommaAndAnd = (
