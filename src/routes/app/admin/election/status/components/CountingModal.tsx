@@ -137,7 +137,6 @@ const CountingModal: React.FunctionComponent<Props> = ({
 
   const handleStartCounting = async (apolloClient: ApolloClient<any>) => {
     setIsCounting(true);
-    console.log(electionKey);
     let response: IMutationResponse | undefined;
     try {
       const result = await apolloClient.mutate<IStartElectionGroupCount>({
