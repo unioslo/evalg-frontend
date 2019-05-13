@@ -1,13 +1,28 @@
 {
   "admin": {
     "counting": {
-      "modalBullet1": "Provide the election key below to decrypt the votes and start the counting process.",
-      "modalBullet2FirstPart": "The election key file containing the election key was downloaded by",
-      "electionKeyInputPlaceholder": "Paste the election key here (line 2 in the election key file)",
-      "modalHeader": "Counting",
+      "countingModal": {
+        "chooseElectionKeyFile": "Choose election key file",
+        "chosenFile": "Chosen file",
+        "closeAndDisplayResults": "Close and display results",
+        "countingFinnished": "Counting finnished",
+        "electionKeyReady": "Election key ready",
+        "header": "Counting",
+        "modalBullet1": "The election key is required to decrypt the votes and start the counting process.",
+        "modalBullet2FirstPart": "The election key file containing the election key was downloaded by",
+        "startCounting": "Start counting",
+        "errors": {
+          "couldNotReadElectionKeyFile": "Could not read election key from file. Did you choose the correct file?",
+          "backend": {
+            "cannotCountBeforeAllElectionsAreClosed": "Can't start counting since not all elections are closed.",
+            "invalidElectionKey": "Invalid election key. Press cancel and open the dialog again to use another file.",
+            "invalidElectionKeyWrongFormat": "Invalid election key. Press cancel and open the dialog again to use another file.",
+            "unknown": "An unknown error occured during counting."
+          }
+        }
+      },
       "sectionHeader": "Counting",
-      "startCounting": "Start counting",
-      "submitElectionKeyButton": "Start counting"
+      "startCounting": "Start counting"
     },
     "electionKey": {
       "create": "Create election key",
@@ -55,6 +70,8 @@
       "loadingName": "Henter navn...",
       "noJustificationGiven": "Not given",
       "reject": "Reject",
+      "undoApproval": "undo approval",
+      "undoRejection": "undo rejection",
       "unknownName": "Unknown name",
       "votesThatMustBeConsidered": "Votes that must be considered",
       "votesApprovedByTheBoard": "Votes approved by the electoral board",
@@ -257,6 +274,7 @@
     "upcomingElections": "Upcoming elections"
   },
   "errors": {
+    "error": "Error",
     "errorMessage": "Error message",
     "generalError": "An error has occured"
   },

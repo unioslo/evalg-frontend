@@ -56,7 +56,7 @@ const ModalSteps: React.FunctionComponent<Props> = ({
         >
           {index + 1}
         </div>
-        {stepContent}
+        <div>{stepContent}</div>
       </div>
     ))}
   </div>

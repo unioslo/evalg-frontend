@@ -5,7 +5,7 @@ import { Page } from '../../../../../components/page';
 import ElectionStatusSection from './components/ElectionStatusSection';
 import VotesSection from './components/VotesSection';
 import ElectionKeySection from './components/ElectionKeySection';
-import CountVotesSection from './components/CountVotesSection';
+import CountingSection from './components/CountingSection';
 import { ElectionGroup } from '../../../../../interfaces';
 
 interface IProps {
@@ -17,16 +17,24 @@ const StatusPage: React.FunctionComponent<IProps> = ({
   electionGroup,
   refetchElectionGroupFunction,
 }) => {
+  const scrollToStatusRef = React.useRef<HTMLDivElement>(null);
+
   return (
-    <Page header={<Trans>election.electionStatus</Trans>}>
-      <ElectionStatusSection electionGroup={electionGroup} />
-      <ElectionKeySection
-        electionGroup={electionGroup}
-        refetchElectionGroupFunction={refetchElectionGroupFunction}
-      />
-      <VotesSection electionGroup={electionGroup} />
-      <CountVotesSection electionGroup={electionGroup} />
-    </Page>
+    <>
+      <Page header={<Trans>election.electionStatus</Trans>}>
+        <div ref={scrollToStatusRef}></div>
+        <ElectionStatusSection electionGroup={electionGroup} />
+        <ElectionKeySection
+          electionGroup={electionGroup}
+          refetchElectionGroupFunction={refetchElectionGroupFunction}
+        />
+        <VotesSection electionGroup={electionGroup} />
+        <CountingSection
+          electionGroup={electionGroup}
+          scrollToStatusRef={scrollToStatusRef}
+        />
+      </Page>
+    </>
   );
 };
 
