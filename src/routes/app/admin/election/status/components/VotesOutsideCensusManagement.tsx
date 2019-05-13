@@ -102,14 +102,14 @@ const VotesOutsideCensusManagement: React.FunctionComponent<Props> = props => {
             <PageExpandableSubSection header={approvedVotesHeading}>
               <SelfAddedVotersMngmtTable
                 voters={verifiedVoters}
-                tableAction={VotersReviewTableAction.Undo}
+                tableAction={VotersReviewTableAction.UndoApproval}
               />
             </PageExpandableSubSection>
 
             <PageExpandableSubSection header={rejectedVotesHeading}>
               <SelfAddedVotersMngmtTable
                 voters={rejectedVoters}
-                tableAction={VotersReviewTableAction.Undo}
+                tableAction={VotersReviewTableAction.UndoRejection}
               />
             </PageExpandableSubSection>
           </>

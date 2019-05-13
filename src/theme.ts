@@ -150,6 +150,7 @@ const theme = {
   plusIconFillColor: white,
   primaryBtnBgColor: darkTurquoise,
   primaryBtnBorderColor: 'transparent',
+  primaryBtnFocusedBorderColor: lightTurquoise,
   primaryBtnColor: white,
   secondaryBtnBgColor: white,
   secondaryBtnBorderColor: lightTurquoise,

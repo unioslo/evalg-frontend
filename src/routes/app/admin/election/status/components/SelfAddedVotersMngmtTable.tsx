@@ -69,7 +69,8 @@ const styles = (theme: any) => ({
 
 export enum VotersReviewTableAction {
   Review,
-  Undo,
+  UndoApproval,
+  UndoRejection,
 }
 
 interface Props {
@@ -169,7 +170,10 @@ const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
                               classes={classes}
                             />
                           )}
-                          {tableAction === VotersReviewTableAction.Undo && (
+                          {(tableAction ===
+                            VotersReviewTableAction.UndoApproval ||
+                            tableAction ===
+                              VotersReviewTableAction.UndoRejection) && (
                             <Mutation
                               mutation={undoReviewSelfAddedVoter}
                               variables={{ id: voter.id }}
@@ -192,7 +196,14 @@ const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
                                         }}
                                         bottom
                                       >
-                                        {t('general.undo').toLowerCase()}
+                                        {tableAction ===
+                                        VotersReviewTableAction.UndoApproval
+                                          ? t(
+                                              'admin.manageSelfAddedVoters.undoApproval'
+                                            )
+                                          : t(
+                                              'admin.manageSelfAddedVoters.undoRejection'
+                                            )}
                                       </ActionText>
                                     )}
                                   </>

@@ -34,6 +34,9 @@ const styles = (theme: any) => ({
     background: theme.primaryBtnBgColor,
     borderColor: theme.primaryBtnBorderColor,
     color: theme.primaryBtnColor,
+    '&:focus': {
+      borderColor: theme.primaryBtnFocusedBorderColor,
+    }
   },
   secondary: {
     background: theme.secondaryBtnBgColor,

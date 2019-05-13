@@ -71,82 +71,61 @@ interface IProps {
   classes: Classes;
 }
 
-interface IState {
-  hasFocus: boolean;
-}
-
-class CheckBox extends React.Component<IProps, IState> {
-  state = {
-    hasFocus: false,
-  };
-
-  handleOnFocus = () => {
-    this.setState({ hasFocus: true });
-  };
-
-  handleOnBlur = () => {
-    this.setState({ hasFocus: false });
-  };
-
-  render() {
-    const { name, onChange, id, value, label, disabled, classes } = this.props;
-    return (
-      <div className={classes.checkBoxAndLabel}>
-        <div className={classes.checkBox}>
-          <input
-            type="checkbox"
-            name={name}
-            id={id}
-            checked={!!value}
-            onChange={onChange}
-            disabled={disabled}
-            onFocus={this.handleOnFocus}
-            onBlur={this.handleOnBlur}
-          />
-          <label
-            htmlFor={name}
-            className={classNames({
-              [classes.iconContainer]: true,
-              disabled: disabled,
-              'on-focus': this.state.hasFocus,
-            })}
-          >
-            <svg
-              width="21"
-              height="21"
-              viewBox="0 0 21 21"
-              className={classes.icon}
-            >
-              <path
-                className={classNames({
-                  [classes.iconBg]: true,
-                  disabled: disabled,
-                })}
-                d="M3.009 0A3.008 3.008 0 0 0 0 3.009V17.99A3.008 3.008
-                     0 0 0 3.009 21H17.99A3.002 3.002 0 0 0 21
-                     17.997V3.006A3.006 3.006 0 0 0 17.991 0H3.01z"
-              />
-              <path
-                className={classes.iconCheckMark}
-                d="M4 12.14l4.888 4.9 9.544-9.567L15.958
-                     5l-7.081 7.082-2.404-2.415"
-              />
-            </svg>
-          </label>
-        </div>
+const CheckBox: React.FunctionComponent<IProps> = props => {
+  const { name, onChange, id, value, label, disabled, classes } = props;
+  return (
+    <div className={classes.checkBoxAndLabel}>
+      <div className={classes.checkBox}>
+        <input
+          type="checkbox"
+          name={name}
+          id={id}
+          checked={!!value}
+          onChange={onChange}
+          disabled={disabled}
+        />
         <label
           htmlFor={name}
           className={classNames({
-            [classes.label]: true,
+            [classes.iconContainer]: true,
             disabled: disabled,
           })}
         >
-          {label}
+          <svg
+            width="21"
+            height="21"
+            viewBox="0 0 21 21"
+            className={classes.icon}
+          >
+            <path
+              className={classNames({
+                [classes.iconBg]: true,
+                disabled: disabled,
+              })}
+              d="M3.009 0A3.008 3.008 0 0 0 0 3.009V17.99A3.008 3.008
+                     0 0 0 3.009 21H17.99A3.002 3.002 0 0 0 21
+                     17.997V3.006A3.006 3.006 0 0 0 17.991 0H3.01z"
+            />
+            <path
+              className={classes.iconCheckMark}
+              d="M4 12.14l4.888 4.9 9.544-9.567L15.958
+                     5l-7.081 7.082-2.404-2.415"
+            />
+          </svg>
         </label>
       </div>
-    );
-  }
-}
+      <label
+        htmlFor={name}
+        className={classNames({
+          [classes.label]: true,
+          disabled: disabled,
+        })}
+      >
+        {label}
+      </label>
+    </div>
+  );
+};
 
 const StyledCheckBox = injectSheet(styles)(CheckBox);
 

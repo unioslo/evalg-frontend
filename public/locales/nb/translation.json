@@ -1,13 +1,28 @@
 {
   "admin": {
     "counting": {
-      "modalBullet1": "Bruk valgnøkkelen nedenfor for å dekryptere stemmene og starte opptellingen.",
-      "modalBullet2FirstPart": "Valgnøkkel-filen med valgnøkkelen ble lastet ned av",
-      "electionKeyInputPlaceholder": "Lim inn valgnøkkelen her (linje 2 i valgnøkkel-filen)",
-      "modalHeader": "Opptelling",
+      "countingModal": {
+        "chooseElectionKeyFile": "Velg valgnøkkelfil",
+        "chosenFile": "Valgt fil",
+        "closeAndDisplayResults": "Lukk og vis resultat",
+        "countingFinnished": "Opptelling ferdig",
+        "electionKeyReady": "Valgnøkkel klar",
+        "header": "Opptelling",
+        "modalBullet1": "Valgnøkkelen er nødvendig for å dekryptere stemmene og starte opptellingen.",
+        "modalBullet2FirstPart": "Valgnøkkel-filen med valgnøkkelen ble lastet ned av",
+        "startCounting": "Start opptelling",
+        "errors": {
+          "couldNotReadElectionKeyFile": "Kunne ikke lese valgnøkkel fra fil. Har du valgt riktig fil?",
+          "backend": {
+            "cannotCountBeforeAllElectionsAreClosed": "Kan ikke starte opptelling fordi alle valg ikke er avsluttet.",
+            "invalidElectionKey": "Valgnøkkelen er ugyldig. Trykk avbryt og åpne dialogboksen igjen for å bruke en annen fil.",
+            "invalidElectionKeyWrongFormat": "Valgnøkkelen er ugyldig. Trykk avbryt og åpne dialogboksen igjen for å bruke en annen fil.",
+            "unknown": "En uventet feil oppstod under opptelling."
+          }
+        }
+      },
       "sectionHeader": "Opptelling",
-      "startCounting": "Start opptelling",
-      "submitElectionKeyButton": "Start opptelling"
+      "startCounting": "Start opptelling"
     },
     "electionKey": {
       "create": "Opprett valgnøkkel",
@@ -55,6 +70,8 @@
       "loadingName": "Looking up name...",
       "noJustificationGiven": "Ikke oppgitt",
       "reject": "Avvis",
+      "undoApproval": "angre godkjenning",
+      "undoRejection": "angre avvisning",
       "unknownName": "Ukjent navn",
       "votesThatMustBeConsidered": "Stemmer som må behandles",
       "votesApprovedByTheBoard": "Stemmer godkjent av valgstyret",
@@ -256,6 +273,7 @@
     "upcomingElections": "Kommende valg"
   },
   "errors": {
+    "error": "Feil",
     "errorMessage": "Feilmelding",
     "generalError": "En feil har oppstått"
   },

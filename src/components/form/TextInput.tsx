@@ -125,6 +125,7 @@ const TextInput = (props: IProps) => {
     classes,
     hasFocus,
     hideErrors,
+    inputRef,
   } = props;
 
   const extraInputClassName = className ? className : '';
@@ -172,7 +173,7 @@ const TextInput = (props: IProps) => {
         autoCapitalize="none"
         autoComplete="off"
         autoCorrect="off"
-        ref={props.inputRef}
+        ref={inputRef}
         tabIndex={tabIndex}
       />
       {!!label && (

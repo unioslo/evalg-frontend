@@ -15,6 +15,7 @@ import { InfoList, InfoListItem } from '../../../../../../components/infolist';
 import Link from '../../../../../../components/link';
 import { CheckBox } from '../../../../../../components/form';
 import ModalSteps from './ModalSteps';
+import AnimatedCheckmark from '../../../../../../components/animations/AnimatedCheckmark';
 
 const styles = (theme: any) => ({
   errorMessage: {
@@ -38,25 +39,6 @@ const styles = (theme: any) => ({
   },
   '@keyframes spin': {
     to: { '-webkit-transform': 'rotate(360deg)' },
-  },
-
-  animatedCheckmarkSvg: {
-    position: 'relative',
-    marginLeft: '13px',
-
-    '& .checkmarkPath': {
-      strokeWidth: 5,
-      stroke: 'white',
-      strokeMiterlimit: 10,
-      strokeDasharray: 48,
-      strokeDashoffset: 48,
-      animation: 'stroke .4s cubic-bezier(0.650, 0.000, 0.450, 1.000) forwards',
-    },
-  },
-  '@keyframes stroke': {
-    '100%': {
-      strokeDashoffset: 0,
-    },
   },
 });
 
@@ -93,7 +75,7 @@ interface IState {
   isAllowedToActivateKey: boolean;
   hasActivatedNewKey: boolean;
   showDetails: boolean;
-  errorMessage: string | null;
+  errorMessage: string;
 }
 
 class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
@@ -121,9 +103,9 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
     this.generateElectionKey();
   }
 
-  showError = async (message: string) => {
+  showError = async (errorMessage: string) => {
     this.setState({
-      errorMessage: message,
+      errorMessage,
     });
   };
 
@@ -159,9 +141,10 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
 
   downloadKeyFile = () => {
     const electionKeyFileContents = `
-Valgnøkkel / Election key:\r\n${
-      this.state.secretKey
-    }\r\nOffentlig nøkkel / Public key:\r\n${this.state.publicKey}`.trim();
+${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
+      // Using \r\n to make file look nice if opened in Notepad on Windows
+      this.state.publicKey
+    }`.trim();
 
     const blob = new Blob([electionKeyFileContents], {
       type: 'text/plain;charset=utf-8',
@@ -176,37 +159,40 @@ Valgnøkkel / Election key:\r\n${
     this.setState({
       isActivatingKey: true,
     });
-    await this.props.client
-      .mutate<ISetElectionGroupKeyResponse>({
+
+    let response;
+    try {
+      const result = await this.props.client.mutate<
+        ISetElectionGroupKeyResponse
+      >({
         mutation: setElectionGroupKeyMutation,
         variables: {
           id: this.props.electionGroupId,
           publicKey: this.state.publicKey,
         },
-      })
-      .then(result => {
-        const response =
-          result && result.data && result.data.setElectionGroupKey;
-
-        if (!response || response.success === false) {
-          let errorMessage = t('admin.electionKey.backend.unknown');
-          if (response && response.code) {
-            errorMessage = translateBackendError(
-              response.code,
-              this.props.t,
-              'admin.electionKey.errors.backend'
-            );
-          }
-          this.setState({ isActivatingKey: false });
-          this.showError(errorMessage);
-        } else {
-          this.keyActivated();
-        }
-      })
-      .catch(error => {
-        this.setState({ isActivatingKey: false });
-        this.showError(t('admin.electionKey.backend.unknown'));
       });
+
+      response = result && result.data && result.data.setElectionGroupKey;
+    } catch (error) {
+      this.setState({ isActivatingKey: false });
+      this.showError(t('admin.electionKey.errors.backend.unknown'));
+      return;
+    }
+
+    if (!response || response.success === false) {
+      let errorMessage = t('admin.electionKey.errors.backend.unknown');
+      if (response && response.code) {
+        errorMessage = translateBackendError({
+          errorCode: response.code,
+          t: this.props.t,
+          codePrefix: 'admin.electionKey.errors.backend',
+        });
+      }
+      this.setState({ isActivatingKey: false });
+      this.showError(errorMessage);
+    } else {
+      this.keyActivated();
+    }
   };
 
   keyActivated = async () => {
@@ -233,24 +219,6 @@ Valgnøkkel / Election key:\r\n${
       errorMessage,
     } = this.state;
 
-    const errorMessageValue = errorMessage ? true : false;
-
-    const animatedCheckmarkSvg = (
-      <svg
-        className={classes.animatedCheckmarkSvg}
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="12 12 30 30"
-        width="26"
-        height="26"
-      >
-        <path
-          className="checkmarkPath"
-          fill="none"
-          d="M14.1 27.2l7.1 7.2 16.7-16.8"
-        />
-      </svg>
-    );
-
     const downloadKeyButtonContent = isGeneratingKey ? (
       <>
         <Trans>admin.electionKey.modalGenerating</Trans>
@@ -270,7 +238,7 @@ Valgnøkkel / Election key:\r\n${
     ) : hasActivatedNewKey ? (
       <>
         <Trans>admin.electionKey.modalActivatedSuccessfully</Trans>
-        {animatedCheckmarkSvg}
+        <AnimatedCheckmark />
       </>
     ) : isReplacingOldKey ? (
       <Trans>admin.electionKey.modalActivateNew</Trans>
@@ -282,7 +250,7 @@ Valgnøkkel / Election key:\r\n${
       <ButtonContainer center noTopMargin>
         <Button
           action={this.downloadKeyFile}
-          disabled={isGeneratingKey || errorMessageValue}
+          disabled={isGeneratingKey || errorMessage !== ''}
           text={downloadKeyButtonContent}
         />
       </ButtonContainer>
@@ -319,7 +287,7 @@ Valgnøkkel / Election key:\r\n${
             isGeneratingKey ||
             isActivatingKey ||
             hasActivatedNewKey ||
-            errorMessageValue
+            errorMessage !== ''
           }
           action={this.activateKey}
         />
