@@ -153,11 +153,12 @@
     }
 
     nav:focus-within,
-    .on-focus,
+    .file-input:focus + label,
+    input[type="checkbox"]:focus + label,
     :focus {
-        outline-color: rgb(163, 0, 109) ;
-        outline-width: 0.3rem;
-        outline-style: solid;
+      outline-color: #2194A8;
+      outline-width: 0.2rem;
+      outline-style: solid;
     }
 
     input[type=checkbox] {

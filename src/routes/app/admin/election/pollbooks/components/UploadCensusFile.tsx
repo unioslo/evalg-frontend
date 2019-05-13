@@ -126,7 +126,6 @@ interface IState {
   censusFile: File | null;
   fileName?: string;
   isUploading: boolean;
-  censusFileButtonHasFocus: boolean;
 }
 
 interface IHTMLInputEvent extends React.FormEvent {
@@ -152,7 +151,6 @@ class UploadCensusFileModal extends React.Component<
       censusFile: null,
       fileName: '',
       isUploading: false,
-      censusFileButtonHasFocus: false,
     };
 
     this.renderForm = this.renderForm.bind(this);
@@ -184,14 +182,14 @@ class UploadCensusFileModal extends React.Component<
         if (!response || !response.success) {
           let errorMessage = this.props.t('census.errors.backend.unknown');
           if (response && response.code) {
-            errorMessage = translateBackendError(
-              response.code,
-              this.props.t,
-              'census.errors.backend',
-              {
+            errorMessage = translateBackendError({
+              errorCode: response.code,
+              t: this.props.t,
+              codePrefix: 'census.errors.backend',
+              tOptions: {
                 mimetype: this.state.censusFile && this.state.censusFile.type,
-              }
-            );
+              },
+            });
           }
           const status: IUploadCensusFileModalStatus = {
             success: false,
@@ -276,16 +274,7 @@ class UploadCensusFileModal extends React.Component<
     const labelClassNames = classNames({
       [this.props.classes.button]: true,
       [this.props.classes.secondary]: true,
-      'on-focus': this.state.censusFileButtonHasFocus,
     });
-
-    const handleCensusFileOnFocus = () => {
-      this.setState({ censusFileButtonHasFocus: true });
-    };
-
-    const handleCensusFileOnBlur = () => {
-      this.setState({ censusFileButtonHasFocus: false });
-    };
 
     return (
       <div className={this.props.classes.size}>
@@ -293,12 +282,10 @@ class UploadCensusFileModal extends React.Component<
           name="censusFile"
           id="censusFile"
           validate={this.required}
-          className={this.props.classes.hiddenFileInput}
+          className={`${this.props.classes.hiddenFileInput} file-input`}
           onChange={onChangeWrapper}
           component="input"
           type="file"
-          onFocus={handleCensusFileOnFocus}
-          onBlur={handleCensusFileOnBlur}
         />
         <label htmlFor="censusFile" className={labelClassNames}>
           <Trans>general.chooseFile</Trans>
