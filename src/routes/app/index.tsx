@@ -60,7 +60,7 @@ interface IStyleProp {
   classes: Classes;
 }
 
-const logout: React.FunctionComponent<IStyleProp> = (props: IStyleProp) => {
+const Logout: React.FunctionComponent<IStyleProp> = (props: IStyleProp) => {
   const { t } = useTranslation();
   window.location.href = oidcLogoutUrl;
   return (
@@ -72,7 +72,7 @@ const logout: React.FunctionComponent<IStyleProp> = (props: IStyleProp) => {
     </div>
   );
 };
-const styledLogout = injectSheet(styles)(logout);
+const styledLogout = injectSheet(styles)(Logout);
 
 interface IAppProps {
   classes: Classes;
