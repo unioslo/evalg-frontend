@@ -61,7 +61,7 @@
     "react-transition-group": "2.6.0",
     "tweetnacl": "^1.0.1",
     "tweetnacl-util": "^0.15.0",
-    "typescript": "^3.3.3333",
+    "typescript": "^3.4.5",
     "valid-url": "^1.0.9"
   },
   "scripts": {
