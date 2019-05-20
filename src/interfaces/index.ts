@@ -66,6 +66,21 @@ export interface IPerson {
   nin: string;
 }
 
+export interface IPersonSearchResult {
+  id: string;
+  displayName: string;
+}
+
+export interface IGroup {
+  id: string;
+  name: string;
+}
+
+export interface IGroupSearchResult {
+  id: string;
+  name: string;
+}
+
 export interface IVoter {
   id: string;
   idType: string;
@@ -178,12 +193,24 @@ export interface ElectionGroup {
   contact: string;
   informationUrl: string;
   tz: string;
-  roles: Array<any>;
+  roles: IElectionGroupRole[];
   publicKey: string;
   announced: boolean;
   published: boolean;
-  announcementBlockers: Array<string>;
-  publicationBlockers: Array<string>;
+  announcementBlockers: string[];
+  publicationBlockers: string[];
+}
+
+export interface IElectionGroupRole {
+  name: string;
+  grantId: string;
+  principal: IPrincipal;
+}
+
+export interface IPrincipal {
+  principalType: 'person-principal' | 'group-principal';
+  person: IPerson; // may actually be undefined, check principal type
+  group: IGroup; // may actually be undefined, check principal type
 }
 
 // TODO: Make sure underneath meta structure and rest of type definitions here is correct to some specification.
