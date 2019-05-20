@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { shuffleArray } from '../../../../utils/helpers';
 import PrefElecBallot from './components/PrefElecBallot';

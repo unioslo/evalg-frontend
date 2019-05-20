@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
 import arrayMutators from 'final-form-arrays';

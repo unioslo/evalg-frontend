@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import nb from 'date-fns/locale/nb';
 import moment from 'moment';

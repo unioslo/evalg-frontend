@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import * as React from 'react';
+import React from 'react';
 import { Mutation } from 'react-apollo';
 import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 

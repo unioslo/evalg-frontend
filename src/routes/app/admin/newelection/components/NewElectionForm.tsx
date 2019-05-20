@@ -1,5 +1,5 @@
 /* @flow */
-import * as React from 'react';
+import React from 'react';
 import { Form, FormRenderProps, FormSpy, Field } from 'react-final-form';
 
 import { getSupportedLanguages } from '../../../../../utils/i18n';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 import FocusTrap from 'focus-trap-react';

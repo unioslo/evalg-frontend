@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import injectSheet from 'react-jss';
 import { Trans } from 'react-i18next';
 import { Classes } from 'jss';

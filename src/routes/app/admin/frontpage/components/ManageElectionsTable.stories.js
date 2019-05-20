@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 
 import ManageElectionsTable from './ManageElectionsTable';

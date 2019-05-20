@@ -1,7 +1,7 @@
 import { ApolloClient } from 'apollo-client';
 import gql from 'graphql-tag';
 import throttle from 'lodash/throttle';
-import * as React from 'react';
+import React from 'react';
 import { ApolloConsumer } from 'react-apollo';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';

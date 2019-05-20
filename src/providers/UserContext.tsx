@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { User, UserManager } from 'oidc-client';
 
 interface IUserContext {

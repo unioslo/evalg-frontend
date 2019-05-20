@@ -1,5 +1,5 @@
 
-import * as React from 'react';
+import React from 'react';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 
 import Table from 'components/table/Table';

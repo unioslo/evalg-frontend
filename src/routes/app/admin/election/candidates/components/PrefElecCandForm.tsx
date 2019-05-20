@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Form, Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
 

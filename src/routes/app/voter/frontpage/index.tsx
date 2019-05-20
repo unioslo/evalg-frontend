@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import * as React from 'react';
+import React from 'react';
 import { Query, WithApolloClient, withApollo } from 'react-apollo';
 
 import { Page, PageSection } from '../../../../components/page';

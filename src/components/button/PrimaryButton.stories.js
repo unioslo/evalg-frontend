@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import PrimaryButton from './PrimaryButton';
 

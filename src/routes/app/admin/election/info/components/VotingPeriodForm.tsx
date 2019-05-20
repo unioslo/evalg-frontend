@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 import { Form, Field, FormRenderProps } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';

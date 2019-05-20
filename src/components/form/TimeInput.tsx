@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';

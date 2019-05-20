@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Route, match } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';

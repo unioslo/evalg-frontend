@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 const mediaQuerySm = window.matchMedia('(min-width: 480px)');
 const mediaQueryMd = window.matchMedia('(min-width: 768px)');

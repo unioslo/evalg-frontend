@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';

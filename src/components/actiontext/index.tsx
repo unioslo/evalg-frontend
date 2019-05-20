@@ -1,6 +1,6 @@
 /* @flow */
 import classNames from 'classnames';
-import * as React from 'react';
+import React from 'react';
 import injectSheet from 'react-jss';
 
 const styles = (theme: any) => ({
