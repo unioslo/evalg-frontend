@@ -1,5 +1,5 @@
 import 'react-app-polyfill/ie11';
-import 'core-js';
+// import 'core-js'; // FIXME: doesn't resolve properly when compiling
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
