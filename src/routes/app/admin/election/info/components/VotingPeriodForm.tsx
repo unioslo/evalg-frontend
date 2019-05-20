@@ -233,10 +233,6 @@ interface IProps extends WithTranslation {
 class VotingPeriodForm extends React.Component<IProps> {
   isSubmitting = false;
 
-  constructor(props: IProps) {
-    super(props);
-  }
-
   public handleSubmit = async (submitValues: any) => {
     this.isSubmitting = true;
     await this.props.onSubmit(submitValues);

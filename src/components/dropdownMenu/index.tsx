@@ -1,10 +1,9 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
-
-import DropDownBase from '../baseComponents'
+import DropDownBase from '../baseComponents';
 import { Classes } from 'jss';
 
 const styles = (theme: any) => ({
@@ -12,7 +11,7 @@ const styles = (theme: any) => ({
     color: theme.colors.greyishBrown,
     fontSize: theme.navFontSize,
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   dropDownMenu: {
     position: 'relative',
@@ -33,46 +32,43 @@ const styles = (theme: any) => ({
     top: '3rem',
     width: '28rem',
     right: 0,
-    left: 0
+    left: 0,
   },
   listItem: {
     '&:first-child': {
-      borderTop: 'none'
+      borderTop: 'none',
     },
     borderTop: `1px solid ${theme.borderColor}`,
     lineHeight: 3.89,
     paddingLeft: '1.5rem',
   },
   listItemActive: {
-    background: theme.colors.lightBlueGray
-  }
+    background: theme.colors.lightBlueGray,
+  },
 });
 
 interface IProps {
-  children: any,
-  text: string | any,
-  largeArrow?: boolean,
-  classes: Classes
+  children: any;
+  text: string | any;
+  largeArrow?: boolean;
+  classes: Classes;
 }
 
 class MobileDropDown extends DropDownBase<IProps> {
-
-  constructor(props: IProps) {
-    super(props);
-  }
-
   render() {
     const { text } = this.props;
     const { classes } = this.props;
     const dropDownClasses = classNames({
       [classes.dropDownMenu]: true,
-      [classes.largeArrow]: this.props.largeArrow
+      [classes.largeArrow]: this.props.largeArrow,
     });
     return (
       <nav className={classes.container}>
-        <div className={dropDownClasses}
-          ref={(node) => (this.wrapperRef = node)}
-          onClick={this.handleClick.bind(this)}>
+        <div
+          className={dropDownClasses}
+          ref={node => (this.wrapperRef = node)}
+          onClick={this.handleClick.bind(this)}
+        >
           {text}
           <TransitionGroup>
             <CSSTransition
@@ -80,26 +76,23 @@ class MobileDropDown extends DropDownBase<IProps> {
               timeout={{ enter: 500, exit: 300 }}
             >
               <div>
-                {this.state.open &&
-                  <ul className={classes.menuList}>
-                    {this.props.children}
-                  </ul>
-                }
+                {this.state.open && (
+                  <ul className={classes.menuList}>{this.props.children}</ul>
+                )}
               </div>
             </CSSTransition>
           </TransitionGroup>
         </div>
       </nav>
-    )
+    );
   }
 }
 
-
 interface IItemProps {
-  children: any,
-  onClick: (event: any) => void,
-  active: boolean,
-  classes: Classes
+  children: any;
+  onClick: (event: any) => void;
+  active: boolean;
+  classes: Classes;
 }
 
 const MobileDropdownItem = (props: IItemProps) => {
@@ -108,11 +101,10 @@ const MobileDropdownItem = (props: IItemProps) => {
     [props.classes.listItemActive]: props.active,
   });
   return (
-    <li className={cls}
-      onClick={props.onClick}>
+    <li className={cls} onClick={props.onClick}>
       {props.children}
     </li>
-  )
+  );
 };
 
 const StyledMobileDropDown = injectSheet(styles)(MobileDropDown);
@@ -120,5 +112,5 @@ const StyledMobileDropdownItem = injectSheet(styles)(MobileDropdownItem);
 
 export {
   StyledMobileDropDown as MobileDropDown,
-  StyledMobileDropdownItem as MobileDropdownItem
+  StyledMobileDropdownItem as MobileDropdownItem,
 };

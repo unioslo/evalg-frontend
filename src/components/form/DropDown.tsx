@@ -132,10 +132,6 @@ interface IProps {
 class DropDown extends DropDownBase<IProps> {
   // state: IDropDownState;
   timeoutID?: any;
-  
-  constructor(props: IProps) {
-    super(props);
-  }
 
   componentDidMount() {
     super.componentDidMount();
@@ -158,7 +154,7 @@ class DropDown extends DropDownBase<IProps> {
       this.setState({ open: true });
     }
   }
-  
+
   handleOnBlur() {
     this.timeoutID = setTimeout(() => {
       this.setState({ open: false });

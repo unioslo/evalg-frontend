@@ -49,10 +49,6 @@ const votersForPersonQuery = gql`
 interface IProps extends WithTranslation {}
 
 class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
-  constructor(props: WithApolloClient<IProps>) {
-    super(props);
-  }
-
   render() {
     const { t } = this.props;
     return (
