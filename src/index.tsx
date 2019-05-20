@@ -61,7 +61,7 @@ const constructApolloClient = () => {
   const uploadLink: ApolloLink = createUploadLink({ uri: graphqlBackend });
 
   const authMiddleware = new ApolloLink((operation, forward) => {
-    operation.setContext(({ headers = {} }) => ({
+    operation.setContext(({ headers = {} }: { headers: any }) => ({
       headers: {
         ...headers,
         authorization: sessionStorage.getItem('evalg-token') || null,
