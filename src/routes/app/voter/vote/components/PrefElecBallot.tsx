@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Trans } from 'react-i18next';
+import injectSheet from 'react-jss';
 
 import Button, { ButtonContainer } from '../../../../../components/button';
 import Icon from '../../../../../components/icon';
@@ -18,8 +19,8 @@ import {
 } from './CandidateList';
 import HelpSubSection from './HelpSubSection';
 import MandatePeriodText from './MandatePeriodText';
-import injectSheet from 'react-jss';
 import BallotButtons from './BallotButtons';
+import { Election, Candidate } from '../../../../../interfaces';
 
 const helpTextTags = [
   'voter.prefElecNrOfCandidates',
@@ -27,7 +28,6 @@ const helpTextTags = [
   'voter.prefElecOnlySelectedGetVote',
   'voter.canVoteBlank',
 ];
-import { Election, Candidate } from '../../../../../interfaces';
 
 interface IProps {
   selectedCandidates: Candidate[];
