@@ -7,15 +7,18 @@ import AdminRolesForm from './AdminRolesForm';
 import {
   IActiveComponentProps,
   IInactiveComponentProps,
-  ISettingsSectionContents
+  ISettingsSectionContents,
 } from '../../../../../../components/page/SettingsSection';
 import { Trans } from 'react-i18next';
 
-import { ElectionGroup } from '../../../../../../interfaces'
+import {
+  ElectionGroup,
+  IElectionGroupRole,
+} from '../../../../../../interfaces';
 
-const searchPersonQuery = gql`
-  query searchPerson($val: String!) {
-    searchPerson(val: $val) {
+const searchPersonsQuery = gql`
+  query searchPersons($val: String!) {
+    searchPersons(val: $val) {
       id
       displayName
     }
@@ -47,23 +50,29 @@ const removeAdminMutation = gql`
   }
 `;
 
+export interface IAdminGrant {
+  id: string;
+  name: string;
+  grantId: string;
+}
+
 const refetchQueriesFunction = () => ['electionGroup'];
 
 const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
   const electionGroupData: ElectionGroup = props.electionGroupData;
-  const adminRoles = electionGroupData.roles.filter(
-    r => r.role === 'election-admin'
+  const adminRoles: IElectionGroupRole[] = electionGroupData.roles.filter(
+    r => r.name === 'election-admin'
   );
 
-  const adminPersons = adminRoles
+  const adminPersons: IAdminGrant[] = adminRoles
     .filter(r => r.principal.principalType === 'person-principal')
     .map(r => ({
       id: r.principal.person.id,
-      displayName: r.principal.person.displayName,
+      name: r.principal.person.displayName,
       grantId: r.grantId,
     }));
 
-  const adminGroups = adminRoles
+  const adminGroups: IAdminGrant[] = adminRoles
     .filter(r => r.principal.principalType === 'group-principal')
     .map(r => ({
       id: r.principal.group.id,
@@ -76,7 +85,7 @@ const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
       {client => {
         async function searchPersons(val: string) {
           const { data }: { data: any } = await client.query({
-            query: searchPersonQuery,
+            query: searchPersonsQuery,
             variables: { val },
           });
           return data.searchPersons;
@@ -143,7 +152,7 @@ const AdminRolesSettingsSection: ISettingsSectionContents = {
   activeComponent: ActiveComponent,
   inactiveComponent: InactiveComponent,
   header: <Trans>election.adminRoles</Trans>,
-  description: <Trans>election.adminRolesDesc</Trans>
+  description: <Trans>election.adminRolesDesc</Trans>,
 };
 
 export default AdminRolesSettingsSection;

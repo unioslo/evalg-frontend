@@ -44,7 +44,7 @@ const electionGroupQuery = gql`
         }
       }
       roles {
-        role
+        name
         grantId
         principal {
           principalType

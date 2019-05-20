@@ -1,19 +1,22 @@
-/* @flow */
 import * as React from 'react';
+import { Trans } from 'react-i18next';
 import throttle from 'lodash/throttle';
 import injectSheet from 'react-jss';
+import { Classes } from 'jss';
 
-// import { objPropsToArray } from 'utils';
-
-import { PageSubSection } from 'components/page';
-import Text from 'components/text';
-import { Trans } from 'react-i18next';
-import { Button, ButtonContainer } from 'components/button';
+import { PageSubSection } from '../../../../../../components/page';
+import Text from '../../../../../../components/text';
+import { Button, ButtonContainer } from '../../../../../../components/button';
 import AutoCompleteDropDown from '../../components/AutoCompleteDropDown';
+import {
+  IPersonSearchResult,
+  IGroupSearchResult,
+} from '../../../../../../interfaces';
+import { IAdminGrant } from './AdminRolesSettings';
 
-const styles = theme => ({
+const styles = (theme: any) => ({
   form: {
-    display: 'flex'
+    display: 'flex',
   },
   formSection: {
     marginTop: '3rem',
@@ -33,39 +36,42 @@ const styles = theme => ({
     paddingRight: '2.5rem',
     display: 'inline-block',
     '&:hover': {
-      cursor: 'pointer'
-    }
-  }
-})
+      cursor: 'pointer',
+    },
+  },
+});
 
-// type Props = {
-//   closeAction: Function,
-//   adminPersons: Array<Object>,
-//   adminGroups: Array<Object>,
-//   classes: Object,
-//   searchPersons: Function,
-//   searchGroups: Function,
-//   addAction: Function,
-//   removeAction: Function
-// };
+interface IProps {
+  classes: Classes;
+  closeAction: () => void;
+  adminPersons: IAdminGrant[];
+  adminGroups: IAdminGrant[];
+  searchPersons: (value: string) => Promise<IPersonSearchResult[]>;
+  searchGroups: (value: string) => Promise<IGroupSearchResult[]>;
+  addAction: (principalOwner: string, principalType: string) => void;
+  removeAction: (grantId: string) => void;
+}
 
-// type State = {
-//   adminPersonFilter: string,
-//   adminGroupFilter: string,
-//   personMatches: Array<Object>,
-//   groupMatches: Array<Object>
-// }
+interface IState {
+  adminPersonFilter: string;
+  adminGroupFilter: string;
+  personMatches: IPersonSearchResult[];
+  groupMatches: IGroupSearchResult[];
+}
 
-// class AdminRolesForm extends React.Component<Props, State> {
-class AdminRolesForm extends React.Component {
+class AdminRolesForm extends React.Component<IProps, IState> {
+  handlePersonSearch: (value: string) => Promise<void>;
+  handleGroupSearch: (value: string) => Promise<void>;
 
-  constructor(props) {
+  constructor(props: IProps) {
     super(props);
     this.state = {
-      adminPersonFilter: '', adminGroupFilter: '',
-      personMatches: [], groupMatches: []
+      adminPersonFilter: '',
+      adminGroupFilter: '',
+      personMatches: [],
+      groupMatches: [],
     };
-    this.handlePersonSearch = throttle(async (value) => {
+    this.handlePersonSearch = throttle(async value => {
       const persons = await this.props.searchPersons(value);
       const { adminPersons } = this.props;
       // We don't want to list persons that are already set as admins
@@ -77,10 +83,10 @@ class AdminRolesForm extends React.Component {
           }
         }
         return true;
-      })
+      });
       this.setState({ personMatches: newPersons });
-    })
-    this.handleGroupSearch = throttle(async (value) => {
+    });
+    this.handleGroupSearch = throttle(async value => {
       const groups = await this.props.searchGroups(value);
       const { adminGroups } = this.props;
       // We don't want to list groups that are already set as admins
@@ -92,19 +98,19 @@ class AdminRolesForm extends React.Component {
           }
         }
         return true;
-      })
+      });
       this.setState({ groupMatches: newGroups });
-    })
+    });
   }
 
-  handleAdminPersonFilterUpdate(value) {
+  handleAdminPersonFilterUpdate(value: string) {
     this.setState({ adminPersonFilter: value });
     if (value.length > 1) {
       this.handlePersonSearch(value);
     }
   }
 
-  handleAdminGroupFilterUpdate(value) {
+  handleAdminGroupFilterUpdate(value: string) {
     this.setState({ adminGroupFilter: value });
     if (value.length > 1) {
       this.handleGroupSearch(value);
@@ -112,24 +118,32 @@ class AdminRolesForm extends React.Component {
   }
   render() {
     const {
-      closeAction, classes, addAction, removeAction, adminPersons, adminGroups
+      closeAction,
+      classes,
+      addAction,
+      removeAction,
+      adminPersons,
+      adminGroups,
     } = this.props;
     const {
       // adminPersonFilter,
-      adminGroupFilter
+      adminGroupFilter,
     } = this.state;
     return (
       <div>
-        <PageSubSection
-          header={<Trans>election.electionAdmins</Trans>} >
-          <Text><Trans>election.electionAdminsDesc</Trans></Text>
+        <PageSubSection header={<Trans>election.electionAdmins</Trans>}>
+          <Text>
+            <Trans>election.electionAdminsDesc</Trans>
+          </Text>
           <div className={classes.form}>
             <div className={classes.formSection}>
-              <Text bold><Trans>election.adminUser</Trans></Text>
+              <Text bold>
+                <Trans>election.adminUser</Trans>
+              </Text>
               <ul className={classes.list}>
                 {adminPersons.map((person, index) => (
                   <li key={index}>
-                    <Text inline>{person.displayName}</Text>
+                    <Text inline>{person.name}</Text>
                     <div
                       className={classes.removeButton}
                       onClick={() => removeAction(adminPersons[index].grantId)}
@@ -141,13 +155,17 @@ class AdminRolesForm extends React.Component {
                 objects={this.state.personMatches}
                 userInput={this.state.adminPersonFilter}
                 onChange={this.handleAdminPersonFilterUpdate.bind(this)}
-                buttonAction={(person) => addAction(person.id, 'person')}
+                buttonAction={(person: IAdminGrant) =>
+                  addAction(person.id, 'person')
+                }
                 buttonText={<Trans>general.add</Trans>}
-                objRenderer={(person) => person.displayName}
+                objRenderer={(person: IAdminGrant) => person.name}
               />
             </div>
             <div className={classes.formSection}>
-              <Text bold><Trans>election.adminGroup</Trans></Text>
+              <Text bold>
+                <Trans>election.adminGroup</Trans>
+              </Text>
               <ul className={classes.list}>
                 {adminGroups.map((group, index) => (
                   <li key={index}>
@@ -163,9 +181,11 @@ class AdminRolesForm extends React.Component {
                 objects={[]}
                 userInput={adminGroupFilter}
                 onChange={this.handleAdminGroupFilterUpdate.bind(this)}
-                buttonAction={(group) => addAction(group.id, 'group')}
+                buttonAction={(group: IAdminGrant) =>
+                  addAction(group.id, 'group')
+                }
                 buttonText={<Trans>general.add</Trans>}
-                objRenderer={(obj) => obj.name}
+                objRenderer={(group: IAdminGrant) => group.name}
               />
             </div>
           </div>
@@ -174,7 +194,7 @@ class AdminRolesForm extends React.Component {
           <Button text="Lukk" action={closeAction} />
         </ButtonContainer>
       </div>
-    )
+    );
   }
 }
 
