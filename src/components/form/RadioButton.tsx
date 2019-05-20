@@ -14,7 +14,7 @@ const styles = (theme: any) => ({
     visibility: 'visible',
     width: '21px',
     height: '21px',
-    margin: 0
+    margin: 0,
   },
   icon: {
     position: 'absolute',
@@ -22,70 +22,73 @@ const styles = (theme: any) => ({
     left: 0,
     background: 'url("/radiobg.svg") no-repeat left top',
     width: '21px',
-    height: '21px'
+    height: '21px',
   },
   checkedIcon: {
-    background: 'url("/radiobg-selected.svg") no-repeat left 50%'
+    background: 'url("/radiobg-selected.svg") no-repeat left 50%',
   },
   label: {
     fontSize: '1.6rem',
     paddingLeft: '0.5rem',
-  }
+  },
 });
 
 interface IProps {
-  name: string,
-  onChange: (event: any) => void,
-  id: string,
-  value: any,
-  checked: boolean,
-  label: any | string,
-  classes: Classes,
-};
+  name: string;
+  onChange: (event: any) => void;
+  id: string;
+  value: any;
+  checked: boolean;
+  label: any | string;
+  classes: Classes;
+}
 
 const RadioButton = (props: IProps) => {
   const { name, onChange, id, value, checked, label, classes } = props;
   const iconClassNames = classNames({
     [classes.icon]: true,
-    [classes.checkedIcon]: checked
+    [classes.checkedIcon]: checked,
   });
 
   return (
     <div className={classes.radioButton}>
-      <input type="radio"
+      <input
+        type="radio"
         className={classes.input}
         name={name}
         id={id}
         value={value}
         onChange={onChange}
-        checked={checked} />
-      <label htmlFor={id}
-        className={iconClassNames} />
-      <label htmlFor={id}
-        className={classes.label}>
+        checked={checked}
+      />
+      <label htmlFor={id} className={iconClassNames} />
+      <label htmlFor={id} className={classes.label}>
         {label}
       </label>
     </div>
-  )
+  );
 };
 
 const StyledRadioButton = injectSheet(styles)(RadioButton);
 export { StyledRadioButton as RadioButton };
 
 interface IGroupProps {
-  input: any,
+  input: any;
   options: Array<{
-    label: any | string,
-    id: string,
-    value: any
-  }>
+    label: any | string;
+    id: string;
+    value: any;
+  }>;
 }
 
 interface IGroupState {
-  value: any
+  value: any;
 }
 
-export class RadioButtonGroup extends React.Component<IGroupProps, IGroupState> {
+export class RadioButtonGroup extends React.Component<
+  IGroupProps,
+  IGroupState
+> {
   // handleChange: Function;
 
   constructor(props: IGroupProps) {
@@ -116,23 +119,23 @@ export class RadioButtonGroup extends React.Component<IGroupProps, IGroupState> 
               id={option.id}
               value={option.value}
             />
-          )
+          );
         })}
       </div>
-    )
+    );
   }
 }
 
 type RFProps = {
   input: {
-    name: string,
-    onChange: (event: any) => void,
-    value: any,
-  },
-  checked: boolean,
-  label: any | string,
-  id: string
-}
+    name: string;
+    onChange: (event: any) => void;
+    value: any;
+  };
+  checked: boolean;
+  label: any | string;
+  id: string;
+};
 
 export const RadioButtonRF = (props: RFProps) => {
   const { input, checked, label, id } = props;

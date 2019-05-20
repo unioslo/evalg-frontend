@@ -1,11 +1,11 @@
 import React from 'react';
 import injectSheet from 'react-jss';
+import { Classes } from 'jss';
 import classNames from 'classnames';
 import FocusTrap from 'focus-trap-react';
 
-import { ButtonContainer } from '../button';
+import { ButtonContainer } from 'components/button';
 import CloseIcon from './icons/CloseIcon';
-import { Classes } from 'jss';
 
 const styles = (theme: any) => ({
   modal: {

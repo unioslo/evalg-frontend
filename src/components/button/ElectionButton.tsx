@@ -140,9 +140,7 @@ const ElectionButton = (props: IProps) => {
         tabIndex={active ? 0 : -1}
       >
         <div className={elButtonClasses}>
-          <div className={classes.hoverText}>
-            {hoverText}
-          </div>
+          <div className={classes.hoverText}>{hoverText}</div>
           <span className={elButtonTextClasses}>
             {name} ({count})
           </span>

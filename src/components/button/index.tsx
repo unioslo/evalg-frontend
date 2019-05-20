@@ -1,7 +1,7 @@
 import Button from './Button';
-import ActionButton from './ActionButton'
+import ActionButton from './ActionButton';
 import ButtonContainer from './ButtonContainer';
-import {ElectionButton, ElectionButtonContainer} from './ElectionButton';
+import { ElectionButton, ElectionButtonContainer } from './ElectionButton';
 
 export default Button;
 
@@ -10,5 +10,5 @@ export {
   ActionButton,
   ButtonContainer,
   ElectionButton,
-  ElectionButtonContainer
+  ElectionButtonContainer,
 };

@@ -1,4 +1,3 @@
-/* @flow */
 import classNames from 'classnames';
 import React from 'react';
 import injectSheet from 'react-jss';
@@ -30,7 +29,7 @@ const ActionText: React.SFC<IProps> = props => {
   const cls = classNames({
     [classes.baseline]: props.bottom,
     [classes.actionText]: true,
-    "button-no-style": true,
+    'button-no-style': true,
   });
   return (
     <button className={cls} onClick={props.action}>

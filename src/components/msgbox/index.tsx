@@ -1,7 +1,7 @@
 import React from 'react';
-import Icon from '../../components/icon';
-
 import injectSheet from 'react-jss';
+
+import Icon from 'components/icon';
 
 const defaultTimeoutSec = 10;
 

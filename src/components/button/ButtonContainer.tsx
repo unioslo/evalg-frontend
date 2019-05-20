@@ -4,13 +4,13 @@ import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
 interface IProps {
-  alignLeft?: boolean,
-  noTopMargin?: boolean,
-  smlTopMargin?: boolean,
-  center?: boolean,
-  alignRight?: boolean,
-  classes: Classes
-};
+  alignLeft?: boolean;
+  noTopMargin?: boolean;
+  smlTopMargin?: boolean;
+  center?: boolean;
+  alignRight?: boolean;
+  classes: Classes;
+}
 
 const styles = (theme: any) => ({
   btnContainer: {
@@ -28,36 +28,36 @@ const styles = (theme: any) => ({
       marginRight: '1rem',
     },
     '& > *:last-child': {
-      marginRight: 0
+      marginRight: 0,
     },
   },
   alignLeft: {
     [theme.breakpoints.mdQuery]: {
-      justifyContent: 'flex-start'
-    }
+      justifyContent: 'flex-start',
+    },
   },
   center: {
     [theme.breakpoints.mdQuery]: {
-      justifyContent: 'center'
-    }
+      justifyContent: 'center',
+    },
   },
   alignRight: {
     [theme.breakpoints.mdQuery]: {
-      justifyContent: 'flex-end'
-    }
+      justifyContent: 'flex-end',
+    },
   },
   smallTopMargin: {
     marginTop: '1rem',
     [theme.breakpoints.mdQuery]: {
-      marginTop: '2rem'
-    }
+      marginTop: '2rem',
+    },
   },
   noTopMargin: {
-    marginTop: 0
-  }
+    marginTop: 0,
+  },
 });
 
-const ButtonContainer: React.SFC<IProps> = (props) => {
+const ButtonContainer: React.SFC<IProps> = props => {
   const { classes } = props;
   const cls = classNames({
     [classes.btnContainer]: true,
@@ -65,14 +65,10 @@ const ButtonContainer: React.SFC<IProps> = (props) => {
     [classes.center]: props.center,
     [classes.alignRight]: props.alignRight,
     [classes.noTopMargin]: props.noTopMargin,
-    [classes.smallTopMargin]: props.smlTopMargin
+    [classes.smallTopMargin]: props.smlTopMargin,
   });
 
-  return (
-    <div className={cls}>
-      {props.children}
-    </div>
-  )
+  return <div className={cls}>{props.children}</div>;
 };
 
 export default injectSheet(styles)(ButtonContainer);

@@ -1,12 +1,12 @@
 import React from 'react';
 import injectSheet from 'react-jss';
+
 import {
   SettingsSectionDisplayStatus,
   ISettingsSectionContents,
 } from './SettingsSection';
 import { SettingsSection } from '.';
-
-import { ElectionGroup } from '../../interfaces';
+import { ElectionGroup } from 'interfaces';
 
 const styles = (theme: any) => ({});
 

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import injectSheet from 'react-jss';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
-import DropDownBase from '../baseComponents';
+import DropDownBase from 'components/baseComponents';
 import { Classes } from 'jss';
 
 const styles = (theme: any) => ({

@@ -2,9 +2,9 @@ import React from 'react';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 import { useTranslation } from 'react-i18next';
-
-import Spinner from '../animations/Spinner';
 import moment from 'moment';
+
+import Spinner from 'components/animations/Spinner';
 
 const styles = {
   loading: {

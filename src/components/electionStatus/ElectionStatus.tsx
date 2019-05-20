@@ -1,12 +1,12 @@
 import React from 'react';
+import { Trans } from 'react-i18next';
 
 import Text from '../text';
 import { ElectionStatusIcon } from '../icons';
-import { Trans } from 'react-i18next';
 
 interface IProps {
-  status: any,
-  textSize?: string
+  status: any;
+  textSize?: string;
 }
 
 const ElectionStatus = (props: IProps) => {
@@ -18,7 +18,7 @@ const ElectionStatus = (props: IProps) => {
         <Trans>{`electionStatus.${status}`}</Trans>
       </Text>
     </span>
-  )
+  );
 };
 
 export default ElectionStatus;

@@ -29,7 +29,7 @@ const DrowdownArrowIcon = (props: IProps) => {
   const dropDownArrowCls = classNames({
     [props.classes.arrow]: true,
     'button-no-style': true,
-  })
+  });
 
   return (
     <button onClick={props.action} className={dropDownArrowCls}>
@@ -42,7 +42,7 @@ const DrowdownArrowIcon = (props: IProps) => {
         />
       </svg>
     </button>
-  )
+  );
 };
 
 export default injectSheet(styles)(DrowdownArrowIcon);

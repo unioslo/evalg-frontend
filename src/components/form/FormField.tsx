@@ -4,12 +4,12 @@ import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
 type IProps = {
-  children?: React.ReactNode,
-  inline?: boolean,
-  noTopMargin?: boolean,
-  smallBottomMargin?: boolean,
-  action?: any,
-  classes: Classes,
+  children?: React.ReactNode;
+  inline?: boolean;
+  noTopMargin?: boolean;
+  smallBottomMargin?: boolean;
+  action?: any;
+  classes: Classes;
 };
 
 const styles = (theme: any) => ({
@@ -18,21 +18,21 @@ const styles = (theme: any) => ({
     verticalAlign: 'top',
     marginTop: '2rem',
     '&:first-child': {
-      marginTop: '0'
-    }
+      marginTop: '0',
+    },
   },
   inline: {
     display: 'inline-block',
   },
   noTopMargin: {
-    marginTop: '0'
+    marginTop: '0',
   },
   smallBottomMargin: {
     marginBottom: '2rem',
   },
   hasAction: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   actionField: {
     flexGrow: '1',
@@ -40,11 +40,9 @@ const styles = (theme: any) => ({
     marginRight: '2.5rem',
   },
   action: {
-    width: '50px'
-  }
-
-
-})
+    width: '50px',
+  },
+});
 
 const FormField = (props: IProps) => {
   const { classes } = props;
@@ -53,25 +51,17 @@ const FormField = (props: IProps) => {
     [classes.inline]: props.inline,
     [classes.noTopMargin]: props.noTopMargin || props.inline,
     [classes.smallBottomMargin]: props.smallBottomMargin,
-    [classes.hasAction]: props.action
+    [classes.hasAction]: props.action,
   });
   if (!props.action) {
-    return (
-      <div className={cls}>
-        {props.children}
-      </div>
-    );
+    return <div className={cls}>{props.children}</div>;
   }
   return (
     <div className={cls}>
-      <div className={classes.actionField}>
-        {props.children}
-      </div>
-      <div className={classes.action}>
-        {props.action}
-      </div>
+      <div className={classes.actionField}>{props.children}</div>
+      <div className={classes.action}>{props.action}</div>
     </div>
-  )
+  );
 };
 
 export default injectSheet(styles)(FormField);

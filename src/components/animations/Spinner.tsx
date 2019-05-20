@@ -1,5 +1,4 @@
 import React from 'react';
-
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
 
@@ -7,12 +6,12 @@ const styles = () => ({
   spinner: {
     position: 'relative',
     display: 'inline-block',
-    width: (props: IProps) => props.size ? props.size : '2.5rem',
-    height: (props: IProps) => props.size ? props.size : '2.5rem',
-    marginLeft: (props: IProps) => props.marginLeft ? props.marginLeft : 0,
-    marginRight: (props: IProps) => props.marginRight ? props.marginRight : 0,
+    width: (props: IProps) => (props.size ? props.size : '2.5rem'),
+    height: (props: IProps) => (props.size ? props.size : '2.5rem'),
+    marginLeft: (props: IProps) => (props.marginLeft ? props.marginLeft : 0),
+    marginRight: (props: IProps) => (props.marginRight ? props.marginRight : 0),
     border: '3px solid rgba(255,255,255, .3)',
-    borderWidth: (props: IProps) => props.thin ? '2px' : '3px',
+    borderWidth: (props: IProps) => (props.thin ? '2px' : '3px'),
     borderRadius: '50%',
     borderTopColor: '#fff',
     animation: 'spin 0.8s linear infinite',

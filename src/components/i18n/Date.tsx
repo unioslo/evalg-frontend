@@ -2,7 +2,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import moment, { Moment } from 'moment-timezone';
 import 'moment/locale/nb';
-import { appTimezone } from '../../appConfig';
+
+import { appTimezone } from 'appConfig';
 
 interface IProps {
   dateTime: Moment | string;
