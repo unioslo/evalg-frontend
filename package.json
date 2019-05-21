@@ -69,7 +69,7 @@
     "build": "npm run build:env && react-scripts build",
     "build:env": "node scripts/build-env.js",
     "test": "react-scripts test --env=jsdom",
-    "lint": "eslint --ext js,ts,tsx src",
+    "lint": "eslint --ext js,jsx,ts,tsx src",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public"
