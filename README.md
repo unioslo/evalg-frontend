@@ -7,6 +7,7 @@
 ## Development
 
 ### Dev quickstart:
+
 1. `curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash`
 2. `nvm install --lts`
 3. `npm install`
@@ -14,6 +15,7 @@
 5. `npm run storybook`
 
 # Storybooks
+
 When developing components, storybook (`npm run storybook`) can be used in
 order to view updates to components automatically.
 
@@ -64,10 +66,20 @@ When authentication is enabled, the following must also be set:
 - react-final-form - https://github.com/final-form/react-final-form#-react-final-form
 - Mozilla Developer Network web docs - https://developer.mozilla.org/en-US/docs/Web (god referanse for Javascript, HTML, CSS, Web APIer, osv.)
 
-### Oppsett med VS Code
+### VS Code
 
-Installer utvidelsene TSLint og Prettier.
-- TSLint linter koden med konfigurasjonen i tslint.json.
-- Prettier formaterer koden med konfigurasjonen i .prettierrc (så man slipper å tenke på det, og alt blir formatert likt). Bruk innstillingen "Format on save" eller eventuelt Ctrl+Shift+I for å formatere en fil manuelt.
+Some tips for configuring VS Code for this project.
 
-Andre extensions-anbefalinger: GitLens, Jest, Sass, Apollo GraphQL, et ikon-tema som Material Icon Theme.
+## Install and configure ESLint
+
+CRA 3.0 provides TypeScript linting via typescript-eslint. Install the ESLint extension and enable TypeScript support in it as per [these instructions](https://github.com/facebook/create-react-app/blob/master/docusaurus/docs/setting-up-your-editor.md#displaying-lint-output-in-the-editor).
+
+Linting rules are currently inherited from CRA and cannot be modified. Revisit [this issue](https://github.com/facebook/create-react-app/issues/6871) at some point.
+
+## Install Prettier
+
+Prettier can automatically format code according to our `.prettierrc`. Consider enabling "Format on save" in VS Code. Ctrl+Shift+I to manually format a document.
+
+## Other recommended extensions
+
+GitLens, Jest, Sass, Apollo GraphQL, Material Icon Theme
