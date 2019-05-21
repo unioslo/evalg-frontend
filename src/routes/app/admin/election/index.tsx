@@ -1,20 +1,19 @@
 import React from 'react';
+import { History, Location } from 'history';
 import { Route, match } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+
+import Loading from 'components/loading';
+import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
+import { ElectionGroup } from 'interfaces';
+import { ElectionGroupFields, ElectionFields } from 'fragments';
 
 import AdminStepper from './components/AdminStepper';
 import InfoPage from './info';
 import CandidatesPage from './candidates';
 import PollbooksPage from './pollbooks';
 import StatusPage from './status';
-// import Loading from 'components/loading';
-import Loading from '../../../../components/loading';
-import { History, Location } from 'history';
-// import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
-import { electionGroupWithOrderedElections } from '../../../../utils/processGraphQLData';
-import { ElectionGroup } from '../../../../interfaces';
-import { ElectionGroupFields, ElectionFields } from '../../../../fragments';
 
 const electionGroupQuery = gql`
   ${ElectionGroupFields}

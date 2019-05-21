@@ -1,35 +1,27 @@
-import gql from 'graphql-tag';
 import React from 'react';
+import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
+import { Redirect } from 'react-router';
 import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 
-import { orderMultipleElections } from '../../../../../utils/processGraphQLData';
-import Button, {
-  ActionButton,
-  ButtonContainer,
-} from '../../../../../components/button';
-import Link from '../../../../../components/link';
-import { MsgBox } from '../../../../../components/msgbox';
-import { ConfirmModal } from '../../../../../components/modal';
-import { Page, PageSection } from '../../../../../components/page';
-import { Redirect } from 'react-router';
+import Spinner from 'components/animations/Spinner';
+import { orderMultipleElections } from 'utils/processGraphQLData';
+import Button, { ActionButton, ButtonContainer } from 'components/button';
+import Link from 'components/link';
+import { MsgBox } from 'components/msgbox';
+import { ConfirmModal } from 'components/modal';
+import { Page, PageSection } from 'components/page';
+import { ElectionGroupFields, ElectionFields } from 'fragments';
+import { DropDownOption, Election, IPollBook, IVoter } from 'interfaces';
+
 import UploadCensusFileModal, {
   IUploadCensusFileModalStatus,
 } from './components/UploadCensusFile';
-
-import {
-  DropDownOption,
-  Election,
-  IPollBook,
-  IVoter,
-} from '../../../../../interfaces';
+import CensusTable from './components/CensusTable';
 import {
   VoterGroupActionPanel,
   VoterGroupActionPanelContainer,
 } from '../components/VoterGroupActionsPanel';
-import CensusTable from './components/CensusTable';
-import Spinner from '../../../../../components/animations/Spinner';
-import { ElectionGroupFields, ElectionFields } from '../../../../../fragments';
 
 const deleteVotersInPollbook = gql`
   mutation DeleteVotersInPollBook($id: UUID!) {
@@ -245,13 +237,11 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
           return (
             <Page header={<Trans>election.censuses</Trans>}>
               <PageSection noBorder desc={<Trans>census.censusPageDesc</Trans>}>
-                <div
-                  style={{ marginBottom: '1.2rem' }}
-                  >
+                <div style={{ marginBottom: '1.2rem' }}>
                   <button
                     className="button-no-style"
                     onClick={this.showUploadCensusFileModal}
-                    >
+                  >
                     <ActionButton text={t('census.uploadCensusFileButton')} />
                   </button>
                 </div>

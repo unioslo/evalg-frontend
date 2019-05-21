@@ -1,8 +1,12 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
+import injectSheet from 'react-jss';
 
-import { PageSection } from '../../../../../components/page';
-import Icon from '../../../../../components/icon';
+import { PageSection } from 'components/page';
+import Icon from 'components/icon';
+import { ScreenSizeConsumer } from 'providers/ScreenSize';
+import { Candidate, Election } from 'interfaces';
+
 import {
   CandidateList,
   CandidateListItem,
@@ -10,10 +14,7 @@ import {
 } from './CandidateList';
 import HelpSubSection from './HelpSubSection';
 import MandatePeriodText from './MandatePeriodText';
-import injectSheet from 'react-jss';
 import BallotButtons from './BallotButtons';
-import { ScreenSizeConsumer } from '../../../../../providers/ScreenSize';
-import { Candidate, Election } from '../../../../../interfaces';
 
 const helpTextTags = [
   'voter.majorityVoteHelpYouMaySelectOnlyOne',

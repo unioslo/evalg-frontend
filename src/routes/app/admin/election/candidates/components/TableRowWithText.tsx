@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Text from '../../../../../../components/text';
-import { TableRow, TableCell } from '../../../../../../components/table';
+import Text from 'components/text';
+import { TableRow, TableCell } from 'components/table';
 
 interface IProps {
   colSpan: number;

@@ -2,9 +2,10 @@ import React from 'react';
 import { Trans } from 'react-i18next';
 import injectSheet from 'react-jss';
 
-import { PageSection, PageSubSection } from '../../../../../components/page';
-import Button, { ButtonContainer } from '../../../../../components/button';
-import { Candidate } from '../../../../../interfaces';
+import { PageSection, PageSubSection } from 'components/page';
+import Button, { ButtonContainer } from 'components/button';
+import { Candidate } from 'interfaces';
+
 import { CandidateInfo } from './CandidateList';
 
 const styles = (theme: any) => ({

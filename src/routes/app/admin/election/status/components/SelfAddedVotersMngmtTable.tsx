@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
+import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Trans, useTranslation } from 'react-i18next';
+import i18next from 'i18next';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
-
-import { IVoter } from '../../../../../../interfaces';
 
 import {
   Table,
@@ -14,14 +14,13 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from '../../../../../../components/table';
-import DropdownArrowIcon from '../../../../../../components/icons/DropdownArrowIcon';
-import { getVoterIdTypeDisplayName } from '../../../../../../utils/i18n';
-import { Mutation, Query } from 'react-apollo';
-import Button from '../../../../../../components/button';
-import Spinner from '../../../../../../components/animations/Spinner';
-import ActionText from '../../../../../../components/actiontext';
-import i18next from 'i18next';
+} from 'components/table';
+import DropdownArrowIcon from 'components/icons/DropdownArrowIcon';
+import { getVoterIdTypeDisplayName } from 'utils/i18n';
+import Button from 'components/button';
+import Spinner from 'components/animations/Spinner';
+import ActionText from 'components/actiontext';
+import { IVoter } from 'interfaces';
 
 const personForVoter = gql`
   query personForVoter($voterId: UUID!) {

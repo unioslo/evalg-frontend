@@ -1,12 +1,13 @@
 import React from 'react';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { withRouter, RouteComponentProps } from 'react-router';
 
-import { shuffleArray } from '../../../../utils/helpers';
+import { Candidate, Election } from 'interfaces';
+import { shuffleArray } from 'utils/helpers';
+
+import { BallotStep } from '.';
 import MajorityVoteReview from './components/MajorityVoteReview';
 import MajorityVoteBallot from './components/MajorityVoteBallot';
-import { Candidate, Election } from '../../../../interfaces';
-import { withRouter, RouteComponentProps } from 'react-router';
-import { BallotStep } from '.';
 
 interface IProps extends WithTranslation {
   election: Election;

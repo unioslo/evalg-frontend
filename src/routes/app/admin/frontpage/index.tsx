@@ -4,15 +4,16 @@ import gql from 'graphql-tag';
 import injectSheet from 'react-jss';
 import { Trans, withTranslation } from 'react-i18next';
 
-import Loading from '../../../../components/loading';
-import Page from '../../../../components/page/Page';
-import { PageSection } from '../../../../components/page';
-import { ActionButton } from '../../../../components/button';
+import Loading from 'components/loading';
+import Page from 'components/page/Page';
+import { PageSection } from 'components/page';
+import { ActionButton } from 'components/button';
+import Link from 'components/link';
+import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
+import { ElectionGroup } from 'interfaces';
+import { ElectionGroupFields, ElectionFields } from 'fragments';
+
 import ManageElectionsTable from './components/ManageElectionsTable';
-import Link from '../../../../components/link';
-import { electionGroupWithOrderedElections } from '../../../../utils/processGraphQLData';
-import { ElectionGroup } from '../../../../interfaces';
-import { ElectionGroupFields, ElectionFields } from '../../../../fragments';
 
 const electionGroupsQuery = gql`
   ${ElectionGroupFields}

@@ -1,12 +1,13 @@
 import React from 'react';
+import { Redirect } from 'react-router';
+import { withTranslation, WithTranslation } from 'react-i18next';
 
-import Page from '../../../../../components/page/Page';
+import Page from 'components/page/Page';
+import Button, { ButtonContainer } from 'components/button';
+import { ElectionGroup } from 'interfaces';
+
 import PrefElecCandTable from './components/PrefElecCandTable';
 import PrefTeamElecCandTable from './components/PrefTeamElecCandTable';
-import Button, { ButtonContainer } from '../../../../../components/button';
-import { Redirect } from 'react-router';
-import { ElectionGroup } from '../../../../../interfaces';
-import { withTranslation, WithTranslation } from 'react-i18next';
 
 interface IProps extends WithTranslation {
   electionGroup: ElectionGroup;

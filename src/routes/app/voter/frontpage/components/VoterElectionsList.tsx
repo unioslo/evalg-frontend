@@ -1,12 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
-
-import Button, { ButtonContainer } from '../../../../../components/button';
-import { Date, Time } from '../../../../../components/i18n';
-import Link from '../../../../../components/link';
-import { ElectionGroup } from '../../../../../interfaces';
 import { Classes } from 'jss';
+
+import Button, { ButtonContainer } from 'components/button';
+import { Date, Time } from 'components/i18n';
+import Link from 'components/link';
+import { ElectionGroup } from 'interfaces';
 
 const styles = (theme: any) => ({
   list: {

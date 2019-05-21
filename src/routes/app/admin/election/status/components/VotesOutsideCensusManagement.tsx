@@ -3,12 +3,12 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { ElectionGroup, IVoter } from '../../../../../../interfaces';
+import { PageExpandableSubSection } from 'components/page/PageSection';
+import { ElectionGroup, IVoter } from 'interfaces';
 
 import SelfAddedVotersMngmtTable, {
   VotersReviewTableAction,
 } from './SelfAddedVotersMngmtTable';
-import { PageExpandableSubSection } from '../../../../../../components/page/PageSection';
 
 const selfAddedVoters = gql`
   query electionGroupWithSelfAddedVoters($id: UUID!) {

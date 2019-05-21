@@ -4,7 +4,7 @@ import { FieldArray } from 'react-final-form-arrays';
 import arrayMutators from 'final-form-arrays';
 import { useTranslation } from 'react-i18next';
 
-import ActionText from '../../../../../../components/actiontext';
+import ActionText from 'components/actiontext';
 import {
   TableRowForm,
   TableRowFormFields,
@@ -12,9 +12,9 @@ import {
   FormField,
   FormFieldGroup,
   TextInputRF,
-} from '../../../../../../components/form';
+} from 'components/form';
 
-// import { validateUrl } from '../../../../../../utils/validators';
+// import { validateUrl } from 'utils/validators';
 
 interface IProps {
   handleSubmit: (a: any) => void;

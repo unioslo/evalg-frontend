@@ -1,21 +1,17 @@
 import React from 'react';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
+import { Classes } from 'jss';
 
-import { Button, ButtonContainer } from '../../../../../components/button';
-import {
-  PageSection,
-  PageSubSection,
-  PageParagraph,
-} from '../../../../../components/page';
+import { Button, ButtonContainer } from 'components/button';
+import { PageSection, PageSubSection, PageParagraph } from 'components/page';
+import { Candidate } from 'interfaces';
+
 import {
   CandidateList,
   CandidateListItem,
   CandidateInfo,
 } from './CandidateList';
-
-import { Candidate } from '../../../../../interfaces';
-import { Classes } from 'jss';
 
 const styles = (theme: any) => ({
   ingress: {

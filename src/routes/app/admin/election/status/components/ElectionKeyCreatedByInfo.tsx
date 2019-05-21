@@ -2,7 +2,7 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Date, Time } from '../../../../../../components/i18n';
+import { Date, Time } from 'components/i18n';
 
 export const electionGroupKeyMetaQuery = gql`
   query electionGroupKeyMeta($id: UUID!) {

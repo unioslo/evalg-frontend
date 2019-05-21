@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { ElectionGroup } from '../../../../../../interfaces';
-import { PageSection } from '../../../../../../components/page';
-import Button, { ButtonContainer } from '../../../../../../components/button';
+import { PageSection } from 'components/page';
+import Button, { ButtonContainer } from 'components/button';
+import { ElectionGroup } from 'interfaces';
+
 import CountingModal from './CountingModal';
 
 interface Props {

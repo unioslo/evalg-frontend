@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-import { authEnabled } from '../../../appConfig';
+import { authEnabled } from 'appConfig';
 
 import AdminFrontPage from './frontpage';
 import AdminElection from './election';

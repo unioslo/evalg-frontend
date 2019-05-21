@@ -1,10 +1,10 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 
-import Text from '../../../../../../components/text';
-import Button, { ButtonContainer } from '../../../../../../components/button';
-import Modal from '../../../../../../components/modal';
-import { ElectionGroup } from '../../../../../../interfaces';
+import Text from 'components/text';
+import Button, { ButtonContainer } from 'components/button';
+import Modal from 'components/modal';
+import { ElectionGroup } from 'interfaces';
 
 const renderPublishButton = (action: any) => (
   <Button

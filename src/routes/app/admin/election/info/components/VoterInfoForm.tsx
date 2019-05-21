@@ -2,7 +2,7 @@ import React from 'react';
 import arrayMutators from 'final-form-arrays';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
-import { Trans } from 'react-i18next';
+import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 
 import {
   DateInputRF,
@@ -12,8 +12,7 @@ import {
   FormFieldGroup,
   RadioButtonGroup,
   TextInputRF,
-} from '../../../../../../components/form';
-
+} from 'components/form';
 import {
   Table,
   TableBody,
@@ -22,16 +21,11 @@ import {
   TableHeaderCell,
   TableHeaderRow,
   TableRow,
-} from '../../../../../../components/table';
-
-import { validateEmail, validateUrl } from '../../../../../../utils/validators';
-
-import { PageSubSection } from '../../../../../../components/page';
-import Text from '../../../../../../components/text';
-
-import { ElectionGroup } from '../../../../../../interfaces';
-import { WithTranslation } from 'react-i18next';
-import { withTranslation } from 'react-i18next';
+} from 'components/table';
+import { PageSubSection } from 'components/page';
+import Text from 'components/text';
+import { validateEmail, validateUrl } from 'utils/validators';
+import { ElectionGroup } from 'interfaces';
 
 const validate = (lang: string) => (values: any) => {
   const elecErrors: any[] = [];

@@ -5,19 +5,19 @@ import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 import { Form, Field } from 'react-final-form';
 import classNames from 'classnames';
+import i18n from 'i18next';
 
-import { TableRow, TableCell } from '../../../../../../components/table';
+import { TableRow, TableCell } from 'components/table';
 import {
   TableRowForm,
   TableRowFormFields,
   FormField,
   TextInputRF,
-} from '../../../../../../components/form';
-import Button, { ButtonContainer } from '../../../../../../components/button';
-import { IPollBook } from '../../../../../../interfaces';
-import { getVoterIdTypeDisplayName } from '../../../../../../utils/i18n';
-import Spinner from '../../../../../../components/animations/Spinner';
-import i18n from 'i18next';
+} from 'components/form';
+import Button, { ButtonContainer } from 'components/button';
+import { IPollBook } from 'interfaces';
+import { getVoterIdTypeDisplayName } from 'utils/i18n';
+import Spinner from 'components/animations/Spinner';
 
 const addVoterById = gql`
   mutation addVoterById(

@@ -1,14 +1,13 @@
-/* @flow */
 import React from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import Text from '../../../../../../components/text';
-import Link from '../../../../../../components/link';
-import { Date } from '../../../../../../components/i18n';
-import { PageSubSection } from '../../../../../../components/page';
-import { InfoList, InfoListItem } from '../../../../../../components/infolist';
-import { allEqualForAttrs } from '../../../../../../utils';
-import { Election, ElectionGroup } from '../../../../../../interfaces';
+import Text from 'components/text';
+import Link from 'components/link';
+import { Date } from 'components/i18n';
+import { PageSubSection } from 'components/page';
+import { InfoList, InfoListItem } from 'components/infolist';
+import { allEqualForAttrs } from 'utils';
+import { Election, ElectionGroup } from 'interfaces';
 
 const valueNotSet = (
   <b>

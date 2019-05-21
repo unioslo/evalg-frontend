@@ -5,17 +5,17 @@ import gql from 'graphql-tag';
 import { withApollo, WithApolloClient } from 'react-apollo';
 import FileSaver from 'file-saver';
 
-import { IMutationResponse } from '../../../../../../interfaces';
+import { sleep, translateBackendError } from 'utils';
+import { getCryptoEngine, IKeyPair } from 'cryptoEngines';
+import Modal from 'components/modal';
+import Button, { ButtonContainer } from 'components/button';
+import { InfoList, InfoListItem } from 'components/infolist';
+import Link from 'components/link';
+import { CheckBox } from 'components/form';
+import AnimatedCheckmark from 'components/animations/AnimatedCheckmark';
+import { IMutationResponse } from 'interfaces';
 
-import { sleep, translateBackendError } from '../../../../../../utils';
-import { getCryptoEngine, IKeyPair } from '../../../../../../cryptoEngines';
-import Modal from '../../../../../../components/modal';
-import Button, { ButtonContainer } from '../../../../../../components/button';
-import { InfoList, InfoListItem } from '../../../../../../components/infolist';
-import Link from '../../../../../../components/link';
-import { CheckBox } from '../../../../../../components/form';
 import ModalSteps from './ModalSteps';
-import AnimatedCheckmark from '../../../../../../components/animations/AnimatedCheckmark';
 
 const styles = (theme: any) => ({
   errorMessage: {

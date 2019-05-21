@@ -10,7 +10,7 @@ import {
   FormErrorMsg,
   TextInputRF,
   DropDownRF,
-} from '../../../../../../components/form';
+} from 'components/form';
 
 interface IProps {
   handleSubmit: (e: any) => void;

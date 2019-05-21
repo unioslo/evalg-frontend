@@ -1,18 +1,19 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
+import { Trans } from 'react-i18next';
+
+import {
+  IActiveComponentProps,
+  IInactiveComponentProps,
+  ISettingsSectionContents,
+} from 'components/page/SettingsSection';
+import { ElectionGroup } from 'interfaces';
 
 import BaseElectionSettingsValues from './BaseElectionSettingsValues';
 import BaseElectionSettingsForm, {
   IElectionsBaseSettings,
 } from './BaseElectionSettingsForm';
-import {
-  IActiveComponentProps,
-  IInactiveComponentProps,
-  ISettingsSectionContents,
-} from '../../../../../../components/page/SettingsSection';
-import { Trans } from 'react-i18next';
-import { ElectionGroup } from '../../../../../../interfaces';
 
 const updateBaseSettings = gql`
   mutation UpdateBaseSettings(

@@ -2,7 +2,7 @@ import 'react-app-polyfill/ie11';
 // import 'core-js'; // FIXME: doesn't resolve properly when compiling
 
 import React from 'react';
-import * as ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { createUploadLink } from 'apollo-upload-client';
@@ -14,13 +14,12 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { makeAuthenticator, makeUserManager, Callback } from 'react-oidc';
 import { User } from 'oidc-client';
 
-import { ScreenSizeProvider } from './providers/ScreenSize';
-import { UserContextProvider } from './providers/UserContext';
-import App from './routes/app';
-import theme from './theme';
-
-import { oidcConfig, graphqlBackend } from './appConfig';
-import Spinner from './components/animations/Spinner';
+import { oidcConfig, graphqlBackend } from 'appConfig';
+import Spinner from 'components/animations/Spinner';
+import { ScreenSizeProvider } from 'providers/ScreenSize';
+import { UserContextProvider } from 'providers/UserContext';
+import App from 'routes/app';
+import theme from 'theme';
 
 import './i18n';
 

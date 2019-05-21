@@ -2,6 +2,7 @@ import React from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
 import arrayMutators from 'final-form-arrays';
+import { withTranslation, WithTranslation } from 'react-i18next';
 
 import {
   Table,
@@ -11,16 +12,11 @@ import {
   TableHeaderCell,
   TableHeaderRow,
   TableRow,
-} from '../../../../../../components/table';
-
-import { CheckBoxRF } from '../../../../../../components/form';
-import { NumberInputRF, FormButtons } from '../../../../../../components/form';
-import { PageSubSection } from '../../../../../../components/page';
-import {
-  ElectionBaseSettingsInput,
-  ElectionGroup,
-} from '../../../../../../interfaces';
-import { withTranslation, WithTranslation } from 'react-i18next';
+} from 'components/table';
+import { CheckBoxRF } from 'components/form';
+import { NumberInputRF, FormButtons } from 'components/form';
+import { PageSubSection } from 'components/page';
+import { ElectionBaseSettingsInput, ElectionGroup } from 'interfaces';
 
 export interface IElectionsBaseSettings {
   elections: ElectionBaseSettingsInput[];

@@ -1,23 +1,22 @@
 import React from 'react';
-
+import injectSheet from 'react-jss';
+import classNames from 'classnames';
+import gql from 'graphql-tag';
+import { Trans, WithTranslation, withTranslation } from 'react-i18next';
+import { ApolloQueryResult } from 'apollo-client';
+import { withApollo, WithApolloClient } from 'react-apollo';
 import {
   Form,
   Field,
   FormRenderProps,
   FieldRenderProps,
 } from 'react-final-form';
-import { Trans, WithTranslation, withTranslation } from 'react-i18next';
-import gql from 'graphql-tag';
-import { ApolloQueryResult } from 'apollo-client';
-import { withApollo, WithApolloClient } from 'react-apollo';
 
-import { translateBackendError } from '../../../../../../utils';
-import Button from '../../../../../../components/button';
-import { FormField } from '../../../../../../components/form';
-import { RadioButtonGroup } from '../../../../../../components/form';
-import Modal from '../../../../../../components/modal';
-import injectSheet from 'react-jss';
-import classNames from 'classnames';
+import { translateBackendError } from 'utils';
+import Button from 'components/button';
+import { FormField } from 'components/form';
+import { RadioButtonGroup } from 'components/form';
+import Modal from 'components/modal';
 
 const styles = (theme: any) => ({
   modalSize: {

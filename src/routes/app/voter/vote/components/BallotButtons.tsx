@@ -1,8 +1,8 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 
-import { ScreenSizeConsumer } from '../../../../../providers/ScreenSize';
-import Button, { ButtonContainer } from '../../../../../components/button';
+import { ScreenSizeConsumer } from 'providers/ScreenSize';
+import Button, { ButtonContainer } from 'components/button';
 
 interface IProps {
   onGoBackToSelectVoterGroup: () => void;

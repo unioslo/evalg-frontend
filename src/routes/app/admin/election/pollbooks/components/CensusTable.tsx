@@ -6,15 +6,6 @@ import { Trans } from 'react-i18next';
 import i18n from 'i18next';
 
 import {
-  IPollBook,
-  IVoter,
-  DropDownOption,
-} from '../../../../../../interfaces';
-
-import CensusTableFiltersRow from './CensusTableFiltersRow';
-import AddVoterForm from './AddVoterForm';
-import UpdateVoterForm from './UpdateVoterForm';
-import {
   Table,
   TableHeader,
   TableHeaderRow,
@@ -22,11 +13,16 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from '../../../../../../components/table';
-import Text from '../../../../../../components/text';
-import ActionText from '../../../../../../components/actiontext';
-import { getVoterIdTypeDisplayName } from '../../../../../../utils/i18n';
-import { ConfirmModal } from '../../../../../../components/modal';
+} from 'components/table';
+import Text from 'components/text';
+import ActionText from 'components/actiontext';
+import { getVoterIdTypeDisplayName } from 'utils/i18n';
+import { ConfirmModal } from 'components/modal';
+import { IPollBook, IVoter, DropDownOption } from 'interfaces';
+
+import CensusTableFiltersRow from './CensusTableFiltersRow';
+import AddVoterForm from './AddVoterForm';
+import UpdateVoterForm from './UpdateVoterForm';
 
 const N_RECORDS_TO_SHOW_INCREMENT = 50;
 

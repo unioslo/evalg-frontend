@@ -3,18 +3,18 @@ import gql from 'graphql-tag';
 import { Query, WithApolloClient, withApollo } from 'react-apollo';
 import { withTranslation, WithTranslation } from 'react-i18next';
 
-import { ElectionGroup, Election, IVoter } from '../../../../interfaces';
+import Loading from 'components/loading';
+import { Page } from 'components/page';
+import { orderMultipleElections } from 'utils/processGraphQLData';
+import { submitVote } from 'utils/voting';
+import { ElectionGroup, Election, IVoter } from 'interfaces';
 
-import VotingStepper, { VotingStep } from './components/VotingStepper';
-import VoterGroupSelect from '../voterGroupSelect';
-import Loading from '../../../../components/loading';
-import { Page } from '../../../../components/page';
-import { orderMultipleElections } from '../../../../utils/processGraphQLData';
 import PrefElecVote from './PrefElecVote';
 import MajorityVote from './MajorityVote';
 import Receipt from './components/Receipt';
 import Error from './components/Error';
-import { submitVote } from '../../../../utils/voting';
+import VotingStepper, { VotingStep } from './components/VotingStepper';
+import VoterGroupSelect from '../voterGroupSelect';
 
 const getElectionGroupVotingData = gql`
   query ElectionGroupVotingData($id: UUID!) {

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 
-import { ElectionGroup } from '../../../../../../interfaces';
+import { ElectionGroup } from 'interfaces';
+import { PageSection } from 'components/page';
 
-import { PageSection } from '../../../../../../components/page';
 import VotesOutsideCensusManagement from './VotesOutsideCensusManagement';
 
 interface Props {
