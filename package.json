@@ -1,6 +1,6 @@
 {
-  "name": "evalg-ts",
-  "version": "0.1.0",
+  "name": "evalg",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@types/apollo-upload-client": "^8.1.1",
