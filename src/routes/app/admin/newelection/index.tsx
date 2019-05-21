@@ -1,15 +1,15 @@
-/* @flow */
-import * as React from 'react';
+import React from 'react';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-
-import Page from '../../../../components/page/Page';
-import { PageSection } from '../../../../components/page';
-import NewElectionForm from './components/NewElectionForm';
 import { Trans } from 'react-i18next';
 import { ApolloClient } from 'apollo-client';
 import { History } from 'history';
-import { EvalgClientState } from '../../../../interfaces';
+
+import Page from 'components/page/Page';
+import { PageSection } from 'components/page';
+import { EvalgClientState } from 'interfaces';
+
+import NewElectionForm from './components/NewElectionForm';
 
 const electionTemplateQuery = gql`
   query {

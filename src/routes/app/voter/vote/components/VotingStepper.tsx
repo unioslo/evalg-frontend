@@ -1,11 +1,11 @@
 import React from 'react';
 import { WithTranslation, withTranslation } from 'react-i18next';
 
-import { appMobileVotingStepperVariant } from './../../../../../appConfig';
-import { Stepper, StepperItem } from '../../../../../components/stepper';
-import MobileStepperCircles from '../../../../../components/stepper/MobileStepperCircles';
-import { ScreenSizeConsumer } from '../../../../../providers/ScreenSize';
-import MobileStepperSimple from '../../../../../components/stepper/MobileStepperSimple';
+import { appMobileVotingStepperVariant } from 'appConfig';
+import { Stepper, StepperItem } from 'components/stepper';
+import MobileStepperCircles from 'components/stepper/MobileStepperCircles';
+import MobileStepperSimple from 'components/stepper/MobileStepperSimple';
+import { ScreenSizeConsumer } from 'providers/ScreenSize';
 
 export enum VotingStep {
   Step1SelectVoterGroup = 1,

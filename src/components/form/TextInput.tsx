@@ -1,11 +1,10 @@
-/* @flow */
-import * as React from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
-
-import FormErrorMsg from './FormErrorMsg';
 import { Classes } from 'jss';
 import { FieldRenderProps } from 'react-final-form';
+
+import FormErrorMsg from './FormErrorMsg';
 
 interface IProps {
   value: string;

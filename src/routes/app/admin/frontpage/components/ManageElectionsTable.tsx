@@ -1,6 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { Trans } from 'react-i18next';
+import { Classes } from 'jss';
+import injectSheet from 'react-jss';
 
+import Icon from 'components/icon';
+import Link from 'components/link';
 import {
   Table,
   TableHeader,
@@ -9,16 +13,11 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from '../../../../../components/table';
+} from 'components/table';
+import { ElectionGroup } from 'interfaces';
 
-import Icon from '../../../../../components/icon';
 import ElectionGroupTableRow from './ElectionGroupTableRow';
 import ElectionTableRow from './ElectionTableRow';
-import Link from '../../../../../components/link';
-import { ElectionGroup } from '../../../../../interfaces';
-
-import { Classes } from 'jss';
-import injectSheet from 'react-jss';
 
 const styles = (theme: any) => ({
   votesOutsideCensusColumnHeader: {

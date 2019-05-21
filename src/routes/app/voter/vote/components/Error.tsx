@@ -1,9 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import injectSheet from 'react-jss';
-import { useTranslation } from 'react-i18next';
-import Link from '../../../../../components/link';
 import { Classes } from 'jss';
-import { PageSection } from '../../../../../components/page';
+import { useTranslation } from 'react-i18next';
+
+import Link from 'components/link';
+import { PageSection } from 'components/page';
 
 const styles = (theme: any) => ({
   receiptTextBox: {

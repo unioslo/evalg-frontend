@@ -1,45 +1,44 @@
 import classNames from 'classnames';
-import * as React from 'react';
+import React from 'react';
 import injectSheet from 'react-jss';
-
 
 const styles = () => ({
   actionItem: {
     '&:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     alignItems: 'center',
     display: 'inline-flex',
     height: '100%',
   },
   alignCenter: {
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   alignRight: {
-    justifyContent: 'flex-end'
-  }
-})
+    justifyContent: 'flex-end',
+  },
+});
 
 interface IProps {
-  action: () => void,
-  alignRight?: boolean,
-  alignCenter?: boolean,
-  classes?: any,
+  action: () => void;
+  alignRight?: boolean;
+  alignCenter?: boolean;
+  classes?: any;
 }
 
-const ActionItem: React.SFC<IProps> = (props) => {
+const ActionItem: React.SFC<IProps> = props => {
   const { classes } = props;
   const cls = classNames({
-    "button-no-style": true,
+    'button-no-style': true,
     [classes.actionItem]: true,
     [classes.alignCenter]: props.alignCenter,
-    [classes.alignRight]: props.alignRight
+    [classes.alignRight]: props.alignRight,
   });
   return (
-    <button className={cls} onClick={props.action} >
+    <button className={cls} onClick={props.action}>
       {props.children}
     </button>
-  )
+  );
 };
 
 export default injectSheet(styles)(ActionItem);

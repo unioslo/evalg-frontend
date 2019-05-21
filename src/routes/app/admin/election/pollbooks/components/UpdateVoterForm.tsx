@@ -2,9 +2,8 @@ import React from 'react';
 import { Field, Form } from 'react-final-form';
 import { Trans } from 'react-i18next';
 
-import { DropDownOption } from '../../../../../../interfaces';
-
-import { DropDownRF, FormButtons } from '../../../../../../components/form';
+import { DropDownRF, FormButtons } from 'components/form';
+import { DropDownOption } from 'interfaces';
 
 interface IUpdateVoterForm {
   submitAction: (o: any) => void;

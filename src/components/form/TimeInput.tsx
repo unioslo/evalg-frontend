@@ -1,12 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
-
-import Icon from '../icon';
-import TextInput from './TextInput';
 import { Classes } from 'jss';
 import { WithTranslation, withTranslation } from 'react-i18next';
+
+import Icon from 'components/icon';
+import TextInput from './TextInput';
 
 const styles = (theme: any) => ({
   outerContainer: {

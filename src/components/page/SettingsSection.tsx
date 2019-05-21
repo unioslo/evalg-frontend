@@ -1,12 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 import { Trans } from 'react-i18next';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import ActionText from '../../components/actiontext';
-import Text from '../../components/text';
+import ActionText from 'components/actiontext';
+import Text from 'components/text';
 
-import { ElectionGroup } from '../../interfaces';
+import { ElectionGroup } from 'interfaces';
 
 const styles = (theme: any) => ({
   section: {
@@ -14,9 +14,9 @@ const styles = (theme: any) => ({
     padding: `${theme.contentVertPadding} ${theme.contentHorPadding}`,
     [theme.breakpoints.mdQuery]: {
       '&:not(:last-child)': {
-        borderBottom: `${theme.sectionBorderWidth} ${theme.sectionBorderStyle} ${
-          theme.sectionBorderColor
-        }`,
+        borderBottom: `${theme.sectionBorderWidth} ${
+          theme.sectionBorderStyle
+        } ${theme.sectionBorderColor}`,
       },
       padding: `${theme.contentVertMdPadding} ${theme.contentHorMdPadding}`,
     },

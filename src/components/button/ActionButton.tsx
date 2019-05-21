@@ -1,5 +1,4 @@
-/* @flow */
-import * as React from 'react';
+import React from 'react';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
@@ -26,7 +25,7 @@ const styles = (theme: any) => ({
   },
 });
 
-const ActionButton: React.SFC<IProps> = (props) => {
+const ActionButton: React.SFC<IProps> = props => {
   const { classes } = props;
   return (
     <svg

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import classNames from 'classnames';
 // import injectSheet from 'react-jss';
 
@@ -9,8 +9,8 @@ import classNames from 'classnames';
 // })
 
 type IProps = {
-  children?: React.ReactNode[],
-}
+  children?: React.ReactNode[];
+};
 
 const ElectionButtonContainer = (props: IProps) => {
   let spaceBetween = false;
@@ -19,15 +19,11 @@ const ElectionButtonContainer = (props: IProps) => {
     spaceBetween = true;
   }
   const cls = classNames({
-    'electionbuttoncontainer': true,
+    electionbuttoncontainer: true,
     'electionbuttoncontainer-margin': !spaceBetween,
-    'electionbuttoncontainer-spacebetween': spaceBetween
+    'electionbuttoncontainer-spacebetween': spaceBetween,
   });
-  return (
-    <div className={cls}>
-      {children}
-    </div>
-  );
+  return <div className={cls}>{children}</div>;
 };
 
 export default ElectionButtonContainer;

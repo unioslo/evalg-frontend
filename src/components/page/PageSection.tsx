@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
-import DropdownArrowIcon from '../icons/DropdownArrowIcon';
+
+import DropdownArrowIcon from 'components/icons/DropdownArrowIcon';
 
 interface IProps {
   children?: React.ReactNode;

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import DropDownBase from 'components/baseComponents/DropDownBase';
 import injectSheet from 'react-jss';
 

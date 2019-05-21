@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import i18n from 'i18next';
-import { TableRow, TableCell } from '../../../../../../components/table';
-import { DropDown, TextInput } from '../../../../../../components/form';
-import ActionText from '../../../../../../components/actiontext';
+
+import { TableRow, TableCell } from 'components/table';
+import { DropDown, TextInput } from 'components/form';
+import ActionText from 'components/actiontext';
 
 interface IFiltersRowProps {
   idTypeFilter: string;

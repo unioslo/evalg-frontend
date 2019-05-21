@@ -1,11 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { WithTranslation, withTranslation } from 'react-i18next';
 
-import Text from '../../../../../../components/text';
-import { InfoList, InfoListItem } from '../../../../../../components/infolist';
-import { ElectionGroup } from '../../../../../../interfaces';
-import { WithTranslation } from 'react-i18next';
-import { withTranslation } from 'react-i18next';
+import Text from 'components/text';
+import { InfoList, InfoListItem } from 'components/infolist';
+import { ElectionGroup } from 'interfaces';
 
 interface IProps extends WithTranslation {
   electionGroup: ElectionGroup;

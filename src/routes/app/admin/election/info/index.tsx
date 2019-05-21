@@ -1,22 +1,22 @@
 import React from 'react';
-
+import { Query, withApollo, WithApolloClient } from 'react-apollo';
 import { Trans, withTranslation, WithTranslation } from 'react-i18next';
-import Page from '../../../../../components/page/Page';
-import { PageSection } from '../../../../../components/page';
-import Text from '../../../../../components/text';
-import Button, { ButtonContainer } from '../../../../../components/button';
 import { History } from 'history';
 import gql from 'graphql-tag';
 
-import { ISettingsSectionContents } from '../../../../../components/page/SettingsSection';
+import Page from 'components/page/Page';
+import { PageSection } from 'components/page';
+import Text from 'components/text';
+import Button, { ButtonContainer } from 'components/button';
+
+import { ISettingsSectionContents } from 'components/page/SettingsSection';
+import SettingsSectionsGroup from 'components/page/SettingsSectionsGroup';
+import { ElectionGroup } from 'interfaces';
+
 import BaseElectionSettingsSection from './components/BaseElectionSettings';
 import VotingPeriodSettingsSection from './components/VotingperiodSettings';
 import VoterInfoSettingsSection from './components/VoterInfoSettings';
 import AdminRolesSettingsSection from './components/AdminRolesSettings';
-import SettingsSectionsGroup from '../../../../../components/page/SettingsSectionsGroup';
-import { Query, withApollo, WithApolloClient } from 'react-apollo';
-import { ElectionGroup } from '../../../../../interfaces';
-// import { ElectionGroup } from '../../../../../interfaces';
 
 const isCreatingNewElectionQuery = gql`
   query {

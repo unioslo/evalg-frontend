@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import injectSheet from 'react-jss';
 import { FieldRenderProps } from 'react-final-form';
 import Select from 'react-select';
@@ -40,10 +40,17 @@ class SelectDropDown extends React.Component<IProps> {
   }
 
   public render() {
-    const { classes, label, options, placeholder, isSearchable, large} = this.props;
+    const {
+      classes,
+      label,
+      options,
+      placeholder,
+      isSearchable,
+      large,
+    } = this.props;
 
     const searchable = isSearchable ? true : false;
-    const size = large ? '35rem': '22.3rem';
+    const size = large ? '35rem' : '22.3rem';
 
     const customStyles = {
       option: (provided: any, state: any) => ({
@@ -52,7 +59,9 @@ class SelectDropDown extends React.Component<IProps> {
           backgroundColor: lightBlueGrey,
           cursor: 'pointer',
         },
-        backgroundColor: state.isFocused ? theme.dropDownBackgroundColorFocused : '#fff',
+        backgroundColor: state.isFocused
+          ? theme.dropDownBackgroundColorFocused
+          : '#fff',
         color: greyishBrown,
         '&:not(:last-child)': {
           borderBottom: 'solid 1px #ddd;',

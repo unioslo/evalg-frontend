@@ -1,16 +1,17 @@
-import * as React from 'react';
+import React from 'react';
 import classNames from 'classnames';
-import Icon from '../icon';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
-import Spinner from '../animations/Spinner';
+
+import Icon from 'components/icon';
+import Spinner from 'components/animations/Spinner';
 
 const OSXUserAgent = window.navigator.userAgent.includes('OS X');
 
 const styles = (theme: any) => ({
   button: {
     '&:only-child, &:last-child': {
-      marginRight: 0
+      marginRight: 0,
     },
     border: `0.3rem solid`,
     borderRadius: '0.4rem',
@@ -18,17 +19,17 @@ const styles = (theme: any) => ({
     display: 'flex',
     alignItems: 'center',
     fontSize: '2rem',
-    height: (props: IProps) => props.height ? props.height : '6rem',
+    height: (props: IProps) => (props.height ? props.height : '6rem'),
     lineHeight: 0.9,
     padding: '0 2rem',
     transition: 'background 100ms ease-in',
     [theme.breakpoints.mdQuery]: {
       fontSize: '1.8rem',
-      height: (props: IProps) => props.height ? props.height : '5rem',
+      height: (props: IProps) => (props.height ? props.height : '5rem'),
     },
   },
   wide: {
-    padding: '2rem 1.5rem'
+    padding: '2rem 1.5rem',
   },
   primary: {
     background: theme.primaryBtnBgColor,
@@ -36,7 +37,7 @@ const styles = (theme: any) => ({
     color: theme.primaryBtnColor,
     '&:focus': {
       borderColor: theme.primaryBtnFocusedBorderColor,
-    }
+    },
   },
   secondary: {
     background: theme.secondaryBtnBgColor,
@@ -44,11 +45,11 @@ const styles = (theme: any) => ({
     color: theme.secondaryBtnColor,
   },
   smallText: {
-    fontSize: '1.4rem'
+    fontSize: '1.4rem',
   },
   disabled: {
     '&$primary': {
-      background: theme.btnDefDisabledColor
+      background: theme.btnDefDisabledColor,
     },
     '&$secondary': {
       color: theme.btnDefDisabledColor,
@@ -58,7 +59,7 @@ const styles = (theme: any) => ({
     cursor: 'not-allowed',
   },
   osx: {
-    paddingTop: `calc(${theme.btnVerMdPadding} - ${theme.btnBorderWidth})`
+    paddingTop: `calc(${theme.btnVerMdPadding} - ${theme.btnBorderWidth})`,
   },
   icon: {
     marginLeft: '2rem',
@@ -71,26 +72,26 @@ const styles = (theme: any) => ({
   },
   centerContent: {
     justifyContent: 'center',
-  }
+  },
 });
 
 interface IProps {
-  action?: (event: any) => void,
-  secondary?: boolean,
-  disabled?: boolean,
-  showSpinner?: boolean,
-  iconLeft?: string,
-  iconRight?: string,
-  smallText?: boolean,
-  wide?: boolean,
-  fillWidth?: boolean,
-  centerContent?: boolean,
-  height?: string,
-  text: string | any,
-  classes: Classes,
+  action?: (event: any) => void;
+  secondary?: boolean;
+  disabled?: boolean;
+  showSpinner?: boolean;
+  iconLeft?: string;
+  iconRight?: string;
+  smallText?: boolean;
+  wide?: boolean;
+  fillWidth?: boolean;
+  centerContent?: boolean;
+  height?: string;
+  text: string | any;
+  classes: Classes;
 }
 
-const Button: React.SFC<IProps> = (props) => {
+const Button: React.SFC<IProps> = props => {
   const { classes } = props;
   const btnClassNames = classNames({
     [classes.button]: true,
@@ -105,28 +106,28 @@ const Button: React.SFC<IProps> = (props) => {
   });
 
   return (
-    <button onClick={props.action}
+    <button
+      onClick={props.action}
       type="button"
       disabled={props.disabled}
-      className={btnClassNames}>
-
-      {props.iconLeft &&
+      className={btnClassNames}
+    >
+      {props.iconLeft && (
         <span className={classes.icon}>
           <Icon type={props.iconLeft} />
         </span>
-      }
+      )}
       {props.text}
 
-      {props.iconRight &&
+      {props.iconRight && (
         <span className={classes.icon}>
           <Icon type={props.iconRight} />
         </span>
-      }
+      )}
 
       {props.showSpinner && <Spinner marginLeft="1rem" size="2.3rem" />}
-
     </button>
-  )
+  );
 };
 
 export default injectSheet(styles)(Button);

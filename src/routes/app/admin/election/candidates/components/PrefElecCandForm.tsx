@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Form, Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
 
@@ -10,7 +10,7 @@ import {
   FormErrorMsg,
   TextInputRF,
   DropDownRF,
-} from '../../../../../../components/form';
+} from 'components/form';
 
 interface IProps {
   handleSubmit: (e: any) => void;

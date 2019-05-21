@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import { Trans } from 'react-i18next';
 
-import { Date } from '../../../../../components/i18n';
-import { Election } from '../../../../../interfaces';
+import { Date } from 'components/i18n';
+import { Election } from 'interfaces';
 
 interface IProps {
   election: Election;

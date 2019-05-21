@@ -1,12 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 
-import Icon from '../../../../../components/icon';
-import Link from '../../../../../components/link';
-import { joinStringsWithCommaAndAnd } from '../../../../../utils';
-import { Candidate } from '../../../../../interfaces';
+import Icon from 'components/icon';
+import Link from 'components/link';
+import { joinStringsWithCommaAndAnd } from 'utils';
+import { Candidate } from 'interfaces';
 
 const styles = (theme: any) => ({
   button: {
@@ -286,13 +286,15 @@ const CumulateButton: React.SFC<IButtonProps> = props => (
 const HOCCumulateButton = injectSheet(styles)(CumulateButton);
 
 const RemoveButton: React.SFC<IButtonProps> = props => (
-  <button 
+  <button
     className={classNames({
       [props.classes.buttonRemove]: true,
-      "button-no-style": true})} 
-    onClick={props.onClick}>
-    <Icon type="remove" custom={{ color: 'teal', small: true }}/>
-    <div className={props.classes.spacing}/>
+      'button-no-style': true,
+    })}
+    onClick={props.onClick}
+  >
+    <Icon type="remove" custom={{ color: 'teal', small: true }} />
+    <div className={props.classes.spacing} />
     <Trans>general.remove</Trans>
   </button>
 );

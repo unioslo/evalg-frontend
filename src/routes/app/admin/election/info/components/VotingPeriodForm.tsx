@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 import { Form, Field, FormRenderProps } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
 import arrayMutators from 'final-form-arrays';
 
-import Text from '../../../../../../components/text';
+import Text from 'components/text';
 import {
   DateInputRF,
   FormErrorMsg,
@@ -12,7 +12,7 @@ import {
   FormFieldGroup,
   RadioButtonGroup,
   TimeInputRF,
-} from '../../../../../../components/form';
+} from 'components/form';
 
 import {
   Table,
@@ -22,10 +22,9 @@ import {
   TableHeaderCell,
   TableHeaderRow,
   TableRow,
-} from '../../../../../../components/table';
-
-import FormButtons from '../../../../../../components/form/FormButtons';
-import { Election } from '../../../../../../interfaces';
+} from 'components/table';
+import FormButtons from 'components/form/FormButtons';
+import { Election } from 'interfaces';
 
 const SingleElectionForm = () => {
   return (
@@ -232,10 +231,6 @@ interface IProps extends WithTranslation {
 
 class VotingPeriodForm extends React.Component<IProps> {
   isSubmitting = false;
-
-  constructor(props: IProps) {
-    super(props);
-  }
 
   public handleSubmit = async (submitValues: any) => {
     this.isSubmitting = true;

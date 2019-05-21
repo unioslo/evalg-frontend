@@ -1,12 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
-
-import DropDownBase from '../baseComponents/DropDownBase';
-import TextInput from './TextInput';
 import { FieldRenderProps } from 'react-final-form';
 import { Classes } from 'jss';
+
+import DropDownBase from 'components/baseComponents/DropDownBase';
+import TextInput from './TextInput';
 
 const styles = (theme: any) => ({
   dropdown: {
@@ -132,10 +132,6 @@ interface IProps {
 class DropDown extends DropDownBase<IProps> {
   // state: IDropDownState;
   timeoutID?: any;
-  
-  constructor(props: IProps) {
-    super(props);
-  }
 
   componentDidMount() {
     super.componentDidMount();
@@ -158,7 +154,7 @@ class DropDown extends DropDownBase<IProps> {
       this.setState({ open: true });
     }
   }
-  
+
   handleOnBlur() {
     this.timeoutID = setTimeout(() => {
       this.setState({ open: false });

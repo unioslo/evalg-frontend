@@ -1,27 +1,21 @@
-import * as React from 'react';
+import React from 'react';
 import injectSheet from 'react-jss';
-
+import { useTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet';
 import { Classes } from 'jss';
 import { Route } from 'react-router-dom';
+
+import { authEnabled, oidcLogoutUrl } from 'appConfig';
+import { UserContext } from 'providers/UserContext';
+import Spinner from 'components/animations/Spinner';
+import Link from 'components/link';
+import { H1 } from 'components/text';
 
 import Content from './components/Content';
 import Footer from './components/Footer';
 import Header from './components/Header';
-import Spinner from '../../components/animations/Spinner';
-import Link from '../../components/link';
-import { H1 } from '../../components/text';
-
 import AdminRoute from './admin';
 import VoterRoute from './voter';
-
-import { authEnabled } from '../../appConfig';
-import { oidcLogoutUrl } from '../../appConfig';
-// import { UserContext } from '../../providers/UserContext';
-import { UserContext } from '../../providers/UserContext';
-import { useTranslation } from 'react-i18next';
-
-import { Helmet } from 'react-helmet';
-
 import VoterFrontPage from './voter/frontpage';
 
 const styles = {
@@ -60,7 +54,7 @@ interface IStyleProp {
   classes: Classes;
 }
 
-const logout: React.FunctionComponent<IStyleProp> = (props: IStyleProp) => {
+const Logout: React.FunctionComponent<IStyleProp> = (props: IStyleProp) => {
   const { t } = useTranslation();
   window.location.href = oidcLogoutUrl;
   return (
@@ -72,7 +66,7 @@ const logout: React.FunctionComponent<IStyleProp> = (props: IStyleProp) => {
     </div>
   );
 };
-const styledLogout = injectSheet(styles)(logout);
+const styledLogout = injectSheet(styles)(Logout);
 
 interface IAppProps {
   classes: Classes;

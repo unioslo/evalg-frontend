@@ -1,15 +1,15 @@
-import * as React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { TableRow, TableCell } from '../../../../../components/table';
-import Text from '../../../../../components/text';
-import VoteStatus from './VoteStatus';
-import ElectionStatus from '../../../../../components/electionStatus';
-import DropdownArrowIcon from '../../../../../components/icons/DropdownArrowIcon';
-import { ElectionGroup } from '../../../../../interfaces';
+import { TableRow, TableCell } from 'components/table';
+import Text from 'components/text';
+import ElectionStatus from 'components/electionStatus';
+import DropdownArrowIcon from 'components/icons/DropdownArrowIcon';
+import { Date, Time } from 'components/i18n';
+import { ElectionGroup } from 'interfaces';
+import { allEqual } from 'utils';
 
-import { Date, Time } from '../../../../../components/i18n';
-import { allEqual } from '../../../../../utils';
+import VoteStatus from './VoteStatus';
 
 interface IProps {
   elGrp: ElectionGroup;

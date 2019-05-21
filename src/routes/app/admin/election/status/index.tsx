@@ -1,12 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 import { Trans } from 'react-i18next';
 
-import { Page } from '../../../../../components/page';
+import { Page } from 'components/page';
+import { ElectionGroup } from 'interfaces';
+
 import ElectionStatusSection from './components/ElectionStatusSection';
 import VotesSection from './components/VotesSection';
 import ElectionKeySection from './components/ElectionKeySection';
 import CountingSection from './components/CountingSection';
-import { ElectionGroup } from '../../../../../interfaces';
 
 interface IProps {
   electionGroup: ElectionGroup;
@@ -22,7 +23,7 @@ const StatusPage: React.FunctionComponent<IProps> = ({
   return (
     <>
       <Page header={<Trans>election.electionStatus</Trans>}>
-        <div ref={scrollToStatusRef}></div>
+        <div ref={scrollToStatusRef} />
         <ElectionStatusSection electionGroup={electionGroup} />
         <ElectionKeySection
           electionGroup={electionGroup}

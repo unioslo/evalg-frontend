@@ -1,7 +1,7 @@
 import React from 'react';
 import injectSheet from 'react-jss';
 
-import Icon from '../../components/icon';
+import Icon from 'components/icon';
 
 const subtaskWorkingStateIconStyles = (theme: any) => ({
   iconContainer: {

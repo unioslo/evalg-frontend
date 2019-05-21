@@ -1,16 +1,17 @@
 import gql from 'graphql-tag';
-import * as React from 'react';
+import React from 'react';
 import { Query, WithApolloClient, withApollo } from 'react-apollo';
 
-import { Page, PageSection } from '../../../../components/page';
+import { withTranslation, WithTranslation, Trans } from 'react-i18next';
+
+import { Page, PageSection } from 'components/page';
+import Loading from 'components/loading';
+import { ElectionGroup, IVoter } from 'interfaces';
+import { ElectionGroupFields, ElectionFields } from 'fragments';
+import { getSignedInPersonIdQuery } from 'queries';
+import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
+
 import VoterElections from './components/VoterElections';
-import { electionGroupWithOrderedElections } from '../../../../utils/processGraphQLData';
-import { ElectionGroup, IVoter } from '../../../../interfaces';
-import { getSignedInPersonIdQuery } from '../../../../queries';
-import { WithTranslation, Trans } from 'react-i18next';
-import { withTranslation } from 'react-i18next';
-import Loading from '../../../../components/loading';
-import { ElectionGroupFields, ElectionFields } from '../../../../fragments';
 
 const electionGroupsQuery = gql`
   ${ElectionGroupFields}
@@ -49,10 +50,6 @@ const votersForPersonQuery = gql`
 interface IProps extends WithTranslation {}
 
 class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
-  constructor(props: WithApolloClient<IProps>) {
-    super(props);
-  }
-
   render() {
     const { t } = this.props;
     return (

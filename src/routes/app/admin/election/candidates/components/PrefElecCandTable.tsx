@@ -1,17 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
-
-// import { objPropsToArray } from '../../../../../../utils';
-
-import { PageSection } from '../../../../../../components/page';
-import Text from '../../../../../../components/text';
 import { Trans, withTranslation, WithTranslation } from 'react-i18next';
-import {
-  ElectionButton,
-  ElectionButtonContainer,
-} from '../../../../../../components/button';
+
+import { PageSection } from 'components/page';
+import Text from 'components/text';
+import { ElectionButton, ElectionButtonContainer } from 'components/button';
 import {
   Table,
   TableHeader,
@@ -20,14 +15,14 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from '../../../../../../components/table';
+} from 'components/table';
 
-import ActionText from '../../../../../../components/actiontext';
-import { DropDown, TextInput } from '../../../../../../components/form';
+import ActionText from 'components/actiontext';
+import { DropDown, TextInput } from 'components/form';
+import { ElectionGroup } from '../../../../../../interfaces';
 
 import TableRowWithText from './TableRowWithText';
 import PrefElecCandForm from './PrefElecCandForm';
-import { ElectionGroup } from '../../../../../../interfaces';
 
 const addPrefElecCandidate = gql`
   mutation AddPrefElecCandidate(

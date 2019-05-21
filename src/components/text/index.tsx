@@ -1,17 +1,17 @@
-import * as React from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
 interface ITextProps {
-  children: any,
-  bold?: boolean,
-  size?: string,
-  inline?: boolean,
-  marginTop?: boolean,
-  marginBottom?: boolean,
-  classes: Classes,
-};
+  children: any;
+  bold?: boolean;
+  size?: string;
+  inline?: boolean;
+  marginTop?: boolean;
+  marginBottom?: boolean;
+  classes: Classes;
+}
 
 const Text = ({
   classes,
@@ -93,8 +93,8 @@ const styles = (theme: any) => ({
 });
 
 interface IHeader {
-  children: any,
-  classes: Classes,
+  children: any;
+  classes: Classes;
 }
 
 const H1 = ({ classes, children }: IHeader) => (

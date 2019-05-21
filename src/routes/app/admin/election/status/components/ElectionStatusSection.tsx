@@ -1,13 +1,14 @@
 import gql from 'graphql-tag';
-import * as React from 'react';
+import React from 'react';
 import { Mutation } from 'react-apollo';
 import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 
-import Text from '../../../../../../components/text';
-import { PageSection, PageSubSection } from '../../../../../../components/page';
-import { InfoList, InfoListItem } from '../../../../../../components/infolist';
-import { ElectionGroup } from '../../../../../../interfaces';
-import ElectionStatus from '../../../../../../components/electionStatus/ElectionStatus';
+import Text from 'components/text';
+import { PageSection, PageSubSection } from 'components/page';
+import { InfoList, InfoListItem } from 'components/infolist';
+import ElectionStatus from 'components/electionStatus/ElectionStatus';
+import { ElectionGroup } from 'interfaces';
+
 import AnnounceElectionGroup from './AnnounceElectionGroup';
 import PublishElectionGroup from './PublishElectionGroup';
 

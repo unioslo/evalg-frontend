@@ -1,25 +1,22 @@
-import * as React from 'react';
+import React from 'react';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
-import {
-  ISODateTimeToTimeZoneAdjustedISODate,
-  ISODateTimeToTimeZoneAdjustedTime,
-  DateAndTimeToISODTWithTimeZonedOffset,
-} from '../../../../../../utils';
+import { Trans } from 'react-i18next';
 
-import VotingPeriodForm from './VotingPeriodForm';
-import VotingPeriodValues from './VotingPeriodValues';
 import {
   IActiveComponentProps,
   IInactiveComponentProps,
   ISettingsSectionContents,
-} from '../../../../../../components/page/SettingsSection';
-import { Trans } from 'react-i18next';
+} from 'components/page/SettingsSection';
+import { Election, ElectionGroup, ElectionVotingPeriodInput } from 'interfaces';
 import {
-  Election,
-  ElectionGroup,
-  ElectionVotingPeriodInput
-} from '../../../../../../interfaces';
+  ISODateTimeToTimeZoneAdjustedISODate,
+  ISODateTimeToTimeZoneAdjustedTime,
+  DateAndTimeToISODTWithTimeZonedOffset,
+} from 'utils';
+
+import VotingPeriodForm from './VotingPeriodForm';
+import VotingPeriodValues from './VotingPeriodValues';
 
 interface IVotingPeriodSettings {
   hasMultipleTimes: boolean;

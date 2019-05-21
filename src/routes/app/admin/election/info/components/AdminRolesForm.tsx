@@ -1,17 +1,15 @@
-import * as React from 'react';
+import React from 'react';
 import { Trans } from 'react-i18next';
 import throttle from 'lodash/throttle';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
-import { PageSubSection } from '../../../../../../components/page';
-import Text from '../../../../../../components/text';
-import { Button, ButtonContainer } from '../../../../../../components/button';
+import { PageSubSection } from 'components/page';
+import Text from 'components/text';
+import { Button, ButtonContainer } from 'components/button';
 import AutoCompleteDropDown from '../../components/AutoCompleteDropDown';
-import {
-  IPersonSearchResult,
-  IGroupSearchResult,
-} from '../../../../../../interfaces';
+import { IPersonSearchResult, IGroupSearchResult } from 'interfaces';
+
 import { IAdminGrant } from './AdminRolesSettings';
 
 const styles = (theme: any) => ({

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-import { Stepper, StepperItem } from '../../../../../components/stepper';
 import { useTranslation } from 'react-i18next';
+
+import { Stepper, StepperItem } from 'components/stepper';
 
 const calculatePath = (groupId: string | number) => (
   subRoute: string | number

@@ -1,12 +1,11 @@
-/* @flow */
-import * as React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import moment, { Moment } from 'moment';
 
-import Text from '../../../../../components/text';
-import { Date, Time } from '../../../../../components/i18n';
-import Button from '../../../../../components/button';
-import Link from '../../../../../components/link';
+import Text from 'components/text';
+import { Date, Time } from 'components/i18n';
+import Button from 'components/button';
+import Link from 'components/link';
 import {
   Table,
   TableHeader,
@@ -15,8 +14,8 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from '../../../../../components/table';
-import { ElectionGroup } from '../../../../../interfaces';
+} from 'components/table';
+import { ElectionGroup } from 'interfaces';
 
 interface IProps {
   electionGroups: Array<ElectionGroup>;

@@ -1,11 +1,12 @@
-/* @flow */
-import * as React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 const Toggler: React.FunctionComponent = () => {
   const { i18n } = useTranslation();
 
-  const toggleLanguage = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const toggleLanguage = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
     e.preventDefault();
     e.stopPropagation();
     const currentLang = i18n.language;
@@ -13,7 +14,7 @@ const Toggler: React.FunctionComponent = () => {
   };
 
   return (
-    <a style={{ color: "inherit" }} onClick={toggleLanguage} href="/" >
+    <a style={{ color: 'inherit' }} onClick={toggleLanguage} href="/">
       {i18n.language === 'nb' ? 'English' : 'Norsk'}
     </a>
   );

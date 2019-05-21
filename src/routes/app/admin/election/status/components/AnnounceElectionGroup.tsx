@@ -1,12 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 import { Trans } from 'react-i18next';
 
-import Modal from '../../../../../../components/modal';
-import Button from '../../../../../../components/button';
-import Text from '../../../../../../components/text';
-import Link from '../../../../../../components/link';
-import ActionText from '../../../../../../components/actiontext';
-import { ElectionGroup } from '../../../../../../interfaces';
+import Modal from 'components/modal';
+import Button from 'components/button';
+import Text from 'components/text';
+import Link from 'components/link';
+import ActionText from 'components/actiontext';
+import { ElectionGroup } from 'interfaces';
 
 const renderAnnounceButton = (action: any) => (
   <Button

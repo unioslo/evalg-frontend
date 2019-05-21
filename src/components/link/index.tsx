@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
@@ -40,17 +40,17 @@ const styles = (theme: any) => ({
 });
 
 interface IProps {
-  to: string,
-  external?: boolean,
-  children?: React.ReactNode,
-  marginRight?: boolean,
-  noExternalIcon?: boolean,
-  mail?: boolean,
-  inheritColor?: boolean,
-  underline?: boolean,
-  noUnderline?: boolean,
-  classes: Classes,
-};
+  to: string;
+  external?: boolean;
+  children?: React.ReactNode;
+  marginRight?: boolean;
+  noExternalIcon?: boolean;
+  mail?: boolean;
+  inheritColor?: boolean;
+  underline?: boolean;
+  noUnderline?: boolean;
+  classes: Classes;
+}
 
 const Link = (props: IProps) => {
   const {

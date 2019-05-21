@@ -1,17 +1,17 @@
-import * as React from 'react';
+import React from 'react';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
+import { Trans } from 'react-i18next';
 
-import VoterInfoForm from './VoterInfoForm';
-import VoterInfoValues from './VoterInfoValues';
 import {
   IActiveComponentProps,
   IInactiveComponentProps,
   ISettingsSectionContents,
-} from '../../../../../../components/page/SettingsSection';
-import { Trans } from 'react-i18next';
+} from 'components/page/SettingsSection';
+import { Election, ElectionGroup, ElectionVoterInfoInput } from 'interfaces';
 
-import { Election, ElectionGroup, ElectionVoterInfoInput } from '../../../../../../interfaces';
+import VoterInfoForm from './VoterInfoForm';
+import VoterInfoValues from './VoterInfoValues';
 
 const buildInitialValues = (elecs: Election[]) => {
   const elections = elecs.map(e => ({

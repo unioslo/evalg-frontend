@@ -1,14 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Text from '../../../../../components/text';
-import { TableRow, TableCell } from '../../../../../components/table';
+import Text from 'components/text';
+import { TableRow, TableCell } from 'components/table';
+import ElectionStatus from 'components/electionStatus';
+import { Date, Time } from 'components/i18n';
+import { Election } from 'interfaces';
 
-import { Election } from '../../../../../interfaces';
-import ElectionStatus from '../../../../../components/electionStatus';
 import VoteStatus from './VoteStatus';
-
-import { Date, Time } from '../../../../../components/i18n';
 
 interface IProps {
   election: Election;

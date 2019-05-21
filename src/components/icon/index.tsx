@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
@@ -568,7 +568,7 @@ const Icon = (props: IProps) => {
   const { type, classes, custom } = props;
   const icon = getIcon(type, classes, custom);
   const cls = classNames({
-    "button-no-style": props.onClick,
+    'button-no-style': props.onClick,
     [classes.iconContainer]: true,
     [classes.marginRight]: props.marginRight,
   });
@@ -578,19 +578,19 @@ const Icon = (props: IProps) => {
       props.onClick(event);
     }
   };
-  if (props.elementType === 'button' || (props.onClick && !props.elementType)) {    
+  if (props.elementType === 'button' || (props.onClick && !props.elementType)) {
     return (
       <button className={cls} onClick={handleClick}>
         {icon}
       </button>
-    )}
-    else {
-      return (
+    );
+  } else {
+    return (
       <div className={cls} onClick={handleClick}>
         {icon}
       </div>
-      )
-    }
+    );
+  }
 };
 
 export default injectSheet(styles)(Icon);

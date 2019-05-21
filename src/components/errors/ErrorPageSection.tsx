@@ -1,8 +1,9 @@
 import React from 'react';
-import { PageSection } from '../page';
 import { Classes } from 'jss';
 import injectSheet from 'react-jss';
 import { useTranslation } from 'react-i18next';
+
+import { PageSection } from 'components/page';
 
 const styles = (theme: any) => ({
   body: {

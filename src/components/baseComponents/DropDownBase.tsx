@@ -1,15 +1,11 @@
-/* @flow */
-import * as React from 'react';
-
-import {} from '../../interfaces'
+import React from 'react';
 
 interface IDropDownState {
-  inputValue: any,
-  objects: any[],
-  open: boolean,
-  selected: any
+  inputValue: any;
+  objects: any[];
+  open: boolean;
+  selected: any;
 }
-
 
 class DropDownBase<T> extends React.Component<T, IDropDownState> {
   state: IDropDownState;

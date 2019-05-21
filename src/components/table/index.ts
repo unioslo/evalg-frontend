@@ -13,5 +13,5 @@ export {
   TableHeader,
   TableHeaderCell,
   TableHeaderRow,
-  TableRow
-}
+  TableRow,
+};

@@ -1,5 +1,3 @@
 import ElectionStatusIcon from './ElectionStatusIcon';
 
-export {
-  ElectionStatusIcon
-}
+export { ElectionStatusIcon };

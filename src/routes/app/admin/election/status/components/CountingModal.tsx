@@ -7,15 +7,16 @@ import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 import classNames from 'classnames';
 
-import { ElectionGroup, IMutationResponse } from '../../../../../../interfaces';
-import Button from '../../../../../../components/button';
-import Modal from '../../../../../../components/modal';
-import ModalSteps from './ModalSteps';
-import { InfoList, InfoListItem } from '../../../../../../components/infolist';
+import Button from 'components/button';
+import Modal from 'components/modal';
+import { InfoList, InfoListItem } from 'components/infolist';
 import ElectionKeyCreatedByInfo from './ElectionKeyCreatedByInfo';
-import Spinner from '../../../../../../components/animations/Spinner';
-import { translateBackendError } from '../../../../../../utils';
-import AnimatedCheckmark from '../../../../../../components/animations/AnimatedCheckmark';
+import Spinner from 'components/animations/Spinner';
+import AnimatedCheckmark from 'components/animations/AnimatedCheckmark';
+import { ElectionGroup, IMutationResponse } from 'interfaces';
+import { translateBackendError } from 'utils';
+
+import ModalSteps from './ModalSteps';
 
 const ELECTION_KEY_FROM_FILE_LENGTH = 44;
 

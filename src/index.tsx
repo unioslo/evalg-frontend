@@ -1,8 +1,8 @@
 import 'react-app-polyfill/ie11';
-import 'core-js';
+// import 'core-js'; // FIXME: doesn't resolve properly when compiling
 
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { createUploadLink } from 'apollo-upload-client';
@@ -14,13 +14,12 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { makeAuthenticator, makeUserManager, Callback } from 'react-oidc';
 import { User } from 'oidc-client';
 
-import { ScreenSizeProvider } from './providers/ScreenSize';
-import { UserContextProvider } from './providers/UserContext';
-import App from './routes/app';
-import theme from './theme';
-
-import { oidcConfig, graphqlBackend } from './appConfig';
-import Spinner from './components/animations/Spinner';
+import { oidcConfig, graphqlBackend } from 'appConfig';
+import Spinner from 'components/animations/Spinner';
+import { ScreenSizeProvider } from 'providers/ScreenSize';
+import { UserContextProvider } from 'providers/UserContext';
+import App from 'routes/app';
+import theme from 'theme';
 
 import './i18n';
 
@@ -61,7 +60,7 @@ const constructApolloClient = () => {
   const uploadLink: ApolloLink = createUploadLink({ uri: graphqlBackend });
 
   const authMiddleware = new ApolloLink((operation, forward) => {
-    operation.setContext(({ headers = {} }) => ({
+    operation.setContext(({ headers = {} }: { headers: any }) => ({
       headers: {
         ...headers,
         authorization: sessionStorage.getItem('evalg-token') || null,

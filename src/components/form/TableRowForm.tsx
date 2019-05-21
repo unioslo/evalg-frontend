@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import injectSheet from 'react-jss';
-
-import Text from '../text';
 import { Classes } from 'jss';
+
+import Text from 'components/text';
 
 const styles = (theme: any) => ({
   form: {
@@ -17,10 +17,10 @@ const styles = (theme: any) => ({
 });
 
 interface IProps {
-  children?: React.ReactNode,
-  header?: any | string,
-  classes: Classes,
-};
+  children?: React.ReactNode;
+  header?: any | string;
+  classes: Classes;
+}
 
 const TableRowFormFields = (props: IProps) => {
   return <div className={props.classes.fields}>{props.children}</div>;

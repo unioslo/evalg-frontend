@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { Trans } from 'react-i18next';
 
-import Text from '../../../../../../components/text';
-import { PageSubSection } from '../../../../../../components/page';
-import { IElectionGroupRole } from '../../../../../../interfaces';
+import Text from 'components/text';
+import { PageSubSection } from 'components/page';
+import { IElectionGroupRole } from 'interfaces';
 
 interface IProps {
   roles: IElectionGroupRole[];

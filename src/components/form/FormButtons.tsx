@@ -1,9 +1,8 @@
-/* @flow */
-import * as React from 'react';
-
+import React from 'react';
 import { Trans } from 'react-i18next';
-import Button, { ButtonContainer } from '../../components/button';
 import injectSheet from 'react-jss';
+
+import Button, { ButtonContainer } from 'components/button';
 
 const styles = (theme: any) => ({
   savingSpinner: {
@@ -22,7 +21,7 @@ const styles = (theme: any) => ({
 
   '@keyframes spin': {
     to: { '-webkit-transform': 'rotate(360deg)' },
-  }
+  },
 });
 
 interface IProps {

@@ -1,20 +1,17 @@
-import * as React from 'react';
+import React from 'react';
 import { ApolloConsumer, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+import { Trans } from 'react-i18next';
 
-import AdminRolesValues from './AdminRolesValues';
-import AdminRolesForm from './AdminRolesForm';
 import {
   IActiveComponentProps,
   IInactiveComponentProps,
   ISettingsSectionContents,
-} from '../../../../../../components/page/SettingsSection';
-import { Trans } from 'react-i18next';
+} from 'components/page/SettingsSection';
+import { ElectionGroup, IElectionGroupRole } from 'interfaces';
 
-import {
-  ElectionGroup,
-  IElectionGroupRole,
-} from '../../../../../../interfaces';
+import AdminRolesValues from './AdminRolesValues';
+import AdminRolesForm from './AdminRolesForm';
 
 const searchPersonsQuery = gql`
   query searchPersons($val: String!) {

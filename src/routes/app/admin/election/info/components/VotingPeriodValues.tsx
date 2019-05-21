@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { Time, Date } from '../../../../../../components/i18n';
-import Text from '../../../../../../components/text';
+import { Time, Date } from 'components/i18n';
+import Text from 'components/text';
 import {
   Table,
   TableBody,
@@ -11,11 +11,10 @@ import {
   TableHeaderCell,
   TableHeaderRow,
   TableRow,
-} from '../../../../../../components/table';
-
-import { InfoList, InfoListItem } from '../../../../../../components/infolist';
-import { allEqualForAttrs } from '../../../../../../utils';
-import { ElectionGroup, Election } from '../../../../../../interfaces';
+} from 'components/table';
+import { InfoList, InfoListItem } from 'components/infolist';
+import { allEqualForAttrs } from 'utils';
+import { ElectionGroup, Election } from 'interfaces';
 
 interface IVotingPeriodProps {
   elections: any[];

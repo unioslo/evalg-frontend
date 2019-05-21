@@ -1,6 +1,6 @@
 {
-  "name": "evalg-ts",
-  "version": "0.1.0",
+  "name": "evalg",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@types/apollo-upload-client": "^8.1.1",
@@ -30,9 +30,9 @@
     "core-js": "^2.6.5",
     "date-fns": "^2.0.0-alpha.27",
     "file-saver": "^2.0.1",
-    "focus-trap-react": "^6.0.0",
     "final-form": "^4.11.0",
     "final-form-arrays": "^1.1.1",
+    "focus-trap-react": "^6.0.0",
     "graphql": "^14.1.1",
     "graphql-tag": "^2.10.1",
     "i18next": "^15.0.7",
@@ -56,12 +56,12 @@
     "react-jss": "^8.6.1",
     "react-oidc": "^0.3.1",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "^2.1.5",
+    "react-scripts": "^3.0.1",
     "react-select": "^2.4.1",
     "react-transition-group": "2.6.0",
     "tweetnacl": "^1.0.1",
     "tweetnacl-util": "^0.15.0",
-    "typescript": "^3.3.3333",
+    "typescript": "^3.4.5",
     "valid-url": "^1.0.9"
   },
   "scripts": {
@@ -69,6 +69,7 @@
     "build": "npm run build:env && react-scripts build",
     "build:env": "node scripts/build-env.js",
     "test": "react-scripts test --env=jsdom",
+    "lint": "eslint --ext js,jsx,ts,tsx src",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public"

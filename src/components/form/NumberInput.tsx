@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
@@ -12,26 +12,25 @@ const styles = (theme: any) => ({
     fontSize: '1.6rem',
     color: theme.colors.greyishBrown,
     '&:disabled': {
-      background: theme.colors.mediumWhite
-    }
-  }
-})
+      background: theme.colors.mediumWhite,
+    },
+  },
+});
 
 interface IProps {
-  name: string,
-  disabled: boolean,
-  value: number,
-  onChange: (event: any) => void,
-  classes: Classes,
+  name: string;
+  disabled: boolean;
+  value: number;
+  onChange: (event: any) => void;
+  classes: Classes;
 }
 
 interface IState {
-  value: string | undefined,
+  value: string | undefined;
 }
 
 class NumberInput extends React.Component<IProps, IState> {
-
-  constructor(props: IProps){
+  constructor(props: IProps) {
     super(props);
 
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -46,7 +45,7 @@ class NumberInput extends React.Component<IProps, IState> {
 
     if (val === '') {
       this.setState({ value: '0' });
-      this.props.onChange('0')
+      this.props.onChange('0');
     } else if (!isNaN(parseInt(val, 10))) {
       const newVal = `${parseInt(val, 10)}`;
       this.setState({ value: newVal });
@@ -57,14 +56,15 @@ class NumberInput extends React.Component<IProps, IState> {
   render() {
     const { name, disabled } = this.props;
     return (
-      <input type="text"
+      <input
+        type="text"
         name={name}
         value={this.state.value}
         onChange={this.handleOnChange}
         className={this.props.classes.numberInput}
         disabled={disabled}
       />
-    )
+    );
   }
 }
 
@@ -72,15 +72,14 @@ const StyledNumberInput = injectSheet(styles)(NumberInput);
 
 export default StyledNumberInput;
 
-
 type RFProps = {
   input: {
-    onChange: (event: any) => void,
-    name: string,
-    value: number
-  },
-  disabled?: boolean
-}
+    onChange: (event: any) => void;
+    name: string;
+    value: number;
+  };
+  disabled?: boolean;
+};
 
 export const NumberInputRF = (props: RFProps) => {
   const { input, disabled } = props;
@@ -94,5 +93,5 @@ export const NumberInputRF = (props: RFProps) => {
       onChange={input.onChange}
       disabled={disabledValue}
     />
-  )
+  );
 };

@@ -1,13 +1,14 @@
-import * as React from 'react';
+import React from 'react';
 import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import Text from '../../../../../../components/text';
-import Link from '../../../../../../components/link';
-import ActionText from '../../../../../../components/actiontext';
-import ActionItem from '../../../../../../components/actionitem';
-import { PageSection } from '../../../../../../components/page';
+import Text from 'components/text';
+import Link from 'components/link';
+import ActionText from 'components/actiontext';
+import ActionItem from 'components/actionitem';
+import Icon from 'components/icon';
+import { PageSection } from 'components/page';
 import {
   Table,
   TableHeader,
@@ -16,12 +17,11 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from '../../../../../../components/table';
-import Icon from '../../../../../../components/icon';
+} from 'components/table';
+import { ElectionGroup } from 'interfaces';
 
 import PrefTeamElecCandForm from './PrefTeamElecCandForm';
 import TableRowWithText from './TableRowWithText';
-import { ElectionGroup } from '../../../../../../interfaces';
 
 const addTeamPrefElecCandidate = gql`
   mutation AddTeamPrefElecCandidate(

@@ -1,19 +1,17 @@
-import * as React from 'react';
+import React from 'react';
 import { Trans } from 'react-i18next';
 import { Tabs, Tab } from 'react-bootstrap';
 import classNames from 'classnames';
-
-import Text from '../../../../../components/text';
-import VoterElectionsList from './VoterElectionsList';
-import VoterElectionsTable from './VoterElectionsTable';
-import {
-  MobileDropDown,
-  MobileDropdownItem,
-} from '../../../../../components/dropdownMenu';
-import { ScreenSizeConsumer } from '../../../../../providers/ScreenSize';
-import { ElectionGroup } from '../../../../../interfaces';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
+
+import Text from 'components/text';
+import { MobileDropDown, MobileDropdownItem } from 'components/dropdownMenu';
+import { ScreenSizeConsumer } from 'providers/ScreenSize';
+import { ElectionGroup } from 'interfaces';
+
+import VoterElectionsList from './VoterElectionsList';
+import VoterElectionsTable from './VoterElectionsTable';
 
 const styles = (theme: any) => ({
   tab: {

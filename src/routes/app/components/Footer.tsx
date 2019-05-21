@@ -1,5 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import injectSheet from 'react-jss';
+import { useTranslation } from 'react-i18next';
 
 import {
   appStagingWarning,
@@ -7,9 +8,8 @@ import {
   appTechnicalSupportEmail,
   appPrivacyPolicylink,
   appCookiesInformationLink,
-} from '../../../appConfig';
-import Link from '../../../components/link';
-import { useTranslation } from 'react-i18next';
+} from 'appConfig';
+import Link from 'components/link';
 
 const styles = (theme: any) => ({
   wrapper: {

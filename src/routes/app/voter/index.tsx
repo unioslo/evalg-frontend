@@ -1,5 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { Route, RouteComponentProps } from 'react-router-dom';
+
 import VotingPage from './vote';
 
 const renderVotingPage = ({

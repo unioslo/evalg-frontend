@@ -1,17 +1,15 @@
-/* @flow */
-import * as React from 'react';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Form, FormRenderProps, FormSpy, Field } from 'react-final-form';
 
-import { getSupportedLanguages } from '../../../../../utils/i18n';
 import {
   FormField,
   FormButtons,
   TextInput,
   SelectDropDown,
-} from '../../../../../components/form';
-
-import { isObjEmpty } from '../../../../../utils/helpers';
-import { useTranslation } from 'react-i18next';
+} from 'components/form';
+import { getSupportedLanguages } from 'utils/i18n';
+import { isObjEmpty } from 'utils/helpers';
 
 interface IProps {
   submitAction: (v: any) => any;
