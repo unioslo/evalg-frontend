@@ -1,11 +1,41 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
 import { PageSection } from 'components/page';
 import Button, { ButtonContainer } from 'components/button';
 import { ElectionGroup } from 'interfaces';
 
 import CountingModal from './CountingModal';
+import CountingSectionCounts from './CountingSectionCounts';
+
+export const electionGroupCountsQuery = gql`
+  query electionGroupCounts($id: UUID!) {
+    electionGroupCountingResults(id: $id) {
+      id
+      initiatedAt
+      finishedAt
+      audit
+      status
+      electionResults {
+        id
+        result
+        electionProtocol
+        votes
+        election {
+          id
+          name
+          active
+          pollbooks {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`;
 
 interface Props {
   electionGroup: ElectionGroup;
@@ -44,10 +74,29 @@ const CountingSection: React.FunctionComponent<Props> = ({
     <PageSection header={t('admin.counting.sectionHeader')}>
       {electionGroup.status === 'closed' ? (
         <ButtonContainer alignLeft smlTopMargin>
-          <Button
-            text={t('admin.counting.startCounting')}
-            action={handleShowModal}
-          />
+          <Query
+            query={electionGroupCountsQuery}
+            variables={{ id: electionGroup.id }}
+          >
+            {({ data, loading, error }) => {
+              const showFirstTimeCountingButton =
+                error ||
+                loading ||
+                data.electionGroupCountingResults.length === 0;
+
+              return (
+                <Button
+                  text={
+                    showFirstTimeCountingButton
+                      ? t('admin.counting.startCounting')
+                      : t('admin.counting.startNewCounting')
+                  }
+                  action={handleShowModal}
+                  secondary={!showFirstTimeCountingButton}
+                />
+              );
+            }}
+          </Query>
         </ButtonContainer>
       ) : (
         t('election.electionNotClosed')
@@ -60,6 +109,8 @@ const CountingSection: React.FunctionComponent<Props> = ({
           onCloseModalAndSeeResults={handleCloseModalAndSeeResults}
         />
       )}
+
+      <CountingSectionCounts electionGroupId={electionGroup.id} />
     </PageSection>
   );
 };
