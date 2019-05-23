@@ -22,7 +22,8 @@
         }
       },
       "sectionHeader": "Opptelling",
-      "startCounting": "Start opptelling"
+      "startCounting": "Start opptelling",
+      "startNewCounting": "Start ny opptelling"
     },
     "electionKey": {
       "create": "Opprett valgnøkkel",

@@ -22,7 +22,8 @@
         }
       },
       "sectionHeader": "Counting",
-      "startCounting": "Start counting"
+      "startCounting": "Start counting",
+      "startNewCounting": "Start new counting"
     },
     "electionKey": {
       "create": "Create election key",
