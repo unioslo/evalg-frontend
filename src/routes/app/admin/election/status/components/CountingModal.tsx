@@ -146,8 +146,7 @@ const CountingModal: React.FunctionComponent<Props> = ({
           id: electionGroup.id,
           electionKey,
         },
-        // refetchQueries = // TODO: Refetch the query that will load the election results
-        // on the status page
+        refetchQueries: () => ['electionGroup', 'electionGroupCounts']
       });
       setIsCounting(false);
       response = result && result.data && result.data.startElectionGroupCount;
