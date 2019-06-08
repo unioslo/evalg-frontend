@@ -11,6 +11,7 @@ import { ElectionGroup } from 'interfaces';
 
 import AnnounceElectionGroup from './AnnounceElectionGroup';
 import PublishElectionGroup from './PublishElectionGroup';
+import LatestElectionGroupCountResult from './LatestElectionGroupCountResult';
 
 const PublishElectionGroupMutation = gql`
   mutation PublishElectionGroup($id: UUID!) {
@@ -100,6 +101,7 @@ class ElectionStatusSection extends React.Component<IProps> {
   render() {
     const { electionGroup } = this.props;
     const publishable = electionGroup.publicationBlockers.length === 0;
+    const { latestElectionGroupCount } = electionGroup;
 
     return (
       <PageSection header="Status">
@@ -206,6 +208,12 @@ class ElectionStatusSection extends React.Component<IProps> {
             )}
           </Mutation>
         ) : null}
+
+        {electionGroup.status === 'closed' && latestElectionGroupCount && (
+          <LatestElectionGroupCountResult
+            electionGroupCount={latestElectionGroupCount}
+          />
+        )}
       </PageSection>
     );
   }

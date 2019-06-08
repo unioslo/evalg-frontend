@@ -7,7 +7,11 @@ import gql from 'graphql-tag';
 import Loading from 'components/loading';
 import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
 import { ElectionGroup } from 'interfaces';
-import { ElectionGroupFields, ElectionFields } from 'fragments';
+import {
+  ElectionGroupFields,
+  ElectionFields,
+  ElectionGroupCountFields,
+} from 'fragments';
 
 import AdminStepper from './components/AdminStepper';
 import InfoPage from './info';
@@ -18,9 +22,13 @@ import StatusPage from './status';
 const electionGroupQuery = gql`
   ${ElectionGroupFields}
   ${ElectionFields}
+  ${ElectionGroupCountFields}
   query electionGroup($id: UUID!) {
     electionGroup(id: $id) {
       ...ElectionGroupFields
+      latestElectionGroupCount {
+        ...ElectionGroupCountFields
+      }
       announcementBlockers
       publicationBlockers
       elections {

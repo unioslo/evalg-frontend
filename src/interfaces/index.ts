@@ -199,6 +199,7 @@ export interface ElectionGroup {
   published: boolean;
   announcementBlockers: string[];
   publicationBlockers: string[];
+  latestElectionGroupCount: ElectionGroupCount;
 }
 
 export interface IElectionGroupRole {
