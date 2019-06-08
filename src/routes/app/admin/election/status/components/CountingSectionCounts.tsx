@@ -6,8 +6,8 @@ import CountsTable from './CountsTable';
 import {
   PageExpandableSubSection,
   PageSubSection,
-} from '../../../../../../components/page/PageSection';
-import Spinner from '../../../../../../components/animations/Spinner';
+} from 'components/page/PageSection';
+import Spinner from 'components/animations/Spinner';
 import { electionGroupCountsQuery } from './CountingSection';
 
 const MAX_COUNTS_ENTRIES_WITHOUT_CLICK_TO_EXPAND = 5;

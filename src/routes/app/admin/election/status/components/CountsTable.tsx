@@ -10,10 +10,10 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from '../../../../../../components/table';
-import DropdownArrowIcon from '../../../../../../components/icons/DropdownArrowIcon';
-import { Date, Time } from '../../../../../../components/i18n';
-import { ElectionGroupCount } from '../../../../../../interfaces';
+} from 'components/table';
+import DropdownArrowIcon from 'components/icons/DropdownArrowIcon';
+import { Date, Time } from 'components/i18n';
+import { ElectionGroupCount } from 'interfaces';
 
 interface IProps {
   electionGroupCounts: ElectionGroupCount[];
