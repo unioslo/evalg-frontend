@@ -107,6 +107,7 @@ const theme = {
   electionStatusActiveColor: lightOliveGreen,
   electionStatusClosedColor: lightDarkWhite,
   electionStatusDraftColor: fadedOrange,
+  errorTextColor: darkRed,
   formErrorTextColor: darkRed,
   formFieldBorder: '0.2rem solid',
   formFieldBorderActiveColor: darkTurquoise,
@@ -178,13 +179,13 @@ const theme = {
   tableRowHoverColor: mediumWhite,
   tableRowMainTextColor: greyishBrown,
   tableThickBorderColor: lightBlueGray,
-  tabs : {
+  tabs: {
     bottomBorderColorActive: darkBlueish,
     bottomBorderColorInactive: eggWhite,
     backGroundColorActive: lightBlueGray,
-    backGroundColorInactive: whiteGray,   
+    backGroundColorInactive: whiteGray,
     textColor: darkGreyishBrown,
-  }
+  },
 };
 
 export default theme;

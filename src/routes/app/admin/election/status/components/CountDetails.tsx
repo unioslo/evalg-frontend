@@ -1,11 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
+import gql from 'graphql-tag';
+import { withApollo, WithApolloClient } from 'react-apollo';
+import ApolloClient from 'apollo-client';
 import { useTranslation } from 'react-i18next';
 import FileSaver from 'file-saver';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
-import { ElectionGroupCount } from '../../../../../../interfaces';
-import { orderElectionResults } from '../../../../../../utils/processGraphQLData';
+import { ElectionGroupCount } from 'interfaces';
+import { orderElectionResults } from 'utils/processGraphQLData';
+import Spinner from 'components/animations/Spinner';
+
+const electionResultVotes = gql`
+  query electionResult($id: UUID!) {
+    electionResult(id: $id) {
+      id
+      votes
+      election {
+        id
+        name
+      }
+    }
+  }
+`;
 
 const styles = (theme: any) => ({
   electionSection: {
@@ -15,8 +32,8 @@ const styles = (theme: any) => ({
     '& div': {
       '&:not(:last-child)': {
         marginBottom: '2rem',
-      }
-    }
+      },
+    },
   },
   auditLogSubSection: {
     marginBottom: '2rem',
@@ -30,6 +47,16 @@ const styles = (theme: any) => ({
   votingPercantageRow: {
     marginBottom: '0.5rem',
   },
+  electionResultFileDownloads: {
+    display: 'flex',
+  },
+  verticalLineSeparator: {
+    margin: '0 0.7rem',
+  },
+  fileDownloadErrorMessage: {
+    marginBottom: '1rem',
+    color: theme.errorTextColor,
+  },
 });
 
 interface IProps {
@@ -37,18 +64,60 @@ interface IProps {
   classes: Classes;
 }
 
-const CountDetails: React.FunctionComponent<IProps> = ({
+const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
   electionGroupCount,
   classes,
+  client: apolloClient,
 }) => {
   const { i18n, t } = useTranslation();
-
   const lang = i18n.language;
+
+  const [
+    downloadingFileElectionResultId,
+    setDownloadingFileElectionResultId,
+  ] = useState('');
+  const [fileDownloadError, setFileDownloadError] = useState('');
+
   let electionResults = electionGroupCount.electionResults;
   electionResults = orderElectionResults(electionResults);
 
+  const handleDownloadBallots = async (
+    apolloClient: ApolloClient<any>,
+    electionResultId: string
+  ) => {
+    setDownloadingFileElectionResultId(electionResultId);
+    setFileDownloadError('');
+
+    let ballots, electionName;
+    try {
+      const { data } = await apolloClient.query({
+        query: electionResultVotes,
+        variables: { id: electionResultId },
+        fetchPolicy: 'no-cache',
+      });
+      ballots = data.electionResult.votes;
+      electionName = data.electionResult.election.name[lang];
+      setDownloadingFileElectionResultId('');
+    } catch (error) {
+      setDownloadingFileElectionResultId('');
+      setFileDownloadError(error.message);
+      return;
+    }
+
+    const blob = new Blob([JSON.stringify(ballots, null, 2)], {
+      type: 'application/json;charset=utf-8',
+    });
+    FileSaver.saveAs(blob, `ballots-${electionName}.json`);
+  };
+
   return (
     <>
+      {fileDownloadError && (
+        <div className={classes.fileDownloadErrorMessage}>
+          Noe gikk galt under nedlasting av en fil: {fileDownloadError}
+        </div>
+      )}
+
       {electionResults.map(electionResult => {
         const electionName = electionResult.election.name[lang];
         const pollbooks = electionResult.election.pollbooks;
@@ -79,14 +148,24 @@ const CountDetails: React.FunctionComponent<IProps> = ({
                 </div>
               ))}
             </div>
-            <div>
-              {t('Opptellingsprotokoll')}: <a href="#">{t('Last ned')}</a> |{' '}
-              {t('Stemmesedler')}: <a onClick={() => {
-                const blob = new Blob([JSON.stringify(electionResult.votes, null, 2)], {
-                  type: 'application/json;charset=utf-8',
-                });
-                FileSaver.saveAs(blob, 'votes.json');
-              }}>{t('Last ned (JSON)')}</a>
+            <div className={classes.electionResultFileDownloads}>
+              <span>
+                {t('Opptellingsprotokoll')}: <a href="#">{t('Last ned')}</a>
+              </span>
+              <span className={classes.verticalLineSeparator}>|</span>
+              <span>
+                {t('Stemmesedler')}:{' '}
+                <a
+                  onClick={() =>
+                    handleDownloadBallots(apolloClient, electionResult.id)
+                  }
+                >
+                  {t('Last ned (JSON)')}
+                </a>
+              </span>
+              {downloadingFileElectionResultId === electionResult.id && (
+                <Spinner darkStyle size="1.6rem" marginLeft="1rem" />
+              )}
             </div>
           </div>
         );
@@ -101,4 +180,4 @@ const CountDetails: React.FunctionComponent<IProps> = ({
   );
 };
 
-export default injectSheet(styles)(CountDetails);
+export default injectSheet(styles)(withApollo(CountDetails));
