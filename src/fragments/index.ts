@@ -42,3 +42,25 @@ export const ElectionFields = gql`
     cancelledAt
   }
 `;
+
+export const ElectionGroupCountFields = gql`
+  fragment ElectionGroupCountFields on ElectionGroupCount {
+    id
+    initiatedAt
+    finishedAt
+    status
+    electionResults {
+      id
+      result
+      election {
+        id
+        name
+        active
+        pollbooks {
+          id
+          name
+        }
+      }
+    }
+  }
+`;

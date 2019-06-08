@@ -3,36 +3,19 @@ import { useTranslation } from 'react-i18next';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import { ElectionGroup } from 'interfaces';
+import { ElectionGroupCountFields } from 'fragments';
+
 import { PageSection } from 'components/page';
 import Button, { ButtonContainer } from 'components/button';
-import { ElectionGroup } from 'interfaces';
-
 import CountingModal from './CountingModal';
 import CountingSectionCounts from './CountingSectionCounts';
 
 export const electionGroupCountsQuery = gql`
+  ${ElectionGroupCountFields}
   query electionGroupCounts($id: UUID!) {
     electionGroupCountingResults(id: $id) {
-      id
-      initiatedAt
-      finishedAt
-      audit
-      status
-      electionResults {
-        id
-        result
-        electionProtocol
-        votes
-        election {
-          id
-          name
-          active
-          pollbooks {
-            id
-            name
-          }
-        }
-      }
+      ...ElectionGroupCountFields
     }
   }
 `;
