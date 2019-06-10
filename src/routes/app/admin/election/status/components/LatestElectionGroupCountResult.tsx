@@ -34,10 +34,15 @@ const LatestElectionGroupCountResult: React.FunctionComponent<IProps> = ({
   const { initiatedAt, status } = count;
 
   return (
-    <PageSubSection header={t('Resultat av siste opptelling')}>
+    <PageSubSection
+      header={t(
+        'admin.statusSection.latestElectionGroupCount.subsectionHeader'
+      )}
+    >
       <span>
-        Opptelling startet <Date dateTime={count.initiatedAt} longDate />{' '}
-        <Time dateTime={count.initiatedAt} /> {t('av')} ?
+        {t('admin.statusSection.latestElectionGroupCount.countingStarted')}{' '}
+        <Date dateTime={count.initiatedAt} longDate />{' '}
+        <Time dateTime={count.initiatedAt} /> {t('general.by')} ?
       </span>
       <div className={classes.resultBox}>
         <CountDetails electionGroupCount={count} />

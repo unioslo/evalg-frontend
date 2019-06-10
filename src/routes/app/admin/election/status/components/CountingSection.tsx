@@ -54,7 +54,7 @@ const CountingSection: React.FunctionComponent<Props> = ({
   };
 
   return (
-    <PageSection header={t('admin.counting.sectionHeader')}>
+    <PageSection header={t('admin.countingSection.sectionHeader')}>
       {electionGroup.status === 'closed' ? (
         <ButtonContainer alignLeft smlTopMargin>
           <Query
@@ -71,8 +71,8 @@ const CountingSection: React.FunctionComponent<Props> = ({
                 <Button
                   text={
                     showFirstTimeCountingButton
-                      ? t('admin.counting.startCounting')
-                      : t('admin.counting.startNewCounting')
+                      ? t('admin.countingSection.startCounting')
+                      : t('admin.countingSection.startNewCounting')
                   }
                   action={handleShowModal}
                   secondary={!showFirstTimeCountingButton}

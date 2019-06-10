@@ -133,34 +133,23 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
               <h3 className={classes.electionHeading}>{electionName}</h3>
             )}
             <div>
-              <h4 className={classes.subHeading}>{t('Resultat')}</h4>
+              <h4 className={classes.subHeading}>{t('admin.countingDetails.electionResult')}</h4>
               <em>Valgresultat</em>
             </div>
-            <div>
-              <h4 className={classes.subHeading}>{t('Valgoppslutning')}</h4>
 
-              {pollbooks.map(pollbook => (
-                <div key={pollbook.id} className={classes.votingPercantageRow}>
-                  {pollbooks.length > 1 && (
-                    <strong>{pollbook.name[lang]}: </strong>
-                  )}
-                  <em>x stemmer av x i manntall, x %</em>
-                </div>
-              ))}
-            </div>
             <div className={classes.electionResultFileDownloads}>
               <span>
-                {t('Opptellingsprotokoll')}: <a href="#">{t('Last ned')}</a>
+                {t('admin.countingDetails.countingProtocol')}: <a href="#">{t('general.download')}</a>
               </span>
               <span className={classes.verticalLineSeparator}>|</span>
               <span>
-                {t('Stemmesedler')}:{' '}
+                {t('admin.countingDetails.ballots')}:{' '}
                 <a
                   onClick={() =>
                     handleDownloadBallots(apolloClient, electionResult.id)
                   }
                 >
-                  {t('Last ned (JSON)')}
+                  {t('general.download')} (JSON)
                 </a>
               </span>
               {downloadingFileElectionResultId === electionResult.id && (
@@ -172,9 +161,9 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
       })}
       <div className={classes.auditLogSubSection}>
         {electionResults.length > 1
-          ? t('Audit-log for alle valgene frem til opptellingen')
-          : t('Audit-log for valget frem til opptellingen')}
-        : <a href="#">{t('Last ned')}</a>
+          ? t('admin.countingDetails.auditLogForAllElections')
+          : t('admin.countingDetails.auditLogForElection')}
+        : <a href="#">{t('general.download')}</a>
       </div>
     </>
   );

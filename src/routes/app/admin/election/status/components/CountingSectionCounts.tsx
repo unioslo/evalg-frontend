@@ -25,40 +25,51 @@ const CountingSectionCounts: React.FunctionComponent<IProps> = ({
     <Query query={electionGroupCountsQuery} variables={{ id: electionGroupId }}>
       {({ data, loading, error }) => {
         if (error) {
-          console.error(error);
           return (
-            <PageSubSection header={t('Opptellinger')}>
-              {t('Kunne ikke laste opptellinger: ')}
-              {error.message}
+            <PageSubSection
+              header={t(
+                'admin.countingSection.countingsSubsection.subsectionHeader'
+              )}
+            >
+              {t(
+                'admin.countingSection.countingsSubsection.errors.couldNotLoadCountings'
+              )}
+              : {error.message}
             </PageSubSection>
           );
         }
 
         if (loading) {
           return (
-            <PageSubSection header={t('Opptellinger')}>
+            <PageSubSection
+              header={t(
+                'admin.countingSection.countingsSubsection.subsectionHeader'
+              )}
+            >
               <Spinner darkStyle />
             </PageSubSection>
           );
         }
 
         const nCounts = data.electionGroupCountingResults.length;
-        
+
         if (nCounts > 0) {
-          const subSectionHeading = `${t('Opptellinger')} (${
-            data.electionGroupCountingResults.length
-          })`;
-          
-          return (
-            (nCounts <= MAX_COUNTS_ENTRIES_WITHOUT_CLICK_TO_EXPAND) ? (
-              <PageSubSection header={subSectionHeading}>
-                <CountsTable electionGroupCounts={data.electionGroupCountingResults} />
-              </PageSubSection>
-            ) : (
-              <PageExpandableSubSection header={subSectionHeading}>
-                <CountsTable electionGroupCounts={data.electionGroupCountingResults} />
-              </PageExpandableSubSection>
-            )
+          const subSectionHeading = `${t(
+            'admin.countingSection.countingsSubsection.subsectionHeader'
+          )} (${data.electionGroupCountingResults.length})`;
+
+          return nCounts <= MAX_COUNTS_ENTRIES_WITHOUT_CLICK_TO_EXPAND ? (
+            <PageSubSection header={subSectionHeading}>
+              <CountsTable
+                electionGroupCounts={data.electionGroupCountingResults}
+              />
+            </PageSubSection>
+          ) : (
+            <PageExpandableSubSection header={subSectionHeading}>
+              <CountsTable
+                electionGroupCounts={data.electionGroupCountingResults}
+              />
+            </PageExpandableSubSection>
           );
         } else {
           return null;

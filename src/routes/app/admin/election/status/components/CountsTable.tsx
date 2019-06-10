@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
+import moment from 'moment';
 
 import CountDetails from './CountDetails';
 import {
@@ -19,9 +20,10 @@ interface IProps {
   electionGroupCounts: ElectionGroupCount[];
 }
 
-const CountsTable: React.FunctionComponent<IProps> = ({ electionGroupCounts }) => {
+const CountsTable: React.FunctionComponent<IProps> = ({
+  electionGroupCounts,
+}) => {
   const { t } = useTranslation();
-
   const [selectedCountId, setSelectedCountId] = useState('');
 
   const handleToggleCount = useCallback(
@@ -35,19 +37,30 @@ const CountsTable: React.FunctionComponent<IProps> = ({ electionGroupCounts }) =
     [selectedCountId]
   );
 
+  // Latest count first
+  electionGroupCounts.sort((a, b) =>
+    moment(a.initiatedAt).isAfter(moment(b.initiatedAt)) ? -1 : 1
+  );
+
   return (
     <Table marginTop="3rem">
       <TableHeader>
         <TableHeaderRow>
           <TableHeaderCell width="8%" />
           <TableHeaderCell width="31%">
-            <Trans>{t('Startet av')}</Trans>
+            <Trans>
+              {t('admin.countingSection.countingsSubsection.startedBy')}
+            </Trans>
           </TableHeaderCell>
           <TableHeaderCell width="31%">
-            <Trans>{t('Tidspunkt startet')}</Trans>
+            <Trans>
+              {t('admin.countingSection.countingsSubsection.timeStarted')}
+            </Trans>
           </TableHeaderCell>
           <TableHeaderCell width="31">
-            <Trans>{t('Status')}</Trans>
+            <Trans>
+              {t('admin.countingSection.countingsSubsection.status')}
+            </Trans>
           </TableHeaderCell>
         </TableHeaderRow>
       </TableHeader>
