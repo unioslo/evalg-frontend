@@ -1,11 +1,13 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
+import { Classes } from 'jss';
 
 import { ElectionGroupCount } from 'interfaces';
-import { Classes } from 'jss';
-import { useTranslation } from 'react-i18next';
-import { Date, Time } from 'components/i18n';
+
 import CountDetails from './CountDetails';
+import { Date, Time } from 'components/i18n';
+import { PageSubSection } from 'components/page';
 
 const styles = (theme: any) => ({
   latestResultSection: {
@@ -32,16 +34,15 @@ const LatestElectionGroupCountResult: React.FunctionComponent<IProps> = ({
   const { initiatedAt, status } = count;
 
   return (
-    <div className={classes.latestResultSection}>
-      <h4>
-        {t('Oppsummering av siste opptelling startet')}{' '}
-        <Date dateTime={count.initiatedAt} longDate />{' '}
+    <PageSubSection header={t('Resultat av siste opptelling')}>
+      <span>
+        Opptelling startet <Date dateTime={count.initiatedAt} longDate />{' '}
         <Time dateTime={count.initiatedAt} /> {t('av')} ?
-      </h4>
+      </span>
       <div className={classes.resultBox}>
         <CountDetails electionGroupCount={count} />
       </div>
-    </div>
+    </PageSubSection>
   );
 };
 
