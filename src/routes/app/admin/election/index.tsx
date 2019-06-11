@@ -22,12 +22,13 @@ import StatusPage from './status';
 const electionGroupQuery = gql`
   ${ElectionGroupFields}
   ${ElectionFields}
+  ${ElectionGroupCountFields}
   query electionGroup($id: UUID!) {
     electionGroup(id: $id) {
       ...ElectionGroupFields
-      # latestElectionGroupCount {
-      #  ...ElectionGroupCountFields
-      # }
+      latestElectionGroupCount {
+        ...ElectionGroupCountFields
+      }
       announcementBlockers
       publicationBlockers
       elections {
