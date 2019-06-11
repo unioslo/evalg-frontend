@@ -38,8 +38,10 @@ const TurnoutSubsection: React.FunctionComponent<IProps> = ({
               <TurnoutRow
                 key={pollbook.id}
                 pollbookName={pollbook.name[lang]}
-                nVoters={Number(pollbook.nVerifiedVoters)}
-                nVotersWithVotes={Number(pollbook.nVerifiedVotersWithVotes)}
+                votersCount={Number(pollbook.verifiedVotersCount)}
+                votersWithVotesCount={Number(
+                  pollbook.verifiedVotersWithVotesCount
+                )}
                 classes={classes}
               />
             ))
@@ -49,9 +51,11 @@ const TurnoutSubsection: React.FunctionComponent<IProps> = ({
                 <TurnoutRow
                   key={election.id}
                   pollbookName={election.pollbooks[0].name[lang]}
-                  nVoters={Number(election.pollbooks[0].nVerifiedVoters)}
-                  nVotersWithVotes={Number(
-                    election.pollbooks[0].nVerifiedVotersWithVotes
+                  votersCount={Number(
+                    election.pollbooks[0].verifiedVotersCount
+                  )}
+                  votersWithVotesCount={Number(
+                    election.pollbooks[0].verifiedVotersWithVotesCount
                   )}
                   classes={classes}
                 />
@@ -63,15 +67,15 @@ const TurnoutSubsection: React.FunctionComponent<IProps> = ({
 
 interface ITurnoutRowProps {
   pollbookName: string;
-  nVoters: number;
-  nVotersWithVotes: number;
+  votersCount: number;
+  votersWithVotesCount: number;
   classes: Classes;
 }
 
 const TurnoutRow: React.FunctionComponent<ITurnoutRowProps> = ({
   pollbookName,
-  nVoters,
-  nVotersWithVotes,
+  votersCount,
+  votersWithVotesCount,
   classes,
 }) => {
   const { t } = useTranslation();
@@ -79,14 +83,14 @@ const TurnoutRow: React.FunctionComponent<ITurnoutRowProps> = ({
   return (
     <div className={classes.votingTurnoutRow}>
       <strong>{pollbookName}: </strong>
-      {nVoters > 0 ? (
+      {votersCount > 0 ? (
         <span>
-          {nVotersWithVotes}{' '}
-          {nVotersWithVotes === 1
+          {votersWithVotesCount}{' '}
+          {votersWithVotesCount === 1
             ? t('admin.statusSection.turnoutSubsection.personHasVotedOf')
             : t('admin.statusSection.turnoutSubsection.personsHasVotedOf')}{' '}
-          {nVoters} {t('admin.statusSection.turnoutSubsection.inCensus')} (
-          {Math.round((nVotersWithVotes / nVoters) * 10000) / 100} %)
+          {votersCount} {t('admin.statusSection.turnoutSubsection.inCensus')} (
+          {Math.round((votersWithVotesCount / votersCount) * 10000) / 100} %)
         </span>
       ) : (
         <em>
