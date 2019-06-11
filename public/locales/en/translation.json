@@ -46,6 +46,13 @@
       "latestElectionGroupCount": {
         "countingStarted": "Counting started",
         "subsectionHeader": "Result of latest count"
+      },
+      "turnoutSubsection": {
+        "censusIsEmpty": "Census is empty",
+        "header": "Turnout",
+        "inCensus": "in census",
+        "personHasVotedOf": "person has voted of",
+        "personsHasVotedOf": "persons has voted of"
       }
     },
     "electionKey": {

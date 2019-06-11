@@ -12,6 +12,7 @@ import { ElectionGroup } from 'interfaces';
 import AnnounceElectionGroup from './AnnounceElectionGroup';
 import PublishElectionGroup from './PublishElectionGroup';
 import LatestElectionGroupCountResult from './LatestElectionGroupCountResult';
+import TurnoutSubsection from './TurnoutSubsection';
 
 const PublishElectionGroupMutation = gql`
   mutation PublishElectionGroup($id: UUID!) {
@@ -131,11 +132,13 @@ class ElectionStatusSection extends React.Component<IProps> {
                       <Trans>election.statusDraftNotReady</Trans>
                     </InfoListItem>
                   ) : null}
+
                   {!electionGroup.published && publishable ? (
                     <InfoListItem bulleted key="draft-ready">
                       <Trans>election.statusDraftReady</Trans>
                     </InfoListItem>
                   ) : null}
+
                   {!electionGroup.published && !electionGroup.announced ? (
                     <InfoListItem bulleted key="can-announce">
                       <Trans>election.statusCanAnnounce</Trans>
@@ -151,6 +154,7 @@ class ElectionStatusSection extends React.Component<IProps> {
                       />
                     </InfoListItem>
                   ) : null}
+
                   {!electionGroup.published && electionGroup.announced ? (
                     <InfoListItem bulleted key="is-announced">
                       <Trans>election.statusIsAnnounced</Trans>
@@ -166,6 +170,7 @@ class ElectionStatusSection extends React.Component<IProps> {
                       />
                     </InfoListItem>
                   ) : null}
+
                   {electionGroup.published &&
                   electionGroup.status === 'published' ? (
                     <InfoListItem bulleted key="published-and-ready">
@@ -208,6 +213,11 @@ class ElectionStatusSection extends React.Component<IProps> {
             )}
           </Mutation>
         ) : null}
+
+        {(electionGroup.status === 'ongoing' ||
+          electionGroup.status === 'closed') && (
+          <TurnoutSubsection electionGroup={electionGroup} />
+        )}
 
         {electionGroup.status === 'closed' && latestElectionGroupCount && (
           <LatestElectionGroupCountResult

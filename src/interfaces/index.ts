@@ -114,6 +114,8 @@ export interface IPollBook {
   voters: IVoter[];
   adminAddedVoters: IVoter[];
   selfAddedVoters: IVoter[];
+  nVerifiedVoters: number;
+  nVerifiedVotersWithVotes: number;
   election: Election;
 }
 

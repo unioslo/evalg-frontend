@@ -46,6 +46,13 @@
       "latestElectionGroupCount": {
         "countingStarted": "Opptelling startet",
         "subsectionHeader": "Resultat av siste opptelling"
+      },
+      "turnoutSubsection": {
+        "censusIsEmpty": "Manntallet er tomt",
+        "header": "Oppmøte",
+        "inCensus": "i manntall",
+        "personHasVotedOf": "person har stemt av",
+        "personsHasVotedOf": "personer har stemt av"
       }
     },
     "electionKey": {
