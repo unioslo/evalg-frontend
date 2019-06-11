@@ -45,7 +45,7 @@
     "statusSection": {
       "latestElectionGroupCount": {
         "countingStarted": "Counting started",
-        "subsectionHeader": "Result of latest counting"
+        "subsectionHeader": "Result of latest count"
       },
       "turnoutSubsection": {
         "header": "Turnout",
