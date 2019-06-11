@@ -54,7 +54,7 @@ const CountingSection: React.FunctionComponent<Props> = ({
   };
 
   return (
-    <PageSection header={t('admin.countingSection.sectionHeader')}>
+    <PageSection header={t('admin.countingSection.header')}>
       {electionGroup.status === 'closed' ? (
         <ButtonContainer alignLeft smlTopMargin>
           <Query

@@ -11,13 +11,16 @@
       }
     },
     "countingSection": {
+      "header": "Counting",
+      "startCounting": "Start counting",
+      "startNewCounting": "Start new counting",
       "countingModal": {
+        "header": "Counting",
         "chooseElectionKeyFile": "Choose election key file",
         "chosenFile": "Chosen file",
         "closeAndDisplayResults": "Close and display results",
         "countingFinnished": "Counting finnished",
         "electionKeyReady": "Election key ready",
-        "header": "Counting",
         "modalBullet1": "The election key is required to decrypt the votes and start the counting process.",
         "modalBullet2FirstPart": "The election key file containing the election key was downloaded by",
         "modalBullet3": "Two countings for the same votes may lead to different results if there are drawings.",
@@ -33,22 +36,26 @@
         }
       },
       "countingsSubsection": {
+        "header": "Countings",
         "startedBy": "Started by",
         "status": "Status",
-        "subsectionHeader": "Countings",
         "timeStarted": "Time started",
         "errors": {
           "couldNotLoadCountings": "Could not load countings"
         }
-      },
-      "sectionHeader": "Counting",
-      "startCounting": "Start counting",
-      "startNewCounting": "Start new counting"
+      }
     },
     "statusSection": {
       "latestElectionGroupCount": {
         "countingStarted": "Counting started",
         "subsectionHeader": "Result of latest count"
+      },
+      "turnoutSubsection": {
+        "header": "Turnout",
+        "censusIsEmpty": "Census is empty",
+        "inCensus": "in census",
+        "personHasVotedOf": "person has voted of",
+        "personsHasVotedOf": "persons has voted of"
       }
     },
     "electionKey": {

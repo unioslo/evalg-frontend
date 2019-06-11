@@ -11,13 +11,16 @@
       }
     },
     "countingSection": {
+      "header": "Opptelling",
+      "startCounting": "Start opptelling",
+      "startNewCounting": "Start ny opptelling",
       "countingModal": {
+        "header": "Opptelling",
         "chooseElectionKeyFile": "Velg valgnøkkelfil",
         "chosenFile": "Valgt fil",
         "closeAndDisplayResults": "Lukk og vis resultat",
         "countingFinnished": "Opptelling ferdig",
         "electionKeyReady": "Valgnøkkel klar",
-        "header": "Opptelling",
         "modalBullet1": "Valgnøkkelen er nødvendig for å dekryptere stemmene og starte opptellingen.",
         "modalBullet2FirstPart": "Valgnøkkel-filen med valgnøkkelen ble lastet ned av",
         "modalBullet3": "To opptellinger for de samme stemmene kan føre til ulikt resultat dersom det forekommer loddtrekninger.",
@@ -33,22 +36,26 @@
         }
       },
       "countingsSubsection": {
+        "header": "Opptellinger",
         "startedBy": "Startet av",
         "status": "Status",
-        "subsectionHeader": "Opptellinger",
         "timeStarted": "Tidspunkt startet",
         "errors": {
           "couldNotLoadCountings": "Kunne ikke laste opptellinger"
         }
-      },
-      "sectionHeader": "Opptelling",
-      "startCounting": "Start opptelling",
-      "startNewCounting": "Start ny opptelling"
+      }
     },
     "statusSection": {
       "latestElectionGroupCount": {
         "countingStarted": "Opptelling startet",
         "subsectionHeader": "Resultat av siste opptelling"
+      },
+      "turnoutSubsection": {
+        "header": "Oppmøte",
+        "censusIsEmpty": "Manntallet er tomt",
+        "inCensus": "i manntall",
+        "personHasVotedOf": "person har stemt av",
+        "personsHasVotedOf": "personer har stemt av"
       }
     },
     "electionKey": {

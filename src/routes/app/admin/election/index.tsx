@@ -33,6 +33,12 @@ const electionGroupQuery = gql`
       publicationBlockers
       elections {
         ...ElectionFields
+        pollbooks {
+          id
+          name
+          verifiedVotersCount
+          verifiedVotersWithVotesCount
+        }
         lists {
           id
           name
