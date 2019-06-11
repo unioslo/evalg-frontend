@@ -1,6 +1,16 @@
 {
   "admin": {
-    "counting": {
+    "countingDetails": {
+      "auditLogForAllElections": "Audit log for all elections until the counting",
+      "auditLogForElection": "Audit log for the election until the counting",
+      "ballots": "Ballots",
+      "countingProtocol": "Counting protocol",
+      "electionResult": "Election result",
+      "errors": {
+        "fileDownloadError": "Something went wrong while trying to download a file"
+      }
+    },
+    "countingSection": {
       "countingModal": {
         "chooseElectionKeyFile": "Choose election key file",
         "chosenFile": "Chosen file",
@@ -10,6 +20,7 @@
         "header": "Counting",
         "modalBullet1": "The election key is required to decrypt the votes and start the counting process.",
         "modalBullet2FirstPart": "The election key file containing the election key was downloaded by",
+        "modalBullet3": "Two countings for the same votes may lead to different results if there are drawings.",
         "startCounting": "Start counting",
         "errors": {
           "couldNotReadElectionKeyFile": "Could not read election key from file. Did you choose the correct file?",
@@ -21,8 +32,24 @@
           }
         }
       },
+      "countingsSubsection": {
+        "startedBy": "Started by",
+        "status": "Status",
+        "subsectionHeader": "Countings",
+        "timeStarted": "Time started",
+        "errors": {
+          "couldNotLoadCountings": "Could not load countings"
+        }
+      },
       "sectionHeader": "Counting",
-      "startCounting": "Start counting"
+      "startCounting": "Start counting",
+      "startNewCounting": "Start new counting"
+    },
+    "statusSection": {
+      "latestElectionGroupCount": {
+        "countingStarted": "Counting started",
+        "subsectionHeader": "Result of latest count"
+      }
     },
     "electionKey": {
       "create": "Create election key",
@@ -306,6 +333,7 @@
     "and": "and",
     "at": "at",
     "back": "Back",
+    "by": "by",
     "cancel": "Cancel",
     "choose": "Choose",
     "chooseFile": "Choose file",
@@ -314,6 +342,7 @@
     "copy": "Copy",
     "datePlaceHolder": "dd/mm/yyyy",
     "delete": "Delete",
+    "download": "Download",
     "edit": "edit",
     "email": "Email",
     "female": "Female",

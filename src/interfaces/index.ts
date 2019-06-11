@@ -199,6 +199,7 @@ export interface ElectionGroup {
   published: boolean;
   announcementBlockers: string[];
   publicationBlockers: string[];
+  latestElectionGroupCount: ElectionGroupCount;
 }
 
 export interface IElectionGroupRole {
@@ -211,6 +212,28 @@ export interface IPrincipal {
   principalType: 'person-principal' | 'group-principal';
   person: IPerson; // may actually be undefined, check principal type
   group: IGroup; // may actually be undefined, check principal type
+}
+
+export interface ElectionGroupCount {
+  id: string;
+  groupId: string;
+  initiatedAt: string;
+  finishedAt: string;
+  audit: any;
+  status: string;
+  electionGroup: ElectionGroup;
+  electionResults: ElectionResult[];
+}
+
+export interface ElectionResult {
+  id: string;
+  result: any;
+  electionProtocol: any;
+  votes: any;
+  electionId: string;
+  election: Election;
+  electionGroupCountId: string;
+  electionGroupCount: ElectionGroupCount;
 }
 
 // TODO: Make sure underneath meta structure and rest of type definitions here is correct to some specification.

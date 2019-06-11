@@ -146,8 +146,7 @@ const CountingModal: React.FunctionComponent<Props> = ({
           id: electionGroup.id,
           electionKey,
         },
-        // refetchQueries = // TODO: Refetch the query that will load the election results
-        // on the status page
+        refetchQueries: () => ['electionGroup', 'electionGroupCounts'],
       });
       setIsCounting(false);
       response = result && result.data && result.data.startElectionGroupCount;
@@ -155,19 +154,19 @@ const CountingModal: React.FunctionComponent<Props> = ({
       setIsCounting(false);
       console.error(error.message);
       setCountingError(
-        t('admin.counting.countingModal.errors.backend.unknown')
+        t('admin.countingSection.countingModal.errors.backend.unknown')
       );
       return;
     }
     if (!response || !response.success) {
       let errorMessage = t(
-        'admin.counting.countingModal.errors.backend.unknown'
+        'admin.countingSection.countingModal.errors.backend.unknown'
       );
       if (response && response.code) {
         errorMessage = translateBackendError({
           errorCode: response.code,
           t,
-          codePrefix: 'admin.counting.countingModal.errors.backend',
+          codePrefix: 'admin.countingSection.countingModal.errors.backend',
         });
       }
       setCountingError(errorMessage);
@@ -199,12 +198,12 @@ const CountingModal: React.FunctionComponent<Props> = ({
         >
           {isElectionKeyReady ? (
             <>
-              {t('admin.counting.countingModal.electionKeyReady')}
+              {t('admin.countingSection.countingModal.electionKeyReady')}
               <AnimatedCheckmark />
             </>
           ) : (
             <>
-              {t('admin.counting.countingModal.chooseElectionKeyFile')}
+              {t('admin.countingSection.countingModal.chooseElectionKeyFile')}
               {isReadingElectionKeyFile && (
                 <Spinner size="2rem" marginLeft="1.1rem" thin />
               )}
@@ -213,7 +212,7 @@ const CountingModal: React.FunctionComponent<Props> = ({
         </label>
         {electionKeyFileName && (
           <div className={classes.electionKeyFileName}>
-            {t('admin.counting.countingModal.chosenFile')}:{' '}
+            {t('admin.countingSection.countingModal.chosenFile')}:{' '}
             {electionKeyFileName}
           </div>
         )}
@@ -221,7 +220,9 @@ const CountingModal: React.FunctionComponent<Props> = ({
 
       {isElectionKeyError && (
         <p className={classes.errorMessage}>
-          {t('admin.counting.countingModal.errors.couldNotReadElectionKeyFile')}
+          {t(
+            'admin.countingSection.countingModal.errors.couldNotReadElectionKeyFile'
+          )}
         </p>
       )}
     </>
@@ -242,13 +243,13 @@ const CountingModal: React.FunctionComponent<Props> = ({
               <>
                 {isCountingFinnishedSuccessfully ? (
                   <>
-                    {t('admin.counting.countingModal.countingFinnished')}
+                    {t('admin.countingSection.countingModal.countingFinnished')}
                     <AnimatedCheckmark />
                   </>
                 ) : (
                   <>
                     <span>
-                      {t('admin.counting.countingModal.startCounting')}
+                      {t('admin.countingSection.countingModal.startCounting')}
                     </span>
                     {isCounting && (
                       <Spinner size="2rem" marginLeft="1.1rem" thin />
@@ -270,13 +271,13 @@ const CountingModal: React.FunctionComponent<Props> = ({
     <Button
       action={onCloseModalAndSeeResults}
       disabled={!isCountingFinnishedSuccessfully}
-      text={t('admin.counting.countingModal.closeAndDisplayResults')}
+      text={t('admin.countingSection.countingModal.closeAndDisplayResults')}
     />
   );
 
   return (
     <Modal
-      header={t('admin.counting.countingModal.header')}
+      header={t('admin.countingSection.countingModal.header')}
       buttons={[
         <Button
           key="cancel-button"
@@ -291,11 +292,14 @@ const CountingModal: React.FunctionComponent<Props> = ({
       <>
         <InfoList maxWidth="100rem">
           <InfoListItem bulleted>
-            {t('admin.counting.countingModal.modalBullet1')}
+            {t('admin.countingSection.countingModal.modalBullet1')}
           </InfoListItem>
           <InfoListItem bulleted>
-            {t('admin.counting.countingModal.modalBullet2FirstPart')}{' '}
+            {t('admin.countingSection.countingModal.modalBullet2FirstPart')}{' '}
             <ElectionKeyCreatedByInfo electionGroupId={electionGroup.id} />.
+          </InfoListItem>
+          <InfoListItem bulleted>
+            {t('admin.countingSection.countingModal.modalBullet3')}
           </InfoListItem>
         </InfoList>
 

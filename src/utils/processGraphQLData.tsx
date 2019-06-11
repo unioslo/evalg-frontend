@@ -1,5 +1,4 @@
-import { Election, ElectionGroup } from '../interfaces';
-
+import { Election, ElectionGroup, ElectionResult } from '../interfaces';
 
 const multipleElectionsSortingOrder = [
   'Academic staff',
@@ -41,6 +40,34 @@ export const orderMultipleElections = (elections: Election[]): Election[] => {
   return orderedElections;
 };
 
+export const orderElectionResults = (
+  electionResults: ElectionResult[]
+): ElectionResult[] => {
+  if (electionResults.length === 1) {
+    return electionResults;
+  }
+
+  const orderedElectionResults: ElectionResult[] = [];
+  const processedIndexes: number[] = [];
+
+  for (const orderedElectionName of multipleElectionsSortingOrder) {
+    for (let i = 0; i < electionResults.length; i++) {
+      if (electionResults[i].election.name.en === orderedElectionName) {
+        orderedElectionResults.push(electionResults[i]);
+        processedIndexes.push(i);
+      }
+    }
+  }
+
+  for (let i = 0; i < electionResults.length; i++) {
+    if (processedIndexes.indexOf(i) === -1) {
+      orderedElectionResults.push(electionResults[i]);
+    }
+  }
+
+  return orderedElectionResults;
+};
+
 export const electionGroupWithOrderedElections = (
   electionGroup: ElectionGroup,
   options?: { onlyActiveElections: boolean }
@@ -55,9 +82,8 @@ export const electionGroupWithOrderedElections = (
       : electionGroup.elections
   );
 
-  const electionGroupWithProcessedElections = {
+  return {
     ...electionGroup,
     elections: processedElections,
   };
-  return electionGroupWithProcessedElections;
 };
