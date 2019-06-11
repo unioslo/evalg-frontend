@@ -5,7 +5,10 @@
       "auditLogForElection": "Audit log for the election until the counting",
       "ballots": "Ballots",
       "countingProtocol": "Counting protocol",
-      "electionResult": "Election result"
+      "electionResult": "Election result",
+      "errors": {
+        "fileDownloadError": "Something went wrong while trying to download a file"
+      }
     },
     "countingSection": {
       "countingModal": {

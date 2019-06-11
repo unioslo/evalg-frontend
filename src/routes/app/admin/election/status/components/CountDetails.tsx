@@ -114,7 +114,9 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
     <>
       {fileDownloadError && (
         <div className={classes.fileDownloadErrorMessage}>
-          Noe gikk galt under nedlasting av en fil: {fileDownloadError}
+          {`${t(
+            'admin.countingDetails.errors.fileDownloadError'
+          )}: ${fileDownloadError}`}
         </div>
       )}
 
@@ -133,13 +135,16 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
               <h3 className={classes.electionHeading}>{electionName}</h3>
             )}
             <div>
-              <h4 className={classes.subHeading}>{t('admin.countingDetails.electionResult')}</h4>
+              <h4 className={classes.subHeading}>
+                {t('admin.countingDetails.electionResult')}
+              </h4>
               <em>Valgresultat</em>
             </div>
 
             <div className={classes.electionResultFileDownloads}>
               <span>
-                {t('admin.countingDetails.countingProtocol')}: <a href="#">{t('general.download')}</a>
+                {t('admin.countingDetails.countingProtocol')}:{' '}
+                <a href="#">{t('general.download')}</a>
               </span>
               <span className={classes.verticalLineSeparator}>|</span>
               <span>

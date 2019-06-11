@@ -1,11 +1,14 @@
 {
   "admin": {
     "countingDetails": {
-      "auditLogForAllElections": "Audit-logg for alle valgene frem til opptellingen",
-      "auditLogForElection": "Audit-logg for valget frem til opptellingen",
+      "auditLogForAllElections": "Revisjonslogg for alle valgene frem til opptellingen",
+      "auditLogForElection": "Revisjonslogg for valget frem til opptellingen",
       "ballots": "Stemmesedler",
       "countingProtocol": "Opptellingsprotokoll",
-      "electionResult": "Valgresultat"
+      "electionResult": "Valgresultat",
+      "errors": {
+        "fileDownloadError": "Noe gikk galt under nedlasting av en fil"
+      }
     },
     "countingSection": {
       "countingModal": {
