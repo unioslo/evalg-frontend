@@ -28,7 +28,7 @@ const CountingSectionCounts: React.FunctionComponent<IProps> = ({
           return (
             <PageSubSection
               header={t(
-                'admin.countingSection.countingsSubsection.subsectionHeader'
+                'admin.countingSection.countingsSubsection.header'
               )}
             >
               {t(
@@ -43,7 +43,7 @@ const CountingSectionCounts: React.FunctionComponent<IProps> = ({
           return (
             <PageSubSection
               header={t(
-                'admin.countingSection.countingsSubsection.subsectionHeader'
+                'admin.countingSection.countingsSubsection.header'
               )}
             >
               <Spinner darkStyle />
@@ -55,7 +55,7 @@ const CountingSectionCounts: React.FunctionComponent<IProps> = ({
 
         if (nCounts > 0) {
           const subSectionHeading = `${t(
-            'admin.countingSection.countingsSubsection.subsectionHeader'
+            'admin.countingSection.countingsSubsection.header'
           )} (${data.electionGroupCountingResults.length})`;
 
           return nCounts <= MAX_COUNTS_ENTRIES_WITHOUT_CLICK_TO_EXPAND ? (
