@@ -1,4 +1,6 @@
 import React from 'react';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 import { useTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
@@ -6,6 +8,25 @@ import { Classes } from 'jss';
 import { ElectionGroup } from 'interfaces';
 
 import { PageSubSection } from 'components/page';
+import Loading from 'components/loading';
+
+const turnoutCountsQuery = gql`
+  query turnoutCounts($id: UUID!) {
+    electionGroup(id: $id) {
+      id
+      type
+      elections {
+        id
+        pollbooks {
+          id
+          name
+          verifiedVotersCount
+          verifiedVotersWithVotesCount
+        }
+      }
+    }
+  }
+`;
 
 const styles = (theme: any) => ({
   turnoutSubSectionContent: {
@@ -16,15 +37,18 @@ const styles = (theme: any) => ({
       marginBottom: '1.5rem',
     },
   },
+  errorText: {
+    color: theme.errorTextColor,
+  },
 });
 
 interface IProps {
-  electionGroup: ElectionGroup;
+  electionGroupId: string;
   classes: Classes;
 }
 
 const TurnoutSubsection: React.FunctionComponent<IProps> = ({
-  electionGroup,
+  electionGroupId,
   classes,
 }) => {
   const { t, i18n } = useTranslation();
@@ -33,33 +57,55 @@ const TurnoutSubsection: React.FunctionComponent<IProps> = ({
   return (
     <PageSubSection header={t('admin.statusSection.turnoutSubsection.header')}>
       <div className={classes.turnoutSubSectionContent}>
-        {electionGroup.type === 'single_election'
-          ? electionGroup.elections[0].pollbooks.map(pollbook => (
-              <TurnoutRow
-                key={pollbook.id}
-                pollbookName={pollbook.name[lang]}
-                votersCount={Number(pollbook.verifiedVotersCount)}
-                votersWithVotesCount={Number(
-                  pollbook.verifiedVotersWithVotesCount
-                )}
-                classes={classes}
-              />
-            ))
-          : electionGroup.elections
-              .filter(election => election.active)
-              .map(election => (
-                <TurnoutRow
-                  key={election.id}
-                  pollbookName={election.pollbooks[0].name[lang]}
-                  votersCount={Number(
-                    election.pollbooks[0].verifiedVotersCount
-                  )}
-                  votersWithVotesCount={Number(
-                    election.pollbooks[0].verifiedVotersWithVotesCount
-                  )}
-                  classes={classes}
-                />
-              ))}
+        <Query
+          query={turnoutCountsQuery}
+          variables={{ id: electionGroupId }}
+          fetchPolicy="network-only"
+        >
+          {({ data, loading, error }) => {
+            if (loading) {
+              return <Loading />;
+            }
+            if (error) {
+              console.error(error);
+              return (
+                <span className={classes.errorText}>
+                  {t('admin.statusSection.turnoutSubsection.errors.general')}.
+                </span>
+              );
+            }
+
+            const electionGroup: ElectionGroup = data.electionGroup;
+
+            return electionGroup.type === 'single_election'
+              ? electionGroup.elections[0].pollbooks.map(pollbook => (
+                  <TurnoutRow
+                    key={pollbook.id}
+                    pollbookName={pollbook.name[lang]}
+                    votersCount={Number(pollbook.verifiedVotersCount)}
+                    votersWithVotesCount={Number(
+                      pollbook.verifiedVotersWithVotesCount
+                    )}
+                    classes={classes}
+                  />
+                ))
+              : electionGroup.elections
+                  .filter(election => election.active)
+                  .map(election => (
+                    <TurnoutRow
+                      key={election.id}
+                      pollbookName={election.pollbooks[0].name[lang]}
+                      votersCount={Number(
+                        election.pollbooks[0].verifiedVotersCount
+                      )}
+                      votersWithVotesCount={Number(
+                        election.pollbooks[0].verifiedVotersWithVotesCount
+                      )}
+                      classes={classes}
+                    />
+                  ));
+          }}
+        </Query>
       </div>
     </PageSubSection>
   );

@@ -216,7 +216,7 @@ class ElectionStatusSection extends React.Component<IProps> {
 
         {(electionGroup.status === 'ongoing' ||
           electionGroup.status === 'closed') && (
-          <TurnoutSubsection electionGroup={electionGroup} />
+          <TurnoutSubsection electionGroupId={electionGroup.id} />
         )}
 
         {electionGroup.status === 'closed' && latestElectionGroupCount && (
