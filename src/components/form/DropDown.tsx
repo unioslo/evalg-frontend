@@ -150,7 +150,7 @@ class DropDown extends DropDownBase<IProps> {
 
   handleOnFocus() {
     clearTimeout(this.timeoutID);
-    if (!this.state.open) {
+    if (!this.state.open && !this.props.disabled) {
       this.setState({ open: true });
     }
   }
