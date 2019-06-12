@@ -61,10 +61,10 @@ const RadioButton = (props: IProps) => {
         onChange={onChange}
         checked={checked}
       />
-      <label htmlFor={id} className={iconClassNames} />
       <label htmlFor={id} className={classes.label}>
         {label}
       </label>
+      <label htmlFor={id} className={iconClassNames} />
     </div>
   );
 };
