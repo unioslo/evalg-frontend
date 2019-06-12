@@ -431,6 +431,9 @@
     "loginAsAdmin": "Logg inn som administrator",
     "readMore": "Mer om eValg"
   },
+  "person": {
+    "loading": "Laster brukerdata…"
+  },
   "prefElec": {
     "candPageDesc": "Her legger du til kandidater som stiller for de ulike velgergruppene.<0></0>\nValget må ha minst like mange kandidater per gruppe som angitt under <1>valginnstillinger</1>."
   },
@@ -494,6 +497,7 @@
     "writeJustification": "Hvorfor du skulle vært med i dette manntallet (valgfritt)",
     "youAreOnTheElectoralRoll": "Du er i manntallet"
   },
+<<<<<<< HEAD
   "votingReport": {
     "back": "Tilbake",
     "emptyWithVote": "Ingen velgere i manntallet har avgitt stemme",
@@ -507,5 +511,9 @@
     },
     "withVotes": "Har avgitt stemme",
     "withoutVotes": "Har ikke avgitt stemme"
+=======
+  "icons": {
+    "close": "Lukk"
+>>>>>>> Add title to svg close icon
   }
 }
