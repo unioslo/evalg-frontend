@@ -229,8 +229,6 @@ const CensusTable: React.FunctionComponent<IProps> = ({
             <AddVoterForm
               pollbook={pollBookDict[addVoterPollbookId]}
               onClose={onCloseAddVoterForm}
-              t={t}
-              lang={lang}
             />
           )}
 
