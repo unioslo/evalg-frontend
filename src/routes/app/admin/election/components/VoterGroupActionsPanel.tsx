@@ -9,6 +9,7 @@ const styles = (theme: any) => ({
   voterPanelSection: {
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'space-between',
     alignItems: 'center',
     textAlign: 'center',
     width: '22rem',
@@ -28,6 +29,7 @@ const styles = (theme: any) => ({
     border: `2px dashed ${theme.colors.lightGray}`,
     color: theme.colors.lightGray,
   },
+  voterGroupPanelTopElements: {},
   voterGroupName: {
     marginBottom: '0.6rem',
   },
@@ -43,19 +45,24 @@ const styles = (theme: any) => ({
   },
   numberOfPersonsText: {
     fontSize: '1.4rem',
-    // fontWeight: 'bold',
     textAlign: 'center',
   },
-  actionLinks: {},
-  actionLink: {
+  actionLinks: {
+    display: 'flex',
     fontSize: '1.4rem',
+    lineHeight: '1.9rem',
+  },
+  actionLink: {
     color: theme.actionTextColor,
     '&:hover': {
       cursor: 'pointer',
       textDecoration: 'underline',
     },
-    '&:not(:last-child)': {
-      marginBottom: '0.5rem',
+    '&:first-child': {
+      marginRight: '1rem',
+    },
+    '&:last-child': {
+      marginLeft: '1rem',
     },
   },
   removeAllButton: {},
@@ -141,29 +148,27 @@ const VoterGroupActionPanel = (props: IProps) => {
 
   return (
     <div className={voterGroupPanelCls}>
-      <div className={classes.voterGroupName}>
-        <span className={classes.voterGroupNameText}>{voterGroupName}</span>
-      </div>
-      <div className={classes.numberOfPersons}>
-        <span className={classes.numberOfPersonsText}>
-          {count}{' '}
-          {count === 1
-            ? t('census.person').toLowerCase()
-            : t('census.persons').toLowerCase()}
-        </span>
+      <div className={classes.voterGroupPanelTopElements}>
+        <div className={classes.voterGroupName}>
+          <span className={classes.voterGroupNameText}>{voterGroupName}</span>
+        </div>
+        <div className={classes.numberOfPersons}>
+          <span className={classes.numberOfPersonsText}>
+            {count}{' '}
+            {count === 1
+              ? t('census.person').toLowerCase()
+              : t('census.persons').toLowerCase()}
+          </span>
+        </div>
       </div>
       {active && (
         <div className={classes.actionLinks}>
-          <div>
-            <button className={actionLinkCls} onClick={addAction}>
-              {addActionText}
-            </button>
-          </div>
-          <div>
-            <button className={actionLinkCls} onClick={removeAllAction}>
-              {removeAllActionText}
-            </button>
-          </div>
+          <button className={actionLinkCls} onClick={addAction}>
+            {addActionText}
+          </button>
+          <button className={actionLinkCls} onClick={removeAllAction}>
+            {removeAllActionText}
+          </button>
         </div>
       )}
       {counterText && <div className={classes.counterText}>{counterText}</div>}
