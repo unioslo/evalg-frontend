@@ -10,6 +10,8 @@ import { ElectionGroup } from 'interfaces';
 import { PageSubSection } from 'components/page';
 import Loading from 'components/loading';
 
+const POLL_INTERVAL_MS = 30000;
+
 const turnoutCountsQuery = gql`
   query turnoutCounts($id: UUID!) {
     electionGroup(id: $id) {
@@ -44,11 +46,13 @@ const styles = (theme: any) => ({
 
 interface IProps {
   electionGroupId: string;
+  doPolling: boolean;
   classes: Classes;
 }
 
 const TurnoutSubsection: React.FunctionComponent<IProps> = ({
   electionGroupId,
+  doPolling,
   classes,
 }) => {
   const { t, i18n } = useTranslation();
@@ -61,6 +65,7 @@ const TurnoutSubsection: React.FunctionComponent<IProps> = ({
           query={turnoutCountsQuery}
           variables={{ id: electionGroupId }}
           fetchPolicy="network-only"
+          pollInterval={doPolling ? POLL_INTERVAL_MS : 0}
         >
           {({ data, loading, error }) => {
             if (loading) {
