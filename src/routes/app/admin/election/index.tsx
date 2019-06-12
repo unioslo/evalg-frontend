@@ -36,8 +36,6 @@ const electionGroupQuery = gql`
         pollbooks {
           id
           name
-          verifiedVotersCount
-          verifiedVotersWithVotesCount
         }
         lists {
           id
