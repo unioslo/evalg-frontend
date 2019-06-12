@@ -55,7 +55,10 @@
         "censusIsEmpty": "Census is empty",
         "inCensus": "in census",
         "personHasVotedOf": "person has voted of",
-        "personsHasVotedOf": "persons has voted of"
+        "personsHasVotedOf": "persons has voted of",
+        "errors": {
+          "general": "Could not load turnout numbers"
+        }
       }
     },
     "electionKey": {

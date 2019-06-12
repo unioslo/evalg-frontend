@@ -55,7 +55,10 @@
         "censusIsEmpty": "Manntallet er tomt",
         "inCensus": "i manntall",
         "personHasVotedOf": "person har stemt av",
-        "personsHasVotedOf": "personer har stemt av"
+        "personsHasVotedOf": "personer har stemt av",
+        "errors": {
+          "general": "Kunne ikke laste inn oppmøtetall"
+        }
       }
     },
     "electionKey": {
