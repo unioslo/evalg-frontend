@@ -8,6 +8,7 @@ import { ElectionGroupCount } from 'interfaces';
 import CountDetails from './CountDetails';
 import { Date, Time } from 'components/i18n';
 import { PageSubSection } from 'components/page';
+import { idValueForPerson } from 'utils/processGraphQLData';
 
 const styles = (theme: any) => ({
   latestResultSection: {
@@ -31,7 +32,7 @@ const LatestElectionGroupCountResult: React.FunctionComponent<IProps> = ({
   classes,
 }) => {
   const { t } = useTranslation();
-  const { initiatedAt, status } = count;
+  const { initiatedAt, initiatedBy } = count;
 
   return (
     <PageSubSection
@@ -41,8 +42,8 @@ const LatestElectionGroupCountResult: React.FunctionComponent<IProps> = ({
     >
       <span>
         {t('admin.statusSection.latestElectionGroupCount.countingStarted')}{' '}
-        <Date dateTime={count.initiatedAt} longDate />{' '}
-        <Time dateTime={count.initiatedAt} /> {t('general.by')} ?
+        <Date dateTime={initiatedAt} longDate /> <Time dateTime={initiatedAt} />{' '}
+        {t('general.by')} {idValueForPerson(initiatedBy)}
       </span>
       <div className={classes.resultBox}>
         <CountDetails electionGroupCount={count} />

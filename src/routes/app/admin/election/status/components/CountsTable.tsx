@@ -15,6 +15,7 @@ import {
 import DropdownArrowIcon from 'components/icons/DropdownArrowIcon';
 import { Date, Time } from 'components/i18n';
 import { ElectionGroupCount } from 'interfaces';
+import { idValueForPerson } from 'utils/processGraphQLData';
 
 interface IProps {
   electionGroupCounts: ElectionGroupCount[];
@@ -65,7 +66,7 @@ const CountsTable: React.FunctionComponent<IProps> = ({
         </TableHeaderRow>
       </TableHeader>
       <TableBody>
-        {electionGroupCounts.map((count: any) => {
+        {electionGroupCounts.map(count => {
           const isSelected = count.id === selectedCountId;
 
           return (
@@ -77,7 +78,7 @@ const CountsTable: React.FunctionComponent<IProps> = ({
                 <TableCell>
                   <DropdownArrowIcon selected={isSelected} />
                 </TableCell>
-                <TableCell>?</TableCell>
+                <TableCell>{idValueForPerson(count.initiatedBy)}</TableCell>
                 <TableCell>
                   <Date dateTime={count.initiatedAt} longDate />{' '}
                   <Time dateTime={count.initiatedAt} />
