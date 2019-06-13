@@ -1,4 +1,9 @@
-import { Election, ElectionGroup, ElectionResult } from '../interfaces';
+import {
+  Election,
+  ElectionGroup,
+  ElectionResult,
+  IPerson,
+} from '../interfaces';
 
 const multipleElectionsSortingOrder = [
   'Academic staff',
@@ -86,4 +91,24 @@ export const electionGroupWithOrderedElections = (
     ...electionGroup,
     elections: processedElections,
   };
+};
+
+export const idValueForPerson = (person: IPerson) => {
+  if (!person) return '';
+
+  const identifiers = person.identifiers;
+
+  for (let id of identifiers) {
+    if (id.idType === 'feide_id') {
+      return id.idValue;
+    }
+  }
+  // Fallback to uid
+  for (let id of identifiers) {
+    if (id.idType === 'uid') {
+      return id.idValue;
+    }
+  }
+  // fallback to person UUID
+  return person.id;
 };

@@ -3,6 +3,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { Date, Time } from 'components/i18n';
+import { idValueForPerson } from 'utils/processGraphQLData';
 
 export const electionGroupKeyMetaQuery = gql`
   query electionGroupKeyMeta($id: UUID!) {
@@ -40,28 +41,9 @@ const ElectionKeyCreatedByInfo: React.FunctionComponent<Props> = ({
       let who = '';
 
       if (generatedBy) {
-        const identifiers = generatedBy.identifiers;
-
-        for (let id of identifiers) {
-          if (id.idType === 'feide_id') {
-            who = id.idValue;
-            break;
-          }
-        }
-        if (!who) {
-          // Fallback to uid
-          for (let id of identifiers) {
-            if (id.idType === 'uid') {
-              who = id.idValue;
-              break;
-            }
-          }
-        }
-        if (!who) {
-          // fallback to person UUID
-          who = generatedBy.id;
-        }
+        who = idValueForPerson(generatedBy);
       }
+
       return (
         <>
           <span>{who}</span> (
