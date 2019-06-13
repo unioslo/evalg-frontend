@@ -144,6 +144,7 @@
     "deletePersonsInPollbook": "Empty census",
     "deletePollbookConfirmationModalText": "Are you sure you want to delete the pollbook “{{pollbookName}}” ({{num}} {{of}})?",
     "deletePollbookConfirmationModalTitle": "Confirm deletion",
+    "feideIdOrBirthNumber": "Feide-ID or birth number",
     "group": "Group",
     "idType": "ID-type",
     "idTypes": {
@@ -164,7 +165,6 @@
     "uploadCensusFileHeader": "Upload census from file",
     "uploadSuccessful": "Added {{numOk}} persons to the group “{{pollbookName}}“.",
     "uploadSuccessfulWithFailures": "Added {{numOk}} persons to the group “{{pollbookName}}“. {{numFailed}} rows from the census file were discarded, probably because they already were in the census.",
-    "usernameOrBirthNumber": "Username or birth number",
     "errors": {
       "backend": {
         "unknown": "An unexpected error occurred while uploading or parsing the census file.",
@@ -333,7 +333,8 @@
     "invalidUrl": "Invalid url.",
     "censusAddVoter": {
       "birthNumberIncorrectNumberOfDigits": "Birth number must be 11 digits",
-      "usernameCannotStartWithNumber": "A username cannot start with a digit"
+      "feideIdCannotStartWithNumber": "Feide-ID cannot start with a digit",
+      "invalidFeideId": "Invalid Feide-ID"
     }
   },
   "general": {

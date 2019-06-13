@@ -144,6 +144,7 @@
     "deletePersonsInPollbook": "Tøm manntall",
     "deletePollbookConfirmationModalText": "Er du sikker på at du vil slette velgergruppen «{{pollbookName}}» ({{num}} {{of}})?",
     "deletePollbookConfirmationModalTitle": "Bekreft sletting",
+    "feideIdOrBirthNumber": "Feide-ID eller fødselsnummer",
     "group": "Gruppe",
     "idType": "ID-type",
     "idTypes": {
@@ -164,7 +165,6 @@
     "uploadCensusFileHeader": "Last opp manntall fra fil",
     "uploadSuccessful": "{{numOk}} personer ble lagt til i velgergruppen «{{pollbookName}}».",
     "uploadSuccessfulWithFailures": "{{numOk}} personer ble lagt til i velgergruppen «{{pollbookName}}». {{numFailed}} rader fra manntallsfilen ble forkastet, sannsynligvis fordi de allerede fantes i manntallet.",
-    "usernameOrBirthNumber": "Brukernavn eller fødselsnummer",
     "errors": {
       "backend": {
         "unknown": "En uventet feil oppstod ved opplasting av manntall.",
@@ -331,7 +331,8 @@
     "invalidUrl": "Ugyldig lenke.",
     "censusAddVoter": {
       "birthNumberIncorrectNumberOfDigits": "Fødselsnummer må være 11 sifre",
-      "usernameCannotStartWithNumber": "Brukernavn kan ikke starte med et tall"
+      "feideIdCannotStartWithNumber": "Feide-ID kan ikke starte med et tall",
+      "invalidFeideId": "Ugyldig Feide-ID"
     }
   },
   "general": {

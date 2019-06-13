@@ -162,7 +162,11 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
     const lang = i18n.language;
 
     return (
-      <Query query={electionGroupQuery} variables={{ id: this.props.groupId }}>
+      <Query
+        query={electionGroupQuery}
+        variables={{ id: this.props.groupId }}
+        fetchPolicy="network-only"
+      >
         {({ data, loading, error, refetch }) => {
           if (error) {
             return 'Error';
@@ -206,7 +210,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                   active: e.active,
                 };
                 pollBook.voters
-                  .filter(voter => !voter.selfAdded)
+                  .filter(voter => voter.verified)
                   .forEach(voter => {
                     voters.push(voter);
                   });

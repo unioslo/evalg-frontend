@@ -18,6 +18,7 @@ import Button, { ButtonContainer } from 'components/button';
 import { IPollBook } from 'interfaces';
 import { getVoterIdTypeDisplayName } from 'utils/i18n';
 import Spinner from 'components/animations/Spinner';
+import { useTranslation } from 'react-i18next';
 
 const addVoterById = gql`
   mutation addVoterById(
@@ -39,6 +40,9 @@ const addVoterById = gql`
 
 const refetchQueries = () => ['electionGroupVoters'];
 
+const feideIdRE = /^[a-zæøåA-ZÆØÅ_][a-zæøåA-ZÆØÅ0-9_.]*@[a-zæøåA-ZÆØÅ0-9_.]+$/;
+const ninRE = /^\d{11}$/;
+
 const styles = (theme: any) => ({
   feedback: {
     marginTop: '1.5rem',
@@ -51,9 +55,6 @@ const styles = (theme: any) => ({
 interface AddVoterFormProps {
   pollbook: IPollBook;
   onClose: () => void;
-  // TODO, get the t function from useTranslations
-  t: i18n.TFunction;
-  lang: string;
   classes: Classes;
 }
 
@@ -62,6 +63,9 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
 
   const [feedback, setFeedback] = useState({ text: '', isBackendError: false });
   const inputEl = useRef<HTMLInputElement>(null);
+
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
 
   useEffect(() => {
     inputEl.current && inputEl.current.focus();
@@ -77,11 +81,18 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
               const addPersonAndSetFeedback = async (values: any) => {
                 const idValue = values.idValue;
                 if (!idValue) return;
-                const idType = idValue.match(/^\d{11}$/) ? 'nin' : 'uid';
-                const idTypeDisplayName = getVoterIdTypeDisplayName(
-                  idType,
-                  props.t
-                ).toLowerCase();
+
+                let idType;
+                if (idValue.match(feideIdRE)) {
+                  idType = 'feide_id';
+                } else if (idValue.match(ninRE)) {
+                  idType = 'nin';
+                } else {
+                  return;
+                }
+
+                const idTypeDisplayName = getVoterIdTypeDisplayName(idType, t);
+
                 try {
                   await add({
                     variables: {
@@ -90,7 +101,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
                       pollbookId: props.pollbook.id,
                     },
                   });
-                  const feedback = props.t('census.addedIdTypeWithIdValue', {
+                  const feedback = t('census.addedIdTypeWithIdValue', {
                     idType: idTypeDisplayName,
                     idValue,
                   });
@@ -107,7 +118,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
               return (
                 <Form
                   onSubmit={addPersonAndSetFeedback}
-                  validate={validate(props.lang, props.t)}
+                  validate={validate(lang, t)}
                   render={formProps => {
                     const {
                       handleSubmit,
@@ -137,9 +148,9 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
                       <form onSubmit={handleSubmitAndReset}>
                         <TableRowForm
                           header={
-                            props.t('census.addPersonInCensusFor') +
+                            t('census.addPersonInCensusFor') +
                             ' ' +
-                            props.pollbook.name[props.lang].toLowerCase()
+                            props.pollbook.name[lang].toLowerCase()
                           }
                         >
                           <TableRowFormFields>
@@ -148,20 +159,18 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
                                 name="idValue"
                                 component={TextInputRF}
                                 large={true}
-                                placeholder={props.t(
-                                  'census.usernameOrBirthNumber'
-                                )}
+                                placeholder={t('census.feideIdOrBirthNumber')}
                                 inputRef={inputEl}
                               />
                             </FormField>
                             <Button
                               height="4.5rem"
                               action={handleSubmitAndReset}
-                              disabled={pristine || !valid}
+                              disabled={pristine}
                               text={
                                 submitting ? (
                                   <>
-                                    <span>{props.t('general.add')}</span>{' '}
+                                    <span>{t('general.add')}</span>{' '}
                                     <Spinner
                                       size="2rem"
                                       marginLeft="0.8rem"
@@ -169,7 +178,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
                                     />
                                   </>
                                 ) : (
-                                  props.t('general.add')
+                                  t('general.add')
                                 )
                               }
                             />
@@ -189,7 +198,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
                           <ButtonContainer noTopMargin>
                             <Button
                               action={props.onClose}
-                              text={props.t('general.close')}
+                              text={t('general.close')}
                               secondary
                             />
                           </ButtonContainer>
@@ -217,15 +226,17 @@ const validate = (lang: string, t: i18n.TFunction) => (values: object) => {
 
   if (!idValue) {
     return {};
-  } else if (!idValue.match(/^\d{11}$/) && !idValue.match(/^[a-zæøå]+/)) {
+  } else if (!idValue.match(ninRE) && !idValue.match(feideIdRE)) {
     if (idValue.match(/^\d+$/) && !idValue.match(/^\d{11}$/)) {
       errors['idValue'] = t(
         'formErrors.censusAddVoter.birthNumberIncorrectNumberOfDigits'
       );
     } else if (idValue.match(/^\d+/)) {
       errors['idValue'] = t(
-        'formErrors.censusAddVoter.usernameCannotStartWithNumber'
+        'formErrors.censusAddVoter.feideIdCannotStartWithNumber'
       );
+    } else {
+      errors['idValue'] = t('formErrors.censusAddVoter.invalidFeideId');
     }
   }
 
