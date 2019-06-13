@@ -48,6 +48,13 @@ export const ElectionGroupCountFields = gql`
     id
     initiatedAt
     finishedAt
+    initiatedBy {
+      id
+      identifiers {
+        idType
+        idValue
+      }
+    }
     status
     electionResults {
       id
