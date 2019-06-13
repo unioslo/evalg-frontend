@@ -24,6 +24,8 @@ const styles = (theme: any) => ({
     }`,
     height: '6rem',
     borderBottom: `1px solid ${theme.tableCandidateBottomBorderColor}`,
+  },
+  clickable: {
     '&:hover': {
       backgroundColor: theme.tableRowHoverColor,
       cursor: 'pointer',
@@ -69,6 +71,7 @@ const TableRow = (props: IProps) => {
   const { classes } = props;
   const cls = classNames({
     [classes.row]: true,
+    [classes.clickable]: props.onClick,
     [classes.isDragged]: props.dragged,
     [classes.noHoverBg]: props.noHoverBg,
     [classes.noBorderBottom]: props.noBorderBottom,

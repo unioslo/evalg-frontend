@@ -47,7 +47,10 @@ const undoReviewSelfAddedVoter = gql`
   }
 `;
 
-const refetchQueriesFunction = () => ['electionGroupWithSelfAddedVoters'];
+const refetchQueriesFunction = () => [
+  'electionGroupWithSelfAddedVoters',
+  'turnoutCounts',
+];
 
 const styles = (theme: any) => ({
   reviewButtons: {
