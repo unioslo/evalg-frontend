@@ -45,7 +45,11 @@ const VotesOutsideCensusManagement: React.FunctionComponent<Props> = props => {
   const { t } = useTranslation();
 
   return (
-    <Query query={selfAddedVoters} variables={{ id: props.electionGroupId }}>
+    <Query
+      query={selfAddedVoters}
+      variables={{ id: props.electionGroupId }}
+      fetchPolicy="network-only"
+    >
       {({ data, loading, error }) => {
         if (error) {
           return 'Error!';
