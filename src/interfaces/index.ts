@@ -63,7 +63,17 @@ export type ElectionStatusType =
 export interface IPerson {
   id: string;
   displayName: string;
-  nin: string;
+  email: string;
+  lastUpdate: string;
+  lastUpdateFromFeide: string;
+  identifiers: IPersonIdentifier[]
+}
+
+export interface IPersonIdentifier {
+  personId: string;
+  idType: string;
+  idValue: string;
+  person: IPerson;
 }
 
 export interface IPersonSearchResult {
@@ -221,6 +231,7 @@ export interface ElectionGroupCount {
   groupId: string;
   initiatedAt: string;
   finishedAt: string;
+  initiatedBy: IPerson;
   audit: any;
   status: string;
   electionGroup: ElectionGroup;
