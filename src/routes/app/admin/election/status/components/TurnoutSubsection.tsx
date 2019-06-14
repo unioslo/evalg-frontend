@@ -19,6 +19,7 @@ const turnoutCountsQuery = gql`
       type
       elections {
         id
+        active
         pollbooks {
           id
           name
