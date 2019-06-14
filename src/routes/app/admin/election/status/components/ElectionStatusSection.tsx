@@ -215,10 +215,14 @@ class ElectionStatusSection extends React.Component<IProps> {
         ) : null}
 
         {(electionGroup.status === 'ongoing' ||
+          electionGroup.status === 'multipleStatuses' ||
           electionGroup.status === 'closed') && (
           <TurnoutSubsection
             electionGroupId={electionGroup.id}
-            doPolling={electionGroup.status === 'ongoing'}
+            doPolling={
+              electionGroup.status === 'ongoing' ||
+              electionGroup.status === 'multipleStatuses'
+            }
           />
         )}
 
