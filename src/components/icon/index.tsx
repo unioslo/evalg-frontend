@@ -357,6 +357,18 @@ const getIcon = (type: string, classes: Classes, custom: any) => {
           <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z" />
         </svg>
       );
+    case 'download':
+      return (
+        <svg
+          className={classes.download}
+          xmlns="http://www.w3.org/2000/svg"
+          width="30"
+          height="30"
+          viewBox="0 0 30 30"
+        >
+          <path d="M11 8h6v6h4l-7 7-7 -7h4zm-6 12v6h18v-6h-3v3h-12v-3z" />
+        </svg>
+      );
     default:
       if (process.env['NODE_ENV'] !== 'production') {
         console.error(`Icon not found: ${type}`);
@@ -552,6 +564,9 @@ const styles = (theme: any) => ({
   },
   xMark: {
     fill: 'red',
+  },
+  download: {
+    fill: 'white',
   },
 });
 
