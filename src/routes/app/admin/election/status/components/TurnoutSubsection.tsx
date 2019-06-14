@@ -137,12 +137,14 @@ const TurnoutRow: React.FunctionComponent<ITurnoutRowProps> = ({
       <strong>{pollbookName}: </strong>
       {votersCount > 0 ? (
         <span>
-          {votersWithVotesCount}{' '}
-          {votersWithVotesCount === 1
-            ? t('admin.statusSection.turnoutSubsection.personHasVotedOf')
-            : t('admin.statusSection.turnoutSubsection.personsHasVotedOf')}{' '}
-          {votersCount} {t('admin.statusSection.turnoutSubsection.inCensus')} (
-          {Math.round((votersWithVotesCount / votersCount) * 10000) / 100} %)
+          {t(
+            'admin.statusSection.turnoutSubsection.countPersonsHasVotedOfVotersInCensus',
+            {
+              count: votersWithVotesCount,
+              votersCount,
+            }
+          )}{' '}
+          ({Math.round((votersWithVotesCount / votersCount) * 10000) / 100} %)
         </span>
       ) : (
         <em>

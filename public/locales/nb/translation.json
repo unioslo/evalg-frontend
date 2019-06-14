@@ -53,9 +53,8 @@
       "turnoutSubsection": {
         "header": "Oppmøte",
         "censusIsEmpty": "Manntallet er tomt",
-        "inCensus": "i manntall",
-        "personHasVotedOf": "person har stemt av",
-        "personsHasVotedOf": "personer har stemt av",
+        "countPersonsHasVotedOfVotersInCensus": "{{ count }} person har stemt av {{ votersCount }} i manntall",
+        "countPersonsHasVotedOfVotersInCensus_plural": "{{ count }} personer har stemt av {{ votersCount }} i manntall",
         "errors": {
           "general": "Kunne ikke laste inn oppmøtetall"
         }

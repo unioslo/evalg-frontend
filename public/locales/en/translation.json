@@ -53,9 +53,8 @@
       "turnoutSubsection": {
         "header": "Turnout",
         "censusIsEmpty": "Census is empty",
-        "inCensus": "in census",
-        "personHasVotedOf": "person has voted of",
-        "personsHasVotedOf": "persons has voted of",
+        "countPersonsHasVotedOfVotersInCensus": "{{ count }} person has voted of {{ votersCount }} in census",
+        "countPersonsHasVotedOfVotersInCensus_plural": "{{ count }} persons has voted of {{ votersCount }} in census",
         "errors": {
           "general": "Could not load turnout numbers"
         }
