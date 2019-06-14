@@ -1,10 +1,13 @@
 import React from 'react';
-import { Trans, WithTranslation, withTranslation } from 'react-i18next';
-import injectSheet from 'react-jss';
 import gql from 'graphql-tag';
 import { withApollo, WithApolloClient } from 'react-apollo';
+import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 import FileSaver from 'file-saver';
+import moment from 'moment-timezone';
+import injectSheet from 'react-jss';
 
+import { appTimezone } from 'appConfig';
+import { IMutationResponse, ElectionGroup } from 'interfaces';
 import { sleep, translateBackendError } from 'utils';
 import { getCryptoEngine, IKeyPair } from 'cryptoEngines';
 import Modal from 'components/modal';
@@ -12,8 +15,8 @@ import Button, { ButtonContainer } from 'components/button';
 import { InfoList, InfoListItem } from 'components/infolist';
 import Link from 'components/link';
 import { CheckBox } from 'components/form';
+import Icon from 'components/icon';
 import AnimatedCheckmark from 'components/animations/AnimatedCheckmark';
-import { IMutationResponse } from 'interfaces';
 
 import ModalSteps from './ModalSteps';
 
@@ -21,6 +24,11 @@ const styles = (theme: any) => ({
   errorMessage: {
     whiteSpace: 'pre-line',
     color: theme.colors.darkRed,
+  },
+  downloadIcon: {
+    marginLeft: '0.6rem',
+    position: 'relative',
+    top: '-2px',
   },
 
   workingSpinner: {
@@ -57,7 +65,7 @@ interface ISetElectionGroupKeyResponse {
 }
 
 interface IProps extends WithTranslation {
-  electionGroupId: string;
+  electionGroup: ElectionGroup;
   isReplacingOldKey: boolean;
   onCloseModal: () => void;
   classes: any;
@@ -140,6 +148,8 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
   };
 
   downloadKeyFile = () => {
+    const lang = this.props.i18n.language;
+
     const electionKeyFileContents = `
 ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
       // Using \r\n to make file look nice if opened in Notepad on Windows
@@ -149,7 +159,19 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
     const blob = new Blob([electionKeyFileContents], {
       type: 'text/plain;charset=utf-8',
     });
-    FileSaver.saveAs(blob, 'electionKey.txt');
+
+    const electionGroupNameTruncated = this.props.electionGroup.name[lang]
+      .slice(0, 20)
+      .replace(/\s/g, '_');
+    const dateTimeStamp = moment
+      .tz(appTimezone) // So it matches (timezone-wise) time shown in frontend for when key was generated.
+      // (The two timestamps won't necessarily be equal, one is time of file download,
+      // one is time of SetElectionKey mutation recorded on backend.)
+      .format('L-LT')
+      .replace(/[:\s]/g, '');
+    const fileName = `election_key-${electionGroupNameTruncated}-${dateTimeStamp}.txt`;
+
+    FileSaver.saveAs(blob, fileName);
     this.setState({ hasDownloadedKey: true }, this.checkIfAllowedToActivateKey);
   };
 
@@ -167,7 +189,7 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
       >({
         mutation: setElectionGroupKeyMutation,
         variables: {
-          id: this.props.electionGroupId,
+          id: this.props.electionGroup.id,
           publicKey: this.state.publicKey,
         },
       });
@@ -225,9 +247,19 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
         <div className={classes.workingSpinner} />
       </>
     ) : isReplacingOldKey ? (
-      <Trans>admin.electionKey.modalDownloadNewKey</Trans>
+      <>
+        <Trans>admin.electionKey.modalDownloadNewKey</Trans>
+        <div className={classes.downloadIcon}>
+          <Icon type="download" />
+        </div>
+      </>
     ) : (
-      <Trans>admin.electionKey.modalDownloadKey</Trans>
+      <>
+        <Trans>admin.electionKey.modalDownloadKey</Trans>
+        <div className={classes.downloadIcon}>
+          <Icon type="download" />
+        </div>
+      </>
     );
 
     const activateKeyButtonContent = isActivatingKey ? (

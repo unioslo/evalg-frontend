@@ -173,7 +173,7 @@ class ElectionKeySection extends React.Component<IProps, IState> {
         )}
         {this.state.showCreateKeyModal && (
           <CreateElectionKeyModal
-            electionGroupId={this.props.electionGroup.id}
+            electionGroup={this.props.electionGroup}
             onCloseModal={this.handleCloseCreateKeyModal}
             isReplacingOldKey={hasKey}
           />
