@@ -41,7 +41,7 @@ const styles = (theme: any) => ({
   },
   fileInputLabelStyledAsButton: {
     backgroundImage:
-      'url(\'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="%23FFF" %3E%3Cpath d="M10 20h8v-6h5l-9-9-9 9h5zm-5 0v6h18v-6h-3v3h-12v-3z" /%3E%3C/svg%3E\')',
+      'url(\'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="%23FFF" %3E%3Cpath d="M10 20h8v-6h4l-8-8-8 8h4zm-5 0v6h18v-6h-3v3h-12v-3z" /%3E%3C/svg%3E\')',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'top 9px right 15px',
     padding: '0 5.1rem 0 2rem',
