@@ -11,11 +11,11 @@ import { ElectionGroupCount } from 'interfaces';
 import { orderElectionResults } from 'utils/processGraphQLData';
 import Spinner from 'components/animations/Spinner';
 
-const electionResultVotes = gql`
+const electionResultBallots = gql`
   query electionResult($id: UUID!) {
     electionResult(id: $id) {
       id
-      votes
+      ballotsWithMetadata
       election {
         id
         name
@@ -88,14 +88,14 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
     setDownloadingFileElectionResultId(electionResultId);
     setFileDownloadError('');
 
-    let ballots, electionName;
+    let ballotsWithMetadata, electionName;
     try {
       const { data } = await apolloClient.query({
-        query: electionResultVotes,
+        query: electionResultBallots,
         variables: { id: electionResultId },
         fetchPolicy: 'no-cache',
       });
-      ballots = data.electionResult.votes;
+      ballotsWithMetadata = data.electionResult.ballotsWithMetadata;
       electionName = data.electionResult.election.name[lang];
       setDownloadingFileElectionResultId('');
     } catch (error) {
@@ -104,7 +104,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
       return;
     }
 
-    const blob = new Blob([JSON.stringify(ballots, null, 2)], {
+    const blob = new Blob([JSON.stringify(ballotsWithMetadata, null, 2)], {
       type: 'application/json;charset=utf-8',
     });
     FileSaver.saveAs(blob, `ballots-${electionName}.json`);

@@ -242,7 +242,8 @@ export interface ElectionResult {
   id: string;
   result: any;
   electionProtocol: any;
-  votes: any;
+  ballots: any;
+  ballotsWithMetadata: any;
   electionId: string;
   election: Election;
   electionGroupCountId: string;
