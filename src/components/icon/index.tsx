@@ -3,7 +3,12 @@ import classNames from 'classnames';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
-const getIcon = (type: string, classes: Classes, custom: any) => {
+const getIcon = (
+  type: string,
+  classes: Classes,
+  custom: any,
+  title?: string
+) => {
   switch (type) {
     case 'forwardArrow':
       return (
@@ -49,6 +54,7 @@ const getIcon = (type: string, classes: Classes, custom: any) => {
     case 'downArrow':
       return (
         <svg height="25px" viewBox="0 0 11 17">
+          {title !== undefined && <title>{title}</title>}
           <g stroke="none" strokeWidth="1" fill="none">
             <g className={classes[custom]}>
               <polygon
@@ -63,6 +69,7 @@ const getIcon = (type: string, classes: Classes, custom: any) => {
     case 'upArrow':
       return (
         <svg height="25px" viewBox="0 0 11 17">
+          {title !== undefined && <title>{title}</title>}
           <g stroke="none" strokeWidth="1" fill="none">
             <g className={classes[custom]}>
               <polygon points="0 5.49956341 0.851348133 6.35091154 4.59000344 3.77139947 4.59000344 16.4099172 6.40912338 16.4099172 6.40912338 3.77139947 10.1477787 6.35091154 10.9998545 5.49956341 5.49956341 -2.27373675e-13" />
@@ -73,6 +80,7 @@ const getIcon = (type: string, classes: Classes, custom: any) => {
     case 'downArrowSmall':
       return (
         <svg className={classes.arrowSmall} viewBox="0 0 14 9">
+          {title !== undefined && <title>{title}</title>}
           <polygon
             className={classes.arrowSmallPolygon}
             points="11.584641 0.0 6.717411 4.79573
@@ -84,6 +92,7 @@ const getIcon = (type: string, classes: Classes, custom: any) => {
     case 'upArrowSmall':
       return (
         <svg className={classes.arrowSmall} viewBox="0 0 14 9">
+          {title !== undefined && <title>{title}</title>}
           <polygon
             className={classes.arrowSmallPolygon}
             transform="rotate(180) translate(-14 -9)"
@@ -222,6 +231,7 @@ const getIcon = (type: string, classes: Classes, custom: any) => {
       });
       return (
         <svg className={removeCls} viewBox="0 0 12 12">
+          {title !== undefined && <title>{title}</title>}
           <g className={removeStrokeCls} strokeWidth="1" fill="none">
             <path d="M8.56910219,6 L11.1742662,8.60516397 C11.6206374,9.05153521 11.6253777,9.77104099 11.1784699,10.2179488 L10.2179488,11.1784699 C9.7716987,11.62472 9.05549904,11.6246012 8.60516397,11.1742662 L6,8.56910219 L3.39483603,11.1742662 C2.94846479,11.6206374 2.22895901,11.6253777 1.78205121,11.1784699 L0.821530097,10.2179488 C0.375280002,9.7716987 0.375398769,9.05549904 0.825733841,8.60516397 L3.43089781,6 L0.825733841,3.39483603 C0.379362596,2.94846479 0.374622298,2.22895901 0.821530098,1.78205121 L1.78205121,0.821530098 C2.2283013,0.375280002 2.94450096,0.375398769 3.39483603,0.825733841 L6,3.43089781 L8.60516397,0.825733841 C9.05153521,0.379362596 9.77104099,0.374622298 10.2179488,0.821530098 L11.1784699,1.78205121 C11.62472,2.2283013 11.6246012,2.94450096 11.1742662,3.39483603 L8.56910219,6 Z" />
           </g>
@@ -577,11 +587,12 @@ interface IProps {
   classes: Classes;
   custom?: any;
   elementType?: string;
+  title?: string;
 }
 
 const Icon = (props: IProps) => {
-  const { type, classes, custom } = props;
-  const icon = getIcon(type, classes, custom);
+  const { type, classes, custom, title } = props;
+  const icon = getIcon(type, classes, custom, title);
   const cls = classNames({
     'button-no-style': props.onClick,
     [classes.iconContainer]: true,

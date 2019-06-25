@@ -437,7 +437,13 @@
     "loading": "Loading user information…"
   },
   "prefElec": {
-    "candPageDesc": "Here you can add candidates that are electable for the various voter groups.{nl} \nThe election must have at least as many candidates per voter group as stated in {{infoLink}}."
+    "candPageDesc": "Here you can add candidates that are electable for the various voter groups.{nl} \nThe election must have at least as many candidates per voter group as stated in {{infoLink}}.",
+    "ballot": {
+      "addCandidate": "Add candidate {{candidate}} to ballot",
+      "demoteCandidate": "Move candidate {{candidate}} down to rank {{index}}",
+      "promoteCandidate": "Move candidate {{candidate}} up to rank {{index}}",
+      "removeCandidate": "Remove candidate {{candidate}} from ballot"
+    }
   },
   "voter": {
     "voterFrontPage": {

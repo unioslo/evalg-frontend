@@ -355,6 +355,7 @@ class UploadCensusFileModal extends React.Component<
                 component={RadioButtonGroup as any}
                 validate={this.required}
                 options={pollBookOptions}
+                legend={'Test'}
               />
             </FormField>
 

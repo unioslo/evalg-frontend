@@ -116,6 +116,14 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                   onMoveCandidate(index, index - 1);
                 const demoteCandidate = () => onMoveCandidate(index, index + 1);
                 const removeCandidate = () => onRemoveCandidate(c);
+
+                const promoteCandidateTitle =
+                  'Move candidate ' + c.name + ' up to rank ' + index;
+                const demoteCandidateTitle =
+                  'Move candidate ' + c.name + ' down to rank ' + (index + 2);
+                const removeCandidateTitle =
+                  'Remove candidate ' + c.name + ' from ballot.';
+
                 return (
                   <CandidateListItem key={`selected-${index}`}>
                     <Icon
@@ -135,12 +143,21 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                     ) : (
                       <ListItemDesktopButtons>
                         {index !== 0 ? (
-                          <UpArrow onClick={promoteCandidate} />
+                          <UpArrow
+                            onClick={promoteCandidate}
+                            title={promoteCandidateTitle}
+                          />
                         ) : null}
                         {index < selectedCandidates.length - 1 ? (
-                          <DownArrow onClick={demoteCandidate} />
+                          <DownArrow
+                            onClick={demoteCandidate}
+                            title={demoteCandidateTitle}
+                          />
                         ) : null}
-                        <RemoveButton onClick={removeCandidate} />
+                        <RemoveButton
+                          onClick={removeCandidate}
+                          title={removeCandidateTitle}
+                        />
                       </ListItemDesktopButtons>
                     )}
                   </CandidateListItem>
