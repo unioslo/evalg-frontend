@@ -5,9 +5,28 @@
       "auditLogForElection": "Revisjonslogg for valget frem til opptellingen",
       "ballots": "Stemmesedler",
       "countingProtocol": "Opptellingsprotokoll",
-      "electionResult": "Valgresultat",
       "errors": {
+        "candidateNameNotFound": "Kunne ikke finne kandidatens navn",
         "fileDownloadError": "Noe gikk galt under nedlasting av en fil"
+      },
+      "electionResult": {
+        "countBlankVotes": "{{ count }} blank stemme",
+        "countBlankVotes_plural": "{{ count }} blanke stemmer",
+        "countCastVotes": "{{ count }} avgitt stemme",
+        "countCastVotes_plural": "{{ count }} avgitte stemmer",
+        "countCountingVotes": "{{ count }} tellende stemme",
+        "countCountingVotes_plural": "{{ count }} tellende stemmer",
+        "electedCandidate": "Valgt kandidat",
+        "electedCandidates": "Valgte kandidater",
+        "electedSubstituteCandidates": "Valgte varakandidater",
+        "electionResult": "Valgresultat",
+        "numberOfVotes": "Antall stemmer",
+        "noElectedCandidates": "Ingen valgte kandidater",
+        "nthSubstitute": "{{ count }}. vara",
+        "ofWhich": "hvorav",
+        "errors": {
+          "couldNotGetNumberOfVotesData": "Kunne ikke hente data om antall stemmer"
+        }
       }
     },
     "countingSection": {
