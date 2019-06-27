@@ -66,7 +66,7 @@ export interface IPerson {
   email: string;
   lastUpdate: string;
   lastUpdateFromFeide: string;
-  identifiers: IPersonIdentifier[]
+  identifiers: IPersonIdentifier[];
 }
 
 export interface IPersonIdentifier {
@@ -108,6 +108,7 @@ export interface IVoter {
     | 'SELF_ADDED_REJECTED';
   reason?: string;
   votes: IVote[];
+  person?: IPerson | null;
 }
 
 export interface IVote {
@@ -127,6 +128,8 @@ export interface IPollBook {
   verifiedVotersCount: number;
   verifiedVotersWithVotesCount: number;
   election: Election;
+  votersWithVote: IVoter[];
+  votersWithoutVote: IVoter[];
 }
 
 export interface IVoteCount {
