@@ -144,7 +144,6 @@ const VotingReport: React.FunctionComponent<IVotingReportProps> = ({
   groupId,
   history,
 }) => {
-  console.info('Her!!');
   const { t, i18n } = useTranslation();
   return (
     <Page header={t('votingReport.header')}>
@@ -163,7 +162,6 @@ const VotingReport: React.FunctionComponent<IVotingReportProps> = ({
 
           const electionGroupData = data.electionGroup as ElectionGroup;
 
-          console.info(data);
           return (
             <>
               <PageSection header={t('votingReport.withVotes')}>
