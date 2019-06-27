@@ -1,6 +1,7 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
+import Link from 'components/link';
 import { ElectionGroup } from 'interfaces';
 import { PageSection } from 'components/page';
 
@@ -16,12 +17,19 @@ const VotesSection: React.FunctionComponent<Props> = ({ electionGroup }) => {
     electionGroup.status === 'announced' ||
     electionGroup.status === 'published';
 
+  const { t } = useTranslation();
+
   return (
-    <PageSection header={<Trans>election.votes</Trans>}>
+    <PageSection header={t('election.votes')}>
       {electionsHasNotStarted ? (
-        <Trans>election.electionNotStarted</Trans>
+        t('election.electionNotStarted')
       ) : (
-        <VotesOutsideCensusManagement electionGroupId={electionGroup.id} />
+        <>
+          <Link to={`/admin/elections/${electionGroup.id}/votingreport`}>
+            {t('votingReport.link')}
+          </Link>
+          <VotesOutsideCensusManagement electionGroupId={electionGroup.id} />
+        </>
       )}
     </PageSection>
   );
