@@ -3,7 +3,9 @@ import gql from 'graphql-tag';
 
 import { Query, withApollo } from 'react-apollo';
 import { useTranslation } from 'react-i18next';
+import { History } from 'history';
 
+import Button, { ButtonContainer } from 'components/button';
 import Loading from 'components/loading';
 import { Page, PageSection, PageSubSection } from 'components/page';
 import { PageExpandableSubSection } from 'components/page/PageSection';
@@ -135,10 +137,12 @@ const ElectionVotingReport: React.FunctionComponent<
 
 interface IVotingReportProps {
   groupId: String;
+  history: History;
 }
 
 const VotingReport: React.FunctionComponent<IVotingReportProps> = ({
   groupId,
+  history,
 }) => {
   console.info('Her!!');
   const { t, i18n } = useTranslation();
@@ -192,6 +196,13 @@ const VotingReport: React.FunctionComponent<IVotingReportProps> = ({
           );
         }}
       </Query>
+      <ButtonContainer>
+        <Button
+          text={t('votingReport.back')}
+          action={() => history.push('/admin/elections/' + groupId + '/status')}
+          secondary={true}
+        />
+      </ButtonContainer>
     </Page>
   );
 };

@@ -457,8 +457,9 @@
     "wasClosed": "was closed",
     "writeJustification": "Why you should be on the electoral roll for this voter group (optional)",
     "youAreOnTheElectoralRoll": "You are on the electoral roll"
-  }
+  },
   "votingReport": {
+    "back": "Back",
     "emptyWithVote": "No voters in census with vote",
     "emptyWitoutVotes": "No voters in census without vote",
     "header": "Census voting report",

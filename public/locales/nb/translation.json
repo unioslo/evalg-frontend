@@ -457,6 +457,7 @@
     "youAreOnTheElectoralRoll": "Du er i manntallet"
   },
   "votingReport": {
+    "back": "Tilbake",
     "emptyWithVote": "Ingen velgere i manntallet har avgitt stemme",
     "emptyWitoutVotes": "Alle velgere i mantallet har avgitt stemme",
     "header": "Manntallsrapport",
