@@ -8,8 +8,10 @@ import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
 import { ElectionGroupCount } from 'interfaces';
-import { orderElectionResults } from 'utils/processGraphQLData';
 import Spinner from 'components/animations/Spinner';
+import { orderElectionResults } from 'utils/processGraphQLData';
+
+import ElectionResultAndBallotStats from './ElectionResultAndBallotStats';
 
 const electionResultBallots = gql`
   query electionResult($id: UUID!) {
@@ -56,6 +58,9 @@ const styles = (theme: any) => ({
   fileDownloadErrorMessage: {
     marginBottom: '1rem',
     color: theme.errorTextColor,
+  },
+  electedCandidatesList: {
+    listStylePosition: 'inside',
   },
 });
 
@@ -120,50 +125,44 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
         </div>
       )}
 
-      {electionResults.map(electionResult => {
-        const electionName = electionResult.election.name[lang];
-        const pollbooks = electionResult.election.pollbooks;
-        const isActiveElection = electionResult.election.active;
+      {electionResults
+        .filter(electionResult => electionResult.election.active)
+        .map(electionResult => {
+          const election = electionResult.election;
+          const electionName = election.name[lang];
 
-        if (!isActiveElection) {
-          return null;
-        }
-
-        return (
-          <div key={electionResult.id} className={classes.electionSection}>
-            {electionResults.length > 1 && (
-              <h3 className={classes.electionHeading}>{electionName}</h3>
-            )}
-            <div>
-              <h4 className={classes.subHeading}>
-                {t('admin.countingDetails.electionResult')}
-              </h4>
-              <em>Valgresultat</em>
-            </div>
-
-            <div className={classes.electionResultFileDownloads}>
-              <span>
-                {t('admin.countingDetails.countingProtocol')}:{' '}
-                <a href="#">{t('general.download')}</a>
-              </span>
-              <span className={classes.verticalLineSeparator}>|</span>
-              <span>
-                {t('admin.countingDetails.ballots')}:{' '}
-                <a
-                  onClick={() =>
-                    handleDownloadBallots(apolloClient, electionResult.id)
-                  }
-                >
-                  {t('general.download')} (JSON)
-                </a>
-              </span>
-              {downloadingFileElectionResultId === electionResult.id && (
-                <Spinner darkStyle size="1.6rem" marginLeft="1rem" />
+          return (
+            <div key={electionResult.id} className={classes.electionSection}>
+              {election.electionGroup.type === 'multiple_elections' && (
+                <h3 className={classes.electionHeading}>{electionName}</h3>
               )}
+
+              <ElectionResultAndBallotStats electionResult={electionResult} />
+
+              <div className={classes.electionResultFileDownloads}>
+                <span>
+                  {t('admin.countingDetails.countingProtocol')}:{' '}
+                  <a href="#">{t('general.download')} (PDF)</a>
+                </span>
+                <span className={classes.verticalLineSeparator}>|</span>
+                <span>
+                  {t('admin.countingDetails.ballots')}:{' '}
+                  <a
+                    onClick={() =>
+                      handleDownloadBallots(apolloClient, electionResult.id)
+                    }
+                  >
+                    {t('general.download')} (JSON)
+                  </a>
+                </span>
+                {downloadingFileElectionResultId === electionResult.id && (
+                  <Spinner darkStyle size="1.6rem" marginLeft="1rem" />
+                )}
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+
       <div className={classes.auditLogSubSection}>
         {electionResults.length > 1
           ? t('admin.countingDetails.auditLogForAllElections')

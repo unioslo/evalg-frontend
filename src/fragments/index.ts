@@ -59,13 +59,25 @@ export const ElectionGroupCountFields = gql`
     electionResults {
       id
       result
+      pollbookStats
       election {
         id
         name
         active
+        electionGroup {
+          id
+          type
+        }
         pollbooks {
           id
           name
+        }
+        lists {
+          id
+          candidates {
+            id
+            name
+          }
         }
       }
     }

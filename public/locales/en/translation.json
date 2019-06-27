@@ -5,9 +5,28 @@
       "auditLogForElection": "Audit log for the election until the counting",
       "ballots": "Ballots",
       "countingProtocol": "Counting protocol",
-      "electionResult": "Election result",
       "errors": {
+        "candidateNameNotFound": "Could not find the candidate's name",
         "fileDownloadError": "Something went wrong while trying to download a file"
+      },
+      "electionResult": {
+        "countBlankVotes": "{{ count }} blank vote",
+        "countBlankVotes_plural": "{{ count }} blank votes",
+        "countCastVotes": "{{ count }} cast vote",
+        "countCastVotes_plural": "{{ count }} cast votes",
+        "countCountingVotes": "{{ count }} counting vote",
+        "countCountingVotes_plural": "{{ count }} counting votes",
+        "electedCandidate": "Elected candidate",
+        "electedCandidates": "Elected candidates",
+        "electedSubstituteCandidates": "Elected substitute candidates",
+        "electionResult": "Election result",
+        "numberOfVotes": "Number of votes",
+        "noElectedCandidates": "No elected candidates",
+        "nthSubstitute": "{{ count }}. substitute",
+        "ofWhich": "of which",
+        "errors": {
+          "couldNotGetNumberOfVotesData": "Could not get number of votes data"
+        }
       }
     },
     "countingSection": {
