@@ -44,7 +44,7 @@ interface IProps extends WithTranslation {
 }
 
 interface Istate {
-  personsAlreadyInPollbook: IPerson[];
+  personsAlreadyInPollbook: any[];
   newPersonsToAddList: IPerson[];
   addablePersonsFromSearch: IPerson[];
   personFilter: string;
