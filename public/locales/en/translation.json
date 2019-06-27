@@ -398,7 +398,9 @@
     "welcome": "Welcome to eValg",
     "yes": "Yes"
   },
-  "person": { "loading": "Loading user information…" },
+  "person": {
+    "loading": "Loading user information…"
+  },
   "prefElec": {
     "candPageDesc": "Here you can add candidates that are electable for the various voter groups.{nl} \nThe election must have at least as many candidates per voter group as stated in {{infoLink}}."
   },
@@ -455,5 +457,18 @@
     "wasClosed": "was closed",
     "writeJustification": "Why you should be on the electoral roll for this voter group (optional)",
     "youAreOnTheElectoralRoll": "You are on the electoral roll"
+  }
+  "votingReport": {
+    "emptyWithVote": "No voters in census with vote",
+    "emptyWitoutVotes": "No voters in census without vote",
+    "header": "Census voting report",
+    "link": "Census voting report",
+    "table": {
+      "name": "Name",
+      "idValue": "ID-value",
+      "idType": "ID-type"
+    },
+    "withVotes": "With vote",
+    "withoutVotes": "Without vote"
   }
 }
