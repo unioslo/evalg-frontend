@@ -18,6 +18,7 @@ import InfoPage from './info';
 import CandidatesPage from './candidates';
 import PollbooksPage from './pollbooks';
 import StatusPage from './status';
+import VotingReport from './status/components/VotingReport';
 
 const electionGroupQuery = gql`
   ${ElectionGroupFields}
@@ -141,6 +142,15 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
               <StatusPage
                 electionGroup={egWithOrderedElections}
                 refetchElectionGroupFunction={refetch}
+                {...routeProps}
+              />
+            )}
+          />
+          <Route
+            path="/admin/elections/:groupId/votingreport"
+            render={routeProps => (
+              <VotingReport
+                groupId={props.match.params.groupId}
                 {...routeProps}
               />
             )}
