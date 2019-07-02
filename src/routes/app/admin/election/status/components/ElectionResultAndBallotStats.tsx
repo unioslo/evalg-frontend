@@ -46,7 +46,6 @@ const ElectionResultAndBallotStats: React.FunctionComponent<IProps> = ({
   const election = electionResult.election;
   const pollbooks = election.pollbooks;
   const result = electionResult.result;
-  const pollbookStats = electionResult.pollbookStats;
 
   return (
     <>
@@ -110,8 +109,10 @@ const ElectionResultAndBallotStats: React.FunctionComponent<IProps> = ({
           {t('admin.countingDetails.electionResult.numberOfVotes')}
         </h3>
         {pollbooks.map(pollbook => {
-          const statsForPollbook = pollbookStats[pollbook.id];
-          if (!statsForPollbook)
+          const pollbookBallotStats = result['meta']['pollbooks'].find(
+            (pollbookBallotStats: any) => pollbookBallotStats.id === pollbook.id
+          );
+          if (!pollbookBallotStats)
             return (
               <span key={pollbook.id} className={classes.errorText}>
                 {t(
@@ -119,10 +120,9 @@ const ElectionResultAndBallotStats: React.FunctionComponent<IProps> = ({
                 )}
               </span>
             );
-          const ballotsCount = statsForPollbook['ballots_count'];
-          const countingBallotsCounts =
-            statsForPollbook['counting_ballots_count'];
-          const blankBallotsCount = statsForPollbook['empty_ballots_count'];
+          const ballotsCount = pollbookBallotStats['ballots_count'];
+          const blankBallotsCount = pollbookBallotStats['empty_ballots_count'];
+          const countingBallotsCounts = ballotsCount - blankBallotsCount;
           return (
             <>
               <div key={pollbook.id} className={classes.sectionLevel2}>
