@@ -74,21 +74,27 @@ const styles = (theme: any) => ({
     lineHeight: '4.5rem',
     [`@media (min-width: ${theme.breakpoints.lg})`]: {
       fontSize: '3.6rem',
-      lineHeight: '4.5rem',
     },
   },
   h2: {
-    fontSize: '2.6rem',
+    fontSize: '2.4rem',
     lineHeight: '3.4rem',
   },
   h3: {
-    fontSize: '1.8rem',
+    fontSize: '2rem',
     lineHeight: '2.9rem',
-    fontWeight: 'normal',
     marginBottom: '2rem',
-    [`@media (min-width: ${theme.breakpoints.lg})`]: {
-      fontSize: '2rem',
-    },
+  },
+  h4: {
+    fontSize: '1.8rem',
+    lineHeight: '2.5rem',
+    marginBottom: '2rem',
+  },
+  h5: {
+    fontSize: '1.6rem',
+    lineHeight: '2rem',
+    marginBlockStart: 0,
+    marginBottom: '1rem',
   },
 });
 
@@ -106,13 +112,29 @@ const H2 = ({ classes, children }: IHeader) => (
 );
 
 const H3 = ({ classes, children }: IHeader) => (
-  <h3 className={classes.h2}>{children}</h3>
+  <h3 className={classes.h3}>{children}</h3>
+);
+
+const H4 = ({ classes, children }: IHeader) => (
+  <h4 className={classes.h4}>{children}</h4>
+);
+
+const H5 = ({ classes, children }: IHeader) => (
+  <h5 className={classes.h5}>{children}</h5>
 );
 
 const StyledH1 = injectSheet(styles)(H1);
 const StyledH2 = injectSheet(styles)(H2);
 const StyledH3 = injectSheet(styles)(H3);
+const StyledH4 = injectSheet(styles)(H4);
+const StyledH5 = injectSheet(styles)(H5);
 
 export default injectSheet(styles)(Text);
 
-export { StyledH1 as H1, StyledH2 as H2, StyledH3 as H3 };
+export {
+  StyledH1 as H1,
+  StyledH2 as H2,
+  StyledH3 as H3,
+  StyledH4 as H4,
+  StyledH5 as H5,
+};
