@@ -484,7 +484,7 @@
     "link": "Manntallsrapport",
     "table": {
       "name": "Navn",
-      "idValue": "ID-Verdi",
+      "idValue": "ID-verdi",
       "idType": "ID-type"
     },
     "withVotes": "Har avgitt stemme",
