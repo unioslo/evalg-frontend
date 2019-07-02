@@ -139,7 +139,7 @@ class AnnounceElectionGroup extends React.Component<IProps, IState> {
           <Modal
             header={<Trans>election.unannounceElectionHeader</Trans>}
             buttons={[
-              renderCancelButton(this.closeConfirmAnnounceDialog.bind(this)),
+              renderCancelButton(this.closeConfirmUnannounceDialog.bind(this)),
               renderUnannounceButton(this.handleUnannounce.bind(this)),
             ]}
             closeAction={this.closeConfirmUnannounceDialog.bind(this)}
