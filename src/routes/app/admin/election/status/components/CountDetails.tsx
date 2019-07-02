@@ -31,13 +31,8 @@ const styles = (theme: any) => ({
     marginBottom: '2rem',
     borderBottom: `1px solid ${theme.tableCandidateBottomBorderColor}`,
     paddingBottom: '2rem',
-    '& div': {
-      '&:not(:last-child)': {
-        marginBottom: '2rem',
-      },
-    },
   },
-  auditLogSubSection: {
+  auditLogSection: {
     marginBottom: '2rem',
   },
   electionHeading: {
@@ -45,9 +40,6 @@ const styles = (theme: any) => ({
   },
   subHeading: {
     marginBottom: '1rem',
-  },
-  votingPercantageRow: {
-    marginBottom: '0.5rem',
   },
   electionResultFileDownloads: {
     display: 'flex',
@@ -163,7 +155,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
           );
         })}
 
-      <div className={classes.auditLogSubSection}>
+      <div className={classes.auditLogSection}>
         {electionResults.length > 1
           ? t('admin.countingDetails.auditLogForAllElections')
           : t('admin.countingDetails.auditLogForElection')}

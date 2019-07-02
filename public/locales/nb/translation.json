@@ -16,6 +16,7 @@
         "countCastVotes_plural": "{{ count }} avgitte stemmer",
         "countCountingVotes": "{{ count }} tellende stemme",
         "countCountingVotes_plural": "{{ count }} tellende stemmer",
+        "drawing": "Loddtrekning",
         "electedCandidate": "Valgt kandidat",
         "electedCandidates": "Valgte kandidater",
         "electedSubstituteCandidates": "Valgte varakandidater",
