@@ -16,6 +16,7 @@
         "countCastVotes_plural": "{{ count }} cast votes",
         "countCountingVotes": "{{ count }} counting vote",
         "countCountingVotes_plural": "{{ count }} counting votes",
+        "drawing": "Drawing",
         "electedCandidate": "Elected candidate",
         "electedCandidates": "Elected candidates",
         "electedSubstituteCandidates": "Elected substitute candidates",

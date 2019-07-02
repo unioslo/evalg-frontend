@@ -140,7 +140,7 @@ const theme = {
     marginBottom: '3.5rem',
   },
   linkExternalColor: blueish,
-  linkInternalColor: darkTurquoise,
+  linkInternalColor: blueish,
   mainArrowColor: white,
   navFontSize: '1.5rem',
   navMenuTextColor: white,

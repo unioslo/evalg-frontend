@@ -9,12 +9,26 @@ import { Classes } from 'jss';
 
 import { ElectionGroupCount } from 'interfaces';
 import Spinner from 'components/animations/Spinner';
-import { orderElectionResults } from 'utils/processGraphQLData';
+import { H3 } from 'components/text';
+import { orderElectionResults, b64toBlob } from 'utils/processGraphQLData';
 
 import ElectionResultAndBallotStats from './ElectionResultAndBallotStats';
 
-const electionResultBallots = gql`
-  query electionResult($id: UUID!) {
+const countingProtocolDownloadQuery = gql`
+  query countingProtocolDownload($id: UUID!) {
+    electionResult(id: $id) {
+      id
+      electionProtocol
+      election {
+        id
+        name
+      }
+    }
+  }
+`;
+
+const ballotsWithMetadataDownloadQuery = gql`
+  query ballotsWithMetadataDownload($id: UUID!) {
     electionResult(id: $id) {
       id
       ballotsWithMetadata
@@ -31,26 +45,15 @@ const styles = (theme: any) => ({
     marginBottom: '2rem',
     borderBottom: `1px solid ${theme.tableCandidateBottomBorderColor}`,
     paddingBottom: '2rem',
-    '& div': {
-      '&:not(:last-child)': {
-        marginBottom: '2rem',
-      },
-    },
   },
-  auditLogSubSection: {
+  auditLogSection: {
     marginBottom: '2rem',
-  },
-  electionHeading: {
-    marginBottom: '2rem',
-  },
-  subHeading: {
-    marginBottom: '1rem',
-  },
-  votingPercantageRow: {
-    marginBottom: '0.5rem',
   },
   electionResultFileDownloads: {
     display: 'flex',
+  },
+  externalLink: {
+    color: theme.linkExternalColor,
   },
   verticalLineSeparator: {
     margin: '0 0.7rem',
@@ -86,6 +89,33 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
   let electionResults = electionGroupCount.electionResults;
   electionResults = orderElectionResults(electionResults);
 
+  const handleDownloadCountingProtocol = async (
+    apolloClient: ApolloClient<any>,
+    electionResultId: string
+  ) => {
+    setDownloadingFileElectionResultId(electionResultId);
+    setFileDownloadError('');
+
+    let countingProtocolBase64, electionName;
+    try {
+      const { data } = await apolloClient.query({
+        query: countingProtocolDownloadQuery,
+        variables: { id: electionResultId },
+        fetchPolicy: 'no-cache',
+      });
+      countingProtocolBase64 = data.electionResult.electionProtocol;
+      electionName = data.electionResult.election.name[lang];
+      setDownloadingFileElectionResultId('');
+    } catch (error) {
+      setDownloadingFileElectionResultId('');
+      setFileDownloadError(error.message);
+      return;
+    }
+
+    const blob = b64toBlob(countingProtocolBase64, 'application/pdf');
+    FileSaver.saveAs(blob, `counting_protocol-${electionName}.pdf`);
+  };
+
   const handleDownloadBallots = async (
     apolloClient: ApolloClient<any>,
     electionResultId: string
@@ -96,7 +126,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
     let ballotsWithMetadata, electionName;
     try {
       const { data } = await apolloClient.query({
-        query: electionResultBallots,
+        query: ballotsWithMetadataDownloadQuery,
         variables: { id: electionResultId },
         fetchPolicy: 'no-cache',
       });
@@ -134,7 +164,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
           return (
             <div key={electionResult.id} className={classes.electionSection}>
               {election.electionGroup.type === 'multiple_elections' && (
-                <h3 className={classes.electionHeading}>{electionName}</h3>
+                <H3>{electionName}</H3>
               )}
 
               <ElectionResultAndBallotStats electionResult={electionResult} />
@@ -142,15 +172,30 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
               <div className={classes.electionResultFileDownloads}>
                 <span>
                   {t('admin.countingDetails.countingProtocol')}:{' '}
-                  <a href="#">{t('general.download')} (PDF)</a>
+                  <a
+                    className={classes.externalLink}
+                    href="#"
+                    onClick={e => {
+                      e.preventDefault();
+                      handleDownloadCountingProtocol(
+                        apolloClient,
+                        electionResult.id
+                      );
+                    }}
+                  >
+                    {t('general.download')} (PDF)
+                  </a>
                 </span>
                 <span className={classes.verticalLineSeparator}>|</span>
                 <span>
                   {t('admin.countingDetails.ballots')}:{' '}
                   <a
-                    onClick={() =>
-                      handleDownloadBallots(apolloClient, electionResult.id)
-                    }
+                    className={classes.externalLink}
+                    href="#"
+                    onClick={e => {
+                      e.preventDefault();
+                      handleDownloadBallots(apolloClient, electionResult.id);
+                    }}
                   >
                     {t('general.download')} (JSON)
                   </a>
@@ -163,11 +208,14 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
           );
         })}
 
-      <div className={classes.auditLogSubSection}>
+      <div className={classes.auditLogSection}>
         {electionResults.length > 1
           ? t('admin.countingDetails.auditLogForAllElections')
           : t('admin.countingDetails.auditLogForElection')}
-        : <a href="#">{t('general.download')}</a>
+        :{' '}
+        <a className={classes.externalLink} href="#">
+          {t('general.download')}
+        </a>
       </div>
     </>
   );

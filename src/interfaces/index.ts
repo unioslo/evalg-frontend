@@ -244,7 +244,6 @@ export interface ElectionGroupCount {
 export interface ElectionResult {
   id: string;
   result: any;
-  pollbookStats: any;
   electionProtocol: any;
   ballots: any;
   ballotsWithMetadata: any;

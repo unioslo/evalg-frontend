@@ -14,7 +14,7 @@ const styles = (theme: any) => ({
     composes: '$link',
   },
   external: {
-    color: theme.colors.blueish,
+    color: theme.linkExternalColor,
     composes: '$link',
   },
   externalIcon: {

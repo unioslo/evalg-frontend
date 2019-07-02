@@ -59,7 +59,6 @@ export const ElectionGroupCountFields = gql`
     electionResults {
       id
       result
-      pollbookStats
       election {
         id
         name
