@@ -1,5 +1,7 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
+import injectSheet from 'react-jss';
+import { Classes } from 'jss';
 
 import Button, { ButtonContainer } from 'components/button';
 import Modal from 'components/modal';
@@ -12,11 +14,18 @@ import { ElectionGroup } from 'interfaces';
 import CreateElectionKeyModal from './CreateElectionKeyModal';
 import ElectionKeyCreatedByInfo from './ElectionKeyCreatedByInfo';
 
+const styles = (theme: any) => ({
+  externalLink: {
+    color: theme.linkExternalColor,
+  },
+});
+
 const setKeySafeStatuses = ['draft', 'announced'];
 
 interface IProps {
   electionGroup: ElectionGroup;
   refetchElectionGroupFunction: () => Promise<any>;
+  classes: Classes;
 }
 
 interface IState {
@@ -70,7 +79,7 @@ class ElectionKeySection extends React.Component<IProps, IState> {
   };
 
   render() {
-    const { electionGroup } = this.props;
+    const { electionGroup, classes } = this.props;
     const hasKey = electionGroup.publicKey !== null;
     const status = electionGroup.status;
 
@@ -96,24 +105,25 @@ class ElectionKeySection extends React.Component<IProps, IState> {
                 <ElectionKeyCreatedByInfo electionGroupId={electionGroup.id} />
                 <br />
                 <Trans>admin.electionKey.publicKeyCaption</Trans>:{' '}
-                {this.state.showPublicKey ? (
-                  <span>
-                    {electionGroup.publicKey}{' '}
-                    <a
-                      href="javascript:void(0);"
-                      onClick={() => this.setState({ showPublicKey: false })}
-                    >
-                      <Trans>general.hide</Trans>
-                    </a>
-                  </span>
-                ) : (
+                <span>
+                  {this.state.showPublicKey ? electionGroup.publicKey : null}{' '}
                   <a
-                    href="javascript:void(0);"
-                    onClick={() => this.setState({ showPublicKey: true })}
+                    className={classes.externalLink}
+                    href="#"
+                    onClick={e => {
+                      e.preventDefault();
+                      this.setState(currState => ({
+                        showPublicKey: !currState.showPublicKey,
+                      }));
+                    }}
                   >
-                    <Trans>general.show</Trans>
+                    {this.state.showPublicKey ? (
+                      <Trans>general.hide</Trans>
+                    ) : (
+                      <Trans>general.show</Trans>
+                    )}
                   </a>
-                )}
+                </span>
               </Text>
               <InfoList>
                 <InfoListItem bulleted key="keep-it-safe">
@@ -183,4 +193,4 @@ class ElectionKeySection extends React.Component<IProps, IState> {
   }
 }
 
-export default ElectionKeySection;
+export default injectSheet(styles)(ElectionKeySection);
