@@ -4,18 +4,16 @@ import { useTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
 
 import { ElectionResult, Candidate } from 'interfaces';
+import { H3, H4, H5 } from 'components/text';
 
 const styles = (theme: any) => ({
   sectionLevel1: {
-    marginBottom: '1.5rem',
+    marginBottom: '2rem',
   },
   sectionLevel2: {
     '&:not(:last-child)': {
       marginBottom: '1.5rem',
     },
-  },
-  subHeading: {
-    marginBottom: '1rem',
   },
   candidatesList: {
     listStylePosition: 'inside',
@@ -50,16 +48,14 @@ const ElectionResultAndBallotStats: React.FunctionComponent<IProps> = ({
   return (
     <>
       <div className={classes.sectionLevel1}>
-        <h3 className={classes.subHeading}>
-          {t('admin.countingDetails.electionResult.electionResult')}
-        </h3>
+        <H4>{t('admin.countingDetails.electionResult.electionResult')}</H4>
         <>
           <div className={classes.sectionLevel2}>
-            <h4 className={classes.subHeading}>
+            <H5>
               {result['regular_candidates'].length === 1
                 ? t('admin.countingDetails.electionResult.electedCandidate')
                 : t('admin.countingDetails.electionResult.electedCandidates')}
-            </h4>
+            </H5>
             {result['regular_candidates'].length > 0 ? (
               <ul className={classes.candidatesList}>
                 <ElectedCandidatesList
@@ -78,11 +74,11 @@ const ElectionResultAndBallotStats: React.FunctionComponent<IProps> = ({
           {result['substitute_candidates'].length > 0 ? (
             <div className={classes.sectionLevel2}>
               <>
-                <h4 className={classes.subHeading}>
+                <H5>
                   {t(
                     'admin.countingDetails.electionResult.electedSubstituteCandidates'
                   )}
-                </h4>
+                </H5>
                 <ol className={classes.substituteCandidatesList}>
                   <ElectedCandidatesList
                     electedCandidateIds={result['substitute_candidates']}
@@ -105,9 +101,7 @@ const ElectionResultAndBallotStats: React.FunctionComponent<IProps> = ({
       </div>
 
       <div className={classes.sectionLevel1}>
-        <h3 className={classes.subHeading}>
-          {t('admin.countingDetails.electionResult.numberOfVotes')}
-        </h3>
+        <H4>{t('admin.countingDetails.electionResult.numberOfVotes')}</H4>
         {pollbooks.map(pollbook => {
           const pollbookBallotStats = result['meta']['pollbooks'].find(
             (pollbookBallotStats: any) => pollbookBallotStats.id === pollbook.id

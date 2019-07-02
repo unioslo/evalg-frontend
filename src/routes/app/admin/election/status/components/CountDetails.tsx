@@ -9,6 +9,7 @@ import { Classes } from 'jss';
 
 import { ElectionGroupCount } from 'interfaces';
 import Spinner from 'components/animations/Spinner';
+import { H3 } from 'components/text';
 import { orderElectionResults } from 'utils/processGraphQLData';
 
 import ElectionResultAndBallotStats from './ElectionResultAndBallotStats';
@@ -34,12 +35,6 @@ const styles = (theme: any) => ({
   },
   auditLogSection: {
     marginBottom: '2rem',
-  },
-  electionHeading: {
-    marginBottom: '2rem',
-  },
-  subHeading: {
-    marginBottom: '1rem',
   },
   electionResultFileDownloads: {
     display: 'flex',
@@ -126,7 +121,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
           return (
             <div key={electionResult.id} className={classes.electionSection}>
               {election.electionGroup.type === 'multiple_elections' && (
-                <h3 className={classes.electionHeading}>{electionName}</h3>
+                <H3>{electionName}</H3>
               )}
 
               <ElectionResultAndBallotStats electionResult={electionResult} />
