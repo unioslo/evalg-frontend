@@ -80,10 +80,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
   const { i18n, t } = useTranslation();
   const lang = i18n.language;
 
-  const [
-    downloadingFileElectionResultId,
-    setDownloadingFileElectionResultId,
-  ] = useState('');
+  const [processingFileForERId, setProcessingFileForERId] = useState('');
   const [fileDownloadError, setFileDownloadError] = useState('');
 
   let electionResults = electionGroupCount.electionResults;
@@ -93,7 +90,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
     apolloClient: ApolloClient<any>,
     electionResultId: string
   ) => {
-    setDownloadingFileElectionResultId(electionResultId);
+    setProcessingFileForERId(electionResultId);
     setFileDownloadError('');
 
     let countingProtocolBase64, electionName;
@@ -105,14 +102,14 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
       });
       countingProtocolBase64 = data.electionResult.electionProtocol;
       electionName = data.electionResult.election.name[lang];
-      setDownloadingFileElectionResultId('');
     } catch (error) {
-      setDownloadingFileElectionResultId('');
+      setProcessingFileForERId('');
       setFileDownloadError(error.message);
       return;
     }
 
     const blob = b64toBlob(countingProtocolBase64, 'application/pdf');
+    setProcessingFileForERId('');
     FileSaver.saveAs(blob, `counting_protocol-${electionName}.pdf`);
   };
 
@@ -120,7 +117,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
     apolloClient: ApolloClient<any>,
     electionResultId: string
   ) => {
-    setDownloadingFileElectionResultId(electionResultId);
+    setProcessingFileForERId(electionResultId);
     setFileDownloadError('');
 
     let ballotsWithMetadata, electionName;
@@ -132,9 +129,8 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
       });
       ballotsWithMetadata = data.electionResult.ballotsWithMetadata;
       electionName = data.electionResult.election.name[lang];
-      setDownloadingFileElectionResultId('');
     } catch (error) {
-      setDownloadingFileElectionResultId('');
+      setProcessingFileForERId('');
       setFileDownloadError(error.message);
       return;
     }
@@ -142,6 +138,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
     const blob = new Blob([JSON.stringify(ballotsWithMetadata, null, 2)], {
       type: 'application/json;charset=utf-8',
     });
+    setProcessingFileForERId('');
     FileSaver.saveAs(blob, `ballots-${electionName}.json`);
   };
 
@@ -200,7 +197,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
                     {t('general.download')} (JSON)
                   </a>
                 </span>
-                {downloadingFileElectionResultId === electionResult.id && (
+                {processingFileForERId === electionResult.id && (
                   <Spinner darkStyle size="1.6rem" marginLeft="1rem" />
                 )}
               </div>
