@@ -53,3 +53,4 @@ export const appCookiesInformationLink = {
 /* Feature toggles */
 export const appMobileVotingStepperVariant: 'simple' | 'circles' = 'circles';
 export const sectionBottomBorderStyle: 'original' | 'stylish' = 'stylish';
+export const showGenerateVotesTestingComponent = false;
