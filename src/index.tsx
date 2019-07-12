@@ -6,7 +6,10 @@ import ReactDOM from 'react-dom';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { createUploadLink } from 'apollo-upload-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import {
+  InMemoryCache,
+  IntrospectionFragmentMatcher,
+} from 'apollo-cache-inmemory';
 import { ApolloCache } from 'apollo-cache';
 import { ApolloProvider } from 'react-apollo';
 import { ThemeProvider } from 'react-jss';
@@ -55,6 +58,16 @@ const initializeCache = (cache: ApolloCache<any>) => {
   });
 };
 
+// an empty schema works as long as we don't do type matching on unions in our fragments
+// see https://github.com/apollographql/apollo-client/issues/3397
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData: {
+    __schema: {
+      types: [],
+    },
+  },
+});
+
 const constructApolloClient = () => {
   // uploadLink extends HttpLink from 'apollo-link-http'
   const uploadLink: ApolloLink = createUploadLink({ uri: graphqlBackend });
@@ -73,7 +86,7 @@ const constructApolloClient = () => {
     }
   });
 
-  const cache = new InMemoryCache();
+  const cache = new InMemoryCache({ fragmentMatcher });
 
   const client = new ApolloClient({
     link: ApolloLink.from([authMiddleware, uploadLink]),
