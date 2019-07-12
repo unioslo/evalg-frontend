@@ -80,6 +80,18 @@
         }
       }
     },
+    "roles": {
+      "confirmRemoval": "Bekreft fjerning",
+      "confirmRemovalElectionAdmin": "Er du sikker på at du vil fjerne «{{ target }}»?",
+      "groups": "Grupper",
+      "singleUsers": "Enkeltbrukere",
+      "sectionHeader": "Administrative roller",
+      "sectionDescription": "Rollene angir hvem som har rettigheter i forbindelse med valget.",
+      "electionAdmins": "Valgansvarlige",
+      "electionAdminsDescription": "Kan endre innstillinger og informasjon for valget, telle stemmer og delegere tilganger.",
+      "addNewElectionAdmin": "Legg til valgansvarlig",
+      "addedElectionAdminByIdentifier": "La til {{ idType }} {{ idValue }} som valgansvarlig"
+    },
     "electionKey": {
       "create": "Opprett valgnøkkel",
       "createNew": "Opprett ny valgnøkkel",
@@ -166,11 +178,6 @@
     "feideIdOrBirthNumber": "Feide-ID eller fødselsnummer",
     "group": "Gruppe",
     "idType": "ID-type",
-    "idTypes": {
-      "uid": "Brukernavn",
-      "nin": "Fødselsnummer",
-      "feide_id": "Feide-ID"
-    },
     "idValue": "ID-verdi",
     "loading": "Laster inn manntall. Dette kan ta litt tid...",
     "loadingVotesOutsideCensus": "Laster inn stemmer utenfor manntall...",
@@ -196,10 +203,6 @@
     "activeElectionsHeader": "Hvilke grupper skal representeres og hvor mange kandidater skal velges fra hver av gruppene?",
     "addCandidate": "Legg til kandidat",
     "addPrefTeamCandidate": "Legg til kandidat og medkandidater",
-    "adminGroup": "Grupper",
-    "adminRoles": "Administrative roller",
-    "adminRolesDesc": "Rollene angir hvem som har rettigheter i forbindelse med valget.",
-    "adminUser": "Enkeltbrukere",
     "allVotingGroups": "Alle velgergrupper",
     "announceElectionConfirm": "Synliggjør valget",
     "announceElectionHeader": "Synliggjør valget på forsiden",
@@ -234,8 +237,6 @@
     "editBoardLeaderCandidate": "Endre kandidat og medkandidater",
     "editCandidate": "Endre kandidat",
     "election": "Valg",
-    "electionAdmins": "Valgansvarlige",
-    "electionAdminsDesc": "Kan endre innstillinger og informasjon for valget, telle stemmer og delegere tilganger.",
     "electionCloses": "Valget stenger",
     "electionInfo": "Valginformasjon",
     "electionKey": "Valgnøkkel",
@@ -353,6 +354,11 @@
       "feideIdCannotStartWithNumber": "Feide-ID kan ikke starte med et tall",
       "invalidFeideId": "Ugyldig Feide-ID"
     }
+  },
+  "idTypes": {
+    "uid": "Brukernavn",
+    "nin": "Fødselsnummer",
+    "feide_id": "Feide-ID"
   },
   "general": {
     "add": "Legg til",

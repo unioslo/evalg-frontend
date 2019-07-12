@@ -8,126 +8,93 @@ import {
   IInactiveComponentProps,
   ISettingsSectionContents,
 } from 'components/page/SettingsSection';
-import { ElectionGroup, IElectionGroupRole } from 'interfaces';
+import {
+  ElectionGroup,
+  IElectionGroupRole,
+  IRoleGrant,
+  PersonIdType,
+} from 'interfaces';
 
 import AdminRolesValues from './AdminRolesValues';
 import AdminRolesForm from './AdminRolesForm';
 
-const searchPersonsQuery = gql`
-  query searchPersons($val: String!) {
-    searchPersons(val: $val) {
-      id
-      displayName
+const addElectionGroupRoleByIdentifierMutation = gql`
+  mutation addElectionGroupRoleByIdentifier(
+    $electionGroupId: UUID!
+    $role: ElectionGroupRoleType!
+    $idType: PersonIdType!
+    $idValue: String!
+  ) {
+    addElectionGroupRoleByIdentifier(
+      electionGroupId: $electionGroupId
+      role: $role
+      idType: $idType
+      idValue: $idValue
+    ) {
+      success
+      code
+      message
     }
   }
 `;
 
-const searchGroupsQuery = gql`
-  query searchGroups($val: String!) {
-    searchGroups(val: $val) {
-      id
-      name
+const removeElectionGroupRoleByGrantMutation = gql`
+  mutation removeElectionGroupRoleByGrant($grantId: UUID!) {
+    removeElectionGroupRoleByGrant(grantId: $grantId) {
+      success
+      code
+      message
     }
   }
 `;
-
-const addAdminMutation = gql`
-  mutation AddAdmin($adminId: UUID!, $type: String!, $elGrpId: UUID!) {
-    addAdmin(adminId: $adminId, type: $type, elGrpId: $elGrpId) {
-      ok
-    }
-  }
-`;
-
-const removeAdminMutation = gql`
-  mutation RemoveAdmin($grantId: UUID!) {
-    removeAdmin(grantId: $grantId) {
-      ok
-    }
-  }
-`;
-
-export interface IAdminGrant {
-  id: string;
-  name: string;
-  grantId: string;
-}
 
 const refetchQueriesFunction = () => ['electionGroup'];
 
 const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
   const electionGroupData: ElectionGroup = props.electionGroupData;
   const adminRoles: IElectionGroupRole[] = electionGroupData.roles.filter(
-    r => r.name === 'election-admin'
+    role => role.name === 'admin'
   );
-
-  const adminPersons: IAdminGrant[] = adminRoles
-    .filter(r => r.principal.principalType === 'person-principal')
-    .map(r => ({
-      id: r.principal.person.id,
-      name: r.principal.person.displayName,
-      grantId: r.grantId,
-    }));
-
-  const adminGroups: IAdminGrant[] = adminRoles
-    .filter(r => r.principal.principalType === 'group-principal')
-    .map(r => ({
-      id: r.principal.group.id,
-      name: r.principal.group.name,
-      grantId: r.grantId,
-    }));
 
   return (
     <ApolloConsumer>
       {client => {
-        async function searchPersons(val: string) {
-          const { data }: { data: any } = await client.query({
-            query: searchPersonsQuery,
-            variables: { val },
-          });
-          return data.searchPersons;
-        }
-        async function searchGroups(val: string) {
-          const { data }: { data: any } = await client.query({
-            query: searchGroupsQuery,
-            variables: { val },
-          });
-          return data.searchGroups;
-        }
         return (
           <Mutation
-            mutation={removeAdminMutation}
+            mutation={removeElectionGroupRoleByGrantMutation}
             refetchQueries={refetchQueriesFunction}
           >
             {(removeAdmin, { data: removeData }) => (
               <Mutation
-                mutation={addAdminMutation}
+                mutation={addElectionGroupRoleByIdentifierMutation}
                 refetchQueries={refetchQueriesFunction}
               >
                 {(addAdmin, { data: addData }) => {
-                  const addAction = (adminId: any, type: string) => {
+                  const addAction = (
+                    role: string,
+                    idType: PersonIdType,
+                    idValue: string
+                  ) => {
                     addAdmin({
                       variables: {
-                        adminId,
-                        type,
-                        elGrpId: electionGroupData.id,
+                        electionGroupId: electionGroupData.id,
+                        role: role,
+                        idType: idType,
+                        idValue: idValue,
                       },
                     });
                   };
 
-                  const removeAction = (grantId: any) => {
-                    removeAdmin({ variables: { grantId } });
+                  const removeAction = (role: IRoleGrant) => {
+                    removeAdmin({ variables: { grantId: role.grantId } });
                   };
 
                   return (
                     <AdminRolesForm
-                      adminPersons={adminPersons}
-                      adminGroups={adminGroups}
-                      addAction={addAction}
-                      removeAction={removeAction}
-                      closeAction={props.submitAction}
-                      searchPersons={searchPersons}
-                      searchGroups={searchGroups}
+                      adminRoles={adminRoles}
+                      onAddRole={addAction}
+                      onRemoveRole={removeAction}
+                      onClose={props.submitAction}
                     />
                   );
                 }}
@@ -148,8 +115,8 @@ const AdminRolesSettingsSection: ISettingsSectionContents = {
   sectionName: 'adminRolesSettings',
   activeComponent: ActiveComponent,
   inactiveComponent: InactiveComponent,
-  header: <Trans>election.adminRoles</Trans>,
-  description: <Trans>election.adminRolesDesc</Trans>,
+  header: <Trans>admin.roles.sectionHeader</Trans>,
+  description: <Trans>admin.roles.sectionDescription</Trans>,
 };
 
 export default AdminRolesSettingsSection;

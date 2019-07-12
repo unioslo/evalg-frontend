@@ -6,6 +6,7 @@ import { Classes } from 'jss';
 import { Form, Field } from 'react-final-form';
 import classNames from 'classnames';
 import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 import { TableRow, TableCell } from 'components/table';
 import {
@@ -15,15 +16,15 @@ import {
   TextInputRF,
 } from 'components/form';
 import Button, { ButtonContainer } from 'components/button';
-import { IPollBook } from 'interfaces';
-import { getVoterIdTypeDisplayName } from 'utils/i18n';
+import { IPollBook, PersonIdType } from 'interfaces';
+import { getPersonIdTypeDisplayName } from 'utils/i18n';
+import { validateFeideId, validateNin } from 'utils/validators';
 import Spinner from 'components/animations/Spinner';
-import { useTranslation } from 'react-i18next';
 
 const addVoterById = gql`
   mutation addVoterById(
     $pollbookId: UUID!
-    $idType: IdType!
+    $idType: PersonIdType!
     $idValue: String!
   ) {
     addVoterById(
@@ -39,9 +40,6 @@ const addVoterById = gql`
 `;
 
 const refetchQueries = () => ['electionGroupVoters'];
-
-const feideIdRE = /^[a-zæøåA-ZÆØÅ_][a-zæøåA-ZÆØÅ0-9_.]*@[a-zæøåA-ZÆØÅ0-9_.]+$/;
-const ninRE = /^\d{11}$/;
 
 const styles = (theme: any) => ({
   feedback: {
@@ -82,16 +80,16 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
                 const idValue = values.idValue;
                 if (!idValue) return;
 
-                let idType;
-                if (idValue.match(feideIdRE)) {
+                let idType: PersonIdType;
+                if (validateFeideId(idValue)) {
                   idType = 'feide_id';
-                } else if (idValue.match(ninRE)) {
+                } else if (validateNin(idValue)) {
                   idType = 'nin';
                 } else {
                   return;
                 }
 
-                const idTypeDisplayName = getVoterIdTypeDisplayName(idType, t);
+                const idTypeDisplayName = getPersonIdTypeDisplayName(idType, t);
 
                 try {
                   await add({
@@ -226,7 +224,7 @@ const validate = (lang: string, t: i18n.TFunction) => (values: object) => {
 
   if (!idValue) {
     return {};
-  } else if (!idValue.match(ninRE) && !idValue.match(feideIdRE)) {
+  } else if (!validateNin(idValue) && !validateFeideId(idValue)) {
     if (idValue.match(/^\d+$/) && !idValue.match(/^\d{11}$/)) {
       errors['idValue'] = t(
         'formErrors.censusAddVoter.birthNumberIncorrectNumberOfDigits'

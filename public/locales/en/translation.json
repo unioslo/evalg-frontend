@@ -80,6 +80,18 @@
         }
       }
     },
+    "roles": {
+      "confirmRemoval": "Confirm removal",
+      "confirmRemovalElectionAdmin": "Are you sure you want to remove “{{ target }}”?",
+      "groups": "Groups",
+      "singleUsers": "Single users",
+      "sectionHeader": "Administrative roles",
+      "sectionDescriptionDescription": "The roles indicate who has permissions on this election.",
+      "electionAdmins": "Election admins",
+      "electionAdminsDescription": "Can change settings and information for the election, count votes and delegate permissions.",
+      "addNewElectionAdmin": "Add election admin",
+      "addedElectionAdminByIdentifier": "Added {{ idType }} {{ idValue }} as election admin"
+    },
     "electionKey": {
       "create": "Create election key",
       "createNew": "Create new election key",
@@ -166,11 +178,6 @@
     "feideIdOrBirthNumber": "Feide-ID or birth number",
     "group": "Group",
     "idType": "ID-type",
-    "idTypes": {
-      "uid": "Username",
-      "nin": "Norwegian birth number",
-      "feide_id": "Feide-ID"
-    },
     "idValue": "ID-value",
     "loading": "Loading censuses. This may take some time...",
     "loadingVotesOutsideCensus": "Loading votes outside censuses...",
@@ -196,10 +203,6 @@
     "activeElectionsHeader": "Which groups should be represented, and how many candidates shall be elected from each of the groups?",
     "addCandidate": "Add candidate",
     "addPrefTeamCandidate": "Add a candidate and cocandidates",
-    "adminGroup": "Groups",
-    "adminRoles": "Administrative roles",
-    "adminRolesDesc": "The roles indicate who has permissions on this election.",
-    "adminUser": "Single users",
     "allVotingGroups": "All voting groups",
     "announceElectionConfirm": "Make visible",
     "announceElectionHeader": "Make election visible",
@@ -233,8 +236,6 @@
     "editBoardLeaderCandidate": "Edit candidate and cocandidates",
     "editCandidate": "Edit candidate",
     "election": "Election",
-    "electionAdmins": "Election admins",
-    "electionAdminsDesc": "Can change settings and information for the election, count votes and delegate permissions.",
     "electionCloses": "Election closes",
     "electionInfo": "Election information",
     "electionInfoShort": "Election info",
@@ -355,6 +356,11 @@
       "feideIdCannotStartWithNumber": "Feide-ID cannot start with a digit",
       "invalidFeideId": "Invalid Feide-ID"
     }
+  },
+  "idTypes": {
+    "uid": "Username",
+    "nin": "Norwegian birth number",
+    "feide_id": "Feide ID"
   },
   "general": {
     "add": "Add",

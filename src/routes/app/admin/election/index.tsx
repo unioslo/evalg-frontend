@@ -59,15 +59,25 @@ const electionGroupQuery = gql`
         name
         grantId
         principal {
-          principalType
-          person {
+          ... on PersonPrincipal {
             id
-            displayName
-            lastUpdate
+            person {
+              id
+              displayName
+              lastUpdate
+            }
           }
-          group {
+          ... on PersonIdentifierPrincipal {
             id
-            name
+            idType
+            idValue
+          }
+          ... on GroupPrincipal {
+            id
+            group {
+              id
+              name
+            }
           }
         }
       }
