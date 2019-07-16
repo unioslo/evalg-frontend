@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import gql from 'graphql-tag';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
 import { ApolloConsumer, Query } from 'react-apollo';
 import { useTranslation } from 'react-i18next';
 import { Route, Switch } from 'react-router';
 import { IAuthenticatorContext } from 'react-oidc/lib/makeAuth';
-import { ApolloClient } from 'apollo-client';
-import { createBrowserHistory } from 'history';
+import { History } from 'history';
+import injectSheet from 'react-jss';
+import { Classes } from 'jss';
 
 import { appHelpLink } from 'appConfig';
 import Link from 'components/link';
@@ -17,6 +16,8 @@ import { UserContext } from 'providers/UserContext';
 import LanguageToggler from './LanguageToggler';
 import { DesktopMenu, DesktopMenuItem } from './DesktopMenu';
 import { MobileMenu, MobileMenuItem } from './MobileMenu';
+import { getSignedInPersonDisplayName } from 'queries';
+import ApolloClient from 'apollo-client';
 
 const styles = (theme: any) => ({
   logoBar: {
@@ -87,11 +88,12 @@ const sayMyName = gql`
 `;
 
 interface IProps {
+  history: History;
   classes: Classes;
 }
 
 const Header: React.FunctionComponent<IProps> = (props: IProps) => {
-  const { classes } = props;
+  const { history, classes } = props;
   const { t } = useTranslation();
 
   return (
@@ -151,7 +153,7 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
                 </Link>
               </MobileMenuItem>
               <MobileMenuItem>
-                <MobileLogout />
+                <MobileLogout history={history} />
               </MobileMenuItem>
             </MobileMenu>
             <DesktopMenu>
@@ -205,7 +207,11 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
               />
             </Switch>
             <DesktopMenu>
-              <UserNameAndLogout />
+              <ApolloConsumer>
+                {client => (
+                  <UserNameAndLogout history={history} apolloClient={client} />
+                )}
+              </ApolloConsumer>
             </DesktopMenu>
             <div className={classes.mobileLanguageToggler}>
               <LanguageToggler />
@@ -217,47 +223,62 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
   );
 };
 
-const logout = (context: IAuthenticatorContext, client: ApolloClient<any>) => (
-  event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-) => {
-  event.preventDefault();
-  event.stopPropagation();
-  context.signOut();
-  client.resetStore();
-  sessionStorage.clear();
-  const history = createBrowserHistory({ forceRefresh: true });
+const navigateToLogout = (history: History) => {
   history.push('/logout');
 };
 
-const MobileLogout: React.FunctionComponent = () => {
+const MobileLogout: React.FunctionComponent<{ history: History }> = ({
+  history,
+}) => {
   const { t } = useTranslation();
+
   return (
-    <ApolloConsumer>
-      {client => {
-        return (
-          <UserContext.Consumer>
-            {context => {
-              if (context.user) {
-                return (
-                  <MobileMenuItem>
-                    <a onClick={logout(context, client)}>
-                      {t('general.logout')}
-                    </a>
-                  </MobileMenuItem>
-                );
-              } else {
-                return null;
-              }
-            }}
-          </UserContext.Consumer>
-        );
-      }}
-    </ApolloConsumer>
+    <>
+      <UserContext.Consumer>
+        {context => {
+          if (context.user) {
+            return (
+              <MobileMenuItem>
+                <a
+                  onClick={e => {
+                    e.preventDefault();
+                    navigateToLogout(history);
+                  }}
+                  href="/"
+                >
+                  {t('general.logout')}
+                </a>
+              </MobileMenuItem>
+            );
+          } else {
+            return null;
+          }
+        }}
+      </UserContext.Consumer>
+    </>
   );
 };
 
-const UserNameAndLogout: React.FunctionComponent = () => {
+const UserNameAndLogout: React.FunctionComponent<{
+  apolloClient: ApolloClient<any>;
+  history: History;
+}> = ({ apolloClient, history }) => {
   const { t } = useTranslation();
+  const [userDisplayName, setUserDisplayName] = useState('');
+
+  useEffect(() => {
+    const getDisplayName = async () => {
+      let displayName;
+      try {
+        displayName = await getSignedInPersonDisplayName(apolloClient);
+        setUserDisplayName(displayName);
+      } catch (error) {
+        console.error('Could not get ID of signed in user.');
+      }
+    };
+    getDisplayName();
+  }, []);
+
   return (
     <ApolloConsumer>
       {client => {
@@ -268,30 +289,15 @@ const UserNameAndLogout: React.FunctionComponent = () => {
                 return (
                   <>
                     <DesktopMenuItem>
-                      <Query query={sayMyName}>
-                        {({ data, loading, error }) => {
-                          if (loading || error) {
-                            return null;
-                          } else {
-                            client.writeData({
-                              data: {
-                                signedInPerson: {
-                                  personId: data.viewer.person.id,
-                                  displayName: data.viewer.person.displayName,
-                                  __typename: 'signedInPerson',
-                                },
-                              },
-                            });
-                            // TODO: Make this happen only on onload
-                            return <>{data.viewer.person.displayName}</>;
-                          }
-                        }}
-                      </Query>
+                      {userDisplayName}
                     </DesktopMenuItem>
                     <DesktopMenuItem>
                       <a
                         style={{ color: 'inherit' }}
-                        onClick={logout(context, client)}
+                        onClick={e => {
+                          e.preventDefault();
+                          navigateToLogout(history);
+                        }}
                         href="/"
                       >
                         {t('general.logout')}

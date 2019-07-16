@@ -42,11 +42,6 @@ const callback = (props: any) => (
 
 const initializeCache = (cache: ApolloCache<any>) => {
   const initialCache = {
-    signedInPerson: {
-      __typename: 'signedInPerson',
-      personId: '',
-      displayName: '',
-    },
     admin: { __typename: 'admin', isCreatingNewElection: false },
   };
 

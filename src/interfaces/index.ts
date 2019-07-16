@@ -1,18 +1,7 @@
 // Local state stuff
 
 export interface EvalgClientState {
-  voter: {
-    selectedPollBookID: string;
-    notInPollBookJustification: string;
-  };
-  signedInPerson: SignedInPerson;
   admin: { isCreatingNewElection: boolean };
-}
-
-export interface SignedInPerson {
-  __typename: 'signedInPerson';
-  displayName?: string;
-  personId: string;
 }
 
 // Graphql entity types
@@ -22,10 +11,6 @@ export type Viewer = {
 };
 
 // Query responses
-
-export type SignedInPersonResponse = {
-  signedInPerson: SignedInPerson;
-};
 
 export type VotersForPersonResponse = {
   votersForPerson: IVoter[];
