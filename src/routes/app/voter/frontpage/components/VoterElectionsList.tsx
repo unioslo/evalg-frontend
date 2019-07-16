@@ -27,14 +27,14 @@ const styles = (theme: any) => ({
 interface IListItemProps {
   electionGroup: ElectionGroup;
   lang: string;
-  canVote: boolean;
+  hasVotingRights: boolean;
   classes: Classes;
 }
 
 const VoterElectionsListItem: React.FunctionComponent<IListItemProps> = (
   props: IListItemProps
 ) => {
-  const { electionGroup, lang, canVote } = props;
+  const { electionGroup, lang, hasVotingRights } = props;
   const { t } = useTranslation();
   const election = electionGroup.elections[0];
 
@@ -62,7 +62,7 @@ const VoterElectionsListItem: React.FunctionComponent<IListItemProps> = (
         </div>
         <div>
           {t('election.rightToVote')}:&nbsp;
-          {canVote ? t('general.yes') : t('general.no')}
+          {hasVotingRights ? t('general.yes') : t('general.no')}
         </div>
       </div>
       <ButtonContainer alignLeft>
@@ -80,7 +80,7 @@ const VoterElectionsListItem: React.FunctionComponent<IListItemProps> = (
 
 interface IListProps {
   electionGroups: Array<ElectionGroup>;
-  canVoteElectionGroups: string[];
+  votingRightsElectionGroups: string[];
   noElectionsText: React.ReactElement;
   classes: Classes;
 }
@@ -101,7 +101,7 @@ const VoterElectionsList: React.FunctionComponent<IListProps> = (
         <VoterElectionsListItem
           classes={classes}
           electionGroup={group}
-          canVote={props.canVoteElectionGroups.includes(group.id)}
+          hasVotingRights={props.votingRightsElectionGroups.includes(group.id)}
           lang={i18n.language}
           key={index}
         />

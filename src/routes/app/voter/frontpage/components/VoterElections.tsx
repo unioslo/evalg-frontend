@@ -45,7 +45,7 @@ const styles = (theme: any) => ({
 
 interface IProps {
   electionGroups: ElectionGroup[];
-  canVoteElectionGroups: string[];
+  votingRightsElectionGroups: string[];
   classes: Classes;
 }
 
@@ -152,7 +152,7 @@ class VoterElections extends React.Component<IProps, IState> {
                 </Tabs>
                 <VoterElectionsTable
                   electionGroups={groups}
-                  canVoteElectionGroups={this.props.canVoteElectionGroups}
+                  votingRightsElectionGroups={this.props.votingRightsElectionGroups}
                   noElectionsText={noElectionsText}
                 />
               </div>
@@ -206,7 +206,7 @@ class VoterElections extends React.Component<IProps, IState> {
               </MobileDropDown>
               <VoterElectionsList
                 electionGroups={groups}
-                canVoteElectionGroups={this.props.canVoteElectionGroups}
+                votingRightsElectionGroups={this.props.votingRightsElectionGroups}
                 noElectionsText={noElectionsText}
               />
             </div>

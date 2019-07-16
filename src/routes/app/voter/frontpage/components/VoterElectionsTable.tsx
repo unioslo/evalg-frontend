@@ -19,7 +19,7 @@ import { ElectionGroup } from 'interfaces';
 
 interface IProps {
   electionGroups: Array<ElectionGroup>;
-  canVoteElectionGroups: string[];
+  votingRightsElectionGroups: string[];
   noElectionsText: React.ReactElement;
 }
 
@@ -75,7 +75,7 @@ const VoterElectionsTable: React.FunctionComponent<IProps> = (
           }
 
           let canVote = false;
-          if (props.canVoteElectionGroups.includes(group.id)) {
+          if (props.votingRightsElectionGroups.includes(group.id)) {
             canVote = true;
           }
 
