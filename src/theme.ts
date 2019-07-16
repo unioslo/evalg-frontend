@@ -1,24 +1,21 @@
 import { sectionBottomBorderStyle } from './appConfig';
 
+
 const black = '#000000';
+const white = '#FFFFFF';
 const lightBlack = '#222222';
 const darkGray = '#2D2D2E';
 const darkGreyishBrown = '#444444';
 const greyishBrown = '#555555';
-const lightGreyishBrown = '#666666';
-const lighterGray = '#707070';
-const gray = '#777777';
+const gray = '#707070';
 const lightGray = '#9B9B9B';
 const darkEggWhite = '#c3c3c3';
-const veryLightGray = '#CBCBCB';
 const eggWhite = '#CCCCCC';
-const lightDarkWhite = '#D8D8D8';
 const darkWhite = '#DDDDDD';
-const darkerWhite = '#999999';
+const backgroundGray = '#E1E3E4';
 const whiteGray = '#F4F9FA';
 const paleGrey = '#F5FAFB';
 const mediumWhite = '#F6F6F6';
-const white = '#FFFFFF';
 const darkBlueGreen = '#00413D';
 const lightOliveGreen = '#91BD60';
 const fadedOrange = '#EAB255';
@@ -32,6 +29,7 @@ const lightRed = '#FF8F8F';
 const darkRed = '#E83535';
 
 const colors = {
+  backgroundGray,
   black,
   blueGreyish,
   blueish,
@@ -43,23 +41,18 @@ const colors = {
   darkRed,
   darkTurquoise,
   darkWhite,
-  darkerWhite,
   eggWhite,
   fadedOrange,
   greyishBrown,
   lightBlack,
   lightBlueGray,
-  lightDarkWhite,
   lightGray,
-  lightGreyishBrown,
   lightOliveGreen,
   lightRed,
   lightTurquoise,
-  lighterGray,
   gray,
   mediumWhite,
   paleGrey,
-  veryLightGray,
   white,
   whiteGray,
 };
@@ -67,14 +60,14 @@ const colors = {
 const theme = {
   actionTextColor: blueish,
   stepperColor: lightTurquoise,
-  stepperSectionCircleColorActive: darkTurquoise,
-  stepperSectionCircleColorInactive: white,
-  stepperSectionDescTextColor: lightBlack,
-  stepperSectionTextColorActive: white,
-  stepperSectionTextColorInactive: lightGray,
+  stepperItemCircleColorActive: darkTurquoise,
+  stepperItemCircleColorInactive: white,
+  stepperItemTextColor: lightBlack,
+  stepperItemNumberColorActive: white,
+  stepperItemNumberColorInactive: lightGray,
   appMaxWidth: '110rem',
   backArrowColor: darkTurquoise,
-  borderColor: lighterGray,
+  borderColor: gray,
   breakpoints: {
     lg: '1140px',
     lgQuery: '@media (min-width:1140px)',
@@ -86,7 +79,7 @@ const theme = {
   btnBorderWidth: '0.3rem',
   btnDefDisabledColor: blueGreyish,
   btnDefDisabledTextColor: white,
-  closeIconColor: veryLightGray,
+  closeIconColor: darkEggWhite,
   colors,
   contentContainerHorPadding: '1rem',
   contentContainerMdHorPadding: '4.5rem',
@@ -105,7 +98,7 @@ const theme = {
   dropDownWidth: '22.3rem',
   editText: blueish,
   electionStatusActiveColor: lightOliveGreen,
-  electionStatusClosedColor: lightDarkWhite,
+  electionStatusClosedColor: eggWhite,
   electionStatusDraftColor: fadedOrange,
   errorTextColor: darkRed,
   formErrorTextColor: darkRed,
@@ -125,6 +118,7 @@ const theme = {
   formFieldTextColor: greyishBrown,
   forwardArrowColor: white,
   forwardArrowColorBg: darkTurquoise,
+  loginPageBgColor: backgroundGray,
   headerLogoBarColor: black,
   headerMainAreaColor: darkGray,
   headerMenuMargin: '2rem',
