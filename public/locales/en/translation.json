@@ -252,7 +252,6 @@
     "hasGenderQuota": "Election uses gender quotas",
     "linkToElection": "Link to more information about the election",
     "linkToElectionPlaceholder": "Webpage for the election",
-    "loading": "Loading election…",
     "manageElections": "Manage elections",
     "manageableElections": "Elections you can manage",
     "mandatePeriod": "Mandate period",
@@ -418,15 +417,28 @@
     "welcome": "Welcome to eValg",
     "yes": "Yes"
   },
-  "person": {
-    "loading": "Loading user information…"
+  "loginPage": {
+    "featureList1": "Vote in electronic elections",
+    "featureList2": "Set up and run elections",
+    "featureList3": "Count and see results of elections",
+    "header": "In eValg you can",
+    "loginButton": "Log in to eValg",
+    "loginAsAdmin": "Log in as administrator",
+    "readMore": "More about eValg"
   },
   "prefElec": {
     "candPageDesc": "Here you can add candidates that are electable for the various voter groups.{nl} \nThe election must have at least as many candidates per voter group as stated in {{infoLink}}."
   },
   "voter": {
+    "voterFrontPage": {
+      "loadingElections": "Loading elections...",
+      "loadingUserData": "Loading user data...",
+      "errors": {
+        "couldNotFetchPersonId": "Could not retrieve person ID for logged in user."
+      }
+    },
     "error": "An error has occurred",
-    "errorInfo": "Please contact the service owner",
+    "errorInfo": "Something went wrong when submitting the vote. The vote is <strong><em>not</em></strong> registered. Please contact the service owner.",
     "canVoteBlank": "You may also cast a blank vote.",
     "castVote": "Cast vote",
     "chooseCandidates": "Choose candidates",
@@ -434,7 +446,6 @@
     "crossedCandidates": "Crossed candidates",
     "cumulate": "Extra vote",
     "editVote": "Edit vote",
-    "loading": "Loading voter information…",
     "majorityVoteHelpHeader": "Choose one candidate",
     "majorityVoteHelpDesc": "Choose the candidate you would like to vote for.",
     "majorityVoteHelpYouMaySelectOnlyOne": "This is a majority vote election, and you may select only one candidate.",
