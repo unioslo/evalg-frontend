@@ -11,21 +11,27 @@ const styles = (theme: any) => ({
   rectangle: {
     fill: theme.stepperColor,
   },
-  sectionNumber: {
+  itemText: {
+    fill: theme.stepperItemTextColor,
+  },
+  itemTextDisabled: {
+    fontStyle: 'italic',
+  },
+  itemNumber: {
     fontSize: '2.4rem',
     fontWeight: 'bold',
   },
-  sectionNumberActive: {
-    fill: theme.stepperSectionTextColorActive,
+  itemNumberActive: {
+    fill: theme.stepperItemNumberColorActive,
   },
-  sectionNumberInactive: {
-    fill: theme.stepperSectionTextColorInactive,
+  itemNumberInactive: {
+    fill: theme.stepperItemNumberColorInactive,
   },
-  sectionCircleActive: {
-    fill: theme.stepperSectionCircleColorActive,
+  itemCircleActive: {
+    fill: theme.stepperItemCircleColorActive,
   },
-  sectionCircleInactive: {
-    fill: theme.stepperSectionCircleColorInactive,
+  itemCircleInactive: {
+    fill: theme.stepperItemCircleColorInactive,
   },
   clickable: {
     '&:hover': {
@@ -68,17 +74,21 @@ const StepperItem: React.SFC<IStepperItemProps> = props => {
     }
   };
 
-  const gClassNames = classNames({
+  const gCls = classNames({
     [classes.clickable]: clickable,
   });
-  const numberClassNames = classNames({
-    [classes.sectionNumber]: true,
-    [classes.sectionNumberActive]: active,
-    [classes.sectionNumberInactive]: !active,
+  const numberCls = classNames({
+    [classes.itemNumber]: true,
+    [classes.itemNumberActive]: active,
+    [classes.itemNumberInactive]: !active,
   });
-  const circleClassNames = classNames({
-    [classes.sectionCircleActive]: active,
-    [classes.sectionCircleInactive]: !active,
+  const circleCls = classNames({
+    [classes.itemCircleActive]: active,
+    [classes.itemCircleInactive]: !active,
+  });
+  const textCls = classNames({
+    [classes.itemText]: true,
+    [classes.itemTextDisabled]: disabled,
   });
 
   const circleRadius = 50;
@@ -86,18 +96,18 @@ const StepperItem: React.SFC<IStepperItemProps> = props => {
 
   return (
     <g
-      className={gClassNames}
+      className={gCls}
       onClick={handleClick}
       transform={'translate(' + translateX + ', ' + translateY + ')'}
       opacity={disabled ? 0.75 : 'inherit'}
     >
-      <text style={{ fontStyle: disabled ? 'italic' : 'inherit' }}>
+      <text className={textCls}>
         <tspan x={circleRadius + itemTextLeftPad} y="31">
           {itemText}
         </tspan>
       </text>
-      <circle className={circleClassNames} cx="25" cy="25" r="25" />
-      <text className={numberClassNames}>
+      <circle className={circleCls} cx="25" cy="25" r="25" />
+      <text className={numberCls}>
         <tspan x="18" y="34">
           {number}
         </tspan>
