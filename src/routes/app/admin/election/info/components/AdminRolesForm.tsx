@@ -18,7 +18,7 @@ import Text from 'components/text';
 import { Button, ButtonContainer } from 'components/button';
 import Spinner from 'components/animations/Spinner';
 import { IRoleGrant, PersonIdType } from 'interfaces';
-import { validateFeideId, validateNin } from 'utils/validators';
+import { validateFeideId } from 'utils/validators';
 import { getPersonIdTypeDisplayName } from 'utils/i18n';
 
 const styles = (theme: any) => ({
@@ -77,10 +77,6 @@ class AdminRolesForm extends React.Component<IProps, IState> {
       roleToRemove: null,
       feedback: { text: '', isBackendError: false },
     };
-    this.removeAndClose = this.removeAndClose.bind(this);
-    this.abortRemovalAndClose = this.abortRemovalAndClose.bind(this);
-    this.setFeedback = this.setFeedback.bind(this);
-    this.addRoleAndSetFeedback = this.addRoleAndSetFeedback.bind(this);
   }
 
   getPrincipalDisplayName = (role: IRoleGrant): string => {
@@ -244,7 +240,6 @@ class AdminRolesForm extends React.Component<IProps, IState> {
                             component={TextInputRF}
                             large={true}
                             placeholder={t('idTypes.feide_id')}
-                            // inputRef={inputEl}
                           />
                         </FormField>
                         <Button
