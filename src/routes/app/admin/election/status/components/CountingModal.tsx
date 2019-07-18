@@ -287,10 +287,9 @@ const CountingModal: React.FunctionComponent<Props> = ({
           secondary
         />,
       ]}
-      minWidth="80rem"
     >
       <>
-        <InfoList maxWidth="100rem">
+        <InfoList maxWidth="80rem">
           <InfoListItem bulleted>
             {t('admin.countingSection.countingModal.modalBullet1')}
           </InfoListItem>
@@ -304,7 +303,6 @@ const CountingModal: React.FunctionComponent<Props> = ({
         </InfoList>
 
         <ModalSteps
-          width="70rem"
           stepsContent={[
             step1ChooseElectionKeyFileButton,
             step2StartCountingButton,
