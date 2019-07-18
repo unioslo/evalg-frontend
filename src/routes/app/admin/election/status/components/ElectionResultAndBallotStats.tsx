@@ -118,8 +118,8 @@ const ElectionResultAndBallotStats: React.FunctionComponent<IProps> = ({
           const blankBallotsCount = pollbookBallotStats['empty_ballots_count'];
           const countingBallotsCounts = ballotsCount - blankBallotsCount;
           return (
-            <>
-              <div key={pollbook.id} className={classes.sectionLevel2}>
+            <React.Fragment key={pollbook.id}>
+              <div className={classes.sectionLevel2}>
                 {pollbooks.length > 1 ? (
                   <>
                     <strong>{pollbook.name[lang]}:</strong>{' '}
@@ -138,7 +138,7 @@ const ElectionResultAndBallotStats: React.FunctionComponent<IProps> = ({
                   count: blankBallotsCount,
                 })}
               </div>
-            </>
+            </React.Fragment>
           );
         })}
       </div>
