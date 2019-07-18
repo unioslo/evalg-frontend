@@ -13,15 +13,22 @@ export const translateBackendError = ({
   codePrefix = 'backend.errors',
   tOptions,
 }: {
-  errorCode: string;
+  errorCode: string | null;
   t: i18n.TFunction;
   codePrefix: string;
   tOptions?: string | i18n.TOptions<i18n.StringMap>;
 }) => {
+  if (errorCode === null) {
+    errorCode = '';
+  }
   const errorCodeKey = `${codePrefix}.${camelCase(errorCode)}`;
+  const genericErrorCodeKey = `backend.errors.${camelCase(errorCode)}`;
   const unknownCategorizedKey = `${codePrefix}.unknown`;
   const unknownKey = 'backend.errors.unknown';
-  return t([errorCodeKey, unknownCategorizedKey, unknownKey], tOptions);
+  return t(
+    [errorCodeKey, unknownCategorizedKey, genericErrorCodeKey, unknownKey],
+    tOptions
+  );
 };
 
 export const joinStringsWithCommaAndAnd = (

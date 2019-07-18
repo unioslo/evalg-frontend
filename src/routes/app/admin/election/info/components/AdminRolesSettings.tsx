@@ -1,5 +1,6 @@
 import React from 'react';
-import { ApolloConsumer, Mutation } from 'react-apollo';
+import { ApolloConsumer } from 'react-apollo';
+import ApolloClient from 'apollo-client';
 import gql from 'graphql-tag';
 import { Trans } from 'react-i18next';
 
@@ -10,8 +11,10 @@ import {
 } from 'components/page/SettingsSection';
 import {
   ElectionGroup,
+  ElectionGroupRoleType,
   IElectionGroupRole,
   IRoleGrant,
+  IMutationResponse,
   PersonIdType,
 } from 'interfaces';
 
@@ -48,9 +51,77 @@ const removeElectionGroupRoleByGrantMutation = gql`
   }
 `;
 
-const refetchQueriesFunction = () => ['electionGroup'];
+interface IAddElectionGroupRoleByIdentifierVariables {
+  electionGroupId: string;
+  role: ElectionGroupRoleType;
+  idType: PersonIdType;
+  idValue: string;
+}
 
-const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
+interface IAddElectionGroupRoleByIdentifierResponse {
+  addElectionGroupRoleByIdentifier: IMutationResponse;
+}
+
+interface IRemoveElectionGroupRoleByGrantVariables {
+  grantId: string;
+}
+
+interface IRemoveElectionGroupRoleByGrantResponse {
+  removeElectionGroupRoleByGrant: IMutationResponse;
+}
+
+const addElectionGroupRoleByIdentifier = async (
+  client: ApolloClient<any>,
+  electionGroupId: string,
+  role: ElectionGroupRoleType,
+  idType: PersonIdType,
+  idValue: string
+): Promise<IMutationResponse | null> => {
+  const response = await client.mutate<
+    IAddElectionGroupRoleByIdentifierResponse,
+    IAddElectionGroupRoleByIdentifierVariables
+  >({
+    mutation: addElectionGroupRoleByIdentifierMutation,
+    variables: {
+      electionGroupId: electionGroupId,
+      role: role,
+      idType: idType,
+      idValue: idValue,
+    },
+    refetchQueries: () => ['electionGroup'],
+  });
+
+  return (
+    (response &&
+      response.data &&
+      response.data.addElectionGroupRoleByIdentifier) ||
+    null
+  );
+};
+
+const removeElectionGroupRoleByGrant = async (
+  client: ApolloClient<any>,
+  grantId: string
+): Promise<IMutationResponse> => {
+  const response = await client.mutate({
+    mutation: removeElectionGroupRoleByGrantMutation,
+    variables: {
+      grantId: grantId,
+    },
+    refetchQueries: () => ['electionGroup'],
+  });
+
+  return (
+    (response &&
+      response.data &&
+      response.data.removeElectionGroupRoleByGrant) ||
+    null
+  );
+};
+
+const ActiveComponent: React.FunctionComponent<
+  IActiveComponentProps
+> = props => {
   const electionGroupData: ElectionGroup = props.electionGroupData;
   const adminRoles: IElectionGroupRole[] = electionGroupData.roles.filter(
     role => role.name === 'admin'
@@ -59,48 +130,31 @@ const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
   return (
     <ApolloConsumer>
       {client => {
+        const addAdmin = (
+          role: ElectionGroupRoleType,
+          idType: PersonIdType,
+          idValue: string
+        ) => {
+          return addElectionGroupRoleByIdentifier(
+            client,
+            electionGroupData.id,
+            role,
+            idType,
+            idValue
+          );
+        };
+
+        const removeAdmin = (role: IRoleGrant) => {
+          return removeElectionGroupRoleByGrant(client, role.grantId);
+        };
+
         return (
-          <Mutation
-            mutation={removeElectionGroupRoleByGrantMutation}
-            refetchQueries={refetchQueriesFunction}
-          >
-            {(removeAdmin, { data: removeData }) => (
-              <Mutation
-                mutation={addElectionGroupRoleByIdentifierMutation}
-                refetchQueries={refetchQueriesFunction}
-              >
-                {(addAdmin, { data: addData }) => {
-                  const addAction = (
-                    role: string,
-                    idType: PersonIdType,
-                    idValue: string
-                  ) => {
-                    addAdmin({
-                      variables: {
-                        electionGroupId: electionGroupData.id,
-                        role: role,
-                        idType: idType,
-                        idValue: idValue,
-                      },
-                    });
-                  };
-
-                  const removeAction = (role: IRoleGrant) => {
-                    removeAdmin({ variables: { grantId: role.grantId } });
-                  };
-
-                  return (
-                    <AdminRolesForm
-                      adminRoles={adminRoles}
-                      onAddRole={addAction}
-                      onRemoveRole={removeAction}
-                      onClose={props.submitAction}
-                    />
-                  );
-                }}
-              </Mutation>
-            )}
-          </Mutation>
+          <AdminRolesForm
+            adminRoles={adminRoles}
+            onAddRole={addAdmin}
+            onRemoveRole={removeAdmin}
+            onClose={props.submitAction}
+          />
         );
       }}
     </ApolloConsumer>

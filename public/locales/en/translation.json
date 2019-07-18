@@ -148,6 +148,7 @@
   },
   "backend": {
     "errors": {
+      "permissionDenied": "Permission denied.",
       "unknown": "An unknown error occurred."
     }
   },

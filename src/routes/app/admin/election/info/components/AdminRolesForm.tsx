@@ -17,8 +17,14 @@ import { PageSubSection } from 'components/page';
 import Text from 'components/text';
 import { Button, ButtonContainer } from 'components/button';
 import Spinner from 'components/animations/Spinner';
-import { IRoleGrant, PersonIdType } from 'interfaces';
+import {
+  IRoleGrant,
+  PersonIdType,
+  ElectionGroupRoleType,
+  IMutationResponse,
+} from 'interfaces';
 import { validateFeideId } from 'utils/validators';
+import { translateBackendError } from 'utils';
 import { getPersonIdTypeDisplayName } from 'utils/i18n';
 
 const styles = (theme: any) => ({
@@ -58,15 +64,19 @@ interface IProps extends WithTranslation {
   classes: Classes;
   adminRoles: IRoleGrant[];
   onClose: () => void;
-  onAddRole: (role: string, idType: PersonIdType, idValue: string) => void;
-  onRemoveRole: (role: IRoleGrant) => void;
+  onAddRole: (
+    role: ElectionGroupRoleType,
+    idType: PersonIdType,
+    idValue: string
+  ) => Promise<IMutationResponse | null>;
+  onRemoveRole: (role: IRoleGrant) => Promise<IMutationResponse | null>;
 }
 
 interface IState {
   roleToRemove: IRoleGrant | null;
   feedback: {
     text: string;
-    isBackendError: boolean;
+    isError: boolean;
   };
 }
 
@@ -75,7 +85,7 @@ class AdminRolesForm extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       roleToRemove: null,
-      feedback: { text: '', isBackendError: false },
+      feedback: { text: '', isError: false },
     };
   }
 
@@ -96,13 +106,11 @@ class AdminRolesForm extends React.Component<IProps, IState> {
     });
   };
 
-  removeAndClose = (): void => {
+  removeAndClose = async (): Promise<void> => {
     if (this.state.roleToRemove === null) {
       return;
     }
-
     this.props.onRemoveRole(this.state.roleToRemove);
-
     this.setRoleToRemove(null);
   };
 
@@ -110,7 +118,7 @@ class AdminRolesForm extends React.Component<IProps, IState> {
     this.setRoleToRemove(null);
   };
 
-  setFeedback = (feedback: { text: string; isBackendError: boolean }): void => {
+  setFeedback = (feedback: { text: string; isError: boolean }): void => {
     this.setState({
       feedback: feedback,
     });
@@ -125,29 +133,32 @@ class AdminRolesForm extends React.Component<IProps, IState> {
     let idType: PersonIdType;
     if (validateFeideId(idValue)) {
       idType = 'feide_id';
-    }
-    // else if (validateNin(idValue)) {
-    //   idType = 'nin';
-    // }
-    else {
+    } else {
       return;
     }
 
     const idTypeDisplayName = getPersonIdTypeDisplayName(idType, t);
 
     try {
-      await onAddRole('admin', 'feide_id', idValue);
-      const feedback = t('admin.roles.addedElectionAdminByIdentifier', {
-        idType: idTypeDisplayName,
-        idValue,
-      });
-      this.setFeedback({ text: feedback, isBackendError: false });
+      const result = await onAddRole('admin', 'feide_id', idValue);
+      if (result && result.success) {
+        const feedback = t('admin.roles.addedElectionAdminByIdentifier', {
+          idType: idTypeDisplayName,
+          idValue,
+        });
+        this.setFeedback({ text: feedback, isError: false });
+      } else {
+        const feedback = translateBackendError({
+          errorCode: (result && result.code) || null,
+          t,
+          codePrefix: 'admin.roles.backend',
+        });
+        this.setFeedback({ text: feedback, isError: true });
+      }
     } catch (error) {
       this.setFeedback({
-        text:
-          error.toString() +
-          ` (idType: ${idTypeDisplayName}, idValue: ${idValue})`,
-        isBackendError: true,
+        text: error.toString(),
+        isError: true,
       });
     }
   };
@@ -262,8 +273,7 @@ class AdminRolesForm extends React.Component<IProps, IState> {
                         className={classNames({
                           [classes.feedback]: true,
                           [classes.feedbackError]:
-                            feedback.isBackendError ||
-                            showValidationErrorFeedback,
+                            feedback.isError || showValidationErrorFeedback,
                         })}
                       >
                         {showValidationErrorFeedback

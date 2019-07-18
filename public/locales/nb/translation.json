@@ -148,6 +148,7 @@
   },
   "backend": {
     "errors": {
+      "permissionDenied": "Du har ikke tillatelse til å utføre denne handlingen.",
       "unknown": "En uventet feil har oppstått."
     }
   },
