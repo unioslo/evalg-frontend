@@ -347,7 +347,7 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
         ]}
       >
         <>
-          <InfoList maxWidth="100rem">
+          <InfoList maxWidth="80rem">
             <InfoListItem bulleted>
               <span
                 dangerouslySetInnerHTML={{
@@ -370,7 +370,6 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
           </InfoList>
 
           <ModalSteps
-            width="60rem"
             stepsContent={[
               step1DownloadKeyButton,
               step2UnderstandCheckbox,

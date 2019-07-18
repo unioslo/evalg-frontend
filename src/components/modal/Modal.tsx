@@ -1,7 +1,6 @@
 import React from 'react';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
-import classNames from 'classnames';
 import FocusTrap from 'focus-trap-react';
 
 import { ButtonContainer } from 'components/button';
@@ -11,18 +10,18 @@ const styles = (theme: any) => ({
   modal: {
     zIndex: 9001,
     backgroundColor: 'white',
-    //width: '90%',
     maxWidth: '1200px',
-    minWidth: (props: IProps) => (props.minWidth ? props.minWidth : 'inherit'),
+    minWidth: (props: IProps) => (props.minWidth ? props.minWidth : 'none'),
+    position: 'relative', // for close icon positioning
   },
-  h1: {
+  heading: {
     fontSize: '3.6rem',
     fontWeight: 'normal',
-    marginBottom: '2rem',
+    marginBottom: '3rem',
     color: theme.colors.greyishBrown,
   },
   content: {
-    padding: '1rem 4rem 4rem 4rem',
+    padding: '4rem',
   },
   buttons: {
     diplay: 'flex',
@@ -50,15 +49,12 @@ const styles = (theme: any) => ({
     alignItems: 'center',
   },
   closeIcon: {
-    width: '100%',
-    paddingTop: '2.2rem',
-    paddingRight: '2.2rem',
-    display: 'flex',
-    justifyContent: 'flex-end',
+    position: 'absolute',
+    top: '2rem',
+    right: '2rem',
+    width: '2rem',
+    height: '2rem',
     cursor: 'pointer',
-    '&.hidden': {
-      visibility: 'hidden',
-    },
   },
 });
 
@@ -79,16 +75,13 @@ const Modal = (props: IProps) => {
     <div className={classes.overlay}>
       <FocusTrap>
         <div className={classes.modal}>
-          <div
-            className={classNames({
-              [classes.closeIcon]: true,
-              hidden: props.hideTopCloseButton,
-            })}
-          >
-            {props.closeAction && <CloseIcon closeAction={props.closeAction} />}
-          </div>
+          {props.closeAction && !props.hideTopCloseButton && (
+            <div className={classes.closeIcon}>
+              <CloseIcon closeAction={props.closeAction} />
+            </div>
+          )}
           <div className={classes.content}>
-            <h1 className={classes.h1}>{props.header}</h1>
+            <h1 className={classes.heading}>{props.header}</h1>
             {props.children}
           </div>
           {!props.hideButtons && (

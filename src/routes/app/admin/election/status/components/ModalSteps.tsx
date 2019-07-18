@@ -5,14 +5,16 @@ import classNames from 'classnames';
 
 const styles = (theme: any) => ({
   steps: {
-    margin: '4rem auto',
-    width: (props: Props) => props.width,
+    margin: '6rem 2rem 4rem 2rem',
+    width: (props: Props) => (props.width ? props.width : 'auto'),
   },
 
   stepRow: {
     display: 'flex',
     alignItems: 'center',
-    marginBottom: '3.5rem',
+    '&:not(:last-child)': {
+      marginBottom: '3.5rem',
+    },
   },
 
   stepNumber: {
@@ -36,7 +38,7 @@ const styles = (theme: any) => ({
 interface Props {
   stepsContent: React.ReactNode[];
   stepsActiveStatus: boolean[];
-  width: string;
+  width?: string;
   classes: Classes;
 }
 

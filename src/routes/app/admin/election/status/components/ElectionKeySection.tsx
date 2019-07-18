@@ -162,19 +162,19 @@ class ElectionKeySection extends React.Component<IProps, IState> {
             hideTopCloseButton
             buttons={[
               <Button
-                text={<Trans>general.yes</Trans>}
-                action={this.confirmNewKey}
-                key="confirm-button"
-              />,
-              <Button
                 secondary
                 text={<Trans>general.no</Trans>}
                 action={this.cancelNewKey}
                 key="cancel-button"
               />,
+              <Button
+                text={<Trans>general.yes</Trans>}
+                action={this.confirmNewKey}
+                key="confirm-button"
+              />,
             ]}
           >
-            <div style={{ maxWidth: '100rem' }}>
+            <div style={{ maxWidth: '80rem' }}>
               <Text>
                 <Trans>admin.electionKey.confirmNewModalText</Trans>
               </Text>
