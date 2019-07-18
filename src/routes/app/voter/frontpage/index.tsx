@@ -8,10 +8,11 @@ import { Page, PageSection } from 'components/page';
 import Loading from 'components/loading';
 import { ElectionGroup, IVoter } from 'interfaces';
 import { ElectionGroupFields, ElectionFields } from 'fragments';
-import { getSignedInPersonIdQuery } from 'queries';
+import { getSignedInPersonId } from 'queries';
 import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
 
 import VoterElections from './components/VoterElections';
+import ErrorInline from 'components/errors/ErrorInline';
 
 const electionGroupsQuery = gql`
   ${ElectionGroupFields}
@@ -50,82 +51,89 @@ const votersForPersonQuery = gql`
 interface IProps extends WithTranslation {}
 
 class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
+  state = {
+    signedInPersonId: '',
+    couldNotFetchSignedInPersonIdError: false,
+  };
+
+  async componentDidMount() {
+    try {
+      const signedInPersonId = await getSignedInPersonId(this.props.client);
+      this.setState({ signedInPersonId });
+    } catch (e) {
+      this.setState({ couldNotFetchSignedInPersonIdError: true });
+    }
+  }
+
   render() {
     const { t } = this.props;
+
+    if (this.state.couldNotFetchSignedInPersonIdError) {
+      return (
+        <ErrorInline
+          errorMessage={t('voter.voterFrontPage.errors.couldNotFetchPersonId')}
+        />
+      );
+    }
+
     return (
       <Query query={electionGroupsQuery} fetchPolicy="network-only">
-        {electionGroupResult => {
-          if (electionGroupResult.loading || electionGroupResult.error) {
+        {({ data: electionGroupData, loading, error }) => {
+          if (loading || error) {
             return (
               <Loading>
-                <Trans>election.loading</Trans>
+                <Trans>voter.voterFrontPage.loadingElections</Trans>
+              </Loading>
+            );
+          } else if (this.state.signedInPersonId === '') {
+            return (
+              <Loading>
+                <Trans>voter.voterFrontPage.loadingUserData</Trans>
               </Loading>
             );
           }
+
           return (
-            <Query query={getSignedInPersonIdQuery}>
-              {signedInPersonResponse => {
-                if (
-                  signedInPersonResponse.loading ||
-                  signedInPersonResponse.error
-                ) {
+            <Query
+              query={votersForPersonQuery}
+              variables={{
+                id: this.state.signedInPersonId,
+              }}
+              fetchPolicy="network-only"
+            >
+              {({ data: votersForPersonData, loading, error }) => {
+                if (loading || error) {
                   return (
                     <Loading>
-                      <Trans>person.loading</Trans>
+                      <Trans>voter.voterFrontPage.loadingUserData</Trans>
                     </Loading>
                   );
                 }
+
+                const userVerifiedVoters = votersForPersonData.votersForPerson.filter(
+                  (voter: IVoter) => voter.verified
+                );
+                const userVerifiedInElectionGroupIds = userVerifiedVoters.map(
+                  (voter: IVoter) => voter.pollbook.election.electionGroup.id
+                );
+
                 return (
-                  <Query
-                    query={votersForPersonQuery}
-                    variables={{
-                      id: signedInPersonResponse.data.signedInPerson.personId,
-                    }}
-                    fetchPolicy="network-only"
-                  >
-                    {votersForPersonResponse => {
-                      if (
-                        votersForPersonResponse.loading ||
-                        votersForPersonResponse.error
-                      ) {
-                        return (
-                          <Loading>
-                            <Trans>voter.loading</Trans>
-                          </Loading>
-                        );
-                      }
-
-                      const canVoteIn = votersForPersonResponse.data.votersForPerson.filter(
-                        (voter: IVoter) => voter.verified === true
-                      );
-                      const electionIds = canVoteIn.map(
-                        (voter: IVoter) =>
-                          voter.pollbook.election.electionGroup.id
-                      );
-
-                      return (
-                        <Page header={t('general.welcome')}>
-                          <PageSection
-                            desc={t('general.frontPageDesc')}
-                            noBorder
-                          >
-                            <VoterElections
-                              canVoteElectionGroups={electionIds}
-                              electionGroups={electionGroupResult.data.electionGroups
-                                .map((eg: ElectionGroup) =>
-                                  electionGroupWithOrderedElections(eg, {
-                                    onlyActiveElections: true,
-                                  })
-                                )
-                                .filter(
-                                  (eg: ElectionGroup) => eg.elections.length > 0
-                                )}
-                            />
-                          </PageSection>
-                        </Page>
-                      );
-                    }}
-                  </Query>
+                  <Page header={t('general.welcome')}>
+                    <PageSection desc={t('general.frontPageDesc')} noBorder>
+                      <VoterElections
+                        votingRightsElectionGroups={userVerifiedInElectionGroupIds}
+                        electionGroups={electionGroupData.electionGroups
+                          .map((eg: ElectionGroup) =>
+                            electionGroupWithOrderedElections(eg, {
+                              onlyActiveElections: true,
+                            })
+                          )
+                          .filter(
+                            (eg: ElectionGroup) => eg.elections.length > 0
+                          )}
+                      />
+                    </PageSection>
+                  </Page>
                 );
               }}
             </Query>

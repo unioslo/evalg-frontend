@@ -252,7 +252,6 @@
     "hasGenderQuota": "Valget har kjønnskvotering",
     "linkToElection": "Lenke til mer informasjon om valget",
     "linkToElectionPlaceholder": "Nettside for valget",
-    "loading": "Laster valginformasjon…",
     "manageElections": "Administrer valg",
     "manageableElections": "Valg du kan administrere",
     "mandatePeriod": "Mandatperiode",
@@ -416,15 +415,28 @@
     "welcome": "Velkommen til eValg",
     "yes": "Ja"
   },
-  "person": {
-    "loading": "Laster brukerdata…"
+  "loginPage": {
+    "featureList1": "Stemme i elektroniske valg",
+    "featureList2": "Opprette og gjennomføre valg",
+    "featureList3": "Telle opp og se resultat av valg",
+    "header": "I eValg kan du",
+    "loginButton": "Logg inn i eValg",
+    "loginAsAdmin": "Logg inn som administrator",
+    "readMore": "Mer om eValg"
   },
   "prefElec": {
     "candPageDesc": "Her legger du til kandidater som stiller for de ulike velgergruppene.<0></0>\nValget må ha minst like mange kandidater per gruppe som angitt under <1>valginnstillinger</1>."
   },
   "voter": {
+    "voterFrontPage": {
+      "loadingElections": "Laster inn valg...",
+      "loadingUserData": "Laster inn brukerdata...",
+      "errors": {
+        "couldNotFetchPersonId": "Kunne ikke hente person-ID for innlogget bruker."
+      }
+    },
     "error": "En feil har oppstått",
-    "errorInfo": "Vennligst kontakt ansvarlig for tjenesten",
+    "errorInfo": "Noe gikk galt under innsending av stemme. Stemmen er <strong><em>ikke</em></strong> registrert. Vennligst kontakt ansvarlig for tjenesten.",
     "canVoteBlank": "Du kan også stemme blankt.",
     "castVote": "Avgi stemme",
     "chooseCandidates": "Velg kandidater",
@@ -432,7 +444,6 @@
     "crossedCandidates": "Kandidater strøket fra listen",
     "cumulate": "Ekstra stemme",
     "editVote": "Rediger stemme",
-    "loading": "Laster informasjon om stemmegiver…",
     "majorityVoteHelpHeader": "Velg en kandidat",
     "majorityVoteHelpDesc": "Velg kandidaten du vil stemme på.",
     "majorityVoteHelpYouMaySelectOnlyOne": "Dette er et flertallsvalg, og du kan kun velge en kandidat.",

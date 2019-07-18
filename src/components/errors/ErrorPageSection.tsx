@@ -7,7 +7,7 @@ import { PageSection } from 'components/page';
 
 const styles = (theme: any) => ({
   body: {
-    color: 'red',
+    color: theme.errorTextColor,
   },
   generalInfo: {
     marginBottom: '2rem',

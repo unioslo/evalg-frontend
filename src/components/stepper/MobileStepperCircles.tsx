@@ -34,17 +34,17 @@ const styles = (theme: any) => ({
     fontSize: '1.5rem',
   },
   sectionNumberActive: {
-    fill: theme.stepperSectionTextColorActive,
+    fill: theme.stepperItemNumberColorActive,
   },
   sectionNumberInactive: {
-    fill: theme.stepperSectionTextColorInactive,
+    fill: theme.stepperItemNumberColorInactive,
   },
   sectionCircleActive: {
-    fill: theme.stepperSectionCircleColorActive,
+    fill: theme.stepperItemCircleColorActive,
   },
   sectionCircleInactive: {
-    fill: theme.stepperSectionCircleColorInactive,
-    stroke: theme.stepperSectionTextColorInactive,
+    fill: theme.stepperItemCircleColorInactive,
+    stroke: theme.stepperItemNumberColorInactive,
     strokeWidth: 1,
     r: 24.5,
   },

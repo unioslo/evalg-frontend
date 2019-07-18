@@ -374,9 +374,11 @@ class VoterGroupSelectPage extends React.Component<
 
     if (this.state.fetchingVoters) {
       return (
-        <Loading>
-          <Trans>voter.loading</Trans>
-        </Loading>
+        <PageSection noBorder>
+          <Loading>
+            <Trans>general.loading</Trans>
+          </Loading>
+        </PageSection>
       );
     }
 

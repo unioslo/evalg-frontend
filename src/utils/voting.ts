@@ -41,7 +41,12 @@ export const submitVote = async (
   voter: IVoter | null
 ) => {
   if (!voter) {
-    const personId = await getSignedInPersonId(client);
+    let personId;
+    try {
+      personId = await getSignedInPersonId(client);
+    } catch (error) {
+      throw new Error('Could not get ID of signed in user.');
+    }
 
     const res = await client.mutate({
       mutation: addVoterMutation,

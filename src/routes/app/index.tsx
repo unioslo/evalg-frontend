@@ -3,13 +3,10 @@ import injectSheet from 'react-jss';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 import { Classes } from 'jss';
-import { Route } from 'react-router-dom';
+import { Route, withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { authEnabled, oidcLogoutUrl } from 'appConfig';
+import { authEnabled } from 'appConfig';
 import { UserContext } from 'providers/UserContext';
-import Spinner from 'components/animations/Spinner';
-import Link from 'components/link';
-import { H1 } from 'components/text';
 
 import Content from './components/Content';
 import Footer from './components/Footer';
@@ -17,6 +14,8 @@ import Header from './components/Header';
 import AdminRoute from './admin';
 import VoterRoute from './voter';
 import VoterFrontPage from './voter/frontpage';
+import LoginPage from './components/LoginPage';
+import Logout from './components/Logout';
 
 const styles = {
   ie11ExtraFlexContainer: {
@@ -39,42 +38,13 @@ const styles = {
   },
 };
 
-const FrontPage: React.FunctionComponent<{}> = () => {
-  const { t } = useTranslation();
-
-  return (
-    <div style={{ fontSize: '3rem' }}>
-      <H1>{t('general.welcome')}</H1>
-      <Link to="/login">{t('general.login')}</Link>
-    </div>
-  );
-};
-
-interface IStyleProp {
-  classes: Classes;
-}
-
-const Logout: React.FunctionComponent<IStyleProp> = (props: IStyleProp) => {
-  const { t } = useTranslation();
-  window.location.href = oidcLogoutUrl;
-  return (
-    <div className={props.classes.logout}>
-      <div className={props.classes.spinBox}>
-        <Spinner darkStyle={true} />
-      </div>
-      {t('general.logoutInProgress')}
-    </div>
-  );
-};
-const styledLogout = injectSheet(styles)(Logout);
-
 interface IAppProps {
   classes: Classes;
   authManager: any;
 }
 
-const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
-  const { authManager, classes } = props;
+const App: React.FunctionComponent<IAppProps & RouteComponentProps> = props => {
+  const { authManager, location, history, classes } = props;
 
   const ProtectedComponent = (props: any) => {
     if (!props.userContext) {
@@ -91,55 +61,68 @@ const App: React.FunctionComponent<IAppProps> = (props: IAppProps) => {
     <div className={classes.ie11ExtraFlexContainer}>
       <div className={classes.app}>
         <Helmet htmlAttributes={{ lang: i18n.language }} />
-        <Header />
-        <Content>
-          <UserContext.Consumer>
-            {(context: any) => {
+        <Header history={history} />
+        <UserContext.Consumer>
+          {(context: any) => {
+            if (!context.user && authEnabled && location.pathname === '/') {
               return (
-                <>
-                  {context.user || !authEnabled ? (
-                    <Route exact={true} path="/" component={VoterFrontPage} />
-                  ) : (
-                    <Route exact={true} path="/" component={FrontPage} />
-                  )}
-
-                  <Route
-                    path="/vote/:electionGroupId"
-                    render={(props: any) => (
-                      <ProtectedComponent
-                        {...props}
-                        component={VoterRoute}
-                        userContext={context.user}
-                      />
-                    )}
-                  />
-                  <Route
-                    path="/admin"
-                    render={(props: any) => (
-                      <ProtectedComponent
-                        {...props}
-                        component={AdminRoute}
-                        userContext={context.user}
-                      />
-                    )}
-                  />
-                </>
+                <Content isLoginPage>
+                  <LoginPage />
+                </Content>
               );
-            }}
-          </UserContext.Consumer>
+            }
 
-          <Route exact={true} path="/logout" component={styledLogout} />
-          <Route
-            exact={true}
-            path="/login"
-            component={authManager(<React.Fragment />)}
-          />
-        </Content>
+            return (
+              <Content>
+                <Route exact path="/" component={VoterFrontPage} />
+
+                <Route
+                  path="/vote/:electionGroupId"
+                  render={(props: any) => (
+                    <ProtectedComponent
+                      {...props}
+                      component={VoterRoute}
+                      userContext={context.user}
+                    />
+                  )}
+                />
+
+                <Route
+                  path="/admin"
+                  render={(props: any) => (
+                    <ProtectedComponent
+                      {...props}
+                      component={AdminRoute}
+                      userContext={context.user}
+                    />
+                  )}
+                />
+
+                <Route
+                  exact
+                  path="/logout"
+                  render={() => (
+                    <Logout
+                      context={context}
+                    />
+                  )}
+                />
+
+                <Route
+                  exact
+                  path="/login"
+                  component={authManager(<React.Fragment />)}
+                />
+              </Content>
+            );
+          }}
+        </UserContext.Consumer>
+
         <Footer />
       </div>
     </div>
   );
 };
 
-const styledApp = injectSheet(styles)(App);
+const styledApp = injectSheet(styles)(withRouter(App));
 export default styledApp;

@@ -4,7 +4,7 @@ import { Classes } from 'jss';
 import { useTranslation } from 'react-i18next';
 
 import Link from 'components/link';
-import { PageSection } from 'components/page';
+import { Page, PageSection } from 'components/page';
 
 const styles = (theme: any) => ({
   receiptTextBox: {
@@ -23,19 +23,18 @@ const Error: React.FunctionComponent<IProps> = (props: IProps) => {
   const { classes } = props;
 
   return (
-    <PageSection noBorder>
-      <div className={classes.receiptTextBox}>
-        <h1>{t('voter.error')}</h1>
-        <br />
-        <br />
-        {t('voter.errorInfo')}
-        <br />
-        <br />
-        <Link to={'/'}>{t('voter.receiptGoToFrontpage')}</Link>{' '}
-        {t('voter.receiptOr')}{' '}
-        <Link to={'/logout'}>{t('voter.receiptLogout')}</Link>.
-      </div>
-    </PageSection>
+    <Page header={t('voter.error')}>
+      <PageSection noBorder>
+        <div className={classes.receiptTextBox}>
+          <div dangerouslySetInnerHTML={{ __html: t('voter.errorInfo') }} />
+          <br />
+          <br />
+          <Link to={'/'}>{t('voter.receiptGoToFrontpage')}</Link>{' '}
+          {t('voter.receiptOr')}{' '}
+          <Link to={'/logout'}>{t('voter.receiptLogout')}</Link>.
+        </div>
+      </PageSection>
+    </Page>
   );
 };
 

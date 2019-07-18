@@ -1,14 +1,14 @@
 import React from 'react';
 import { User, UserManager } from 'oidc-client';
 
-interface IUserContext {
-  signOut: () => void;
+export interface IUserContext {
+  signOut: () => Promise<any>;
   user: User | null;
   userManager: UserManager | null;
 }
 
 const DEFAULT: IUserContext = {
-  signOut: () => 0,
+  signOut: () => Promise.resolve(0),
   user: null,
   userManager: null,
 };
@@ -18,7 +18,7 @@ const UserContext = React.createContext<IUserContext>(DEFAULT);
 interface IProviderState {
   isFetchingUser: boolean;
   context: {
-    signOut: () => void;
+    signOut: () => Promise<any>;
     user: User | null;
     userManager: UserManager;
   };
@@ -66,8 +66,8 @@ class UserContextProvider extends React.Component<IProps, IProviderState> {
     }
   };
 
-  public signOut = () => {
-    this.state.context.userManager.removeUser();
+  public signOut = async () => {
+    await this.state.context.userManager.removeUser();
     this.getUser();
   };
 
