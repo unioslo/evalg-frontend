@@ -226,15 +226,11 @@ const validate = (lang: string, t: i18n.TFunction) => (values: object) => {
     return {};
   } else if (!validateNin(idValue) && !validateFeideId(idValue)) {
     if (idValue.match(/^\d+$/) && !idValue.match(/^\d{11}$/)) {
-      errors['idValue'] = t(
-        'formErrors.censusAddVoter.birthNumberIncorrectNumberOfDigits'
-      );
+      errors['idValue'] = t('formErrors.birthNumberIncorrectNumberOfDigits');
     } else if (idValue.match(/^\d+/)) {
-      errors['idValue'] = t(
-        'formErrors.censusAddVoter.feideIdCannotStartWithNumber'
-      );
+      errors['idValue'] = t('formErrors.feideIdCannotStartWithNumber');
     } else {
-      errors['idValue'] = t('formErrors.censusAddVoter.invalidFeideId');
+      errors['idValue'] = t('formErrors.invalidFeideId');
     }
   }
 

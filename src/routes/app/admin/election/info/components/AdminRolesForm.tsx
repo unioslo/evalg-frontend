@@ -167,18 +167,8 @@ class AdminRolesForm extends React.Component<IProps, IState> {
 
     if (!idValue) {
       return {};
-    } else if (!validateNin(idValue) && !validateFeideId(idValue)) {
-      if (idValue.match(/^\d+$/) && !idValue.match(/^\d{11}$/)) {
-        errors['idValue'] = t(
-          'formErrors.censusAddVoter.birthNumberIncorrectNumberOfDigits'
-        );
-      } else if (idValue.match(/^\d+/)) {
-        errors['idValue'] = t(
-          'formErrors.censusAddVoter.feideIdCannotStartWithNumber'
-        );
-      } else {
-        errors['idValue'] = t('formErrors.censusAddVoter.invalidFeideId');
-      }
+    } else if (!validateFeideId(idValue)) {
+      errors['idValue'] = t('formErrors.invalidFeideId');
     }
 
     if (errors) {

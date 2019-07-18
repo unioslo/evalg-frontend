@@ -351,11 +351,9 @@
     "invalidDates": "Start time must be before closing time.",
     "invalidEmail": "Invalid email address.",
     "invalidUrl": "Invalid url.",
-    "censusAddVoter": {
-      "birthNumberIncorrectNumberOfDigits": "Birth number must be 11 digits",
-      "feideIdCannotStartWithNumber": "Feide-ID cannot start with a digit",
-      "invalidFeideId": "Invalid Feide-ID"
-    }
+    "birthNumberIncorrectNumberOfDigits": "Birth number must be 11 digits",
+    "feideIdCannotStartWithNumber": "Feide ID cannot start with a digit",
+    "invalidFeideId": "Invalid Feide ID"
   },
   "idTypes": {
     "uid": "Username",

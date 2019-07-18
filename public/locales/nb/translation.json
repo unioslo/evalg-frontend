@@ -349,11 +349,9 @@
     "invalidDates": "Starttid må være før sluttid.",
     "invalidEmail": "Ugyldig epostadresse.",
     "invalidUrl": "Ugyldig lenke.",
-    "censusAddVoter": {
-      "birthNumberIncorrectNumberOfDigits": "Fødselsnummer må være 11 sifre",
-      "feideIdCannotStartWithNumber": "Feide-ID kan ikke starte med et tall",
-      "invalidFeideId": "Ugyldig Feide-ID"
-    }
+    "birthNumberIncorrectNumberOfDigits": "Fødselsnummer må være 11 sifre",
+    "feideIdCannotStartWithNumber": "Feide-ID kan ikke starte med et tall",
+    "invalidFeideId": "Ugyldig Feide-ID"
   },
   "idTypes": {
     "uid": "Brukernavn",
