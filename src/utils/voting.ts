@@ -45,7 +45,7 @@ export const submitVote = async (
     try {
       personId = await getSignedInPersonId(client);
     } catch (error) {
-      throw new Error('Coul\'d not ID of signed in user.');
+      throw new Error('Could not get ID of signed in user.');
     }
 
     const res = await client.mutate({
