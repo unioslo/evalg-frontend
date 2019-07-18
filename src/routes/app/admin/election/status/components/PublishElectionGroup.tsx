@@ -81,6 +81,7 @@ class PublishElectionGroup extends React.Component<IProps, IState> {
               renderPublishButton(this.handlePublish.bind(this)),
             ]}
             closeAction={this.closePublishModal.bind(this)}
+            hideTopCloseButton
           >
             <Text>
               <Trans>election.publishElectionModalInfo</Trans>
@@ -122,6 +123,7 @@ class PublishElectionGroup extends React.Component<IProps, IState> {
               renderUnpublishButton(this.handleUnpublish.bind(this)),
             ]}
             closeAction={this.closeUnpublishModal.bind(this)}
+            hideTopCloseButton
           >
             <Text>
               <Trans>election.unpublishElectionModalInfo</Trans>

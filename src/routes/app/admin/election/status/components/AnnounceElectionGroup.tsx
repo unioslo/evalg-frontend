@@ -88,6 +88,7 @@ class AnnounceElectionGroup extends React.Component<IProps, IState> {
               renderAnnounceButton(this.handleAnnounce.bind(this)),
             ]}
             closeAction={this.closeConfirmAnnounceDialog.bind(this)}
+            hideTopCloseButton
           >
             <p>
               <Text>
@@ -143,6 +144,7 @@ class AnnounceElectionGroup extends React.Component<IProps, IState> {
               renderUnannounceButton(this.handleUnannounce.bind(this)),
             ]}
             closeAction={this.closeConfirmUnannounceDialog.bind(this)}
+            hideTopCloseButton
           >
             <p>
               <Text>
