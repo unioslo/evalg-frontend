@@ -3,16 +3,18 @@ import React from 'react';
 import { Mutation } from 'react-apollo';
 import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 
+import { ElectionGroup } from 'interfaces';
+import { showGenerateVotesTestingComponent } from 'appConfig';
 import Text from 'components/text';
 import { PageSection, PageSubSection } from 'components/page';
 import { InfoList, InfoListItem } from 'components/infolist';
 import ElectionStatus from 'components/electionStatus/ElectionStatus';
-import { ElectionGroup } from 'interfaces';
 
 import AnnounceElectionGroup from './AnnounceElectionGroup';
 import PublishElectionGroup from './PublishElectionGroup';
 import LatestElectionGroupCountResult from './LatestElectionGroupCountResult';
 import TurnoutSubsection from './TurnoutSubsection';
+import GenerateVotesForTesting from './GenerateVotesForTesting';
 
 const PublishElectionGroupMutation = gql`
   mutation PublishElectionGroup($id: UUID!) {
@@ -225,6 +227,12 @@ class ElectionStatusSection extends React.Component<IProps> {
             }
           />
         )}
+
+        {showGenerateVotesTestingComponent &&
+          (electionGroup.status === 'ongoing' ||
+            electionGroup.status === 'multipleStatuses') && (
+            <GenerateVotesForTesting electionGroup={electionGroup} />
+          )}
 
         {electionGroup.status === 'closed' && latestElectionGroupCount && (
           <LatestElectionGroupCountResult
