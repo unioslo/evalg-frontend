@@ -236,12 +236,12 @@ class VoterGroupSelectPage extends React.Component<
     if (electionGroupType === 'multiple_elections') {
       EGPollbooks = activeElections.map(election => election.pollbooks[0]);
       voteElectionIndex = this.state.selectedPollBookIndex;
-      voteElection = activeElections[voteElectionIndex];
     } else {
       EGPollbooks = activeElections[0].pollbooks;
       voteElectionIndex = 0;
-      voteElection = activeElections[voteElectionIndex];
     }
+
+    voteElection = activeElections[voteElectionIndex];
 
     if (voteElection.status !== 'ongoing') {
       electionIsOngoing = false;
