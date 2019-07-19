@@ -20,20 +20,33 @@ const StatusPage: React.FunctionComponent<IProps> = ({
 }) => {
   const scrollToStatusRef = React.useRef<HTMLDivElement>(null);
 
+  const showElectionKeySectionAtBottom =
+    electionGroup.status == 'ongoing' ||
+    electionGroup.status == 'closed' ||
+    electionGroup.status == 'multipleStatuses';
+
   return (
     <>
       <Page header={<Trans>election.electionStatus</Trans>}>
         <div ref={scrollToStatusRef} />
         <ElectionStatusSection electionGroup={electionGroup} />
-        <ElectionKeySection
-          electionGroup={electionGroup}
-          refetchElectionGroupFunction={refetchElectionGroupFunction}
-        />
+        {!showElectionKeySectionAtBottom && (
+          <ElectionKeySection
+            electionGroup={electionGroup}
+            refetchElectionGroupFunction={refetchElectionGroupFunction}
+          />
+        )}
         <VotesSection electionGroup={electionGroup} />
         <CountingSection
           electionGroup={electionGroup}
           scrollToStatusRef={scrollToStatusRef}
         />
+        {showElectionKeySectionAtBottom && (
+          <ElectionKeySection
+            electionGroup={electionGroup}
+            refetchElectionGroupFunction={refetchElectionGroupFunction}
+          />
+        )}
       </Page>
     </>
   );
