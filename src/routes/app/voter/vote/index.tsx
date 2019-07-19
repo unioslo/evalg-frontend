@@ -131,14 +131,14 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
 
   handleProceedFromSelectVoterGroup = (
     activeElections: Election[],
-    selectedElectionIndex: number,
+    voteElectionIndex: number,
     selectedPollBookId: string,
     voter: IVoter | null,
     notInPollBookJustification: string
   ) => {
     this.setState(
       {
-        voteElection: activeElections[selectedElectionIndex],
+        voteElection: activeElections[voteElectionIndex],
         selectedPollBookId,
         voter,
         notInPollBookJustification,
@@ -238,14 +238,14 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
                     electionGroupType={electionGroup.type}
                     activeElections={activeElections}
                     onProceed={(
-                      selectedElectionIndex,
+                      voteElectionIndex,
                       selectedPollBookID,
                       voter,
                       notInPollBookJustification
                     ) =>
                       this.handleProceedFromSelectVoterGroup(
                         activeElections,
-                        selectedElectionIndex,
+                        voteElectionIndex,
                         selectedPollBookID,
                         voter,
                         notInPollBookJustification

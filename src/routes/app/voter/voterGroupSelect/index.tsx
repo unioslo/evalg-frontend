@@ -229,30 +229,29 @@ class VoterGroupSelectPage extends React.Component<
     const { electionGroupType, activeElections } = this.props;
 
     let EGPollbooks: IPollBook[];
-    let electionForSelectedPollbook: Election;
-    let electionForSelectedPollbookIndex: number;
-    let electionForSelectedPollbookIsOngoing = true;
+    let voteElection: Election;
+    let voteElectionIndex: number;
+    let electionIsOngoing = true;
 
     if (electionGroupType === 'multiple_elections') {
       EGPollbooks = activeElections.map(election => election.pollbooks[0]);
-
-      electionForSelectedPollbookIndex = this.state.selectedPollBookIndex;
-      electionForSelectedPollbook =
-        activeElections[electionForSelectedPollbookIndex];
-
-      if (electionForSelectedPollbook.status !== 'ongoing') {
-        electionForSelectedPollbookIsOngoing = false;
-      }
+      voteElectionIndex = this.state.selectedPollBookIndex;
     } else {
       EGPollbooks = activeElections[0].pollbooks;
-      electionForSelectedPollbook = activeElections[0];
-      electionForSelectedPollbookIndex = 0;
+      voteElectionIndex = 0;
     }
+
+    voteElection = activeElections[voteElectionIndex];
+
+    if (voteElection.status !== 'ongoing') {
+      electionIsOngoing = false;
+    }
+
     return {
-      EGPollbooks: EGPollbooks,
-      electionForSelectedPollbook,
-      electionForSelectedPollbookIndex,
-      electionForSelectedPollbookIsOngoing,
+      EGPollbooks,
+      voteElection,
+      voteElectionIndex,
+      electionIsOngoing,
     };
   }
 
@@ -263,9 +262,9 @@ class VoterGroupSelectPage extends React.Component<
 
     const {
       EGPollbooks,
-      electionForSelectedPollbook,
-      electionForSelectedPollbookIndex,
-      electionForSelectedPollbookIsOngoing,
+      voteElection,
+      voteElectionIndex,
+      electionIsOngoing,
     } = this.getCommonVars();
 
     const dropdown = (
@@ -290,7 +289,7 @@ class VoterGroupSelectPage extends React.Component<
     let additionalInformation: React.ReactNode = null;
     let extraElements: React.ReactNode = null;
 
-    if (electionForSelectedPollbookIsOngoing) {
+    if (electionIsOngoing) {
       if (this.hasRightToVote(this.state.selectedPollBookIndex, EGPollbooks)) {
         subheading = (
           <Trans>voterGroupSelect.registeredInSelectedGroupHeading</Trans>
@@ -323,14 +322,14 @@ class VoterGroupSelectPage extends React.Component<
         );
       }
     } else {
-      if (electionForSelectedPollbook.status === 'published') {
+      if (voteElection.status === 'published') {
         subheading = <Trans>voterGroupSelect.electionNotYetOpen</Trans>;
         beforeDropDownText = <Trans>voterGroupSelect.theElectionFor</Trans>;
         afterDropDownText = (
           <>
             <Trans>voterGroupSelect.opens</Trans>{' '}
-            <Date dateTime={electionForSelectedPollbook.start} longDate />{' '}
-            <Time dateTime={electionForSelectedPollbook.start} />.
+            <Date dateTime={voteElection.start} longDate />{' '}
+            <Time dateTime={voteElection.start} />.
           </>
         );
         additionalInformation = (
@@ -340,21 +339,21 @@ class VoterGroupSelectPage extends React.Component<
               lang
             ].toLowerCase()}{' '}
             <Trans>voterGroupSelect.opens</Trans>{' '}
-            <Date dateTime={electionForSelectedPollbook.start} longDate />{' '}
-            <Time dateTime={electionForSelectedPollbook.start} />{' '}
+            <Date dateTime={voteElection.start} longDate />{' '}
+            <Time dateTime={voteElection.start} />{' '}
             <Trans>voterGroupSelect.andCloses</Trans>{' '}
-            <Date dateTime={electionForSelectedPollbook.end} longDate />{' '}
-            <Time dateTime={electionForSelectedPollbook.end} />.
+            <Date dateTime={voteElection.end} longDate />{' '}
+            <Time dateTime={voteElection.end} />.
           </>
         );
-      } else if (electionForSelectedPollbook.status === 'closed') {
+      } else if (voteElection.status === 'closed') {
         subheading = <Trans>voterGroupSelect.electionClosed</Trans>;
         beforeDropDownText = <Trans>voterGroupSelect.theElectionFor</Trans>;
         afterDropDownText = (
           <>
             <Trans>voterGroupSelect.wasClosed</Trans>{' '}
-            <Date dateTime={electionForSelectedPollbook.end} longDate />{' '}
-            <Time dateTime={electionForSelectedPollbook.end} />.
+            <Date dateTime={voteElection.end} longDate />{' '}
+            <Time dateTime={voteElection.end} />.
           </>
         );
       } else {
@@ -386,21 +385,18 @@ class VoterGroupSelectPage extends React.Component<
       <PageSection noBorder={true}>
         <div className={classes.electionGroupInfoSection}>
           <div className={classes.mandatePeriodTextDesktop}>
-            <MandatePeriodText
-              election={electionForSelectedPollbook}
-              longDate
-            />
+            <MandatePeriodText election={voteElection} longDate />
           </div>
 
           <div className={classes.mandatePeriodTextMobile}>
-            <MandatePeriodText election={electionForSelectedPollbook} />
+            <MandatePeriodText election={voteElection} />
           </div>
 
-          {electionForSelectedPollbook.informationUrl && (
+          {voteElection.informationUrl && (
             <p>
               <Trans>voterGroupSelect.moreAboutTheElection</Trans>:{' '}
-              <Link to={electionForSelectedPollbook.informationUrl} external>
-                {electionForSelectedPollbook.informationUrl}
+              <Link to={voteElection.informationUrl} external>
+                {voteElection.informationUrl}
               </Link>
             </p>
           )}
@@ -443,13 +439,13 @@ class VoterGroupSelectPage extends React.Component<
               );
 
               this.props.onProceed(
-                electionForSelectedPollbookIndex,
+                voteElectionIndex,
                 selectedPollbookId,
                 maybeVoterForSelectedPollbook,
                 notInPollBookJustification
               );
             }}
-            disabled={!electionForSelectedPollbookIsOngoing}
+            disabled={!electionIsOngoing}
           />
         </ButtonContainer>
         {this.state.redirectBack && <Redirect push to="/" />}
