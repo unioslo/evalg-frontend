@@ -84,81 +84,87 @@ interface IProps {
 
 // tslint:disable:jsx-no-lambda
 const AdminElection: React.SFC<IProps> = (props: IProps) => (
-  <Query
-    query={electionGroupQuery}
-    variables={{ id: props.match.params.groupId }}
-    fetchPolicy="network-only"
-  >
-    {({ data, loading, error, refetch }) => {
-      if (loading) {
-        return <Loading />;
-      }
-      if (error) {
-        return <p>Error!</p>;
-      }
+  <>
+    <AdminStepper
+      path={props.location.pathname}
+      groupId={props.match.params.groupId}
+    />
+    <Query
+      query={electionGroupQuery}
+      variables={{ id: props.match.params.groupId }}
+      fetchPolicy="network-only"
+    >
+      {({ data, loading, error, refetch }) => {
+        if (loading) {
+          return (
+            <div style={{ marginTop: '5rem' }}>
+              <Loading />
+            </div>
+          );
+        }
+        if (error) {
+          return <p>Error!</p>;
+        }
 
-      const egWithOrderedElections = electionGroupWithOrderedElections(
-        data.electionGroup
-      );
+        const egWithOrderedElections = electionGroupWithOrderedElections(
+          data.electionGroup
+        );
 
-      // const lang = props.i18n.language;
-      return (
-        <>
-          <AdminStepper
-            path={props.location.pathname}
-            groupId={props.match.params.groupId}
-          />
-          <Route
-            exact={true}
-            path="/admin/elections/:groupId/info"
-            render={routeProps => (
-              <InfoPage
-                electionGroupData={egWithOrderedElections}
-                history={routeProps.history}
-              />
-            )}
-          />
-          <Route
-            path="/admin/elections/:groupId/candidates"
-            render={routeProps => (
-              <CandidatesPage
-                electionGroup={egWithOrderedElections}
-                {...routeProps}
-              />
-            )}
-          />
-          <Route
-            path="/admin/elections/:groupId/pollbooks"
-            render={routeProps => (
-              <PollbooksPage
-                groupId={props.match.params.groupId}
-                {...routeProps}
-              />
-            )}
-          />
-          <Route
-            path="/admin/elections/:groupId/status"
-            render={routeProps => (
-              <StatusPage
-                electionGroup={egWithOrderedElections}
-                refetchElectionGroupFunction={refetch}
-                {...routeProps}
-              />
-            )}
-          />
-          <Route
-            path="/admin/elections/:groupId/votingreport"
-            render={routeProps => (
-              <VotingReport
-                groupId={props.match.params.groupId}
-                {...routeProps}
-              />
-            )}
-          />
-        </>
-      );
-    }}
-  </Query>
+        // const lang = props.i18n.language;
+        return (
+          <>
+            <Route
+              exact={true}
+              path="/admin/elections/:groupId/info"
+              render={routeProps => (
+                <InfoPage
+                  electionGroupData={egWithOrderedElections}
+                  history={routeProps.history}
+                />
+              )}
+            />
+            <Route
+              path="/admin/elections/:groupId/candidates"
+              render={routeProps => (
+                <CandidatesPage
+                  electionGroup={egWithOrderedElections}
+                  {...routeProps}
+                />
+              )}
+            />
+            <Route
+              path="/admin/elections/:groupId/pollbooks"
+              render={routeProps => (
+                <PollbooksPage
+                  groupId={props.match.params.groupId}
+                  {...routeProps}
+                />
+              )}
+            />
+            <Route
+              path="/admin/elections/:groupId/status"
+              render={routeProps => (
+                <StatusPage
+                  electionGroup={egWithOrderedElections}
+                  refetchElectionGroupFunction={refetch}
+                  {...routeProps}
+                />
+              )}
+            />
+            <Route
+              path="/admin/elections/:groupId/votingreport"
+              render={routeProps => (
+                <VotingReport
+                  groupId={props.match.params.groupId}
+                  {...routeProps}
+                />
+              )}
+            />
+          </>
+        );
+      }}
+    </Query>
+  </>
 );
 
 export default AdminElection;
