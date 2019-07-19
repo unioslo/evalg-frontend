@@ -43,7 +43,6 @@ const CountingSection: React.FunctionComponent<Props> = ({
   const handleCloseModalAndSeeResults = () => {
     setShowModal(false);
     if (scrollToStatusRef.current) {
-      console.log(scrollToStatusRef);
       setTimeout(
         () =>
           scrollToStatusRef.current &&
