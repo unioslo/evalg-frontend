@@ -108,7 +108,7 @@ pipeline {
     post {
         cleanup {
             sh('rm -vrf build')
-            sh("docker rmi \$(docker images --filter 'reference=${IMAGE_TAG}' -q)")
+            sh("docker rmi -f \$(docker images --filter 'reference=${IMAGE_TAG}' -q)")
         }
     }
 }
