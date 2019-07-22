@@ -52,7 +52,7 @@ class UserContextProvider extends React.Component<IProps, IProviderState> {
       .catch(() => this.setState({ isFetchingUser: false }));
   };
 
-  public storeUser = (user: User) => {
+  public storeUser = (user: User | null) => {
     if (user) {
       this.setState(({ context }) => ({
         context: { ...context, user },
