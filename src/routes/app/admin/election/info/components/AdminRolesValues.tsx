@@ -12,18 +12,20 @@ interface IProps {
 class AdminRolesValues extends React.Component<IProps> {
   render() {
     const { roles } = this.props;
-    const adminRoles = roles.filter(role => role.name === 'election-admin');
+    const adminRoles = roles.filter(role => role.name === 'admin');
     const adminRoleNames = adminRoles.map(role => {
-      if (role.principal.principalType === 'person-principal') {
+      if (role.principal.__typename === 'PersonPrincipal') {
         return role.principal.person.displayName;
-      } else if (role.principal.principalType === 'group-principal') {
+      } else if (role.principal.__typename === 'PersonIdentifierPrincipal') {
+        return role.principal.idValue;
+      } else if (role.principal.__typename === 'GroupPrincipal') {
         return role.principal.group.name;
       } else {
         return null;
       }
     });
     return (
-      <PageSubSection header={<Trans>election.electionAdmins</Trans>}>
+      <PageSubSection header={<Trans>admin.roles.electionAdmins</Trans>}>
         <Text>{adminRoleNames.join(', ')}</Text>
       </PageSubSection>
     );

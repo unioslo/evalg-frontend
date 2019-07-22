@@ -16,7 +16,7 @@ import {
   TableCell,
 } from 'components/table';
 import DropdownArrowIcon from 'components/icons/DropdownArrowIcon';
-import { getVoterIdTypeDisplayName } from 'utils/i18n';
+import { getPersonIdTypeDisplayName } from 'utils/i18n';
 import Button from 'components/button';
 import Spinner from 'components/animations/Spinner';
 import ActionText from 'components/actiontext';
@@ -324,7 +324,7 @@ const VoterDetails: React.FunctionComponent<VoterDetailsProps> = ({
           </strong>
         </p>
         <p>
-          {getVoterIdTypeDisplayName(voter.idType, t)}: {voter.idValue}
+          {getPersonIdTypeDisplayName(voter.idType, t)}: {voter.idValue}
         </p>
       </div>
     </TableCell>

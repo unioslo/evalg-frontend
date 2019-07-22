@@ -54,9 +54,11 @@ export interface IPerson {
   identifiers: IPersonIdentifier[];
 }
 
+export type PersonIdType = 'feide_id' | 'uid' | 'nin';
+
 export interface IPersonIdentifier {
   personId: string;
-  idType: string;
+  idType: PersonIdType;
   idValue: string;
   person: IPerson;
 }
@@ -76,9 +78,15 @@ export interface IGroupSearchResult {
   name: string;
 }
 
+export interface IRoleGrant {
+  grantId: string;
+  name: string;
+  principal: Principal;
+}
+
 export interface IVoter {
   id: string;
-  idType: string;
+  idType: PersonIdType;
   idValue: string;
   pollbookId: string;
   pollbook: IPollBook;
@@ -202,16 +210,36 @@ export interface ElectionGroup {
   latestElectionGroupCount: ElectionGroupCount;
 }
 
-export interface IElectionGroupRole {
-  name: string;
-  grantId: string;
-  principal: IPrincipal;
+export type PrincipalType =
+  | 'PersonPrincipal'
+  | 'PersonIdentifierPrincipal'
+  | 'GroupPrincipal';
+
+export type Principal =
+  | IPersonPrincipal
+  | IPersonIdentifierPrincipal
+  | IGroupPrincipal;
+
+export interface IPersonPrincipal {
+  __typename: 'PersonPrincipal';
+  person: IPerson;
 }
 
-export interface IPrincipal {
-  principalType: 'person-principal' | 'group-principal';
-  person: IPerson; // may actually be undefined, check principal type
-  group: IGroup; // may actually be undefined, check principal type
+export interface IPersonIdentifierPrincipal {
+  __typename: 'PersonIdentifierPrincipal';
+  idType: PersonIdType;
+  idValue: string;
+}
+
+export interface IGroupPrincipal {
+  __typename: 'GroupPrincipal';
+  group: IGroup;
+}
+
+export type ElectionGroupRoleType = 'admin';
+
+export interface IElectionGroupRole extends IRoleGrant {
+  name: ElectionGroupRoleType;
 }
 
 export interface ElectionGroupCount {

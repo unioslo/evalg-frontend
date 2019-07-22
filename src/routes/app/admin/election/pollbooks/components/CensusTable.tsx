@@ -16,9 +16,9 @@ import {
 } from 'components/table';
 import Text from 'components/text';
 import ActionText from 'components/actiontext';
-import { getVoterIdTypeDisplayName } from 'utils/i18n';
+import { getPersonIdTypeDisplayName } from 'utils/i18n';
 import { ConfirmModal } from 'components/modal';
-import { IPollBook, IVoter, DropDownOption } from 'interfaces';
+import { IPollBook, IVoter, DropDownOption, PersonIdType } from 'interfaces';
 
 import CensusTableFiltersRow from './CensusTableFiltersRow';
 import AddVoterForm from './AddVoterForm';
@@ -177,7 +177,7 @@ const CensusTable: React.FunctionComponent<IProps> = ({
     });
   });
 
-  const idTypes: string[] = [];
+  const idTypes: PersonIdType[] = [];
   const idTypeFilterOptions: { name: string; value: string }[] = [];
   for (const voter of unfilteredVoters) {
     if (!idTypes.includes(voter.idType)) {
@@ -187,7 +187,7 @@ const CensusTable: React.FunctionComponent<IProps> = ({
   idTypeFilterOptions.push({ name: t('general.all'), value: 'all' });
   for (const idType of idTypes) {
     idTypeFilterOptions.push({
-      name: getVoterIdTypeDisplayName(idType, t),
+      name: getPersonIdTypeDisplayName(idType, t),
       value: idType,
     });
   }
@@ -238,7 +238,7 @@ const CensusTable: React.FunctionComponent<IProps> = ({
                 <React.Fragment key={voter.id}>
                   <TableRow verticalPadding={true}>
                     <TableCell topPadding verticalAlignTop>
-                      <Text>{getVoterIdTypeDisplayName(voter.idType, t)}</Text>
+                      <Text>{getPersonIdTypeDisplayName(voter.idType, t)}</Text>
                     </TableCell>
                     <TableCell topPadding verticalAlignTop>
                       <Text>{voter.idValue}</Text>
@@ -280,7 +280,7 @@ const CensusTable: React.FunctionComponent<IProps> = ({
               return (
                 <TableRow key={voter.id} actionTextOnHover>
                   <TableCell>
-                    <Text>{getVoterIdTypeDisplayName(voter.idType, t)}</Text>
+                    <Text>{getPersonIdTypeDisplayName(voter.idType, t)}</Text>
                   </TableCell>
                   <TableCell>
                     <Text>{voter.idValue}</Text>
@@ -338,7 +338,7 @@ const CensusTable: React.FunctionComponent<IProps> = ({
                 body={
                   <Trans
                     values={{
-                      idType: getVoterIdTypeDisplayName(
+                      idType: getPersonIdTypeDisplayName(
                         voterToDelete.idType,
                         t
                       ).toLowerCase(),

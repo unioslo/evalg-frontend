@@ -1,16 +1,31 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
-import throttle from 'lodash/throttle';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
+import { Form, Field } from 'react-final-form';
+import classNames from 'classnames';
+import { WithTranslation, withTranslation } from 'react-i18next';
 
+import {
+  TableRowForm,
+  TableRowFormFields,
+  FormField,
+  TextInputRF,
+} from 'components/form';
+import { ConfirmModal } from 'components/modal';
 import { PageSubSection } from 'components/page';
 import Text from 'components/text';
 import { Button, ButtonContainer } from 'components/button';
-import AutoCompleteDropDown from '../../components/AutoCompleteDropDown';
-import { IPersonSearchResult, IGroupSearchResult } from 'interfaces';
-
-import { IAdminGrant } from './AdminRolesSettings';
+import Spinner from 'components/animations/Spinner';
+import {
+  IRoleGrant,
+  PersonIdType,
+  ElectionGroupRoleType,
+  IMutationResponse,
+} from 'interfaces';
+import { validateFeideId } from 'utils/validators';
+import { translateBackendError } from 'utils';
+import { getPersonIdTypeDisplayName } from 'utils/i18n';
 
 const styles = (theme: any) => ({
   form: {
@@ -37,163 +52,270 @@ const styles = (theme: any) => ({
       cursor: 'pointer',
     },
   },
+  feedback: {
+    marginTop: '1.5rem',
+  },
+  feedbackError: {
+    color: theme.formErrorTextColor,
+  },
 });
 
-interface IProps {
+interface IProps extends WithTranslation {
   classes: Classes;
-  closeAction: () => void;
-  adminPersons: IAdminGrant[];
-  adminGroups: IAdminGrant[];
-  searchPersons: (value: string) => Promise<IPersonSearchResult[]>;
-  searchGroups: (value: string) => Promise<IGroupSearchResult[]>;
-  addAction: (principalOwner: string, principalType: string) => void;
-  removeAction: (grantId: string) => void;
+  adminRoles: IRoleGrant[];
+  onClose: () => void;
+  onAddRole: (
+    role: ElectionGroupRoleType,
+    idType: PersonIdType,
+    idValue: string
+  ) => Promise<IMutationResponse | null>;
+  onRemoveRole: (role: IRoleGrant) => Promise<IMutationResponse | null>;
 }
 
 interface IState {
-  adminPersonFilter: string;
-  adminGroupFilter: string;
-  personMatches: IPersonSearchResult[];
-  groupMatches: IGroupSearchResult[];
+  roleToRemove: IRoleGrant | null;
+  feedback: {
+    text: string;
+    isError: boolean;
+  };
 }
 
 class AdminRolesForm extends React.Component<IProps, IState> {
-  handlePersonSearch: (value: string) => Promise<void>;
-  handleGroupSearch: (value: string) => Promise<void>;
-
   constructor(props: IProps) {
     super(props);
     this.state = {
-      adminPersonFilter: '',
-      adminGroupFilter: '',
-      personMatches: [],
-      groupMatches: [],
+      roleToRemove: null,
+      feedback: { text: '', isError: false },
     };
-    this.handlePersonSearch = throttle(async value => {
-      const persons = await this.props.searchPersons(value);
-      const { adminPersons } = this.props;
-      // We don't want to list persons that are already set as admins
-      // in the search results.
-      const newPersons = persons.filter(p => {
-        for (let i = 0; i < adminPersons.length; i++) {
-          if (p.id === adminPersons[i].id) {
-            return false;
-          }
-        }
-        return true;
-      });
-      this.setState({ personMatches: newPersons });
-    });
-    this.handleGroupSearch = throttle(async value => {
-      const groups = await this.props.searchGroups(value);
-      const { adminGroups } = this.props;
-      // We don't want to list groups that are already set as admins
-      // in the search results.
-      const newGroups = groups.filter(p => {
-        for (let i = 0; i < adminGroups.length; i++) {
-          if (p.id === adminGroups[i].id) {
-            return false;
-          }
-        }
-        return true;
-      });
-      this.setState({ groupMatches: newGroups });
-    });
   }
 
-  handleAdminPersonFilterUpdate(value: string) {
-    this.setState({ adminPersonFilter: value });
-    if (value.length > 1) {
-      this.handlePersonSearch(value);
+  getPrincipalDisplayName = (role: IRoleGrant): string => {
+    if (role.principal.__typename === 'PersonPrincipal') {
+      return role.principal.person.displayName;
+    } else if (role.principal.__typename === 'PersonIdentifierPrincipal') {
+      return role.principal.idValue;
+    } else if (role.principal.__typename === 'GroupPrincipal') {
+      return role.principal.group.name;
     }
-  }
+    return role.grantId;
+  };
 
-  handleAdminGroupFilterUpdate(value: string) {
-    this.setState({ adminGroupFilter: value });
-    if (value.length > 1) {
-      this.handleGroupSearch(value);
+  setRoleToRemove = (role: IRoleGrant | null): void => {
+    this.setState({
+      roleToRemove: role,
+    });
+  };
+
+  removeAndClose = async (): Promise<void> => {
+    if (this.state.roleToRemove === null) {
+      return;
     }
-  }
+    this.props.onRemoveRole(this.state.roleToRemove);
+    this.setRoleToRemove(null);
+  };
+
+  abortRemovalAndClose = (): void => {
+    this.setRoleToRemove(null);
+  };
+
+  setFeedback = (feedback: { text: string; isError: boolean }): void => {
+    this.setState({
+      feedback: feedback,
+    });
+  };
+
+  addRoleAndSetFeedback = async (values: any) => {
+    const { onAddRole, t } = this.props;
+
+    const idValue = values.idValue;
+    if (!idValue) return;
+
+    let idType: PersonIdType;
+    if (validateFeideId(idValue)) {
+      idType = 'feide_id';
+    } else {
+      return;
+    }
+
+    const idTypeDisplayName = getPersonIdTypeDisplayName(idType, t);
+
+    try {
+      const result = await onAddRole('admin', 'feide_id', idValue);
+      if (result && result.success) {
+        const feedback = t('admin.roles.addedElectionAdminByIdentifier', {
+          idType: idTypeDisplayName,
+          idValue,
+        });
+        this.setFeedback({ text: feedback, isError: false });
+      } else {
+        const feedback = translateBackendError({
+          errorCode: (result && result.code) || null,
+          t,
+          codePrefix: 'admin.roles.backend',
+        });
+        this.setFeedback({ text: feedback, isError: true });
+      }
+    } catch (error) {
+      this.setFeedback({
+        text: error.toString(),
+        isError: true,
+      });
+    }
+  };
+
+  validateAddRoleForm = (values: object) => {
+    const { t } = this.props;
+    if (!values.hasOwnProperty('idValue')) {
+      return {};
+    }
+
+    const { idValue } = values as { idValue: string };
+    const errors: object = {};
+
+    if (!idValue) {
+      return {};
+    } else if (!validateFeideId(idValue)) {
+      errors['idValue'] = t('formErrors.invalidFeideId');
+    }
+
+    if (errors) {
+      // Don't display error messages within the fields themselves
+      return { _errors: errors };
+    } else {
+      return {};
+    }
+  };
+
   render() {
-    const {
-      closeAction,
-      classes,
-      addAction,
-      removeAction,
-      adminPersons,
-      adminGroups,
-    } = this.props;
-    const {
-      // adminPersonFilter,
-      adminGroupFilter,
-    } = this.state;
+    const { classes, adminRoles, t } = this.props;
+    const { roleToRemove, feedback } = this.state;
     return (
-      <div>
-        <PageSubSection header={<Trans>election.electionAdmins</Trans>}>
-          <Text>
-            <Trans>election.electionAdminsDesc</Trans>
-          </Text>
-          <div className={classes.form}>
-            <div className={classes.formSection}>
-              <Text bold>
-                <Trans>election.adminUser</Trans>
-              </Text>
-              <ul className={classes.list}>
-                {adminPersons.map((person, index) => (
-                  <li key={index}>
-                    <Text inline>{person.name}</Text>
-                    <div
-                      className={classes.removeButton}
-                      onClick={() => removeAction(adminPersons[index].grantId)}
-                    />
-                  </li>
-                ))}
-              </ul>
-              <AutoCompleteDropDown
-                objects={this.state.personMatches}
-                userInput={this.state.adminPersonFilter}
-                onChange={this.handleAdminPersonFilterUpdate.bind(this)}
-                buttonAction={(person: IAdminGrant) =>
-                  addAction(person.id, 'person')
-                }
-                buttonText={<Trans>general.add</Trans>}
-                objRenderer={(person: IAdminGrant) => person.name}
-              />
+      <>
+        <div>
+          <PageSubSection header={<Trans>admin.roles.electionAdmins</Trans>}>
+            <Text>
+              <Trans>admin.roles.electionAdminsDescription</Trans>
+            </Text>
+            <div className={classes.form}>
+              <div className={classes.formSection}>
+                <Text bold>
+                  <Trans>admin.roles.singleUsers</Trans>
+                </Text>
+                <ul className={classes.list}>
+                  {adminRoles.map((role, index) => (
+                    <li key={index}>
+                      <Text inline>{this.getPrincipalDisplayName(role)}</Text>
+                      <div
+                        className={classes.removeButton}
+                        onClick={() => this.setRoleToRemove(role)}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-            <div className={classes.formSection}>
-              <Text bold>
-                <Trans>election.adminGroup</Trans>
-              </Text>
-              <ul className={classes.list}>
-                {adminGroups.map((group, index) => (
-                  <li key={index}>
-                    <Text inline>{group.name}</Text>
-                    <div
-                      className={classes.removeButton}
-                      onClick={() => removeAction(adminGroups[index].grantId)}
-                    />
-                  </li>
-                ))}
-              </ul>
-              <AutoCompleteDropDown
-                objects={[]}
-                userInput={adminGroupFilter}
-                onChange={this.handleAdminGroupFilterUpdate.bind(this)}
-                buttonAction={(group: IAdminGrant) =>
-                  addAction(group.id, 'group')
-                }
-                buttonText={<Trans>general.add</Trans>}
-                objRenderer={(group: IAdminGrant) => group.name}
-              />
-            </div>
-          </div>
-        </PageSubSection>
-        <ButtonContainer>
-          <Button text="Lukk" action={closeAction} />
-        </ButtonContainer>
-      </div>
+          </PageSubSection>
+          <PageSubSection>
+            <Form
+              onSubmit={this.addRoleAndSetFeedback}
+              validate={this.validateAddRoleForm}
+              render={formProps => {
+                const {
+                  handleSubmit,
+                  errors,
+                  valid,
+                  pristine,
+                  touched,
+                  submitting,
+                  form,
+                } = formProps;
+
+                const showValidationErrorFeedback =
+                  !pristine && errors._errors && touched && touched['idValue'];
+
+                const handleSubmitAndReset = async (e: any) => {
+                  e.preventDefault();
+                  await handleSubmit();
+                  if (valid) {
+                    form.reset();
+                  }
+                };
+
+                return (
+                  <form onSubmit={handleSubmitAndReset}>
+                    <TableRowForm header={t('admin.roles.addNewElectionAdmin')}>
+                      <TableRowFormFields>
+                        <FormField inline>
+                          <Field
+                            name="idValue"
+                            component={TextInputRF}
+                            large={true}
+                            placeholder={t('idTypes.feide_id')}
+                          />
+                        </FormField>
+                        <Button
+                          height="4.5rem"
+                          action={handleSubmitAndReset}
+                          disabled={pristine}
+                          text={
+                            submitting ? (
+                              <>
+                                <span>{t('general.add')}</span>{' '}
+                                <Spinner size="2rem" marginLeft="0.8rem" thin />
+                              </>
+                            ) : (
+                              t('general.add')
+                            )
+                          }
+                        />
+                      </TableRowFormFields>
+                      <div
+                        className={classNames({
+                          [classes.feedback]: true,
+                          [classes.feedbackError]:
+                            feedback.isError || showValidationErrorFeedback,
+                        })}
+                      >
+                        {showValidationErrorFeedback
+                          ? errors._errors.idValue
+                          : feedback.text}
+                      </div>
+                    </TableRowForm>
+                  </form>
+                );
+              }}
+            />
+          </PageSubSection>
+          <ButtonContainer noTopMargin>
+            <Button
+              action={this.props.onClose}
+              text={t('general.close')}
+              secondary
+            />
+          </ButtonContainer>
+        </div>
+
+        {roleToRemove && (
+          <ConfirmModal
+            confirmAction={this.removeAndClose}
+            closeAction={this.abortRemovalAndClose}
+            header={<Trans>admin.roles.confirmRemoval</Trans>}
+            body={
+              <Trans
+                values={{
+                  target: this.getPrincipalDisplayName(roleToRemove),
+                }}
+              >
+                admin.roles.confirmRemovalElectionAdmin
+              </Trans>
+            }
+            confirmText={<Trans>general.remove</Trans>}
+            closeText={<Trans>general.cancel</Trans>}
+          />
+        )}
+      </>
     );
   }
 }
 
-export default injectSheet(styles)(AdminRolesForm);
+export default injectSheet(styles)(withTranslation()(AdminRolesForm));
