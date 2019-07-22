@@ -20,7 +20,7 @@ const bluishLenkefarge = '#2294a8';
 const greyishBrown = '#555555';
 const lightBlueGrey = '#c4e2e7';
 
-interface IProps extends FieldRenderProps {
+interface IProps extends FieldRenderProps<string, any> {
   options: any;
   classes: any;
   label: any;

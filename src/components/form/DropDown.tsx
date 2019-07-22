@@ -307,7 +307,7 @@ class DropDown extends DropDownBase<IProps> {
   }
 }
 
-interface IRFProps extends FieldRenderProps {
+interface IRFProps extends FieldRenderProps<string, any> {
   options: IDropDownOption[];
   placeholder: string;
   label: any;
