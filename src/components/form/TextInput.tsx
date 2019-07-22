@@ -190,7 +190,7 @@ export default StyledTextInput;
 
 /* Redux Form Wrapper */
 
-interface IRFProps extends FieldRenderProps {
+interface IRFProps extends FieldRenderProps<string, any> {
   placeholder?: string;
   readOnly?: boolean;
   id?: string;

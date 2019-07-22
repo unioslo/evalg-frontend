@@ -264,7 +264,7 @@ class UploadCensusFileModal extends React.Component<
     return value ? undefined : 'Required';
   }
 
-  private fileInputWrapper(fieldProps: FieldRenderProps) {
+  private fileInputWrapper(fieldProps: FieldRenderProps<any, any>) {
     const onChangeWrapper = (e: IHTMLInputEvent) => {
       fieldProps.input.onChange(e);
       this.onChange(e);
