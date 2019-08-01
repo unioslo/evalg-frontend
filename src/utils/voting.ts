@@ -73,7 +73,7 @@ export const submitVote = async (
   }
 
   if (!voter) {
-    throw new Error("Couldn\'t create voter for person.");
+    throw new Error("Couldn't create voter for person.");
   }
 
   const ballotDataJSON = JSON.stringify(ballotData);
@@ -87,7 +87,6 @@ export const submitVote = async (
   });
 
   if (!voteRes.data.vote.ok) {
-    throw new Error("An error occured when voting.")
+    throw new Error('An error occured when voting.');
   }
-
 };

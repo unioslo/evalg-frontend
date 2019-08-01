@@ -85,26 +85,26 @@ const Link = (props: IProps) => {
 
   if (external) {
     return (
-      <a className={cls} href={to} target="_blank">
+      <a className={cls} href={to} target="_blank" rel="noopener noreferrer">
         {children}
         {!noExternalIcon && (
           <span className={classes.externalIcon}>{externalLinkIcon}</span>
         )}
       </a>
     );
-  } else if (mail) {
+  }
+  if (mail) {
     return (
       <a className={cls} href={`mailto:${to}`}>
         {children}
       </a>
     );
-  } else {
-    return (
-      <RouterLink className={cls} to={to}>
-        {children}
-      </RouterLink>
-    );
   }
+  return (
+    <RouterLink className={cls} to={to}>
+      {children}
+    </RouterLink>
+  );
 };
 
 export default injectSheet(styles)(Link);
