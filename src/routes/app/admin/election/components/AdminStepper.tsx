@@ -29,7 +29,7 @@ const styles = (theme: any) => ({
 
 const calculatePath = (groupId: string | number) => (
   subRoute: string | number
-) => '/admin/elections/' + groupId + '/' + subRoute;
+) => `/admin/elections/${groupId}/${subRoute}`;
 
 interface IProps {
   groupId: number | string;
@@ -49,51 +49,54 @@ const AdminStepper: React.FunctionComponent<IProps> = (props: IProps) => {
           if (data && data.electionGroup) {
             const electionGroupName = data.electionGroup.name[i18n.language];
             return (
-              <div className={classes.electionGroupName}>
-                {electionGroupName}
-              </div>
+              <>
+                <div className={classes.electionGroupName}>
+                  {electionGroupName}
+                </div>
+                <Stepper>
+                  <Link to={linkGenerator('info')}>
+                    <StepperItem
+                      translateX={4}
+                      translateY={3}
+                      number={1}
+                      itemText={t('election.electionInfo')}
+                      active={activeSection === 'info'}
+                    />
+                  </Link>
+                  <Link to={linkGenerator('candidates')}>
+                    <StepperItem
+                      translateX={234}
+                      translateY={3}
+                      number={2}
+                      itemText={t('election.candidates')}
+                      active={activeSection === 'candidates'}
+                    />
+                  </Link>
+                  <Link to={linkGenerator('pollbooks')}>
+                    <StepperItem
+                      translateX={464}
+                      translateY={3}
+                      number={3}
+                      itemText={t('election.censuses')}
+                      active={activeSection === 'pollbooks'}
+                    />
+                  </Link>
+                  <Link to={linkGenerator('status')}>
+                    <StepperItem
+                      translateX={694}
+                      translateY={3}
+                      number={4}
+                      itemText={t('election.electionStatus')}
+                      active={activeSection === 'status'}
+                    />
+                  </Link>
+                </Stepper>
+              </>
             );
-          } else return null;
+          }
+          return null;
         }}
       </Query>
-      <Stepper>
-        <Link to={linkGenerator('info')}>
-          <StepperItem
-            translateX={4}
-            translateY={3}
-            number={1}
-            itemText={t('election.electionInfo')}
-            active={activeSection === 'info'}
-          />
-        </Link>
-        <Link to={linkGenerator('candidates')}>
-          <StepperItem
-            translateX={234}
-            translateY={3}
-            number={2}
-            itemText={t('election.candidates')}
-            active={activeSection === 'candidates'}
-          />
-        </Link>
-        <Link to={linkGenerator('pollbooks')}>
-          <StepperItem
-            translateX={464}
-            translateY={3}
-            number={3}
-            itemText={t('election.censuses')}
-            active={activeSection === 'pollbooks'}
-          />
-        </Link>
-        <Link to={linkGenerator('status')}>
-          <StepperItem
-            translateX={694}
-            translateY={3}
-            number={4}
-            itemText={t('election.electionStatus')}
-            active={activeSection === 'status'}
-          />
-        </Link>
-      </Stepper>
     </>
   );
 };

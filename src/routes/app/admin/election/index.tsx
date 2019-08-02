@@ -4,6 +4,7 @@ import { Route, match } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import { NotFound, ErrorPageSection } from 'components/errors';
 import Loading from 'components/loading';
 import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
 import { ElectionGroup } from 'interfaces';
@@ -113,7 +114,10 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => (
           );
         }
         if (error) {
-          return <p>Error!</p>;
+          return <ErrorPageSection errorMessage={error.message} />;
+        }
+        if (data.electionGroup === null) {
+          return <NotFound />;
         }
 
         const egWithOrderedElections = electionGroupWithOrderedElections(

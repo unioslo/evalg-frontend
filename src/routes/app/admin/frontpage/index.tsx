@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import injectSheet from 'react-jss';
 import { Trans, withTranslation } from 'react-i18next';
 
+import { NotFound, ErrorPageSection } from 'components/errors';
 import Loading from 'components/loading';
 import Page from 'components/page/Page';
 import { PageSection } from 'components/page';
@@ -61,7 +62,10 @@ const AdminFrontPage = (props: any) => {
           return <Loading />;
         }
         if (error) {
-          return <p>Error!</p>;
+          return <ErrorPageSection errorMessage={error.message} />;
+        }
+        if (data.electionGroup === null) {
+          return <NotFound />;
         }
 
         const electionGroupsWithOrderedElections = data.electionGroups.map(

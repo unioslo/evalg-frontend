@@ -333,7 +333,9 @@
   "errors": {
     "error": "Error",
     "errorMessage": "Error message",
-    "generalError": "An error has occured"
+    "generalError": "An error has occured",
+    "notFound": "Not found",
+    "notFoundDescription": "Sorry, the page you are looking for does not exist."
   },
   "footer": {
     "termsHeader": "Terms",

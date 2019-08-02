@@ -332,7 +332,9 @@
   "errors": {
     "error": "Feil",
     "errorMessage": "Feilmelding",
-    "generalError": "En feil har oppstått"
+    "generalError": "En feil har oppstått",
+    "notFound": "Ikke funnet",
+    "notFoundDescription": "Beklager, siden du leter etter finnes ikke."
   },
   "footer": {
     "termsHeader": "Vilkår",
