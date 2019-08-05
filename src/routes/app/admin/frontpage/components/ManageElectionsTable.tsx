@@ -42,12 +42,14 @@ class ManageElectionsTable extends React.Component<IProps, IState> {
   }
 
   setSelected(electionId: string) {
-    if (electionId === this.state.selectedElection) {
+    const { selectedElection } = this.state;
+    if (electionId === selectedElection) {
       this.setState({ selectedElection: '' });
     } else {
       this.setState({ selectedElection: electionId });
     }
   }
+
   render() {
     const { electionGroups, classes } = this.props;
     if (electionGroups.length === 0) {
@@ -81,21 +83,22 @@ class ManageElectionsTable extends React.Component<IProps, IState> {
             </TableHeaderCell>
           </TableHeaderRow>
         </TableHeader>
-        {electionGroups.map((elGrp, index) => {
+        {electionGroups.map((electionGroup, index) => {
+          const { selectedElection } = this.state;
           let selected = false;
-          if (this.state.selectedElection === elGrp.id) {
+          if (selectedElection === electionGroup.id) {
             selected = true;
           }
           return (
-            <TableBody key={index}>
+            <TableBody key={electionGroup.id}>
               <ElectionGroupTableRow
-                elGrp={elGrp}
-                selectAction={this.setSelected.bind(this)}
+                elGrp={electionGroup}
+                selectAction={this.setSelected}
                 selected={selected}
               />
               {selected &&
-                elGrp.type === 'multiple_elections' &&
-                elGrp.elections.map(el => {
+                electionGroup.type === 'multiple_elections' &&
+                electionGroup.elections.map(el => {
                   if (!el.active) {
                     return null;
                   }
@@ -106,16 +109,18 @@ class ManageElectionsTable extends React.Component<IProps, IState> {
                   <TableCell greyBg />
                   <TableCell colspan={5} greyBg alignRight>
                     <Link
-                      to={`/admin/elections/${elGrp.id}/status`}
+                      to={`/admin/elections/${electionGroup.id}/status`}
                       marginRight
                     >
                       <Icon type="forwardArrow" marginRight />
-                      <Trans>election.goTo</Trans>&nbsp;
+                      <Trans>election.goTo</Trans>
+                      &nbsp;
                       <Trans>election.status</Trans>
                     </Link>
-                    <Link to={`/admin/elections/${elGrp.id}/info`}>
+                    <Link to={`/admin/elections/${electionGroup.id}/info`}>
                       <Icon type="forwardArrow" marginRight />
-                      <Trans>election.goTo</Trans>&nbsp;
+                      <Trans>election.goTo</Trans>
+                      &nbsp;
                       <Trans>election.settings</Trans>
                     </Link>
                   </TableCell>

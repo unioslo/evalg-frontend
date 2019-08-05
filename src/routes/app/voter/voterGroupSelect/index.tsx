@@ -361,7 +361,7 @@ class VoterGroupSelectPage extends React.Component<
         beforeDropDownText = <Trans>voterGroupSelect.theElectionFor</Trans>;
         afterDropDownText = (
           <>
-            <Trans>voterGroupSelect.isNotOpen</Trans> .
+            <Trans>voterGroupSelect.isNotOpen</Trans>.
           </>
         );
       }
