@@ -2,6 +2,8 @@ import { makeElObj, makeElObjData } from './makeElectionObjects';
 import moment from 'moment-timezone';
 import { appTimezone } from '../appConfig';
 
+import { buttonize } from './a11y';
+
 import {
   isObjEmpty,
   isObject,
@@ -30,6 +32,7 @@ const DateAndTimeToISODTWithTimeZonedOffset = (date: string, time: string) =>
   moment.tz(`${date}T${time}`, appTimezone).toISOString();
 
 export {
+  buttonize,
   sleep,
   translateBackendError,
   joinStringsWithCommaAndAnd,
