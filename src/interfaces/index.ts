@@ -79,6 +79,7 @@ export interface IGroupSearchResult {
 }
 
 export interface IRoleGrant {
+  __typename: string;
   grantId: string;
   name: string;
   principal: Principal;
@@ -239,6 +240,7 @@ export interface IGroupPrincipal {
 export type ElectionGroupRoleType = 'admin';
 
 export interface IElectionGroupRole extends IRoleGrant {
+  groupId: string;
   name: ElectionGroupRoleType;
 }
 

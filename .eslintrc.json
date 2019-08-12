@@ -9,8 +9,22 @@
   "extends": [
     "react-app",
     "airbnb-typescript",
-    "prettier"
+    "prettier",
+    "prettier/@typescript-eslint",
+    "prettier/react"
   ],
+  "rules": {
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allow": [
+          "__typename",
+          "_errors"
+        ]
+      }
+    ],
+    "import/prefer-default-export": "off"
+  },
   "settings": {
     "import/resolver": {
       "node": {

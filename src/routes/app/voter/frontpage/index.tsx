@@ -4,6 +4,7 @@ import { Query, WithApolloClient, withApollo } from 'react-apollo';
 
 import { withTranslation, WithTranslation, Trans } from 'react-i18next';
 
+import { ErrorPageSection, ErrorInline } from 'components/errors';
 import { Page, PageSection } from 'components/page';
 import Loading from 'components/loading';
 import { ElectionGroup, IVoter } from 'interfaces';
@@ -12,7 +13,6 @@ import { getSignedInPersonId } from 'queries';
 import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
 
 import VoterElections from './components/VoterElections';
-import ErrorInline from 'components/errors/ErrorInline';
 
 const electionGroupsQuery = gql`
   ${ElectionGroupFields}
@@ -85,7 +85,8 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
                 <Trans>voter.voterFrontPage.loadingElections</Trans>
               </Loading>
             );
-          } else if (this.state.signedInPersonId === '') {
+          }
+          if (this.state.signedInPersonId === '') {
             return (
               <Loading>
                 <Trans>voter.voterFrontPage.loadingUserData</Trans>
@@ -102,12 +103,15 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
               fetchPolicy="network-only"
             >
               {({ data: votersForPersonData, loading, error }) => {
-                if (loading || error) {
+                if (loading) {
                   return (
                     <Loading>
                       <Trans>voter.voterFrontPage.loadingUserData</Trans>
                     </Loading>
                   );
+                }
+                if (error) {
+                  return <ErrorPageSection errorMessage={error.message} />;
                 }
 
                 const userVerifiedVoters = votersForPersonData.votersForPerson.filter(
@@ -121,7 +125,9 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
                   <Page header={t('general.welcome')}>
                     <PageSection desc={t('general.frontPageDesc')} noBorder>
                       <VoterElections
-                        votingRightsElectionGroups={userVerifiedInElectionGroupIds}
+                        votingRightsElectionGroups={
+                          userVerifiedInElectionGroupIds
+                        }
                         electionGroups={electionGroupData.electionGroups
                           .map((eg: ElectionGroup) =>
                             electionGroupWithOrderedElections(eg, {

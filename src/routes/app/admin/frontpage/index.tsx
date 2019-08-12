@@ -4,21 +4,22 @@ import gql from 'graphql-tag';
 import injectSheet from 'react-jss';
 import { Trans, withTranslation } from 'react-i18next';
 
+import { NotFound, ErrorPageSection } from 'components/errors';
 import Loading from 'components/loading';
 import Page from 'components/page/Page';
 import { PageSection } from 'components/page';
 import { ActionButton } from 'components/button';
 import Link from 'components/link';
 import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
-import { ElectionGroup } from 'interfaces';
+import { ElectionGroup, IRoleGrant, IElectionGroupRole } from 'interfaces';
 import { ElectionGroupFields, ElectionFields } from 'fragments';
 
 import ManageElectionsTable from './components/ManageElectionsTable';
 
-const electionGroupsQuery = gql`
+const viewerElectionGroupsQuery = gql`
   ${ElectionGroupFields}
   ${ElectionFields}
-  query {
+  query ViewerElectionGroupsAndRoles {
     electionGroups {
       ...ElectionGroupFields
       elections {
@@ -26,6 +27,13 @@ const electionGroupsQuery = gql`
         voteCount {
           selfAddedNotReviewed
           total
+        }
+      }
+    }
+    viewer {
+      roles {
+        ... on ElectionGroupRole {
+          groupId
         }
       }
     }
@@ -55,16 +63,37 @@ const styles = (theme: any) => ({
 const AdminFrontPage = (props: any) => {
   const { t } = props;
   return (
-    <Query query={electionGroupsQuery} fetchPolicy="network-only">
+    <Query query={viewerElectionGroupsQuery} fetchPolicy="network-only">
       {({ loading, error, data }) => {
         if (loading) {
           return <Loading />;
         }
         if (error) {
-          return <p>Error!</p>;
+          return <ErrorPageSection errorMessage={error.message} />;
+        }
+        if (data.electionGroup === null) {
+          return <NotFound />;
         }
 
-        const electionGroupsWithOrderedElections = data.electionGroups.map(
+        /* Filter out election groups which the viewer does not have a role for */
+        const electionGroupRoles =
+          data.viewer.roles &&
+          data.viewer.roles.filter((role: IRoleGrant) => {
+            return role.__typename === 'ElectionGroupRole';
+          });
+        const manageableElectionGroupIds = electionGroupRoles.map(
+          (role: IElectionGroupRole) => {
+            return role.groupId;
+          }
+        );
+
+        const manageableElectionGroups = data.electionGroups.filter(
+          (electionGroup: ElectionGroup) => {
+            return manageableElectionGroupIds.includes(electionGroup.id);
+          }
+        );
+
+        const electionGroupsWithOrderedElections = manageableElectionGroups.map(
           (electionGroup: ElectionGroup) =>
             electionGroupWithOrderedElections(electionGroup)
         );
