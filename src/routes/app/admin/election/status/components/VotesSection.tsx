@@ -11,17 +11,20 @@ interface Props {
   electionGroup: ElectionGroup;
 }
 
-const VotesSection: React.FunctionComponent<Props> = ({ electionGroup }) => {
-  const electionsHasNotStarted =
+export const electionsHasNotStarted = (electionGroup: ElectionGroup) => {
+  return (
     electionGroup.status === 'draft' ||
     electionGroup.status === 'announced' ||
-    electionGroup.status === 'published';
+    electionGroup.status === 'published'
+  );
+};
 
+const VotesSection: React.FunctionComponent<Props> = ({ electionGroup }) => {
   const { t } = useTranslation();
 
   return (
     <PageSection header={t('election.votes')}>
-      {electionsHasNotStarted ? (
+      {electionsHasNotStarted(electionGroup) ? (
         t('election.electionNotStarted')
       ) : (
         <>

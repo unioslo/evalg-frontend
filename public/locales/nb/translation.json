@@ -144,6 +144,16 @@
       "votesThatMustBeConsidered": "Stemmer som må behandles",
       "votesApprovedByTheBoard": "Stemmer godkjent av valgstyret",
       "votesRejectedByTheBoard": "Stemmer avvist av valgstyret"
+    },
+    "manageSurplusVoters" : {
+      "header": "Personer med flere godkjente stemmer",
+      "dropdown": "Se personer",
+      "dropdownClose": "Lukk",
+      "description": "Noen personer har en godkjent stemme i flere velgergrupper. En person kan ikke ha flere stemmer i ett valg. Du må derfor velge hvilken av stemmene som skal telles (resterende stemmer fra personen blir avvist).",
+      "descriptionNoPersons": "Dette valget har ingen personer med flere godkjente stemmer",
+      "confirm": "Bekreft",
+      "person": "Person",
+      "votingGroup": "Velg velgergruppe"
     }
   },
   "backend": {

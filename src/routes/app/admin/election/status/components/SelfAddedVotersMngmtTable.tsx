@@ -21,6 +21,8 @@ import Button from 'components/button';
 import Spinner from 'components/animations/Spinner';
 import ActionText from 'components/actiontext';
 import { IVoter } from 'interfaces';
+import { refetchVoteManagementQueries } from 'queries';
+import { undoReviewVoter, reviewVoter } from 'mutations';
 
 const personForVoter = gql`
   query personForVoter($voterId: UUID!) {
@@ -30,27 +32,6 @@ const personForVoter = gql`
     }
   }
 `;
-
-const reviewSelfAddedVoter = gql`
-  mutation reviewSelfAddedVoter($id: UUID!, $verify: Boolean!) {
-    reviewSelfAddedVoter(id: $id, verify: $verify) {
-      ok
-    }
-  }
-`;
-
-const undoReviewSelfAddedVoter = gql`
-  mutation undoReviewSelfAddedVoter($id: UUID!) {
-    undoReviewSelfAddedVoter(id: $id) {
-      ok
-    }
-  }
-`;
-
-const refetchQueriesFunction = () => [
-  'electionGroupWithSelfAddedVoters',
-  'turnoutCounts',
-];
 
 const styles = (theme: any) => ({
   reviewButtons: {
@@ -177,9 +158,9 @@ const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
                             tableAction ===
                               VotersReviewTableAction.UndoRejection) && (
                             <Mutation
-                              mutation={undoReviewSelfAddedVoter}
+                              mutation={undoReviewVoter}
                               variables={{ id: voter.id }}
-                              refetchQueries={refetchQueriesFunction}
+                              refetchQueries={refetchVoteManagementQueries}
                               awaitRefetchQueries
                             >
                               {(undo, { loading }) => {
@@ -251,8 +232,8 @@ const ReviewButtons: React.FunctionComponent<ReviewButtonProps> = ({
   classes,
 }) => (
   <Mutation
-    mutation={reviewSelfAddedVoter}
-    refetchQueries={refetchQueriesFunction}
+    mutation={reviewVoter}
+    refetchQueries={refetchVoteManagementQueries}
     awaitRefetchQueries
   >
     {(review, { loading }) => {

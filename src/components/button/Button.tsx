@@ -5,6 +5,7 @@ import { Classes } from 'jss';
 
 import Icon from 'components/icon';
 import Spinner from 'components/animations/Spinner';
+import { string } from 'prop-types';
 
 const OSXUserAgent = window.navigator.userAgent.includes('OS X');
 
@@ -83,6 +84,7 @@ interface IProps {
   iconLeft?: string;
   iconRight?: string;
   smallText?: boolean;
+  type?: string;
   wide?: boolean;
   fillWidth?: boolean;
   centerContent?: boolean;
@@ -108,7 +110,7 @@ const Button: React.SFC<IProps> = props => {
   return (
     <button
       onClick={props.action}
-      type="button"
+      type={props.type ? props.type : "button"}
       disabled={props.disabled}
       className={btnClassNames}
     >

@@ -8,6 +8,7 @@ import ElectionStatusSection from './components/ElectionStatusSection';
 import VotesSection from './components/VotesSection';
 import ElectionKeySection from './components/ElectionKeySection';
 import CountingSection from './components/CountingSection';
+import SurplusVotesSection from './components/SurplusVotesSection'
 
 interface IProps {
   electionGroup: ElectionGroup;
@@ -37,6 +38,7 @@ const StatusPage: React.FunctionComponent<IProps> = ({
           />
         )}
         <VotesSection electionGroup={electionGroup} />
+        <SurplusVotesSection electionGroup={electionGroup} />
         <CountingSection
           electionGroup={electionGroup}
           scrollToStatusRef={scrollToStatusRef}

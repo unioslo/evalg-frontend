@@ -43,7 +43,7 @@
         "electionKeyReady": "Election key ready",
         "modalBullet1": "The election key is required to decrypt the votes and start the counting process.",
         "modalBullet2FirstPart": "The election key file containing the election key was downloaded by",
-        "modalBullet3": "Two countings for the same votes may lead to different results if there are drawings.",
+        "modalBullet3": "Two countings of the same votes may lead to different results if there are drawings.",
         "startCounting": "Start counting",
         "errors": {
           "couldNotReadElectionKeyFile": "Could not read election key from file. Did you choose the correct file?",
@@ -144,6 +144,16 @@
       "votesThatMustBeConsidered": "Votes that must be considered",
       "votesApprovedByTheBoard": "Votes approved by the electoral board",
       "votesRejectedByTheBoard": "Votes rejected by the electoral board"
+    },
+    "manageSurplusVoters" : {
+      "header": "Persons with Multiple Verified Votes",
+      "dropdown": "See persons",
+      "dropdownClose": "Close",
+      "description": "Some persons have approved votes in multiple voting groups. A person can not have more than one vote per election. You must therefore select which vote to count (remaining votes from the person are rejected).",
+      "descriptionNoPersons": "This election has no persons with multiple verified votes",
+      "confirm": "Confirm",
+      "person": "Person",
+      "votingGroup": "Select voting group"
     }
   },
   "backend": {

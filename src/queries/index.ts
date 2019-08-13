@@ -37,3 +37,69 @@ export async function getSignedInPersonDisplayName(
     throw error;
   }
 }
+
+export const selfAddedVoters = gql`
+  query electionGroupWithSelfAddedVoters($id: UUID!) {
+    electionGroup(id: $id) {
+      id
+      elections {
+        id
+        active
+        pollbooks {
+          id
+          name
+          selfAddedVoters {
+            id
+            verifiedStatus
+            idType
+            idValue
+            reason
+            pollbook {
+              id
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const searchVoters = gql`
+query searchVoters($electionGroupId: UUID!, 
+  $selfAdded: Boolean, $reviewed: Boolean, $verified: Boolean, $hasVoted: Boolean) {
+    searchVoters(electionGroupId: $electionGroupId, 
+      selfAdded: $selfAdded, reviewed: $reviewed, verified: $verified, hasVoted: $hasVoted) {
+        id
+        pollbook {
+          id
+          name
+        }
+      }
+  }
+`;
+
+export const personsWithMultipleVerifiedVotersQuery = gql`
+  query personsWithMultipleVerifiedVoters($id: UUID!) {
+    personsWithMultipleVerifiedVoters(id: $id) {
+      person {
+        id
+        displayName
+      }
+      voters {
+        id
+        pollbook {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
+export const refetchVoteManagementQueries = () => [
+  'electionGroupWithSelfAddedVoters',
+  'searchVoters',
+  'personsWithMultipleVerifiedVoters',
+  'turnoutCounts',
+];
