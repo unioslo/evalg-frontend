@@ -433,6 +433,12 @@
     "loginAsAdmin": "Log in as administrator",
     "readMore": "More about eValg"
   },
+  "majorityElec": {
+    "ballot": {
+      "chooseCandidate": "Choose candidate {{candidate}}",
+      "removeCandidate": "Remove candidate {{candidate}}"
+    }
+  },
   "person": {
     "loading": "Loading user information…"
   },
@@ -505,7 +511,6 @@
     "writeJustification": "Why you should be on the electoral roll for this voter group (optional)",
     "youAreOnTheElectoralRoll": "You are on the electoral roll"
   },
-<<<<<<< HEAD
   "votingReport": {
     "back": "Back",
     "emptyWithVote": "No voters in census with vote",
@@ -519,9 +524,8 @@
     },
     "withVotes": "With vote",
     "withoutVotes": "Without vote"
-=======
+  },
   "icons": {
     "close": "Close"
->>>>>>> Add title to svg close icon
   }
 }

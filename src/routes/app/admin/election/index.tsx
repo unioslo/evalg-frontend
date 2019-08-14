@@ -24,9 +24,13 @@ import VotingReport from './status/components/VotingReport';
 const electionGroupQuery = gql`
   ${ElectionGroupFields}
   ${ElectionFields}
+  ${ElectionGroupCountFields}
   query electionGroup($id: UUID!) {
     electionGroup(id: $id) {
       ...ElectionGroupFields
+      latestElectionGroupCount {
+        ...ElectionGroupCountFields
+      }
       announcementBlockers
       publicationBlockers
       elections {

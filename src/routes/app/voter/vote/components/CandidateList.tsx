@@ -62,7 +62,7 @@ const styles = (theme: any) => ({
   desktopButtons: {
     display: 'grid',
     gridTemplateAreas: `'upArrow . downArrow . cumulate . remove .'`,
-    gridTemplateColumns: '2rem 5rem 2rem 5rem 14rem 5rem 7.5rem 3.5rem',
+    gridTemplateColumns: '2rem 5rem 2rem 5rem 14rem 12rem 2rem 2rem',
   },
   desktopButtonsContainer: {
     display: 'flex',
@@ -322,15 +322,6 @@ const RemoveButton: React.FunctionComponent<IButtonProps> = props => {
           custom={{ color: 'teal', small: true }}
           title={props.title}
         />
-        <div className={props.classes.spacing} />
-
-        {props.title === undefined ? (
-          <Trans>general.remove</Trans>
-        ) : (
-          <div aria-hidden="true">
-            <Trans>general.remove</Trans>
-          </div>
-        )}
       </button>
     </>
   );

@@ -139,6 +139,7 @@ const getIcon = (
       });
       return (
         <svg className={addCircleCls} viewBox="0 0 46 46">
+          {title !== undefined && <title>{title}</title>}
           <g stroke="none" strokeWidth="1" fill="none">
             <circle strokeWidth="2" cx="23" cy="23" r="20" />
             <rect
@@ -158,6 +159,7 @@ const getIcon = (
       });
       return (
         <svg className={radioButtonCircleCls} viewBox="0 0 46 46">
+          {title !== undefined && <title>{title}</title>}
           <g stroke="none" strokeWidth="1" fill="none">
             <circle strokeWidth="3" cx="23" cy="23" r="20" />
           </g>
@@ -171,6 +173,7 @@ const getIcon = (
       });
       return (
         <svg className={radioButtonCircleSelectedCls} viewBox="0 0 46 46">
+          {title !== undefined && <title>{title}</title>}
           <g stroke="none" strokeWidth="1" fill="none">
             <circle strokeWidth="3" cx="23" cy="23" r="20" />
           </g>
