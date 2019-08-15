@@ -93,14 +93,14 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
     setProcessingFileForERId(electionResultId);
     setFileDownloadError('');
 
-    let countingProtocolBase64, electionName;
+    let countingProtocol, electionName;
     try {
       const { data } = await apolloClient.query({
         query: countingProtocolDownloadQuery,
         variables: { id: electionResultId },
         fetchPolicy: 'no-cache',
       });
-      countingProtocolBase64 = data.electionResult.electionProtocol;
+      countingProtocol = data.electionResult.electionProtocol;
       electionName = data.electionResult.election.name[lang];
     } catch (error) {
       setProcessingFileForERId('');
@@ -108,9 +108,12 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
       return;
     }
 
-    const blob = b64toBlob(countingProtocolBase64, 'application/pdf');
+    const blob = new Blob([countingProtocol], {
+      type: 'text/plain;charset=utf-8',
+    });
+
     setProcessingFileForERId('');
-    FileSaver.saveAs(blob, `counting_protocol-${electionName}.pdf`);
+    FileSaver.saveAs(blob, `counting_protocol-${electionName}.txt`);
   };
 
   const handleDownloadBallots = async (
@@ -180,7 +183,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
                       );
                     }}
                   >
-                    {t('general.download')} (PDF)
+                    {t('general.download')} (TXT)
                   </a>
                 </span>
                 <span className={classes.verticalLineSeparator}>|</span>
