@@ -55,6 +55,8 @@
           }
         }
       },
+      "warningSelfAddedVoters": "Counting can not be started before all self added voters have been reviewed",
+      "warningPersonsWithMultipleVoters": "Counting can not be started before all persons with multiple votes have been reviewed",
       "countingsSubsection": {
         "header": "Countings",
         "startedBy": "Started by",

@@ -21,11 +21,6 @@ interface IProps {
   refetchElectionGroupFunction: () => Promise<any>;
 }
 
-interface PropsQuery {
-  render: any;
-  electionGroupId: string;
-}
-
 interface CategorizedVoters {
   notReviewedVoters: IVoter[];
   verifiedVoters: IVoter[];
@@ -95,57 +90,61 @@ const StatusPage: React.FunctionComponent<IProps> = ({
           variables={{ id: electionGroup.id }}
           fetchPolicy="network-only"
         >
-          {selfAddedVoters => (
-            <Query
-              query={searchVotersQuery}
-              variables={{
-                electionGroupId: electionGroup.id,
-                selfAdded: false,
-                reviewed: true,
-                verified: false,
-              }}
-              fetchPolicy="network-only"
-            >
-              {adminAddedRejectedVoters => (
-                <Query
-                  query={personsWithMultipleVerifiedVotersQuery}
-                  variables={{ id: electionGroup.id }}
-                  fetchPolicy="network-only"
-                >
-                  {personsWithMultipleVerifiedVoters => {
-                    const categorizedVoters = getCategorizedVoters(
-                      selfAddedVoters
-                    );
-                    return (
-                      <>
-                        <VotesSection
-                          electionGroup={electionGroup}
-                          categorizedVoters={categorizedVoters}
-                          adminAddedRejectedVoters={adminAddedRejectedVoters}
-                          selfAddedVoters={selfAddedVoters}
-                        />
-                        <SurplusVotesSection
-                          electionGroup={electionGroup}
-                          personsWithMultipleVerifiedVoters={
-                            personsWithMultipleVerifiedVoters
-                          }
-                        />
-                        <CountingSection
-                          selfAddedVoters={selfAddedVoters}
-                          categorizedVoters={categorizedVoters}
-                          personsWithMultipleVerifiedVoters={
-                            personsWithMultipleVerifiedVoters
-                          }
-                          electionGroup={electionGroup}
-                          scrollToStatusRef={scrollToStatusRef}
-                        />
-                      </>
-                    );
-                  }}
-                </Query>
-              )}
-            </Query>
-          )}
+          {selfAddedVoters => {
+            const categorizedVoters = getCategorizedVoters(selfAddedVoters);
+            return (
+              <Query
+                query={searchVotersQuery}
+                variables={{
+                  electionGroupId: electionGroup.id,
+                  selfAdded: false,
+                  reviewed: true,
+                  verified: false,
+                }}
+                fetchPolicy="network-only"
+              >
+                {adminAddedRejectedVoters => {
+                  return (
+                    <Query
+                      query={personsWithMultipleVerifiedVotersQuery}
+                      variables={{ id: electionGroup.id }}
+                      fetchPolicy="network-only"
+                    >
+                      {personsWithMultipleVerifiedVoters => {
+                        return (
+                          <>
+                            <VotesSection
+                              electionGroup={electionGroup}
+                              categorizedVoters={categorizedVoters}
+                              adminAddedRejectedVoters={
+                                adminAddedRejectedVoters
+                              }
+                              selfAddedVoters={selfAddedVoters}
+                            />
+                            <SurplusVotesSection
+                              electionGroup={electionGroup}
+                              personsWithMultipleVerifiedVoters={
+                                personsWithMultipleVerifiedVoters
+                              }
+                            />
+                            <CountingSection
+                              selfAddedVoters={selfAddedVoters}
+                              categorizedVoters={categorizedVoters}
+                              personsWithMultipleVerifiedVoters={
+                                personsWithMultipleVerifiedVoters
+                              }
+                              electionGroup={electionGroup}
+                              scrollToStatusRef={scrollToStatusRef}
+                            />
+                          </>
+                        );
+                      }}
+                    </Query>
+                  );
+                }}
+              </Query>
+            );
+          }}
         </Query>
         {showElectionKeySectionAtBottom && (
           <ElectionKeySection

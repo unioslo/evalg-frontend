@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { WithApolloClient, withApollo } from 'react-apollo';
 import {
   Trans,
-  useTranslation,
   WithTranslation,
   withTranslation,
 } from 'react-i18next';
@@ -84,10 +83,6 @@ class SurplusVotesMngmt extends React.Component<PropsInternal, IState> {
     };
   }
 
-  public shouldComponentUpdate(nextProps: PropsInternal, nextState: IState) {
-    return nextProps.personsWithMultipleVerifiedVoters.loading === false;
-  }
-
   public rejectVote = (voterId: string) => {
     const mutationVars = {
       mutation: reviewVoter,
@@ -96,6 +91,7 @@ class SurplusVotesMngmt extends React.Component<PropsInternal, IState> {
         verify: false,
       },
       refetchQueries: refetchVoteManagementQueries,
+      awaitRefetchQueries: true,
     };
     return this.props.client.mutate(mutationVars);
   };
@@ -171,7 +167,7 @@ class SurplusVotesMngmt extends React.Component<PropsInternal, IState> {
     }
 
     if (this.props.personsWithMultipleVerifiedVoters.loading) {
-      return <p>'Loading!'</p>;
+      return <Spinner darkStyle/>;
     }
 
     const personsWithMultipleVerifiedVoters = this.props

@@ -55,6 +55,8 @@
           }
         }
       },
+      "warningSelfAddedVoters": "Valget kan ikke telles opp før alle stemmer utenfor manntal er behandlet",
+      "warningPersonsWithMultipleVoters": "Valget kan ikke telles opp før alle personer med flere stemmer er behandlet",
       "countingsSubsection": {
         "header": "Opptellinger",
         "startedBy": "Startet av",

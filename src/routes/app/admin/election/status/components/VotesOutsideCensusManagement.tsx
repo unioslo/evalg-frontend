@@ -1,69 +1,113 @@
 import React from 'react';
-import { Trans, useTranslation } from 'react-i18next';
+import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 
-import { PageExpandableSubSection } from 'components/page/PageSection';
-import { ElectionGroup, IVoter } from 'interfaces';
+import {
+  StatelessExpandableSubSection,
+} from 'components/page/PageSection';
 
 import SelfAddedVotersMngmtTable, {
   VotersReviewTableAction,
 } from './SelfAddedVotersMngmtTable';
 
-interface Props {
+interface Props extends WithTranslation {
   selfAddedVoters: any;
   categorizedVoters: any;
   adminAddedRejectedVoters: any;
 }
 
-const VotesOutsideCensusManagement: React.FunctionComponent<Props> = ({ selfAddedVoters, categorizedVoters, adminAddedRejectedVoters}) => {
-  const { t } = useTranslation();
+interface State {
+  isExpandedNotReviewedVoters: boolean;
+  isExpandedVerifiedVoters: boolean;
+  isExpandedRejectedVoters: boolean;
+}
 
-  if (
-    selfAddedVoters.error ||
-    adminAddedRejectedVoters.error
-  ) {
-    return <p>Error!</p>;
+class VotesOutsideCensusManagement extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      isExpandedNotReviewedVoters: false,
+      isExpandedVerifiedVoters: false,
+      isExpandedRejectedVoters: false,
+    };
   }
 
-  if ((selfAddedVoters.loading || adminAddedRejectedVoters.loading) || (selfAddedVoters.data === undefined )) {
-    return <p><Trans>census.loadingVotesOutsideCensus</Trans></p>;
+  render() {
+    if (
+      this.props.selfAddedVoters.error ||
+      this.props.adminAddedRejectedVoters.error
+    ) {
+      return <p>Error!</p>;
+    }
+
+    if (
+      this.props.selfAddedVoters.loading ||
+      this.props.adminAddedRejectedVoters.loading
+    ) {
+      return (
+        <p>
+          <Trans>census.loadingVotesOutsideCensus</Trans>
+        </p>
+      );
+    }
+
+    this.props.categorizedVoters.rejectedVoters.concat(
+      this.props.adminAddedRejectedVoters.data.searchVoters
+    );
+
+    const votesToConsiderHeading = `${this.props.t(
+      'admin.manageSelfAddedVoters.votesThatMustBeConsidered'
+    )} (${this.props.categorizedVoters.notReviewedVoters.length})`;
+    const approvedVotesHeading = `${this.props.t(
+      'admin.manageSelfAddedVoters.votesApprovedByTheBoard'
+    )} (${this.props.categorizedVoters.verifiedVoters.length})`;
+    const rejectedVotesHeading = `${this.props.t(
+      'admin.manageSelfAddedVoters.votesRejectedByTheBoard'
+    )} (${this.props.categorizedVoters.rejectedVoters.length})`;
+
+    return (
+      <>
+        <StatelessExpandableSubSection
+          setIsExpanded={(newIsExpanded: boolean) =>
+            this.setState({ isExpandedNotReviewedVoters: newIsExpanded })
+          }
+          isExpanded={this.state.isExpandedNotReviewedVoters}
+          header={votesToConsiderHeading}
+        >
+          <SelfAddedVotersMngmtTable
+            voters={this.props.categorizedVoters.notReviewedVoters}
+            tableAction={VotersReviewTableAction.Review}
+          />
+        </StatelessExpandableSubSection>
+
+        <StatelessExpandableSubSection
+          setIsExpanded={(newIsExpanded: boolean) =>
+            this.setState({ isExpandedVerifiedVoters: newIsExpanded })
+          }
+          isExpanded={this.state.isExpandedVerifiedVoters}
+          header={approvedVotesHeading}
+        >
+          <SelfAddedVotersMngmtTable
+            voters={this.props.categorizedVoters.verifiedVoters}
+            tableAction={VotersReviewTableAction.UndoApproval}
+          />
+        </StatelessExpandableSubSection>
+
+        <StatelessExpandableSubSection
+          setIsExpanded={(newIsExpanded: boolean) =>
+            this.setState({ isExpandedRejectedVoters: newIsExpanded })
+          }
+          isExpanded={this.state.isExpandedRejectedVoters}
+          header={rejectedVotesHeading}
+        >
+          <SelfAddedVotersMngmtTable
+            voters={this.props.categorizedVoters.rejectedVoters}
+            tableAction={VotersReviewTableAction.UndoRejection}
+          />
+        </StatelessExpandableSubSection>
+      </>
+    );
   }
+}
 
-  categorizedVoters.rejectedVoters.concat(adminAddedRejectedVoters.data.searchVoters);
-
-  const votesToConsiderHeading = `${t(
-    'admin.manageSelfAddedVoters.votesThatMustBeConsidered'
-  )} (${categorizedVoters.notReviewedVoters.length})`;
-  const approvedVotesHeading = `${t(
-    'admin.manageSelfAddedVoters.votesApprovedByTheBoard'
-  )} (${categorizedVoters.verifiedVoters.length})`;
-  const rejectedVotesHeading = `${t(
-    'admin.manageSelfAddedVoters.votesRejectedByTheBoard'
-  )} (${categorizedVoters.rejectedVoters.length})`;
-
-  return (
-    <>
-      <PageExpandableSubSection header={votesToConsiderHeading}>
-        <SelfAddedVotersMngmtTable
-          voters={categorizedVoters.notReviewedVoters}
-          tableAction={VotersReviewTableAction.Review}
-        />
-      </PageExpandableSubSection>
-
-      <PageExpandableSubSection header={approvedVotesHeading}>
-        <SelfAddedVotersMngmtTable
-          voters={categorizedVoters.verifiedVoters}
-          tableAction={VotersReviewTableAction.UndoApproval}
-        />
-      </PageExpandableSubSection>
-
-      <PageExpandableSubSection header={rejectedVotesHeading}>
-        <SelfAddedVotersMngmtTable
-          voters={categorizedVoters.rejectedVoters}
-          tableAction={VotersReviewTableAction.UndoRejection}
-        />
-      </PageExpandableSubSection>
-    </>
-  );
-};
-
-export default VotesOutsideCensusManagement;
+export default withTranslation()(VotesOutsideCensusManagement);

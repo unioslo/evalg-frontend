@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
-import { useTranslation, Trans } from 'react-i18next';
+import React from 'react';
+import {
+  WithTranslation,
+  withTranslation,
+} from 'react-i18next';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -12,9 +15,6 @@ import CountingModal from './CountingModal';
 import CountingSectionCounts from './CountingSectionCounts';
 import { Classes } from 'jss';
 import injectSheet from 'react-jss';
-import { schemaDefinitionNotAloneMessage } from 'graphql/validation/rules/LoneSchemaDefinition';
-import { isUndefined } from 'util';
-import Spinner from 'components/animations/Spinner';
 
 export const electionGroupCountsQuery = gql`
   ${ElectionGroupCountFields}
@@ -26,14 +26,12 @@ export const electionGroupCountsQuery = gql`
 `;
 
 const styles = (theme: any) => ({
-  countingNotAllowedContainer: {
+  warningParagraph: {
     color: theme.colors.darkRed,
-    alignItems: 'center',
-    textAlign: 'center',
   },
 });
 
-interface Props {
+interface Props extends WithTranslation {
   electionGroup: ElectionGroup;
   scrollToStatusRef: React.RefObject<HTMLDivElement>;
   selfAddedVoters: any;
@@ -42,122 +40,123 @@ interface Props {
   classes: Classes;
 }
 
-const CountingSection: React.FunctionComponent<Props> = ({
-  electionGroup,
-  scrollToStatusRef,
-  selfAddedVoters,
-  categorizedVoters,
-  personsWithMultipleVerifiedVoters,
-  classes,
-}) => {
-  const [showModal, setShowModal] = useState(false);
-  const [message, setMessage] = useState('');
-  const loadingParentQueries =
-    selfAddedVoters.loading || personsWithMultipleVerifiedVoters.loading;
-  const errorParentQueries =
-    selfAddedVoters.error || personsWithMultipleVerifiedVoters.error;
-  const { t } = useTranslation();
+interface State {
+  showModal: boolean;
+  message: string;
+}
 
-  const getMessage = () => {
-    if (!(selfAddedVoters.loading || selfAddedVoters.error)) {
-      if (categorizedVoters.notReviewedVoters.length > 0) {
-        return t(`admin.countingSection.notAllowedSelfAddedVoters`);
-      }
+class CountingSection extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = { showModal: false, message: '' };
+  }
+
+  componentWillUpdate(newProps: Props, newState: State) { 
+    if (this.state.message !== '') {
+      this.setState({ message: '' });
+    }
+  }
+
+  public getMessage = () => {
+    if (
+      !(
+        this.props.selfAddedVoters.loading || this.props.selfAddedVoters.error
+      ) &&
+      this.props.categorizedVoters.notReviewedVoters.length > 0
+    ) {
+      return this.props.t(`admin.countingSection.warningSelfAddedVoters`);
     }
     if (
       !(
-        personsWithMultipleVerifiedVoters.loading ||
-        personsWithMultipleVerifiedVoters.error
-      )
+        this.props.personsWithMultipleVerifiedVoters.loading ||
+        this.props.personsWithMultipleVerifiedVoters.error
+      ) &&
+      this.props.personsWithMultipleVerifiedVoters.data
+        .personsWithMultipleVerifiedVoters.length > 0
     ) {
-      if (
-        personsWithMultipleVerifiedVoters.data.personsWithMultipleVerifiedVoters
-          .length > 0
-      ) {
-        return t(`admin.countingSection.notAllowedPersonsWithMultipleVoters`);
-      }
+      return this.props.t(
+        `admin.countingSection.warningPersonsWithMultipleVoters`
+      );
     }
     return '';
   };
 
-  const handleShowModal = () => {
-    console.error(selfAddedVoters, 'selfAdded');
-    console.error(personsWithMultipleVerifiedVoters, 'persons');
-
-    const tempMessage = getMessage();
+  public handleShowModal = () => {
+    const tempMessage = this.getMessage();
 
     if (tempMessage === '') {
-      setShowModal(true);
+      this.setState({ showModal: true });
     } else {
-      setMessage(tempMessage);
+      this.setState({ message: tempMessage });
     }
   };
 
-  const handleCancelModal = () => {
-    setShowModal(false);
+  public handleCancelModal = () => {
+    this.setState({ showModal: false });
   };
 
-  const handleCloseModalAndSeeResults = () => {
-    setShowModal(false);
-    if (scrollToStatusRef.current) {
+
+  public handleCloseModalAndSeeResults = () => {
+    this.setState({ showModal: false });
+    if (this.props.scrollToStatusRef.current) {
       setTimeout(
         () =>
-          scrollToStatusRef.current &&
-          scrollToStatusRef.current.scrollIntoView(),
+          this.props.scrollToStatusRef.current &&
+          this.props.scrollToStatusRef.current.scrollIntoView(),
         0
       );
     }
   };
 
-  console.error('isLoading', loadingParentQueries);
+  render() {
+    return (
+      <PageSection header={this.props.t('admin.countingSection.header')}>
+        {this.props.electionGroup.status === 'closed' ? (
+          <ButtonContainer alignLeft smlTopMargin>
+            <Query
+              query={electionGroupCountsQuery}
+              variables={{ id: this.props.electionGroup.id }}
+            >
+              {({ data, loading, error }) => {
+                const showFirstTimeCountingButton =
+                  error ||
+                  loading ||
+                  data.electionGroupCountingResults.length === 0;
 
-  return (
-    <PageSection header={t('admin.countingSection.header')}>
-      {electionGroup.status === 'closed' ? (
-        <ButtonContainer alignLeft smlTopMargin>
-          <Query
-            query={electionGroupCountsQuery}
-            variables={{ id: electionGroup.id }}
-          >
-            {({ data, loading, error }) => {
-              const showFirstTimeCountingButton =
-                error ||
-                loading ||
-                data.electionGroupCountingResults.length === 0;
+                return (
+                  <Button
+                    text={
+                      showFirstTimeCountingButton
+                        ? this.props.t('admin.countingSection.startCounting')
+                        : this.props.t('admin.countingSection.startNewCounting')
+                    }
+                    action={this.handleShowModal}
+                    secondary={!showFirstTimeCountingButton}
+                  />
+                );
+              }}
+            </Query>
+            <p className={this.props.classes.warningParagraph}>
+              {this.state.message}
+            </p>
+          </ButtonContainer>
+        ) : (
+          this.props.t('election.electionNotClosed')
+        )}
 
-              return (
-                <Button
-                  text={
-                    showFirstTimeCountingButton
-                      ? t('admin.countingSection.startCounting')
-                      : t('admin.countingSection.startNewCounting')
-                  }
-                  action={handleShowModal}
-                  secondary={!showFirstTimeCountingButton}
-                />
-              );
-            }}
-          </Query>
-          {/* {loadingParentQueries && <Spinner darkStyle />} */}
-          <div className={classes.countingNotAllowedContainer}>
-            <p>{message}</p>
-          </div>
-        </ButtonContainer>
-      ) : (
-        t('election.electionNotClosed')
-      )}
+        {this.state.showModal && (
+          <CountingModal
+            electionGroup={this.props.electionGroup}
+            onCancelModal={this.handleCancelModal}
+            onCloseModalAndSeeResults={this.handleCloseModalAndSeeResults}
+          />
+        )}
 
-      {showModal && (
-        <CountingModal
-          electionGroup={electionGroup}
-          onCancelModal={handleCancelModal}
-          onCloseModalAndSeeResults={handleCloseModalAndSeeResults}
-        />
-      )}
+        <CountingSectionCounts electionGroupId={this.props.electionGroup.id} />
+      </PageSection>
+    );
+  }
+}
 
-      <CountingSectionCounts electionGroupId={electionGroup.id} />
-    </PageSection>
-  );
-};
-
-export default injectSheet(styles)(CountingSection);
+export default injectSheet(styles)(withTranslation()(CountingSection));
