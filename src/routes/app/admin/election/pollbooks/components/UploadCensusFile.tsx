@@ -14,8 +14,7 @@ import {
 
 import { translateBackendError } from 'utils';
 import Button from 'components/button';
-import { FormField } from 'components/form';
-import { RadioButtonGroup } from 'components/form';
+import { FormField, RadioButtonGroup } from 'components/form';
 import Modal from 'components/modal';
 
 const styles = (theme: any) => ({

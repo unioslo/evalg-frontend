@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -10,6 +10,11 @@ import { PageSection } from 'components/page';
 import Button, { ButtonContainer } from 'components/button';
 import CountingModal from './CountingModal';
 import CountingSectionCounts from './CountingSectionCounts';
+import { Classes } from 'jss';
+import injectSheet from 'react-jss';
+import { schemaDefinitionNotAloneMessage } from 'graphql/validation/rules/LoneSchemaDefinition';
+import { isUndefined } from 'util';
+import Spinner from 'components/animations/Spinner';
 
 export const electionGroupCountsQuery = gql`
   ${ElectionGroupCountFields}
@@ -20,20 +25,72 @@ export const electionGroupCountsQuery = gql`
   }
 `;
 
+const styles = (theme: any) => ({
+  countingNotAllowedContainer: {
+    color: theme.colors.darkRed,
+    alignItems: 'center',
+    textAlign: 'center',
+  },
+});
+
 interface Props {
   electionGroup: ElectionGroup;
   scrollToStatusRef: React.RefObject<HTMLDivElement>;
+  selfAddedVoters: any;
+  categorizedVoters: any;
+  personsWithMultipleVerifiedVoters: any;
+  classes: Classes;
 }
 
 const CountingSection: React.FunctionComponent<Props> = ({
   electionGroup,
   scrollToStatusRef,
+  selfAddedVoters,
+  categorizedVoters,
+  personsWithMultipleVerifiedVoters,
+  classes,
 }) => {
   const [showModal, setShowModal] = useState(false);
+  const [message, setMessage] = useState('');
+  const loadingParentQueries =
+    selfAddedVoters.loading || personsWithMultipleVerifiedVoters.loading;
+  const errorParentQueries =
+    selfAddedVoters.error || personsWithMultipleVerifiedVoters.error;
   const { t } = useTranslation();
 
+  const getMessage = () => {
+    if (!(selfAddedVoters.loading || selfAddedVoters.error)) {
+      if (categorizedVoters.notReviewedVoters.length > 0) {
+        return t(`admin.countingSection.notAllowedSelfAddedVoters`);
+      }
+    }
+    if (
+      !(
+        personsWithMultipleVerifiedVoters.loading ||
+        personsWithMultipleVerifiedVoters.error
+      )
+    ) {
+      if (
+        personsWithMultipleVerifiedVoters.data.personsWithMultipleVerifiedVoters
+          .length > 0
+      ) {
+        return t(`admin.countingSection.notAllowedPersonsWithMultipleVoters`);
+      }
+    }
+    return '';
+  };
+
   const handleShowModal = () => {
-    setShowModal(true);
+    console.error(selfAddedVoters, 'selfAdded');
+    console.error(personsWithMultipleVerifiedVoters, 'persons');
+
+    const tempMessage = getMessage();
+
+    if (tempMessage === '') {
+      setShowModal(true);
+    } else {
+      setMessage(tempMessage);
+    }
   };
 
   const handleCancelModal = () => {
@@ -51,6 +108,8 @@ const CountingSection: React.FunctionComponent<Props> = ({
       );
     }
   };
+
+  console.error('isLoading', loadingParentQueries);
 
   return (
     <PageSection header={t('admin.countingSection.header')}>
@@ -79,6 +138,10 @@ const CountingSection: React.FunctionComponent<Props> = ({
               );
             }}
           </Query>
+          {/* {loadingParentQueries && <Spinner darkStyle />} */}
+          <div className={classes.countingNotAllowedContainer}>
+            <p>{message}</p>
+          </div>
         </ButtonContainer>
       ) : (
         t('election.electionNotClosed')
@@ -97,4 +160,4 @@ const CountingSection: React.FunctionComponent<Props> = ({
   );
 };
 
-export default CountingSection;
+export default injectSheet(styles)(CountingSection);

@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import { Query, WithApolloClient, withApollo } from 'react-apollo';
-import { Trans, useTranslation } from 'react-i18next';
+import { WithApolloClient, withApollo } from 'react-apollo';
+import {
+  Trans,
+  useTranslation,
+  WithTranslation,
+  withTranslation,
+} from 'react-i18next';
 import { PageExpandableSubSection } from 'components/page/PageSection';
 import {
   Table,
@@ -19,8 +24,8 @@ import Button from 'components/button';
 import { Classes } from 'jss';
 import Spinner from 'components/animations/Spinner';
 import { reviewVoter } from 'mutations';
-import { refetchVoteManagementQueries, personsWithMultipleVerifiedVotersQuery } from 'queries';
-import Icon from 'components/icon/index';
+import { refetchVoteManagementQueries } from 'queries';
+import Icon from 'components/icon';
 
 const styles = (theme: any) => ({
   voteSelectForm: {
@@ -58,19 +63,32 @@ interface IReviewVoterResponse {
   ok: boolean;
 }
 
-interface IProps {
+interface IProps extends WithTranslation {
   electionGroupId: string;
+  personsWithMultipleVerifiedVoters: any;
   classes: Classes;
+}
+
+interface IState {
+  isUploading: boolean;
 }
 
 type PropsInternal = WithApolloClient<IProps>;
 
-const SurplusVotesMngmt: React.FunctionComponent<PropsInternal> = props => {
-  const { t, i18n } = useTranslation();
+class SurplusVotesMngmt extends React.Component<PropsInternal, IState> {
+  constructor(props: PropsInternal) {
+    super(props);
 
-  const [isUploading, setIsUploading] = useState(false);
+    this.state = {
+      isUploading: false,
+    };
+  }
 
-  const rejectVote = (voterId: string, isLastQuery: boolean) => {
+  public shouldComponentUpdate(nextProps: PropsInternal, nextState: IState) {
+    return nextProps.personsWithMultipleVerifiedVoters.loading === false;
+  }
+
+  public rejectVote = (voterId: string) => {
     const mutationVars = {
       mutation: reviewVoter,
       variables: {
@@ -78,32 +96,28 @@ const SurplusVotesMngmt: React.FunctionComponent<PropsInternal> = props => {
         verify: false,
       },
       refetchQueries: refetchVoteManagementQueries,
-      awaitRefetchQueries: true,
     };
-
-    return props.client.mutate(mutationVars);
+    return this.props.client.mutate(mutationVars);
   };
 
-  const getOnSubmit = (voters: IVoter[]) =>
-    async function(value: any) {
-      setIsUploading(true);
-      const votersToReject = voters.filter(voter => voter.id != value.voterId);
-      const lastElement = votersToReject[votersToReject.length - 1];
-      const promises = votersToReject.map((voter: IVoter) =>
-        rejectVote(voter.id, voter === lastElement)
-      );
-      await Promise.all(promises);
-      setIsUploading(false);
-    };
+  public getOnSubmit = (voters: IVoter[]) => async (value: any) => {
+    this.setState({ isUploading: true });
+    const votersToReject = voters.filter(voter => voter.id !== value.voterId);
+    const promises = votersToReject.map((voter: IVoter) =>
+      this.rejectVote(voter.id)
+    );
+    await Promise.all(promises);
+    this.setState({ isUploading: false });
+  };
 
-  const getOptions = (voters: IVoter[]) =>
+  public getOptions = (voters: IVoter[]) =>
     voters.map(voter => ({
-      label: voter.pollbook.name[i18n.language],
+      label: voter.pollbook.name[this.props.i18n.language],
       value: voter.id,
       id: voter.id,
     }));
 
-  const getRenderForm = (person: IPerson, voters: IVoter[]) => (
+  public getRenderForm = (person: IPerson, voters: IVoter[]) => (
     formRenderProps: FormRenderProps
   ) => {
     const { handleSubmit, pristine, invalid } = formRenderProps;
@@ -118,8 +132,8 @@ const SurplusVotesMngmt: React.FunctionComponent<PropsInternal> = props => {
                 handleSubmit(event);
               }}
             >
-              <div className={props.classes.voteSelectForm}>
-                <div className={props.classes.radioButton}>
+              <div className={this.props.classes.voteSelectForm}>
+                <div className={this.props.classes.radioButton}>
                   <FormField>
                     <Field
                       name="voterId"
@@ -127,18 +141,18 @@ const SurplusVotesMngmt: React.FunctionComponent<PropsInternal> = props => {
                       validate={(value: any) =>
                         value ? undefined : 'Required'
                       }
-                      options={getOptions(voters)}
+                      options={this.getOptions(voters)}
                     />
                   </FormField>
                 </div>
-                <div className={props.classes.buttonContainer}>
+                <div className={this.props.classes.buttonContainer}>
                   <Button
-                    text={t(`admin.manageSurplusVoters.confirm`)}
-                    disabled={pristine || invalid || isUploading}
+                    text={this.props.t(`admin.manageSurplusVoters.confirm`)}
+                    disabled={pristine || invalid || this.state.isUploading}
                     type="submit"
                   />
-                  <div className={props.classes.spinnerContainer}>
-                    {isUploading && (
+                  <div className={this.props.classes.spinnerContainer}>
+                    {this.state.isUploading && (
                       <Spinner darkStyle marginLeft="1.4rem" size="2.2rem" />
                     )}
                   </div>
@@ -151,65 +165,61 @@ const SurplusVotesMngmt: React.FunctionComponent<PropsInternal> = props => {
     );
   };
 
-  return (
-    <Query
-      query={personsWithMultipleVerifiedVotersQuery}
-      variables={{ id: props.electionGroupId }}
-      key={props.electionGroupId}
-      fetchPolicy="network-only"
-    >
-      {({ data, loading, error }) => {
-        if (error) {
-          return 'Error!';
-        }
+  public render() {
+    if (this.props.personsWithMultipleVerifiedVoters.error) {
+      return <p>'Error!'</p>;
+    }
 
-        if (loading) {
-          return 'Loading!';
-        }
-        const personsWithMultipleVerifiedVoters = data.personsWithMultipleVerifiedVoters as IPersonWithVoters[];
+    if (this.props.personsWithMultipleVerifiedVoters.loading) {
+      return <p>'Loading!'</p>;
+    }
 
-        return personsWithMultipleVerifiedVoters.length === 0 ? (
-          <div className={props.classes.descriptionContainer}>
-            <span>
-              <Trans>admin.manageSurplusVoters.descriptionNoPersons</Trans>
-            </span>
-            <div className={props.classes.iconContainer}>
-              <Icon type="checkMark" />
-            </div>
-          </div>
-        ) : (
-          <>
-            <Trans>admin.manageSurplusVoters.description</Trans>
-            <PageExpandableSubSection
-              header={`${t(`admin.manageSurplusVoters.dropdown`)} (${
-                personsWithMultipleVerifiedVoters.length
-              })`}
-            >
-              <Table marginTop="3rem">
-                <TableHeader>
-                  <TableHeaderRow>
-                    <TableHeaderCell width="31%">
-                      <Trans>admin.manageSurplusVoters.person</Trans>
-                    </TableHeaderCell>
-                    <TableHeaderCell width="69%">
-                      <Trans>election.voterGroup</Trans>
-                    </TableHeaderCell>
-                  </TableHeaderRow>
-                </TableHeader>
-                {personsWithMultipleVerifiedVoters.map(({ person, voters }) => (
-                  <Form
-                    key={person.id}
-                    onSubmit={getOnSubmit(voters)}
-                    render={getRenderForm(person, voters)}
-                  />
-                ))}
-              </Table>
-            </PageExpandableSubSection>
-          </>
-        );
-      }}
-    </Query>
-  );
-};
+    const personsWithMultipleVerifiedVoters = this.props
+      .personsWithMultipleVerifiedVoters.data
+      .personsWithMultipleVerifiedVoters as IPersonWithVoters[];
 
-export default injectSheet(styles)(withApollo(SurplusVotesMngmt));
+    return personsWithMultipleVerifiedVoters.length === 0 ? (
+      <div className={this.props.classes.descriptionContainer}>
+        <span>
+          <Trans>admin.manageSurplusVoters.descriptionNoPersons</Trans>
+        </span>
+        <div className={this.props.classes.iconContainer}>
+          <Icon type="checkMark" />
+        </div>
+      </div>
+    ) : (
+      <>
+        <Trans>admin.manageSurplusVoters.description</Trans>
+        <PageExpandableSubSection
+          header={`${this.props.t(`admin.manageSurplusVoters.dropdown`)} (${
+            personsWithMultipleVerifiedVoters.length
+          })`}
+        >
+          <Table marginTop="3rem">
+            <TableHeader>
+              <TableHeaderRow>
+                <TableHeaderCell width="31%">
+                  <Trans>admin.manageSurplusVoters.person</Trans>
+                </TableHeaderCell>
+                <TableHeaderCell width="69%">
+                  <Trans>election.voterGroup</Trans>
+                </TableHeaderCell>
+              </TableHeaderRow>
+            </TableHeader>
+            {personsWithMultipleVerifiedVoters.map(({ person, voters }) => (
+              <Form
+                key={person.id}
+                onSubmit={this.getOnSubmit(voters)}
+                render={this.getRenderForm(person, voters)}
+              />
+            ))}
+          </Table>
+        </PageExpandableSubSection>
+      </>
+    );
+  }
+}
+
+export default injectSheet(styles)(
+  withTranslation()(withApollo(SurplusVotesMngmt))
+);

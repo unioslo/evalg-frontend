@@ -161,7 +161,6 @@ const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
                               mutation={undoReviewVoter}
                               variables={{ id: voter.id }}
                               refetchQueries={refetchVoteManagementQueries}
-                              awaitRefetchQueries
                             >
                               {(undo, { loading }) => {
                                 return (
@@ -234,7 +233,6 @@ const ReviewButtons: React.FunctionComponent<ReviewButtonProps> = ({
   <Mutation
     mutation={reviewVoter}
     refetchQueries={refetchVoteManagementQueries}
-    awaitRefetchQueries
   >
     {(review, { loading }) => {
       return (

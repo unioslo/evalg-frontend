@@ -38,7 +38,7 @@ export async function getSignedInPersonDisplayName(
   }
 }
 
-export const selfAddedVoters = gql`
+export const selfAddedVotersQuery = gql`
   query electionGroupWithSelfAddedVoters($id: UUID!) {
     electionGroup(id: $id) {
       id
@@ -65,7 +65,7 @@ export const selfAddedVoters = gql`
   }
 `;
 
-export const searchVoters = gql`
+export const searchVotersQuery = gql`
 query searchVoters($electionGroupId: UUID!, 
   $selfAdded: Boolean, $reviewed: Boolean, $verified: Boolean, $hasVoted: Boolean) {
     searchVoters(electionGroupId: $electionGroupId, 
