@@ -431,8 +431,23 @@
     "loginAsAdmin": "Logg inn som administrator",
     "readMore": "Mer om eValg"
   },
+  "majorityElec": {
+    "ballot": {
+      "chooseCandidate": "Velg kandidat {{candidate}}",
+      "removeCandidate": "Fjern kandidat {{candidate}}"
+    }
+  },
+  "person": {
+    "loading": "Laster brukerdata…"
+  },
   "prefElec": {
-    "candPageDesc": "Her legger du til kandidater som stiller for de ulike velgergruppene.<0></0>\nValget må ha minst like mange kandidater per gruppe som angitt under <1>valginnstillinger</1>."
+    "candPageDesc": "Her legger du til kandidater som stiller for de ulike velgergruppene.<0></0>\nValget må ha minst like mange kandidater per gruppe som angitt under <1>valginnstillinger</1>.",
+     "ballot": {
+      "addCandidate": "Legg kandidat {{candidate}} til stemmeseddelen",
+      "demoteCandidate": "Flytt kandidat {{candidate}} ned til plass {{index}}",
+      "promoteCandidate": "Flytt kandidat {{candidate}} opp til plass {{index}}",
+      "removeCandidate": "Fjern kandidat {{candidate}} fra stemmeseddel"
+    }
   },
   "voter": {
     "voterFrontPage": {
@@ -507,5 +522,8 @@
     },
     "withVotes": "Har avgitt stemme",
     "withoutVotes": "Har ikke avgitt stemme"
+  },
+  "icons": {
+    "close": "Lukk"
   }
 }

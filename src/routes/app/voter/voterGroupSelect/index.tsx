@@ -312,13 +312,18 @@ class VoterGroupSelectPage extends React.Component<
           <Trans>voterGroupSelect.notRegisteredInSelectedGroupInfoText</Trans>
         );
         extraElements = (
-          <textarea
-            value={this.state.notInPollBookJustification}
-            onChange={this.handlenotInPollBookJustificationChange}
-            className={classes.notInPollBookJustificationTextArea}
-            placeholder={t('voterGroupSelect.writeJustification')}
-            rows={6}
-          />
+          <>
+            <label htmlFor="censusJustification">
+              {t('voterGroupSelect.writeJustification')}
+            </label>
+            <textarea
+              id="censusJustification"
+              value={this.state.notInPollBookJustification}
+              onChange={this.handlenotInPollBookJustificationChange}
+              className={classes.notInPollBookJustificationTextArea}
+              rows={6}
+            />
+          </>
         );
       }
     } else {

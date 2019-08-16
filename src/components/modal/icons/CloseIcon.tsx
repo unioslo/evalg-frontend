@@ -1,5 +1,6 @@
 import React from 'react';
 import injectSheet from 'react-jss';
+import { useTranslation } from 'react-i18next';
 import { Classes } from 'jss';
 
 const styles = (theme: any) => ({
@@ -18,6 +19,8 @@ interface IProps {
 
 const CloseIcon = (props: IProps) => {
   const { classes } = props;
+  const { t } = useTranslation();
+
   return (
     <button className="button-no-style" onClick={props.closeAction}>
       <svg width="19px" height="19px" viewBox="0 0 19 19">
@@ -48,6 +51,7 @@ const CloseIcon = (props: IProps) => {
             rx="0.8"
           />
         </g>
+        <title>{t('icons.close')}</title>
       </svg>
     </button>
   );

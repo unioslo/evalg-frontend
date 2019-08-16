@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
+import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
 
 import Button, { ButtonContainer } from 'components/button';
@@ -30,7 +30,7 @@ const helpTextTags = [
   'voter.canVoteBlank',
 ];
 
-interface IProps {
+interface IProps extends WithTranslation {
   selectedCandidates: Candidate[];
   unselectedCandidates: Candidate[];
   election: Election;
@@ -69,6 +69,7 @@ class PrefElecBallot extends React.Component<IProps, IState> {
       onGoBackToSelectVoterGroup,
       onReviewBallot,
       classes,
+      t,
     } = this.props;
 
     const mobileResetButton = (
@@ -116,6 +117,7 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                   onMoveCandidate(index, index - 1);
                 const demoteCandidate = () => onMoveCandidate(index, index + 1);
                 const removeCandidate = () => onRemoveCandidate(c);
+
                 return (
                   <CandidateListItem key={`selected-${index}`}>
                     <Icon
@@ -135,12 +137,21 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                     ) : (
                       <ListItemDesktopButtons>
                         {index !== 0 ? (
-                          <UpArrow onClick={promoteCandidate} />
+                          <UpArrow
+                            onClick={promoteCandidate}
+                            title={t('prefElec.ballot.promoteCandidate', {candidate: c.name, index: index})}
+                          />
                         ) : null}
                         {index < selectedCandidates.length - 1 ? (
-                          <DownArrow onClick={demoteCandidate} />
+                          <DownArrow
+                            onClick={demoteCandidate}
+                            title={t('prefElec.ballot.demoteCandidate', {candidate: c.name, index: index+2})}
+                          />
                         ) : null}
-                        <RemoveButton onClick={removeCandidate} />
+                        <RemoveButton
+                          onClick={removeCandidate}
+                          title={t('prefElec.ballot.removeCandidate', {candidate: c.name})}
+                        />
                       </ListItemDesktopButtons>
                     )}
                   </CandidateListItem>
@@ -150,6 +161,7 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                 <CandidateListItem key={`unselected-${index}`}>
                   <Icon
                     type="addCircle"
+                    title={t('prefElec.ballot.addCandidate', {candidate: c.name})}
                     custom={
                       screenSize !== 'mobile' && screenSize !== 'sm'
                         ? 'small'
@@ -234,4 +246,4 @@ const styles = (theme: any) => ({
   },
 });
 
-export default injectSheet(styles)(PrefElecBallot);
+export default withTranslation()(injectSheet(styles)(PrefElecBallot));

@@ -286,6 +286,7 @@ class UploadCensusFileModal extends React.Component<
           component="input"
           type="file"
         />
+        {/* TODO convert to button */}
         <label htmlFor="censusFile" className={labelClassNames}>
           <Trans>general.chooseFile</Trans>
         </label>

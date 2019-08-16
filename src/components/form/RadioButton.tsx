@@ -61,10 +61,10 @@ const RadioButton = (props: IProps) => {
         onChange={onChange}
         checked={checked}
       />
-      <label htmlFor={id} className={iconClassNames} />
       <label htmlFor={id} className={classes.label}>
         {label}
       </label>
+      <label htmlFor={id} className={iconClassNames} />
     </div>
   );
 };
@@ -74,6 +74,7 @@ export { StyledRadioButton as RadioButton };
 
 interface IGroupProps {
   input: any;
+  legend: string;
   options: Array<{
     label: any | string;
     id: string;
@@ -107,7 +108,8 @@ export class RadioButtonGroup extends React.Component<
   render() {
     const { options, input } = this.props;
     return (
-      <div>
+      <fieldset>
+        <legend>{this.props.legend}</legend>
         {options.map((option, index) => {
           return (
             <StyledRadioButton
@@ -121,7 +123,7 @@ export class RadioButtonGroup extends React.Component<
             />
           );
         })}
-      </div>
+      </fieldset>
     );
   }
 }

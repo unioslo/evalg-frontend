@@ -62,7 +62,7 @@ const styles = (theme: any) => ({
   desktopButtons: {
     display: 'grid',
     gridTemplateAreas: `'upArrow . downArrow . cumulate . remove .'`,
-    gridTemplateColumns: '2rem 5rem 2rem 5rem 14rem 5rem 7.5rem 3.5rem',
+    gridTemplateColumns: '2rem 5rem 2rem 5rem 14rem 12rem 2rem 2rem',
   },
   desktopButtonsContainer: {
     display: 'flex',
@@ -185,6 +185,7 @@ const RankIcon: React.SFC<IRankProps> = props => (
       >
         {props.rankNr}
       </text>
+      <title>{'icons.close'}</title>
     </g>
   </svg>
 );
@@ -258,46 +259,73 @@ const HOCListItemDesktopButtons = injectSheet(styles)(ListItemDesktopButtons);
 interface IButtonProps {
   classes: any;
   onClick: () => void;
+  title?: string;
 }
 
-const UpArrow: React.SFC<IButtonProps> = props => (
-  <div className={props.classes.buttonUpArrow}>
-    <Icon type="upArrow" custom="teal" onClick={props.onClick} />
-  </div>
-);
+const UpArrow: React.FunctionComponent<IButtonProps> = props => {
+  return (
+    <div className={props.classes.buttonUpArrow}>
+      <Icon
+        type="upArrow"
+        custom="teal"
+        onClick={props.onClick}
+        title={props.title}
+      />
+    </div>
+  );
+};
 
 const HOCUpArrow = injectSheet(styles)(UpArrow);
 
-const DownArrow: React.SFC<IButtonProps> = props => (
-  <div className={props.classes.buttonDownArrow}>
-    <Icon type="downArrow" custom="teal" onClick={props.onClick} />
-  </div>
-);
+const DownArrow: React.FunctionComponent<IButtonProps> = props => {
+  return (
+    <div className={props.classes.buttonDownArrow}>
+      <Icon
+        type="downArrow"
+        custom="teal"
+        onClick={props.onClick}
+        title={props.title}
+      />
+    </div>
+  );
+};
 
 const HOCDownArrow = injectSheet(styles)(DownArrow);
 
-const CumulateButton: React.SFC<IButtonProps> = props => (
-  <div className={props.classes.buttonCumulate} onClick={props.onClick}>
-    <Icon type="star" custom={{ color: 'teal', small: true }} />
-    <Trans>voter.cumulate</Trans>
-  </div>
-);
+const CumulateButton: React.FunctionComponent<IButtonProps> = props => {
+  return (
+    <div className={props.classes.buttonCumulate} onClick={props.onClick}>
+      <Icon
+        type="star"
+        custom={{ color: 'teal', small: true }}
+        title={props.title}
+      />
+      <Trans>voter.cumulate</Trans>
+    </div>
+  );
+};
 
 const HOCCumulateButton = injectSheet(styles)(CumulateButton);
 
-const RemoveButton: React.SFC<IButtonProps> = props => (
-  <button
-    className={classNames({
-      [props.classes.buttonRemove]: true,
-      'button-no-style': true,
-    })}
-    onClick={props.onClick}
-  >
-    <Icon type="remove" custom={{ color: 'teal', small: true }} />
-    <div className={props.classes.spacing} />
-    <Trans>general.remove</Trans>
-  </button>
-);
+const RemoveButton: React.FunctionComponent<IButtonProps> = props => {
+  return (
+    <>
+      <button
+        className={classNames({
+          [props.classes.buttonRemove]: true,
+          'button-no-style': true,
+        })}
+        onClick={props.onClick}
+      >
+        <Icon
+          type="remove"
+          custom={{ color: 'teal', small: true }}
+          title={props.title}
+        />
+      </button>
+    </>
+  );
+};
 
 const HOCRemoveButton = injectSheet(styles)(RemoveButton);
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
+import { Trans, withTranslation, WithTranslation} from 'react-i18next';
 import injectSheet from 'react-jss';
 
 import { PageSection } from 'components/page';
@@ -21,7 +21,7 @@ const helpTextTags = [
   'voter.canVoteBlank',
 ];
 
-interface IProps {
+interface IProps extends WithTranslation {
   candidates: Candidate[];
   selectedCandidateIndex: number;
   onSelectCandidate: (selectedCandidateIndex: number) => void;
@@ -46,6 +46,7 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
     onBlankVote,
     election,
     classes,
+    t,
   } = props;
 
   return (
@@ -75,6 +76,7 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
                     {index === selectedCandidateIndex ? (
                       <Icon
                         type="radioButtonCircleSelected"
+                        title={t('majorityElec.ballot.removeCandidate', {candidate: candidate.name})}
                         custom={
                           screenSize !== 'mobile' && screenSize !== 'sm'
                             ? { small: true }
@@ -85,6 +87,7 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
                     ) : (
                       <Icon
                         type="radioButtonCircle"
+                        title={t('majorityElec.ballot.chooseCandidate', {candidate: candidate.name})}
                         custom={
                           screenSize !== 'mobile' && screenSize !== 'sm'
                             ? { small: true }
@@ -126,4 +129,4 @@ const styles = (theme: any) => ({
   },
 });
 
-export default injectSheet(styles)(MajorityVoteBallot);
+export default withTranslation()(injectSheet(styles)(MajorityVoteBallot));
