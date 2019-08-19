@@ -5,7 +5,6 @@ import { Classes } from 'jss';
 
 import Icon from 'components/icon';
 import Spinner from 'components/animations/Spinner';
-import { string } from 'prop-types';
 
 const OSXUserAgent = window.navigator.userAgent.includes('OS X');
 
