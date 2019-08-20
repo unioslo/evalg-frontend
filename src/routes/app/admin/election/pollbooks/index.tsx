@@ -173,7 +173,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
           }
           if (loading) {
             return (
-              <Page header={<Trans>election.censuses</Trans>}>
+              <Page header={t('election.censuses')}>
                 <PageSection>
                   <Spinner size="2.2rem" darkStyle marginRight="1rem" />
                   <Trans>census.loading</Trans>
@@ -239,7 +239,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
           });
 
           return (
-            <Page header={<Trans>election.censuses</Trans>}>
+            <Page header={t('election.censuses')}>
               <PageSection noBorder desc={<Trans>census.censusPageDesc</Trans>}>
                 <div style={{ marginBottom: '1.2rem' }}>
                   <button

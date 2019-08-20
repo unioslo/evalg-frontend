@@ -15,6 +15,7 @@ import Receipt from './components/Receipt';
 import Error from './components/Error';
 import VotingStepper, { VotingStep } from './components/VotingStepper';
 import VoterGroupSelect from '../voterGroupSelect';
+import Helmet from 'react-helmet';
 
 const getElectionGroupVotingData = gql`
   query ElectionGroupVotingData($id: UUID!) {
@@ -55,6 +56,13 @@ const getElectionGroupVotingData = gql`
     }
   }
 `;
+
+const votingStepTranslateKey = {
+  1: 'voter.stepperStep1',
+  2: 'voter.stepperStep2',
+  3: 'voter.stepperStep3',
+  4: 'voter.stepperStep4',
+}
 
 export enum BallotStep {
   FillOutBallot,
@@ -175,6 +183,8 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
         ? BallotStep.ReviewBallot
         : BallotStep.FillOutBallot;
 
+    const currentStepText = this.props.t(votingStepTranslateKey[currentStep])
+
     return (
       <Query
         query={getElectionGroupVotingData}
@@ -227,12 +237,16 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
             <>
               <VotingStepper
                 currentStep={currentStep}
+                currentStepText={currentStepText}
                 onClickStep1={this.goToStep1}
                 onClickStep2={this.goToStep2}
                 scrollToDivRef={this.scrollToDivRef}
                 disabled={this.state.isSubmittingVote}
               />
               <Page header={electionGroupName}>
+                <Helmet>
+                  <title>{`${currentStepText} - ${electionGroupName}`}</title>
+                </Helmet>
                 {currentStep === VotingStep.Step1SelectVoterGroup && (
                   <VoterGroupSelect
                     electionGroupType={electionGroup.type}

@@ -9,13 +9,14 @@ import { ScreenSizeConsumer } from 'providers/ScreenSize';
 
 export enum VotingStep {
   Step1SelectVoterGroup = 1,
-  Step2FillBallot,
-  Step3ReviewBallot,
-  Step4Receipt,
+  Step2FillBallot = 2,
+  Step3ReviewBallot = 3,
+  Step4Receipt = 4,
 }
 
 interface IProps extends WithTranslation {
   currentStep: VotingStep;
+  currentStepText: string;
   onClickStep1?: () => void;
   onClickStep2?: () => void;
   scrollToDivRef?: React.RefObject<HTMLDivElement>;
@@ -24,6 +25,7 @@ interface IProps extends WithTranslation {
 
 const VotingStepper: React.SFC<IProps> = ({
   currentStep,
+  currentStepText,
   onClickStep1,
   onClickStep2,
   scrollToDivRef,
@@ -80,24 +82,6 @@ const VotingStepper: React.SFC<IProps> = ({
       ))}
     </Stepper>
   );
-
-  let currentStepText;
-  switch (currentStep) {
-    case VotingStep.Step1SelectVoterGroup:
-      currentStepText = t('voter.stepperStep1');
-      break;
-    case VotingStep.Step2FillBallot:
-      currentStepText = t('voter.stepperStep2');
-      break;
-    case VotingStep.Step3ReviewBallot:
-      currentStepText = t('voter.stepperStep3');
-      break;
-    case VotingStep.Step4Receipt:
-      currentStepText = t('voter.stepperStep4');
-      break;
-    default:
-      currentStepText = '';
-  }
 
   let mobileVotingStepper: React.ReactNode;
   switch (appMobileVotingStepperVariant) {

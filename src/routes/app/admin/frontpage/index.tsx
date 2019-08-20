@@ -99,7 +99,7 @@ const AdminFrontPage = (props: any) => {
         );
 
         return (
-          <Page header={<Trans>election.manageElections</Trans>}>
+          <Page header={t('election.manageElections')}>
             <PageSection noBorder noBtmPadding>
               <Link to="/admin/newElection">
                 <ActionButton text={t('election.createNewElection')} />

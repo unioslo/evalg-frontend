@@ -1,7 +1,7 @@
 import React from 'react';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Trans } from 'react-i18next';
+import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 import { ApolloClient } from 'apollo-client';
 import { History } from 'history';
 
@@ -69,7 +69,7 @@ const createNewElectionGroupMutation = gql`
   }
 `;
 
-interface IProps {
+interface IProps extends WithTranslation {
   history: History;
 }
 
@@ -117,7 +117,7 @@ class NewElection extends React.Component<IProps, IState> {
                 return 'Error!';
               }
               return (
-                <Page header={<Trans>election.createNewElection</Trans>}>
+                <Page header={this.props.t('election.createNewElection')}>
                   <PageSection header={<Trans>election.selectType</Trans>}>
                     <NewElectionForm
                       initialValues={this.state.currentValues}
@@ -139,4 +139,4 @@ class NewElection extends React.Component<IProps, IState> {
   }
 }
 
-export default NewElection;
+export default withTranslation()(NewElection);
