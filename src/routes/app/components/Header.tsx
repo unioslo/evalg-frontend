@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import gql from 'graphql-tag';
 import { ApolloConsumer, Query } from 'react-apollo';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +11,7 @@ import { Classes } from 'jss';
 import { appHelpLink } from 'appConfig';
 import Link from 'components/link';
 import { H1 } from 'components/text';
-import { UserContext } from 'providers/UserContext';
+import { UserContext, UserContextProvider } from 'providers/UserContext';
 
 import LanguageToggler from './LanguageToggler';
 import { DesktopMenu, DesktopMenuItem } from './DesktopMenu';
@@ -265,15 +265,18 @@ const UserNameAndLogout: React.FunctionComponent<{
 }> = ({ apolloClient, history }) => {
   const { t } = useTranslation();
   const [userDisplayName, setUserDisplayName] = useState('');
+  const user = useContext(UserContext)
 
   useEffect(() => {
     const getDisplayName = async () => {
       let displayName;
-      try {
-        displayName = await getSignedInPersonDisplayName(apolloClient);
-        setUserDisplayName(displayName);
-      } catch (error) {
-        console.error('Could not get ID of signed in user.');
+      if (user.user) {
+        try {
+          displayName = await getSignedInPersonDisplayName(apolloClient);
+          setUserDisplayName(displayName);
+        } catch (error) {
+          console.error('Could not get ID of signed in user.');
+        }
       }
     };
     getDisplayName();
