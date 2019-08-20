@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
-import gql from 'graphql-tag';
-import { ApolloConsumer, Query } from 'react-apollo';
+import { ApolloConsumer } from 'react-apollo';
 import { useTranslation } from 'react-i18next';
 import { Route, Switch } from 'react-router';
-import { IAuthenticatorContext } from 'react-oidc/lib/makeAuth';
 import { History } from 'history';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
@@ -11,7 +9,7 @@ import { Classes } from 'jss';
 import { appHelpLink } from 'appConfig';
 import Link from 'components/link';
 import { H1 } from 'components/text';
-import { UserContext, UserContextProvider } from 'providers/UserContext';
+import { UserContext } from 'providers/UserContext';
 
 import LanguageToggler from './LanguageToggler';
 import { DesktopMenu, DesktopMenuItem } from './DesktopMenu';
@@ -75,17 +73,6 @@ const styles = (theme: any) => ({
     },
   },
 });
-
-const sayMyName = gql`
-  query {
-    viewer {
-      person {
-        id
-        displayName
-      }
-    }
-  }
-`;
 
 interface IProps {
   history: History;
@@ -265,12 +252,12 @@ const UserNameAndLogout: React.FunctionComponent<{
 }> = ({ apolloClient, history }) => {
   const { t } = useTranslation();
   const [userDisplayName, setUserDisplayName] = useState('');
-  const user = useContext(UserContext)
+  const userContext = useContext(UserContext)
 
   useEffect(() => {
     const getDisplayName = async () => {
       let displayName;
-      if (user.user) {
+      if (userContext.user) {
         try {
           displayName = await getSignedInPersonDisplayName(apolloClient);
           setUserDisplayName(displayName);
@@ -280,7 +267,7 @@ const UserNameAndLogout: React.FunctionComponent<{
       }
     };
     getDisplayName();
-  }, []);
+  }, [userContext, apolloClient]);
 
   return (
     <ApolloConsumer>
