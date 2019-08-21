@@ -38,7 +38,7 @@ const Logout: React.FunctionComponent<WithApolloClient<IProps>> = ({
       window.location.href = oidcLogoutUrl;
     };
     logout();
-  }, []);
+  }, [apolloClient, context]);
 
  return (
     <div className={classes.logout}>

@@ -4,7 +4,7 @@ import { withApollo, WithApolloClient } from 'react-apollo';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
-import { ElectionGroup, IPollBook, Candidate } from 'interfaces';
+import { ElectionGroup, IPollBook } from 'interfaces';
 import Button from 'components/button';
 import { shuffleArray } from 'utils/helpers';
 import { sleep } from 'utils';
@@ -110,7 +110,7 @@ const GenerateVotesForTesting: React.FunctionComponent<
           } else {
             generateOneVoterAndVote(pollbook, candidateIds);
 
-            if (i % 5 == 0) {
+            if (i % 5 === 0) {
               await sleep(DELAY_BETWEEN_REQUEST_BATCHES_MS);
             }
           }

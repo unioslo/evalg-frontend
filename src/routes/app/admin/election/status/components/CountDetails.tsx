@@ -10,7 +10,7 @@ import { Classes } from 'jss';
 import { ElectionGroupCount } from 'interfaces';
 import Spinner from 'components/animations/Spinner';
 import { H3 } from 'components/text';
-import { orderElectionResults, b64toBlob } from 'utils/processGraphQLData';
+import { orderElectionResults } from 'utils/processGraphQLData';
 
 import ElectionResultAndBallotStats from './ElectionResultAndBallotStats';
 

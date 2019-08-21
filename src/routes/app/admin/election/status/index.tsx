@@ -21,9 +21,9 @@ const StatusPage: React.FunctionComponent<IProps> = ({
   const scrollToStatusRef = React.useRef<HTMLDivElement>(null);
 
   const showElectionKeySectionAtBottom =
-    electionGroup.status == 'ongoing' ||
-    electionGroup.status == 'closed' ||
-    electionGroup.status == 'multipleStatuses';
+    electionGroup.status === 'ongoing' ||
+    electionGroup.status === 'closed' ||
+    electionGroup.status === 'multipleStatuses';
 
   return (
     <>

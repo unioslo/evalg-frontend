@@ -34,7 +34,7 @@ const styles = (theme: any) => ({
   },
 });
 
-const Content: React.SFC<IProps> = ({ isLoginPage: isLoginPage, classes, children }) => {
+const Content: React.SFC<IProps> = ({ isLoginPage, classes, children }) => {
   const wrapperCls = classNames({
     [classes.wrapper]: true,
     [classes.wrapperLoginPage]: isLoginPage,

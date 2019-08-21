@@ -61,7 +61,7 @@ interface IVotersTable {
 }
 
 const VoterTable: React.FunctionComponent<IVotersTable> = ({ voters }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Table>
@@ -144,7 +144,7 @@ const VotingReport: React.FunctionComponent<IVotingReportProps> = ({
   groupId,
   history,
 }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   return (
     <Page header={t('votingReport.header')}>
       <Query
