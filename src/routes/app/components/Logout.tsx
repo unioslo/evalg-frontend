@@ -31,16 +31,16 @@ const Logout: React.FunctionComponent<WithApolloClient<IProps>> = ({
   const { t } = useTranslation();
 
   useEffect(() => {
+    const logout = async () => {
+      await context.signOut();
+      await apolloClient.resetStore();
+      sessionStorage.clear();
+      window.location.href = oidcLogoutUrl;
+    };
     logout();
   }, []);
 
-  const logout = async () => {
-    await context.signOut();
-    await apolloClient.resetStore();
-    sessionStorage.clear();
-    window.location.href = oidcLogoutUrl;
-  };
-  return (
+ return (
     <div className={classes.logout}>
       <div className={classes.spinBox}>
         <Spinner darkStyle />
