@@ -77,7 +77,7 @@ class InfoPage extends React.Component<PropsInternal> {
   render() {
     const { id: groupId } = this.props.electionGroupData;
 
-    const { i18n } = this.props;
+    const { t, i18n } = this.props;
     const lang = i18n.language;
     const history = this.props.history;
 
@@ -92,7 +92,7 @@ class InfoPage extends React.Component<PropsInternal> {
             admin: { isCreatingNewElection },
           },
         }) => (
-          <Page header={<Trans>election.electionInfo</Trans>}>
+          <Page header={t('election.electionInfo')}>
             <PageSection header={<Trans>election.electionType</Trans>}>
               <Text>{this.props.electionGroupData.name[lang]}</Text>
             </PageSection>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
+import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 
 import { Page } from 'components/page';
 import { ElectionGroup } from 'interfaces';
@@ -9,7 +9,7 @@ import VotesSection from './components/VotesSection';
 import ElectionKeySection from './components/ElectionKeySection';
 import CountingSection from './components/CountingSection';
 
-interface IProps {
+interface IProps extends WithTranslation {
   electionGroup: ElectionGroup;
   refetchElectionGroupFunction: () => Promise<any>;
 }
@@ -17,6 +17,7 @@ interface IProps {
 const StatusPage: React.FunctionComponent<IProps> = ({
   electionGroup,
   refetchElectionGroupFunction,
+  t
 }) => {
   const scrollToStatusRef = React.useRef<HTMLDivElement>(null);
 
@@ -27,7 +28,7 @@ const StatusPage: React.FunctionComponent<IProps> = ({
 
   return (
     <>
-      <Page header={<Trans>election.electionStatus</Trans>}>
+      <Page header={t('election.electionStatus')}>
         <div ref={scrollToStatusRef} />
         <ElectionStatusSection electionGroup={electionGroup} />
         {!showElectionKeySectionAtBottom && (
@@ -52,4 +53,4 @@ const StatusPage: React.FunctionComponent<IProps> = ({
   );
 };
 
-export default StatusPage;
+export default withTranslation()(StatusPage);

@@ -60,7 +60,9 @@ const App: React.FunctionComponent<IAppProps & RouteComponentProps> = props => {
   return (
     <div className={classes.ie11ExtraFlexContainer}>
       <div className={classes.app}>
-        <Helmet htmlAttributes={{ lang: i18n.language }} />
+        <Helmet htmlAttributes={{ lang: i18n.language }}>
+          <title>eValg</title>
+        </Helmet>
         <Header history={history} />
         <UserContext.Consumer>
           {(context: any) => {
@@ -101,11 +103,7 @@ const App: React.FunctionComponent<IAppProps & RouteComponentProps> = props => {
                 <Route
                   exact
                   path="/logout"
-                  render={() => (
-                    <Logout
-                      context={context}
-                    />
-                  )}
+                  render={() => <Logout context={context} />}
                 />
 
                 <Route
