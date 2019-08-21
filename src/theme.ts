@@ -22,7 +22,7 @@ const fadedOrange = '#EAB255';
 const blueGreyish = '#acb2b3';
 const blueish = '#2771bb';
 const darkBlueish = '#2294a8';
-const darkTurquoise = '#2194A8';
+const darkTurquoise = '#196F7E';
 const lightTurquoise = '#8ECED9';
 const lightBlueGray = '#C4E2E7';
 const lightRed = '#FF8F8F';
@@ -147,9 +147,9 @@ const theme = {
   primaryBtnBorderColor: 'transparent',
   primaryBtnFocusedBorderColor: lightTurquoise,
   primaryBtnColor: white,
-  secondaryBtnBgColor: white,
-  secondaryBtnBorderColor: lightTurquoise,
-  secondaryBtnColor: darkBlueGreen,
+  secondaryBtnBgColor: lightBlueGray,
+  secondaryBtnBorderColor: darkTurquoise,
+  secondaryBtnColor: darkGreyishBrown,
   sectionBorderColor:
     sectionBottomBorderStyle === 'original' ? lightBlueGray : darkTurquoise,
   sectionBorderWidth: sectionBottomBorderStyle === 'original' ? '1rem' : '3px',
