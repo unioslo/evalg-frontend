@@ -30,17 +30,20 @@ const Logout: React.FunctionComponent<WithApolloClient<IProps>> = ({
 }) => {
   const { t } = useTranslation();
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    const logout = async () => {
-      await context.signOut();
-      await apolloClient.resetStore();
-      sessionStorage.clear();
-      window.location.href = oidcLogoutUrl;
-    };
     logout();
-  }, [apolloClient, context]);
+  }, []);
+  /* eslint-enable react-hooks/exhaustive-deps */
 
- return (
+  const logout = async () => {
+    await context.signOut();
+    await apolloClient.resetStore();
+    sessionStorage.clear();
+    window.location.href = oidcLogoutUrl;
+  };
+
+  return (
     <div className={classes.logout}>
       <div className={classes.spinBox}>
         <Spinner darkStyle />
