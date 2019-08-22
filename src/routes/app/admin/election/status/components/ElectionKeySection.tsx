@@ -31,7 +31,6 @@ interface IProps {
 interface IState {
   showCreateKeyModal: boolean;
   showConfirmNewKeyModal: boolean;
-  showPublicKey: boolean;
 }
 
 class ElectionKeySection extends React.Component<IProps, IState> {
@@ -42,7 +41,6 @@ class ElectionKeySection extends React.Component<IProps, IState> {
     this.state = {
       showCreateKeyModal: false,
       showConfirmNewKeyModal: false,
-      showPublicKey: false,
     };
   }
 
@@ -79,7 +77,7 @@ class ElectionKeySection extends React.Component<IProps, IState> {
   };
 
   render() {
-    const { electionGroup, classes } = this.props;
+    const { electionGroup } = this.props;
     const hasKey = electionGroup.publicKey !== null;
     const status = electionGroup.status;
 
@@ -106,24 +104,8 @@ class ElectionKeySection extends React.Component<IProps, IState> {
                 <br />
                 <Trans>admin.electionKey.publicKeyCaption</Trans>:{' '}
                 <span>
-                  {this.state.showPublicKey ? electionGroup.publicKey : null}{' '}
-                  <a
-                    className={classes.externalLink}
-                    href="#"
-                    onClick={e => {
-                      e.preventDefault();
-                      this.setState(currState => ({
-                        showPublicKey: !currState.showPublicKey,
-                      }));
-                    }}
-                  >
-                    {this.state.showPublicKey ? (
-                      <Trans>general.hide</Trans>
-                    ) : (
-                      <Trans>general.show</Trans>
-                    )}
-                  </a>
-                </span>
+                  {electionGroup.publicKey}
+               </span>
               </Text>
               <InfoList>
                 <InfoListItem bulleted key="keep-it-safe">

@@ -7,6 +7,7 @@ import FileSaver from 'file-saver';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
+import Button, { ButtonContainer } from 'components/button';
 import { ElectionGroupCount } from 'interfaces';
 import Spinner from 'components/animations/Spinner';
 import { H3 } from 'components/text';
@@ -168,38 +169,28 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
               )}
 
               <ElectionResultAndBallotStats electionResult={electionResult} />
-
               <div className={classes.electionResultFileDownloads}>
-                <span>
-                  {t('admin.countingDetails.countingProtocol')}:{' '}
-                  <a
-                    className={classes.externalLink}
-                    href="#"
-                    onClick={e => {
+                <ButtonContainer>
+                  <Button
+                    action={e => {
                       e.preventDefault();
                       handleDownloadCountingProtocol(
                         apolloClient,
                         electionResult.id
                       );
                     }}
-                  >
-                    {t('general.download')} (TXT)
-                  </a>
-                </span>
-                <span className={classes.verticalLineSeparator}>|</span>
-                <span>
-                  {t('admin.countingDetails.ballots')}:{' '}
-                  <a
-                    className={classes.externalLink}
-                    href="#"
-                    onClick={e => {
+                    text={<span>{t('general.download')} {t('admin.countingDetails.countingProtocol')} (TXT)</span>}
+                    secondary={true}
+                  />
+                  <Button
+                    action={e => {
                       e.preventDefault();
                       handleDownloadBallots(apolloClient, electionResult.id);
                     }}
-                  >
-                    {t('general.download')} (JSON)
-                  </a>
-                </span>
+                    text={<span>{t('general.download')} {t('admin.countingDetails.ballots')} (JSON)</span>}
+                    secondary={true}
+                  />
+                </ButtonContainer>
                 {processingFileForERId === electionResult.id && (
                   <Spinner darkStyle size="1.6rem" marginLeft="1rem" />
                 )}
@@ -209,13 +200,15 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
         })}
 
       <div className={classes.auditLogSection}>
-        {electionResults.length > 1
+        <Button
+          action={e => {
+            //pass
+          }}
+          text={<span>{t('general.download')} {electionResults.length > 1
           ? t('admin.countingDetails.auditLogForAllElections')
-          : t('admin.countingDetails.auditLogForElection')}
-        :{' '}
-        <a className={classes.externalLink} href="#">
-          {t('general.download')}
-        </a>
+          : t('admin.countingDetails.auditLogForElection')}</span>}
+          secondary={true}
+        />
       </div>
     </>
   );
