@@ -4,7 +4,7 @@
       "auditLogForAllElections": "Revisjonslogg for alle valgene frem til opptellingen",
       "auditLogForElection": "Revisjonslogg for valget frem til opptellingen",
       "ballots": "Stemmesedler",
-      "countingProtocol": "Opptellingsprotokoll",
+      "countingProtocol": "opptellingsprotokoll",
       "errors": {
         "candidateNameNotFound": "Fant ikke kandidatens navn",
         "fileDownloadError": "Noe gikk galt under nedlasting av en fil"

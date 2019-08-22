@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import gql from 'graphql-tag';
 
 import { Query, withApollo } from 'react-apollo';
@@ -7,9 +7,9 @@ import { History } from 'history';
 
 import Button, { ButtonContainer } from 'components/button';
 import Loading from 'components/loading';
-import { Page, PageSection, PageSubSection } from 'components/page';
+import { Page, PageSection } from 'components/page';
 import { PageExpandableSubSection } from 'components/page/PageSection';
-import { ElectionGroup, Election, IVoter, IPerson } from 'interfaces';
+import { ElectionGroup, Election, IVoter } from 'interfaces';
 import {
   Table,
   TableHeader,
@@ -61,7 +61,7 @@ interface IVotersTable {
 }
 
 const VoterTable: React.FunctionComponent<IVotersTable> = ({ voters }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Table>
@@ -144,7 +144,7 @@ const VotingReport: React.FunctionComponent<IVotingReportProps> = ({
   groupId,
   history,
 }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   return (
     <Page header={t('votingReport.header')}>
       <Query

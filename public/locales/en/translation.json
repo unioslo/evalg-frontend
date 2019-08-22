@@ -4,7 +4,7 @@
       "auditLogForAllElections": "Audit log for all elections until the counting",
       "auditLogForElection": "Audit log for the election until the counting",
       "ballots": "Ballots",
-      "countingProtocol": "Counting protocol",
+      "countingProtocol": "counting protocol",
       "errors": {
         "candidateNameNotFound": "Could not find the candidate's name",
         "fileDownloadError": "Something went wrong while trying to download a file"

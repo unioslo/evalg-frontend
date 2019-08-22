@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
 
 import { ElectionResult, Candidate } from 'interfaces';
-import { H3, H4, H5 } from 'components/text';
+import { H4, H5 } from 'components/text';
 
 const styles = (theme: any) => ({
   sectionLevel1: {
