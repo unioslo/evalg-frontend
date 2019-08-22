@@ -49,7 +49,6 @@ const createNewElectionGroupMutation = gql`
           id
           name
           description
-          type
           meta
           sequence
           start
