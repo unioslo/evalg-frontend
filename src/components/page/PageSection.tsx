@@ -162,6 +162,38 @@ const StyledExpandableSubSection = injectSheet(styles)(
   PageExpandableSubSection
 );
 
+interface IStatelessExpandableSubSectionProps extends IExpandableSubSectionProps {
+  isExpanded: boolean;
+  setIsExpanded: (newIsExpanded: boolean) => void;
+}
+
+const StatelessExpandableSubSection: React.FunctionComponent<
+  IStatelessExpandableSubSectionProps
+> = props => {
+  const { header, classes, isExpanded, setIsExpanded } = props;
+  const topBarCls = classNames({  
+    [classes.pointerOnHover]: true,
+  });
+
+  const toggleIsExpanded = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  return (
+    <div className={classes.subSection}>
+      <div className={topBarCls} onClick={toggleIsExpanded}>
+        <DropdownArrowIcon selected={isExpanded} />
+        <span className={classes.subSectionHeader}>{header}</span>
+      </div>
+      {isExpanded && props.children}
+    </div>
+  );
+};
+
+const StyledStatelessExpandableSubSection = injectSheet(styles)(
+  StatelessExpandableSubSection
+);
+
 const PageParagraph: React.SFC<ISubProps> = props => {
   const { classes } = props;
   return (
@@ -182,5 +214,6 @@ export {
   StyledSection as PageSection,
   StyledSubSection as PageSubSection,
   StyledExpandableSubSection as PageExpandableSubSection,
+  StyledStatelessExpandableSubSection as StatelessExpandableSubSection,
   StyledParagraph as PageParagraph,
 };

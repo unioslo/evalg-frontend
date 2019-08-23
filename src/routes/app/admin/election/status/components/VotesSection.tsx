@@ -9,26 +9,36 @@ import VotesOutsideCensusManagement from './VotesOutsideCensusManagement';
 
 interface Props {
   electionGroup: ElectionGroup;
+  selfAddedVoters: any;
+  categorizedVoters: any;
+  adminAddedRejectedVoters: any;
 }
 
-const VotesSection: React.FunctionComponent<Props> = ({ electionGroup }) => {
-  const electionsHasNotStarted =
+export const electionsHasNotStarted = (electionGroup: ElectionGroup) => {
+  return (
     electionGroup.status === 'draft' ||
     electionGroup.status === 'announced' ||
-    electionGroup.status === 'published';
+    electionGroup.status === 'published'
+  );
+};
 
+const VotesSection: React.FunctionComponent<Props> = props => {
   const { t } = useTranslation();
 
   return (
     <PageSection header={t('election.votes')}>
-      {electionsHasNotStarted ? (
+      {electionsHasNotStarted(props.electionGroup) ? (
         t('election.electionNotStarted')
       ) : (
         <>
-          <Link to={`/admin/elections/${electionGroup.id}/votingreport`}>
+          <Link to={`/admin/elections/${props.electionGroup.id}/votingreport`}>
             {t('votingReport.link')}
           </Link>
-          <VotesOutsideCensusManagement electionGroupId={electionGroup.id} />
+          <VotesOutsideCensusManagement 
+            selfAddedVoters={props.selfAddedVoters}
+            categorizedVoters={props.categorizedVoters}
+            adminAddedRejectedVoters={props.adminAddedRejectedVoters}
+          />
         </>
       )}
     </PageSection>

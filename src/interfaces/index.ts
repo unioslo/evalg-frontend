@@ -186,6 +186,7 @@ export interface ElectionGroup {
   name: NameFields;
   start: string | null;
   end: string | null;
+  personsWithMultipleVerifiedVoters: IVoter[];
   mandatePeriodStart: string;
   mandatePeriodEnd: string;
   meta: ElectionMetaData;

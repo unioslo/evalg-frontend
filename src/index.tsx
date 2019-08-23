@@ -3,8 +3,9 @@ import 'react-app-polyfill/stable';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ApolloClient } from 'apollo-client';
-import { ApolloLink } from 'apollo-link';
+import ApolloClient from 'apollo-client';
+import { ApolloLink, split, Operation } from 'apollo-link';
+import { BatchHttpLink } from 'apollo-link-batch-http';
 import { createUploadLink } from 'apollo-upload-client';
 import {
   InMemoryCache,
@@ -25,6 +26,7 @@ import App from 'routes/app';
 import theme from 'theme';
 
 import './i18n';
+import { refetchVoteManagementQueries } from 'queries';
 
 const storeToken = (props: any) => (user: User) => {
   sessionStorage.setItem(
@@ -64,8 +66,12 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
 });
 
 const constructApolloClient = () => {
-  // uploadLink extends HttpLink from 'apollo-link-http'
-  const uploadLink: ApolloLink = createUploadLink({ uri: graphqlBackend });
+  const uploadLink: ApolloLink = split(
+    (operation: Operation) =>
+      refetchVoteManagementQueries().includes(operation.operationName),
+    new BatchHttpLink({ uri: graphqlBackend, batchInterval: 10 }),
+    createUploadLink({ uri: graphqlBackend })
+  );
 
   const authMiddleware = new ApolloLink((operation, forward) => {
     operation.setContext(({ headers = {} }: { headers: any }) => ({

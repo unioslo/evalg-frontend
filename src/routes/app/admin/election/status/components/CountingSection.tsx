@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React from 'react';
+import {
+  WithTranslation,
+  withTranslation,
+} from 'react-i18next';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -10,6 +13,8 @@ import { PageSection } from 'components/page';
 import Button, { ButtonContainer } from 'components/button';
 import CountingModal from './CountingModal';
 import CountingSectionCounts from './CountingSectionCounts';
+import { Classes } from 'jss';
+import injectSheet from 'react-jss';
 
 export const electionGroupCountsQuery = gql`
   ${ElectionGroupCountFields}
@@ -20,81 +25,138 @@ export const electionGroupCountsQuery = gql`
   }
 `;
 
-interface Props {
+const styles = (theme: any) => ({
+  warningParagraph: {
+    color: theme.colors.darkRed,
+  },
+});
+
+interface Props extends WithTranslation {
   electionGroup: ElectionGroup;
   scrollToStatusRef: React.RefObject<HTMLDivElement>;
+  selfAddedVoters: any;
+  categorizedVoters: any;
+  personsWithMultipleVerifiedVoters: any;
+  classes: Classes;
 }
 
-const CountingSection: React.FunctionComponent<Props> = ({
-  electionGroup,
-  scrollToStatusRef,
-}) => {
-  const [showModal, setShowModal] = useState(false);
-  const { t } = useTranslation();
+interface State {
+  showModal: boolean;
+  message: string;
+}
 
-  const handleShowModal = () => {
-    setShowModal(true);
+class CountingSection extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = { showModal: false, message: '' };
+  }
+
+  componentWillUpdate(newProps: Props, newState: State) { 
+    if (this.state.message !== '') {
+      this.setState({ message: '' });
+    }
+  }
+
+  public getMessage = () => {
+    if (
+      !(
+        this.props.selfAddedVoters.loading || this.props.selfAddedVoters.error
+      ) &&
+      this.props.categorizedVoters.notReviewedVoters.length > 0
+    ) {
+      return this.props.t(`admin.countingSection.warningSelfAddedVoters`);
+    }
+    if (
+      !(
+        this.props.personsWithMultipleVerifiedVoters.loading ||
+        this.props.personsWithMultipleVerifiedVoters.error
+      ) &&
+      this.props.personsWithMultipleVerifiedVoters.data
+        .personsWithMultipleVerifiedVoters.length > 0
+    ) {
+      return this.props.t(
+        `admin.countingSection.warningPersonsWithMultipleVoters`
+      );
+    }
+    return '';
   };
 
-  const handleCancelModal = () => {
-    setShowModal(false);
+  public handleShowModal = () => {
+    const tempMessage = this.getMessage();
+
+    if (tempMessage === '') {
+      this.setState({ showModal: true });
+    } else {
+      this.setState({ message: tempMessage });
+    }
   };
 
-  const handleCloseModalAndSeeResults = () => {
-    setShowModal(false);
-    if (scrollToStatusRef.current) {
+  public handleCancelModal = () => {
+    this.setState({ showModal: false });
+  };
+
+
+  public handleCloseModalAndSeeResults = () => {
+    this.setState({ showModal: false });
+    if (this.props.scrollToStatusRef.current) {
       setTimeout(
         () =>
-          scrollToStatusRef.current &&
-          scrollToStatusRef.current.scrollIntoView(),
+          this.props.scrollToStatusRef.current &&
+          this.props.scrollToStatusRef.current.scrollIntoView(),
         0
       );
     }
   };
 
-  return (
-    <PageSection header={t('admin.countingSection.header')}>
-      {electionGroup.status === 'closed' ? (
-        <ButtonContainer alignLeft smlTopMargin>
-          <Query
-            query={electionGroupCountsQuery}
-            variables={{ id: electionGroup.id }}
-          >
-            {({ data, loading, error }) => {
-              const showFirstTimeCountingButton =
-                error ||
-                loading ||
-                data.electionGroupCountingResults.length === 0;
+  render() {
+    return (
+      <PageSection header={this.props.t('admin.countingSection.header')}>
+        {this.props.electionGroup.status === 'closed' ? (
+          <ButtonContainer alignLeft smlTopMargin>
+            <Query
+              query={electionGroupCountsQuery}
+              variables={{ id: this.props.electionGroup.id }}
+            >
+              {({ data, loading, error }) => {
+                const showFirstTimeCountingButton =
+                  error ||
+                  loading ||
+                  data.electionGroupCountingResults.length === 0;
 
-              return (
-                <Button
-                  text={
-                    showFirstTimeCountingButton
-                      ? t('admin.countingSection.startCounting')
-                      : t('admin.countingSection.startNewCounting')
-                  }
-                  action={handleShowModal}
-                  secondary={!showFirstTimeCountingButton}
-                />
-              );
-            }}
-          </Query>
-        </ButtonContainer>
-      ) : (
-        t('election.electionNotClosed')
-      )}
+                return (
+                  <Button
+                    text={
+                      showFirstTimeCountingButton
+                        ? this.props.t('admin.countingSection.startCounting')
+                        : this.props.t('admin.countingSection.startNewCounting')
+                    }
+                    action={this.handleShowModal}
+                    secondary={!showFirstTimeCountingButton}
+                  />
+                );
+              }}
+            </Query>
+            <p className={this.props.classes.warningParagraph}>
+              {this.state.message}
+            </p>
+          </ButtonContainer>
+        ) : (
+          this.props.t('election.electionNotClosed')
+        )}
 
-      {showModal && (
-        <CountingModal
-          electionGroup={electionGroup}
-          onCancelModal={handleCancelModal}
-          onCloseModalAndSeeResults={handleCloseModalAndSeeResults}
-        />
-      )}
+        {this.state.showModal && (
+          <CountingModal
+            electionGroup={this.props.electionGroup}
+            onCancelModal={this.handleCancelModal}
+            onCloseModalAndSeeResults={this.handleCloseModalAndSeeResults}
+          />
+        )}
 
-      <CountingSectionCounts electionGroupId={electionGroup.id} />
-    </PageSection>
-  );
-};
+        <CountingSectionCounts electionGroupId={this.props.electionGroup.id} />
+      </PageSection>
+    );
+  }
+}
 
-export default CountingSection;
+export default injectSheet(styles)(withTranslation()(CountingSection));
