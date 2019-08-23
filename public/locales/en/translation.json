@@ -338,16 +338,17 @@
     "notFoundDescription": "Sorry, the page you are looking for does not exist."
   },
   "footer": {
-    "termsHeader": "Terms",
-    "privacyPolicyLink": "Privacy policy",
-    "termsOfUseLink": "Terms of use",
-    "evalgUses": "eValg uses",
     "cookiesInformationLink": "cookies",
     "contactSectionHeader": "Contact points",
+    "evalgUses": "eValg uses",
+    "holdingElectionsInfoLink": "Rules and assistance on holding elections",
+    "pilotMessage": "eValg 3.0 Pilot. The old site can be found <0>here</0>. For questions regarding the election pilot, please contact <1>eValg-drift</1>.",
+    "privacyPolicyLink": "Privacy policy",
     "responsibleOrganizationHeader": "Service owner",
     "technicalSupport": "Technical support",
-    "holdingElectionsInfoLink": "Rules and assistance on holding elections",
-    "serviceOwnerLink": "Department for System Integration and Identity Management (INT)"
+    "serviceOwnerLink": "Department for System Integration and Identity Management (INT)",
+    "termsHeader": "Terms",
+    "termsOfUseLink": "Terms of use"
   },
   "formErrors": {
     "invalidDates": "Start time must be before closing time.",

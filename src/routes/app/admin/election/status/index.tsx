@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trans, withTranslation, WithTranslation } from 'react-i18next';
+import { withTranslation, WithTranslation } from 'react-i18next';
 
 import { Page } from 'components/page';
 import { ElectionGroup } from 'interfaces';
