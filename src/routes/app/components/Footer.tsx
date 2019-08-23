@@ -1,6 +1,6 @@
 import React from 'react';
 import injectSheet from 'react-jss';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 import {
   appStagingWarning,
@@ -155,8 +155,14 @@ const Footer: React.FunctionComponent<IProps> = (props: IProps) => {
       </footer>
       {appStagingWarning && (
         <div className="alert">
-          Test av eValg 3. For spørsmål om løsningen ta kontakt med{' '}
-          <a href="mailto:evalg-kontakt@usit.uio.no">evalg-drift</a>
+          <Trans
+            components={[
+              <a href={'https://valg.uio.no'}>text</a>,
+              <a href="mailto:evalg-kontakt@usit.uio.no">text</a>
+            ]}
+          >
+            footer.pilotMessage
+          </Trans>
         </div>
       )}
     </React.Fragment>

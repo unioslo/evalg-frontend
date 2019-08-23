@@ -349,15 +349,16 @@
     "notFoundDescription": "Beklager, siden du leter etter finnes ikke."
   },
   "footer": {
-    "termsHeader": "Vilkår",
-    "privacyPolicyLink": "Personvern",
-    "termsOfUseLink": "Bruksvilkår",
-    "evalgUses": "eValg bruker",
     "cookiesInformationLink": "informasjonskapsler",
     "contactSectionHeader": "Kontaktpunkter",
+    "evalgUses": "eValg bruker",
+    "pilotMessage": "Pilot av eValg 3.0. Den gamle løsningen finner du <0>her</0>. For spørsmål om piloten ta kontakt med <1>eValg-drift</1>.",
+    "privacyPolicyLink": "Personvern",
     "responsibleOrganizationHeader": "Ansvarlig for tjenesten",
+    "serviceOwnerLink": "Seksjon for integrasjon og elektroniske identiteter (INT)",
     "technicalSupport": "Teknisk støtte",
-    "serviceOwnerLink": "Seksjon for integrasjon og elektroniske identiteter (INT)"
+    "termsHeader": "Vilkår",
+    "termsOfUseLink": "Bruksvilkår"
   },
   "formErrors": {
     "invalidDates": "Starttid må være før sluttid.",
