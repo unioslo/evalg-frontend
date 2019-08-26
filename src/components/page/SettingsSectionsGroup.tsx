@@ -76,7 +76,7 @@ class SettingsSectionsGroup extends React.Component<IProps, IState> {
 
   activateNextSection = () => {
     const displayStatuses = [...this.state.displayStatuses];
-    for (let i = 0; i < displayStatuses.length; i++) {
+    for (let i = 0; i < displayStatuses.length; i += 1) {
       if (displayStatuses[i] === 'active' && i < displayStatuses.length - 1) {
         displayStatuses[i] = 'inactive';
         displayStatuses[i + 1] = 'active';
@@ -110,7 +110,7 @@ class SettingsSectionsGroup extends React.Component<IProps, IState> {
   setAllSectionsToInactive = (
     displayStatuses: SettingsSectionDisplayStatus[]
   ) => {
-    for (let i = 0; i < displayStatuses.length; i++) {
+    for (let i = 0; i < displayStatuses.length; i += 1) {
       displayStatuses[i] = 'inactive';
     }
     return displayStatuses;

@@ -48,7 +48,7 @@ const buildInitialValues = (elecs: Election[]) => {
   }));
   let hasMultipleTimes = false;
   if (elecs.length > 1) {
-    for (let i = 0; i < elecs.length - 1; i++) {
+    for (let i = 0; i < elecs.length - 1; i += 1) {
       if (
         elecs[i].start !== elecs[i + 1].start ||
         elecs[i].end !== elecs[i + 1].end

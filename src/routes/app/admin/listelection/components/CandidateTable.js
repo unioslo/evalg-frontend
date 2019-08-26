@@ -173,7 +173,7 @@ class CandidateTable extends React.Component {
     if (this.state.nameFilter !== '' || this.state.departmentFilter !== '') {
       return true;
     }
-    for (let i = 0; i < event.path.length - 1; i++) {
+    for (let i = 0; i < event.path.length - 1; i += 1) {
       if (event.path[i].className === 'dragicon') {
         return false;
       }
