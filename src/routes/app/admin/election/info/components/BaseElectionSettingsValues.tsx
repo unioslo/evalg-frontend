@@ -15,7 +15,7 @@ const BaseElectionSettingsValues: React.SFC<IProps> = props => {
   const lang = i18n.language;
   const { elections } = props.electionGroup;
   const activeElections = elections.filter(e => e.active);
-  const {electionGroup} = props;
+  const { electionGroup } = props;
   return (
     <InfoList>
       {activeElections.length === 0 && (
