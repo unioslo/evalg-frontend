@@ -172,7 +172,7 @@ const VotingReport: React.FunctionComponent<IVotingReportProps> = ({
                       <ElectionVotingReport
                         key={i}
                         election={election}
-                        withVotes={true}
+                        withVotes
                       />
                     );
                   })}
@@ -198,7 +198,7 @@ const VotingReport: React.FunctionComponent<IVotingReportProps> = ({
         <Button
           text={t('votingReport.back')}
           action={() => history.push('/admin/elections/' + groupId + '/status')}
-          secondary={true}
+          secondary
         />
       </ButtonContainer>
     </Page>

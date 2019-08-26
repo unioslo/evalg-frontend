@@ -25,7 +25,7 @@ const BaseElectionSettingsValues: React.SFC<IProps> = props => {
         return (
           <InfoListItem key={index}>
             {election.name[lang]}:{' '}
-            <Text bold={true} inline={true}>
+            <Text bold inline>
               {election.meta.candidateRules.seats}&nbsp;
               {t('election.candidatesShort')},&nbsp;
               {election.meta.candidateRules.substitutes}&nbsp;
@@ -35,7 +35,7 @@ const BaseElectionSettingsValues: React.SFC<IProps> = props => {
         );
       })}
       {hasGenderQuota && (
-        <InfoListItem smallText={true}>
+        <InfoListItem smallText>
           {t('election.hasGenderQuota')}
         </InfoListItem>
       )}

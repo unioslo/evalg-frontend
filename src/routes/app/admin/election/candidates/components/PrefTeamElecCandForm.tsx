@@ -101,7 +101,7 @@ const PrefTeamElecCandForm: React.FunctionComponent<IProps> = (
                         {fields.map((coCandidate, index) => {
                           if (index === 0) {
                             return (
-                              <FormField key={index} action={true}>
+                              <FormField key={index} action>
                                 <Field
                                   name={`${coCandidate}.name`}
                                   component={TextInputRF}

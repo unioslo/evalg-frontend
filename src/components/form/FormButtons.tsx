@@ -45,15 +45,15 @@ const FormButtons = (props: IProps) => {
     entityText,
   } = props;
   return (
-    <ButtonContainer alignRight={true}>
+    <ButtonContainer alignRight>
       {entityAction && entityText && (
-        <Button text={entityText} action={entityAction} secondary={true} />
+        <Button text={entityText} action={entityAction} secondary/>
       )}
       <Button
         text={<Trans>general.cancel</Trans>}
         disabled={submitting}
         action={closeAction}
-        secondary={true}
+        secondary
       />
       <Button
         text={

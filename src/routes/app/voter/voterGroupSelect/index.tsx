@@ -387,7 +387,7 @@ class VoterGroupSelectPage extends React.Component<
     }
 
     return (
-      <PageSection noBorder={true}>
+      <PageSection noBorder>
         <div className={classes.electionGroupInfoSection}>
           <div className={classes.mandatePeriodTextDesktop}>
             <MandatePeriodText election={voteElection} longDate />
@@ -419,10 +419,10 @@ class VoterGroupSelectPage extends React.Component<
           {extraElements}
         </div>
 
-        <ButtonContainer alignLeft={true}>
+        <ButtonContainer alignLeft>
           <Button
             text={<Trans>general.back</Trans>}
-            secondary={true}
+            secondary
             action={() => {
               this.setState({ redirectBack: true });
             }}

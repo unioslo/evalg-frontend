@@ -80,7 +80,7 @@ const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
     <Mutation
       mutation={updateVotingPeriods}
       refetchQueries={refetchQueriesFunction}
-      awaitRefetchQueries={true}
+      awaitRefetchQueries
     >
       {(mutation, { data }) => {
         const handleSubmit = async (submitValues: any) => {

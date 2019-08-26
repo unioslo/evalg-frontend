@@ -236,7 +236,7 @@ const CensusTable: React.FunctionComponent<IProps> = ({
             if (voter.id === voterToUpdateId) {
               return (
                 <React.Fragment key={voter.id}>
-                  <TableRow verticalPadding={true}>
+                  <TableRow verticalPadding>
                     <TableCell topPadding verticalAlignTop>
                       <Text>{getPersonIdTypeDisplayName(voter.idType, t)}</Text>
                     </TableCell>

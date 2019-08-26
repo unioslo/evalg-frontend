@@ -116,8 +116,8 @@ const renderOptionFields = (
             name={`option${index + 2}ou`}
             component={SelectDropDown as any}
             options={ouOptions}
-            large={true}
-            isSearchable={true}
+            large
+            isSearchable
             placeholder={t('general.select')}
           />
         </FormField>

@@ -30,14 +30,14 @@ const SingleElectionForm = () => {
   return (
     <div>
       <FormFieldGroup>
-        <FormField inline={true}>
+        <FormField inline>
           <Field
             name="elections[0].startDate"
             component={DateInputRF as any}
             label={<Trans>election.electionOpens</Trans>}
           />
         </FormField>
-        <FormField inline={true}>
+        <FormField inline>
           <Field
             name="elections[0].startTime"
             component={TimeInputRF as any}
@@ -46,14 +46,14 @@ const SingleElectionForm = () => {
         </FormField>
       </FormFieldGroup>
       <FormFieldGroup>
-        <FormField inline={true}>
+        <FormField inline>
           <Field
             name="elections[0].endDate"
             component={DateInputRF as any}
             label={<Trans>election.electionCloses</Trans>}
           />
         </FormField>
-        <FormField inline={true}>
+        <FormField inline>
           <Field
             name="elections[0].endTime"
             component={TimeInputRF as any}
@@ -118,36 +118,36 @@ const MultipleElectionsForm = ({
                   </TableCell>
                   <TableCell>
                     <FormFieldGroup>
-                      <FormField inline={true} smallBottomMargin={true}>
+                      <FormField inline smallBottomMargin>
                         <Field
                           name={`${election}.startDate`}
                           component={DateInputRF as any}
-                          small={true}
+                          small
                         />
                       </FormField>
-                      <FormField inline={true} smallBottomMargin={true}>
+                      <FormField inline smallBottomMargin>
                         <Field
                           name={`${election}.startTime`}
                           component={TimeInputRF as any}
-                          small={true}
+                          small
                         />
                       </FormField>
                     </FormFieldGroup>
                   </TableCell>
                   <TableCell>
                     <FormFieldGroup>
-                      <FormField inline={true} smallBottomMargin={true}>
+                      <FormField inline smallBottomMargin>
                         <Field
                           name={`${election}.endDate`}
                           component={DateInputRF as any}
-                          small={true}
+                          small
                         />
                       </FormField>
-                      <FormField inline={true} smallBottomMargin={true}>
+                      <FormField inline smallBottomMargin>
                         <Field
                           name={`${election}.endTime`}
                           component={TimeInputRF as any}
-                          small={true}
+                          small
                         />
                       </FormField>
                     </FormFieldGroup>

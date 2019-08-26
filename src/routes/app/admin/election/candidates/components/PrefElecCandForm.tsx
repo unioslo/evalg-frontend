@@ -83,7 +83,7 @@ const PrefElecCandForm: React.FunctionComponent<IProps> = (props: IProps) => {
                   <Field
                     name="name"
                     component={TextInputRF}
-                    large={true}
+                    large
                     placeholder={t('election.candidateNamePlaceHolder')}
                   />
                 </FormField>

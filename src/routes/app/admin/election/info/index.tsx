@@ -104,7 +104,7 @@ class InfoPage extends React.Component<PropsInternal> {
               onSettingsWasSaved={this.handleSettingsWasSaved}
             />
 
-            <ButtonContainer alignRight={true} noTopMargin={false}>
+            <ButtonContainer alignRight noTopMargin={false}>
               <Button
                 text={
                   <span>

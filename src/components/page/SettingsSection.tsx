@@ -99,7 +99,7 @@ const SettingsSection: React.SFC<IProps> = props => {
       {header && <h2 className={classes.title}>{header}</h2>}
       {displayStatus !== 'active' && onSetActive && (
         <div className={classes.topAction}>
-          <ActionText action={handleSetActive} bottom={true}>
+          <ActionText action={handleSetActive} bottom>
             <Trans>general.edit</Trans>
           </ActionText>
         </div>
