@@ -5,7 +5,7 @@ import chaiEnzyme from 'chai-enzyme';
 import sinon from 'sinon';
 
 chai.use(chaiEnzyme());
-const expect = chai.expect;
+const { expect } = chai;
 
 import Modal from './Modal';
 import CloseIcon from './icons/CloseIcon';

@@ -84,7 +84,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
   const [processingFileForERId, setProcessingFileForERId] = useState('');
   const [fileDownloadError, setFileDownloadError] = useState('');
 
-  let electionResults = electionGroupCount.electionResults;
+  let { electionResults } = electionGroupCount;
   electionResults = orderElectionResults(electionResults);
 
   const handleDownloadCountingProtocol = async (
@@ -131,7 +131,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
         variables: { id: electionResultId },
         fetchPolicy: 'no-cache',
       });
-      ballotsWithMetadata = data.electionResult.ballotsWithMetadata;
+      ({ ballotsWithMetadata } = data.electionResult);
       electionName = data.electionResult.election.name[lang];
     } catch (error) {
       setProcessingFileForERId('');
@@ -159,7 +159,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
       {electionResults
         .filter(electionResult => electionResult.election.active)
         .map(electionResult => {
-          const election = electionResult.election;
+          const { election } = electionResult;
           const electionName = election.name[lang];
 
           return (

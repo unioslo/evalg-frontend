@@ -6,7 +6,7 @@ import chaiEnzyme from 'chai-enzyme';
 import sinon from 'sinon';
 
 chai.use(chaiEnzyme());
-const expect = chai.expect;
+const { expect } = chai;
 
 describe('<PrimaryButton />', () => {
   it('should call the button action function when clicked', () => {

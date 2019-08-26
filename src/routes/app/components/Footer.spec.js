@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme';
 import chai from 'chai'
 import chaiEnzyme from 'chai-enzyme';
 chai.use(chaiEnzyme());
-const expect = chai.expect;
+const { expect } = chai;
 const noop = () => null;
 
 import Footer from './Footer';

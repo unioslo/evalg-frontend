@@ -111,7 +111,7 @@ const CandidateListItem: React.SFC<IListItemProps> = props => (
 const HOCCandidateListItem = injectSheet(styles)(CandidateListItem);
 
 interface IInfoProps extends WithTranslation {
-  candidate: Candidate | null;
+  candidate: Candidate;
   classes: any;
   infoUrl?: boolean;
   listName?: boolean;
@@ -121,8 +121,7 @@ interface IInfoProps extends WithTranslation {
 
 const CandidateInfo: React.SFC<IInfoProps> = props => {
   const lang = props.i18n ? props.i18n.language : 'nb';
-  const { classes } = props;
-  const candidate: any = props.candidate;
+  const { classes, candidate } = props;
   const { coCandidates } = candidate.meta;
   const candidateInfoCls = classNames({
     [classes.candidateInfo]: true,

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
-import { ElectionGroup } from 'interfaces';
+import { IPollBook, Election } from 'interfaces';
 
 import { PageSubSection } from 'components/page';
 import Loading from 'components/loading';
@@ -81,10 +81,10 @@ const TurnoutSubsection: React.FunctionComponent<IProps> = ({
               );
             }
 
-            const electionGroup: ElectionGroup = data.electionGroup;
+            const { electionGroup } = data;
 
             return electionGroup.type === 'single_election'
-              ? electionGroup.elections[0].pollbooks.map(pollbook => (
+              ? electionGroup.elections[0].pollbooks.map((pollbook: IPollBook) => (
                   <TurnoutRow
                     key={pollbook.id}
                     pollbookName={pollbook.name[lang]}
@@ -96,8 +96,8 @@ const TurnoutSubsection: React.FunctionComponent<IProps> = ({
                   />
                 ))
               : electionGroup.elections
-                  .filter(election => election.active)
-                  .map(election => (
+                  .filter((election: Election) => election.active)
+                  .map((election: Election) => (
                     <TurnoutRow
                       key={election.id}
                       pollbookName={election.pollbooks[0].name[lang]}

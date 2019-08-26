@@ -10,7 +10,6 @@ import {
   ISettingsSectionContents,
 } from 'components/page/SettingsSection';
 import {
-  ElectionGroup,
   ElectionGroupRoleType,
   IElectionGroupRole,
   IRoleGrant,
@@ -122,7 +121,7 @@ const removeElectionGroupRoleByGrant = async (
 const ActiveComponent: React.FunctionComponent<
   IActiveComponentProps
 > = props => {
-  const electionGroupData: ElectionGroup = props.electionGroupData;
+  const { electionGroupData } = props;
   const adminRoles: IElectionGroupRole[] = electionGroupData.roles.filter(
     role => role.name === 'admin'
   );

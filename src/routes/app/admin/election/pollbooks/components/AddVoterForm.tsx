@@ -57,7 +57,7 @@ interface AddVoterFormProps {
 }
 
 const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
-  const classes = props.classes;
+  const { classes } = props;
 
   const [feedback, setFeedback] = useState({ text: '', isBackendError: false });
   const inputEl = useRef<HTMLInputElement>(null);
@@ -77,7 +77,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
           <Mutation mutation={addVoterById} refetchQueries={refetchQueries}>
             {add => {
               const addPersonAndSetFeedback = async (values: any) => {
-                const idValue = values.idValue;
+                const { idValue } = values;
                 if (!idValue) return;
 
                 let idType: PersonIdType;

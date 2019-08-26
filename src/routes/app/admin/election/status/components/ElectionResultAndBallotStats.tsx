@@ -41,9 +41,9 @@ const ElectionResultAndBallotStats: React.FunctionComponent<IProps> = ({
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
 
-  const election = electionResult.election;
-  const pollbooks = election.pollbooks;
-  const result = electionResult.result;
+  const { election } = electionResult;
+  const { pollbooks } = election;
+  const { result } = electionResult;
 
   return (
     <>

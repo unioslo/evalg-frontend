@@ -8,7 +8,7 @@ import {
   IInactiveComponentProps,
   ISettingsSectionContents,
 } from 'components/page/SettingsSection';
-import { Election, ElectionGroup, ElectionVotingPeriodInput } from 'interfaces';
+import { Election, ElectionVotingPeriodInput } from 'interfaces';
 import {
   ISODateTimeToTimeZoneAdjustedISODate,
   ISODateTimeToTimeZoneAdjustedTime,
@@ -73,7 +73,7 @@ const buildSubmitPayload = (submitValues: any): IVotingPeriodSettings => ({
 const refetchQueriesFunction = () => ['electionGroup'];
 
 const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
-  const electionGroupData: ElectionGroup = props.electionGroupData;
+  const { electionGroupData } = props;
   const activeElections = electionGroupData.elections.filter(e => e.active);
 
   return (
@@ -101,7 +101,7 @@ const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
 };
 
 const InactiveComponent: React.SFC<IInactiveComponentProps> = props => {
-  const electionGroupData: ElectionGroup = props.electionGroupData;
+  const { electionGroupData } = props;
   const activeElections = electionGroupData.elections.filter(e => e.active);
 
   return (

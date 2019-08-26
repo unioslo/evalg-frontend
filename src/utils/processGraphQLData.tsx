@@ -96,7 +96,7 @@ export const electionGroupWithOrderedElections = (
 export const idValueForPerson = (person: IPerson) => {
   if (!person) return '';
 
-  const identifiers = person.identifiers;
+  const { identifiers } = person;
 
   for (let id of identifiers) {
     if (id.idType === 'feide_id') {

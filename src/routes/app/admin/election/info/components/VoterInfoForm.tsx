@@ -162,7 +162,7 @@ class VoterInfoForm extends React.Component<IProps> {
   render() {
     const { initialValues, closeAction, i18n, t } = this.props;
     const lang = i18n.language;
-    const electionGroup: any = this.props.electionGroup;
+    const { electionGroup } = this.props;
     const { elections } = initialValues;
     if (elections.length === 0) {
       return (
