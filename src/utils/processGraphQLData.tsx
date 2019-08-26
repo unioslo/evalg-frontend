@@ -28,7 +28,7 @@ export const orderMultipleElections = (elections: Election[]): Election[] => {
   const processedIndexes: number[] = [];
 
   for (const orderedElectionName of multipleElectionsSortingOrder) {
-    for (let i = 0; i < elections.length; i++) {
+    for (let i = 0; i < elections.length; i += 1) {
       if (elections[i].name.en === orderedElectionName) {
         orderedElections.push(elections[i]);
         processedIndexes.push(i);
@@ -36,7 +36,7 @@ export const orderMultipleElections = (elections: Election[]): Election[] => {
     }
   }
 
-  for (let i = 0; i < elections.length; i++) {
+  for (let i = 0; i < elections.length; i += 1) {
     if (processedIndexes.indexOf(i) === -1) {
       orderedElections.push(elections[i]);
     }
@@ -56,7 +56,7 @@ export const orderElectionResults = (
   const processedIndexes: number[] = [];
 
   for (const orderedElectionName of multipleElectionsSortingOrder) {
-    for (let i = 0; i < electionResults.length; i++) {
+    for (let i = 0; i < electionResults.length; i += 1) {
       if (electionResults[i].election.name.en === orderedElectionName) {
         orderedElectionResults.push(electionResults[i]);
         processedIndexes.push(i);
@@ -64,7 +64,7 @@ export const orderElectionResults = (
     }
   }
 
-  for (let i = 0; i < electionResults.length; i++) {
+  for (let i = 0; i < electionResults.length; i += 1) {
     if (processedIndexes.indexOf(i) === -1) {
       orderedElectionResults.push(electionResults[i]);
     }
@@ -126,7 +126,7 @@ export const b64toBlob = (
     const slice = byteCharacters.slice(offset, offset + sliceSize);
 
     const byteNumbers = new Array(slice.length);
-    for (let i = 0; i < slice.length; i++) {
+    for (let i = 0; i < slice.length; i += 1) {
       byteNumbers[i] = slice.charCodeAt(i);
     }
 

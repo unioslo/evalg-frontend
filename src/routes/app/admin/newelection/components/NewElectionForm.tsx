@@ -64,7 +64,7 @@ const getNodeListAndSettings = (currentValues: any[], templateRoot: any) => {
     while (nodesAdded <= currentValues.length - 1) {
       // No next node, which means we're at the end of the template flow
       if (!nextNodes[nextNodeIndex]) {
-        nodesAdded++;
+        nodesAdded += 1;
       } else {
         const nextNode = nextNodes[nextNodeIndex];
         if (
@@ -87,10 +87,10 @@ const getNodeListAndSettings = (currentValues: any[], templateRoot: any) => {
           )
         ) {
           nodeList.push(nextNode);
-          nodesAdded++;
-          curValIndex++;
+          nodesAdded += 1;
+          curValIndex += 1;
         }
-        nextNodeIndex++;
+        nextNodeIndex += 1;
       }
     }
   }

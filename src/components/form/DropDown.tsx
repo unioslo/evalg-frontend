@@ -100,7 +100,7 @@ interface IDropDownOption {
 }
 
 const getValueName = (value: any, options: Array<IDropDownOption>): string => {
-  for (let i = 0; i < options.length; i++) {
+  for (let i = 0; i < options.length; i += 1) {
     if (options[i].value === value) {
       return options[i].name;
     }

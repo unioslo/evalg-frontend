@@ -49,7 +49,7 @@ function getRandomString(length: number) {
   var result = '';
   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   var charactersLength = characters.length;
-  for (var i = 0; i < length; i++) {
+  for (var i = 0; i < length; i += 1) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
@@ -104,7 +104,7 @@ const GenerateVotesForTesting: React.FunctionComponent<
       const candidateIds = election.lists[0].candidates.map(c => c.id);
 
       for (const pollbook of election.pollbooks) {
-        for (let i = 0; i < nVotesPerPollbook; i++) {
+        for (let i = 0; i < nVotesPerPollbook; i += 1) {
           if (ONE_REQUEST_AT_A_TIME) {
             await generateOneVoterAndVote(pollbook, candidateIds);
           } else {

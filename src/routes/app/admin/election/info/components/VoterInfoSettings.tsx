@@ -24,7 +24,7 @@ const buildInitialValues = (elecs: Election[]) => {
   }));
   let hasMultipleMandateTimes = false;
   if (elecs.length > 1) {
-    for (let i = 0; i < elecs.length - 1; i++) {
+    for (let i = 0; i < elecs.length - 1; i += 1) {
       if (
         elecs[i].mandatePeriodStart !== elecs[i + 1].mandatePeriodStart ||
         elecs[i].mandatePeriodEnd !== elecs[i + 1].mandatePeriodEnd
@@ -36,7 +36,7 @@ const buildInitialValues = (elecs: Election[]) => {
   }
   let hasMultipleContactInfo = false;
   if (elecs.length > 1) {
-    for (let i = 0; i < elecs.length - 1; i++) {
+    for (let i = 0; i < elecs.length - 1; i += 1) {
       if (elecs[i].contact !== elecs[i + 1].contact) {
         hasMultipleContactInfo = true;
         break;
@@ -45,7 +45,7 @@ const buildInitialValues = (elecs: Election[]) => {
   }
   let hasMultipleInfoUrls = false;
   if (elecs.length > 1) {
-    for (let i = 0; i < elecs.length - 1; i++) {
+    for (let i = 0; i < elecs.length - 1; i += 1) {
       if (elecs[i].informationUrl !== elecs[i + 1].informationUrl) {
         hasMultipleInfoUrls = true;
         break;

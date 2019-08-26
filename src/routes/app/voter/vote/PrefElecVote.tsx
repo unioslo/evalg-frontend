@@ -11,7 +11,9 @@ import PrefElecReview from './components/PrefElecReview';
 function moveArrayItem(arr: any[], oldIndex: number, newIndex: number) {
   if (newIndex >= arr.length) {
     let k = newIndex - arr.length + 1;
+    /* eslint-disable no-plusplus */
     while (k--) {
+    /* eslint-enable no-plusplus */
       arr.push(undefined);
     }
   }

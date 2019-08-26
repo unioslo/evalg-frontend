@@ -70,7 +70,7 @@ export const allEqual = (array: any[]) => {
   if (array.length === 0) {
     return false;
   }
-  for (let i = 1; i < array.length; i++) {
+  for (let i = 1; i < array.length; i += 1) {
     if (array[i] !== array[0]) {
       return false;
     }
@@ -94,7 +94,7 @@ export const allEqualForAttrs = (array: any[], attrs: string[]) => {
 };
 
 export const findObjIndex = (array: Array<{ id: string }>, id: string) => {
-  for (let i = 0; i < array.length; i++) {
+  for (let i = 0; i < array.length; i += 1) {
     if (array[i].id === id) {
       return i;
     }
@@ -119,7 +119,7 @@ export const objsEqual = (a: any, b: any) => {
 export const shuffleArray = <T>(array: T[]): T[] => {
   const emptyArray: T[] = [];
   const shuffledArray = emptyArray.concat(array);
-  for (let i = shuffledArray.length - 1; i > 0; i--) {
+  for (let i = shuffledArray.length - 1; i > 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1));
     const temp = shuffledArray[i];
     shuffledArray[i] = shuffledArray[j];

@@ -62,7 +62,7 @@ const MobileStepperCircles: React.SFC<IProps> = props => {
   const { numberOfSteps, currentStepNumber, stepText, title, classes } = props;
 
   let stepNumbers = [];
-  for (let i = 1; i <= numberOfSteps; i++) {
+  for (let i = 1; i <= numberOfSteps; i += 1) {
     stepNumbers.push(i);
   }
   const leftStepNumbers = stepNumbers.slice(0, currentStepNumber);
