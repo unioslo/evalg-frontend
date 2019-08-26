@@ -101,8 +101,11 @@ interface IState {
 
 class TimeInput extends React.Component<IProps, IState> {
   wrapperRef: any;
+
   timeoutID: any;
+
   hourInput: any;
+
   minuteInput: any;
   // handleHourChange: Function;
   // handleMinuteChange: Function;

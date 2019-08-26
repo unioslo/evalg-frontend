@@ -60,6 +60,7 @@ interface IProps extends WithTranslation {
 
 class BaseElectionSettingsForm extends React.Component<IProps> {
   isSubmitting = false;
+
   initialValues = buildInitialValues(this.props.electionGroup);
 
   constructor(props: IProps) {

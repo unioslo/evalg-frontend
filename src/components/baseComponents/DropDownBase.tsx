@@ -9,8 +9,8 @@ interface IDropDownState {
 
 class DropDownBase<T> extends React.Component<T, IDropDownState> {
   state: IDropDownState;
+
   wrapperRef: any;
-  // handleClickOutside: Function;
 
   constructor(props: T) {
     super(props);
