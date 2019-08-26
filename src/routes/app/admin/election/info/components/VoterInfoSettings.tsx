@@ -8,7 +8,7 @@ import {
   IInactiveComponentProps,
   ISettingsSectionContents,
 } from 'components/page/SettingsSection';
-import { Election, ElectionGroup, ElectionVoterInfoInput } from 'interfaces';
+import { Election, ElectionVoterInfoInput } from 'interfaces';
 
 import VoterInfoForm from './VoterInfoForm';
 import VoterInfoValues from './VoterInfoValues';
@@ -97,7 +97,7 @@ const updateVoterInfo = gql`
 const refetchQueriesFunction = () => ['electionGroup'];
 
 const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
-  const electionGroupData: ElectionGroup = props.electionGroupData;
+  const { electionGroupData } = props;
   const { elections } = electionGroupData;
   const activeElections = elections.filter(e => e.active);
 
@@ -126,7 +126,7 @@ const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
 };
 
 const InactiveComponent: React.SFC<IInactiveComponentProps> = props => {
-  const electionGroupData: ElectionGroup = props.electionGroupData;
+  const { electionGroupData } = props;
   const { elections } = electionGroupData;
   const activeElections = elections.filter(e => e.active);
 

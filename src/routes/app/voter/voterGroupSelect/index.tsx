@@ -190,9 +190,9 @@ class VoterGroupSelectPage extends React.Component<
     selectedPollBookIndex: number,
     EGPollbooks: IPollBook[]
   ): IVoter | null => {
-    const voters: IVoter[] = this.state.voters;
+    const { voters } = this.state;
     const filteredVoters = voters.filter(
-      v => v.pollbook.id === EGPollbooks[selectedPollBookIndex].id
+      (v: IVoter) => v.pollbook.id === EGPollbooks[selectedPollBookIndex].id
     );
 
     if (filteredVoters.length === 1) {
@@ -257,8 +257,7 @@ class VoterGroupSelectPage extends React.Component<
 
   public render() {
     const lang = this.props.i18n.language;
-    const classes = this.props.classes;
-    const t = this.props.t;
+    const { classes, t } = this.props;
 
     const {
       EGPollbooks,

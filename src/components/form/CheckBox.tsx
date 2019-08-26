@@ -142,7 +142,7 @@ interface IRFProps {
 
 const CheckBoxRF = (props: IRFProps) => {
   const { input, label, classes } = props;
-  const disabled = input.disabled;
+  const { disabled } = input;
   return (
     <CheckBox
       name={input.name}

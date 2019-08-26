@@ -49,7 +49,7 @@ const getNodeListAndSettings = (currentValues: any[], templateRoot: any) => {
   }
 
   const selectedRootNodeOption = templateRoot.options[currentValues[0].value];
-  const nextNodes = selectedRootNodeOption.nextNodes;
+  const { nextNodes } = selectedRootNodeOption;
   if (!selectedRootNodeOption.settings) {
     return { nodeList, settings };
   }
@@ -163,7 +163,7 @@ const getDerivedValues = (values: any, settings: any, ouLists: any) => {
   });
 
   if (ou === null && settings.ouTag === 'root') {
-    ou = ouLists.root[0];
+    ([ou] = ouLists.root);
   } else if (ou !== null) {
     ou = ouLists[settings.ouTag][ou];
   }
@@ -172,7 +172,7 @@ const getDerivedValues = (values: any, settings: any, ouLists: any) => {
   //  name = ou.electionNameTags[electionNameTag]
   // }
   if (name === null && settings.name) {
-    name = settings.name;
+    ({ name } = settings.name);
   }
   return { ou, name };
 };
@@ -189,8 +189,8 @@ const internalSubmit = (
   const { templateRoot, ouLists, elections } = electionTemplate;
   const { settings } = getNodeListAndSettings(currentValues, templateRoot);
   const ret = getDerivedValues(values, settings, ouLists);
-  const ou = ret.ou;
-  let name = ret.name;
+  const { ou } = ret;
+  let { name } = ret;
 
   if (settings.template && ou) {
     const { ouTag, ...restSettings } = settings;

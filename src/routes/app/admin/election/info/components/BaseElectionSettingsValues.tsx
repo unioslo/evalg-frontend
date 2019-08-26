@@ -15,7 +15,7 @@ const BaseElectionSettingsValues: React.SFC<IProps> = props => {
   const lang = i18n.language;
   const { elections } = props.electionGroup;
   const activeElections = elections.filter(e => e.active);
-  const hasGenderQuota = props.electionGroup.hasGenderQuota;
+  const {electionGroup} = props;
   return (
     <InfoList>
       {activeElections.length === 0 && (
@@ -34,7 +34,7 @@ const BaseElectionSettingsValues: React.SFC<IProps> = props => {
           </InfoListItem>
         );
       })}
-      {hasGenderQuota && (
+      {electionGroup.hasGenderQuota && (
         <InfoListItem smallText>
           {t('election.hasGenderQuota')}
         </InfoListItem>

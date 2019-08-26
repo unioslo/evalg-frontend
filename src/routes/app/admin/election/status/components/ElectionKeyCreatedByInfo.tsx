@@ -36,8 +36,7 @@ const ElectionKeyCreatedByInfo: React.FunctionComponent<Props> = ({
         return null;
       }
 
-      const generatedAt = data.electionGroupKeyMeta.generatedAt;
-      const generatedBy = data.electionGroupKeyMeta.generatedBy;
+      const { generatedAt, generatedBy } = data.electionGroupKeyMeta;
       let who = '';
 
       if (generatedBy) {

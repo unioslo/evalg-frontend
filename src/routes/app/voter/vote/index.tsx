@@ -7,7 +7,7 @@ import Loading from 'components/loading';
 import { Page } from 'components/page';
 import { orderMultipleElections } from 'utils/processGraphQLData';
 import { submitVote } from 'utils/voting';
-import { ElectionGroup, Election, IVoter } from 'interfaces';
+import { Election, IVoter } from 'interfaces';
 
 import PrefElecVote from './PrefElecVote';
 import MajorityVote from './MajorityVote';
@@ -198,7 +198,7 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
             return 'Error';
           }
 
-          const electionGroup: ElectionGroup = data.electionGroup;
+          const { electionGroup } = data;
           const electionGroupName: string = electionGroup.name[lang];
           const activeElections = orderMultipleElections(
             electionGroup.elections
@@ -206,7 +206,7 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
 
           let VotingComponent: any;
           if (this.state.voteElection) {
-            const voteElection = this.state.voteElection;
+            const { voteElection } = this.state;
             const { candidateType } = voteElection.meta;
             const { voting } = voteElection.meta.ballotRules;
 

@@ -8,7 +8,6 @@ import {
   IInactiveComponentProps,
   ISettingsSectionContents,
 } from 'components/page/SettingsSection';
-import { ElectionGroup } from 'interfaces';
 
 import BaseElectionSettingsValues from './BaseElectionSettingsValues';
 import BaseElectionSettingsForm, {
@@ -34,7 +33,7 @@ const updateBaseSettings = gql`
 const refetchQueriesFunction = () => ['electionGroup'];
 
 const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
-  const electionGroupData: ElectionGroup = props.electionGroupData;
+  const { electionGroupData } = props;
 
   if (electionGroupData.type !== 'multiple_elections') {
     return null;
@@ -67,7 +66,7 @@ const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
 };
 
 const InactiveComponent: React.SFC<IInactiveComponentProps> = props => {
-  const electionGroupData: ElectionGroup = props.electionGroupData;
+  const { electionGroupData } = props;
 
   if (electionGroupData.type !== 'multiple_elections') {
     return null;

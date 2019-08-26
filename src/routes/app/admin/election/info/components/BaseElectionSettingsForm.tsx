@@ -82,7 +82,7 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
   render() {
     const { i18n, t } = this.props;
     const lang = i18n.language;
-    const elections: any = this.initialValues.elections;
+    const { elections } = this.initialValues;
     return (
       <Form
         onSubmit={this.handleFormSubmit}

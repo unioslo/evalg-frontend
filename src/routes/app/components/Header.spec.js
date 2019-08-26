@@ -4,7 +4,7 @@ import chai from 'chai'
 import chaiEnzyme from 'chai-enzyme';
 import configureStore from 'redux-mock-store';
 chai.use(chaiEnzyme());
-const expect = chai.expect;
+const { expect } = chai;
 const noop = () => null;
 
 import Header from './Header';

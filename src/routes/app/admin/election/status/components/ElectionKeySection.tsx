@@ -79,7 +79,7 @@ class ElectionKeySection extends React.Component<IProps, IState> {
   render() {
     const { electionGroup } = this.props;
     const hasKey = electionGroup.publicKey !== null;
-    const status = electionGroup.status;
+    const { status } = electionGroup;
 
     return (
       <>

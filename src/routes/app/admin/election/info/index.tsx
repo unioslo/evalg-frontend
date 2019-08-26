@@ -77,9 +77,8 @@ class InfoPage extends React.Component<PropsInternal> {
   render() {
     const { id: groupId } = this.props.electionGroupData;
 
-    const { t, i18n } = this.props;
+    const { t, i18n, history } = this.props;
     const lang = i18n.language;
-    const history = this.props.history;
 
     const proceedToCandiates = () => {
       history.push(`/admin/elections/${groupId}/candidates`);
