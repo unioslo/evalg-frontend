@@ -87,7 +87,7 @@ const VoterElectionsTable: React.FunctionComponent<IProps> = (
               </TableCell>
               <TableCell>{dateTimeToMarkup(startTime)}</TableCell>
               <TableCell>{dateTimeToMarkup(endTime)}</TableCell>
-              <TableCell alignCenter={true}>
+              <TableCell alignCenter>
                 {canVote ? (
                   <Text>{t('general.yes')}</Text>
                 ) : (
@@ -99,9 +99,9 @@ const VoterElectionsTable: React.FunctionComponent<IProps> = (
                   <Link to={`/vote/${group.id}`}>{t('election.voteNow')}</Link>
                 ) : (
                   <Button
-                    secondary={true}
+                    secondary
                     text={t('election.changeVote')}
-                    wide={true}
+                    wide
                     action={() => console.error('CHANGE VOTE')}
                   />
                 )}

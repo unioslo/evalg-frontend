@@ -33,7 +33,7 @@ const TableRowForm = (props: IProps) => {
     <div className={props.classes.form}>
       {props.header && (
         <div className={props.classes.header}>
-          <Text bold={true} size="large">
+          <Text bold size="large">
             {props.header}
           </Text>
         </div>

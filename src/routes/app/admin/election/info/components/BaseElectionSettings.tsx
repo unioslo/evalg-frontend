@@ -44,7 +44,7 @@ const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
     <Mutation
       mutation={updateBaseSettings}
       refetchQueries={refetchQueriesFunction}
-      awaitRefetchQueries={true}
+      awaitRefetchQueries
     >
       {(mutation, { data }) => {
         const handleSubmit = async (

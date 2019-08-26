@@ -180,7 +180,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
                       );
                     }}
                     text={<span>{t('general.download')} {t('admin.countingDetails.countingProtocol')} (TXT)</span>}
-                    secondary={true}
+                    secondary
                   />
                   <Button
                     action={e => {
@@ -188,7 +188,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
                       handleDownloadBallots(apolloClient, electionResult.id);
                     }}
                     text={<span>{t('general.download')} {t('admin.countingDetails.ballots')} (JSON)</span>}
-                    secondary={true}
+                    secondary
                   />
                 </ButtonContainer>
                 {processingFileForERId === electionResult.id && (
@@ -207,7 +207,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
           text={<span>{t('general.download')} {electionResults.length > 1
           ? t('admin.countingDetails.auditLogForAllElections')
           : t('admin.countingDetails.auditLogForElection')}</span>}
-          secondary={true}
+          secondary
         />
       </div>
     </>

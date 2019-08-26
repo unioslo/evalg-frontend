@@ -19,7 +19,7 @@ const ConfirmModal: React.SFC<IProps> = props => {
       key="confirm"
       action={props.confirmAction}
       text={props.confirmText}
-      secondary={true}
+      secondary
     />,
   ];
   return (

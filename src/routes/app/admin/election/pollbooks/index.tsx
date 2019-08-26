@@ -263,7 +263,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                 </VoterGroupActionPanelContainer>
 
                 {this.state.showUploadMsgBox && (
-                  <MsgBox msg={this.state.uploadMsg} timeout={true} />
+                  <MsgBox msg={this.state.uploadMsg} timeout />
                 )}
 
                 <CensusTable

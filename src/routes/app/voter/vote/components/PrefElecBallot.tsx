@@ -127,7 +127,7 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                         small: screenSize !== 'mobile' && screenSize !== 'sm',
                       }}
                     />
-                    <CandidateInfo candidate={c} infoUrl={true} />
+                    <CandidateInfo candidate={c} infoUrl/>
                     {screenSize === 'mobile' || screenSize === 'sm' ? (
                       <ToggleSelectIcon
                         flexRight
@@ -169,7 +169,7 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                     }
                     onClick={onAddCandidate.bind(this, c)}
                   />
-                  <CandidateInfo candidate={c} infoUrl={true} />
+                  <CandidateInfo candidate={c} infoUrl/>
                 </CandidateListItem>
               ))}
             </CandidateList>

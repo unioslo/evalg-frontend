@@ -64,7 +64,7 @@ class HelpSubSection extends React.Component<IHelpSubProps, IHelpSubState> {
             </div>
           );
           return (
-            <PageSubSection header={<Header />} customHeader={true}>
+            <PageSubSection header={<Header />} customHeader>
               {this.props.desc}
               {this.state.showHelpTexts ? (
                 <div className={classes.helpTexts}>
@@ -72,8 +72,8 @@ class HelpSubSection extends React.Component<IHelpSubProps, IHelpSubState> {
                     {this.props.helpTextTags.map((text, index) => (
                       <InfoListItem
                         key={index}
-                        bulleted={true}
-                        noLeftMargin={true}
+                        bulleted
+                        noLeftMargin
                       >
                         <Trans>{text}</Trans>
                       </InfoListItem>

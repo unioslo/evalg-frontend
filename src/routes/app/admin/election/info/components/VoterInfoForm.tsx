@@ -244,20 +244,20 @@ class VoterInfoForm extends React.Component<IProps> {
                                 <Text>{elections[index].name[lang]}</Text>
                               </TableCell>
                               <TableCell>
-                                <FormField inline={true} noTopMargin={true}>
+                                <FormField inline noTopMargin>
                                   <Field
                                     name={`${election}.mandatePeriodStart`}
                                     component={DateInputRF as any}
-                                    small={true}
+                                    small
                                   />
                                 </FormField>
                               </TableCell>
                               <TableCell>
-                                <FormField inline={true} noTopMargin={true}>
+                                <FormField inline noTopMargin>
                                   <Field
                                     name={`${election}.mandatePeriodEnd`}
                                     component={DateInputRF as any}
-                                    small={true}
+                                    small
                                   />
                                 </FormField>
                               </TableCell>
@@ -269,14 +269,14 @@ class VoterInfoForm extends React.Component<IProps> {
                   </Table>
                 ) : (
                   <FormFieldGroup>
-                    <FormField inline={true} noTopMargin={true}>
+                    <FormField inline noTopMargin>
                       <Field
                         name="elections[0].mandatePeriodStart"
                         component={DateInputRF as any}
                         label={<Trans>election.fromDate</Trans>}
                       />
                     </FormField>
-                    <FormField inline={true} noTopMargin={true}>
+                    <FormField inline noTopMargin>
                       <Field
                         name="elections[0].mandatePeriodEnd"
                         component={DateInputRF as any}
@@ -346,12 +346,12 @@ class VoterInfoForm extends React.Component<IProps> {
                                 <Text>{elections[index].name[lang]}</Text>
                               </TableCell>
                               <TableCell>
-                                <FormField noTopMargin={true}>
+                                <FormField noTopMargin>
                                   <Field
                                     name={`${election}.contact`}
                                     component={TextInputRF as any}
                                     placeholder={t('general.email')}
-                                    small={true}
+                                    small
                                   />
                                 </FormField>
                               </TableCell>
@@ -424,12 +424,12 @@ class VoterInfoForm extends React.Component<IProps> {
                                 <Text>{elections[index].name[lang]}</Text>
                               </TableCell>
                               <TableCell>
-                                <FormField noTopMargin={true}>
+                                <FormField noTopMargin>
                                   <Field
                                     name={`${election}.informationUrl`}
                                     component={TextInputRF as any}
                                     placeholder={t('general.webpage')}
-                                    small={true}
+                                    small
                                   />
                                 </FormField>
                               </TableCell>

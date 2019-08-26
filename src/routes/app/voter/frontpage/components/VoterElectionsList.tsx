@@ -70,7 +70,7 @@ const VoterElectionsListItem: React.FunctionComponent<IListItemProps> = (
           {!hasVoted ? (
             <Button text={t('election.voteNow')} />
           ) : (
-            <Button secondary={true} text={t('election.changeVote')} />
+            <Button secondary text={t('election.changeVote')} />
           )}
         </Link>
       </ButtonContainer>

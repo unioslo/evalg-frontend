@@ -96,7 +96,7 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
                         onClick={toggleSelectAction}
                       />
                     )}
-                    <CandidateInfo candidate={candidate} infoUrl={true} />
+                    <CandidateInfo candidate={candidate} infoUrl/>
                   </CandidateListItem>
                 );
               })}

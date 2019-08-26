@@ -309,7 +309,7 @@ class UploadCensusFileModal extends React.Component<
         text={<Trans>general.cancel</Trans>}
         action={this.props.closeAction}
         disabled={this.state.isUploading}
-        secondary={true}
+        secondary
         key="cancelButton"
       />
     );
@@ -367,7 +367,7 @@ class UploadCensusFileModal extends React.Component<
                 name="filename"
                 type="text"
                 value={this.state.fileName}
-                disabled={true}
+                disabled
               />
 
               <Field name="censusFile" validate={this.required}>

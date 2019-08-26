@@ -72,7 +72,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
 
   return (
     <>
-      <TableRow verticalPadding={true}>
+      <TableRow verticalPadding>
         <TableCell colspan={4}>
           <Mutation mutation={addVoterById} refetchQueries={refetchQueries}>
             {add => {
@@ -156,7 +156,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
                               <Field
                                 name="idValue"
                                 component={TextInputRF}
-                                large={true}
+                                large
                                 placeholder={t('census.feideIdOrBirthNumber')}
                                 inputRef={inputEl}
                               />

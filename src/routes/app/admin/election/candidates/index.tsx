@@ -44,7 +44,7 @@ class CandidatesPage extends React.Component<IProps, IState> {
       <Page header={t('election.candidates')}>
         <CandidatePage electionGroup={electionGroup} />
 
-        <ButtonContainer alignRight={true} noTopMargin={false}>
+        <ButtonContainer alignRight noTopMargin={false}>
           <Button
             text={
               <span>
