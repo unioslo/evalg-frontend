@@ -167,9 +167,8 @@ const MultipleElectionsForm = ({
 const determineFormType = (grpType: string, elections: Election[]) => {
   if (grpType === 'multiple_elections' && elections.length > 1) {
     return MultipleElectionsForm;
-  } else {
-    return SingleElectionForm;
   }
+  return SingleElectionForm;
 };
 
 const electionValuesSet = (e: any) =>

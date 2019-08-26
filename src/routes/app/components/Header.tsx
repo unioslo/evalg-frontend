@@ -237,9 +237,8 @@ const MobileLogout: React.FunctionComponent<{ history: History }> = ({
                 </a>
               </MobileMenuItem>
             );
-          } else {
-            return null;
           }
+          return null;
         }}
       </UserContext.Consumer>
     </>
@@ -295,9 +294,8 @@ const UserNameAndLogout: React.FunctionComponent<{
                     </DesktopMenuItem>
                   </>
                 );
-              } else {
-                return null;
               }
+                return null;
             }}
           </UserContext.Consumer>
         );

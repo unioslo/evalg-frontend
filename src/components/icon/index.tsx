@@ -613,13 +613,12 @@ const Icon = (props: IProps) => {
         {icon}
       </button>
     );
-  } else {
-    return (
-      <div className={cls} onClick={handleClick}>
-        {icon}
-      </div>
-    );
   }
+  return (
+    <div className={cls} onClick={handleClick}>
+      {icon}
+    </div>
+  );
 };
 
 export default injectSheet(styles)(Icon);

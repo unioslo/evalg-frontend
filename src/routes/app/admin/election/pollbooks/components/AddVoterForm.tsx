@@ -237,9 +237,8 @@ const validate = (lang: string, t: i18n.TFunction) => (values: object) => {
   if (errors) {
     // Don't display error messages within the fields themselves
     return { _errors: errors };
-  } else {
-    return {};
   }
+  return {};
 };
 
 export default injectSheet(styles)(AddVoterForm);

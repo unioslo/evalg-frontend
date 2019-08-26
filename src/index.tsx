@@ -82,9 +82,8 @@ const constructApolloClient = () => {
     }));
     if (forward) {
       return forward(operation);
-    } else {
-      return null;
     }
+    return null;
   });
 
   const cache = new InMemoryCache({ fragmentMatcher });

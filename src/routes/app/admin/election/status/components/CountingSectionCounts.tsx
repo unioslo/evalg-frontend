@@ -71,9 +71,8 @@ const CountingSectionCounts: React.FunctionComponent<IProps> = ({
               />
             </PageExpandableSubSection>
           );
-        } else {
-          return null;
         }
+        return null;
       }}
     </Query>
   );
