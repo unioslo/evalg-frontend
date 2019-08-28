@@ -96,6 +96,7 @@ export class RadioButtonGroup extends React.Component<
     super(props);
     this.handleChange = this.handleChange.bind(this);
   }
+
   componentWillMount() {
     this.setState({ value: this.props.input.value });
   }

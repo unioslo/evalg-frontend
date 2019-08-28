@@ -56,17 +56,21 @@ class AnnounceElectionGroup extends React.Component<IProps, IState> {
       showConfirmUnannounceModal: false,
     };
   }
+
   closeAnnounceModal() {
     this.setState({
       showAnnounceModal: false,
     });
   }
+
   showConfirmAnnounceDialog() {
     this.setState({ showConfirmAnnounceModal: true });
   }
+
   closeConfirmAnnounceDialog() {
     this.setState({ showConfirmAnnounceModal: false });
   }
+
   handleAnnounce() {
     this.props.announceAction(this.props.electionGroup.id);
     this.setState({
@@ -74,6 +78,7 @@ class AnnounceElectionGroup extends React.Component<IProps, IState> {
       showConfirmAnnounceModal: false,
     });
   }
+
   renderAnnounce() {
     return (
       <span>
@@ -112,17 +117,21 @@ class AnnounceElectionGroup extends React.Component<IProps, IState> {
       </span>
     );
   }
+
   closeUnannounceModal() {
     this.setState({
       showUnannounceModal: false,
     });
   }
+
   showConfirmUnannounceDialog() {
     this.setState({ showConfirmUnannounceModal: true });
   }
+
   closeConfirmUnannounceDialog() {
     this.setState({ showConfirmUnannounceModal: false });
   }
+
   handleUnannounce() {
     this.props.unannounceAction(this.props.electionGroup.id);
     this.setState({
@@ -130,6 +139,7 @@ class AnnounceElectionGroup extends React.Component<IProps, IState> {
       showConfirmUnannounceModal: false,
     });
   }
+
   renderUnannounce() {
     return (
       <span>
@@ -168,6 +178,7 @@ class AnnounceElectionGroup extends React.Component<IProps, IState> {
       </span>
     );
   }
+
   render() {
     const { electionGroup } = this.props;
     return (

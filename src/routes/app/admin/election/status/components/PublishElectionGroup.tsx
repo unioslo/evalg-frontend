@@ -133,6 +133,7 @@ class PublishElectionGroup extends React.Component<IProps, IState> {
       </div>
     );
   }
+
   render() {
     const { electionGroup } = this.props;
     return (

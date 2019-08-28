@@ -33,6 +33,7 @@ class ScreenSizeProvider extends React.Component<any, IState> {
     super(props);
     this.setScreenSize = this.setScreenSize.bind(this);
   }
+
   public componentDidMount() {
     mediaQuerySm.addListener(this.setScreenSize.bind(this));
     mediaQueryMd.addListener(this.setScreenSize.bind(this));

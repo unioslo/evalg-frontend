@@ -73,8 +73,11 @@ interface IState {
 
 class DateInput extends React.Component<IProps, IState> {
   // props: iProps;
+
   state: IState;
+
   wrapperRef: any;
+
   // handleClickOutside: Function;
 
   constructor(props: IProps) {
@@ -114,6 +117,7 @@ class DateInput extends React.Component<IProps, IState> {
     this.setState({ hasFocus: true });
     this.props.onFocus();
   }
+
   render() {
     const { value, name, label, small, error, classes } = this.props;
     const lang = this.props.i18n.language;
