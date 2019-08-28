@@ -119,9 +119,8 @@ export const TableCell = (props: IProps) => {
         {props.children}
       </td>
     );
-  } else {
-    return <td className={cls}>{props.children}</td>;
   }
+  return <td className={cls}>{props.children}</td>;
 };
 
 export default injectSheet(styles)(TableCell);

@@ -39,12 +39,11 @@ export const joinStringsWithCommaAndAnd = (
     return '';
   } else if (strings.length === 1) {
     return strings[0];
-  } else {
-    const commaSeparatedStrings = strings.slice(0, -1).join(', ');
-    return `${commaSeparatedStrings} ${t('general.and')} ${
-      strings[strings.length - 1]
-    }`;
   }
+  const commaSeparatedStrings = strings.slice(0, -1).join(', ');
+  return `${commaSeparatedStrings} ${t('general.and')} ${
+    strings[strings.length - 1]
+  }`;
 };
 
 export const getTranslationsForPersonIdType = (t: i18n.TFunction) => ({

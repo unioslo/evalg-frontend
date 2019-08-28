@@ -112,9 +112,8 @@ const PrefElecCandForm: React.FunctionComponent<IProps> = (props: IProps) => {
                     return (
                       <FormErrorMsg key={index} msg={errors._errors[field]} />
                     );
-                  } else {
-                    return <React.Fragment key={index} />;
                   }
+                  return <React.Fragment key={index} />;
                 })}
               <FormButtons
                 saveAction={handleSubmit}

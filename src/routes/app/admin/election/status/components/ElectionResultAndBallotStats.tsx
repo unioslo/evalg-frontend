@@ -180,18 +180,17 @@ const ElectedCandidatesList: React.FunctionComponent<
               {electedCandidate.name}
             </li>
           );
-        } else {
-          return (
-            <li key={electedCandidateId}>
-              <span className={classes.errortext}>
-                {t(
-                  'admin.countingDetails.electionResult.errors.candidateNameNotFound'
-                )}
-              </span>{' '}
-              ({electedCandidateId})
-            </li>
-          );
         }
+        return (
+          <li key={electedCandidateId}>
+            <span className={classes.errortext}>
+              {t(
+                'admin.countingDetails.electionResult.errors.candidateNameNotFound'
+              )}
+            </span>{' '}
+            ({electedCandidateId})
+          </li>
+        );
       })}
     </>
   );

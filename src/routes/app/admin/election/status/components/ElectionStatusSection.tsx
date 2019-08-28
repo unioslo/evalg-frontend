@@ -85,17 +85,16 @@ class ElectionStatusSection extends React.Component<IProps> {
         {this.props.electionGroup.elections.map((election, index) => {
           if (!election.active) {
             return null;
-          } else {
-            return (
-              <InfoListItem bulleted key={index}>
-                <Text inline>
-                  {election.name[this.props.i18n.language]}
-                  &nbsp; &nbsp;
-                  <ElectionStatus status={election.status} />
-                </Text>
-              </InfoListItem>
-            );
           }
+          return (
+            <InfoListItem bulleted key={index}>
+              <Text inline>
+                {election.name[this.props.i18n.language]}
+                &nbsp; &nbsp;
+                <ElectionStatus status={election.status} />
+              </Text>
+            </InfoListItem>
+          );
         })}
       </InfoList>
     );

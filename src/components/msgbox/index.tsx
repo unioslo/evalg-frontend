@@ -120,9 +120,8 @@ class MsgBox extends React.Component<IProps, IState> {
           </div>
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
 

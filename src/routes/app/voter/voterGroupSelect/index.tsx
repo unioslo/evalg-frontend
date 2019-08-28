@@ -197,9 +197,8 @@ class VoterGroupSelectPage extends React.Component<
 
     if (filteredVoters.length === 1) {
       return filteredVoters[0];
-    } else {
-      return null;
     }
+    return null;
   };
 
   hasRightToVote = (

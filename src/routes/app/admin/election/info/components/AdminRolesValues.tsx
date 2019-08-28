@@ -20,9 +20,8 @@ class AdminRolesValues extends React.Component<IProps> {
         return role.principal.idValue;
       } else if (role.principal.__typename === 'GroupPrincipal') {
         return role.principal.group.name;
-      } else {
-        return null;
       }
+      return null;
     });
     return (
       <PageSubSection header={<Trans>admin.roles.electionAdmins</Trans>}>

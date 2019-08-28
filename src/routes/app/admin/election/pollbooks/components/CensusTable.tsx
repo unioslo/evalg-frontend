@@ -276,32 +276,31 @@ const CensusTable: React.FunctionComponent<IProps> = ({
                   </TableRow>
                 </React.Fragment>
               );
-            } else {
-              return (
-                <TableRow key={voter.id} actionTextOnHover>
-                  <TableCell>
-                    <Text>{getPersonIdTypeDisplayName(voter.idType, t)}</Text>
-                  </TableCell>
-                  <TableCell>
-                    <Text>{voter.idValue}</Text>
-                  </TableCell>
-                  <TableCell>
-                    <Text>{pollBookDict[voter.pollbookId].name[lang]}</Text>
-                  </TableCell>
-                  <TableCell alignRight>
-                    <Text>
-                      <ActionText
-                        action={() =>
-                          handleShowUpdateVoterFormForVoterId(voter.id)
-                        }
-                      >
-                        <Trans>general.edit</Trans>
-                      </ActionText>
-                    </Text>
-                  </TableCell>
-                </TableRow>
-              );
             }
+            return (
+              <TableRow key={voter.id} actionTextOnHover>
+                <TableCell>
+                  <Text>{getPersonIdTypeDisplayName(voter.idType, t)}</Text>
+                </TableCell>
+                <TableCell>
+                  <Text>{voter.idValue}</Text>
+                </TableCell>
+                <TableCell>
+                  <Text>{pollBookDict[voter.pollbookId].name[lang]}</Text>
+                </TableCell>
+                <TableCell alignRight>
+                  <Text>
+                    <ActionText
+                      action={() =>
+                        handleShowUpdateVoterFormForVoterId(voter.id)
+                      }
+                    >
+                      <Trans>general.edit</Trans>
+                    </ActionText>
+                  </Text>
+                </TableCell>
+              </TableRow>
+            );
           })}
           <TableRow>
             <TableCell colspan={4}>
