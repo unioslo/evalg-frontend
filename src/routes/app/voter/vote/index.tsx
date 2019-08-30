@@ -207,7 +207,7 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
           let VotingComponent: any;
           if (this.state.voteElection) {
             const { voteElection } = this.state;
-            const { candidateType } = voteElection.meta;
+            const { candidateType, countingRules } = voteElection.meta;
             const { voting } = voteElection.meta.ballotRules;
 
             if (voting === 'rank_candidates') {
@@ -215,10 +215,9 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
                 candidateType === 'single' ||
                 candidateType === 'single_team'
               ) {
-                // TODO: This might not be how we wan't to decide when to use majority vote ballot
-                if (voteElection.lists[0].candidates.length <= 2) {
+                if (countingRules.method === 'uio_mv') {
                   VotingComponent = MajorityVote;
-                } else {
+                } else if (countingRules.method === 'uio_stv') {
                   VotingComponent = PrefElecVote;
                 }
               } else {
