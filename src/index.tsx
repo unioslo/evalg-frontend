@@ -2,6 +2,7 @@ import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 
 import React from 'react';
+import * as Sentry from '@sentry/browser';
 import ReactDOM from 'react-dom';
 import ApolloClient from 'apollo-client';
 import { ApolloLink, split, Operation } from 'apollo-link';
@@ -18,7 +19,7 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { makeAuthenticator, makeUserManager, Callback } from 'react-oidc';
 import { User } from 'oidc-client';
 
-import { oidcConfig, graphqlBackend } from 'appConfig';
+import { oidcConfig, graphqlBackend, appVersion, sentryEnvironment, sentryDns, sentryEnabled } from 'appConfig';
 import Spinner from 'components/animations/Spinner';
 import { ScreenSizeProvider } from 'providers/ScreenSize';
 import { UserContextProvider } from 'providers/UserContext';
@@ -27,6 +28,15 @@ import theme from 'theme';
 
 import './i18n';
 import { refetchVoteManagementQueries } from 'queries';
+
+// Initialize sentry
+if (sentryEnabled) {
+  Sentry.init({
+    dsn: sentryDns,
+    environment: sentryEnvironment,
+    release: appVersion
+  });
+}
 
 const storeToken = (props: any) => (user: User) => {
   sessionStorage.setItem(
@@ -37,6 +47,14 @@ const storeToken = (props: any) => (user: User) => {
   const redirect = loginFrom ? loginFrom : '/';
   props.history.push(redirect);
   sessionStorage.removeItem('login_redirect');
+
+  // Set the user scope in sentry for logged in users
+  Sentry.configureScope((scope) => {
+    scope.setUser({
+      "id": user.profile['dataporten-userid_sec'],
+      "email": user.profile['email']
+    });
+  })
 };
 
 const userManager = makeUserManager(oidcConfig);
