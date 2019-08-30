@@ -30,7 +30,6 @@ import './i18n';
 import { refetchVoteManagementQueries } from 'queries';
 
 // Initialize sentry
-console.error('Sentry enabled: ' + sentryEnabled);
 if (sentryEnabled) {
   Sentry.init({
     dsn: sentryDns,
