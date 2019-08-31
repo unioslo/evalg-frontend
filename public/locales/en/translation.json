@@ -26,7 +26,7 @@
         "nthSubstitute": "{{ count }}. substitute",
         "ofWhich": "of which",
         "errors": {
-          "couldNotGetNumberOfVotesData": "Could not fetch number of votes"
+          "couldNotGetNumberOfVotesData": "Could not fetch the number of votes"
         }
       }
     },
@@ -48,7 +48,7 @@
         "errors": {
           "couldNotReadElectionKeyFile": "Could not read election key from file. Did you choose the correct file?",
           "backend": {
-            "cannotCountBeforeAllElectionsAreClosed": "Can not start counting, since not all elections are closed.",
+            "cannotCountBeforeAllElectionsAreClosed": "Can not start counting until all elections are closed.",
             "invalidElectionKey": "Invalid election key. Press cancel and open the dialog again to use another file.",
             "invalidElectionKeyWrongFormat": "Invalid election key. Press cancel and open the dialog again to use another file.",
             "unknown": "An unknown error occurred during counting."
