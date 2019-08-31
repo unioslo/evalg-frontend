@@ -46,7 +46,7 @@
         "modalBullet3": "Merk: Om du må telle opp på nytt kan loddtrekninger føre til ulikt resultat.",
         "startCounting": "Start opptelling",
         "errors": {
-          "couldNotReadElectionKeyFile": "Kunne ikke lese valgnøkkel fra fil. Har du valgt riktig fil?",
+          "couldNotReadElectionKeyFile": "Kunne ikke lese valgnøkkelen fra filen. Har du valgt riktig fil?",
           "backend": {
             "cannotCountBeforeAllElectionsAreClosed": "Kan ikke starte opptellingen fordi et eller flere valg ikke er ferdige.",
             "invalidElectionKey": "Valgnøkkelen er ugyldig. Trykk avbryt og åpne dialogboksen igjen for å bruke en annen fil.",
@@ -306,7 +306,7 @@
     "statusOpensAutomatically": "Valget er publisert og vil starte automatisk til angitt tidspunkt.",
     "statusThisIsMissing": "Dette mangler",
     "toDate": "Til dato",
-    "unannounceElectionConfirm": "Fjern fra forsiden",
+    "unannounceElectionConfirm": "Skjul fra forsiden",
     "unannounceElectionHeader": "Fjern valget fra forsiden",
     "unannounceElectionInfoOne": "Valget og stemmeperioden blir fjernet fra forsiden til velgerne.",
     "unannounceElectionInfoTwo": "Du kan synliggjøre valget igjen senere.",
@@ -328,7 +328,7 @@
     "votes": "Stemmer",
     "votesOutsideCensus": "Stemmer utenfor manntallet",
     "votingPeriod": "Stemmeperiode",
-    "votingPeriodSubHeader": "Når skal valget være åpent for stemmer?"
+    "votingPeriodSubHeader": "Når skal valget være åpent for stemmegivning?"
   },
   "electionStatus": {
     "announced": "Utkast (annonsert)",
@@ -350,7 +350,7 @@
   },
   "footer": {
     "cookiesInformationLink": "informasjonskapsler",
-    "contactSectionHeader": "Kontaktpunkter",
+    "contactSectionHeader": "Trenger du hjelp?",
     "evalgUses": "eValg-bruker",
     "pilotMessage": "Pilot av eValg 3.0. Dagens løsning finner du på <0>valg.uio.no</0>. For spørsmål om piloten kontakt oss på <1>eValg-kontakt@usit.uio.no</1>.",
     "privacyPolicyLink": "Personvern",
