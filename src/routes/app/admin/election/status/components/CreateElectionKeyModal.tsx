@@ -126,6 +126,7 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
 
   generateElectionKey = async () => {
     let keys: IKeyPair = { secretKey: '', publicKey: '' };
+    throw Error('Feil 123');
     try {
       this.setState({
         isGeneratingKey: true,
