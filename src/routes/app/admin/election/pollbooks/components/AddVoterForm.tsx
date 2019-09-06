@@ -21,13 +21,13 @@ import { getPersonIdTypeDisplayName } from 'utils/i18n';
 import { validateFeideId, validateNin } from 'utils/validators';
 import Spinner from 'components/animations/Spinner';
 
-const addVoterById = gql`
-  mutation addVoterById(
+const addVoterByIdentifier = gql`
+  mutation addVoterByIdentifier(
     $pollbookId: UUID!
     $idType: PersonIdType!
     $idValue: String!
   ) {
-    addVoterById(
+    addVoterByIdentifier(
       pollbookId: $pollbookId
       idType: $idType
       idValue: $idValue
@@ -74,7 +74,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
     <>
       <TableRow verticalPadding>
         <TableCell colspan={4}>
-          <Mutation mutation={addVoterById} refetchQueries={refetchQueries}>
+          <Mutation mutation={addVoterByIdentifier} refetchQueries={refetchQueries}>
             {add => {
               const addPersonAndSetFeedback = async (values: any) => {
                 const { idValue } = values;

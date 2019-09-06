@@ -12,8 +12,8 @@ const submitVoteMutation = gql`
 `;
 
 const addVoterMutation = gql`
-  mutation addVoter($personId: UUID!, $pollbookId: UUID!, $reason: String) {
-    addVoter(personId: $personId, pollbookId: $pollbookId, reason: $reason) {
+  mutation addVoterByPersonId($personId: UUID!, $pollbookId: UUID!, $reason: String) {
+    addVoterByPersonId(personId: $personId, pollbookId: $pollbookId, reason: $reason) {
       id
     }
   }
@@ -58,7 +58,7 @@ export const submitVote = async (
     });
 
     if (res.data) {
-      voter = res.data.addVoter;
+      voter = res.data.addVoterByPersonId;
     }
   } else {
     if (voter.selfAdded && !voter.verified) {
