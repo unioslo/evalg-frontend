@@ -1,3 +1,4 @@
+
 declare global {
   /* tslint:disable */
   interface Window {
@@ -13,15 +14,15 @@ const env = isProduction ? window.ENV : process.env;
 export const appTimezone: string = 'Europe/Oslo';
 
 /* Version */
-export const appName: string = env.REACT_APP_NAME as string;
-export const appVersion: string = env.REACT_APP_VERSION as string;
+export const appVersion: string = process.env.REACT_APP_VERSION as string;
+export const appName: string = process.env.REACT_APP_NAME as string;
 
 /* Sentry */
 const sentryPublicKey: string = env.REACT_APP_SENTRY_PUBLIC_KEY as string;
 const sentryProjectId: string = env.REACT_APP_SENTRY_PROJECT_ID as string;
 const sentryHost: string = env.REACT_APP_SENTRY_HOST as string;
 export const sentryEnabled: boolean = (sentryHost !== undefined) ? true : false;
-export const sentryDns: string = `https://${sentryPublicKey}@${sentryHost}/${sentryProjectId}`;
+export const sentryDsn: string = `https://${sentryPublicKey}@${sentryHost}/${sentryProjectId}`;
 export const sentryEnvironment: string = env.REACT_APP_SENTRY_ENVIRONMENT as string;
 
 /* Backend */

@@ -19,7 +19,7 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { makeAuthenticator, makeUserManager, Callback } from 'react-oidc';
 import { User } from 'oidc-client';
 
-import { oidcConfig, graphqlBackend, appVersion, sentryEnvironment, sentryDns, sentryEnabled } from 'appConfig';
+import { oidcConfig, graphqlBackend, appVersion, sentryEnvironment, sentryDsn, sentryEnabled } from 'appConfig';
 import Spinner from 'components/animations/Spinner';
 import { ScreenSizeProvider } from 'providers/ScreenSize';
 import { UserContextProvider } from 'providers/UserContext';
@@ -32,7 +32,7 @@ import { refetchVoteManagementQueries } from 'queries';
 // Initialize sentry
 if (sentryEnabled) {
   Sentry.init({
-    dsn: sentryDns,
+    dsn: sentryDsn,
     environment: sentryEnvironment,
     release: appVersion
   });
