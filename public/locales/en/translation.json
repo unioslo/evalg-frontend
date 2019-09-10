@@ -55,7 +55,7 @@
           }
         }
       },
-      "warningSelfAddedVoters": "Review all votes outside the poll books before you could start the counting",
+      "warningSelfAddedVoters": "Review all votes outside the poll books before you start the counting",
       "warningPersonsWithMultipleVoters": "Review all votes from the same person before you could start the counting",
       "countingsSubsection": {
         "header": "Countings",
