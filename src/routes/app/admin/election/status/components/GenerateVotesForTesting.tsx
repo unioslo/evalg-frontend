@@ -16,8 +16,8 @@ const ONE_REQUEST_AT_A_TIME = false;
 const DELAY_BETWEEN_REQUEST_BATCHES_MS = 600;
 
 const addVoterMutation = gql`
-  mutation addVoterById($pollbookId: UUID!, $idValue: String!) {
-    addVoterById(
+  mutation addVoterByIdentifier($pollbookId: UUID!, $idValue: String!) {
+    addVoterByIdentifier(
       approved: true
       idType: feide_id
       idValue: $idValue
@@ -137,8 +137,8 @@ const GenerateVotesForTesting: React.FunctionComponent<
     const voterId =
       result &&
       result.data &&
-      result.data.addVoterById &&
-      result.data.addVoterById.id;
+      result.data.addVoterByIdentifier &&
+      result.data.addVoterByIdentifier.id;
     if (!voterId) return;
     const ballotJSON = JSON.stringify(generateRandomBallot(candidateIds));
     await client.mutate({
