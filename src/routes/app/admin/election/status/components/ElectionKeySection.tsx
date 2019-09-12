@@ -115,7 +115,7 @@ class ElectionKeySection extends React.Component<IProps, IState> {
                   <Trans>admin.electionKey.infoListCanReplace</Trans>
                 </InfoListItem>
                 <InfoListItem bulleted key="read-more">
-                  <Link external to="#TODO">
+                  <Link external to="https://www.uio.no/tjenester/it/applikasjoner/e-valg/hjelp/valnokkel.html">
                     <Trans>admin.electionKey.readMore</Trans>
                   </Link>
                 </InfoListItem>
