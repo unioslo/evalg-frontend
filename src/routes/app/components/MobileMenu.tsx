@@ -73,6 +73,7 @@ class MobileMenu extends React.Component<IProps, IState> {
 
     this.setWrapperRef = this.setWrapperRef.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleKey = this.handleKey.bind(this);
   }
 
   componentDidMount() {
@@ -88,6 +89,12 @@ class MobileMenu extends React.Component<IProps, IState> {
 
   setWrapperRef(node: any) {
     this.wrapperRef = node;
+  }
+
+  handleKey(event: any) {
+    if (event.key === ' ' || event.key === 'Enter') {
+      this.setState({ open: !this.state.open });
+    }
   }
 
   handleClick() {
@@ -108,6 +115,11 @@ class MobileMenu extends React.Component<IProps, IState> {
           className={classes.inner}
           ref={this.setWrapperRef}
           onClick={this.handleClick}
+          onKeyDown={this.handleKey}
+          tabIndex={0}
+          role="button"
+          aria-haspopup="true"
+          aria-expanded={!this.state.open}
         >
           <Trans>general.menu</Trans>
           <div className={classes.menuIcon} />
