@@ -103,9 +103,7 @@ class ElectionKeySection extends React.Component<IProps, IState> {
                 <ElectionKeyCreatedByInfo electionGroupId={electionGroup.id} />
                 <br />
                 <Trans>admin.electionKey.publicKeyCaption</Trans>:{' '}
-                <span>
-                  {electionGroup.publicKey}
-               </span>
+                <span>{electionGroup.publicKey}</span>
               </Text>
               <InfoList>
                 <InfoListItem bulleted key="keep-it-safe">
@@ -115,7 +113,10 @@ class ElectionKeySection extends React.Component<IProps, IState> {
                   <Trans>admin.electionKey.infoListCanReplace</Trans>
                 </InfoListItem>
                 <InfoListItem bulleted key="read-more">
-                  <Link external to="https://www.uio.no/tjenester/it/applikasjoner/e-valg/hjelp/valnokkel.html">
+                  <Link
+                    external
+                    to="https://www.uio.no/tjenester/it/applikasjoner/e-valg/hjelp/valnokkel.html/"
+                  >
                     <Trans>admin.electionKey.readMore</Trans>
                   </Link>
                 </InfoListItem>

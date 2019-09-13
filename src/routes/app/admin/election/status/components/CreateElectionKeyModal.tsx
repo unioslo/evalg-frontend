@@ -363,7 +363,10 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
               />
             </InfoListItem>
             <InfoListItem bulleted>
-              <Link external to="#TODO">
+              <Link
+                external
+                to="https://www.uio.no/tjenester/it/applikasjoner/e-valg/hjelp/valnokkel.html/"
+              >
                 <Trans>admin.electionKey.modalMoreInfoLink</Trans>
               </Link>
             </InfoListItem>

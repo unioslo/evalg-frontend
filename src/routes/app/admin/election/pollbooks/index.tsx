@@ -25,7 +25,6 @@ import {
 
 const deleteVotersInPollbook = gql`
   mutation DeleteVotersInPollBook($id: UUID!) {
-    # TODO (backend): Denne sletter voters med selfAdded=true også, og det vil vi nok ikke
     deleteVotersInPollbook(id: $id) {
       ok
     }
@@ -252,7 +251,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
 
                 <Link
                   external
-                  to="https://www.uio.no/for-ansatte/arbeidsstotte/arrangere-valg/"
+                  to="https://www.uio.no/tjenester/it/applikasjoner/e-valg/hjelp/manntall.html/"
                 >
                   <Trans>census.aboutCensusFiles</Trans>
                 </Link>
