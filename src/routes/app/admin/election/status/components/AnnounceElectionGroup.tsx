@@ -107,7 +107,7 @@ class AnnounceElectionGroup extends React.Component<IProps, IState> {
             </p>
             <p>
               <Text>
-                <Link external to="https://www.uio.no/tjenester/it/applikasjoner/e-valg/hjelp/publisering-av-val.html/">
+                <Link external to="https://www.uio.no/tjenester/it/applikasjoner/e-valg/hjelp/publisering.html/">
                   <Trans>election.announceElectionReadMore</Trans>
                 </Link>
               </Text>
@@ -168,7 +168,7 @@ class AnnounceElectionGroup extends React.Component<IProps, IState> {
             </p>
             <p>
               <Text>
-                <Link external to="https://www.uio.no/tjenester/it/applikasjoner/e-valg/hjelp/synleggjering-av-val.html/">
+                <Link external to="https://www.uio.no/tjenester/it/applikasjoner/e-valg/hjelp/publisering.html/">
                   <Trans>election.announceElectionReadMore</Trans>
                 </Link>
               </Text>
