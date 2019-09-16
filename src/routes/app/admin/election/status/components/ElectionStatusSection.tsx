@@ -19,7 +19,7 @@ import GenerateVotesForTesting from './GenerateVotesForTesting';
 const PublishElectionGroupMutation = gql`
   mutation PublishElectionGroup($id: UUID!) {
     publishElectionGroup(id: $id) {
-      ok
+      success
     }
   }
 `;
@@ -27,7 +27,7 @@ const PublishElectionGroupMutation = gql`
 const UnpublishElectionGroupMutation = gql`
   mutation UnpublishElectionGroup($id: UUID!) {
     unpublishElectionGroup(id: $id) {
-      ok
+      success
     }
   }
 `;
@@ -35,7 +35,7 @@ const UnpublishElectionGroupMutation = gql`
 const AnnounceElectionGroupMutation = gql`
   mutation AnnounceElectionGroup($id: UUID!) {
     announceElectionGroup(id: $id) {
-      ok
+      success
     }
   }
 `;
@@ -43,7 +43,7 @@ const AnnounceElectionGroupMutation = gql`
 const UnannounceElectionGroupMutation = gql`
   mutation UnannounceElectionGroup($id: UUID!) {
     unannounceElectionGroup(id: $id) {
-      ok
+      success
     }
   }
 `;
@@ -173,11 +173,11 @@ class ElectionStatusSection extends React.Component<IProps> {
                   ) : null}
 
                   {electionGroup.published &&
-                  electionGroup.status === 'published' ? (
-                    <InfoListItem bulleted key="published-and-ready">
-                      <Trans>election.statusOpensAutomatically</Trans>
-                    </InfoListItem>
-                  ) : null}
+                    electionGroup.status === 'published' ? (
+                      <InfoListItem bulleted key="published-and-ready">
+                        <Trans>election.statusOpensAutomatically</Trans>
+                      </InfoListItem>
+                    ) : null}
                 </InfoList>
               )}
             </Mutation>
@@ -189,43 +189,43 @@ class ElectionStatusSection extends React.Component<IProps> {
           : null}
 
         {electionGroup.published ||
-        (!electionGroup.published && publishable) ? (
-          <Mutation
-            mutation={PublishElectionGroupMutation}
-            refetchQueries={() => ['electionGroup']}
-          >
-            {publishGroup => (
-              <Mutation
-                mutation={UnpublishElectionGroupMutation}
-                refetchQueries={() => ['electionGroup']}
-              >
-                {unpublishGroup => (
-                  <PublishElectionGroup
-                    electionGroup={this.props.electionGroup}
-                    publishAction={(id: string) =>
-                      publishGroup({ variables: { id } })
-                    }
-                    unpublishAction={(id: string) =>
-                      unpublishGroup({ variables: { id } })
-                    }
-                  />
-                )}
-              </Mutation>
-            )}
-          </Mutation>
-        ) : null}
+          (!electionGroup.published && publishable) ? (
+            <Mutation
+              mutation={PublishElectionGroupMutation}
+              refetchQueries={() => ['electionGroup']}
+            >
+              {publishGroup => (
+                <Mutation
+                  mutation={UnpublishElectionGroupMutation}
+                  refetchQueries={() => ['electionGroup']}
+                >
+                  {unpublishGroup => (
+                    <PublishElectionGroup
+                      electionGroup={this.props.electionGroup}
+                      publishAction={(id: string) =>
+                        publishGroup({ variables: { id } })
+                      }
+                      unpublishAction={(id: string) =>
+                        unpublishGroup({ variables: { id } })
+                      }
+                    />
+                  )}
+                </Mutation>
+              )}
+            </Mutation>
+          ) : null}
 
         {(electionGroup.status === 'ongoing' ||
           electionGroup.status === 'multipleStatuses' ||
           electionGroup.status === 'closed') && (
-          <TurnoutSubsection
-            electionGroupId={electionGroup.id}
-            doPolling={
-              electionGroup.status === 'ongoing' ||
-              electionGroup.status === 'multipleStatuses'
-            }
-          />
-        )}
+            <TurnoutSubsection
+              electionGroupId={electionGroup.id}
+              doPolling={
+                electionGroup.status === 'ongoing' ||
+                electionGroup.status === 'multipleStatuses'
+              }
+            />
+          )}
 
         {showGenerateVotesTestingComponent &&
           (electionGroup.status === 'ongoing' ||
