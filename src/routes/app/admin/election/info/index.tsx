@@ -1,5 +1,4 @@
 import React from 'react';
-import { ApolloClient } from 'apollo-client';
 import { Query, withApollo, WithApolloClient } from 'react-apollo';
 import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 import { History } from 'history';
