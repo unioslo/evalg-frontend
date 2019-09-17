@@ -1,5 +1,5 @@
-import React from 'react';
-import { Trans } from 'react-i18next';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Modal from 'components/modal';
 import Button from 'components/button';
@@ -8,107 +8,95 @@ import Link from 'components/link';
 import ActionText from 'components/actiontext';
 import { ElectionGroup } from 'interfaces';
 
-const renderAnnounceButton = (action: any) => (
-  <Button
-    key="announce"
-    text={<Trans>election.announceElectionConfirm</Trans>}
-    action={action}
-  />
-);
-
-const renderUnannounceButton = (action: any) => (
-  <Button
-    key="unannounce"
-    text={<Trans>election.unannounceElectionConfirm</Trans>}
-    action={action}
-  />
-);
-
-const renderCancelButton = (action: any) => (
-  <Button
-    key="cancel"
-    text={<Trans>general.cancel</Trans>}
-    action={action}
-    secondary
-  />
-);
 
 interface IProps {
   electionGroup: ElectionGroup;
-  announceAction: Function;
-  unannounceAction: Function;
+  announceAction: (id: string) => void;
+  unannounceAction: (id: string) => void;
 }
 
-interface IState {
-  showConfirmAnnounceModal: boolean;
-  showConfirmUnannounceModal: boolean;
-  showAnnounceModal: boolean;
-  showUnannounceModal: boolean;
-}
 
-class AnnounceElectionGroup extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      showAnnounceModal: false,
-      showUnannounceModal: false,
-      showConfirmAnnounceModal: false,
-      showConfirmUnannounceModal: false,
-    };
+/**
+ * Component for announcing and unannouncing elections.
+ */
+const AnnounceElectionGroup: React.FunctionComponent<IProps> = (props: IProps) => {
+  const [showConfirmAnnounceModal, setShowConfirmAnnounceModal] = useState(false);
+  const [showConfirmUnannounceModal, setShowConfirmUnannounceModal] = useState(false);
+  const { t } = useTranslation();
+
+  const showConfirmAnnounceDialog = () => {
+    setShowConfirmAnnounceModal(true);
   }
 
-  closeAnnounceModal() {
-    this.setState({
-      showAnnounceModal: false,
-    });
+  const closeConfirmAnnounceDialog = () => {
+    setShowConfirmAnnounceModal(false);
   }
 
-  showConfirmAnnounceDialog() {
-    this.setState({ showConfirmAnnounceModal: true });
+  const showConfirmUnannounceDialog = () => {
+    setShowConfirmUnannounceModal(true);
   }
 
-  closeConfirmAnnounceDialog() {
-    this.setState({ showConfirmAnnounceModal: false });
+  const closeConfirmUnannounceDialog = () => {
+    setShowConfirmUnannounceModal(false);
   }
 
-  handleAnnounce() {
-    this.props.announceAction(this.props.electionGroup.id);
-    this.setState({
-      showAnnounceModal: true,
-      showConfirmAnnounceModal: false,
-    });
+  const handleAnnounce = () => {
+    props.announceAction(props.electionGroup.id);
+    setShowConfirmAnnounceModal(false);
   }
 
-  renderAnnounce() {
+  const handleUnannounce = () => {
+    props.unannounceAction(props.electionGroup.id);
+    setShowConfirmUnannounceModal(false);
+  }
+
+  const renderAnnounceButton = (action: () => void) => (
+    <Button
+      key="announce"
+      text={t('election.announceElectionConfirm')}
+      action={action}
+    />
+  );
+
+  const renderUnannounceButton = (action: () => void) => (
+    <Button
+      key="unannounce"
+      text={t('election.unannounceElectionConfirm')}
+      action={action}
+    />
+  );
+
+  const renderCancelButton = (action: () => void) => (
+    <Button
+      key="cancel"
+      text={t('general.cancel')}
+      action={action}
+      secondary
+    />
+  );
+
+  const renderAnnounce = () => {
     return (
       <span>
-        <ActionText action={this.showConfirmAnnounceDialog.bind(this)} bottom>
-          <Trans>election.statusDoAnnounce</Trans>
+        <ActionText action={showConfirmAnnounceDialog} bottom>
+          {t('election.statusDoAnnounce')}
         </ActionText>
-        {this.state.showConfirmAnnounceModal && (
+        {showConfirmAnnounceModal && (
           <Modal
-            header={<Trans>election.announceElectionHeader</Trans>}
+            header={t('election.announceElectionHeader')}
             buttons={[
-              renderCancelButton(this.closeConfirmAnnounceDialog.bind(this)),
-              renderAnnounceButton(this.handleAnnounce.bind(this)),
+              renderCancelButton(closeConfirmAnnounceDialog),
+              renderAnnounceButton(handleAnnounce),
             ]}
-            closeAction={this.closeConfirmAnnounceDialog.bind(this)}
+            closeAction={closeConfirmAnnounceDialog}
             hideTopCloseButton
           >
-            <p>
-              <Text>
-                <Trans>election.announceElectionInfoOne</Trans>
-              </Text>
-            </p>
-            <p>
-              <Text>
-                <Trans>election.announceElectionInfoTwo</Trans>
-              </Text>
-            </p>
+            <p><Text>{t('election.announceElectionInfoOne')}</Text></p>
+            <p><Text>{t('election.announceElectionInfoTwo')}</Text></p>
             <p>
               <Text>
                 <Link external to="https://www.uio.no/tjenester/it/applikasjoner/e-valg/hjelp/publisering.html/">
-                  <Trans>election.announceElectionReadMore</Trans>
+                  {t('election.announceElectionReadMore')}
                 </Link>
               </Text>
             </p>
@@ -118,58 +106,28 @@ class AnnounceElectionGroup extends React.Component<IProps, IState> {
     );
   }
 
-  closeUnannounceModal() {
-    this.setState({
-      showUnannounceModal: false,
-    });
-  }
-
-  showConfirmUnannounceDialog() {
-    this.setState({ showConfirmUnannounceModal: true });
-  }
-
-  closeConfirmUnannounceDialog() {
-    this.setState({ showConfirmUnannounceModal: false });
-  }
-
-  handleUnannounce() {
-    this.props.unannounceAction(this.props.electionGroup.id);
-    this.setState({
-      showUnannounceModal: true,
-      showConfirmUnannounceModal: false,
-    });
-  }
-
-  renderUnannounce() {
+  const renderUnannounce = () => {
     return (
       <span>
-        <ActionText action={this.showConfirmUnannounceDialog.bind(this)} bottom>
-          <Trans>election.statusDoUnannounce</Trans>
+        <ActionText action={showConfirmUnannounceDialog} bottom>
+          {t('election.statusDoUnannounce')}
         </ActionText>
-        {this.state.showConfirmUnannounceModal && (
+        {showConfirmUnannounceModal && (
           <Modal
-            header={<Trans>election.unannounceElectionHeader</Trans>}
+            header={t('election.unannounceElectionHeader')}
             buttons={[
-              renderCancelButton(this.closeConfirmUnannounceDialog.bind(this)),
-              renderUnannounceButton(this.handleUnannounce.bind(this)),
+              renderCancelButton(closeConfirmUnannounceDialog),
+              renderUnannounceButton(handleUnannounce),
             ]}
-            closeAction={this.closeConfirmUnannounceDialog.bind(this)}
+            closeAction={closeConfirmUnannounceDialog}
             hideTopCloseButton
           >
-            <p>
-              <Text>
-                <Trans>election.unannounceElectionInfoOne</Trans>
-              </Text>
-            </p>
-            <p>
-              <Text>
-                <Trans>election.unannounceElectionInfoTwo</Trans>
-              </Text>
-            </p>
+            <p><Text>{t('election.unannounceElectionInfoOne')}</Text></p>
+            <p><Text>{t('election.unannounceElectionInfoTwo')}</Text></p>
             <p>
               <Text>
                 <Link external to="https://www.uio.no/tjenester/it/applikasjoner/e-valg/hjelp/publisering.html/">
-                  <Trans>election.announceElectionReadMore</Trans>
+                  {t('election.announceElectionReadMore')}
                 </Link>
               </Text>
             </p>
@@ -179,15 +137,12 @@ class AnnounceElectionGroup extends React.Component<IProps, IState> {
     );
   }
 
-  render() {
-    const { electionGroup } = this.props;
-    return (
-      <span>
-        {!electionGroup.announced && this.renderAnnounce()}
-        {electionGroup.announced && this.renderUnannounce()}
-      </span>
-    );
-  }
+  return (
+    <span>
+      {!props.electionGroup.announced && renderAnnounce()}
+      {props.electionGroup.announced && renderUnannounce()}
+    </span>
+  )
 }
 
 export default AnnounceElectionGroup;
