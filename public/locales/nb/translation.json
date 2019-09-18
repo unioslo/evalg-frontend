@@ -147,7 +147,7 @@
       "votesApprovedByTheBoard": "Stemmesedler godkjent av valgstyret",
       "votesRejectedByTheBoard": "Stemmesedler avvist av valgstyret"
     },
-    "manageSurplusVoters" : {
+    "manageSurplusVoters": {
       "header": "Personer med flere godkjente stemmesedler",
       "dropdown": "Se personer",
       "dropdownClose": "Lukk",
@@ -288,7 +288,7 @@
     "publish": "Publiser",
     "publishElection": "Publiser valget",
     "publishElectionModalInfo": "Valget blir synlig for velgerne og åpner automatisk til angitt tidspunkt.",
-    "publishElectionNotPublisher": "Publisere av valg kan kun gjøres av valgstyrene. For å komme i kontatakt med valgstyrene, se <0>kontaktveileder for valg.</0>",
+    "publishElectionNotPublisher": "Publisering av valg kan kun gjøres av valgstyrene. For å komme i kontatakt med valgstyrene, se <0>kontaktveileder for valg.</0>",
     "publishLoadingCanPublish": "Laster valgstatus",
     "published": "Publisert",
     "quotas": "Kvotering",
@@ -316,7 +316,7 @@
     "unannounceElectionInfoTwo": "Du kan synliggjøre valget igjen senere.",
     "unpublish": "Avpubliser",
     "unpublishElection": "Avpubliser valget",
-    "unpublishElectionNotPublisher": "Avpublisere av valg kan kun gjøres av valgstyrene. For å komme i kontatakt med valgstyrene, se <0>kontaktveileder for valg.</0>",
+    "unpublishElectionNotPublisher": "Avpublisering av valg kan kun gjøres av valgstyrene. For å komme i kontakt med valgstyrene, se <0>kontaktveileder for valg.</0>",
     "unpublishElectionModalInfo": "Valget vil ikke åpne automatisk.",
     "valueNotSet": "ikke satt",
     "voteNow": "Stem nå",
@@ -461,7 +461,7 @@
   },
   "prefElec": {
     "candPageDesc": "Legg til kandidater som stiller for de ulike velgergruppene.<0></0>\nValget må ha minst like mange kandidater per gruppe som angitt under <1>valginnstillinger</1>.",
-     "ballot": {
+    "ballot": {
       "addCandidate": "Legg til kandidat {{candidate}}",
       "demoteCandidate": "Flytt kandidat {{candidate}} ned til plass {{index}}",
       "promoteCandidate": "Flytt kandidat {{candidate}} opp til plass {{index}}",
