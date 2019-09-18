@@ -147,7 +147,7 @@
       "votesApprovedByTheBoard": "Stemmesedler godkjent av valgstyret",
       "votesRejectedByTheBoard": "Stemmesedler avvist av valgstyret"
     },
-    "manageSurplusVoters" : {
+    "manageSurplusVoters": {
       "header": "Personer med flere godkjente stemmesedler",
       "dropdown": "Se personer",
       "dropdownClose": "Lukk",
@@ -225,6 +225,7 @@
     "ballot": "Stemmeseddel",
     "blankVote": "Blank stemme",
     "blockerMissingKey": "Valgnøkkel",
+    "blockerNoActiveElection": "Valget har ingen aktive velgergrupper",
     "blockerStartBeforeEnd": "Starttid må være før sluttid",
     "blockerUnknown": "En uventet feil oppstod",
     "candidate": "Kandidat",
@@ -287,6 +288,8 @@
     "publish": "Publiser",
     "publishElection": "Publiser valget",
     "publishElectionModalInfo": "Valget blir synlig for velgerne og åpner automatisk til angitt tidspunkt.",
+    "publishElectionNotPublisher": "Publisering av valg kan kun gjøres av valgstyrene. For å komme i kontatakt med valgstyrene, se <0>kontaktveileder for valg.</0>",
+    "publishLoadingCanPublish": "Laster valgstatus",
     "published": "Publisert",
     "quotas": "Kvotering",
     "remove": "Fjern",
@@ -298,6 +301,7 @@
     "singleVotingPeriod": "Felles stemmeperiode for alle velgergruppene",
     "status": "Status",
     "statusCanAnnounce": "Du kan gjøre stemmeperioden for valget synlig for velgerne",
+    "statusCanBeAnnounce": "Valgstyret kan gjøre stemmeperioden for valget synlig for velgerne før publisering",
     "statusDoAnnounce": "Gjør synlig",
     "statusDoUnannounce": "Fjern fra forsiden",
     "statusDraftNotReady": "Valget oppfyller ikke minimumskravene",
@@ -312,6 +316,7 @@
     "unannounceElectionInfoTwo": "Du kan synliggjøre valget igjen senere.",
     "unpublish": "Avpubliser",
     "unpublishElection": "Avpubliser valget",
+    "unpublishElectionNotPublisher": "Avpublisering av valg kan kun gjøres av valgstyrene. For å komme i kontakt med valgstyrene, se <0>kontaktveileder for valg.</0>",
     "unpublishElectionModalInfo": "Valget vil ikke åpne automatisk.",
     "valueNotSet": "ikke satt",
     "voteNow": "Stem nå",
@@ -335,6 +340,7 @@
     "closed": "Stengt",
     "closedElections": "Avsluttede valg",
     "draft": "Utkast",
+    "inactive": "Inaktivt",
     "multipleStatuses": "Flere verdier",
     "ongoing": "Pågår",
     "ongoingElections": "Pågående valg",
@@ -455,7 +461,7 @@
   },
   "prefElec": {
     "candPageDesc": "Legg til kandidater som stiller for de ulike velgergruppene.<0></0>\nValget må ha minst like mange kandidater per gruppe som angitt under <1>valginnstillinger</1>.",
-     "ballot": {
+    "ballot": {
       "addCandidate": "Legg til kandidat {{candidate}}",
       "demoteCandidate": "Flytt kandidat {{candidate}} ned til plass {{index}}",
       "promoteCandidate": "Flytt kandidat {{candidate}} opp til plass {{index}}",

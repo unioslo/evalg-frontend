@@ -91,37 +91,37 @@ class InfoPage extends React.Component<PropsInternal> {
             admin: { isCreatingNewElection },
           },
         }) => (
-          <Page header={t('election.electionInfo')}>
-            <PageSection header={<Trans>election.electionType</Trans>}>
-              <Text>{this.props.electionGroupData.name[lang]}</Text>
-            </PageSection>
+            <Page header={t('election.electionInfo')}>
+              <PageSection header={<Trans>election.electionType</Trans>}>
+                <Text>{this.props.electionGroupData.name[lang]}</Text>
+              </PageSection>
 
-            <SettingsSectionsGroup
-              settingsSectionsContents={this.settingsSectionsContents}
-              electionGroupData={this.props.electionGroupData}
-              startWithDirectedFlowActive={isCreatingNewElection}
-              onSettingsWasSaved={this.handleSettingsWasSaved}
-            />
-
-            <ButtonContainer alignRight noTopMargin={false}>
-              <Button
-                text={
-                  <span>
-                    <Trans>election.goTo</Trans>&nbsp;
-                    <Trans>election.candidates</Trans>
-                  </span>
-                }
-                action={proceedToCandiates}
-                disabled={
-                  this.props.electionGroupData.elections.filter(
-                    (e: any) => e.active
-                  ).length === 0
-                }
-                iconRight="mainArrow"
+              <SettingsSectionsGroup
+                settingsSectionsContents={this.settingsSectionsContents}
+                electionGroupData={this.props.electionGroupData}
+                startWithDirectedFlowActive={isCreatingNewElection}
+                onSettingsWasSaved={this.handleSettingsWasSaved}
               />
-            </ButtonContainer>
-          </Page>
-        )}
+
+              <ButtonContainer alignRight noTopMargin={false}>
+                <Button
+                  text={
+                    <span>
+                      <Trans>election.goTo</Trans>&nbsp;
+                    <Trans>election.candidates</Trans>
+                    </span>
+                  }
+                  action={proceedToCandiates}
+                  disabled={
+                    this.props.electionGroupData.elections.filter(
+                      (e: any) => e.active
+                    ).length === 0
+                  }
+                  iconRight="mainArrow"
+                />
+              </ButtonContainer>
+            </Page>
+          )}
       </Query>
     );
   }

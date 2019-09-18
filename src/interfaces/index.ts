@@ -8,6 +8,7 @@ export interface EvalgClientState {
 
 export type Viewer = {
   person: IPerson;
+  roles: [IRoleGrant];
 };
 
 // Query responses
@@ -238,11 +239,12 @@ export interface IGroupPrincipal {
   group: IGroup;
 }
 
-export type ElectionGroupRoleType = 'admin';
+export type ElectionGroupRoleType = 'admin' | 'publisher' | 'global_admin';
 
 export interface IElectionGroupRole extends IRoleGrant {
   groupId: string;
   name: ElectionGroupRoleType;
+  globalRole: boolean;
 }
 
 export interface ElectionGroupCount {

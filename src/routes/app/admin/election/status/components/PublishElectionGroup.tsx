@@ -1,148 +1,143 @@
-import React from 'react';
-import { Trans } from 'react-i18next';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Text from 'components/text';
 import Button, { ButtonContainer } from 'components/button';
 import Modal from 'components/modal';
 import { ElectionGroup } from 'interfaces';
 
-const renderPublishButton = (action: any) => (
-  <Button
-    key="publish"
-    text={<Trans>election.publish</Trans>}
-    action={action}
-  />
-);
-
-const renderUnpublishButton = (action: any) => (
-  <Button
-    key="unpublish"
-    text={<Trans>election.unpublishElection</Trans>}
-    action={action}
-  />
-);
-
-const renderCancelButton = (action: any) => (
-  <Button
-    key="cancel"
-    text={<Trans>general.cancel</Trans>}
-    action={action}
-    secondary
-  />
-);
 
 interface IProps {
   electionGroup: ElectionGroup;
-  publishAction: Function;
-  unpublishAction: Function;
+  publishAction: (id: string) => void;
+  unpublishAction: (id: string) => void;
+  canPublish: boolean;
 }
 
-interface IState {
-  showPublishModal: boolean;
-  showUnpublishModal: boolean;
-}
+/**
+ * Component used to publish and unpublish election groups.
+ *
+ */
+const PublishElectionGroup: React.FunctionComponent<IProps> = (props: IProps) => {
 
-class PublishElectionGroup extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      showPublishModal: false,
-      showUnpublishModal: false,
-    };
+  const [showPublishModal, setShowPublishModal] = useState(false);
+  const [showUnpublishModal, setShowUnpublishModal] = useState(false);
+  const { t } = useTranslation();
+
+  const { electionGroup } = props;
+
+  const showPublishDialog = () => {
+    setShowPublishModal(true);
   }
 
-  showPublishModal() {
-    this.setState({ showPublishModal: true });
+  const closePublishDialog = () => {
+    setShowPublishModal(false);
   }
 
-  closePublishModal() {
-    this.setState({ showPublishModal: false });
+  const showUnpublishDialog = () => {
+    setShowUnpublishModal(true);
   }
 
-  handlePublish() {
-    this.props.publishAction(this.props.electionGroup.id);
-    this.closePublishModal();
+  const closeUnpublishDialog = () => {
+    setShowUnpublishModal(false);
   }
 
-  renderPublish() {
+  const handlePublish = () => {
+    props.publishAction(props.electionGroup.id);
+    closePublishDialog();
+  }
+
+  const handleUnpublish = () => {
+    props.unpublishAction(props.electionGroup.id);
+    setShowUnpublishModal(false);
+  }
+
+  const renderPublishButton = () => (
+    <Button
+      key="publish"
+      text={t('election.publish')}
+      action={handlePublish}
+    />
+  );
+
+  const renderUnpublishButton = () => (
+    <Button
+      key="unpublish"
+      text={t('election.unpublishElection')}
+      action={handleUnpublish}
+    />
+  );
+
+  const renderCancelButton = (action: () => void) => (
+    <Button
+      key="cancel"
+      text={t('general.cancel')}
+      action={action}
+      secondary
+    />
+  );
+
+  const renderPublish = () => {
     return (
       <div>
         <ButtonContainer alignLeft smlTopMargin>
           <Button
-            text={<Trans>election.publishElection</Trans>}
-            action={this.showPublishModal.bind(this)}
+            text={t('election.publishElection')}
+            action={showPublishDialog}
+            disabled={!props.canPublish}
           />
         </ButtonContainer>
-        {this.state.showPublishModal && (
+        {showPublishModal && (
           <Modal
-            header={<Trans>election.publishElection</Trans>}
+            header={t('election.publishElection')}
             buttons={[
-              renderCancelButton(this.closePublishModal.bind(this)),
-              renderPublishButton(this.handlePublish.bind(this)),
+              renderCancelButton(closePublishDialog),
+              renderPublishButton(),
             ]}
-            closeAction={this.closePublishModal.bind(this)}
+            closeAction={() => setShowPublishModal(false)}
             hideTopCloseButton
           >
-            <Text>
-              <Trans>election.publishElectionModalInfo</Trans>
-            </Text>
+            <Text>{t('election.publishElectionModalInfo')}</Text>
           </Modal>
         )}
       </div>
     );
   }
 
-  showUnpublishModal() {
-    this.setState({ showUnpublishModal: true });
-  }
-
-  closeUnpublishModal() {
-    this.setState({ showUnpublishModal: false });
-  }
-
-  handleUnpublish() {
-    this.props.unpublishAction(this.props.electionGroup.id);
-    this.closeUnpublishModal();
-  }
-
-  renderUnpublish() {
+  const renderUnpublish = () => {
     return (
       <div>
         <ButtonContainer alignLeft smlTopMargin>
           <Button
-            text={<Trans>election.unpublishElection</Trans>}
-            action={this.showUnpublishModal.bind(this)}
+            text={t('election.unpublishElection')}
+            action={showUnpublishDialog}
             secondary
+            disabled={!props.canPublish}
           />
         </ButtonContainer>
-        {this.state.showUnpublishModal && (
+        {showUnpublishModal && (
           <Modal
-            header={<Trans>election.unpublishElection</Trans>}
+            header={t('election.unpublishElection')}
             buttons={[
-              renderCancelButton(this.closeUnpublishModal.bind(this)),
-              renderUnpublishButton(this.handleUnpublish.bind(this)),
+              renderCancelButton(closeUnpublishDialog),
+              renderUnpublishButton(),
             ]}
-            closeAction={this.closeUnpublishModal.bind(this)}
+            closeAction={closeUnpublishDialog}
             hideTopCloseButton
           >
-            <Text>
-              <Trans>election.unpublishElectionModalInfo</Trans>
-            </Text>
+            <Text>{t('election.unpublishElectionModalInfo')}</Text>
           </Modal>
         )}
       </div>
     );
   }
 
-  render() {
-    const { electionGroup } = this.props;
-    return (
-      <span>
-        {!electionGroup.published && this.renderPublish()}
-        {electionGroup.published && this.renderUnpublish()}
-      </span>
-    );
-  }
+  return (
+    <span>
+      {!electionGroup.published && renderPublish()}
+      {electionGroup.published && renderUnpublish()}
+    </span>
+  )
 }
 
 export default PublishElectionGroup;
