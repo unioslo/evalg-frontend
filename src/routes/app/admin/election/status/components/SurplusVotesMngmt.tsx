@@ -1,11 +1,7 @@
 import React from 'react';
 import { WithApolloClient, withApollo } from 'react-apollo';
-import {
-  Trans,
-  WithTranslation,
-  withTranslation,
-} from 'react-i18next';
-import { PageExpandableSubSection } from 'components/page/PageSection';
+import { Trans, WithTranslation, withTranslation } from 'react-i18next';
+import { StatelessExpandableSubSection } from 'components/page/PageSection';
 import {
   Table,
   TableHeader,
@@ -69,7 +65,7 @@ interface IProps extends WithTranslation {
 }
 
 interface IState {
-  isUploading: boolean;
+  isExpanded: boolean;
 }
 
 type PropsInternal = WithApolloClient<IProps>;
@@ -79,7 +75,7 @@ class SurplusVotesMngmt extends React.Component<PropsInternal, IState> {
     super(props);
 
     this.state = {
-      isUploading: false,
+      isExpanded: false,
     };
   }
 
@@ -96,14 +92,14 @@ class SurplusVotesMngmt extends React.Component<PropsInternal, IState> {
     return this.props.client.mutate(mutationVars);
   };
 
-  public getOnSubmit = (voters: IVoter[]) => async (value: any) => {
-    this.setState({ isUploading: true });
+  public getOnSubmit = (person: IPerson, voters: IVoter[]) => async (
+    value: any
+  ) => {
     const votersToReject = voters.filter(voter => voter.id !== value.voterId);
     const promises = votersToReject.map((voter: IVoter) =>
       this.rejectVote(voter.id)
     );
     await Promise.all(promises);
-    this.setState({ isUploading: false });
   };
 
   public getOptions = (voters: IVoter[]) =>
@@ -116,7 +112,7 @@ class SurplusVotesMngmt extends React.Component<PropsInternal, IState> {
   public getRenderForm = (person: IPerson, voters: IVoter[]) => (
     formRenderProps: FormRenderProps
   ) => {
-    const { handleSubmit, pristine, invalid } = formRenderProps;
+    const { handleSubmit, pristine, invalid, submitting } = formRenderProps;
     return (
       <TableBody>
         <TableRow>
@@ -144,11 +140,11 @@ class SurplusVotesMngmt extends React.Component<PropsInternal, IState> {
                 <div className={this.props.classes.buttonContainer}>
                   <Button
                     text={this.props.t(`admin.manageSurplusVoters.confirm`)}
-                    disabled={pristine || invalid || this.state.isUploading}
+                    disabled={pristine || invalid || submitting}
                     type="submit"
                   />
                   <div className={this.props.classes.spinnerContainer}>
-                    {this.state.isUploading && (
+                    {submitting && (
                       <Spinner darkStyle marginLeft="1.4rem" size="2.2rem" />
                     )}
                   </div>
@@ -167,7 +163,7 @@ class SurplusVotesMngmt extends React.Component<PropsInternal, IState> {
     }
 
     if (this.props.personsWithMultipleVerifiedVoters.loading) {
-      return <Spinner darkStyle/>;
+      return <Spinner darkStyle />;
     }
 
     const personsWithMultipleVerifiedVoters = this.props
@@ -186,10 +182,14 @@ class SurplusVotesMngmt extends React.Component<PropsInternal, IState> {
     ) : (
       <>
         <Trans>admin.manageSurplusVoters.description</Trans>
-        <PageExpandableSubSection
+        <StatelessExpandableSubSection
           header={`${this.props.t(`admin.manageSurplusVoters.dropdown`)} (${
             personsWithMultipleVerifiedVoters.length
           })`}
+          isExpanded={this.state.isExpanded}
+          setIsExpanded={newIsExpanded => {
+            this.setState({ isExpanded: newIsExpanded });
+          }}
         >
           <Table marginTop="3rem">
             <TableHeader>
@@ -205,12 +205,12 @@ class SurplusVotesMngmt extends React.Component<PropsInternal, IState> {
             {personsWithMultipleVerifiedVoters.map(({ person, voters }) => (
               <Form
                 key={person.id}
-                onSubmit={this.getOnSubmit(voters)}
+                onSubmit={this.getOnSubmit(person, voters)}
                 render={this.getRenderForm(person, voters)}
               />
             ))}
           </Table>
-        </PageExpandableSubSection>
+        </StatelessExpandableSubSection>
       </>
     );
   }
