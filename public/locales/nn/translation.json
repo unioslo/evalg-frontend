@@ -88,6 +88,7 @@
       "groups": "Grupper",
       "singleUsers": "Enkeltbrukarar",
       "sectionHeader": "Administrative roller",
+      "sectionDescription": "Vi anbefaler å gje fleire tilgang til å administrere valet, i tilfelle du vert utilgjengeleg.",
       "sectionDescription": "Rollene markerer kven som har tilgang til valet.",
       "electionAdmins": "Valansvarlege",
       "electionAdminsDescription": "Har full tilgang til å endre valet, og delegere tilgangar. Dei treng også valnøkkelen for å kunne telje opp.",

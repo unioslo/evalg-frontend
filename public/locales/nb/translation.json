@@ -88,7 +88,7 @@
       "groups": "Grupper",
       "singleUsers": "Enkeltbrukere",
       "sectionHeader": "Administrative roller",
-      "sectionDescription": "Rollene angir hvem som har rettigheter i forbindelse med valget.",
+      "sectionDescription": "Vi anbefaler å gi flere tilgang til å administrere valget, i tilfelle du er utilgjengelig.",
       "electionAdmins": "Valgansvarlige",
       "electionAdminsDescription": "Har full tilgang til å endre valget, og delegere tilganger. Valgnøkkelen trengs også for å kunne telle opp.",
       "addNewElectionAdmin": "Legg til valgansvarlig",

@@ -88,7 +88,7 @@
       "groups": "Groups",
       "singleUsers": "Single users",
       "sectionHeader": "Administrative roles",
-      "sectionDescription": "The roles indicate who has access to this election.",
+      "sectionDescription": "We recommend you give other access to the election, in case you are unavailable.",
       "electionAdmins": "Election admins",
       "electionAdminsDescription": "Has full access to edit this election, count votes and grant access to others.",
       "addNewElectionAdmin": "Add election admin",
