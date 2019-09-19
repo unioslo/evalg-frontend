@@ -147,7 +147,7 @@
       "votesApprovedByTheBoard": "Votes approved by the electoral board",
       "votesRejectedByTheBoard": "Votes rejected by the electoral board"
     },
-    "manageSurplusVoters" : {
+    "manageSurplusVoters": {
       "header": "Persons with multiple votes",
       "dropdown": "See persons",
       "dropdownClose": "Close",
@@ -288,7 +288,7 @@
     "publish": "Publish",
     "publishElection": "Publish election",
     "publishElectionModalInfo": "The election will be visible to the electors and start at the specified time.",
-    "publishElectionNotPublisher": "To publish an election you need extra privileges. Please see the <0>contact information</0>.",
+    "publishElectionNotPublisher": "To publish an election you need extra privileges. Please see the <0>documentation on publishing elections.</0>.",
     "publishLoadingCanPublish": "Loading election status",
     "published": "Published",
     "quotas": "Quotas",
@@ -316,7 +316,7 @@
     "unannounceElectionInfoTwo": "You can make the election visible again later.",
     "unpublish": "Unpublish",
     "unpublishElection": "Unpublish election",
-    "unpublishElectionNotPublisher": "Only those with extra privileges can unpublish the election. Please see the <0>contact information</0>",
+    "unpublishElectionNotPublisher": "Only those with extra privileges can unpublish the election. Please see the <0>documentation on publishing elections.</0>",
     "unpublishElectionModalInfo": "The election will not start at the specified time.",
     "valueNotSet": "not set",
     "voteNow": "Vote now",
