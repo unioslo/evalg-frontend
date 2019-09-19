@@ -11,7 +11,7 @@ import Link from 'components/link';
 import { H1 } from 'components/text';
 import { UserContext } from 'providers/UserContext';
 
-import LanguageToggler, { MobileLanguageToggler } from './LanguageToggler';
+import LanguageSelector, { MobileLanguageSelector } from './LanguageSelector';
 import { DesktopMenu, DesktopMenuItem } from './DesktopMenu';
 import { MobileMenu, MobileMenuItem } from './MobileMenu';
 import { getSignedInPersonDisplayName } from 'queries';
@@ -170,7 +170,7 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
                 </Link>
               </DesktopMenuItem>
               <DesktopMenuItem>
-                <LanguageToggler />
+                <LanguageSelector />
               </DesktopMenuItem>
             </DesktopMenu>
           </div>
@@ -200,7 +200,7 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
                 )}
               </ApolloConsumer>
             </DesktopMenu>
-            <MobileLanguageToggler/>   
+            <MobileLanguageSelector/>   
           </div>
         </div>
       </div>

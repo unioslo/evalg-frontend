@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
 import injectSheet from 'react-jss';
-import { inlineFragmentOnNonCompositeErrorMessage } from 'graphql/validation/rules/FragmentsOnCompositeTypes';
 
 const styles = (theme: any) => ({
   actionText: {

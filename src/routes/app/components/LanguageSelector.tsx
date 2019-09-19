@@ -19,7 +19,7 @@ const options = [
   },
 ];
 
-const Toggler: React.FunctionComponent = () => {
+const LanguageSelector: React.FunctionComponent = () => {
   const { i18n, t } = useTranslation();
 
   return (
@@ -36,7 +36,7 @@ const Toggler: React.FunctionComponent = () => {
   );
 };
 
-export const MobileLanguageToggler: React.FunctionComponent = () => {
+export const MobileLanguageSelector: React.FunctionComponent = () => {
   const { i18n, t } = useTranslation();
 
   return (
@@ -53,4 +53,4 @@ export const MobileLanguageToggler: React.FunctionComponent = () => {
   )
 }
 
-export default withTranslation()(Toggler);
+export default withTranslation()(LanguageSelector);
