@@ -12,6 +12,11 @@ const styles = (theme: any) => ({
     fontSize: '1.6rem',
     verticalAlign: 'super',
   },
+  inline: {
+    color: 'inherit',
+    fontSize: 'inherit',
+    verticalAlign: 'inherit',
+  },
   baseline: {
     verticalAlign: 'inherit',
   },
@@ -21,19 +26,23 @@ interface IProps {
   action?: (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
   children?: React.ReactNode;
   bottom?: boolean;
+  inline?: boolean;
   classes: any;
+  onBlur?: any;
+  onFocus?: any;
 }
 
 const ActionText: React.SFC<IProps> = props => {
-  const { classes } = props;
+  const { children, classes, bottom, action, inline } = props;
   const cls = classNames({
-    [classes.baseline]: props.bottom,
+    [classes.baseline]: bottom,
     [classes.actionText]: true,
+    [classes.inline]: inline,
     'button-no-style': true,
   });
   return (
-    <button className={cls} onClick={props.action}>
-      {props.children}
+    <button className={cls} onClick={action} {...props} >
+      {children}
     </button>
   );
 };

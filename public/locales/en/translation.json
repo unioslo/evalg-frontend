@@ -439,7 +439,8 @@
     "upload": "Upload",
     "webpage": "Web page",
     "welcome": "Welcome to eValg",
-    "yes": "Yes"
+    "yes": "Yes",
+    "language": "Language"
   },
   "loginPage": {
     "featureList1": "Cast your vote in electronic elections",

@@ -91,6 +91,47 @@ const styles = (theme: any) => ({
     backgroundRepeat: 'no-repeat',
     backgroundSize: '14px 9px',
   },
+  dropDownDesktopMenu: {
+    width: 'fit-content',
+    display: 'inline-block',
+    color: theme.colors.white,
+    background: 'url("/dropdownarrow.svg") no-repeat right 7px top 50%',
+    fontFamily: 'inherit',
+    fontSize: 'inherit',
+    '& .inlineOptionNameText': {
+      marginRight: 30,
+    },
+  },
+  listDesktopMenu: {
+    position: 'absolute',
+    right: 0,
+    top: 'inherit',
+    fontFamily: 'inherit',
+    fontSize: 'inherit',
+    borderRadius: theme.formFieldBorderRadius,
+    listStyleType: 'none',
+    minWidth: '12rem',
+    maxHeight: theme.dropDownListMaxHeight,
+    zIndex: 100,
+    background: theme.colors.white,
+    border: theme.formFieldBorder,
+    borderColor: theme.formFieldBorderColor,
+  },
+  listItemDesktopMenu: {
+    padding: '0.3rem 0.5rem',
+    borderBottom: `0.1rem solid ${theme.formFieldBorderColor}`,
+    minHeight: '2rem',
+    '&:hover': {
+      background: theme.lightBlueGray,
+      cursor: 'pointer',
+    },
+    '&:last-child': {
+      borderBottom: 0,
+    },
+  },
+  itemTextDesktopMenu: {
+    fontSize: '1.4rem',
+  },
 });
 
 interface IDropDownOption {
@@ -119,6 +160,7 @@ interface IProps {
   searchable?: boolean;
   large?: boolean;
   inline?: boolean;
+  onDesktopMenu?: boolean;
   noRelativePositionOfListOnMobile?: boolean;
   name?: string;
   // meta: object,
@@ -180,6 +222,7 @@ class DropDown extends DropDownBase<IProps> {
       label,
       large,
       inline, // if inline is true, searchable has no effect
+      onDesktopMenu,
       noRelativePositionOfListOnMobile,
       searchable,
       disabled,
@@ -204,18 +247,29 @@ class DropDown extends DropDownBase<IProps> {
 
     const dropdownClassNames = classNames({
       [classes.dropdown]: true,
-      [classes.dropdownNormal]: !inline,
+      [classes.dropdownNormal]: !inline && !onDesktopMenu,
       [classes.dropdownInline]: inline,
+      [classes.dropDownDesktopMenu]: onDesktopMenu,
       [classes.dropDownNoRelativePositionOfListOnMobile]: noRelativePositionOfListOnMobile,
       [classes.large]: large,
     });
 
     const listClassNames = classNames({
       [classes.list]: true,
+      [classes.listDesktopMenu]: onDesktopMenu,
       [classes.listLarge]: large,
       [classes.listScroll]: validOptions.length > 6,
       [classes.listNoLabel]: !label,
     });
+
+    const listItemClassNames = classNames({
+      [classes.listItem]: true,
+      [classes.listItemDesktopMenu]: onDesktopMenu,
+    })
+
+    const itemTextClassNames = classNames({
+      [classes.itemTextDesktopMenu]: onDesktopMenu,
+    })
 
     const listId = id + '-list';
     const inputId = id + '-input';
@@ -234,10 +288,12 @@ class DropDown extends DropDownBase<IProps> {
         onFocus={this.handleOnFocus.bind(this)}
         tabIndex={0}
       >
-        {inline ? (
+        {(inline || onDesktopMenu) ? (
           <div>
             <div className={'inlineOptionNameText'}>
-              {getValueName(value, options).toLowerCase()}
+              {placeholder
+                ? placeholder
+                : getValueName(value, options).toLowerCase()}
             </div>
           </div>
         ) : (
@@ -273,7 +329,7 @@ class DropDown extends DropDownBase<IProps> {
                     return (
                       <li
                         key={index}
-                        className={classes.listItem}
+                        className={listItemClassNames}
                         onKeyDown={(
                           event: React.KeyboardEvent<HTMLLIElement>
                         ) => {
@@ -288,7 +344,7 @@ class DropDown extends DropDownBase<IProps> {
                         }}
                         tabIndex={0}
                       >
-                        <p>{option.name}</p>
+                        <p className={itemTextClassNames}>{option.name}</p>
                         {option.secondaryLine && (
                           <p className={classes.secondaryLine}>
                             {option.secondaryLine}
