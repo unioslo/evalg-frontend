@@ -1,23 +1,56 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, withTranslation } from 'react-i18next';
+import { DropDown } from 'components/form/DropDown';
+import { MobileMenu, MobileMenuItem } from './MobileMenu';
+import ActionText from 'components/actiontext'
+
+const options = [
+  {
+    name: 'English',
+    value: 'en',
+  },
+  {
+    name: 'Norsk nynorsk',
+    value: 'nn',
+  },
+  {
+    name: 'Norsk bokmål',
+    value: 'nb',
+  },
+];
 
 const Toggler: React.FunctionComponent = () => {
-  const { i18n } = useTranslation();
-
-  const toggleLanguage = (
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const currentLang = i18n.language;
-    i18n.changeLanguage(currentLang === 'nb' ? 'en' : 'nb');
-  };
+  const { i18n, t } = useTranslation();
 
   return (
-    <a style={{ color: 'inherit' }} onClick={toggleLanguage} href="/">
-      {i18n.language === 'nb' ? 'English' : 'Norsk'}
-    </a>
+    <DropDown
+      placeholder={t('general.language')}
+      onDesktopMenu
+      options={options}
+      value={i18n.language}
+      onChange={newValue => {
+        i18n.changeLanguage(newValue);
+
+      }}
+    />
   );
 };
 
-export default Toggler;
+export const MobileLanguageToggler: React.FunctionComponent = () => {
+  const { i18n, t } = useTranslation();
+
+  return (
+    <MobileMenu placeholder={t('general.language')}>
+      {options.map(option => (
+        <MobileMenuItem>
+          <ActionText inline action={() => {
+            i18n.changeLanguage(option.value)}}>
+            {option.name}
+          </ActionText>
+        </MobileMenuItem>
+      ))}
+    </MobileMenu>
+  )
+}
+
+export default withTranslation()(Toggler);

@@ -45,6 +45,7 @@ const styles = (theme: any) => ({
     top: '3rem',
     width: '28rem',
     right: '0',
+    zIndex: '10'
   },
   menuListItem: {
     borderTop: `1px solid ${theme.borderColor}`,
@@ -58,6 +59,7 @@ const styles = (theme: any) => ({
 
 interface IProps {
   classes: Classes;
+  placeholder?: string;
 }
 
 interface IState {
@@ -108,7 +110,7 @@ class MobileMenu extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, placeholder } = this.props;
     return (
       <nav className={classes.mobileMenu}>
         <div
@@ -121,7 +123,7 @@ class MobileMenu extends React.Component<IProps, IState> {
           aria-haspopup="true"
           aria-expanded={!this.state.open}
         >
-          <Trans>general.menu</Trans>
+          {placeholder ? placeholder : <Trans>general.menu</Trans>}
           <div className={classes.menuIcon} />
           {this.state.open && (
             <ul className={classes.menuList}>{this.props.children}</ul>

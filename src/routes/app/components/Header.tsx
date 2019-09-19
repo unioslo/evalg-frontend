@@ -11,7 +11,7 @@ import Link from 'components/link';
 import { H1 } from 'components/text';
 import { UserContext } from 'providers/UserContext';
 
-import LanguageToggler from './LanguageToggler';
+import LanguageToggler, { MobileLanguageToggler } from './LanguageToggler';
 import { DesktopMenu, DesktopMenuItem } from './DesktopMenu';
 import { MobileMenu, MobileMenuItem } from './MobileMenu';
 import { getSignedInPersonDisplayName } from 'queries';
@@ -200,9 +200,7 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
                 )}
               </ApolloConsumer>
             </DesktopMenu>
-            <div className={classes.mobileLanguageToggler}>
-              <LanguageToggler />
-            </div>
+            <MobileLanguageToggler/>   
           </div>
         </div>
       </div>
@@ -225,8 +223,8 @@ const MobileLogout: React.FunctionComponent<{ history: History }> = ({
         {context => {
           if (context.user) {
             return (
-              <MobileMenuItem>
                 <a
+                  style={{color: 'inherit'}}
                   onClick={e => {
                     e.preventDefault();
                     navigateToLogout(history);
@@ -235,7 +233,6 @@ const MobileLogout: React.FunctionComponent<{ history: History }> = ({
                 >
                   {t('general.logout')}
                 </a>
-              </MobileMenuItem>
             );
           }
           return null;

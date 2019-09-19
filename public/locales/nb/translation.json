@@ -433,7 +433,8 @@
     "upload": "Last opp",
     "webpage": "Nettadresse",
     "welcome": "Velkommen til eValg",
-    "yes": "Ja"
+    "yes": "Ja",
+    "language": "Språk"
   },
   "loginPage": {
     "featureList1": "Stemme i elektroniske valg",
