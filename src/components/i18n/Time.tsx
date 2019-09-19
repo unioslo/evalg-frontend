@@ -7,9 +7,10 @@ interface IProps {
   dateTime: Moment | string;
 }
 
-const prefixes: any = {
+const prefixes: { [id: string]: string } = {
   en: 'at',
   nb: 'kl',
+  nn: 'kl',
 };
 
 const Time: React.FunctionComponent<IProps> = (props: IProps) => {
@@ -21,7 +22,9 @@ const Time: React.FunctionComponent<IProps> = (props: IProps) => {
   moment.locale(i18n.language);
   const lang = i18n.language;
   const time = moment.tz(props.dateTime, appTimezone).format('LT');
-  return <span>{`${prefixes[lang]} ${time}`}</span>;
+  const prefix: string = (prefixes[lang] !== undefined ? prefixes[lang] : 'kl')
+
+  return <span>{`${prefix} ${time}`}</span>;
 };
 
 export default Time;
