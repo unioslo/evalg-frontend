@@ -245,7 +245,7 @@ const ElectionStatusSection: React.FunctionComponent<IProps> = (props: IProps) =
                                 <Link
                                   key="0"
                                   external
-                                  to={'https://www.uio.no/for-ansatte/arbeidsstotte/arrangere-valg/kontakt.html'}
+                                  to={'https://www.uio.no/tjenester/it/applikasjoner/e-valg/hjelp/publisering.html'}
                                 >
                                   text
                                 </Link>
@@ -262,7 +262,7 @@ const ElectionStatusSection: React.FunctionComponent<IProps> = (props: IProps) =
                                 <Link
                                   key="0"
                                   external
-                                  to={'https://www.uio.no/for-ansatte/arbeidsstotte/arrangere-valg/kontakt.html'}
+                                  to={'https://www.uio.no/tjenester/it/applikasjoner/e-valg/hjelp/publisering.html'}
                                 >
                                   text
                                 </Link>
