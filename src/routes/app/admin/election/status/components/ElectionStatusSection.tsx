@@ -3,6 +3,7 @@ import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Trans, useTranslation } from 'react-i18next';
 
+import { enableAnnounceElectionGroup } from 'appConfig';
 import Spinner from 'components/animations/Spinner';
 import { ElectionGroup, IElectionGroupRole } from 'interfaces';
 import { showGenerateVotesTestingComponent } from 'appConfig';
@@ -192,7 +193,7 @@ const ElectionStatusSection: React.FunctionComponent<IProps> = (props: IProps) =
                           </InfoListItem>
                         ) : null}
 
-                        {!electionGroup.published && !electionGroup.announced ? (
+                        {enableAnnounceElectionGroup && !electionGroup.published && !electionGroup.announced ? (
                           canPublish ? (
                             <InfoListItem bulleted key="can-announce">
                               {t('election.statusCanAnnounce')}
@@ -212,7 +213,7 @@ const ElectionStatusSection: React.FunctionComponent<IProps> = (props: IProps) =
                               {t('election.statusCanBeAnnounce')}
                             </InfoListItem>
                         ) : null}
-                        {!electionGroup.published && electionGroup.announced ? (
+                        {enableAnnounceElectionGroup && !electionGroup.published && electionGroup.announced ? (
                           canPublish ? (
                             <InfoListItem bulleted key="is-announced">
                               {t('election.statusIsAnnounced')}
