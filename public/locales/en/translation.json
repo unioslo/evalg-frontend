@@ -121,7 +121,7 @@
       "readMore": "Read more about election keys",
       "save": "Save key",
       "infoListCanReplace": "Until votes has been cast, you may create a new election key that replaces the old one. Note: If the election is published or ongoing, you will first need to unpublish it.",
-      "infoListKeepItSafe": "Make sure the key is stored somewhere safe. Without the key, votes cannot be counted.",
+      "infoListKeepItSafe": "Make sure the election key is stored somewhere safe. Without the election key, votes cannot be counted.",
       "cannotReplaceBecauseUnsafeStatus": "To create a new election key that replaces the old one, you must first unpublish the election. It is not possible to replace the election key if any votes has been cast.",
       "errors": {
         "generateKeyError": "Something went wrong when generating the election key pair.",
