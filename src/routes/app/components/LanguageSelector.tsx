@@ -42,7 +42,7 @@ export const MobileLanguageSelector: React.FunctionComponent = () => {
   return (
     <MobileMenu placeholder={t('general.language')}>
       {options.map(option => (
-        <MobileMenuItem>
+        <MobileMenuItem key={option.value}>
           <ActionText inline action={() => {
             i18n.changeLanguage(option.value)}}>
             {option.name}
