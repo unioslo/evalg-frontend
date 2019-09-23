@@ -1,4 +1,3 @@
-
 declare global {
   /* tslint:disable */
   interface Window {
@@ -21,7 +20,7 @@ export const appName: string = process.env.REACT_APP_NAME as string;
 const sentryPublicKey: string = env.REACT_APP_SENTRY_PUBLIC_KEY as string;
 const sentryProjectId: string = env.REACT_APP_SENTRY_PROJECT_ID as string;
 const sentryHost: string = env.REACT_APP_SENTRY_HOST as string;
-export const sentryEnabled: boolean = (sentryHost !== undefined) ? true : false;
+export const sentryEnabled: boolean = sentryHost !== undefined ? true : false;
 export const sentryDsn: string = `https://${sentryPublicKey}@${sentryHost}/${sentryProjectId}`;
 export const sentryEnvironment: string = env.REACT_APP_SENTRY_ENVIRONMENT as string;
 
@@ -59,11 +58,14 @@ export const appPrivacyPolicylink = {
     'https://www.uio.no/tjenester/it/applikasjoner/e-valg/personvern/info.html',
 };
 export const appCookiesInformationLink = {
-  'nb': 'https://www.uio.no/tjenester/it/applikasjoner/e-valg/personvern/cookies.html',
-  'en': 'https://www.uio.no/english/services/it/adm-services/evalg/privacy/cookies.html'
+  nb:
+    'https://www.uio.no/tjenester/it/applikasjoner/e-valg/personvern/cookies.html',
+  en:
+    'https://www.uio.no/english/services/it/adm-services/evalg/privacy/cookies.html',
 };
 
 /* Feature toggles */
 export const appMobileVotingStepperVariant: 'simple' | 'circles' = 'circles';
 export const sectionBottomBorderStyle: 'original' | 'stylish' = 'stylish';
 export const showGenerateVotesTestingComponent = false;
+export const enableAnnounceElectionGroup = false;
