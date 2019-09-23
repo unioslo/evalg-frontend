@@ -118,7 +118,7 @@ const renderOptionFields = (
             options={ouOptions}
             large
             isSearchable
-            placeholder={t('general.select')}
+            placeholder={t('general.selectOrSearch')}
           />
         </FormField>
       );
@@ -129,7 +129,7 @@ const renderOptionFields = (
             name={`option${index + 2}name`}
             component={TextInput as any}
             label={node.name[lang]}
-            placeholder={'Velg'}
+            placeholder={t('general.select')}
           />
         </FormField>
       );
