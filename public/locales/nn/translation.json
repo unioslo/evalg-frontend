@@ -105,7 +105,7 @@
       "modalActivating": "Aktiverer valnøkkel",
       "modalActivatedSuccessfully": "Valnøkkelen er aktivert",
       "publicKeyCaption": "Offentleg nøkkel (ikkje valnøkkel)",
-      "modalDetailsSecretKey": "Hemmeleg dekrypteringsnøkkel (valnøkkel)",
+      "modalDetailsSecretKey": "Hemmeleg nøkkel (valnøkkel)",
       "modalDetailsPublicKey": "Offentleg krypteringsnøkkel",
       "modalDetailsCreatedBy": "Oppretta av",
       "modalDetailsTimeCreated": "Tidspunkt oppretta",
@@ -129,7 +129,8 @@
           "unknown": "Ein uventa feil oppstod under aktiveringa av valnøkkelen.",
           "cannotChangeKeyIfPastStart": "Du kan ikkje endre valnøkkelen fordi valet pågår.",
           "cannotChangeKeyIfPublished": "Du kan ikkje endre valnøkkelen fordi valet er publisert.",
-          "cannotChangeKeyIfVotesExist": "Du kan ikkje endre valnøkkelen fordi det er røysta i valet."
+          "cannotChangeKeyIfVotesExist": "Du kan ikkje endre valnøkkelen fordi det er røysta i valet.",
+          "couldNotCreateBackup": "Kunne ikkje opprette sikkerhetskopi av hemmeleg nøkkel"
         }
       }
     },

@@ -129,7 +129,8 @@
           "unknown": "An unknown error occurred while uploading or activating the public key.",
           "cannotChangeKeyIfPastStart": "Changing the election key is not permitted, because the election is ongoing.",
           "cannotChangeKeyIfPublished": "Changing the election key is not permitted, because the election is published.",
-          "cannotChangeKeyIfVotesExist": "Changing the election key is not permitted, because a vote has been cast."
+          "cannotChangeKeyIfVotesExist": "Changing the election key is not permitted, because a vote has been cast.",
+          "couldNotCreateBackup": "Could not create election key backup"
         }
       }
     },
