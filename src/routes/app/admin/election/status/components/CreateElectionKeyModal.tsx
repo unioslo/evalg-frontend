@@ -19,6 +19,7 @@ import Icon from 'components/icon';
 import AnimatedCheckmark from 'components/animations/AnimatedCheckmark';
 
 import ModalSteps from './ModalSteps';
+import { string } from 'prop-types';
 
 const styles = (theme: any) => ({
   errorMessage: {
@@ -60,8 +61,49 @@ const setElectionGroupKeyMutation = gql`
   }
 `;
 
+const addElectionGroupKeyBackupMutation = gql`
+  mutation AddElectionGroupKeyBackup(
+    $electionGroupId: UUID!
+    $encryptedPrivKey: String!
+    $masterKeyId: UUID!
+  ) {
+    addElectionGroupKeyBackup(
+      electionGroupId: $electionGroupId
+      encryptedPrivKey: $encryptedPrivKey
+      masterKeyId: $masterKeyId
+    ) {
+      success
+      code
+      message
+    }
+  }
+`;
+
+const masterKeysQuery = gql`
+  query masterKeys {
+    masterKeys {
+      id
+      publicKey
+      description
+      active
+    }
+  }
+`;
+
+interface IMasterKey {
+  id: string;
+  description: string;
+  publicKey: string;
+  active: boolean;
+  createdAt: string;
+}
+
 interface ISetElectionGroupKeyResponse {
   setElectionGroupKey: IMutationResponse;
+}
+
+interface IAddElectionGroupKeyBackupResponse {
+  addElectionGroupKeyBackup: IMutationResponse;
 }
 
 interface IProps extends WithTranslation {
@@ -78,12 +120,19 @@ interface IState {
   publicKey: string;
   isGeneratingKey: boolean;
   isActivatingKey: boolean;
+  hasFetchedMasterKeys: boolean;
   hasDownloadedKey: boolean;
   isCheckboxChecked: boolean;
   isAllowedToActivateKey: boolean;
   hasActivatedNewKey: boolean;
+  masterKeys: Array<IMasterKey>;
   showDetails: boolean;
   errorMessage: string;
+}
+
+interface IElectionGroupKeyBackup {
+  masterKeyID: string;
+  encryptedPrivateKey: string;
 }
 
 class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
@@ -98,10 +147,12 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
       publicKey: '',
       isGeneratingKey: false,
       isActivatingKey: false,
+      hasFetchedMasterKeys: false,
       hasDownloadedKey: false,
       isCheckboxChecked: false,
       isAllowedToActivateKey: false,
       hasActivatedNewKey: false,
+      masterKeys: [],
       showDetails: false,
       errorMessage: '',
     };
@@ -124,12 +175,38 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
     }));
   };
 
+  fetchMasterKeys = async () => {
+    let result;
+    const { t } = this.props;
+    try {
+      result = await this.props.client.query({
+        query: masterKeysQuery,
+      });
+
+      console.debug(result.data.masterKeys);
+    } catch (error) {
+      this.showError(t('admin.electionKey.errors.backend.unknown'));
+      return;
+    }
+    if (!result || !result.data || !result.data.masterKeys) {
+      let errorMessage = t('admin.electionKey.errors.backend.unknown');
+      this.showError(errorMessage);
+    } else {
+      this.setState({
+        masterKeys: result.data.masterKeys,
+        hasFetchedMasterKeys: true,
+      });
+      console.debug(this.state);
+    }
+  };
+
   generateElectionKey = async () => {
     let keys: IKeyPair = { secretKey: '', publicKey: '' };
     try {
       this.setState({
         isGeneratingKey: true,
       });
+      await this.fetchMasterKeys();
       keys = await this.cryptoEngine.generateKeyPair();
       this.setState({
         isGeneratingKey: false,
@@ -177,10 +254,48 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
 
   activateKey = async () => {
     const { t } = this.props;
+    const { secretKey, masterKeys } = this.state;
 
     this.setState({
       isActivatingKey: true,
     });
+
+    let couldNotBackupKey = false;
+    await Promise.all(
+      masterKeys.map(async (masterKey: IMasterKey) => {
+        const encryptedPrivateKey = await this.cryptoEngine.encryptPrivateKey(
+          secretKey,
+          masterKey.publicKey
+        );
+        console.info(encryptedPrivateKey);
+        try {
+          const result = await this.props.client.mutate<
+            IAddElectionGroupKeyBackupResponse
+          >({
+            mutation: addElectionGroupKeyBackupMutation,
+            variables: {
+              electionGroupId: this.props.electionGroup.id,
+              encryptedPrivKey: encryptedPrivateKey,
+              masterKeyId: masterKey.id,
+            },
+          });
+          const response =
+            result && result.data && result.data.addElectionGroupKeyBackup;
+          if (!response || response.success === false) {
+            couldNotBackupKey = true;
+          }
+        } catch (error) {
+          couldNotBackupKey = true;
+        }
+      })
+    );
+
+    //const { couldNotBackupKey } = this.state;
+    if (couldNotBackupKey) {
+      this.setState({ isActivatingKey: false });
+      this.showError(t('admin.electionKey.errors.backend.couldNotCreateBackup'));
+      return;
+    }
 
     let response;
     try {

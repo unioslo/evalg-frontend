@@ -129,7 +129,8 @@
           "unknown": "En uventet feil oppstod under aktiveringa av valgnøkkelen.",
           "cannotChangeKeyIfPastStart": "Du kan ikke endre valgnøkkelen fordi valget pågår.",
           "cannotChangeKeyIfPublished": "Du kan ikke endre valgnøkkelen fordi valget er publisert.",
-          "cannotChangeKeyIfVotesExist": "Du kan ikke endre valgnøkkelen fordi det er avgitt stemmer i valget."
+          "cannotChangeKeyIfVotesExist": "Du kan ikke endre valgnøkkelen fordi det er avgitt stemmer i valget.",
+          "couldNotCreateBackup": "Kunne ikke opprette sikkerhetskopi av hemmelig nøkkel"
         }
       }
     },
