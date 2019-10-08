@@ -18,7 +18,6 @@ import {
 } from 'components/table';
 
 import ActionText from 'components/actiontext';
-import { DropDown, TextInput } from 'components/form';
 import { ElectionGroup } from '../../../../../../interfaces';
 
 import TableRowWithText from './TableRowWithText';
