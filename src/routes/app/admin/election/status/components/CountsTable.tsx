@@ -49,19 +49,13 @@ const CountsTable: React.FunctionComponent<IProps> = ({
         <TableHeaderRow>
           <TableHeaderCell width="8%" />
           <TableHeaderCell width="31%">
-            <Trans>
-              {t('admin.countingSection.countingsSubsection.startedBy')}
-            </Trans>
+            {t('admin.countingSection.countingsSubsection.startedBy')}
           </TableHeaderCell>
           <TableHeaderCell width="31%">
-            <Trans>
-              {t('admin.countingSection.countingsSubsection.timeStarted')}
-            </Trans>
+            {t('admin.countingSection.countingsSubsection.timeStarted')}
           </TableHeaderCell>
           <TableHeaderCell width="31">
-            <Trans>
-              {t('admin.countingSection.countingsSubsection.status')}
-            </Trans>
+            {t('admin.countingSection.countingsSubsection.status')}
           </TableHeaderCell>
         </TableHeaderRow>
       </TableHeader>
@@ -83,7 +77,15 @@ const CountsTable: React.FunctionComponent<IProps> = ({
                   <Date dateTime={count.initiatedAt} longDate />{' '}
                   <Time dateTime={count.initiatedAt} />
                 </TableCell>
-                <TableCell>{count.status}</TableCell>
+                {(count.status === 'finished') ?
+                  <TableCell>
+                    {t('admin.countingSection.countingsSubsection.finished')}
+                  </TableCell>
+                  :
+                  <TableCell>
+                    {t('admin.countingSection.countingsSubsection.ongoing')}
+                  </TableCell>
+                }
               </TableRow>
               {isSelected && (
                 <TableRow>

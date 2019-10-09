@@ -58,7 +58,9 @@
       "warningSelfAddedVoters": "Du må behandle alle stemmer utenfor manntall før du kan telle opp valget",
       "warningPersonsWithMultipleVoters": "Valget kan ikke telles opp før alle personer med flere stemmer er behandlet",
       "countingsSubsection": {
+        "finished": "Ferdig",
         "header": "Opptellinger",
+        "ongoing": "Pågår",
         "startedBy": "Startet av",
         "status": "Status",
         "timeStarted": "Tidspunkt startet",
