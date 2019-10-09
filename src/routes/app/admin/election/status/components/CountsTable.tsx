@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 
 import CountDetails from './CountDetails';
