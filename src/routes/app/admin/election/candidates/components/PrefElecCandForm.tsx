@@ -84,6 +84,7 @@ const PrefElecCandForm: React.FunctionComponent<IProps> = (props: IProps) => {
                     name="name"
                     component={TextInputRF}
                     large
+                    label={t('general.name')}
                     placeholder={t('election.candidateNamePlaceHolder')}
                   />
                 </FormField>
@@ -92,6 +93,7 @@ const PrefElecCandForm: React.FunctionComponent<IProps> = (props: IProps) => {
                     name="gender"
                     component={DropDownRF as any}
                     options={genderOptions}
+                    label={t('general.gender')}
                     placeholder={t('general.gender')}
                   />
                 </FormField>
@@ -101,6 +103,7 @@ const PrefElecCandForm: React.FunctionComponent<IProps> = (props: IProps) => {
                     component={DropDownRF as any}
                     options={candListOptions}
                     large
+                    label={t('general.group')}
                     placeholder={t('general.group')}
                   />
                 </FormField>

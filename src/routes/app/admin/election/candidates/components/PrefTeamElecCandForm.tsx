@@ -4,7 +4,7 @@ import { FieldArray } from 'react-final-form-arrays';
 import arrayMutators from 'final-form-arrays';
 import { useTranslation } from 'react-i18next';
 
-import ActionText from 'components/actiontext';
+import Button from 'components/button'
 import {
   TableRowForm,
   TableRowFormFields,
@@ -14,7 +14,7 @@ import {
   TextInputRF,
 } from 'components/form';
 
-// import { validateUrl } from 'utils/validators';
+import Icon from 'components/icon';
 
 interface IProps {
   handleSubmit: (a: any) => void;
@@ -23,29 +23,6 @@ interface IProps {
   initialValues: object;
   formHeader: any | string;
 }
-
-// const validate = (values: Object, props: Props) => {
-// const validate = (values: any, props: IProps) => {
-//   const errors: any = {};
-//   const coCandidatesErrors = [];
-//   const { name, informationUrl, coCandidates } = values;
-//   if (!name) {
-//     errors.name = {t('general.required')}
-//   }
-//   if (informationUrl && !validateUrl(informationUrl)) {
-//     errors.informationUrl = {t('formErrors.invalidUrl')}
-//   }
-//   const coCandErrors = coCandidates.map((coCandidate: any, index: any) => {
-//     if (!coCandidate.name) {
-//       return { name: {t('general.required')} }
-//     }
-//     return null;
-//   });
-//   if (coCandidatesErrors.length) {
-//     errors.coCandidates = coCandErrors;
-//   }
-//   return errors;
-// };
 
 const PrefTeamElecCandForm: React.FunctionComponent<IProps> = (
   props: IProps
@@ -66,12 +43,10 @@ const PrefTeamElecCandForm: React.FunctionComponent<IProps> = (
       render={formProps => {
         const {
           handleSubmit,
-          // reset,
-          // submitting,
+          form: {
+            mutators: { push }
+          },
           pristine,
-          // values,
-          // invalid,
-          // errors,
           valid,
         } = formProps;
         return (
@@ -83,6 +58,7 @@ const PrefTeamElecCandForm: React.FunctionComponent<IProps> = (
                     <Field
                       name="name"
                       component={TextInputRF}
+                      label={t('general.name')}
                       placeholder={t('election.candidateNamePlaceHolder')}
                     />
                   </FormField>
@@ -90,53 +66,42 @@ const PrefTeamElecCandForm: React.FunctionComponent<IProps> = (
                     <Field
                       name="informationUrl"
                       component={TextInputRF}
+                      label={t('general.webpage')}
                       placeholder={t('general.webpage')}
                     />
                   </FormField>
-                </FormFieldGroup>
-                <FormFieldGroup flexGrow noTopMargin>
-                  <FieldArray name="coCandidates">
-                    {({ fields }) => (
-                      <div>
-                        {fields.map((coCandidate, index) => {
-                          if (index === 0) {
-                            return (
-                              <FormField key={index} action>
-                                <Field
-                                  name={`${coCandidate}.name`}
-                                  component={TextInputRF}
-                                  placeholder={t(
-                                    'election.coCandidateNamePlaceHolder'
-                                  )}
-                                />
-                              </FormField>
-                            );
-                          }
-                          const removeAction = (
-                            <ActionText action={() => fields.remove(index)}>
-                              {t('general.remove')}
-                            </ActionText>
-                          );
-                          return (
-                            <FormField action={removeAction} key={index}>
-                              <Field
-                                name={`${coCandidate}.name`}
-                                component={TextInputRF}
-                                placeholder={t(
-                                  'election.coCandidateNamePlaceHolder'
-                                )}
-                              />
-                            </FormField>
-                          );
-                        })}
-                        <div style={{ marginTop: '2rem' }}>
-                          <ActionText action={() => fields.push({})}>
-                            {t('election.newCoCandidate')}
-                          </ActionText>
-                        </div>
-                      </div>
-                    )}
+
+                  <FieldArray name='coCandidates'>
+                    {({ fields }) =>
+                      fields.map((coCandidate, index) => (
+                        <FormField
+                          action={
+                            <Icon
+                              type='remove'
+                              onClick={() => fields.remove(index)}
+                              custom={{ color: 'teal', small: true }}
+                              title={t('election.removeCoCandidateNr', { number: index + 1 })}
+                            />
+                          } key={index}>
+                          <Field
+                            name={`${coCandidate}.name`}
+                            component={TextInputRF}
+                            label={t('election.coCandidateNr', { number: index + 1 })}
+                            placeholder={t(
+                              'election.coCandidateNamePlaceHolder'
+                            )}
+                          />
+                        </FormField>
+                      ))
+                    }
                   </FieldArray>
+                  <div style={{ marginTop: '2rem' }}>
+                    <Button
+                      text={t('election.newCoCandidate')}
+                      action={() => push('coCandidates', {})}
+                      secondary
+                    />
+                  </div>
                 </FormFieldGroup>
               </TableRowFormFields>
               <FormButtons
@@ -147,7 +112,7 @@ const PrefTeamElecCandForm: React.FunctionComponent<IProps> = (
                 entityText={t('election.deleteCandidate')}
               />
             </TableRowForm>
-          </form>
+          </form >
         );
       }}
     />

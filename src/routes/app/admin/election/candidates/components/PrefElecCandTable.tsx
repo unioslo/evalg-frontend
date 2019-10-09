@@ -18,7 +18,6 @@ import {
 } from 'components/table';
 
 import ActionText from 'components/actiontext';
-import { DropDown, TextInput } from 'components/form';
 import { ElectionGroup } from '../../../../../../interfaces';
 
 import TableRowWithText from './TableRowWithText';
@@ -70,48 +69,6 @@ const deleteCandidate = gql`
   }
 `;
 
-const getFilteredCandidates = (
-  candidates: any[],
-  nameFilter: string,
-  genderFilter: string,
-  listFilter: string
-) => {
-  return candidates.filter(candidate => {
-    const { name, gender, listId } = candidate;
-    if (nameFilter && !name.toLowerCase().includes(nameFilter.toLowerCase())) {
-      return false;
-    }
-    if (genderFilter && genderFilter !== 'all' && gender !== genderFilter) {
-      return false;
-    }
-    if (listFilter && listFilter !== 'all' && listId !== listFilter) {
-      return false;
-    }
-    return true;
-  });
-};
-
-const buildGenderFilterOptions = (t: (s: string) => string) => {
-  return [
-    { name: t('general.all'), value: 'all' },
-    { name: t('general.male'), value: 'male' },
-    { name: t('general.female'), value: 'female' },
-  ];
-};
-
-const buildListFilterOptions = (
-  listDict: any,
-  lang: string,
-  t: (s: string) => string
-) => {
-  const filterOptions = [];
-  filterOptions.push({ name: t('general.all'), value: 'all' });
-  Object.keys(listDict).forEach(id => {
-    filterOptions.push({ name: listDict[id].name[lang], value: id });
-  });
-  return filterOptions;
-};
-
 interface IProps extends WithTranslation {
   children?: React.ReactNode;
   electionGroup: ElectionGroup;
@@ -120,9 +77,6 @@ interface IProps extends WithTranslation {
 interface IState {
   newFormListId: string;
   editCandidateId: string;
-  nameFilter: string;
-  genderFilter: string;
-  listFilter: string;
 }
 
 class PrefElecCandTable extends React.Component<IProps, IState> {
@@ -131,9 +85,6 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
     this.state = {
       newFormListId: '',
       editCandidateId: '',
-      nameFilter: '',
-      genderFilter: '',
-      listFilter: '',
     };
     this.closeEditForm = this.closeEditForm.bind(this);
     this.closeNewForm = this.closeNewForm.bind(this);
@@ -157,17 +108,6 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
     this.setState({ editCandidateId: '' });
   }
 
-  handleNameFilterChange(nameFilter: string) {
-    this.setState({ nameFilter });
-  }
-
-  handleGenderFilterChange(genderFilter: string) {
-    this.setState({ genderFilter });
-  }
-
-  handleListFilterChange(listFilter: string) {
-    this.setState({ listFilter });
-  }
 
   render() {
     const { electionGroup: elGrp, t, i18n } = this.props;
@@ -197,7 +137,7 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
       );
     }
 
-    const unFilteredCandidates: object[] = [];
+    const candidates: any[] = [];
     const listDict: any = {};
     elections
       .filter(e => e.active)
@@ -205,7 +145,7 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
         e.lists.forEach((l: any) => {
           listDict[l.id] = l;
           l.candidates.forEach((c: any) => {
-            unFilteredCandidates.push({
+            candidates.push({
               id: c.id,
               name: c.name,
               gender: c.meta.gender,
@@ -216,15 +156,6 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
         });
       });
 
-    const { nameFilter, genderFilter, listFilter } = this.state;
-    const genderFilterOptions = buildGenderFilterOptions(t);
-    const listFilterOptions = buildListFilterOptions(listDict, lang, t);
-    const candidates = getFilteredCandidates(
-      unFilteredCandidates,
-      nameFilter,
-      genderFilter,
-      listFilter
-    );
     return (
       <Mutation
         mutation={addPrefElecCandidate}
@@ -283,46 +214,7 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
                         </TableHeaderRow>
                       </TableHeader>
                       <TableBody>
-                        {unFilteredCandidates.length > 0 && (
-                          <TableRow>
-                            <TableCell>
-                              <TextInput
-                                onChange={this.handleNameFilterChange.bind(
-                                  this
-                                )}
-                                name={t('general.name')}
-                                placeholder={t('general.name')}
-                                value={this.state.nameFilter}
-                                disabled={!!this.state.newFormListId}
-                                narrow
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <DropDown
-                                options={genderFilterOptions}
-                                onChange={this.handleGenderFilterChange.bind(
-                                  this
-                                )}
-                                placeholder={t('general.gender')}
-                                disabled={!!this.state.newFormListId}
-                                value={this.state.genderFilter}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <DropDown
-                                options={listFilterOptions}
-                                onChange={this.handleListFilterChange.bind(
-                                  this
-                                )}
-                                placeholder={t('general.group')}
-                                disabled={!!this.state.newFormListId}
-                                value={this.state.listFilter}
-                                large
-                              />
-                            </TableCell>
-                            <TableCell />
-                          </TableRow>
-                        )}
+
                         {this.state.newFormListId ? (
                           <TableRow>
                             <TableCell colspan={4}>
@@ -341,18 +233,11 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
                             </TableCell>
                           </TableRow>
                         ) : null}
-                        {!unFilteredCandidates ? (
+                        {candidates.length === 0 ? (
                           <TableRowWithText colSpan={4}>
                             <Trans>election.noCandidatesDefined</Trans>
                           </TableRowWithText>
                         ) : null}
-                        {unFilteredCandidates.length > 0
-                          ? candidates.length === 0 && (
-                              <TableRowWithText colSpan={4}>
-                                <Trans>election.noCandidatesFound</Trans>
-                              </TableRowWithText>
-                            )
-                          : null}
                         {candidates.length > 0 &&
                           candidates.map((candidate, index) => {
                             if (candidate.id === this.state.editCandidateId) {
@@ -397,7 +282,7 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
                                   <Text>
                                     <Trans>{`general.${
                                       candidate.gender
-                                    }`}</Trans>
+                                      }`}</Trans>
                                   </Text>
                                 </TableCell>
                                 <TableCell>
