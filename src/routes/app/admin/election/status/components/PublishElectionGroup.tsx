@@ -107,14 +107,17 @@ const PublishElectionGroup: React.FunctionComponent<IProps> = (props: IProps) =>
   const renderUnpublish = () => {
     return (
       <div>
-        <ButtonContainer alignLeft smlTopMargin>
-          <Button
-            text={t('election.unpublishElection')}
-            action={showUnpublishDialog}
-            secondary
-            disabled={!props.canPublish}
-          />
-        </ButtonContainer>
+        {electionGroup.status === 'closed' ?
+          null
+          :
+          <ButtonContainer alignLeft smlTopMargin>
+            <Button
+              text={t('election.unpublishElection')}
+              action={showUnpublishDialog}
+              secondary
+              disabled={!props.canPublish}
+            />
+          </ButtonContainer>}
         {showUnpublishModal && (
           <Modal
             header={t('election.unpublishElection')}
