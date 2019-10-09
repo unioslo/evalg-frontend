@@ -58,7 +58,9 @@
       "warningSelfAddedVoters": "Du må behandle alle røyster utanfor manntalet før du kan telje opp valet",
       "warningPersonsWithMultipleVoters": "Valet kan ikkje teljast opp før alle personar med fleire røyster er behandla",
       "countingsSubsection": {
+        "finished": "Ferdig",
         "header": "Oppteljingar",
+        "ongoing": "Pågår",
         "startedBy": "Starta av",
         "status": "Status",
         "timeStarted": "Tidspunkt starta",
