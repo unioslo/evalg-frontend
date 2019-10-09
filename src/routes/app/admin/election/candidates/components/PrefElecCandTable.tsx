@@ -110,7 +110,7 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
 
 
   render() {
-    const { electionGroup: elGrp, t, i18n } = this.props;
+    const { electionGroup: elGrp, i18n } = this.props;
     const lang = i18n.language;
     const { elections } = elGrp;
 

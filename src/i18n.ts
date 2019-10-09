@@ -33,6 +33,11 @@ i18n
     react: {
       wait: true,
     },
+
+    detection: {
+      order: ['cookie'],
+      caches: ['cookie'],
+    },
   });
 
 export default i18n;
