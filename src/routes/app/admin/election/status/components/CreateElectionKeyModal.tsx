@@ -19,7 +19,6 @@ import Icon from 'components/icon';
 import AnimatedCheckmark from 'components/animations/AnimatedCheckmark';
 
 import ModalSteps from './ModalSteps';
-import { string } from 'prop-types';
 
 const styles = (theme: any) => ({
   errorMessage: {
