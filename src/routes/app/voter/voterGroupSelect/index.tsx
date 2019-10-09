@@ -27,6 +27,7 @@ const votersForPersonQuery = gql`
     votersForPerson(id: $id) {
       id
       verified
+      selfAdded
       pollbook {
         id
       }
@@ -133,7 +134,7 @@ type IState = {
 class VoterGroupSelectPage extends React.Component<
   WithApolloClient<IProps>,
   IState
-> {
+  > {
   readonly state = {
     selectedPollBookIndex: 0,
     notInPollBookJustification: '',
