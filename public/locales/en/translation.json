@@ -536,13 +536,19 @@
     "youAreOnTheElectoralRoll": "You are on the electoral roll"
   },
   "votingReport": {
+    "approvedSelfAddedVoters": "Voters approved by the electoral board ({{nr}})",
     "back": "Back",
-    "emptyWithVote": "No voters in census with vote",
-    "emptyWitoutVotes": "No voters in census without vote",
+    "emptyPollbook": "Empty pollbook",
     "header": "Census voting report",
     "link": "Census voting report",
+    "noVoters": "No voters",
+    "ofTotalWithVotes": "({{nr}} of {{total}} voters in the pollbook have voted)",
+    "ofTotalWithoutVotes": "({{nr}} of {{total}} voters in the pollbook have not voted)",
+    "processedSelfAddedVoters": "Voters reviewed by the electoral board",
+    "rejectedSelfAddedVoters": "Voters rejected by the electoral board ({{nr}})",
     "table": {
       "name": "Name",
+      "pollbook": "Pollbook",
       "idValue": "ID-value",
       "idType": "ID-type"
     },

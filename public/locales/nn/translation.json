@@ -536,13 +536,19 @@
     "youAreOnTheElectoralRoll": "Du er i manntalet"
   },
   "votingReport": {
+    "approvedSelfAddedVoters": "Veljarar godkjent av valstyret ({{nr}})",
     "back": "Tilbake",
-    "emptyWithVote": "Ingen veljarar i manntalet har røysta",
-    "emptyWitoutVotes": "Alle veljarar i manntalet har røysta",
+    "emptyPollbook": "Tomt manntall",
     "header": "Manntalsrapport",
     "link": "Manntalsrapport",
+    "noVoters": "Ingen veljarar",
+    "ofTotalWithVotes": "({{nr}} av {{total}} personar i manntalet har røysta)",
+    "ofTotalWithoutVotes": "({{nr}} av {{total}} personar i mantallet har ikkje røysta)",
+    "processedSelfAddedVoters": "Veljarar behandla av valstyret",
+    "rejectedSelfAddedVoters": "Veljarar avvist av valstyret ({{nr}})",
     "table": {
       "name": "Namn",
+      "pollbook": "Manntal",
       "idValue": "Identitet",
       "idType": "ID-type"
     },
