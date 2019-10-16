@@ -205,7 +205,19 @@
     "showMoreRecordsPrompt": "Show {{ nMoreRecordsToShow }} more records.",
     "uploadCensusFileButton": "Upload census file",
     "uploadCensusFileHeader": "Upload census from file",
-    "uploadSuccessful": "Added {{numOk}} persons to the group “{{pollbookName}}“.",
+    "uploadTable": {
+      "fileName": "Filename",
+      "pollbook": "Pollbook",
+      "status": "Status",
+      "added": "Added",
+      "existing": "Existing",
+      "error": "Error"
+    },
+    "status": {
+      "ongoing": "Ongoing",
+      "finished": "Finished"
+    },
+    "uploadSuccessful": "Pollbook file uploaded for the group «{{pollbookName}}».",
     "uploadSuccessfulWithFailures": "Added {{numOk}} persons to the group “{{pollbookName}}“. {{numFailed}} rows from the census file were discarded, probably because they already were in the poll book.",
     "errors": {
       "backend": {

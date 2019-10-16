@@ -91,8 +91,6 @@ const UploadCensusFileMutation = gql`
       success
       code
       message
-      numOk
-      numFailed
     }
   }
 `;
@@ -141,7 +139,7 @@ class UploadCensusFileModal extends React.Component<
   PropsInternal,
   IState,
   IHTMLInputEvent
-> {
+  > {
   constructor(props: PropsInternal) {
     super(props);
 
@@ -198,12 +196,7 @@ class UploadCensusFileModal extends React.Component<
           if (this.props.refetchData !== undefined) {
             this.props.refetchData();
           }
-          const feedbackTemplate = response.numFailed
-            ? 'uploadSuccessfulWithFailures'
-            : 'uploadSuccessful';
-          const message = this.props.t(`census.${feedbackTemplate}`, {
-            numOk: response.numOk,
-            numFailed: response.numFailed,
+          const message = this.props.t('census.uploadSuccessful', {
             pollbookName: this.props.pollBooks[values.pollbookId].name[lang],
           });
           const status: IUploadCensusFileModalStatus = {

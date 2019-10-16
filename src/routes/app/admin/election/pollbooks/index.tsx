@@ -18,6 +18,7 @@ import UploadCensusFileModal, {
   IUploadCensusFileModalStatus,
 } from './components/UploadCensusFile';
 import CensusTable from './components/CensusTable';
+import UploadedCensusFileTable from './components/UploadedCensusFileTable';
 import {
   VoterGroupActionPanel,
   VoterGroupActionPanelContainer,
@@ -60,6 +61,7 @@ const electionGroupQuery = gql`
           name
           weight
           priority
+          nrOfVoters
           voters {
             id
             pollbookId
@@ -67,6 +69,19 @@ const electionGroupQuery = gql`
             idValue
             verified
             selfAdded
+          }
+          censusFileImports {
+            id
+            fileName
+            mimeType
+            importResults
+            initiatedAt
+            finishedAt
+            status
+            pollbook {
+              name
+            }
+
           }
         }
       }
@@ -228,9 +243,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                     this.handleShowDeleteVotersInPollbookModal(pollbook.id)
                   }
                   removeAllActionText={t('census.deletePersonsInPollbook')}
-                  count={
-                    voters.filter(v => v.pollbookId === pollbook.id).length
-                  }
+                  count={pollbook.nrOfVoters}
                   active={e.active}
                 />
               );
@@ -255,6 +268,9 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                 >
                   <Trans>census.aboutCensusFiles</Trans>
                 </Link>
+
+                <UploadedCensusFileTable pollbooks={pollBooks} />
+
               </PageSection>
               <PageSection noBorder>
                 <VoterGroupActionPanelContainer>
@@ -262,7 +278,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                 </VoterGroupActionPanelContainer>
 
                 {this.state.showUploadMsgBox && (
-                  <MsgBox msg={this.state.uploadMsg} timeout />
+                  <MsgBox msg={this.state.uploadMsg} timeout={false} />
                 )}
 
                 <CensusTable
@@ -318,8 +334,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                     const deletePollbook =
                       pollBookDict[this.state.deleteVotersPollbookId];
                     const deletePollbookNumberOfVoters =
-                      deletePollbook.voters.length;
-
+                      deletePollbook.nrOfVoters;
                     return (
                       <ConfirmModal
                         confirmAction={deletePollbookAndClose}

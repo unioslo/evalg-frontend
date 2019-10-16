@@ -205,7 +205,19 @@
     "showMoreRecordsPrompt": "Vis {{ nMoreRecordsToShow }} fleire oppføringar.",
     "uploadCensusFileButton": "Last opp manntalsfil",
     "uploadCensusFileHeader": "Last opp manntal frå fil",
-    "uploadSuccessful": "{{numOk}} personar vart lagt til i veljargruppa «{{pollbookName}}».",
+    "uploadTable": {
+      "fileName": "Filnamn",
+      "pollbook": "Manntal",
+      "status": "Status",
+      "added": "Lagt til",
+      "existing": "Eksisterar i manntal",
+      "error": "Feil"
+    },
+    "status": {
+      "ongoing": "Pågår",
+      "finished": "Ferdig"
+    },
+    "uploadSuccessful": "Manntallsfila vart lasta opp for veljargruppa «{{pollbookName}}».",
     "uploadSuccessfulWithFailures": "{{numOk}} personar vart lagt til i veljargruppa «{{pollbookName}}». {{numFailed}} rader frå manntalsfila vart forkasta, truleg fordi dei allereie var i manntalet.",
     "errors": {
       "backend": {
