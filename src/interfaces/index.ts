@@ -112,6 +112,18 @@ export interface IVote {
   voter: IVoter;
 }
 
+export interface ICensusFileImport {
+  id: string;
+  pollbookId: string;
+  pollbook: IPollBook;
+  fileName: string;
+  mimeType: string;
+  importResults: string;
+  initiatedAt: string;
+  finishedAt: string;
+  status: string;
+}
+
 export interface IPollBook {
   id: string;
   name: NameFields;
@@ -125,6 +137,8 @@ export interface IPollBook {
   election: Election;
   votersWithVote: IVoter[];
   votersWithoutVote: IVoter[];
+  censusFileImports: ICensusFileImport[];
+  nrOfVoters: number;
 }
 
 export interface IVoteCount {
