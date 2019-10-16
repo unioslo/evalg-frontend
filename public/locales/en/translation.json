@@ -206,6 +206,7 @@
     "uploadCensusFileButton": "Upload census file",
     "uploadCensusFileHeader": "Upload census from file",
     "uploadTable": {
+      "header": "Imported census files",
       "fileName": "Filename",
       "pollbook": "Pollbook",
       "status": "Status",
