@@ -206,6 +206,7 @@
     "uploadCensusFileButton": "Last opp manntallsfil",
     "uploadCensusFileHeader": "Last opp manntall fra fil",
     "uploadTable": {
+      "header": "Importerte manntallfiler",
       "fileName": "Filnavn",
       "pollbook": "Manntall",
       "status": "Status",

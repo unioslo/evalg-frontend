@@ -25,7 +25,7 @@ const UploadedCensusFileTable: React.FunctionComponent<UploadedCensusFileTablePr
     return null
   }
   return (
-    <PageExpandableSubSection startExpanded header={'Opplastede filer'}>
+    <PageExpandableSubSection startExpanded header={t('census.uploadTable.header')}>
       <Table>
         <TableHeader>
           <TableHeaderRow>
