@@ -50,6 +50,22 @@ const getElectionGroupVotingReports = gql`
               displayName
             }
           }
+          selfAddedVoters {
+            id
+            idType
+            idValue
+            reviewed
+            verified
+            verifiedStatus
+            pollbook {
+              id
+              name
+            }
+            person {
+              id
+              displayName
+            }
+          }
         }
       }
     }
@@ -58,16 +74,19 @@ const getElectionGroupVotingReports = gql`
 
 interface IVotersTable {
   voters: IVoter[];
+  withPollbook?: boolean;
 }
 
-const VoterTable: React.FunctionComponent<IVotersTable> = ({ voters }) => {
-  const { t } = useTranslation();
-
+const VoterTable: React.FunctionComponent<IVotersTable> = ({ voters, withPollbook }) => {
+  const { t, i18n } = useTranslation();
   return (
     <Table>
       <TableHeader>
         <TableHeaderRow>
           <TableHeaderCell>{t('votingReport.table.name')}</TableHeaderCell>
+          {withPollbook &&
+            <TableHeaderCell>{t('votingReport.table.pollbook')}</TableHeaderCell>
+          }
           <TableHeaderCell>{t('votingReport.table.idValue')}</TableHeaderCell>
           <TableHeaderCell>{t('votingReport.table.idType')}</TableHeaderCell>
         </TableHeaderRow>
@@ -76,11 +95,11 @@ const VoterTable: React.FunctionComponent<IVotersTable> = ({ voters }) => {
         {voters.map((voter, i) => {
           return (
             <TableRow key={i}>
-              {voter.person === null || voter.person === undefined ? (
-                <TableCell />
-              ) : (
-                <TableCell>{voter.person.displayName}</TableCell>
-              )}
+              {voter.person === null || voter.person === undefined
+                ? <TableCell />
+                : <TableCell>{voter.person.displayName}</TableCell>
+              }
+              {withPollbook && <TableCell>{voter.pollbook.name[i18n.language]}</TableCell>}
               <TableCell>{voter.idValue}</TableCell>
               <TableCell>{voter.idType}</TableCell>
             </TableRow>
@@ -104,36 +123,72 @@ const ElectionVotingReport: React.FunctionComponent<
   return (
     <>
       {election.pollbooks.map((pollbook, i) => {
-        const tot: Number =
+        const tot: number =
           pollbook.votersWithVote.length + pollbook.votersWithoutVote.length;
 
-        const nr: Number = withVotes
+        const nr: number = withVotes
           ? pollbook.votersWithVote.length
           : pollbook.votersWithoutVote.length;
         const voters: IVoter[] = withVotes
           ? pollbook.votersWithVote
           : pollbook.votersWithoutVote;
 
-        const listEmpty: string = withVotes
-          ? t('votingReport.emptyWithVote')
-          : t('votingReport.emptyWitoutVotes');
-
+        let listEmpty = ''
+        let header = ''
+        if (tot === 0) {
+          header = pollbook.name[i18n.language] + ' (' + t('votingReport.emptyPollbook') + ')'
+          listEmpty = t('votingReport.emptyPollbook')
+        } else {
+          header = pollbook.name[i18n.language] + ' ' + t(withVotes ? 'votingReport.ofTotalWithVotes' : 'votingReport.ofTotalWithoutVotes', { nr: nr, total: tot })
+          listEmpty = t('votingReport.noVoters')
+        }
         return (
-          <PageExpandableSubSection
-            key={i}
-            header={pollbook.name[i18n.language] + ' (' + nr + '/' + tot + ')'}
-          >
-            {voters.length === 0 ? (
-              <p>{listEmpty}</p>
-            ) : (
-              <VoterTable voters={voters} />
-            )}
+          <PageExpandableSubSection key={i} header={header}>
+            {voters.length === 0
+              ? <p>{listEmpty}</p>
+              : <VoterTable voters={voters} />
+            }
           </PageExpandableSubSection>
         );
       })}
     </>
   );
 };
+
+interface ReviewedVotersReportProps {
+  electionGroup: ElectionGroup;
+}
+
+const ReviewedVotersReport: React.FunctionComponent<ReviewedVotersReportProps> = ({ electionGroup }) => {
+  const { t } = useTranslation();
+  const selfAddedVoters = electionGroup.elections
+    .filter(e => e.active)
+    .flatMap(e => e.pollbooks)
+    .flatMap(p => p.selfAddedVoters)
+  const verifiedVoters = selfAddedVoters
+    .filter(voter => voter.verifiedStatus === 'SELF_ADDED_VERIFIED')
+  const rejectedVoters = selfAddedVoters
+    .filter(voter => voter.verifiedStatus === 'SELF_ADDED_REJECTED')
+
+  return (
+    <PageSection header={t('votingReport.processedSelfAddedVoters')}>
+      <PageExpandableSubSection
+        header={t('votingReport.approvedSelfAddedVoters', { nr: verifiedVoters.length })}>
+        {verifiedVoters.length > 0
+          ? <VoterTable withPollbook voters={verifiedVoters} />
+          : <p>{t('votingReport.noVoters')}</p>
+        }
+      </PageExpandableSubSection>
+      <PageExpandableSubSection
+        header={t('votingReport.rejectedSelfAddedVoters', { nr: rejectedVoters.length })}>
+        {rejectedVoters.length > 0
+          ? <VoterTable withPollbook voters={rejectedVoters} />
+          : <p>{t('votingReport.noVoters')}</p>
+        }
+      </PageExpandableSubSection>
+    </PageSection>
+  )
+}
 
 interface IVotingReportProps {
   groupId: String;
@@ -190,6 +245,7 @@ const VotingReport: React.FunctionComponent<IVotingReportProps> = ({
                     );
                   })}
               </PageSection>
+              <ReviewedVotersReport electionGroup={electionGroupData} />
             </>
           );
         }}

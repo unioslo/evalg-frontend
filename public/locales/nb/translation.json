@@ -549,13 +549,19 @@
     "youAreOnTheElectoralRoll": "Du er i manntallet"
   },
   "votingReport": {
+    "approvedSelfAddedVoters": "Velgere godkjent av valgstyret ({{nr}})",
     "back": "Tilbake",
-    "emptyWithVote": "Ingen velgere i manntallet har avgitt stemme",
-    "emptyWitoutVotes": "Alle velgere i manntallet har avgitt stemme",
+    "emptyPollbook": "Tomt manntall",
     "header": "Manntallsrapport",
     "link": "Manntallsrapport",
+    "noVoters": "Ingen velgere",
+    "ofTotalWithVotes": "({{nr}} av {{total}} personer i manntallet har stemt)",
+    "ofTotalWithoutVotes": "({{nr}} av {{total}} personer i manntallet har ikke stemt)",
+    "processedSelfAddedVoters": "Velgere behandlet av valgstyret",
+    "rejectedSelfAddedVoters": "Velgere avvist av valgstyret ({{nr}})",
     "table": {
       "name": "Navn",
+      "pollbook": "Manntall",
       "idValue": "Identitet",
       "idType": "ID-type"
     },
