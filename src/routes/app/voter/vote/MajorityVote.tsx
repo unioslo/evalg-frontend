@@ -28,7 +28,7 @@ interface IState {
 class MajorityVote extends React.Component<
   IProps & RouteComponentProps,
   IState
-> {
+  > {
   readonly state: IState = {
     selectedCandidateIndex: -1,
     selectedCandidate: null,
@@ -99,7 +99,7 @@ class MajorityVote extends React.Component<
     this.props.onSubmitVote({
       voteType: 'majorityVote',
       isBlankVote: this.state.isBlankVote,
-      rankedCandidateIds: this.state.selectedCandidate
+      rankedCandidateIds: (this.state.selectedCandidate && !this.state.isBlankVote)
         ? [this.state.selectedCandidate.id]
         : [],
     });
