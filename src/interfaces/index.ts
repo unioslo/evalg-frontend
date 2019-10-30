@@ -139,6 +139,7 @@ export interface IPollBook {
   votersWithoutVote: IVoter[];
   censusFileImports: ICensusFileImport[];
   nrOfVoters: number;
+  voterDump: string[][];
 }
 
 export interface IVoteCount {
