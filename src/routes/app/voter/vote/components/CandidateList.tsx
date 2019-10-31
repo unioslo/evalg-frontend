@@ -140,7 +140,7 @@ const CandidateInfo: React.SFC<IInfoProps> = props => {
           )}
         </div>
       )}
-      {props.infoUrl ? (
+      {props.infoUrl && candidate.informationUrl ? (
         <div className={classes.candidateInfoSubText}>
           <Link to={candidate.informationUrl} external>
             <Trans>candidate.infoLinkText</Trans>
@@ -222,21 +222,21 @@ const ToggleSelectIcon: React.SFC<ISelectProps> = props => {
           </g>
         </svg>
       ) : (
-        <svg width="51px" height="42px" viewBox="0 0 51 62" version="1.1">
-          <g stroke="none" strokeWidth="1" fill="none">
-            <rect fill="#F9F4FA" x="0" y="0" width="51" height="62" rx="8" />
-            <g transform="translate(12.000000, 17.000000)">
-              <circle
-                stroke="#8ECED9"
-                strokeWidth="3"
-                cx="14"
-                cy="14"
-                r="12.5"
-              />
+          <svg width="51px" height="42px" viewBox="0 0 51 62" version="1.1">
+            <g stroke="none" strokeWidth="1" fill="none">
+              <rect fill="#F9F4FA" x="0" y="0" width="51" height="62" rx="8" />
+              <g transform="translate(12.000000, 17.000000)">
+                <circle
+                  stroke="#8ECED9"
+                  strokeWidth="3"
+                  cx="14"
+                  cy="14"
+                  r="12.5"
+                />
+              </g>
             </g>
-          </g>
-        </svg>
-      )}
+          </svg>
+        )}
     </div>
   );
 };
