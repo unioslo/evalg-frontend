@@ -226,6 +226,10 @@
         "pollbookNotFound": "The poll book no longer exists.",
         "unsupportedFileType": "An error occurred while parsing the census file. It contains invalid data, or the file type “{{mimetype}}“ is unsupported."
       }
+    },
+    "download": {
+      "button": "Download current census (CSV)",
+      "generating": "Generating censusfile..."
     }
   },
   "election": {

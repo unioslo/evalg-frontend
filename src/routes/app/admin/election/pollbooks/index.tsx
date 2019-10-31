@@ -23,6 +23,7 @@ import {
   VoterGroupActionPanel,
   VoterGroupActionPanelContainer,
 } from '../components/VoterGroupActionsPanel';
+import VoterCSVDumper from '../components/VoterCSVDumper';
 
 const deleteVotersInPollbook = gql`
   mutation DeleteVotersInPollBook($id: UUID!) {
@@ -272,6 +273,10 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                 <UploadedCensusFileTable pollbooks={pollBooks} />
 
               </PageSection>
+              <PageSection noBorder>
+                <VoterCSVDumper electionGroup={data.electionGroup} />
+              </PageSection>
+
               <PageSection noBorder>
                 <VoterGroupActionPanelContainer>
                   {voterGroupActionPanels}

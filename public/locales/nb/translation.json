@@ -226,6 +226,10 @@
         "pollbookNotFound": "Velgergruppen du forsøkte å knytte manntallet til eksisterer ikke lenger.",
         "unsupportedFileType": "En feil oppstod ved lesing av filen. Filen inneholder ugyldige rader, eller filtypen «{{mimetype}}» støttes ikke."
       }
+    },
+    "download": {
+      "button": "Last ned manntallet (CSV)",
+      "generating": "Genererer manntallsfil..."
     }
   },
   "election": {

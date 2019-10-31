@@ -10,6 +10,7 @@ const styles = () => ({
     height: (props: IProps) => (props.size ? props.size : '2.5rem'),
     marginLeft: (props: IProps) => (props.marginLeft ? props.marginLeft : 0),
     marginRight: (props: IProps) => (props.marginRight ? props.marginRight : 0),
+    marginTop: (props: IProps) => (props.marginTop ? props.marginTop : 0),
     border: '3px solid rgba(255,255,255, .3)',
     borderWidth: (props: IProps) => (props.thin ? '2px' : '3px'),
     borderRadius: '50%',
@@ -31,6 +32,7 @@ interface IProps {
   thin?: boolean;
   marginLeft?: string;
   marginRight?: string;
+  marginTop?: string;
   classes: any;
 }
 
