@@ -80,7 +80,7 @@ pipeline {
         stage('Build docker image') {
             steps {
                 script {
-                    docker_image = docker.build("${IMAGE_TAG}", '-f ./Dockerfile .')
+                    docker_image = docker.build("${IMAGE_TAG}", '--pull --no-cache -f ./Dockerfile .')
                 }
             }
         }
