@@ -10,6 +10,7 @@ interface ITextProps {
   inline?: boolean;
   marginTop?: boolean;
   marginBottom?: boolean;
+  alignCenter?: boolean;
   classes: Classes;
 }
 
@@ -21,6 +22,7 @@ const Text = ({
   marginBottom,
   inline,
   bold,
+  alignCenter,
 }: ITextProps) => {
   const textSize = size ? size : 'regular';
   const cls = classNames({
@@ -33,6 +35,7 @@ const Text = ({
     [classes.marginBottom]: marginBottom,
     [classes.inline]: inline,
     [classes.bold]: bold,
+    [classes.alignCenter]: alignCenter,
   });
   return <span className={cls}>{children}</span>;
 };
@@ -41,6 +44,9 @@ const styles = (theme: any) => ({
   text: {
     fontWeight: 'normal',
     display: 'block',
+  },
+  alignCenter: {
+    textAlign: 'center',
   },
   sm: {
     fontSize: '1.4rem',
