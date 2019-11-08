@@ -201,6 +201,19 @@
     "person": "Person",
     "persons": "Personer",
     "resetFilters": "Nullstill filtre",
+    "search": {
+      "filter": {
+        "censusGroup": "Filtrer på gruppe",
+        "votingStatus": "Filtrer på stemmestatus"
+      },
+      "header": "Søk i manntallet",
+      "hasVoted": "Har stemt",
+      "hasNotVoted": "Har ikke stemt",
+      "noResults": "Fant ingen velgere",
+      "searchFor": "Søk etter identitet",
+      "searching": "Søker i manntallet...",
+      "votingStatus": "Stemmestatus"
+    },
     "showingNOfNRecords": "Viser {{ nRecordsShowing }} av {{ nRecordsTotal }} oppføringer.",
     "showMoreRecordsPrompt": "Vis {{ nMoreRecordsToShow }} flere oppføringer.",
     "uploadCensusFileButton": "Last opp manntallsfil",
