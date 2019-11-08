@@ -104,6 +104,7 @@ export interface IVoter {
   reason?: string;
   votes: IVote[];
   person?: IPerson | null;
+  hasVoted: boolean;
 }
 
 export interface IVote {
