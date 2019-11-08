@@ -201,6 +201,19 @@
     "person": "Person",
     "persons": "Persons",
     "resetFilters": "Reset filters",
+    "search": {
+      "filter": {
+        "censusGroup": "Filter on group",
+        "votingStatus": "Filter on voting status"
+      },
+      "header": "Search census",
+      "hasVoted": "Has voted",
+      "hasNotVoted": "Has not voted",
+      "noResults": "No voters found",
+      "searchFor": "Search for identity",
+      "searching": "Searching census..",
+      "votingStatus": "Voting status"
+    },
     "showingNOfNRecords": "Showing {{ nRecordsShowing }} of {{ nRecordsTotal }} records.",
     "showMoreRecordsPrompt": "Show {{ nMoreRecordsToShow }} more records.",
     "uploadCensusFileButton": "Upload census file",
