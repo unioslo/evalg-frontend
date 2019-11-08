@@ -18,12 +18,15 @@ import UploadCensusFileModal, {
   IUploadCensusFileModalStatus,
 } from './components/UploadCensusFile';
 import CensusTable from './components/CensusTable';
+import CensusSearchTable from './components/CensusSearchTable';
 import UploadedCensusFileTable from './components/UploadedCensusFileTable';
 import {
   VoterGroupActionPanel,
   VoterGroupActionPanelContainer,
 } from '../components/VoterGroupActionsPanel';
 import VoterCSVDumper from '../components/VoterCSVDumper';
+import AddVoterForm from './components/AddVoterForm';
+import { TableBody, Table } from 'components/table';
 
 const deleteVotersInPollbook = gql`
   mutation DeleteVotersInPollBook($id: UUID!) {
@@ -41,36 +44,12 @@ const electionGroupQuery = gql`
       ...ElectionGroupFields
       elections {
         ...ElectionFields
-        lists {
-          id
-          name
-          description
-          informationUrl
-          candidates {
-            id
-            name
-            meta
-            informationUrl
-            priority
-            preCumulated
-            userCumulated
-            listId
-          }
-        }
         pollbooks {
           id
           name
           weight
           priority
           nrOfVoters
-          voters {
-            id
-            pollbookId
-            idType
-            idValue
-            verified
-            selfAdded
-          }
           censusFileImports {
             id
             fileName
@@ -82,7 +61,6 @@ const electionGroupQuery = gql`
             pollbook {
               name
             }
-
           }
         }
       }
@@ -207,7 +185,6 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
           const pollBookDict: { [pollbookId: string]: IPollBook } = {};
           const pollBookOptions: DropDownOption[] = [];
           const pollBookRadioButtonOptions: any = {};
-          const voters: IVoter[] = [];
 
           elections
             .filter(e => e.active)
@@ -224,11 +201,6 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                   value: pollBook.id,
                   active: e.active,
                 };
-                pollBook.voters
-                  .filter(voter => voter.verified)
-                  .forEach(voter => {
-                    voters.push(voter);
-                  });
               });
             });
           const voterGroupActionPanels: JSX.Element[] = [];
@@ -269,9 +241,10 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                 >
                   <Trans>census.aboutCensusFiles</Trans>
                 </Link>
-
+                {this.state.showUploadMsgBox && (
+                  <MsgBox msg={this.state.uploadMsg} timeout={false} />
+                )}
                 <UploadedCensusFileTable pollbooks={pollBooks} />
-
               </PageSection>
               <PageSection noBorder>
                 <VoterCSVDumper electionGroup={data.electionGroup} />
@@ -282,20 +255,20 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                   {voterGroupActionPanels}
                 </VoterGroupActionPanelContainer>
 
-                {this.state.showUploadMsgBox && (
-                  <MsgBox msg={this.state.uploadMsg} timeout={false} />
+                {!!this.state.addVoterPollbookId && (
+                  <Table>
+                    <TableBody>
+                      <AddVoterForm
+                        pollbook={pollBookDict[this.state.addVoterPollbookId]}
+                        onClose={this.handleCloseAddVoterForm}
+                      />
+                    </TableBody>
+                  </Table>
                 )}
+              </PageSection>
 
-                <CensusTable
-                  pollBooks={pollBooks}
-                  pollBookDict={pollBookDict}
-                  pollBookOptions={pollBookOptions}
-                  voters={voters}
-                  addVoterPollbookId={this.state.addVoterPollbookId}
-                  onCloseAddVoterForm={this.handleCloseAddVoterForm}
-                  t={t}
-                  lang={lang}
-                />
+              <PageSection noBorder>
+                <CensusSearchTable electionGroup={data.electionGroup} />
               </PageSection>
 
               <ButtonContainer alignRight>
