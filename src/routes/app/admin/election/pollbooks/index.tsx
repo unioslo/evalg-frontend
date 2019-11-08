@@ -12,12 +12,11 @@ import { MsgBox } from 'components/msgbox';
 import { ConfirmModal } from 'components/modal';
 import { Page, PageSection } from 'components/page';
 import { ElectionGroupFields, ElectionFields } from 'fragments';
-import { DropDownOption, Election, IPollBook, IVoter } from 'interfaces';
+import { DropDownOption, Election, IPollBook } from 'interfaces';
 
 import UploadCensusFileModal, {
   IUploadCensusFileModalStatus,
 } from './components/UploadCensusFile';
-import CensusTable from './components/CensusTable';
 import CensusSearchTable from './components/CensusSearchTable';
 import UploadedCensusFileTable from './components/UploadedCensusFileTable';
 import {

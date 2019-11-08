@@ -21,7 +21,7 @@ import {
   FormFieldGroup,
   FormField,
 } from 'components/form';
-import { PageSection, PageSubSection } from 'components/page';
+import { PageSection } from 'components/page';
 import UpdateVoterForm from './UpdateVoterForm';
 import { ConfirmModal } from 'components/modal';
 import { getPersonIdTypeDisplayName } from 'utils/i18n';
