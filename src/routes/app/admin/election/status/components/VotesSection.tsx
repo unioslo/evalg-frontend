@@ -31,9 +31,6 @@ const VotesSection: React.FunctionComponent<Props> = props => {
         t('election.electionNotStarted')
       ) : (
         <>
-          <Link to={`/admin/elections/${props.electionGroup.id}/votingreport`}>
-            {t('votingReport.link')}
-          </Link>
           <VotesOutsideCensusManagement 
             selfAddedVoters={props.selfAddedVoters}
             categorizedVoters={props.categorizedVoters}
