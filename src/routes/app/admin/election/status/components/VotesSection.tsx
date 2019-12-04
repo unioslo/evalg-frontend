@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Link from 'components/link';
 import { ElectionGroup } from 'interfaces';
 import { PageSection } from 'components/page';
 
@@ -31,9 +30,6 @@ const VotesSection: React.FunctionComponent<Props> = props => {
         t('election.electionNotStarted')
       ) : (
         <>
-          <Link to={`/admin/elections/${props.electionGroup.id}/votingreport`}>
-            {t('votingReport.link')}
-          </Link>
           <VotesOutsideCensusManagement 
             selfAddedVoters={props.selfAddedVoters}
             categorizedVoters={props.categorizedVoters}
