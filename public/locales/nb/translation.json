@@ -393,7 +393,7 @@
     "cookiesInformationLink": "informasjonskapsler",
     "contactSectionHeader": "Trenger du hjelp?",
     "evalgUses": "eValg-bruker",
-    "pilotMessage": "Skal du til valget for styret til IMV, KHM eller Klinmed? Gå til den gamle valgløsningen, på <0>valg2.uio.no</0>. Mer informasjon om ny løsning på <1>https://www.uio.no/tjenester/it/adm-app/e-valg/evalg3.html</1>.",
+    "pilotMessage": "Skal du til valget for styret til IMV, KHM eller Klinmed? Gå til den gamle valgløsningen, på <0>valg2.uio.no</0>. <1>Les mer om den nye løsningen</1>.",
     "privacyPolicyLink": "Personvern",
     "responsibleOrganizationHeader": "Ansvarlig for tjenesten",
     "serviceOwnerLink": "Seksjon for integrasjon og elektroniske identiteter (INT)",
