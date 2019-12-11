@@ -19,7 +19,7 @@ const styles = (theme: any) => ({
   footer: {
     background: `url('/uio-app-uio-sickle-medium.png') left ${
       theme.horizontalPadding
-    } top no-repeat`,
+      } top no-repeat`,
     height: 'fit-content',
     maxWidth: theme.appMaxWidth,
     margin: '0 auto',
@@ -29,7 +29,7 @@ const styles = (theme: any) => ({
       padding: `0rem ${theme.horizontalMdPadding}`,
       background: `url('/uio-app-uio-sickle-medium.png') left ${
         theme.horizontalMdPadding
-      } top no-repeat`,
+        } top no-repeat`,
     },
   },
   logoOffsetContainer: {
@@ -157,8 +157,8 @@ const Footer: React.FunctionComponent<IProps> = (props: IProps) => {
         <div className="alert">
           <Trans
             components={[
-              <a href={'https://valg.uio.no'}>text</a>,
-              <a href="mailto:evalg-kontakt@usit.uio.no">text</a>
+              <a href="https://valg2.uio.no">text</a>,
+              <a href="https://www.uio.no/tjenester/it/adm-app/e-valg/evalg3.html">text</a>
             ]}
           >
             footer.pilotMessage
