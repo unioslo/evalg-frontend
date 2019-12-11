@@ -393,7 +393,7 @@
     "cookiesInformationLink": "cookies",
     "contactSectionHeader": "Need help?",
     "evalgUses": "eValg uses",
-    "pilotMessage": "Pilot of eValg 3. The current version can be found at <0>valg.uio.no</0>. For questions regarding the election pilot, please contact <1>evalg-kontakt@usit.uio.no</1>.",
+    "pilotMessage": "Are you voting in the board election at IMV, KHM or Klinmed? Please use the old election service, at <0>valg2.uio.no</0>. <1>Read more about the new service</1>.",
     "privacyPolicyLink": "Privacy policy",
     "responsibleOrganizationHeader": "Maintained by",
     "serviceOwnerLink": "Department for System Integration and Identity Management (INT)",
