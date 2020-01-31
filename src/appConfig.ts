@@ -48,7 +48,8 @@ export const appStagingWarning: boolean =
 /* Footer content */
 export const appHelpLink: string =
   'https://www.uio.no/for-ansatte/arbeidsstotte/arrangere-valg/';
-export const appTechnicalSupportEmail: string = 'it-support@uio.no';
+export const appTechnicalSupportLink: string =
+  'https://www.uio.no/tjenester/it/adm-app/e-valg/kontaktveileder.html';
 export const appServiceOwnerLink: string =
   'https://www.usit.uio.no/om/organisasjon/bnt/usitint/';
 export const appPrivacyPolicylink = {

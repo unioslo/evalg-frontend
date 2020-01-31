@@ -5,7 +5,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import {
   appStagingWarning,
   appServiceOwnerLink,
-  appTechnicalSupportEmail,
+  appTechnicalSupportLink,
   appPrivacyPolicylink,
   appCookiesInformationLink,
 } from 'appConfig';
@@ -121,14 +121,13 @@ const Footer: React.FunctionComponent<IProps> = (props: IProps) => {
                 <header>{t('footer.contactSectionHeader')}</header>
                 <div className="content">
                   <div>
-                    {t('footer.technicalSupport')}:{' '}
                     <Link
-                      mail
-                      to={appTechnicalSupportEmail}
+                      external
+                      to={appTechnicalSupportLink}
                       inheritColor
                       underline
                     >
-                      {appTechnicalSupportEmail}
+                      {t('footer.contactHelp')}
                     </Link>
                   </div>
                 </div>
