@@ -30,6 +30,11 @@ const Receipt: React.FunctionComponent<IProps> = (props: IProps) => {
         {t('voter.receiptVotingAgainInfo')}
         <br />
         <br />
+        <Link external={true} to={'https://nettskjema.no/a/valg3'}>
+          {t('voter.feedback')}
+        </Link>
+        <br />
+        <br />
         <Link to={'/'}>{t('voter.receiptGoToFrontpage')}</Link>{' '}
         {t('voter.receiptOr')}{' '}
         <Link to={'/logout'}>{t('voter.receiptLogout')}</Link>.
