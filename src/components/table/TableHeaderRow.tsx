@@ -9,7 +9,7 @@ interface IProps {
 
 const styles = (theme: any) => ({
   row: {
-    userSelect: 'none',
+    userSelect: 'text',
     height: '5rem',
   },
 });

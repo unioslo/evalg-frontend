@@ -12,7 +12,7 @@ interface IProps {
 const styles = (theme: any) => ({
   table: {
     width: '100%',
-    userSelect: 'none',
+    userSelect: 'text',
     marginTop: (props: IProps) => (props.marginTop ? props.marginTop : '4rem'),
     '& th:not(:last-child), & td:not(:last-child)': {
       paddingRight: '2rem',

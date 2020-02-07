@@ -9,7 +9,7 @@ interface IProps {
 
 const styles = (theme: any) => ({
   tableHeader: {
-    userSelect: 'none',
+    userSelect: 'text',
     background: theme.tableHeaderBg,
     fontSize: theme.tableHeaderFontSize,
     color: theme.tableHeaderTextColor,

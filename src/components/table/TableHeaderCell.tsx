@@ -14,7 +14,7 @@ interface IProps {
 
 const styles = (theme: any) => ({
   cell: {
-    userSelect: 'none',
+    userSelect: 'text',
     fontWeight: 'normal',
     paddingTop: '0.4rem',
     '&:first-child': {

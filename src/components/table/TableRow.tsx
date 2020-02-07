@@ -18,10 +18,10 @@ interface IProps {
 
 const styles = (theme: any) => ({
   row: {
-    userSelect: 'none',
+    userSelect: 'text',
     padding: `0 ${theme.tableHorizontalPadding} 0 ${
       theme.tableHorizontalPadding
-    }`,
+      }`,
     height: '6rem',
     borderBottom: `1px solid ${theme.tableCandidateBottomBorderColor}`,
   },
