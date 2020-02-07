@@ -20,7 +20,7 @@ interface IProps {
 
 const styles = (theme: any) => ({
   cell: {
-    userSelect: 'none',
+    userSelect: 'text',
     '&:first-child': {
       paddingLeft: theme.tableHorizontalPadding,
     },
