@@ -84,7 +84,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
   const [processingFileForERId, setProcessingFileForERId] = useState('');
   const [fileDownloadError, setFileDownloadError] = useState('');
 
-  let { electionResults } = electionGroupCount;
+  let { electionResults } = electionGroupCount;
   electionResults = orderElectionResults(electionResults);
 
   const handleDownloadCountingProtocol = async (
@@ -198,18 +198,6 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
             </div>
           );
         })}
-
-      <div className={classes.auditLogSection}>
-        <Button
-          action={e => {
-            //pass
-          }}
-          text={<span>{t('general.download')} {electionResults.length > 1
-          ? t('admin.countingDetails.auditLogForAllElections')
-          : t('admin.countingDetails.auditLogForElection')}</span>}
-          secondary
-        />
-      </div>
     </>
   );
 };
