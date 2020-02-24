@@ -108,7 +108,6 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
     this.setState({ editCandidateId: '' });
   }
 
-
   render() {
     const { electionGroup: elGrp, i18n } = this.props;
     const lang = i18n.language;
@@ -148,6 +147,7 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
             candidates.push({
               id: c.id,
               name: c.name,
+              isLocked: e.isLocked,
               gender: c.meta.gender,
               informationUrl: c.informationUrl,
               listId: c.listId,
@@ -188,7 +188,7 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
                             key={index}
                             count={election.lists[0].candidates.length}
                             minCount={minCount}
-                            active={election.active}
+                            active={election.active && !election.isLocked}
                             counterTextTag="election.candidateCounter"
                             action={this.setNewFormActive.bind(
                               this,
@@ -214,7 +214,6 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
                         </TableHeaderRow>
                       </TableHeader>
                       <TableBody>
-
                         {this.state.newFormListId ? (
                           <TableRow>
                             <TableCell colspan={4}>
@@ -280,9 +279,7 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
                                 </TableCell>
                                 <TableCell>
                                   <Text>
-                                    <Trans>{`general.${
-                                      candidate.gender
-                                      }`}</Trans>
+                                    <Trans>{`general.${candidate.gender}`}</Trans>
                                   </Text>
                                 </TableCell>
                                 <TableCell>

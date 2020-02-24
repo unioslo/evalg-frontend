@@ -172,6 +172,7 @@ export interface coCandidate {
 
 export interface ElectionList {
   id: string;
+  election: Election;
   name: NameFields;
   description: NameFields;
   informationUrl: string;
@@ -193,6 +194,7 @@ export interface Election {
   mandatePeriodEnd: string;
   contact: string;
   informationUrl: string;
+  isLocked: boolean;
   tz: string;
   lists: ElectionList[];
 }
