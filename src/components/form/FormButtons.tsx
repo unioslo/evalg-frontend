@@ -31,6 +31,7 @@ interface IProps {
   cancelDisabled?: boolean;
   submitting?: boolean;
   entityAction?: any;
+  entityActionDisabled?: boolean;
   entityText?: React.ReactNode | string;
   classes: any;
 }
@@ -42,12 +43,18 @@ const FormButtons = (props: IProps) => {
     submitDisabled,
     submitting,
     entityAction,
+    entityActionDisabled,
     entityText,
   } = props;
   return (
     <ButtonContainer alignRight>
       {entityAction && entityText && (
-        <Button text={entityText} action={entityAction} secondary/>
+        <Button
+          text={entityText}
+          action={entityAction}
+          disabled={entityActionDisabled}
+          secondary
+        />
       )}
       <Button
         text={<Trans>general.cancel</Trans>}
@@ -71,6 +78,10 @@ const FormButtons = (props: IProps) => {
       />
     </ButtonContainer>
   );
+};
+
+FormButtons.defaultProps = {
+  entityActionDisabled: false,
 };
 
 export default injectSheet(styles)(FormButtons);

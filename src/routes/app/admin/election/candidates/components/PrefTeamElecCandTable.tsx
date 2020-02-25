@@ -22,6 +22,7 @@ import { ElectionGroup } from 'interfaces';
 
 import PrefTeamElecCandForm from './PrefTeamElecCandForm';
 import TableRowWithText from './TableRowWithText';
+import { electionGroupCountsQuery } from '../../status/components/CountingSection';
 
 const addTeamPrefElecCandidate = gql`
   mutation AddTeamPrefElecCandidate(
@@ -133,6 +134,7 @@ class PrefTeamElecCandTable extends React.Component<IProps, IState> {
 
   render() {
     const candidateList = this.props.electionGroup.elections[0].lists[0];
+    const electionIsLocked = this.props.electionGroup.elections[0].isLocked;
     if (!candidateList) {
       return (
         <PageSection noBorder desc={<Trans>election.prefTeamHeader</Trans>}>
@@ -167,10 +169,12 @@ class PrefTeamElecCandTable extends React.Component<IProps, IState> {
                 <Trans>election.coCandidates</Trans>
               </TableHeaderCell>
               <TableHeaderCell alignRight>
-                <ActionItem action={this.setNewFormTopActive.bind(this)}>
-                  <Icon type="plussign" marginRight />
-                  <Trans>election.addCandidate</Trans>
-                </ActionItem>
+                {!electionIsLocked && (
+                  <ActionItem action={this.setNewFormTopActive.bind(this)}>
+                    <Icon type="plussign" marginRight />
+                    <Trans>election.addCandidate</Trans>
+                  </ActionItem>
+                )}
               </TableHeaderCell>
             </TableHeaderRow>
           </TableHeader>
@@ -190,6 +194,7 @@ class PrefTeamElecCandTable extends React.Component<IProps, IState> {
                           addCand({ variables: values });
                           this.setNewFormsInactive();
                         }}
+                        isLocked={electionIsLocked}
                         cancelAction={this.setNewFormsInactive}
                         formHeader={
                           <Trans>election.addPrefTeamCandidate</Trans>
@@ -233,6 +238,7 @@ class PrefTeamElecCandTable extends React.Component<IProps, IState> {
                                       updCand({ variables: values });
                                       this.setEditId('');
                                     }}
+                                    isLocked={electionIsLocked}
                                     cancelAction={this.setEditId.bind(-1)}
                                     deleteAction={() => {
                                       deleteCand({
@@ -284,37 +290,40 @@ class PrefTeamElecCandTable extends React.Component<IProps, IState> {
                   );
                 })
               : null}
-            <TableRow>
-              {this.state.newFormBottomActive ? (
-                <Mutation
-                  mutation={addTeamPrefElecCandidate}
-                  refetchQueries={() => ['electionGroup']}
-                >
-                  {addCand => (
-                    <TableCell colspan={3}>
-                      <PrefTeamElecCandForm
-                        initialValues={newCandidateValues}
-                        handleSubmit={(values: any) => {
-                          values = this.removeCoCandidatesWithoutName(values);
-                          addCand({ variables: values });
-                          this.setNewFormsInactive();
-                        }}
-                        cancelAction={this.setNewFormsInactive}
-                        formHeader={
-                          <Trans>election.addPrefTeamCandidate</Trans>
-                        }
-                      />
-                    </TableCell>
-                  )}
-                </Mutation>
-              ) : (
-                <TableCell colspan={3}>
-                  <ActionText action={this.setNewFormBottomActive.bind(this)}>
-                    <Trans>election.addPrefTeamCandidate</Trans>
-                  </ActionText>
-                </TableCell>
-              )}
-            </TableRow>
+            {!electionIsLocked && (
+              <TableRow>
+                {this.state.newFormBottomActive ? (
+                  <Mutation
+                    mutation={addTeamPrefElecCandidate}
+                    refetchQueries={() => ['electionGroup']}
+                  >
+                    {addCand => (
+                      <TableCell colspan={3}>
+                        <PrefTeamElecCandForm
+                          initialValues={newCandidateValues}
+                          handleSubmit={(values: any) => {
+                            values = this.removeCoCandidatesWithoutName(values);
+                            addCand({ variables: values });
+                            this.setNewFormsInactive();
+                          }}
+                          isLocked={electionIsLocked}
+                          cancelAction={this.setNewFormsInactive}
+                          formHeader={
+                            <Trans>election.addPrefTeamCandidate</Trans>
+                          }
+                        />
+                      </TableCell>
+                    )}
+                  </Mutation>
+                ) : (
+                  <TableCell colspan={3}>
+                    <ActionText action={this.setNewFormBottomActive.bind(this)}>
+                      <Trans>election.addPrefTeamCandidate</Trans>
+                    </ActionText>
+                  </TableCell>
+                )}
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </PageSection>

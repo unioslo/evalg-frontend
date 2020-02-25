@@ -37,6 +37,7 @@ export const ElectionFields = gql`
     groupId
     active
     status
+    isLocked
     publishedAt
     cancelledAt
   }

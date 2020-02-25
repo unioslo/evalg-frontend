@@ -4,7 +4,7 @@ import { FieldArray } from 'react-final-form-arrays';
 import arrayMutators from 'final-form-arrays';
 import { useTranslation } from 'react-i18next';
 
-import Button from 'components/button'
+import Button from 'components/button';
 import {
   TableRowForm,
   TableRowFormFields,
@@ -19,6 +19,7 @@ import Icon from 'components/icon';
 interface IProps {
   handleSubmit: (a: any) => void;
   cancelAction: (id: any) => void;
+  isLocked: boolean;
   deleteAction?: () => void;
   initialValues: object;
   formHeader: any | string;
@@ -30,6 +31,7 @@ const PrefTeamElecCandForm: React.FunctionComponent<IProps> = (
   const {
     cancelAction,
     initialValues,
+    isLocked,
     // deleteAction
   } = props;
 
@@ -44,7 +46,7 @@ const PrefTeamElecCandForm: React.FunctionComponent<IProps> = (
         const {
           handleSubmit,
           form: {
-            mutators: { push }
+            mutators: { push },
           },
           pristine,
           valid,
@@ -71,22 +73,28 @@ const PrefTeamElecCandForm: React.FunctionComponent<IProps> = (
                     />
                   </FormField>
 
-                  <FieldArray name='coCandidates'>
+                  <FieldArray name="coCandidates">
                     {({ fields }) =>
                       fields.map((coCandidate, index) => (
                         <FormField
                           action={
                             <Icon
-                              type='remove'
+                              type="remove"
                               onClick={() => fields.remove(index)}
                               custom={{ color: 'teal', small: true }}
-                              title={t('election.removeCoCandidateNr', { number: index + 1 })}
+                              title={t('election.removeCoCandidateNr', {
+                                number: index + 1,
+                              })}
                             />
-                          } key={index}>
+                          }
+                          key={index}
+                        >
                           <Field
                             name={`${coCandidate}.name`}
                             component={TextInputRF}
-                            label={t('election.coCandidateNr', { number: index + 1 })}
+                            label={t('election.coCandidateNr', {
+                              number: index + 1,
+                            })}
                             placeholder={t(
                               'election.coCandidateNamePlaceHolder'
                             )}
@@ -109,10 +117,11 @@ const PrefTeamElecCandForm: React.FunctionComponent<IProps> = (
                 closeAction={cancelAction}
                 submitDisabled={pristine || !valid}
                 entityAction={props.deleteAction}
+                entityActionDisabled={isLocked}
                 entityText={t('election.deleteCandidate')}
               />
             </TableRowForm>
-          </form >
+          </form>
         );
       }}
     />

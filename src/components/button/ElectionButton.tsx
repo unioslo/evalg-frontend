@@ -135,6 +135,7 @@ const ElectionButton = (props: IProps) => {
   return (
     <div className={classes.wrapper}>
       <button
+        disabled={!active}
         onClick={action}
         className="button-no-style"
         tabIndex={active ? 0 : -1}

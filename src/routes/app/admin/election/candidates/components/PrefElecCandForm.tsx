@@ -56,7 +56,7 @@ const PrefElecCandForm: React.FunctionComponent<IProps> = (props: IProps) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
 
-  const { cancelAction, listDict } = props;
+  const { cancelAction, listDict, candidate } = props;
 
   const genderOptions = [
     { name: t('general.male'), value: 'male' },
@@ -121,6 +121,7 @@ const PrefElecCandForm: React.FunctionComponent<IProps> = (props: IProps) => {
               <FormButtons
                 saveAction={handleSubmit}
                 closeAction={cancelAction}
+                entityActionDisabled={candidate.isLocked}
                 submitDisabled={pristine || !valid}
                 entityAction={props.deleteAction}
                 entityText={t('election.deleteCandidate')}
