@@ -394,7 +394,7 @@
     "contactHelp": "Contact",
     "contactSectionHeader": "Need help?",
     "evalgUses": "eValg uses",
-    "pilotMessage": "Are you voting in the board election at IMV, KHM or Klinmed? Please use the old election service, at <0>valg2.uio.no</0>. <1>Read more about the new service</1>.",
+    "pilotMessage": "Are you looking for an election that is held in the old election service? Please go to <0>valg2.uio.no</0>. <1>Read more about the new service</1>.",
     "privacyPolicyLink": "Privacy policy",
     "responsibleOrganizationHeader": "Maintained by",
     "serviceOwnerLink": "Department for System Integration and Identity Management (INT)",
