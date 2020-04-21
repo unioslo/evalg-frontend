@@ -1,10 +1,13 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
 import Link from 'components/link';
+import { MsgBox } from 'components/msgbox';
+
+import { enableFrontPageMsg } from 'appConfig';
 
 const styles = (theme: any) => ({
   mainContainer: {
@@ -107,6 +110,18 @@ const FrontPage: React.FunctionComponent<IProps> = ({ classes }) => {
 
   return (
     <>
+      {enableFrontPageMsg && (
+        <MsgBox
+          msg={
+            <Trans t={t} components={[<a href="https://valg2.uio.no">text</a>]}>
+              loginPage.message
+            </Trans>
+          }
+          timeout={false}
+          small
+          warning
+        />
+      )}
       <div className={classes.mainContainer}>
         <img
           className={classes.graphicDesktop}

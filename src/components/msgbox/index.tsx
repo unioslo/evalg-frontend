@@ -7,14 +7,12 @@ const defaultTimeoutSec = 10;
 
 const styles = () => ({
   info: {
-    marginTop: '30px',
+    marginTop: (props: IProps) => (props.small ? '0px' : '30px'),
     minHeight: '64px',
     display: 'flex',
-    // alignItems: 'stretch',
-    // alignContent: 'center',
-
-    // justifyContent: 'space-between',
-
+    margin: '0 auto',
+    justifyContent: 'center',
+    maxWidth: (props: IProps) => (props.small ? '740px' : ''),
     backgroundColor: '#f4f9fa',
     border: '2px',
     borderStyle: 'solid',
@@ -23,10 +21,8 @@ const styles = () => ({
     borderColor: '#8eced9',
   },
   msg: {
-    // justifySelf: 'flex-start',
-    maxWidth: '850px',
     fontFamily: 'Arial',
-    fontSize: '16px',
+    fontSize: (props: IProps) => (props.warning ? '19px' : '16px'),
     fontWeight: 'normal',
     fontStyle: 'normal',
     fontStretch: 'normal',
@@ -62,6 +58,8 @@ interface IProps {
   msg: string | React.ReactNode;
   timeout: boolean;
   timeoutSec?: number;
+  small?: boolean;
+  warning?: boolean;
   classes: any;
 }
 
@@ -70,6 +68,11 @@ interface IState {
 }
 
 class MsgBox extends React.Component<IProps, IState> {
+  public static defaultProps = {
+    small: false,
+    warning: false,
+  };
+
   public timerHandle: NodeJS.Timer | null;
 
   constructor(props: IProps) {
