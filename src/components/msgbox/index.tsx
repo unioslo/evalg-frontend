@@ -11,18 +11,17 @@ const styles = () => ({
     minHeight: '64px',
     display: 'flex',
     margin: '0 auto',
-    justifyContent: 'center',
     maxWidth: (props: IProps) => (props.small ? '740px' : ''),
-    backgroundColor: '#f4f9fa',
+    backgroundColor: (props: IProps) => (props.warning ? '#f8d7da' : '#f4f9fa'),
     border: '2px',
     borderStyle: 'solid',
     boxSizing: 'border-box',
     borderRadius: '4px',
-    borderColor: '#8eced9',
+    borderColor: (props: IProps) => (props.warning ? '#f5c6cb' : '#8eced9'),
   },
   msg: {
     fontFamily: 'Arial',
-    fontSize: (props: IProps) => (props.warning ? '19px' : '16px'),
+    fontSize: (props: IProps) => (props.warning ? '21px' : '16px'),
     fontWeight: 'normal',
     fontStyle: 'normal',
     fontStretch: 'normal',
@@ -115,11 +114,13 @@ class MsgBox extends React.Component<IProps, IState> {
       return (
         <div className={classes.info}>
           <div className={classes.infoIconMargins}>
-            <Icon type="infoMsgBox" />
+            {!this.props.warning && <Icon type="infoMsgBox" />}
           </div>
           <span className={classes.msg}>{this.props.msg}</span>
           <div className={classes.closeIconMargins}>
-            <Icon type="closeMsgBox" onClick={this.closeBox} />
+            {!this.props.warning && (
+              <Icon type="closeMsgBox" onClick={this.closeBox} />
+            )}
           </div>
         </div>
       );

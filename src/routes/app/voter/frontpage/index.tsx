@@ -13,6 +13,8 @@ import { getSignedInPersonId } from 'queries';
 import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
 
 import VoterElections from './components/VoterElections';
+import { MsgBox } from 'components/msgbox';
+import { showUserMsg } from 'appConfig';
 
 const electionGroupsQuery = gql`
   ${ElectionGroupFields}
@@ -123,6 +125,22 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
 
                 return (
                   <Page header={t('general.welcome')}>
+                    {showUserMsg && (
+                      <MsgBox
+                        msg={
+                          <Trans
+                            t={t}
+                            components={[
+                              <a href="https://valg2.uio.no">text</a>,
+                            ]}
+                          >
+                            loginPage.message
+                          </Trans>
+                        }
+                        timeout={false}
+                        warning
+                      />
+                    )}
                     <PageSection desc={t('general.frontPageDesc')} noBorder>
                       <VoterElections
                         votingRightsElectionGroups={
