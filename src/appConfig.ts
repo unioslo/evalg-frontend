@@ -71,4 +71,4 @@ export const sectionBottomBorderStyle: 'original' | 'stylish' = 'stylish';
 export const showGenerateVotesTestingComponent = false;
 export const enableAnnounceElectionGroup = false;
 // Show the content of loginpage.message as a msgbox on the frontpage
-export const enableFrontPageMsg = true;
+export const showUserMsg = true;

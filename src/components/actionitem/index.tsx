@@ -26,7 +26,7 @@ interface IProps {
   classes?: any;
 }
 
-const ActionItem: React.SFC<IProps> = props => {
+const ActionItem: React.SFC<IProps> = (props) => {
   const { classes } = props;
   const cls = classNames({
     'button-no-style': true,
