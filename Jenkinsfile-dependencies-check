@@ -1,0 +1,22 @@
+#!/usr/bin/env groovy
+
+pipeline {
+  agent any
+  triggers {
+    cron('@weekly')
+  }
+  stages {
+    stage('Run check') {
+      steps {
+        build(
+          job: 'jenkins-common-jobs/dependencies-checking/npm-dependency-checker',
+          parameters: [
+            string(
+              name: 'gitUrl',
+              value: "${GIT_URL}"),
+          ]
+        )
+      }
+    }
+  }
+}
