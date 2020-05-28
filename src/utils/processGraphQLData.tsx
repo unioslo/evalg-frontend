@@ -83,7 +83,7 @@ export const electionGroupWithOrderedElections = (
 
   const processedElections = orderMultipleElections(
     options && options.onlyActiveElections
-      ? electionGroup.elections.filter(e => e.active)
+      ? electionGroup.elections.filter((e) => e.active)
       : electionGroup.elections
   );
 
@@ -98,15 +98,17 @@ export const idValueForPerson = (person: IPerson) => {
 
   const { identifiers } = person;
 
-  for (let id of identifiers) {
-    if (id.idType === 'feide_id') {
-      return id.idValue;
+  if (identifiers !== undefined && identifiers !== null) {
+    for (let id of identifiers) {
+      if (id.idType === 'feide_id') {
+        return id.idValue;
+      }
     }
-  }
-  // Fallback to uid
-  for (let id of identifiers) {
-    if (id.idType === 'uid') {
-      return id.idValue;
+    // Fallback to uid
+    for (let id of identifiers) {
+      if (id.idType === 'uid') {
+        return id.idValue;
+      }
     }
   }
   // fallback to person UUID
