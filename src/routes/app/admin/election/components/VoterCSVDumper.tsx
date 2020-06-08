@@ -58,7 +58,7 @@ const VoterCSVDumper: React.FunctionComponent<PollbookDumperProps> = ({ election
             e.pollbooks
           ).flatMap((p: IPollBook) =>
             p.voterDump.map(v =>
-              [p.name[i18n.language], v[0], v[1]]
+              [p.name[i18n.language], v[0], v[1], v[2]]
             )
           ).map((v: string[]) =>
             v.join(';')
