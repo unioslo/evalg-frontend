@@ -1,5 +1,5 @@
 import camelCase from 'lodash/camelCase';
-import i18n from 'i18next';
+import { TFunction, TOptions, StringMap } from 'i18next';
 
 import { PersonIdType } from 'interfaces';
 
@@ -14,9 +14,9 @@ export const translateBackendError = ({
   tOptions,
 }: {
   errorCode: string | null;
-  t: i18n.TFunction;
+  t: TFunction;
   codePrefix: string;
-  tOptions?: string | i18n.TOptions<i18n.StringMap>;
+  tOptions?: string | TOptions<StringMap>;
 }) => {
   if (errorCode === null) {
     errorCode = '';
@@ -31,10 +31,7 @@ export const translateBackendError = ({
   );
 };
 
-export const joinStringsWithCommaAndAnd = (
-  strings: string[],
-  t: i18n.TFunction
-) => {
+export const joinStringsWithCommaAndAnd = (strings: string[], t: TFunction) => {
   if (strings.length === 0) {
     return '';
   } else if (strings.length === 1) {
@@ -46,7 +43,7 @@ export const joinStringsWithCommaAndAnd = (
   }`;
 };
 
-export const getTranslationsForPersonIdType = (t: i18n.TFunction) => ({
+export const getTranslationsForPersonIdType = (t: TFunction) => ({
   uid: t('idTypes.uid'),
   nin: t('idTypes.nin'),
   feide_id: t('idTypes.feide_id'),
@@ -56,7 +53,7 @@ let translationsForPersonIdType: { uid: string; nin: string; feide_id: string };
 
 export const getPersonIdTypeDisplayName = (
   personIdType: PersonIdType,
-  t: i18n.TFunction
+  t: TFunction
 ) => {
   if (!translationsForPersonIdType) {
     translationsForPersonIdType = getTranslationsForPersonIdType(t);
