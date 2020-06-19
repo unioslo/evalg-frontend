@@ -1,5 +1,5 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import injectSheet from 'react-jss';
 
 const styles = () => ({
@@ -23,20 +23,20 @@ interface IProps {
   action: () => void;
   alignRight?: boolean;
   alignCenter?: boolean;
-  classes?: any;
+  classes: any;
 }
 
-const ActionItem: React.SFC<IProps> = (props) => {
-  const { classes } = props;
+const ActionItem: React.FunctionComponent<IProps> = (props) => {
+  const { classes, alignCenter, alignRight, action, children } = props;
   const cls = classNames({
     'button-no-style': true,
     [classes.actionItem]: true,
-    [classes.alignCenter]: props.alignCenter,
-    [classes.alignRight]: props.alignRight,
+    [classes.alignCenter]: alignCenter,
+    [classes.alignRight]: alignRight,
   });
   return (
-    <button className={cls} onClick={props.action}>
-      {props.children}
+    <button type="button" className={cls} onClick={action}>
+      {children}
     </button>
   );
 };

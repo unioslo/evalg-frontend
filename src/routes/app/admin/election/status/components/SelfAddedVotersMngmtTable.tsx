@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Trans, useTranslation } from 'react-i18next';
-import i18next from 'i18next';
+import { TFunction } from 'i18next';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
@@ -103,7 +103,7 @@ const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
             </TableCell>
           </TableRow>
         ) : (
-          voters.map(voter => {
+          voters.map((voter) => {
             const voterGroup = voter.pollbook.name[lang];
             const isSelected = voter.id === selectedVoterId;
 
@@ -170,7 +170,7 @@ const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
                                       <Spinner darkStyle size="2.2rem" />
                                     ) : (
                                       <ActionText
-                                        action={async e => {
+                                        action={async (e) => {
                                           e.stopPropagation();
                                           await undo();
                                           if (selectedVoterId === voter.id) {
@@ -220,7 +220,7 @@ interface ReviewButtonProps {
   voterId: string;
   selectedVoterId: string;
   setSelectedVoterId: (voterId: string) => void;
-  t: i18next.TFunction;
+  t: TFunction;
   classes: Classes;
 }
 
@@ -241,7 +241,7 @@ const ReviewButtons: React.FunctionComponent<ReviewButtonProps> = ({
         <div className={classes.reviewButtons}>
           <Button
             text={t('admin.manageSelfAddedVoters.reject')}
-            action={async e => {
+            action={async (e) => {
               e.stopPropagation(); // avoid toggling voter
               await review({
                 variables: {
@@ -260,7 +260,7 @@ const ReviewButtons: React.FunctionComponent<ReviewButtonProps> = ({
           <div className={classes.buttonSeparator} />
           <Button
             text={t('admin.manageSelfAddedVoters.approve')}
-            action={async e => {
+            action={async (e) => {
               e.stopPropagation(); // avoid toggling voter
               await review({
                 variables: {
@@ -285,7 +285,7 @@ const ReviewButtons: React.FunctionComponent<ReviewButtonProps> = ({
 interface VoterDetailsProps {
   voter: IVoter;
   displayNameElement: React.ReactNode;
-  t: i18next.TFunction;
+  t: TFunction;
   classes: Classes;
 }
 
