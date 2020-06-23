@@ -63,7 +63,7 @@ const GET_VIEWER_ROLES = gql`
       }
     }
   }
-`
+`;
 
 const blockerToTranslation = {
   'missing-key': 'blockerMissingKey',
@@ -75,7 +75,9 @@ interface publicationBlockersProps {
   electionGroup: ElectionGroup;
 }
 
-const PublicationBlockers: React.FunctionComponent<publicationBlockersProps> = (props: publicationBlockersProps) => {
+const PublicationBlockers: React.FunctionComponent<publicationBlockersProps> = (
+  props: publicationBlockersProps
+) => {
   const { t } = useTranslation();
   const { publicationBlockers } = props.electionGroup;
   return (
@@ -95,14 +97,15 @@ const PublicationBlockers: React.FunctionComponent<publicationBlockersProps> = (
       </InfoList>
     </PageSubSection>
   );
-}
-
+};
 
 interface multipleStatusesInterface {
   electionGroup: ElectionGroup;
 }
 
-const MultipleStatuses: React.FunctionComponent<multipleStatusesInterface> = (props: multipleStatusesInterface) => {
+const MultipleStatuses: React.FunctionComponent<multipleStatusesInterface> = (
+  props: multipleStatusesInterface
+) => {
   const { i18n } = useTranslation();
   return (
     <InfoList>
@@ -115,14 +118,14 @@ const MultipleStatuses: React.FunctionComponent<multipleStatusesInterface> = (pr
             <Text inline>
               {election.name[i18n.language]}
               &nbsp; &nbsp;
-                <ElectionStatus status={election.status} />
+              <ElectionStatus status={election.status} />
             </Text>
           </InfoListItem>
         );
       })}
     </InfoList>
   );
-}
+};
 
 interface IProps {
   electionGroup: ElectionGroup;
@@ -131,7 +134,9 @@ interface IProps {
 /**
  * The election status component
  */
-const ElectionStatusSection: React.FunctionComponent<IProps> = (props: IProps) => {
+const ElectionStatusSection: React.FunctionComponent<IProps> = (
+  props: IProps
+) => {
   const { t } = useTranslation();
   const { electionGroup } = props;
   const publishable = electionGroup.publicationBlockers.length === 0;
@@ -139,47 +144,51 @@ const ElectionStatusSection: React.FunctionComponent<IProps> = (props: IProps) =
 
   return (
     <PageSection header="Status">
-      <Query
-        query={GET_VIEWER_ROLES}
-        fetchPolicy="network-only"
-      >
-        {({ data, loading, error, refetch }) => {
+      <Query query={GET_VIEWER_ROLES} fetchPolicy="network-only">
+        {(result: any) => {
+          const { data, loading, error } = result;
           if (loading) {
             return (
               <PageSection>
                 <Spinner size="2.2rem" darkStyle marginRight="1rem" />
                 {t('election.publishLoadingCanPublish')}
               </PageSection>
-            )
+            );
           }
           let canPublish: boolean = false;
           if (!error && data.viewer.roles !== undefined) {
-            const publishRoles: Array<IElectionGroupRole> = data.viewer.roles.filter((x: IElectionGroupRole) => {
-              return (x.globalRole && x.name === 'publisher' && x.groupId === null)
-            })
-            canPublish = publishRoles.length >= 1
+            const publishRoles: Array<IElectionGroupRole> = data.viewer.roles.filter(
+              (x: IElectionGroupRole) => {
+                return (
+                  x.globalRole && x.name === 'publisher' && x.groupId === null
+                );
+              }
+            );
+            canPublish = publishRoles.length >= 1;
           }
 
           return (
             <>
-              {(electionGroup.status !== 'multipleStatuses') ? (
+              {electionGroup.status !== 'multipleStatuses' ? (
                 <Text inline>
-                  <ElectionStatus textSize="large" status={electionGroup.status} />
+                  <ElectionStatus
+                    textSize="large"
+                    status={electionGroup.status}
+                  />
                 </Text>
               ) : (
-                  <MultipleStatuses electionGroup={electionGroup} />
-                )
-              }
+                <MultipleStatuses electionGroup={electionGroup} />
+              )}
               <Mutation
                 mutation={UnannounceElectionGroupMutation}
                 refetchQueries={() => ['electionGroup']}
               >
-                {unannounceGroup => (
+                {(unannounceGroup: any) => (
                   <Mutation
                     mutation={AnnounceElectionGroupMutation}
                     refetchQueries={() => ['electionGroup']}
                   >
-                    {announceGroup => (
+                    {(announceGroup: any) => (
                       <InfoList>
                         {!electionGroup.published && !publishable ? (
                           <InfoListItem bulleted key="draft-not-ready">
@@ -193,7 +202,9 @@ const ElectionStatusSection: React.FunctionComponent<IProps> = (props: IProps) =
                           </InfoListItem>
                         ) : null}
 
-                        {enableAnnounceElectionGroup && !electionGroup.published && !electionGroup.announced ? (
+                        {enableAnnounceElectionGroup &&
+                        !electionGroup.published &&
+                        !electionGroup.announced ? (
                           canPublish ? (
                             <InfoListItem bulleted key="can-announce">
                               {t('election.statusCanAnnounce')}
@@ -208,12 +219,15 @@ const ElectionStatusSection: React.FunctionComponent<IProps> = (props: IProps) =
                                 }
                               />
                             </InfoListItem>
-                          ) :
+                          ) : (
                             <InfoListItem bulleted key="can-announced">
                               {t('election.statusCanBeAnnounce')}
                             </InfoListItem>
+                          )
                         ) : null}
-                        {enableAnnounceElectionGroup && !electionGroup.published && electionGroup.announced ? (
+                        {enableAnnounceElectionGroup &&
+                        !electionGroup.published &&
+                        electionGroup.announced ? (
                           canPublish ? (
                             <InfoListItem bulleted key="is-announced">
                               {t('election.statusIsAnnounced')}
@@ -228,17 +242,18 @@ const ElectionStatusSection: React.FunctionComponent<IProps> = (props: IProps) =
                                 }
                               />
                             </InfoListItem>
-                          ) :
+                          ) : (
                             <InfoListItem bulleted key="is-announced">
                               {t('election.statusIsAnnounced')}
                             </InfoListItem>
+                          )
                         ) : null}
                         {electionGroup.published &&
-                          electionGroup.status === 'published' ? (
-                            <InfoListItem bulleted key="published-and-ready">
-                              {t('election.statusOpensAutomatically')}
-                            </InfoListItem>
-                          ) : null}
+                        electionGroup.status === 'published' ? (
+                          <InfoListItem bulleted key="published-and-ready">
+                            {t('election.statusOpensAutomatically')}
+                          </InfoListItem>
+                        ) : null}
                         {!electionGroup.published && !canPublish ? (
                           <InfoListItem bulleted key="cannot-publish">
                             <Trans
@@ -246,10 +261,12 @@ const ElectionStatusSection: React.FunctionComponent<IProps> = (props: IProps) =
                                 <Link
                                   key="0"
                                   external
-                                  to={'https://www.uio.no/tjenester/it/applikasjoner/e-valg/hjelp/publisering.html'}
+                                  to={
+                                    'https://www.uio.no/tjenester/it/applikasjoner/e-valg/hjelp/publisering.html'
+                                  }
                                 >
                                   text
-                                </Link>
+                                </Link>,
                               ]}
                             >
                               election.publishElectionNotPublisher
@@ -263,10 +280,12 @@ const ElectionStatusSection: React.FunctionComponent<IProps> = (props: IProps) =
                                 <Link
                                   key="0"
                                   external
-                                  to={'https://www.uio.no/tjenester/it/applikasjoner/e-valg/hjelp/publisering.html'}
+                                  to={
+                                    'https://www.uio.no/tjenester/it/applikasjoner/e-valg/hjelp/publisering.html'
+                                  }
                                 >
                                   text
-                                </Link>
+                                </Link>,
                               ]}
                             >
                               election.unpublishElectionNotPublisher
@@ -279,49 +298,49 @@ const ElectionStatusSection: React.FunctionComponent<IProps> = (props: IProps) =
                 )}
               </Mutation>
 
-              {!electionGroup.published && !publishable
-                ? <PublicationBlockers electionGroup={electionGroup} />
-                : null}
+              {!electionGroup.published && !publishable ? (
+                <PublicationBlockers electionGroup={electionGroup} />
+              ) : null}
 
               {electionGroup.published ||
-                (!electionGroup.published && publishable) ? (
-                  <Mutation
-                    mutation={PublishElectionGroupMutation}
-                    refetchQueries={() => ['electionGroup']}
-                  >
-                    {publishGroup => (
-                      <Mutation
-                        mutation={UnpublishElectionGroupMutation}
-                        refetchQueries={() => ['electionGroup']}
-                      >
-                        {unpublishGroup => (
-                          <PublishElectionGroup
-                            electionGroup={electionGroup}
-                            publishAction={(id: string) =>
-                              publishGroup({ variables: { id } })
-                            }
-                            unpublishAction={(id: string) =>
-                              unpublishGroup({ variables: { id } })
-                            }
-                            canPublish={canPublish}
-                          />
-                        )}
-                      </Mutation>
-                    )}
-                  </Mutation>
-                ) : null}
+              (!electionGroup.published && publishable) ? (
+                <Mutation
+                  mutation={PublishElectionGroupMutation}
+                  refetchQueries={() => ['electionGroup']}
+                >
+                  {(publishGroup: any) => (
+                    <Mutation
+                      mutation={UnpublishElectionGroupMutation}
+                      refetchQueries={() => ['electionGroup']}
+                    >
+                      {(unpublishGroup: any) => (
+                        <PublishElectionGroup
+                          electionGroup={electionGroup}
+                          publishAction={(id: string) =>
+                            publishGroup({ variables: { id } })
+                          }
+                          unpublishAction={(id: string) =>
+                            unpublishGroup({ variables: { id } })
+                          }
+                          canPublish={canPublish}
+                        />
+                      )}
+                    </Mutation>
+                  )}
+                </Mutation>
+              ) : null}
 
               {(electionGroup.status === 'ongoing' ||
                 electionGroup.status === 'multipleStatuses' ||
                 electionGroup.status === 'closed') && (
-                  <TurnoutSubsection
-                    electionGroupId={electionGroup.id}
-                    doPolling={
-                      electionGroup.status === 'ongoing' ||
-                      electionGroup.status === 'multipleStatuses'
-                    }
-                  />
-                )}
+                <TurnoutSubsection
+                  electionGroupId={electionGroup.id}
+                  doPolling={
+                    electionGroup.status === 'ongoing' ||
+                    electionGroup.status === 'multipleStatuses'
+                  }
+                />
+              )}
 
               {showGenerateVotesTestingComponent &&
                 (electionGroup.status === 'ongoing' ||
@@ -329,17 +348,18 @@ const ElectionStatusSection: React.FunctionComponent<IProps> = (props: IProps) =
                   <GenerateVotesForTesting electionGroup={electionGroup} />
                 )}
 
-              {electionGroup.status === 'closed' && latestElectionGroupCount && (
-                <LatestElectionGroupCountResult
-                  electionGroupCount={latestElectionGroupCount}
-                />
-              )}
+              {electionGroup.status === 'closed' &&
+                latestElectionGroupCount && (
+                  <LatestElectionGroupCountResult
+                    electionGroupCount={latestElectionGroupCount}
+                  />
+                )}
             </>
-          )
+          );
         }}
       </Query>
-    </PageSection >
+    </PageSection>
   );
-}
+};
 
 export default ElectionStatusSection;

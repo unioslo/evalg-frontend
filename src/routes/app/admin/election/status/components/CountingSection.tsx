@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  WithTranslation,
-  withTranslation,
-} from 'react-i18next';
+import { WithTranslation, withTranslation } from 'react-i18next';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -52,7 +49,7 @@ class CountingSection extends React.Component<Props, State> {
     this.state = { showModal: false, message: '' };
   }
 
-  componentWillUpdate(newProps: Props, newState: State) { 
+  componentWillUpdate(newProps: Props, newState: State) {
     if (this.state.message !== '') {
       this.setState({ message: '' });
     }
@@ -96,7 +93,6 @@ class CountingSection extends React.Component<Props, State> {
     this.setState({ showModal: false });
   };
 
-
   public handleCloseModalAndSeeResults = () => {
     this.setState({ showModal: false });
     if (this.props.scrollToStatusRef.current) {
@@ -118,7 +114,8 @@ class CountingSection extends React.Component<Props, State> {
               query={electionGroupCountsQuery}
               variables={{ id: this.props.electionGroup.id }}
             >
-              {({ data, loading, error }) => {
+              {(result: any) => {
+                const { data, loading, error } = result;
                 const showFirstTimeCountingButton =
                   error ||
                   loading ||

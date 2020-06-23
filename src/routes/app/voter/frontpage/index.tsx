@@ -80,7 +80,8 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
 
     return (
       <Query query={electionGroupsQuery} fetchPolicy="network-only">
-        {({ data: electionGroupData, loading, error }) => {
+        {(result: any) => {
+          const { data: electionGroupData, loading, error } = result;
           if (loading || error) {
             return (
               <Loading>
@@ -104,7 +105,12 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
               }}
               fetchPolicy="network-only"
             >
-              {({ data: votersForPersonData, loading, error }) => {
+              {(resultVotersForPerson: any) => {
+                const {
+                  data: votersForPersonData,
+                  loading,
+                  error,
+                } = resultVotersForPerson;
                 if (loading) {
                   return (
                     <Loading>

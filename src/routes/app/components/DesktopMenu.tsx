@@ -1,10 +1,5 @@
 import React from 'react';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
-
-interface IProps {
-  classes: Classes;
-}
+import injectSheet, { WithStylesProps } from 'react-jss';
 
 const styles = (theme: any) => ({
   menu: {
@@ -23,6 +18,8 @@ const styles = (theme: any) => ({
     marginLeft: '2rem',
   },
 });
+
+interface IProps extends WithStylesProps<typeof styles> {}
 
 const DesktopMenu: React.FunctionComponent<IProps> = ({
   children,

@@ -139,7 +139,7 @@ class UploadCensusFileModal extends React.Component<
   PropsInternal,
   IState,
   IHTMLInputEvent
-  > {
+> {
   constructor(props: PropsInternal) {
     super(props);
 
@@ -170,7 +170,7 @@ class UploadCensusFileModal extends React.Component<
           pollbookId: values.pollbookId,
         },
       })
-      .then(result => {
+      .then((result) => {
         const response = result && result.data && result.data.uploadCensusFile;
 
         this.setState({ isUploading: false });
@@ -208,7 +208,7 @@ class UploadCensusFileModal extends React.Component<
           this.props.closeAction(status);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ isUploading: false });
         const errorMessage = this.props.t('census.errors.backend.unknown');
         const status: IUploadCensusFileModalStatus = {
@@ -319,7 +319,7 @@ class UploadCensusFileModal extends React.Component<
 
     // Create the pollbook radio button options
     const pollBookOptions: any = [];
-    Object.keys(this.props.pollBooks).forEach(pollBookID => {
+    Object.keys(this.props.pollBooks).forEach((pollBookID) => {
       if (this.props.pollBooks[pollBookID].active) {
         pollBookOptions.push({
           label: this.props.pollBooks[pollBookID].name[lang],
@@ -375,5 +375,5 @@ class UploadCensusFileModal extends React.Component<
 }
 
 export default injectSheet(styles)(
-  withTranslation()(withApollo(UploadCensusFileModal))
+  withTranslation()(withApollo<IProps, IState>(UploadCensusFileModal))
 );

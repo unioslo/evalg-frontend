@@ -22,7 +22,6 @@ import { ElectionGroup } from 'interfaces';
 
 import PrefTeamElecCandForm from './PrefTeamElecCandForm';
 import TableRowWithText from './TableRowWithText';
-import { electionGroupCountsQuery } from '../../status/components/CountingSection';
 
 const addTeamPrefElecCandidate = gql`
   mutation AddTeamPrefElecCandidate(
@@ -184,7 +183,7 @@ class PrefTeamElecCandTable extends React.Component<IProps, IState> {
                 mutation={addTeamPrefElecCandidate}
                 refetchQueries={() => ['electionGroup']}
               >
-                {addCand => (
+                {(addCand: any) => (
                   <TableRow>
                     <TableCell colspan={3}>
                       <PrefTeamElecCandForm
@@ -220,12 +219,12 @@ class PrefTeamElecCandTable extends React.Component<IProps, IState> {
                             mutation={deleteCandidate}
                             refetchQueries={() => ['electionGroup']}
                           >
-                            {deleteCand => (
+                            {(deleteCand: any) => (
                               <Mutation
                                 mutation={updateTeamPrefElecCandidate}
                                 refetchQueries={() => ['electionGroup']}
                               >
-                                {updCand => (
+                                {(updCand: any) => (
                                   <PrefTeamElecCandForm
                                     formHeader={
                                       <Trans>election.editCandidate</Trans>
@@ -297,7 +296,7 @@ class PrefTeamElecCandTable extends React.Component<IProps, IState> {
                     mutation={addTeamPrefElecCandidate}
                     refetchQueries={() => ['electionGroup']}
                   >
-                    {addCand => (
+                    {(addCand: any) => (
                       <TableCell colspan={3}>
                         <PrefTeamElecCandForm
                           initialValues={newCandidateValues}

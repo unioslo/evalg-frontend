@@ -78,7 +78,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = (props) => {
             mutation={addVoterByIdentifier}
             refetchQueries={refetchQueries}
           >
-            {(add) => {
+            {(add: any) => {
               const addPersonAndSetFeedback = async (values: any) => {
                 const { idValue } = values;
                 if (!idValue) return;

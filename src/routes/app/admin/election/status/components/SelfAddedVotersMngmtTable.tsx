@@ -103,7 +103,7 @@ const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
             </TableCell>
           </TableRow>
         ) : (
-          voters.map((voter) => {
+          voters.map(voter => {
             const voterGroup = voter.pollbook.name[lang];
             const isSelected = voter.id === selectedVoterId;
 
@@ -113,7 +113,12 @@ const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
                 variables={{ voterId: voter.id }}
                 key={voter.id}
               >
-                {({ data, loading: personForVoterLoading, error }) => {
+                {(result: any) => {
+                  const {
+                    data,
+                    loading: personForVoterLoading,
+                    error,
+                  } = result;
                   let displayNameElement;
 
                   if (error) {
@@ -163,14 +168,15 @@ const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
                               refetchQueries={refetchVoteManagementQueries}
                               awaitRefetchQueries
                             >
-                              {(undo, { loading }) => {
+                              {(result: any) => {
+                                const { undo, loading } = result;
                                 return (
                                   <>
                                     {loading ? (
                                       <Spinner darkStyle size="2.2rem" />
                                     ) : (
                                       <ActionText
-                                        action={async (e) => {
+                                        action={async e => {
                                           e.stopPropagation();
                                           await undo();
                                           if (selectedVoterId === voter.id) {
@@ -236,12 +242,13 @@ const ReviewButtons: React.FunctionComponent<ReviewButtonProps> = ({
     refetchQueries={refetchVoteManagementQueries}
     awaitRefetchQueries
   >
-    {(review, { loading }) => {
+    {(result: any) => {
+      const { review, loading } = result;
       return (
         <div className={classes.reviewButtons}>
           <Button
             text={t('admin.manageSelfAddedVoters.reject')}
-            action={async (e) => {
+            action={async e => {
               e.stopPropagation(); // avoid toggling voter
               await review({
                 variables: {
@@ -260,7 +267,7 @@ const ReviewButtons: React.FunctionComponent<ReviewButtonProps> = ({
           <div className={classes.buttonSeparator} />
           <Button
             text={t('admin.manageSelfAddedVoters.approve')}
-            action={async (e) => {
+            action={async e => {
               e.stopPropagation(); // avoid toggling voter
               await review({
                 variables: {

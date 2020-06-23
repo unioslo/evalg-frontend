@@ -90,13 +90,13 @@ const CensusSearchTable: React.FunctionComponent<IProps> = ({
   const [voterToDelete, setVoterToDelete] = useState<null | IVoter>(null);
 
   const pollbooks: Array<IPollBook> = electionGroup.elections
-    .filter(e => e.active)
-    .flatMap(e => e.pollbooks);
+    .filter((e) => e.active)
+    .flatMap((e) => e.pollbooks);
 
   const pollbookDict = {};
-  pollbooks.forEach(p => (pollbookDict[p.id] = p));
+  pollbooks.forEach((p) => (pollbookDict[p.id] = p));
 
-  const pollbookOptions: Array<DropDownOption> = pollbooks.map(p => {
+  const pollbookOptions: Array<DropDownOption> = pollbooks.map((p) => {
     return {
       name: p.name[i18n.language],
       value: p.id,
@@ -187,12 +187,12 @@ const CensusSearchTable: React.FunctionComponent<IProps> = ({
                   {t('census.search.votingStatus')}
                 </TableHeaderCell>
                 <TableHeaderCell>{t('census.group')}</TableHeaderCell>
-                <TableHeaderCell></TableHeaderCell>
+                <TableHeaderCell />
               </TableHeaderRow>
             </TableHeader>
             <TableBody>
               <Query query={voterSearchQuery} variables={searchOptions}>
-                {({ data, loading, error, refetch }) => {
+                {({ data, loading }: { data: any; loading: any }) => {
                   if (loading) {
                     return (
                       <TableRow>
@@ -202,7 +202,7 @@ const CensusSearchTable: React.FunctionComponent<IProps> = ({
                               size="2.2rem"
                               darkStyle
                               marginRight="1rem"
-                            ></Spinner>
+                            />
                             {t('census.search.searching')}
                           </Text>
                         </TableCell>
@@ -226,7 +226,7 @@ const CensusSearchTable: React.FunctionComponent<IProps> = ({
 
                   return (
                     <>
-                      {voters.map(voter => {
+                      {voters.map((voter) => {
                         if (voter.id === voterToUpdateId) {
                           return (
                             <TableRow key={voter.id} verticalPadding>
@@ -250,7 +250,7 @@ const CensusSearchTable: React.FunctionComponent<IProps> = ({
                                   mutation={updateVoterPollBook}
                                   refetchQueries={refetchQueries}
                                 >
-                                  {updateVoter => {
+                                  {(updateVoter: any) => {
                                     const update = (values: {
                                       id: string;
                                       pollbookId: string;
@@ -318,7 +318,7 @@ const CensusSearchTable: React.FunctionComponent<IProps> = ({
 
         {voterToDelete && (
           <Mutation mutation={deleteVoter} refetchQueries={refetchQueries}>
-            {del => {
+            {(del: any) => {
               const deleteAndClose = () => {
                 del({ variables: { id: voterToDelete.id } });
                 handleCloseDeleteVoterModal();

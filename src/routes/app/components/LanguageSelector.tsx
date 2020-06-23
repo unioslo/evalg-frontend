@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation, withTranslation } from 'react-i18next';
 import { DropDown } from 'components/form/DropDown';
 import { MobileMenu, MobileMenuItem } from './MobileMenu';
-import ActionText from 'components/actiontext'
+import ActionText from 'components/actiontext';
 
 const options = [
   {
@@ -30,7 +30,6 @@ const LanguageSelector: React.FunctionComponent = () => {
       value={i18n.language}
       onChange={newValue => {
         i18n.changeLanguage(newValue);
-
       }}
     />
   );
@@ -43,14 +42,18 @@ export const MobileLanguageSelector: React.FunctionComponent = () => {
     <MobileMenu placeholder={t('general.language')}>
       {options.map(option => (
         <MobileMenuItem key={option.value}>
-          <ActionText inline action={() => {
-            i18n.changeLanguage(option.value)}}>
+          <ActionText
+            inline
+            action={() => {
+              i18n.changeLanguage(option.value);
+            }}
+          >
             {option.name}
           </ActionText>
         </MobileMenuItem>
       ))}
     </MobileMenu>
-  )
-}
+  );
+};
 
 export default withTranslation()(LanguageSelector);

@@ -23,13 +23,12 @@ const CountingSectionCounts: React.FunctionComponent<IProps> = ({
 
   return (
     <Query query={electionGroupCountsQuery} variables={{ id: electionGroupId }}>
-      {({ data, loading, error }) => {
+      {(result: any) => {
+        const { data, loading, error } = result;
         if (error) {
           return (
             <PageSubSection
-              header={t(
-                'admin.countingSection.countingsSubsection.header'
-              )}
+              header={t('admin.countingSection.countingsSubsection.header')}
             >
               {t(
                 'admin.countingSection.countingsSubsection.errors.couldNotLoadCountings'
@@ -42,9 +41,7 @@ const CountingSectionCounts: React.FunctionComponent<IProps> = ({
         if (loading) {
           return (
             <PageSubSection
-              header={t(
-                'admin.countingSection.countingsSubsection.header'
-              )}
+              header={t('admin.countingSection.countingsSubsection.header')}
             >
               <Spinner darkStyle />
             </PageSubSection>

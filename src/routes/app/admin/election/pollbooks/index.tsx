@@ -159,9 +159,10 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
         variables={{ id: this.props.groupId }}
         fetchPolicy="network-only"
       >
-        {({ data, loading, error, refetch }) => {
+        {(result: any) => {
+          const { data, loading, error, refetch } = result;
           if (error) {
-            return 'Error';
+            return <div>error</div>;
           }
           if (loading) {
             return (
@@ -186,9 +187,9 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
           const pollBookRadioButtonOptions: any = {};
 
           elections
-            .filter(e => e.active)
+            .filter((e) => e.active)
             .forEach((e: Election) => {
-              e.pollbooks.forEach(pollBook => {
+              e.pollbooks.forEach((pollBook) => {
                 pollBooks.push(pollBook);
                 pollBookDict[pollBook.id] = pollBook;
                 pollBookOptions.push({
@@ -203,8 +204,8 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
               });
             });
           const voterGroupActionPanels: JSX.Element[] = [];
-          elections.forEach(e => {
-            e.pollbooks.forEach(pollbook => {
+          elections.forEach((e) => {
+            e.pollbooks.forEach((pollbook) => {
               voterGroupActionPanels.push(
                 <VoterGroupActionPanel
                   key={pollbook.id}
@@ -298,7 +299,7 @@ class ElectionGroupCensuses extends React.Component<IProps, IState> {
                   mutation={deleteVotersInPollbook}
                   refetchQueries={refetchQueries}
                 >
-                  {del => {
+                  {(del: any) => {
                     const deletePollbookAndClose = () => {
                       del({
                         variables: {

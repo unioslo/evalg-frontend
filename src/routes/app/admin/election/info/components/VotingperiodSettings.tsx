@@ -38,7 +38,7 @@ const updateVotingPeriods = gql`
 `;
 
 const buildInitialValues = (elecs: Election[]) => {
-  const elections = elecs.map(e => ({
+  const elections = elecs.map((e) => ({
     id: e.id,
     name: e.name,
     startDate: ISODateTimeToTimeZoneAdjustedISODate(e.start),
@@ -72,9 +72,9 @@ const buildSubmitPayload = (submitValues: any): IVotingPeriodSettings => ({
 
 const refetchQueriesFunction = () => ['electionGroup'];
 
-const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
+const ActiveComponent: React.SFC<IActiveComponentProps> = (props) => {
   const { electionGroupData } = props;
-  const activeElections = electionGroupData.elections.filter(e => e.active);
+  const activeElections = electionGroupData.elections.filter((e) => e.active);
 
   return (
     <Mutation
@@ -82,7 +82,7 @@ const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
       refetchQueries={refetchQueriesFunction}
       awaitRefetchQueries
     >
-      {(mutation, { data }) => {
+      {(mutation: any) => {
         const handleSubmit = async (submitValues: any) => {
           await mutation({ variables: buildSubmitPayload(submitValues) });
           props.submitAction();
@@ -100,9 +100,9 @@ const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
   );
 };
 
-const InactiveComponent: React.SFC<IInactiveComponentProps> = props => {
-  const { electionGroupData } = props;
-  const activeElections = electionGroupData.elections.filter(e => e.active);
+const InactiveComponent: React.SFC<IInactiveComponentProps> = (props) => {
+  const { electionGroupData } = props;
+  const activeElections = electionGroupData.elections.filter((e) => e.active);
 
   return (
     <VotingPeriodValues

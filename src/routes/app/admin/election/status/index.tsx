@@ -30,7 +30,7 @@ interface CategorizedVoters {
 const StatusPage: React.FunctionComponent<IProps> = ({
   electionGroup,
   refetchElectionGroupFunction,
-  t
+  t,
 }) => {
   const scrollToStatusRef = React.useRef<HTMLDivElement>(null);
   const getCategorizedVoters = (selfAddedVoters: any) => {
@@ -91,7 +91,7 @@ const StatusPage: React.FunctionComponent<IProps> = ({
           variables={{ id: electionGroup.id }}
           fetchPolicy="network-only"
         >
-          {selfAddedVoters => {
+          {(selfAddedVoters: any) => {
             const categorizedVoters = getCategorizedVoters(selfAddedVoters);
             return (
               <Query
@@ -104,14 +104,14 @@ const StatusPage: React.FunctionComponent<IProps> = ({
                 }}
                 fetchPolicy="network-only"
               >
-                {adminAddedRejectedVoters => {
+                {(adminAddedRejectedVoters: any) => {
                   return (
                     <Query
                       query={personsWithMultipleVerifiedVotersQuery}
                       variables={{ id: electionGroup.id }}
                       fetchPolicy="network-only"
                     >
-                      {personsWithMultipleVerifiedVoters => {
+                      {(personsWithMultipleVerifiedVoters: any) => {
                         return (
                           <>
                             <VotesSection

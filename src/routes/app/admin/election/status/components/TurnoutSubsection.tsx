@@ -68,7 +68,8 @@ const TurnoutSubsection: React.FunctionComponent<IProps> = ({
           fetchPolicy="network-only"
           pollInterval={doPolling ? POLL_INTERVAL_MS : 0}
         >
-          {({ data, loading, error }) => {
+          {(result: any) => {
+            const { data, loading, error } = result;
             if (loading) {
               return <Loading />;
             }
@@ -81,20 +82,22 @@ const TurnoutSubsection: React.FunctionComponent<IProps> = ({
               );
             }
 
-            const { electionGroup } = data;
+            const { electionGroup } = data;
 
             return electionGroup.type === 'single_election'
-              ? electionGroup.elections[0].pollbooks.map((pollbook: IPollBook) => (
-                  <TurnoutRow
-                    key={pollbook.id}
-                    pollbookName={pollbook.name[lang]}
-                    votersCount={Number(pollbook.verifiedVotersCount)}
-                    votersWithVotesCount={Number(
-                      pollbook.verifiedVotersWithVotesCount
-                    )}
-                    classes={classes}
-                  />
-                ))
+              ? electionGroup.elections[0].pollbooks.map(
+                  (pollbook: IPollBook) => (
+                    <TurnoutRow
+                      key={pollbook.id}
+                      pollbookName={pollbook.name[lang]}
+                      votersCount={Number(pollbook.verifiedVotersCount)}
+                      votersWithVotesCount={Number(
+                        pollbook.verifiedVotersWithVotesCount
+                      )}
+                      classes={classes}
+                    />
+                  )
+                )
               : electionGroup.elections
                   .filter((election: Election) => election.active)
                   .map((election: Election) => (

@@ -2,6 +2,7 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { Query, WithApolloClient, withApollo } from 'react-apollo';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet';
 
 import Loading from 'components/loading';
 import { Page } from 'components/page';
@@ -15,7 +16,6 @@ import Receipt from './components/Receipt';
 import Error from './components/Error';
 import VotingStepper, { VotingStep } from './components/VotingStepper';
 import VoterGroupSelect from '../voterGroupSelect';
-import Helmet from 'react-helmet';
 
 const getElectionGroupVotingData = gql`
   query ElectionGroupVotingData($id: UUID!) {
@@ -62,7 +62,7 @@ const votingStepTranslateKey = {
   2: 'voter.stepperStep2',
   3: 'voter.stepperStep3',
   4: 'voter.stepperStep4',
-}
+};
 
 export enum BallotStep {
   FillOutBallot,
@@ -183,19 +183,20 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
         ? BallotStep.ReviewBallot
         : BallotStep.FillOutBallot;
 
-    const currentStepText = this.props.t(votingStepTranslateKey[currentStep])
+    const currentStepText = this.props.t(votingStepTranslateKey[currentStep]);
 
     return (
       <Query
         query={getElectionGroupVotingData}
         variables={{ id: this.props.electionGroupId }}
       >
-        {({ data, loading, error, client }) => {
+        {(result: any) => {
+          const { data, loading, error } = result;
           if (loading) {
             return <Loading />;
           }
           if (error) {
-            return 'Error';
+            return <div>Error</div>;
           }
 
           const { electionGroup } = data;
@@ -206,7 +207,7 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
 
           let VotingComponent: any;
           if (this.state.voteElection) {
-            const { voteElection } = this.state;
+            const { voteElection } = this.state;
             const { candidateType, countingRules } = voteElection.meta;
             const { voting } = voteElection.meta.ballotRules;
 
@@ -289,4 +290,4 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
   }
 }
 
-export default withTranslation()(withApollo(VotingPage));
+export default withTranslation()(withApollo<IProps, IState>(VotingPage));

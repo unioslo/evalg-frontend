@@ -2,7 +2,7 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import injectSheet from 'react-jss';
-import { Trans, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import { NotFound, ErrorPageSection } from 'components/errors';
 import Loading from 'components/loading';
@@ -60,11 +60,12 @@ const styles = (theme: any) => ({
   },
 });
 
-const AdminFrontPage = (props: any) => {
-  const { t } = props;
+const AdminFrontPage = () => {
+  const { t } = useTranslation();
   return (
     <Query query={viewerElectionGroupsQuery} fetchPolicy="network-only">
-      {({ loading, error, data }) => {
+      {(result: any) => {
+        const { loading, error, data } = result;
         if (loading) {
           return <Loading />;
         }
@@ -107,7 +108,7 @@ const AdminFrontPage = (props: any) => {
             </PageSection>
             <PageSection
               noBorder
-              header={<Trans>election.manageableElections</Trans>}
+              header={<>{t('election.manageableElections')}</>}
             >
               <ManageElectionsTable
                 electionGroups={electionGroupsWithOrderedElections}
@@ -120,4 +121,4 @@ const AdminFrontPage = (props: any) => {
   );
 };
 
-export default injectSheet(styles)(withTranslation()(AdminFrontPage));
+export default injectSheet(styles)(AdminFrontPage);

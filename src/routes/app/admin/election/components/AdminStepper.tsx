@@ -45,7 +45,7 @@ const AdminStepper: React.FunctionComponent<IProps> = (props: IProps) => {
   return (
     <>
       <Query query={electionGroupNameQuery} variables={{ id: groupId }}>
-        {({ data }) => {
+        {({ data }: { data: any }) => {
           if (data && data.electionGroup) {
             const electionGroupName = data.electionGroup.name[i18n.language];
             return (

@@ -168,7 +168,7 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
   };
 
   checkIfAllowedToActivateKey = () => {
-    this.setState(currState => ({
+    this.setState((currState) => ({
       isAllowedToActivateKey:
         currState.hasDownloadedKey && currState.isCheckboxChecked,
     }));
@@ -292,7 +292,9 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
     //const { couldNotBackupKey } = this.state;
     if (couldNotBackupKey) {
       this.setState({ isActivatingKey: false });
-      this.showError(t('admin.electionKey.errors.backend.couldNotCreateBackup'));
+      this.showError(
+        t('admin.electionKey.errors.backend.couldNotCreateBackup')
+      );
       return;
     }
 
@@ -407,7 +409,7 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
         onClick={() => {
           if (hasDownloadedKey) {
             this.setState(
-              currState => ({
+              (currState) => ({
                 isCheckboxChecked: !currState.isCheckboxChecked,
               }),
               this.checkIfAllowedToActivateKey
@@ -509,5 +511,5 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
 }
 
 export default injectSheet(styles)(
-  withTranslation()(withApollo(CreateElectionKeyModal))
+  withTranslation()(withApollo<PropsInternal, IState>(CreateElectionKeyModal))
 );
