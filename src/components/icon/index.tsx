@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import injectSheet from 'react-jss';
+import withStyles, { WithStylesProps } from 'react-jss';
 import { Classes } from 'jss';
 
 const getIcon = (
@@ -383,7 +383,7 @@ const getIcon = (
         </svg>
       );
     default:
-      if (process.env['NODE_ENV'] !== 'production') {
+      if (process.env.NODE_ENV !== 'production') {
         console.error(`Icon not found: ${type}`);
       }
       return <span>Icon not found: {type}</span>;
@@ -403,18 +403,19 @@ const styles = (theme: any) => ({
     '&:hover': {
       cursor: 'pointer',
     },
-    [`@media (hover: hover) and ${theme.breakpoints.mdQuery}`]: {
-      // to avoid "sticky" hover effects on mobile
-      '&:hover': {
-        '& circle': {
-          strokeWidth: '3px',
-          stroke: theme.colors.darkTurquoise,
-        },
-        '& rect': {
-          fill: theme.colors.darkTurquoise,
-        },
-      },
-    },
+    // TODO: media queries does not work.
+    // [`@media (hover: hover) and ${theme.breakpoints.mdQuery}`]: {
+    //   // to avoid "sticky" hover effects on mobile
+    //   '&:hover': {
+    //     '& circle': {
+    //       strokeWidth: '3px',
+    //       stroke: theme.colors.darkTurquoise,
+    //     },
+    //     '& rect': {
+    //       fill: theme.colors.darkTurquoise,
+    //     },
+    //   },
+    // },
   },
   arrowSmall: {
     width: '14px',
@@ -423,6 +424,14 @@ const styles = (theme: any) => ({
   arrowSmallPolygon: {
     fill: theme.dropDownArrowColor,
   },
+  backArrow: {
+    width: '17px',
+    height: '12px',
+    fill: theme.backArrowColor,
+  },
+  checkMark: {
+    fill: 'green',
+  },
   clipBoard: {
     height: '22px',
     width: '22px',
@@ -430,17 +439,16 @@ const styles = (theme: any) => ({
     position: 'relative',
     top: '-3px',
   },
-  iconContainer: {
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  marginRight: {
-    marginRight: '0.8rem',
+  closeMsgBox: {
+    width: '26px',
+    height: '26px',
   },
   forwardArrow: {
     width: '22px',
     height: '22px',
+  },
+  download: {
+    fill: 'white',
   },
   forwardArrowCircle: {
     fill: theme.forwardArrowColorBg,
@@ -448,10 +456,11 @@ const styles = (theme: any) => ({
   forwardArrowArrow: {
     fill: theme.forwardArrowColor,
   },
-  backArrow: {
-    width: '17px',
-    height: '12px',
-    fill: theme.backArrowColor,
+  gray: {
+    fill: '#6EAEBB',
+  },
+  grayStroke: {
+    stroke: '#6EAEBB',
   },
   help: {
     height: '28px',
@@ -461,10 +470,22 @@ const styles = (theme: any) => ({
     height: '20px',
     width: '20px',
   },
+  iconContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  infoMsgBox: {
+    width: '22px',
+    height: '20px',
+  },
   mainArrow: {
     width: '16px',
     height: '16px',
     fill: theme.mainArrowColor,
+  },
+  marginRight: {
+    marginRight: '0.8rem',
   },
   plusCircle: {
     stroke: theme.colors.lightTurquoise,
@@ -489,15 +510,15 @@ const styles = (theme: any) => ({
     '&:hover': {
       cursor: 'pointer',
     },
-    [`@media (hover: hover) and ${theme.breakpoints.mdQuery}`]: {
-      // to avoid "sticky" hover effects on mobile
-      '&:hover': {
-        '& circle': {
-          strokeWidth: '5px',
-          stroke: theme.colors.darkTurquoise,
-        },
-      },
-    },
+    // [`@media (hover: hover) and ${theme.breakpoints.mdQuery}`]: {
+    //   // to avoid "sticky" hover effects on mobile
+    //   '&:hover': {
+    //     '& circle': {
+    //       strokeWidth: '5px',
+    //       stroke: theme.colors.darkTurquoise,
+    //     },
+    //   },
+    // },
     '& .checkMarkPath': {
       transform: 'translate(8px, 11px) scale(1.5)',
     },
@@ -512,6 +533,13 @@ const styles = (theme: any) => ({
     height: '32px',
     width: '32px',
   },
+  rankCircle: {
+    height: '42px',
+    width: '42px',
+  },
+  rankCircleFill: {
+    fill: theme.colors.darkTurquoise,
+  },
   remove: {
     height: '25px',
   },
@@ -525,21 +553,6 @@ const styles = (theme: any) => ({
     position: 'relative',
     top: '-7px',
   },
-  star: {
-    height: '22px',
-  },
-  starSmall: {
-    height: '16px !important',
-  },
-  white: {
-    fill: theme.colors.whiteGray,
-  },
-  gray: {
-    fill: '#6EAEBB',
-  },
-  teal: {
-    fill: theme.colors.darkTurquoise,
-  },
   smallCircle: {
     height: '36px !important',
     width: '36px !important',
@@ -548,58 +561,53 @@ const styles = (theme: any) => ({
     height: '14px !important',
     width: '16px !important',
   },
-  rankCircle: {
-    height: '42px',
-    width: '42px',
+  star: {
+    height: '22px',
   },
-  rankCircleFill: {
+  starSmall: {
+    height: '16px !important',
+  },
+  teal: {
     fill: theme.colors.darkTurquoise,
   },
   tealStroke: {
     stroke: theme.colors.darkTurquoise,
   },
+  white: {
+    fill: theme.colors.whiteGray,
+  },
   whiteStroke: {
     stroke: theme.colors.whiteGray,
-  },
-  grayStroke: {
-    stroke: '#6EAEBB',
-  },
-  infoMsgBox: {
-    width: '22px',
-    height: '20px',
-  },
-  closeMsgBox: {
-    width: '26px',
-    height: '26px',
-  },
-  checkMark: {
-    fill: 'green',
   },
   xMark: {
     fill: 'red',
   },
-  download: {
-    fill: 'white',
-  },
 });
 
-interface IProps {
+interface IProps extends WithStylesProps<typeof styles> {
   type: string;
   marginRight?: boolean;
   onClick?: (event: React.MouseEvent<any, MouseEvent>) => void;
-  classes: Classes;
   custom?: any;
   elementType?: string;
   title?: string;
 }
 
 const Icon = (props: IProps) => {
-  const { type, classes, custom, title } = props;
+  const {
+    type,
+    classes,
+    custom,
+    title,
+    onClick,
+    marginRight,
+    elementType,
+  } = props;
   const icon = getIcon(type, classes, custom, title);
   const cls = classNames({
-    'button-no-style': props.onClick,
+    'button-no-style': onClick,
     [classes.iconContainer]: true,
-    [classes.marginRight]: props.marginRight,
+    [classes.marginRight]: marginRight,
   });
   const handleClick = (event: React.MouseEvent<any, MouseEvent>) => {
     event.preventDefault();
@@ -607,9 +615,9 @@ const Icon = (props: IProps) => {
       props.onClick(event);
     }
   };
-  if (props.elementType === 'button' || (props.onClick && !props.elementType)) {
+  if (elementType === 'button' || (onClick && !elementType)) {
     return (
-      <button className={cls} onClick={handleClick}>
+      <button type="button" className={cls} onClick={handleClick}>
         {icon}
       </button>
     );
@@ -621,4 +629,4 @@ const Icon = (props: IProps) => {
   );
 };
 
-export default injectSheet(styles)(Icon);
+export default withStyles(styles)(Icon);
