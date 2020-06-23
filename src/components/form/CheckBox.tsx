@@ -60,7 +60,7 @@ const styles = (theme: any) => ({
   },
 });
 
-interface IPropsTest extends WithStylesProps<typeof styles> {
+interface IProps extends WithStylesProps<typeof styles> {
   checked?: boolean;
   disabled?: boolean;
   label?: any;
@@ -71,7 +71,7 @@ interface IPropsTest extends WithStylesProps<typeof styles> {
   value: any;
 }
 
-const CheckBox = (props: IPropsTest) => {
+const CheckBox = (props: IProps) => {
   const {
     checked,
     classes,
