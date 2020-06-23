@@ -168,7 +168,7 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
   };
 
   checkIfAllowedToActivateKey = () => {
-    this.setState((currState) => ({
+    this.setState(currState => ({
       isAllowedToActivateKey:
         currState.hasDownloadedKey && currState.isCheckboxChecked,
     }));
@@ -409,7 +409,7 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
         onClick={() => {
           if (hasDownloadedKey) {
             this.setState(
-              (currState) => ({
+              currState => ({
                 isCheckboxChecked: !currState.isCheckboxChecked,
               }),
               this.checkIfAllowedToActivateKey
@@ -419,9 +419,11 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
       >
         <CheckBox
           value={isCheckboxChecked}
+          checked={isCheckboxChecked}
           label={<Trans>admin.electionKey.modalCheckboxLabel</Trans>}
           disabled={!hasDownloadedKey}
           onChange={() => null}
+          onBlur={() => null}
         />
       </div>
     );

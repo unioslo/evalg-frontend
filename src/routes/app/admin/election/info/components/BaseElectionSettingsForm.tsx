@@ -13,10 +13,10 @@ import {
   TableHeaderRow,
   TableRow,
 } from 'components/table';
-import { CheckBoxRF } from 'components/form';
+import { CheckBox } from 'components/form';
 import { NumberInputRF, FormButtons } from 'components/form';
 import { PageSubSection } from 'components/page';
-import { ElectionBaseSettingsInput, ElectionGroup } from 'interfaces';
+import { ElectionBaseSettingsInput, ElectionGroup, Election } from 'interfaces';
 
 export interface IElectionsBaseSettings {
   elections: ElectionBaseSettingsInput[];
@@ -69,15 +69,15 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
+  shouldComponentUpdate() {
+    return !this.isSubmitting;
+  }
+
   // TODO fix type here, was {elections: ElectionBaseSettingsInput[]}
   async handleFormSubmit(submitValues: any) {
     this.isSubmitting = true;
     await this.props.onSubmit(buildSubmitPayload(submitValues));
     this.isSubmitting = false;
-  }
-
-  shouldComponentUpdate() {
-    return !this.isSubmitting;
   }
 
   render() {
@@ -109,7 +109,7 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
                     </TableHeaderCell>
                   </TableHeaderRow>
                 </TableHeader>
-                <FieldArray name="elections">
+                <FieldArray<Election> name="elections">
                   {({ fields }) => (
                     <TableBody>
                       {fields.map((election, index) => {
@@ -118,10 +118,13 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
                             <TableCell>
                               <Field
                                 name={`${election}.active`}
-                                component={CheckBoxRF as any}
                                 type="checkbox"
                                 label={elections[index].name[lang]}
-                              />
+                              >
+                                {({ input, label }) => (
+                                  <CheckBox {...input} label={label} />
+                                )}
+                              </Field>
                             </TableCell>
                             <TableCell>
                               <Field
@@ -151,10 +154,11 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
               <PageSubSection header={t('election.quotas')}>
                 <Field
                   name="hasGenderQuota"
-                  component={CheckBoxRF as any}
                   type="checkbox"
                   label={t('election.hasGenderQuota')}
-                />
+                >
+                  {({ input, label }) => <CheckBox {...input} label={label} />}
+                </Field>
               </PageSubSection>
               <FormButtons
                 submitting={submitting}

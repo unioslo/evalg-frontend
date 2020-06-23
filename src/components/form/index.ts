@@ -1,4 +1,4 @@
-import { CheckBox, CheckBoxRF } from './CheckBox';
+import { CheckBox } from './CheckBox';
 import DateInput, { DateInputRF } from './DateInput';
 import { DropDown, DropDownRF } from './DropDown';
 import FormButtons from './FormButtons';
@@ -14,7 +14,6 @@ import { TableRowForm, TableRowFormFields } from './TableRowForm';
 
 export {
   CheckBox,
-  CheckBoxRF,
   DateInput,
   DateInputRF,
   DropDown,

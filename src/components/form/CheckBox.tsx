@@ -1,7 +1,6 @@
 import React from 'react';
-import injectSheet from 'react-jss';
+import injectSheet, { WithStylesProps } from 'react-jss';
 import classNames from 'classnames';
-import { Classes } from 'jss';
 
 const styles = (theme: any) => ({
   checkBoxAndLabel: {
@@ -61,34 +60,47 @@ const styles = (theme: any) => ({
   },
 });
 
-interface IProps {
-  name?: string;
-  onChange: (event: any) => void;
-  id?: string;
-  value: boolean;
-  label?: any | string;
+interface IPropsTest extends WithStylesProps<typeof styles> {
+  checked?: boolean;
   disabled?: boolean;
-  classes: Classes;
+  label?: any;
+  name?: string;
+  onBlur: (event: any) => void;
+  onChange: (event: any) => void;
+  onFocus?: (event: any) => void;
+  value: any;
 }
 
-const CheckBox: React.FunctionComponent<IProps> = props => {
-  const { name, onChange, id, value, label, disabled, classes } = props;
+const CheckBox = (props: IPropsTest) => {
+  const {
+    checked,
+    classes,
+    disabled,
+    label,
+    name,
+    onBlur,
+    onChange,
+    onFocus,
+    value,
+  } = props;
   return (
     <div className={classes.checkBoxAndLabel}>
       <div className={classes.checkBox}>
         <input
-          type="checkbox"
           name={name}
-          id={id}
-          checked={!!value}
+          id={name}
+          type="checkbox"
+          value={value}
+          checked={checked}
           onChange={onChange}
-          disabled={disabled}
+          onBlur={onBlur}
+          onFocus={onFocus}
         />
         <label
           htmlFor={name}
           className={classNames({
             [classes.iconContainer]: true,
-            disabled: disabled,
+            disabled,
           })}
         >
           <svg
@@ -100,7 +112,7 @@ const CheckBox: React.FunctionComponent<IProps> = props => {
             <path
               className={classNames({
                 [classes.iconBg]: true,
-                disabled: disabled,
+                disabled,
               })}
               d="M3.009 0A3.008 3.008 0 0 0 0 3.009V17.99A3.008 3.008
                      0 0 0 3.009 21H17.99A3.002 3.002 0 0 0 21
@@ -118,7 +130,7 @@ const CheckBox: React.FunctionComponent<IProps> = props => {
         htmlFor={name}
         className={classNames({
           [classes.label]: true,
-          disabled: disabled,
+          disabled,
         })}
       >
         {label}
@@ -129,33 +141,4 @@ const CheckBox: React.FunctionComponent<IProps> = props => {
 
 const StyledCheckBox = injectSheet(styles)(CheckBox);
 
-interface IRFProps {
-  input: {
-    name: string;
-    onChange: (event: any) => void;
-    value: boolean;
-    disabled: boolean;
-  };
-  label: any | string;
-  classes: Classes;
-}
-
-const CheckBoxRF = (props: IRFProps) => {
-  const { input, label, classes } = props;
-  const { disabled } = input;
-  return (
-    <CheckBox
-      name={input.name}
-      onChange={input.onChange}
-      id={input.name}
-      value={input.value}
-      label={label}
-      disabled={disabled}
-      classes={classes}
-    />
-  );
-};
-
-const StyledCheckBoxRF = injectSheet(styles)(CheckBoxRF);
-
-export { StyledCheckBox as CheckBox, StyledCheckBoxRF as CheckBoxRF };
+export { StyledCheckBox as CheckBox };
