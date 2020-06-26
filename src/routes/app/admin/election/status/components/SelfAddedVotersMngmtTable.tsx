@@ -168,8 +168,7 @@ const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
                               refetchQueries={refetchVoteManagementQueries}
                               awaitRefetchQueries
                             >
-                              {(result: any) => {
-                                const { undo, loading } = result;
+                              {(undo: any, { loading }: { loading: any }) => {
                                 return (
                                   <>
                                     {loading ? (
@@ -242,8 +241,7 @@ const ReviewButtons: React.FunctionComponent<ReviewButtonProps> = ({
     refetchQueries={refetchVoteManagementQueries}
     awaitRefetchQueries
   >
-    {(result: any) => {
-      const { review, loading } = result;
+    {(review: any, { loading }: { loading: any }) => {
       return (
         <div className={classes.reviewButtons}>
           <Button

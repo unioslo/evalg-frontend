@@ -9,7 +9,7 @@ export const buttonize = (
   return {
     role: 'button',
     onClick: handler,
-    tabindex: 0,
+    tabIndex: 0,
     onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === key) handler(event);
     },
