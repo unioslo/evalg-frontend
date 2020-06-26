@@ -103,36 +103,39 @@ class NewElection extends React.Component<IProps, IState> {
   public render() {
     return (
       <Query query={electionTemplateQuery}>
-        {({ data: { electionTemplate }, loading, error, client }) => (
-          <Mutation
-            mutation={createNewElectionGroupMutation}
-            onCompleted={data => this.onCreateCompleted(data, client)}
-          >
-            {createNewElectionGroup => {
-              if (loading) {
-                return 'Loading...';
-              }
-              if (error) {
-                return 'Error!';
-              }
-              return (
-                <Page header={this.props.t('election.createNewElection')}>
-                  <PageSection header={<Trans>election.selectType</Trans>}>
-                    <NewElectionForm
-                      initialValues={this.state.currentValues}
-                      updateValues={this.updateValues}
-                      electionTemplate={electionTemplate}
-                      submitAction={(values: any) =>
-                        createNewElectionGroup({ variables: values })
-                      }
-                      cancelAction={() => this.props.history.push('/admin')}
-                    />
-                  </PageSection>
-                </Page>
-              );
-            }}
-          </Mutation>
-        )}
+        {(result: any) => {
+          const { data, loading, error, client } = result;
+          return (
+            <Mutation
+              mutation={createNewElectionGroupMutation}
+              onCompleted={(data: any) => this.onCreateCompleted(data, client)}
+            >
+              {(createNewElectionGroup: any) => {
+                if (loading) {
+                  return <div>Loading...</div>;
+                }
+                if (error) {
+                  return <div>Error!</div>;
+                }
+                return (
+                  <Page header={this.props.t('election.createNewElection')}>
+                    <PageSection header={<Trans>election.selectType</Trans>}>
+                      <NewElectionForm
+                        initialValues={this.state.currentValues}
+                        updateValues={this.updateValues}
+                        electionTemplate={data.electionTemplate}
+                        submitAction={(values: any) =>
+                          createNewElectionGroup({ variables: values })
+                        }
+                        cancelAction={() => this.props.history.push('/admin')}
+                      />
+                    </PageSection>
+                  </Page>
+                );
+              }}
+            </Mutation>
+          );
+        }}
       </Query>
     );
   }

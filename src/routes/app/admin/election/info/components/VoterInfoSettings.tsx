@@ -14,7 +14,7 @@ import VoterInfoForm from './VoterInfoForm';
 import VoterInfoValues from './VoterInfoValues';
 
 const buildInitialValues = (elecs: Election[]) => {
-  const elections = elecs.map(e => ({
+  const elections = elecs.map((e) => ({
     id: e.id,
     name: e.name,
     mandatePeriodStart: e.mandatePeriodStart,
@@ -96,10 +96,10 @@ const updateVoterInfo = gql`
 
 const refetchQueriesFunction = () => ['electionGroup'];
 
-const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
+const ActiveComponent: React.SFC<IActiveComponentProps> = (props) => {
   const { electionGroupData } = props;
   const { elections } = electionGroupData;
-  const activeElections = elections.filter(e => e.active);
+  const activeElections = elections.filter((e) => e.active);
 
   return (
     <Mutation
@@ -107,7 +107,7 @@ const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
       refetchQueries={refetchQueriesFunction}
       awaitRefetchQueries
     >
-      {(mutation, { data }) => {
+      {(mutation: any) => {
         const handleSubmit = async (values: any) => {
           await mutation({ variables: buildPayload(values) });
           props.submitAction();
@@ -125,10 +125,10 @@ const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
   );
 };
 
-const InactiveComponent: React.SFC<IInactiveComponentProps> = props => {
+const InactiveComponent: React.SFC<IInactiveComponentProps> = (props) => {
   const { electionGroupData } = props;
   const { elections } = electionGroupData;
-  const activeElections = elections.filter(e => e.active);
+  const activeElections = elections.filter((e) => e.active);
 
   return (
     <VoterInfoValues

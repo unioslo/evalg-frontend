@@ -217,5 +217,5 @@ class SurplusVotesMngmt extends React.Component<PropsInternal, IState> {
 }
 
 export default injectSheet(styles)(
-  withTranslation()(withApollo(SurplusVotesMngmt))
+  withTranslation()(withApollo<IProps, IState>(SurplusVotesMngmt))
 );

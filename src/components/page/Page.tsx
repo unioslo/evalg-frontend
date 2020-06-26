@@ -1,6 +1,6 @@
 import React from 'react';
 import injectSheet from 'react-jss';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 
 interface IProps {
   header: string;
@@ -28,17 +28,20 @@ const styles = (theme: any) => ({
   },
 });
 
-const Page: React.SFC<IProps> = props => (
-  <>
-    <Helmet>
-      <title>{props.header}</title>
-    </Helmet>
-    <main className={props.classes.page}>
-      <h1 className={props.classes.header}>{props.header}</h1>
-      {props.children}
-    </main>
-  </>
-);
+const Page: React.SFC<IProps> = props => {
+  const { header, classes, children } = props;
+  return (
+    <>
+      <Helmet>
+        <title>{header}</title>
+      </Helmet>
+      <main className={classes.page}>
+        <h1 className={classes.header}>{header}</h1>
+        {children}
+      </main>
+    </>
+  );
+};
 
 const StyledPage: any = injectSheet(styles)(Page);
 

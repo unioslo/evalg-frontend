@@ -139,7 +139,7 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
     const candidates: any[] = [];
     const listDict: any = {};
     elections
-      .filter(e => e.active)
+      .filter((e) => e.active)
       .forEach((e: any) => {
         e.lists.forEach((l: any) => {
           listDict[l.id] = l;
@@ -161,17 +161,17 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
         mutation={addPrefElecCandidate}
         refetchQueries={() => ['electionGroup']}
       >
-        {addCandidate => (
+        {(addCandidate: any) => (
           <Mutation
             mutation={deleteCandidate}
             refetchQueries={() => ['electionGroup']}
           >
-            {deleteCand => (
+            {(deleteCand: any) => (
               <Mutation
                 mutation={updatePrefElecCandidate}
                 refetchQueries={() => ['electionGroup']}
               >
-                {updateCandidate => (
+                {(updateCandidate: any) => (
                   <PageSection noBorder desc={pageDesc}>
                     <ElectionButtonContainer>
                       {elections.map((election: any, index: any) => {
@@ -220,7 +220,7 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
                               <PrefElecCandForm
                                 listDict={listDict}
                                 candidate={{ listId: this.state.newFormListId }}
-                                handleSubmit={values => {
+                                handleSubmit={(values) => {
                                   addCandidate({ variables: values });
                                   this.closeNewForm();
                                 }}
@@ -246,7 +246,7 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
                                     <PrefElecCandForm
                                       listDict={listDict}
                                       candidate={candidate}
-                                      handleSubmit={values => {
+                                      handleSubmit={(values) => {
                                         updateCandidate({
                                           variables: { ...values },
                                         });

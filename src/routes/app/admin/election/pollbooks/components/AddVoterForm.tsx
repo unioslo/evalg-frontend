@@ -5,7 +5,7 @@ import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 import { Form, Field } from 'react-final-form';
 import classNames from 'classnames';
-import i18n from 'i18next';
+import { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
 
 import { TableRow, TableCell } from 'components/table';
@@ -56,7 +56,7 @@ interface AddVoterFormProps {
   classes: Classes;
 }
 
-const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
+const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = (props) => {
   const { classes } = props;
 
   const [feedback, setFeedback] = useState({ text: '', isBackendError: false });
@@ -74,8 +74,11 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
     <>
       <TableRow verticalPadding>
         <TableCell colspan={4}>
-          <Mutation mutation={addVoterByIdentifier} refetchQueries={refetchQueries}>
-            {add => {
+          <Mutation
+            mutation={addVoterByIdentifier}
+            refetchQueries={refetchQueries}
+          >
+            {(add: any) => {
               const addPersonAndSetFeedback = async (values: any) => {
                 const { idValue } = values;
                 if (!idValue) return;
@@ -117,7 +120,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
                 <Form
                   onSubmit={addPersonAndSetFeedback}
                   validate={validate(lang, t)}
-                  render={formProps => {
+                  render={(formProps) => {
                     const {
                       handleSubmit,
                       errors,
@@ -214,7 +217,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = props => {
   );
 };
 
-const validate = (lang: string, t: i18n.TFunction) => (values: object) => {
+const validate = (lang: string, t: TFunction) => (values: object) => {
   if (!values.hasOwnProperty('idValue')) {
     return {};
   }

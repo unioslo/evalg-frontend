@@ -83,7 +83,7 @@ interface IProps {
   iconLeft?: string;
   iconRight?: string;
   smallText?: boolean;
-  type?: string;
+  type?: 'button' | 'reset' | 'submit' | undefined;
   wide?: boolean;
   fillWidth?: boolean;
   centerContent?: boolean;
@@ -92,7 +92,7 @@ interface IProps {
   classes: Classes;
 }
 
-const Button: React.SFC<IProps> = props => {
+const Button: React.SFC<IProps> = (props) => {
   const { classes } = props;
   const btnClassNames = classNames({
     [classes.button]: true,
@@ -109,7 +109,7 @@ const Button: React.SFC<IProps> = props => {
   return (
     <button
       onClick={props.action}
-      type={props.type ? props.type : "button"}
+      type={props.type ? props.type : 'button'}
       disabled={props.disabled}
       className={btnClassNames}
     >

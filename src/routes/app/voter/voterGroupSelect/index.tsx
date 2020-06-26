@@ -134,7 +134,7 @@ type IState = {
 class VoterGroupSelectPage extends React.Component<
   WithApolloClient<IProps>,
   IState
-  > {
+> {
   readonly state = {
     selectedPollBookIndex: 0,
     notInPollBookJustification: '',
@@ -459,5 +459,5 @@ class VoterGroupSelectPage extends React.Component<
 }
 
 export default injectSheet(styles)(
-  withTranslation()(withApollo(VoterGroupSelectPage))
+  withTranslation()(withApollo<IProps, IState>(VoterGroupSelectPage))
 );

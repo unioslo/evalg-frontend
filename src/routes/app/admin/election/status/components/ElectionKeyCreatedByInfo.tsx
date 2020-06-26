@@ -27,31 +27,32 @@ interface Props {
 const ElectionKeyCreatedByInfo: React.FunctionComponent<Props> = ({
   electionGroupId,
 }) => (
-    <Query query={electionGroupKeyMetaQuery} variables={{ id: electionGroupId }}>
-      {({ loading, error, data }) => {
-        if (error) {
-          return null;
-        }
-        if (loading || !data) {
-          return null;
-        }
+  <Query query={electionGroupKeyMetaQuery} variables={{ id: electionGroupId }}>
+    {(result: any) => {
+      const { loading, error, data } = result;
+      if (error) {
+        return null;
+      }
+      if (loading || !data) {
+        return null;
+      }
 
-        const { generatedAt, generatedBy } = data.electionGroupKeyMeta;
-        let who = '';
+      const { generatedAt, generatedBy } = data.electionGroupKeyMeta;
+      let who = '';
 
-        if (generatedBy && generatedBy.identifiers !== null) {
-          who = idValueForPerson(generatedBy);
-        }
+      if (generatedBy && generatedBy.identifiers !== null) {
+        who = idValueForPerson(generatedBy);
+      }
 
-        return (
-          <>
-            <span>{who}</span> (
+      return (
+        <>
+          <span>{who}</span> (
           <Date dateTime={generatedAt} longDate />{' '}
-            <Time dateTime={generatedAt} />)
+          <Time dateTime={generatedAt} />)
         </>
-        );
-      }}
-    </Query>
-  );
+      );
+    }}
+  </Query>
+);
 
 export default ElectionKeyCreatedByInfo;

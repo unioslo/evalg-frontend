@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Trans, useTranslation } from 'react-i18next';
-import i18next from 'i18next';
+import { TFunction } from 'i18next';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
@@ -113,7 +113,12 @@ const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
                 variables={{ voterId: voter.id }}
                 key={voter.id}
               >
-                {({ data, loading: personForVoterLoading, error }) => {
+                {(result: any) => {
+                  const {
+                    data,
+                    loading: personForVoterLoading,
+                    error,
+                  } = result;
                   let displayNameElement;
 
                   if (error) {
@@ -163,7 +168,8 @@ const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
                               refetchQueries={refetchVoteManagementQueries}
                               awaitRefetchQueries
                             >
-                              {(undo, { loading }) => {
+                              {(result: any) => {
+                                const { undo, loading } = result;
                                 return (
                                   <>
                                     {loading ? (
@@ -220,7 +226,7 @@ interface ReviewButtonProps {
   voterId: string;
   selectedVoterId: string;
   setSelectedVoterId: (voterId: string) => void;
-  t: i18next.TFunction;
+  t: TFunction;
   classes: Classes;
 }
 
@@ -236,7 +242,8 @@ const ReviewButtons: React.FunctionComponent<ReviewButtonProps> = ({
     refetchQueries={refetchVoteManagementQueries}
     awaitRefetchQueries
   >
-    {(review, { loading }) => {
+    {(result: any) => {
+      const { review, loading } = result;
       return (
         <div className={classes.reviewButtons}>
           <Button
@@ -285,7 +292,7 @@ const ReviewButtons: React.FunctionComponent<ReviewButtonProps> = ({
 interface VoterDetailsProps {
   voter: IVoter;
   displayNameElement: React.ReactNode;
-  t: i18next.TFunction;
+  t: TFunction;
   classes: Classes;
 }
 

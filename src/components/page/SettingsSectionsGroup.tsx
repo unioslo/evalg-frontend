@@ -1,12 +1,13 @@
 import React from 'react';
 import injectSheet from 'react-jss';
+import { Classes } from 'jss';
 
+import { ElectionGroup } from 'interfaces';
 import {
   SettingsSectionDisplayStatus,
   ISettingsSectionContents,
 } from './SettingsSection';
 import { SettingsSection } from '.';
-import { ElectionGroup } from 'interfaces';
 
 const styles = (theme: any) => ({});
 
@@ -32,6 +33,7 @@ interface IProps {
   startWithDirectedFlowActive: boolean;
   initialDisplayStatuses?: SettingsSectionDisplayStatus[];
   onSettingsWasSaved: () => void;
+  classes: Classes;
 }
 
 interface IState {

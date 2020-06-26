@@ -27,6 +27,7 @@ interface IProps extends FieldRenderProps<string, any> {
   placeholder: any;
   isSearchable?: boolean;
   large?: boolean;
+  input: any;
 }
 
 class SelectDropDown extends React.Component<IProps> {

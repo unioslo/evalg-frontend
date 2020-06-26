@@ -157,8 +157,8 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
       )}
 
       {electionResults
-        .filter(electionResult => electionResult.election.active)
-        .map(electionResult => {
+        .filter((electionResult) => electionResult.election.active)
+        .map((electionResult) => {
           const { election } = electionResult;
           const electionName = election.name[lang];
 
@@ -172,22 +172,32 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
               <div className={classes.electionResultFileDownloads}>
                 <ButtonContainer>
                   <Button
-                    action={e => {
+                    action={(e) => {
                       e.preventDefault();
                       handleDownloadCountingProtocol(
                         apolloClient,
                         electionResult.id
                       );
                     }}
-                    text={<span>{t('general.download')} {t('admin.countingDetails.countingProtocol')} (TXT)</span>}
+                    text={
+                      <span>
+                        {t('general.download')}{' '}
+                        {t('admin.countingDetails.countingProtocol')} (TXT)
+                      </span>
+                    }
                     secondary
                   />
                   <Button
-                    action={e => {
+                    action={(e) => {
                       e.preventDefault();
                       handleDownloadBallots(apolloClient, electionResult.id);
                     }}
-                    text={<span>{t('general.download')} {t('admin.countingDetails.ballots')} (JSON)</span>}
+                    text={
+                      <span>
+                        {t('general.download')}{' '}
+                        {t('admin.countingDetails.ballots')} (JSON)
+                      </span>
+                    }
                     secondary
                   />
                 </ButtonContainer>
@@ -202,4 +212,4 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
   );
 };
 
-export default injectSheet(styles)(withApollo(CountDetails));
+export default injectSheet(styles)(withApollo<IProps>(CountDetails));

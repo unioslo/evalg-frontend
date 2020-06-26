@@ -52,4 +52,4 @@ const Logout: React.FunctionComponent<WithApolloClient<IProps>> = ({
     </div>
   );
 };
-export default injectSheet(styles)(withApollo(Logout));
+export default injectSheet(styles)(withApollo<IProps>(Logout));

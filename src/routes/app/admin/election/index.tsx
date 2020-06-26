@@ -102,7 +102,8 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => {
         variables={{ id: match.params.groupId }}
         fetchPolicy="network-only"
       >
-        {({ data, loading, error, refetch }) => {
+        {(results: any) => {
+          const { data, loading, error, refetch } = results;
           if (loading) {
             return (
               <div style={{ marginTop: '5rem' }}>
@@ -129,7 +130,7 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => {
               <Route
                 exact
                 path="/admin/elections/:groupId/info"
-                render={routeProps => (
+                render={(routeProps) => (
                   <InfoPage
                     electionGroupData={egWithOrderedElections}
                     history={routeProps.history}
@@ -138,7 +139,7 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => {
               />
               <Route
                 path="/admin/elections/:groupId/candidates"
-                render={routeProps => (
+                render={(routeProps) => (
                   <CandidatesPage
                     electionGroup={egWithOrderedElections}
                     {...routeProps}
@@ -147,7 +148,7 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => {
               />
               <Route
                 path="/admin/elections/:groupId/pollbooks"
-                render={routeProps => (
+                render={(routeProps) => (
                   <PollbooksPage
                     groupId={match.params.groupId}
                     {...routeProps}
@@ -156,7 +157,7 @@ const AdminElection: React.SFC<IProps> = (props: IProps) => {
               />
               <Route
                 path="/admin/elections/:groupId/status"
-                render={routeProps => (
+                render={(routeProps) => (
                   <StatusPage
                     electionGroup={egWithOrderedElections}
                     refetchElectionGroupFunction={refetch}

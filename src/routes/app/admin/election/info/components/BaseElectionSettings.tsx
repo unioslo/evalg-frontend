@@ -32,7 +32,7 @@ const updateBaseSettings = gql`
 
 const refetchQueriesFunction = () => ['electionGroup'];
 
-const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
+const ActiveComponent: React.SFC<IActiveComponentProps> = (props) => {
   const { electionGroupData } = props;
 
   if (electionGroupData.type !== 'multiple_elections') {
@@ -45,7 +45,7 @@ const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
       refetchQueries={refetchQueriesFunction}
       awaitRefetchQueries
     >
-      {(mutation, { data }) => {
+      {(mutation: any) => {
         const handleSubmit = async (
           electionBaseSettings: IElectionsBaseSettings
         ) => {
@@ -65,7 +65,7 @@ const ActiveComponent: React.SFC<IActiveComponentProps> = props => {
   );
 };
 
-const InactiveComponent: React.SFC<IInactiveComponentProps> = props => {
+const InactiveComponent: React.SFC<IInactiveComponentProps> = (props) => {
   const { electionGroupData } = props;
 
   if (electionGroupData.type !== 'multiple_elections') {

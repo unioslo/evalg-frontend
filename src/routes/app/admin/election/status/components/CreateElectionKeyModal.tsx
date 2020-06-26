@@ -292,7 +292,9 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
     //const { couldNotBackupKey } = this.state;
     if (couldNotBackupKey) {
       this.setState({ isActivatingKey: false });
-      this.showError(t('admin.electionKey.errors.backend.couldNotCreateBackup'));
+      this.showError(
+        t('admin.electionKey.errors.backend.couldNotCreateBackup')
+      );
       return;
     }
 
@@ -417,9 +419,11 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
       >
         <CheckBox
           value={isCheckboxChecked}
+          checked={isCheckboxChecked}
           label={<Trans>admin.electionKey.modalCheckboxLabel</Trans>}
           disabled={!hasDownloadedKey}
           onChange={() => null}
+          onBlur={() => null}
         />
       </div>
     );
@@ -509,5 +513,5 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
 }
 
 export default injectSheet(styles)(
-  withTranslation()(withApollo(CreateElectionKeyModal))
+  withTranslation()(withApollo<PropsInternal, IState>(CreateElectionKeyModal))
 );

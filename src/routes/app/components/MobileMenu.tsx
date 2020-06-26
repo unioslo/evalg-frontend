@@ -1,9 +1,11 @@
 import React from 'react';
-import injectSheet from 'react-jss';
+import injectSheet, { WithStylesProps } from 'react-jss';
 import { Trans } from 'react-i18next';
-import { Classes } from 'jss';
 
 const styles = (theme: any) => ({
+  inner: {
+    // TODO: Used in the code but not defined in styles?
+  },
   mobileMenu: {
     color: theme.navMenuTextColor,
     fontSize: theme.navFontSize,
@@ -45,7 +47,7 @@ const styles = (theme: any) => ({
     top: '3rem',
     width: '28rem',
     right: '0',
-    zIndex: '10'
+    zIndex: '10',
   },
   menuListItem: {
     borderTop: `1px solid ${theme.borderColor}`,
@@ -57,8 +59,7 @@ const styles = (theme: any) => ({
   },
 });
 
-interface IProps {
-  classes: Classes;
+interface IProps extends WithStylesProps<typeof styles> {
   placeholder?: string;
 }
 

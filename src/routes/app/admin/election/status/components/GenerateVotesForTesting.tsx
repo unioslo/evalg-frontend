@@ -89,9 +89,9 @@ interface IProps {
   classes: Classes;
 }
 
-const GenerateVotesForTesting: React.FunctionComponent<
-  WithApolloClient<IProps>
-> = ({ electionGroup, classes, client }) => {
+const GenerateVotesForTesting: React.FunctionComponent<WithApolloClient<
+  IProps
+>> = ({ electionGroup, classes, client }) => {
   const [isWorking, setIsWorking] = useState(false);
   const [nVotesPerPollbook, setNVotesPerPollbook] = useState(
     DEFAULT_N_VOTES_PER_POLLBOOK
@@ -171,4 +171,4 @@ const GenerateVotesForTesting: React.FunctionComponent<
   );
 };
 
-export default injectSheet(styles)(withApollo(GenerateVotesForTesting));
+export default injectSheet(styles)(withApollo<IProps>(GenerateVotesForTesting));
