@@ -59,7 +59,7 @@
     "react-helmet": "^6.1.0",
     "react-i18next": "^11.7.0",
     "react-jss": "^10.3.0",
-    "react-oidc": "^0.3.2",
+    "react-oidc": "^1.0.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
@@ -71,7 +71,7 @@
     "valid-url": "^1.0.9"
   },
   "scripts": {
-    "start": "NODE_ENV=development npm run build:env && react-scripts start",
+    "start": "NODE_ENV=development npm run build:env -- --profile && react-scripts start",
     "build": "npm run build:env && react-scripts build",
     "build:env": "node scripts/build-env.js",
     "coverage": "react-scripts test --env=jsdom --coverage --color",
