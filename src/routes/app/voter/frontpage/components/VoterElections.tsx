@@ -50,7 +50,7 @@ interface IProps {
 }
 
 interface IState {
-  electionStatusFilter: string;
+  electionStatusFilter: string | null;
 }
 
 class VoterElections extends React.Component<IProps, IState> {
@@ -65,7 +65,10 @@ class VoterElections extends React.Component<IProps, IState> {
     this.setState({ electionStatusFilter: value });
   }
 
-  filterElectionGroups(electionGroups: ElectionGroup[], filter: string) {
+  filterElectionGroups(electionGroups: ElectionGroup[], filter: string | null) {
+    if (filter === null) {
+      return electionGroups;
+    }
     const statusesForFilter = {
       ongoing: ['ongoing'],
       announced: ['announced', 'published'],
@@ -118,8 +121,8 @@ class VoterElections extends React.Component<IProps, IState> {
                   defaultActiveKey="ongoing"
                   className={classes.tabs}
                   id="elections-tab"
-                  onSelect={(key: string) =>
-                    this.setState({ electionStatusFilter: key })
+                  onSelect={(eventKey: string | null) =>
+                    this.setState({ electionStatusFilter: eventKey })
                   }
                 >
                   <Tab
@@ -152,7 +155,9 @@ class VoterElections extends React.Component<IProps, IState> {
                 </Tabs>
                 <VoterElectionsTable
                   electionGroups={groups}
-                  votingRightsElectionGroups={this.props.votingRightsElectionGroups}
+                  votingRightsElectionGroups={
+                    this.props.votingRightsElectionGroups
+                  }
                   noElectionsText={noElectionsText}
                 />
               </div>
@@ -206,7 +211,9 @@ class VoterElections extends React.Component<IProps, IState> {
               </MobileDropDown>
               <VoterElectionsList
                 electionGroups={groups}
-                votingRightsElectionGroups={this.props.votingRightsElectionGroups}
+                votingRightsElectionGroups={
+                  this.props.votingRightsElectionGroups
+                }
                 noElectionsText={noElectionsText}
               />
             </div>
