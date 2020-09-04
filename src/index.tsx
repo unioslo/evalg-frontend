@@ -19,7 +19,14 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { makeAuthenticator, makeUserManager, Callback } from 'react-oidc';
 import { User } from 'oidc-client';
 
-import { oidcConfig, graphqlBackend, appVersion, sentryEnvironment, sentryDsn, sentryEnabled } from 'appConfig';
+import {
+  oidcConfig,
+  graphqlBackend,
+  appVersion,
+  sentryEnvironment,
+  sentryDsn,
+  sentryEnabled,
+} from 'appConfig';
 import Spinner from 'components/animations/Spinner';
 import { ScreenSizeProvider } from 'providers/ScreenSize';
 import { UserContextProvider } from 'providers/UserContext';
@@ -34,7 +41,7 @@ if (sentryEnabled) {
   Sentry.init({
     dsn: sentryDsn,
     environment: sentryEnvironment,
-    release: appVersion
+    release: appVersion,
   });
 }
 
@@ -49,12 +56,12 @@ const storeToken = (props: any) => (user: User) => {
   sessionStorage.removeItem('login_redirect');
 
   // Set the user scope in sentry for logged in users
-  Sentry.configureScope((scope) => {
+  Sentry.configureScope(scope => {
     scope.setUser({
-      "id": user.profile['dataporten-userid_sec'],
-      "email": user.profile['email']
+      id: user.profile['dataporten-userid_sec'],
+      email: user.profile['email'],
     });
-  })
+  });
 };
 
 const userManager = makeUserManager(oidcConfig);

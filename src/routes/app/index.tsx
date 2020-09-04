@@ -51,7 +51,7 @@ const App: React.FunctionComponent<IAppProps & RouteComponentProps> = props => {
       sessionStorage.setItem('login_redirect', props.location.pathname);
     }
     const Comp = props.component;
-    const Component = authEnabled ? authManager(<Comp />) : Comp;
+    const Component = authEnabled ? authManager(Comp) : Comp;
     return <Component />;
   };
 
@@ -109,7 +109,7 @@ const App: React.FunctionComponent<IAppProps & RouteComponentProps> = props => {
                 <Route
                   exact
                   path="/login"
-                  component={authManager(<React.Fragment />)}
+                  component={authManager(React.Fragment)}
                 />
               </Content>
             );
