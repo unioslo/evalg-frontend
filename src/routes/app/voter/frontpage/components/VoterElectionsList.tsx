@@ -34,7 +34,7 @@ interface IListItemProps {
 const VoterElectionsListItem: React.FunctionComponent<IListItemProps> = (
   props: IListItemProps
 ) => {
-  const { electionGroup, lang, hasVotingRights } = props;
+  const { electionGroup, lang, hasVotingRights, classes } = props;
   const { t } = useTranslation();
   const election = electionGroup.elections[0];
 
@@ -42,8 +42,9 @@ const VoterElectionsListItem: React.FunctionComponent<IListItemProps> = (
   // properly
   const hasVoted = false;
 
+  const showVoteLink = electionGroup.status === 'ongoing';
   return (
-    <li className={props.classes.listItem}>
+    <li className={classes.listItem}>
       <h3>
         <b>{electionGroup.name[lang]}</b>
       </h3>
@@ -65,15 +66,17 @@ const VoterElectionsListItem: React.FunctionComponent<IListItemProps> = (
           {hasVotingRights ? t('general.yes') : t('general.no')}
         </div>
       </div>
-      <ButtonContainer alignLeft>
-        <Link to={`/vote/${electionGroup.id}`}>
-          {!hasVoted ? (
-            <Button text={t('election.voteNow')} />
-          ) : (
-            <Button secondary text={t('election.changeVote')} />
-          )}
-        </Link>
-      </ButtonContainer>
+      {showVoteLink && (
+        <ButtonContainer alignLeft>
+          <Link to={`/vote/${electionGroup.id}`}>
+            {!hasVoted ? (
+              <Button text={t('election.voteNow')} />
+            ) : (
+              <Button secondary text={t('election.changeVote')} />
+            )}
+          </Link>
+        </ButtonContainer>
+      )}
     </li>
   );
 };
@@ -97,13 +100,13 @@ const VoterElectionsList: React.FunctionComponent<IListProps> = (
   }
   return (
     <ul className={classes.list}>
-      {electionGroups.map((group, index) => (
+      {electionGroups.map(group => (
         <VoterElectionsListItem
           classes={classes}
           electionGroup={group}
           hasVotingRights={props.votingRightsElectionGroups.includes(group.id)}
           lang={i18n.language}
-          key={index}
+          key={group.id}
         />
       ))}
     </ul>
