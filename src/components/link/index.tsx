@@ -84,8 +84,14 @@ const Link = (props: IProps) => {
   );
 
   if (external) {
+    const urlRegex = /^((http|https):\/\/)/;
     return (
-      <a className={cls} href={to} target="_blank" rel="noopener noreferrer">
+      <a
+        className={cls}
+        href={urlRegex.test(to) ? to : `//${to}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         {children}
         {!noExternalIcon && (
           <span className={classes.externalIcon}>{externalLinkIcon}</span>
