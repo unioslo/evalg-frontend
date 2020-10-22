@@ -6,6 +6,7 @@ import { PageSection } from 'components/page';
 import Icon from 'components/icon';
 import { ScreenSizeConsumer } from 'providers/ScreenSize';
 import { Candidate, Election } from 'interfaces';
+import Link from 'components/link';
 
 import {
   CandidateList,
@@ -59,6 +60,14 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
           <div className={classes.mandatePeriodTextMobile}>
             <MandatePeriodText election={election} />
           </div>
+          {election.informationUrl && (
+            <p>
+              <Trans>voterGroupSelect.moreAboutTheElection</Trans>:{' '}
+              <Link to={election.informationUrl} external>
+                {election.informationUrl}
+              </Link>
+            </p>
+          )}
           <HelpSubSection
             header={<Trans>voter.majorityVoteHelpHeader</Trans>}
             desc={<Trans>voter.majorityVoteHelpDesc</Trans>}
