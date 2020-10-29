@@ -7,6 +7,7 @@ import Icon from 'components/icon';
 import { PageSection } from 'components/page';
 import { ScreenSizeConsumer } from 'providers/ScreenSize';
 import { Election, Candidate } from 'interfaces';
+import Link  from 'components/link';
 
 import CandidateButtonBar from './CandidateButtonBar';
 import {
@@ -55,6 +56,36 @@ class PrefElecBallot extends React.Component<IProps, IState> {
     this.state = { activeCandIndex: -1 };
   }
 
+  selectCandidate = (index: number) => {
+    this.setState({ activeCandIndex: index });
+  };
+
+  deselectCandidate = () => {
+    this.setState({ activeCandIndex: -1 });
+  };
+
+  promoteSelectedCandidate = () => {
+    this.props.onMoveCandidate(
+      this.state.activeCandIndex,
+      this.state.activeCandIndex - 1
+    );
+    this.setState({ activeCandIndex: this.state.activeCandIndex - 1 });
+  };
+
+  demoteSelectedCandidate = () => {
+    this.props.onMoveCandidate(
+      this.state.activeCandIndex,
+      this.state.activeCandIndex + 1
+    );
+    this.setState({ activeCandIndex: this.state.activeCandIndex + 1 });
+  };
+
+  removeCandidate = () => {
+    const candidate = this.props.selectedCandidates[this.state.activeCandIndex];
+    this.props.onRemoveCandidate(candidate);
+    this.setState({ activeCandIndex: -1 });
+  };
+
   public render() {
     const {
       selectedCandidates,
@@ -101,6 +132,14 @@ class PrefElecBallot extends React.Component<IProps, IState> {
             <div className={classes.mandatePeriodTextMobile}>
               <MandatePeriodText election={election} />
             </div>
+            {election.informationUrl && (
+            <p>
+              <Trans>voterGroupSelect.moreAboutTheElection</Trans>:{' '}
+              <Link to={election.informationUrl} external>
+                {election.informationUrl}
+              </Link>
+            </p>
+            )}
             <HelpSubSection
               header={<Trans>voter.chooseCandidates</Trans>}
               desc={<Trans>voter.prefElecDesc</Trans>}
@@ -199,36 +238,6 @@ class PrefElecBallot extends React.Component<IProps, IState> {
       </ScreenSizeConsumer>
     );
   }
-
-  selectCandidate = (index: number) => {
-    this.setState({ activeCandIndex: index });
-  };
-
-  deselectCandidate = () => {
-    this.setState({ activeCandIndex: -1 });
-  };
-
-  promoteSelectedCandidate = () => {
-    this.props.onMoveCandidate(
-      this.state.activeCandIndex,
-      this.state.activeCandIndex - 1
-    );
-    this.setState({ activeCandIndex: this.state.activeCandIndex - 1 });
-  };
-
-  demoteSelectedCandidate = () => {
-    this.props.onMoveCandidate(
-      this.state.activeCandIndex,
-      this.state.activeCandIndex + 1
-    );
-    this.setState({ activeCandIndex: this.state.activeCandIndex + 1 });
-  };
-
-  removeCandidate = () => {
-    const candidate = this.props.selectedCandidates[this.state.activeCandIndex];
-    this.props.onRemoveCandidate(candidate);
-    this.setState({ activeCandIndex: -1 });
-  };
 }
 
 const styles = (theme: any) => ({
