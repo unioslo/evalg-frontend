@@ -10,6 +10,7 @@ import {
 } from 'components/form';
 import { getSupportedLanguages } from 'utils/i18n';
 import { isObjEmpty } from 'utils/helpers';
+import { getDerivedValues, getRequiredSettings } from './utils';
 
 interface IProps {
   submitAction: (v: any) => any;
@@ -21,11 +22,14 @@ interface IProps {
 
 const buildDropdownOptions = (options: any[], lang: string) => {
   // Create the drop down options
+  //if (!options) {
+  //  debugger;
+  //}
   return options
     .map((option, index) => ({
       label:
         option.name[lang] +
-        (option.externalId ? ' (' + option.externalId + ')' : ''),
+        (option.externalId ? ` ( ${option.externalId} )` : ''),
       value: index,
     }))
     .sort((a, b) => (a.label > b.label ? 1 : -1));
@@ -67,16 +71,21 @@ const getNodeListAndSettings = (currentValues: any[], templateRoot: any) => {
         nodesAdded += 1;
       } else {
         const nextNode = nextNodes[nextNodeIndex];
-        if (
-          currentValues[curValIndex] !== undefined &&
-          nextNode.options &&
-          nextNode.options[currentValues[curValIndex].value] &&
-          nextNode.options[currentValues[curValIndex].value].settings
-        ) {
-          const newSettings =
-            nextNode.options[currentValues[curValIndex].value].settings;
-          settings = Object.assign(settings, newSettings);
+        if (currentValues[curValIndex] !== undefined) {
+          // Next node is a drop down menu
+          if (
+            nextNode.options &&
+            nextNode.options[currentValues[curValIndex].value] &&
+            nextNode.options[currentValues[curValIndex].value].settings
+          ) {
+            const newSettings =
+              nextNode.options[currentValues[curValIndex].value].settings;
+            settings = Object.assign(settings, newSettings);
+          } else if (nextNode.setElectionName) {
+            settings = Object.assign(settings, nextNode.settings);
+          }
         }
+
         // If ouListsLevel is set to 1 (the root-node in the OU tree), we
         // simply skip the OU-search node
         if (
@@ -124,14 +133,53 @@ const renderOptionFields = (
       );
     } else if (node.setElectionName) {
       return (
-        <FormField key={index}>
-          <Field
-            name={`option${index + 2}name`}
-            component={TextInput as any}
-            label={node.name[lang]}
-            placeholder={t('general.select')}
-          />
-        </FormField>
+        <React.Fragment key="selectElectionName">
+          <FormField key="name-select-nb">
+            <Field
+              name={`option${index + 2}name.value.nb`}
+              label={node.name[lang].nb}
+            >
+              {props => (
+                <TextInput
+                  value={props.value}
+                  name={props.input.name}
+                  onChange={props.input.onChange}
+                  label={node.name[lang].nb}
+                />
+              )}
+            </Field>
+          </FormField>
+          <FormField key="name-select-nn">
+            <Field
+              name={`option${index + 2}name.value.nn`}
+              label={node.name[lang].nn}
+            >
+              {props => (
+                <TextInput
+                  value={props.value}
+                  name={props.input.name}
+                  onChange={props.input.onChange}
+                  label={node.name[lang].nn}
+                />
+              )}
+            </Field>
+          </FormField>
+          <FormField key="name-select-en">
+            <Field
+              name={`option${index + 2}name.value.en`}
+              label={node.name[lang].en}
+            >
+              {props => (
+                <TextInput
+                  value={props.value}
+                  name={props.input.name}
+                  onChange={props.input.onChange}
+                  label={node.name[lang].en}
+                />
+              )}
+            </Field>
+          </FormField>
+        </React.Fragment>
       );
     }
     const nodeOptions = buildDropdownOptions(node.options, lang);
@@ -149,38 +197,6 @@ const renderOptionFields = (
   });
 };
 
-const getDerivedValues = (values: any, settings: any, ouLists: any) => {
-  let ou = null;
-  let name = null;
-
-  Object.keys(values).forEach(valueName => {
-    if (valueName.endsWith('ou')) {
-      ou = values[valueName].value;
-    }
-    if (valueName.endsWith('name')) {
-      name = values[valueName].value;
-    }
-  });
-
-  if (ou === null && settings.ouTag === 'root') {
-    ([ou] = ouLists.root);
-  } else if (ou !== null) {
-    ou = ouLists[settings.ouTag][ou];
-  }
-  // const { electionNameTag } = settings;
-  // if (name === null && ou !== null && ou.electionNameTags[electionNameTag]) {
-  //  name = ou.electionNameTags[electionNameTag]
-  // }
-  if (name === null && settings.name) {
-    ({ name } = settings.name);
-  }
-  return { ou, name };
-};
-
-// TODO: Manual settings need to be expanded when it becomes an option
-const requiredManualSettings = ['name', 'group', 'ouTag'];
-const requiredTemplateSettings = ['template', 'templateName', 'ouTag'];
-
 const internalSubmit = (
   submitAction: (v: any) => any,
   electionTemplate: any
@@ -194,7 +210,17 @@ const internalSubmit = (
 
   if (settings.template && ou) {
     const { ouTag, ...restSettings } = settings;
-    submitAction(Object.assign({}, restSettings, { ouId: ou.id }));
+
+    if (name) {
+      // Manual election name
+      restSettings.name = Object.keys(name).map((k: string) => ({
+        language: k,
+        name: name[k],
+      }));
+    } else {
+      restSettings.name = [];
+    }
+    submitAction({ ...restSettings, ouId: ou.id });
   } else if (ou && name) {
     if (typeof name === 'string') {
       const nameObj: any = {};
@@ -220,6 +246,8 @@ const internalSubmit = (
   }
 };
 
+// TODO: Manual settings need to be expanded when it becomes an option
+
 const validate = (electionTemplate: any) => (values: object) => {
   const notFinished = { _error: 'not done' };
   if (isObjEmpty(values)) {
@@ -228,20 +256,30 @@ const validate = (electionTemplate: any) => (values: object) => {
   const { templateRoot, ouLists } = electionTemplate;
   const currentValues = getCurrentValues(values);
   const { settings } = getNodeListAndSettings(currentValues, templateRoot);
-  let requiredSettings = requiredTemplateSettings;
+  const requiredSettings = getRequiredSettings(settings);
 
-  if (!settings.template) {
-    requiredSettings = requiredManualSettings;
+  // Check if all we have all of the required settings
+  if (
+    requiredSettings.some(
+      (requiredSetting: string) => settings[requiredSetting] === undefined
+    )
+  ) {
+    return notFinished;
   }
 
-  for (const requiredSetting of requiredSettings) {
-    if (settings[requiredSetting] === undefined) {
-      return notFinished;
-    }
-  }
   const { ou, name } = getDerivedValues(values, settings, ouLists);
   if (!settings.template && (ou === null || name === null)) {
     return notFinished;
+  }
+
+  if (requiredSettings.includes('name')) {
+    if (name === null) {
+      return notFinished;
+    }
+    // Check if we have a name in all supported languages
+    if (getSupportedLanguages().some((lang: string) => !(lang in name))) {
+      return notFinished;
+    }
   }
   if (settings.template && ou === null) {
     return notFinished;
@@ -251,9 +289,7 @@ const validate = (electionTemplate: any) => (values: object) => {
 
 const NewElectionForm: React.FunctionComponent<IProps> = (props: IProps) => {
   const { electionTemplate, submitAction, cancelAction } = props;
-
   const { templateRoot, ouLists } = electionTemplate;
-
   const { i18n, t } = useTranslation();
   const lang = i18n.language;
 
@@ -270,6 +306,7 @@ const NewElectionForm: React.FunctionComponent<IProps> = (props: IProps) => {
           // pristine,
           values,
           invalid,
+          form,
         } = formProps;
 
         const currentValues = getCurrentValues(values);
@@ -305,7 +342,7 @@ const NewElectionForm: React.FunctionComponent<IProps> = (props: IProps) => {
                 });
 
                 if (changedValue) {
-                  // We need to delete all the subsequent vakues after the one
+                  // We need to delete all the subsequent values after the one
                   // that was updated, as they are now invalid.
                   const keptValues = Object.keys(formValues).filter(
                     key => key <= changedValue
@@ -314,6 +351,12 @@ const NewElectionForm: React.FunctionComponent<IProps> = (props: IProps) => {
                   keptValues.forEach(key => {
                     updatedValues[key] = formValues[key];
                   });
+
+                  if (Object.keys(updatedValues).length === 1) {
+                    // If we jump back to the start, we need to clear any manually
+                    // inputs in the field.
+                    form.reset();
+                  }
                   props.updateValues(updatedValues);
                 }
               }}

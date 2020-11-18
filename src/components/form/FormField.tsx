@@ -17,6 +17,7 @@ const styles = (theme: any) => ({
     marginRight: '2.5rem',
     verticalAlign: 'top',
     marginTop: '2rem',
+    marginBottom: '2rem',
     '&:first-child': {
       marginTop: '0',
     },
