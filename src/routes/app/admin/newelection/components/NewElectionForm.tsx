@@ -22,9 +22,6 @@ interface IProps {
 
 const buildDropdownOptions = (options: any[], lang: string) => {
   // Create the drop down options
-  //if (!options) {
-  //  debugger;
-  //}
   return options
     .map((option, index) => ({
       label:
