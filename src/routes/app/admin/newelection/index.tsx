@@ -22,11 +22,13 @@ const createNewElectionGroupMutation = gql`
     $ouId: UUID!
     $template: Boolean!
     $templateName: String!
+    $name: [ElectionName]
   ) {
     createNewElectionGroup(
       ouId: $ouId
       template: $template
       templateName: $templateName
+      nameList: $name
     ) {
       electionGroup {
         id
@@ -84,10 +86,6 @@ class NewElection extends React.Component<IProps, IState> {
     this.onCreateCompleted = this.onCreateCompleted.bind(this);
   }
 
-  public updateValues(newVals: any) {
-    this.setState({ currentValues: newVals });
-  }
-
   public onCreateCompleted(data: any, client: ApolloClient<EvalgClientState>) {
     const localStateData = {
       // TODO: find out how to not need __typename here
@@ -97,6 +95,10 @@ class NewElection extends React.Component<IProps, IState> {
 
     const { electionGroup } = data.createNewElectionGroup;
     this.props.history.push(`/admin/elections/${electionGroup.id}/info`);
+  }
+
+  public updateValues(newVals: any) {
+    this.setState({ currentValues: { ...newVals } });
   }
 
   // tslint:disable:jsx-no-lambda
