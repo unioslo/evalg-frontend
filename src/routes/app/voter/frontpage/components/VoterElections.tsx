@@ -4,6 +4,7 @@ import { Tabs, Tab } from 'react-bootstrap';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
+import moment from 'moment';
 
 import Text from 'components/text';
 import { MobileDropDown, MobileDropdownItem } from 'components/dropdownMenu';
@@ -84,7 +85,39 @@ class VoterElections extends React.Component<IProps, IState> {
           ).length > 0)
     );
 
-    return filteredGroups;
+    const sortedGroups = filteredGroups.sort(
+      (a: ElectionGroup, b: ElectionGroup) => {
+        const voteA = this.props.votingRightsElectionGroups.includes(a.id);
+        const voteB = this.props.votingRightsElectionGroups.includes(b.id);
+
+        if (voteA === voteB) {
+          // Sort on end time of voting right is equal.
+          let aEndTime: string;
+          let bEndTime: string;
+
+          if (a.elections.length === 1) {
+            aEndTime = a.elections[0].end;
+          } else {
+            aEndTime = moment
+              .max(...a.elections.map(e => moment(e.end)))
+              .toISOString();
+          }
+          if (b.elections.length === 1) {
+            bEndTime = b.elections[0].end;
+          } else {
+            bEndTime = moment
+              .max(...b.elections.map(e => moment(e.end)))
+              .toISOString();
+          }
+          return aEndTime.localeCompare(bEndTime);
+        } else if (voteA) {
+          return -1;
+        }
+        return 1;
+      }
+    );
+
+    return sortedGroups;
   }
 
   render() {
@@ -110,7 +143,7 @@ class VoterElections extends React.Component<IProps, IState> {
               noElectionsText = <Trans>general.noClosedElections</Trans>;
               break;
             default:
-              noElectionsText = <React.Fragment />;
+              noElectionsText = <></>;
               break;
           }
 
@@ -176,7 +209,7 @@ class VoterElections extends React.Component<IProps, IState> {
               dropdownText = <Trans>electionStatus.closedElections</Trans>;
               break;
             default:
-              dropdownText = <React.Fragment />;
+              dropdownText = <></>;
               break;
           }
 
