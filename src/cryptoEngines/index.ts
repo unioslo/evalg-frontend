@@ -1,9 +1,6 @@
-import NaCl from './nacl';
+import NaCl, { IKeyPair } from './nacl';
 
-export interface IKeyPair {
-  publicKey: string;
-  secretKey: string;
-}
+export type { IKeyPair };
 
 export const getCryptoEngine = () => {
   return new NaCl();
