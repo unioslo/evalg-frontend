@@ -85,31 +85,25 @@ class VoterElections extends React.Component<IProps, IState> {
           ).length > 0)
     );
 
+    const getElectionGroupEndTime = (electionGroup: ElectionGroup) => {
+      if (electionGroup.elections.length === 1) {
+        return electionGroup.elections[0].end;
+      }
+      return moment
+        .max(...electionGroup.elections.map(e => moment(e.end)))
+        .toISOString();
+    };
+
     const sortedGroups = filteredGroups.sort(
       (a: ElectionGroup, b: ElectionGroup) => {
         const voteA = this.props.votingRightsElectionGroups.includes(a.id);
         const voteB = this.props.votingRightsElectionGroups.includes(b.id);
 
         if (voteA === voteB) {
-          // Sort on end time of voting right is equal.
-          let aEndTime: string;
-          let bEndTime: string;
-
-          if (a.elections.length === 1) {
-            aEndTime = a.elections[0].end;
-          } else {
-            aEndTime = moment
-              .max(...a.elections.map(e => moment(e.end)))
-              .toISOString();
-          }
-          if (b.elections.length === 1) {
-            bEndTime = b.elections[0].end;
-          } else {
-            bEndTime = moment
-              .max(...b.elections.map(e => moment(e.end)))
-              .toISOString();
-          }
-          return aEndTime.localeCompare(bEndTime);
+          // Sort on end time if voting right is equal.
+          return getElectionGroupEndTime(a).localeCompare(
+            getElectionGroupEndTime(b)
+          );
         } else if (voteA) {
           return -1;
         }
