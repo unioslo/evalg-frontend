@@ -4,6 +4,7 @@ import { Tabs, Tab } from 'react-bootstrap';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
+import moment from 'moment';
 
 import Text from 'components/text';
 import { MobileDropDown, MobileDropdownItem } from 'components/dropdownMenu';
@@ -84,7 +85,33 @@ class VoterElections extends React.Component<IProps, IState> {
           ).length > 0)
     );
 
-    return filteredGroups;
+    const getElectionGroupEndTime = (electionGroup: ElectionGroup) => {
+      if (electionGroup.elections.length === 1) {
+        return electionGroup.elections[0].end;
+      }
+      return moment
+        .max(...electionGroup.elections.map(e => moment(e.end)))
+        .toISOString();
+    };
+
+    const sortedGroups = filteredGroups.sort(
+      (a: ElectionGroup, b: ElectionGroup) => {
+        const voteA = this.props.votingRightsElectionGroups.includes(a.id);
+        const voteB = this.props.votingRightsElectionGroups.includes(b.id);
+
+        if (voteA === voteB) {
+          // Sort on end time if voting right is equal.
+          return getElectionGroupEndTime(a).localeCompare(
+            getElectionGroupEndTime(b)
+          );
+        } else if (voteA) {
+          return -1;
+        }
+        return 1;
+      }
+    );
+
+    return sortedGroups;
   }
 
   render() {
@@ -110,7 +137,7 @@ class VoterElections extends React.Component<IProps, IState> {
               noElectionsText = <Trans>general.noClosedElections</Trans>;
               break;
             default:
-              noElectionsText = <React.Fragment />;
+              noElectionsText = <></>;
               break;
           }
 
@@ -176,7 +203,7 @@ class VoterElections extends React.Component<IProps, IState> {
               dropdownText = <Trans>electionStatus.closedElections</Trans>;
               break;
             default:
-              dropdownText = <React.Fragment />;
+              dropdownText = <></>;
               break;
           }
 

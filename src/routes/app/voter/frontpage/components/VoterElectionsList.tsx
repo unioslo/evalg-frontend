@@ -91,7 +91,12 @@ interface IListProps {
 const VoterElectionsList: React.FunctionComponent<IListProps> = (
   props: IListProps
 ) => {
-  const { electionGroups, noElectionsText, classes } = props;
+  const {
+    electionGroups,
+    noElectionsText,
+    votingRightsElectionGroups,
+    classes,
+  } = props;
   const { i18n } = useTranslation();
 
   // const lang = props.i18n.language;
@@ -104,7 +109,7 @@ const VoterElectionsList: React.FunctionComponent<IListProps> = (
         <VoterElectionsListItem
           classes={classes}
           electionGroup={group}
-          hasVotingRights={props.votingRightsElectionGroups.includes(group.id)}
+          hasVotingRights={votingRightsElectionGroups.includes(group.id)}
           lang={i18n.language}
           key={group.id}
         />
