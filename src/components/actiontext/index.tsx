@@ -41,7 +41,7 @@ const ActionText: React.SFC<IProps> = props => {
     'button-no-style': true,
   });
   return (
-    <button className={cls} onClick={action}>
+    <button className={cls} onClick={action} data-testid="action-text">
       {children}
     </button>
   );

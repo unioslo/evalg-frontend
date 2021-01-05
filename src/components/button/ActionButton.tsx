@@ -26,7 +26,7 @@ const styles = (theme: any) => ({
 });
 
 const ActionButton: React.SFC<IProps> = props => {
-  const { classes } = props;
+  const { classes, text } = props;
   return (
     <svg
       className={classes.boundingbox}
@@ -45,7 +45,7 @@ const ActionButton: React.SFC<IProps> = props => {
         />
         <text className={classes.text} transform="translate(29 27)">
           <tspan x="40" y="22" style={{ borderBottom: '1px solid black' }}>
-            {props.text}
+            {text}
           </tspan>
         </text>
         {/*<path stroke="#2294A8" strokeLinecap="square" d="M71.5 55.5h143"/>*/}

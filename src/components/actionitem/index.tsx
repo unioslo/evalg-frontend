@@ -26,7 +26,7 @@ interface IProps {
   classes: any;
 }
 
-const ActionItem: React.FunctionComponent<IProps> = (props) => {
+const ActionItem: React.FunctionComponent<IProps> = props => {
   const { classes, alignCenter, alignRight, action, children } = props;
   const cls = classNames({
     'button-no-style': true,
@@ -35,7 +35,12 @@ const ActionItem: React.FunctionComponent<IProps> = (props) => {
     [classes.alignRight]: alignRight,
   });
   return (
-    <button type="button" className={cls} onClick={action}>
+    <button
+      type="button"
+      data-testid="action-item"
+      className={cls}
+      onClick={action}
+    >
       {children}
     </button>
   );
