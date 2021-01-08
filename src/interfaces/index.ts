@@ -162,11 +162,12 @@ export interface Candidate {
   priority: number;
   preCumulated: boolean;
   meta: {
-    coCandidates?: coCandidate[];
+    coCandidates?: CoCandidate[];
+    gender?: 'male' | 'female';
   };
 }
 
-export interface coCandidate {
+export interface CoCandidate {
   name: string;
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trans, withTranslation, WithTranslation} from 'react-i18next';
+import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
 
 import { PageSection } from 'components/page';
@@ -35,7 +35,7 @@ interface IProps extends WithTranslation {
   classes: any;
 }
 
-const MajorityVoteBallot: React.SFC<IProps> = props => {
+const MajorityVoteBallot: React.FunctionComponent<IProps> = props => {
   const {
     candidates,
     selectedCandidateIndex,
@@ -81,11 +81,13 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
                 }
 
                 return (
-                  <CandidateListItem key={index}>
+                  <CandidateListItem key={candidate.id}>
                     {index === selectedCandidateIndex ? (
                       <Icon
                         type="radioButtonCircleSelected"
-                        title={t('majorityElec.ballot.removeCandidate', {candidate: candidate.name})}
+                        title={t('majorityElec.ballot.removeCandidate', {
+                          candidate: candidate.name,
+                        })}
                         custom={
                           screenSize !== 'mobile' && screenSize !== 'sm'
                             ? { small: true }
@@ -96,7 +98,9 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
                     ) : (
                       <Icon
                         type="radioButtonCircle"
-                        title={t('majorityElec.ballot.chooseCandidate', {candidate: candidate.name})}
+                        title={t('majorityElec.ballot.chooseCandidate', {
+                          candidate: candidate.name,
+                        })}
                         custom={
                           screenSize !== 'mobile' && screenSize !== 'sm'
                             ? { small: true }
@@ -105,7 +109,7 @@ const MajorityVoteBallot: React.SFC<IProps> = props => {
                         onClick={toggleSelectAction}
                       />
                     )}
-                    <CandidateInfo candidate={candidate} infoUrl/>
+                    <CandidateInfo candidate={candidate} infoUrl />
                   </CandidateListItem>
                 );
               })}

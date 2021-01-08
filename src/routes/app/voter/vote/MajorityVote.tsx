@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { Candidate, Election } from 'interfaces';
+import { Election } from 'interfaces';
 import { shuffleArray } from 'utils/helpers';
 
-import { BallotStep } from '.';
+import { BallotStep } from './utils';
 import MajorityVoteReview from './components/MajorityVoteReview';
 import MajorityVoteBallot from './components/MajorityVoteBallot';
 
@@ -19,91 +19,93 @@ interface IProps extends WithTranslation {
   isSubmittingVote: boolean;
 }
 
-interface IState {
-  selectedCandidateIndex: number;
-  selectedCandidate: Candidate | null;
-  isBlankVote: boolean;
-}
-
-class MajorityVote extends React.Component<
-  IProps & RouteComponentProps,
-  IState
-  > {
-  readonly state: IState = {
-    selectedCandidateIndex: -1,
-    selectedCandidate: null,
-    isBlankVote: false,
-  };
-
-  readonly shuffledCandidates = shuffleArray(
-    this.props.election.lists[0].candidates
+const MajorityVote: React.FunctionComponent<IProps &
+  RouteComponentProps> = props => {
+  const [selectedCandidateIndex, setSelectedCandidateIndex] = useState<number>(
+    -1
+  );
+  const [isBlankVote, setIsBlankVote] = useState<boolean>(false);
+  const didMountRef = useRef(false);
+  const {
+    ballotStep,
+    election,
+    isSubmittingVote,
+    onGoBackToBallot,
+    onGoBackToSelectVoterGroup,
+    onProceedToReview,
+    onSubmitVote,
+  } = props;
+  const shuffledCandidatesRef = useRef(
+    shuffleArray(election.lists[0].candidates)
   );
 
-  public render() {
-    const { ballotStep } = this.props;
-    const isCandidateSelected = this.state.selectedCandidateIndex !== -1;
+  useEffect(() => {
+    if (didMountRef.current) {
+      onProceedToReview();
+    } else {
+      didMountRef.current = true;
+    }
+  }, [isBlankVote, onProceedToReview]);
 
-    return (
-      <>
-        {ballotStep === BallotStep.FillOutBallot && (
-          <MajorityVoteBallot
-            candidates={this.shuffledCandidates}
-            selectedCandidateIndex={this.state.selectedCandidateIndex}
-            election={this.props.election}
-            onSelectCandidate={this.handleSelectCandidate}
-            onDeselectCandidate={this.handleDeselectCandidate}
-            reviewBallotEnabled={isCandidateSelected}
-            onGoBackToSelectVoterGroup={this.props.onGoBackToSelectVoterGroup}
-            onBlankVote={this.handleBlankVoteAndProceedToReview}
-            onReviewBallot={this.handleProceedToReview}
-          />
-        )}
-        {ballotStep === BallotStep.ReviewBallot && (
-          <MajorityVoteReview
-            selectedCandidate={this.state.selectedCandidate}
-            isBlankVote={this.state.isBlankVote}
-            onGoBackToBallot={this.props.onGoBackToBallot}
-            onSubmitVote={this.handleSubmitVote}
-            isSubmittingVote={this.props.isSubmittingVote}
-          />
-        )}
-      </>
-    );
-  }
-
-  handleSelectCandidate = (selectedCandidateIndex: number) => {
-    this.setState({
-      selectedCandidateIndex,
-      selectedCandidate: this.shuffledCandidates[selectedCandidateIndex],
-    });
+  const handleSelectCandidate = (candidateIndex: number) => {
+    setSelectedCandidateIndex(candidateIndex);
   };
 
-  handleDeselectCandidate = () => {
-    this.setState({ selectedCandidateIndex: -1 });
+  const handleDeselectCandidate = () => {
+    setSelectedCandidateIndex(-1);
   };
 
-  handleBlankVoteAndProceedToReview = () => {
-    this.setState(
-      {
-        isBlankVote: true,
-      },
-      this.props.onProceedToReview
-    );
+  const handleBlankVoteAndProceedToReview = () => {
+    setIsBlankVote(true);
   };
 
-  handleProceedToReview = () => {
-    this.setState({ isBlankVote: false }, this.props.onProceedToReview);
+  const handleProceedToReview = () => {
+    if (isBlankVote) {
+      setIsBlankVote(false);
+    } else {
+      onProceedToReview();
+    }
   };
 
-  handleSubmitVote = () => {
-    this.props.onSubmitVote({
+  const handleSubmitVote = () => {
+    const selectedCandidate =
+      shuffledCandidatesRef.current[selectedCandidateIndex];
+    onSubmitVote({
       voteType: 'majorityVote',
-      isBlankVote: this.state.isBlankVote,
-      rankedCandidateIds: (this.state.selectedCandidate && !this.state.isBlankVote)
-        ? [this.state.selectedCandidate.id]
-        : [],
+      isBlankVote,
+      rankedCandidateIds:
+        selectedCandidate && !isBlankVote ? [selectedCandidate.id] : [],
     });
   };
-}
+
+  return (
+    <>
+      {ballotStep === BallotStep.FillOutBallot && (
+        <MajorityVoteBallot
+          candidates={shuffledCandidatesRef.current}
+          selectedCandidateIndex={selectedCandidateIndex}
+          election={election}
+          onSelectCandidate={handleSelectCandidate}
+          onDeselectCandidate={handleDeselectCandidate}
+          reviewBallotEnabled={selectedCandidateIndex !== -1}
+          onGoBackToSelectVoterGroup={onGoBackToSelectVoterGroup}
+          onBlankVote={handleBlankVoteAndProceedToReview}
+          onReviewBallot={handleProceedToReview}
+        />
+      )}
+      {ballotStep === BallotStep.ReviewBallot && (
+        <MajorityVoteReview
+          selectedCandidate={
+            shuffledCandidatesRef.current[selectedCandidateIndex]
+          }
+          isBlankVote={isBlankVote}
+          onGoBackToBallot={onGoBackToBallot}
+          onSubmitVote={handleSubmitVote}
+          isSubmittingVote={isSubmittingVote}
+        />
+      )}
+    </>
+  );
+};
 
 export default withTranslation()(withRouter(MajorityVote));
