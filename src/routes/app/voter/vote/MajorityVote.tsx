@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { WithTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { withRouter, RouteComponentProps } from 'react-router';
 
-import { Election } from 'interfaces';
+import { Candidate, Election } from 'interfaces';
 import { shuffleArray } from 'utils/helpers';
 
 import { BallotStep } from './utils';
 import MajorityVoteReview from './components/MajorityVoteReview';
 import MajorityVoteBallot from './components/MajorityVoteBallot';
 
-interface IProps extends WithTranslation {
+interface IProps {
   election: Election;
   ballotStep: BallotStep;
   onProceedToReview: () => void;
@@ -21,10 +21,11 @@ interface IProps extends WithTranslation {
 
 const MajorityVote: React.FunctionComponent<IProps &
   RouteComponentProps> = props => {
-  const [selectedCandidateIndex, setSelectedCandidateIndex] = useState<number>(
-    -1
-  );
+  const [selectedCandidates, setSelectedCandidates] = useState<Candidate[]>([]);
   const [isBlankVote, setIsBlankVote] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState<string | undefined>(undefined);
+  const { t } = useTranslation();
+
   const didMountRef = useRef(false);
   const {
     ballotStep,
@@ -47,12 +48,36 @@ const MajorityVote: React.FunctionComponent<IProps &
     }
   }, [isBlankVote, onProceedToReview]);
 
-  const handleSelectCandidate = (candidateIndex: number) => {
-    setSelectedCandidateIndex(candidateIndex);
+  useEffect(() => {
+    if (
+      typeof election.meta.ballotRules.votes === 'number' &&
+      selectedCandidates.length > election.meta.ballotRules.votes
+    ) {
+      setErrorMsg(
+        t('voter.majorityVoteToManyVotesError', {
+          nrValid: election.meta.ballotRules.votes,
+          nrSelected: selectedCandidates.length,
+        })
+      );
+    } else {
+      setErrorMsg(undefined);
+    }
+  }, [selectedCandidates, election, t]);
+
+  const handleSelectCandidate = (candidate: Candidate) => {
+    if (
+      election.meta.ballotRules.votes === 'all' ||
+      election.meta.ballotRules.votes === 1
+    ) {
+      // We can only vote for 1 candidate. Flip the selection.
+      setSelectedCandidates([candidate]);
+    } else if (!selectedCandidates.includes(candidate)) {
+      setSelectedCandidates(selectedCandidates.concat([candidate]));
+    }
   };
 
-  const handleDeselectCandidate = () => {
-    setSelectedCandidateIndex(-1);
+  const handleDeselectCandidate = (candidate: Candidate) => {
+    setSelectedCandidates(selectedCandidates.filter(c => c !== candidate));
   };
 
   const handleBlankVoteAndProceedToReview = () => {
@@ -68,14 +93,27 @@ const MajorityVote: React.FunctionComponent<IProps &
   };
 
   const handleSubmitVote = () => {
-    const selectedCandidate =
-      shuffledCandidatesRef.current[selectedCandidateIndex];
     onSubmitVote({
       voteType: 'majorityVote',
       isBlankVote,
-      rankedCandidateIds:
-        selectedCandidate && !isBlankVote ? [selectedCandidate.id] : [],
+      rankedCandidateIds: isBlankVote ? [] : selectedCandidates.map(c => c.id),
     });
+  };
+
+  const isReviewButtonEnabled = () => {
+    if (
+      election.meta.ballotRules.votes === 'all' &&
+      selectedCandidates.length === 1
+    ) {
+      // UiO hack..
+      return true;
+    } else if (
+      selectedCandidates.length >= 1 &&
+      selectedCandidates.length <= election.meta.ballotRules.votes
+    ) {
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -83,11 +121,12 @@ const MajorityVote: React.FunctionComponent<IProps &
       {ballotStep === BallotStep.FillOutBallot && (
         <MajorityVoteBallot
           candidates={shuffledCandidatesRef.current}
-          selectedCandidateIndex={selectedCandidateIndex}
+          selectedCandidates={selectedCandidates}
           election={election}
+          errorMsg={errorMsg}
           onSelectCandidate={handleSelectCandidate}
           onDeselectCandidate={handleDeselectCandidate}
-          reviewBallotEnabled={selectedCandidateIndex !== -1}
+          reviewBallotEnabled={isReviewButtonEnabled()}
           onGoBackToSelectVoterGroup={onGoBackToSelectVoterGroup}
           onBlankVote={handleBlankVoteAndProceedToReview}
           onReviewBallot={handleProceedToReview}
@@ -95,9 +134,7 @@ const MajorityVote: React.FunctionComponent<IProps &
       )}
       {ballotStep === BallotStep.ReviewBallot && (
         <MajorityVoteReview
-          selectedCandidate={
-            shuffledCandidatesRef.current[selectedCandidateIndex]
-          }
+          selectedCandidates={selectedCandidates}
           isBlankVote={isBlankVote}
           onGoBackToBallot={onGoBackToBallot}
           onSubmitVote={handleSubmitVote}
@@ -108,4 +145,4 @@ const MajorityVote: React.FunctionComponent<IProps &
   );
 };
 
-export default withTranslation()(withRouter(MajorityVote));
+export default withRouter(MajorityVote);

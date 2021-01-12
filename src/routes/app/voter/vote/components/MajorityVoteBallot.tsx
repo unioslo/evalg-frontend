@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trans, withTranslation, WithTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
 
 import { PageSection } from 'components/page';
@@ -7,6 +7,7 @@ import Icon from 'components/icon';
 import { ScreenSizeConsumer } from 'providers/ScreenSize';
 import { Candidate, Election } from 'interfaces';
 import Link from 'components/link';
+import Alert from 'components/alerts';
 
 import {
   CandidateList,
@@ -17,16 +18,12 @@ import HelpSubSection from './HelpSubSection';
 import MandatePeriodText from './MandatePeriodText';
 import BallotButtons from './BallotButtons';
 
-const helpTextTags = [
-  'voter.majorityVoteHelpYouMaySelectOnlyOne',
-  'voter.canVoteBlank',
-];
-
-interface IProps extends WithTranslation {
+interface IProps {
   candidates: Candidate[];
-  selectedCandidateIndex: number;
-  onSelectCandidate: (selectedCandidateIndex: number) => void;
-  onDeselectCandidate: () => void;
+  selectedCandidates: Candidate[];
+  errorMsg?: string;
+  onSelectCandidate: (candidate: Candidate) => void;
+  onDeselectCandidate: (candidate: Candidate) => void;
   election: Election;
   reviewBallotEnabled: boolean;
   onGoBackToSelectVoterGroup: () => void;
@@ -38,7 +35,8 @@ interface IProps extends WithTranslation {
 const MajorityVoteBallot: React.FunctionComponent<IProps> = props => {
   const {
     candidates,
-    selectedCandidateIndex,
+    selectedCandidates,
+    errorMsg,
     onSelectCandidate,
     onDeselectCandidate,
     reviewBallotEnabled,
@@ -47,8 +45,35 @@ const MajorityVoteBallot: React.FunctionComponent<IProps> = props => {
     onBlankVote,
     election,
     classes,
-    t,
   } = props;
+
+  const { t } = useTranslation();
+
+  const helpTextTags = [
+    'voter.majorityVoteHelpYouMaySelectOnlyOne',
+    'voter.canVoteBlank',
+  ];
+
+  let helpText: string[] | undefined;
+  let helpHeader = t('voter.majorityVoteHelpHeader');
+  let helpDesc = t('voter.majorityVoteHelpDesc');
+  if (
+    typeof election.meta.ballotRules.votes === 'number' &&
+    election.meta.ballotRules.votes > 1
+  ) {
+    helpHeader = t('voter.majorityVoteHelpHeaderMultiple', {
+      nr: election.meta.ballotRules.votes,
+    });
+
+    helpDesc = t('voter.majorityVoteHelpDescMultiple');
+
+    helpText = [
+      t('voter.majorityVoteHelpYouMaySelectMultiple', {
+        nr: election.meta.ballotRules.votes,
+      }),
+      t('voter.canVoteBlank'),
+    ];
+  }
 
   return (
     <ScreenSizeConsumer>
@@ -62,27 +87,29 @@ const MajorityVoteBallot: React.FunctionComponent<IProps> = props => {
           </div>
           {election.informationUrl && (
             <p>
-              <Trans>voterGroupSelect.moreAboutTheElection</Trans>:{' '}
+              {t('voterGroupSelect.moreAboutTheElection')}:{' '}
               <Link to={election.informationUrl} external>
                 {election.informationUrl}
               </Link>
             </p>
           )}
           <HelpSubSection
-            header={<Trans>voter.majorityVoteHelpHeader</Trans>}
-            desc={<Trans>voter.majorityVoteHelpDesc</Trans>}
+            header={helpHeader}
+            desc={helpDesc}
             helpTextTags={helpTextTags}
+            helpText={helpText}
           >
+            {errorMsg && <Alert type="error">{errorMsg}</Alert>}
             <CandidateList>
-              {candidates.map((candidate, index) => {
-                let toggleSelectAction = () => onSelectCandidate(index);
-                if (selectedCandidateIndex === index) {
-                  toggleSelectAction = onDeselectCandidate;
+              {candidates.map(candidate => {
+                let toggleSelectAction = () => onSelectCandidate(candidate);
+                if (selectedCandidates.includes(candidate)) {
+                  toggleSelectAction = () => onDeselectCandidate(candidate);
                 }
 
                 return (
                   <CandidateListItem key={candidate.id}>
-                    {index === selectedCandidateIndex ? (
+                    {selectedCandidates.includes(candidate) ? (
                       <Icon
                         type="radioButtonCircleSelected"
                         title={t('majorityElec.ballot.removeCandidate', {
@@ -142,4 +169,4 @@ const styles = (theme: any) => ({
   },
 });
 
-export default withTranslation()(injectSheet(styles)(MajorityVoteBallot));
+export default injectSheet(styles)(MajorityVoteBallot);

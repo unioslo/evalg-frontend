@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
 
 import { PageSection, PageSubSection } from 'components/page';
@@ -31,7 +31,7 @@ const styles = (theme: any) => ({
 });
 
 interface IReviewProps {
-  selectedCandidate: Candidate | null;
+  selectedCandidates: Candidate[] | null;
   isBlankVote: boolean;
   onGoBackToBallot: () => void;
   onSubmitVote: () => void;
@@ -39,9 +39,9 @@ interface IReviewProps {
   classes: any;
 }
 
-const MajorityVoteReview: React.SFC<IReviewProps> = props => {
+const MajorityVoteReview: React.FunctionComponent<IReviewProps> = props => {
   const {
-    selectedCandidate,
+    selectedCandidates,
     isBlankVote,
     onGoBackToBallot,
     onSubmitVote,
@@ -49,9 +49,11 @@ const MajorityVoteReview: React.SFC<IReviewProps> = props => {
     classes,
   } = props;
 
+  const { t } = useTranslation();
+
   const blankBallot = (
     <div className={classes.blankVoteTextContainer}>
-      <Trans>election.blankVote</Trans>
+      {t('election.blankVote')}
     </div>
   );
 
@@ -59,36 +61,43 @@ const MajorityVoteReview: React.SFC<IReviewProps> = props => {
     <ButtonContainer alignLeft>
       <Button
         secondary
-        text={<Trans>general.back</Trans>}
+        text={t('general.back')}
         action={onGoBackToBallot}
         disabled={isSubmittingVote}
       />
       <Button
-        text={<Trans>voter.submitVote</Trans>}
+        text={t('voter.submitVote')}
         action={onSubmitVote}
         disabled={isSubmittingVote}
         showSpinner={isSubmittingVote}
       />
     </ButtonContainer>
   );
+
   return (
     <PageSection noBorder>
       <div className={classes.ingress}>
-        <Trans>voter.reviewBallotIngressText</Trans>
+        {t('voter.reviewBallotIngressText')}
       </div>
-      <PageSubSection header={<Trans>election.ballot</Trans>}>
+      <PageSubSection header={t('election.ballot')}>
         {isBlankVote && blankBallot}
-        {!isBlankVote && selectedCandidate && (
+        {!isBlankVote && selectedCandidates && (
           <>
             <p className={classes.chosenCandidateText}>
-              <Trans>voter.chosenCandidate</Trans>:
+              {selectedCandidates.length > 1
+                ? t('voter.chosenCandidates')
+                : t('voter.chosenCandidate')}
+              :
             </p>
             <div className={classes.chosenCandidateContainer}>
-              <CandidateInfo
-                candidate={selectedCandidate}
-                infoUrl
-                noLeftPadding
-              />
+              {selectedCandidates.map(candidate => (
+                <CandidateInfo
+                  key={candidate.id}
+                  candidate={candidate}
+                  infoUrl
+                  noLeftPadding
+                />
+              ))}
             </div>
           </>
         )}

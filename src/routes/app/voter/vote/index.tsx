@@ -216,14 +216,16 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
                   VotingComponent = MajorityVote;
                 } else if (countingRules.method === 'uio_stv') {
                   VotingComponent = PrefElecVote;
-                } else if (countingRules.method === 'mv') {
-                  VotingComponent = MajorityVote;
                 }
               } else {
                 return <div>Unknown meta.candidateType: {candidateType}</div>;
               }
             } else if (voting === 'list') {
               return <div>List election voting not implemented</div>;
+            } else if (voting === 'no_rank') {
+              if (countingRules.method === 'mv') {
+                VotingComponent = MajorityVote;
+              }
             } else {
               return <div>Unknown meta.ballotRules.voting type: {voting}</div>;
             }
