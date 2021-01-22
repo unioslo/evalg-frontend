@@ -146,7 +146,7 @@ const FrontPage: React.FunctionComponent<IProps> = ({ classes }) => {
             <Link to="/admin" underline>
               {t('loginPage.loginAsAdmin')}
             </Link>
-            <Link to="#" underline external noExternalIcon>
+            <Link to="https://www.uio.no/tjenester/it/adm-app/e-valg/" underline external noExternalIcon>
               {t('loginPage.readMore')}
             </Link>
           </div>
