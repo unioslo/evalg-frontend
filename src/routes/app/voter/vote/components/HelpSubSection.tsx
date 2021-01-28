@@ -1,5 +1,5 @@
-import React from 'react';
-import { Trans } from 'react-i18next';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
@@ -28,70 +28,65 @@ interface IHelpSubProps {
   classes: Classes;
   header: React.ReactNode;
   helpTextTags: string[];
+  helpText?: string[];
   desc?: React.ReactNode;
 }
 
-interface IHelpSubState {
-  showHelpTexts: boolean;
-}
+const HelpSubSection: React.FunctionComponent<IHelpSubProps> = props => {
+  const [showHelpTexts, setShowHelpTexts] = useState<boolean>(false);
 
-class HelpSubSection extends React.Component<IHelpSubProps, IHelpSubState> {
-  constructor(props: IHelpSubProps) {
-    super(props);
-    this.state = { showHelpTexts: false };
-    this.toggleShowHelpTexts = this.toggleShowHelpTexts.bind(this);
-  }
+  const { classes, children, desc, header, helpTextTags, helpText } = props;
+  const { t } = useTranslation();
 
-  public render() {
-    return (
-      <ScreenSizeConsumer>
-        {({ screenSize }) => {
-          const { classes } = this.props;
-          const Header = () => (
-            <div className={classes.headerContainer}>
-              <h3 className={classes.header}>{this.props.header}</h3>
-              <div className={classes.iconContainer}>
-                <Icon
-                  type="help"
-                  onClick={this.toggleShowHelpTexts}
-                  custom={
-                    screenSize !== 'mobile' && screenSize !== 'sm'
-                      ? 'small'
-                      : false
-                  }
-                />
-              </div>
+  const toggleShowHelpTexts = () => {
+    setShowHelpTexts(!showHelpTexts);
+  };
+
+  return (
+    <ScreenSizeConsumer>
+      {({ screenSize }) => {
+        const Header = () => (
+          <div className={classes.headerContainer}>
+            <h3 className={classes.header}>{header}</h3>
+            <div className={classes.iconContainer}>
+              <Icon
+                type="help"
+                onClick={toggleShowHelpTexts}
+                custom={
+                  screenSize !== 'mobile' && screenSize !== 'sm'
+                    ? 'small'
+                    : false
+                }
+              />
             </div>
-          );
-          return (
-            <PageSubSection header={<Header />} customHeader>
-              {this.props.desc}
-              {this.state.showHelpTexts ? (
-                <div className={classes.helpTexts}>
-                  <InfoList>
-                    {this.props.helpTextTags.map((text, index) => (
-                      <InfoListItem
-                        key={index}
-                        bulleted
-                        noLeftMargin
-                      >
-                        <Trans>{text}</Trans>
-                      </InfoListItem>
-                    ))}
-                  </InfoList>
-                </div>
-              ) : null}
-              {this.props.children}
-            </PageSubSection>
-          );
-        }}
-      </ScreenSizeConsumer>
-    );
-  }
-
-  private toggleShowHelpTexts() {
-    this.setState({ showHelpTexts: !this.state.showHelpTexts });
-  }
-}
+          </div>
+        );
+        return (
+          <PageSubSection header={<Header />} customHeader>
+            {desc}
+            {showHelpTexts ? (
+              <div className={classes.helpTexts}>
+                <InfoList>
+                  {helpText
+                    ? helpText.map((text, index) => (
+                        <InfoListItem key={index} bulleted noLeftMargin>
+                          {text}
+                        </InfoListItem>
+                      ))
+                    : helpTextTags.map((text, index) => (
+                        <InfoListItem key={index} bulleted noLeftMargin>
+                          {t(text)}
+                        </InfoListItem>
+                      ))}
+                </InfoList>
+              </div>
+            ) : null}
+            {children}
+          </PageSubSection>
+        );
+      }}
+    </ScreenSizeConsumer>
+  );
+};
 
 export default injectSheet(styles)(HelpSubSection);

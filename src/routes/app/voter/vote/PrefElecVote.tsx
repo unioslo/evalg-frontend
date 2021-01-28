@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router';
 import { Election, Candidate } from 'interfaces';
 import { shuffleArray } from 'utils/helpers';
 
-import { BallotStep } from '.';
+import { BallotStep } from './utils';
 import PrefElecBallot from './components/PrefElecBallot';
 import PrefElecReview from './components/PrefElecReview';
 
@@ -13,7 +13,7 @@ function moveArrayItem(arr: any[], oldIndex: number, newIndex: number) {
     let k = newIndex - arr.length + 1;
     /* eslint-disable no-plusplus */
     while (k--) {
-    /* eslint-enable no-plusplus */
+      /* eslint-enable no-plusplus */
       arr.push(undefined);
     }
   }

@@ -9,6 +9,7 @@ import { Page } from 'components/page';
 import { orderMultipleElections } from 'utils/processGraphQLData';
 import { submitVote } from 'utils/voting';
 import { Election, IVoter } from 'interfaces';
+import { BallotStep } from './utils';
 
 import PrefElecVote from './PrefElecVote';
 import MajorityVote from './MajorityVote';
@@ -63,11 +64,6 @@ const votingStepTranslateKey = {
   3: 'voter.stepperStep3',
   4: 'voter.stepperStep4',
 };
-
-export enum BallotStep {
-  FillOutBallot,
-  ReviewBallot,
-}
 
 interface IProps extends WithTranslation {
   electionGroupId: string;
@@ -226,6 +222,10 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
               }
             } else if (voting === 'list') {
               return <div>List election voting not implemented</div>;
+            } else if (voting === 'no_rank') {
+              if (countingRules.method === 'mv') {
+                VotingComponent = MajorityVote;
+              }
             } else {
               return <div>Unknown meta.ballotRules.voting type: {voting}</div>;
             }
