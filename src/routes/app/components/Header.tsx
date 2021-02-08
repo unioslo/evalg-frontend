@@ -6,7 +6,7 @@ import { History } from 'history';
 import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 
-import { appHelpLink } from 'appConfig';
+import { appHelpLink, appInst } from 'appConfig';
 import Link from 'components/link';
 import { H1 } from 'components/text';
 import { UserContext } from 'providers/UserContext';
@@ -14,25 +14,11 @@ import { UserContext } from 'providers/UserContext';
 import LanguageSelector, { MobileLanguageSelector } from './LanguageSelector';
 import { DesktopMenu, DesktopMenuItem } from './DesktopMenu';
 import { MobileMenu, MobileMenuItem } from './MobileMenu';
+import LogoBar from './LogoBar';
 import { getSignedInPersonDisplayName } from 'queries';
 import ApolloClient from 'apollo-client';
 
 const styles = (theme: any) => ({
-  logoBar: {
-    margin: '0 auto',
-    maxWidth: theme.appMaxWidth,
-    padding: `0 ${theme.horizontalPadding}`,
-    [theme.breakpoints.mdQuery]: {
-      padding: `0 ${theme.horizontalMdPadding}`,
-    },
-  },
-  logoBarWrapper: {
-    backgroundColor: theme.colors.black,
-  },
-  logo: {
-    background: 'url("/uio-app-logo-nb.png") left center no-repeat',
-    height: '4rem',
-  },
   mainWrapper: {
     backgroundColor: theme.headerMainAreaColor,
   },
@@ -40,13 +26,9 @@ const styles = (theme: any) => ({
     margin: '0 auto',
     maxWidth: theme.appMaxWidth,
     height: '12rem',
-    padding: `2.5rem ${theme.horizontalPadding} 3rem ${
-      theme.horizontalPadding
-    }`,
+    padding: `2.5rem ${theme.horizontalPadding} 3rem ${theme.horizontalPadding}`,
     [theme.breakpoints.mdQuery]: {
-      padding: `2.5rem ${theme.horizontalMdPadding} 3rem ${
-        theme.horizontalMdPadding
-      }`,
+      padding: `2.5rem ${theme.horizontalMdPadding} 3rem ${theme.horizontalMdPadding}`,
     },
   },
   mainRow: {
@@ -85,11 +67,7 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
 
   return (
     <header>
-      <div className={classes.logoBarWrapper}>
-        <div className={classes.logoBar}>
-          <div className={classes.logo} />
-        </div>
-      </div>
+      <LogoBar />
       <div className={classes.mainWrapper}>
         <div className={classes.main}>
           <div className={classes.mainRow}>
@@ -200,7 +178,7 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
                 )}
               </ApolloConsumer>
             </DesktopMenu>
-            <MobileLanguageSelector/>   
+            <MobileLanguageSelector />
           </div>
         </div>
       </div>
@@ -223,16 +201,16 @@ const MobileLogout: React.FunctionComponent<{ history: History }> = ({
         {context => {
           if (context.user) {
             return (
-                <a
-                  style={{color: 'inherit'}}
-                  onClick={e => {
-                    e.preventDefault();
-                    navigateToLogout(history);
-                  }}
-                  href="/"
-                >
-                  {t('general.logout')}
-                </a>
+              <a
+                style={{ color: 'inherit' }}
+                onClick={e => {
+                  e.preventDefault();
+                  navigateToLogout(history);
+                }}
+                href="/"
+              >
+                {t('general.logout')}
+              </a>
             );
           }
           return null;
@@ -248,7 +226,7 @@ const UserNameAndLogout: React.FunctionComponent<{
 }> = ({ apolloClient, history }) => {
   const { t } = useTranslation();
   const [userDisplayName, setUserDisplayName] = useState('');
-  const userContext = useContext(UserContext)
+  const userContext = useContext(UserContext);
 
   useEffect(() => {
     const getDisplayName = async () => {
@@ -274,9 +252,7 @@ const UserNameAndLogout: React.FunctionComponent<{
               if (context.user) {
                 return (
                   <>
-                    <DesktopMenuItem>
-                      {userDisplayName}
-                    </DesktopMenuItem>
+                    <DesktopMenuItem>{userDisplayName}</DesktopMenuItem>
                     <DesktopMenuItem>
                       <a
                         style={{ color: 'inherit' }}
@@ -292,7 +268,7 @@ const UserNameAndLogout: React.FunctionComponent<{
                   </>
                 );
               }
-                return null;
+              return null;
             }}
           </UserContext.Consumer>
         );
