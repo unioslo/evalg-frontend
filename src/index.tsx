@@ -18,11 +18,13 @@ import { ThemeProvider } from 'react-jss';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { makeAuthenticator, makeUserManager, Callback } from 'react-oidc';
 import { User } from 'oidc-client';
+import { Helmet } from 'react-helmet';
 
 import {
   oidcConfig,
   graphqlBackend,
   appVersion,
+  appInst,
   sentryEnvironment,
   sentryDsn,
   sentryEnabled,
@@ -32,6 +34,7 @@ import { ScreenSizeProvider } from 'providers/ScreenSize';
 import { UserContextProvider } from 'providers/UserContext';
 import App from 'routes/app';
 import theme from 'theme';
+import getCurrentThemePatch from 'themes';
 
 import './i18n';
 import { refetchVoteManagementQueries } from 'queries';
@@ -132,22 +135,30 @@ const protector = makeAuthenticator({ userManager });
 
 const appRoot = () => {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route path="/callback" render={callback} />
-        <ApolloProvider client={constructApolloClient()}>
-          <ThemeProvider theme={theme}>
-            <ScreenSizeProvider>
-              <UserContextProvider userManager={userManager}>
-                <React.Suspense fallback={<Spinner />}>
-                  <App authManager={protector} />
-                </React.Suspense>
-              </UserContextProvider>
-            </ScreenSizeProvider>
-          </ThemeProvider>
-        </ApolloProvider>
-      </Switch>
-    </BrowserRouter>
+    <>
+      <Helmet>
+        <link rel="icon" href={`favicons/${appInst}.ico`} />
+        <title>eValg</title>
+      </Helmet>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/callback" render={callback} />
+          <ApolloProvider client={constructApolloClient()}>
+            <ThemeProvider theme={theme}>
+              <ThemeProvider theme={getCurrentThemePatch()}>
+                <ScreenSizeProvider>
+                  <UserContextProvider userManager={userManager}>
+                    <React.Suspense fallback={<Spinner />}>
+                      <App authManager={protector} />
+                    </React.Suspense>
+                  </UserContextProvider>
+                </ScreenSizeProvider>
+              </ThemeProvider>
+            </ThemeProvider>
+          </ApolloProvider>
+        </Switch>
+      </BrowserRouter>
+    </>
   );
 };
 
