@@ -1,8 +1,9 @@
 import React from 'react';
-import injectSheet from 'react-jss';
+import { createUseStyles, useTheme } from 'react-jss';
 import { Trans, useTranslation } from 'react-i18next';
 
 import {
+  appInst,
   appStagingWarning,
   appServiceOwnerLink,
   appTechnicalSupportLink,
@@ -11,15 +12,16 @@ import {
 } from 'appConfig';
 import Link from 'components/link';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   wrapper: {
     background: theme.colors.black,
     padding: '4rem 0',
   },
   footer: {
-    background: `url('/uio-app-uio-sickle-medium.png') left ${
-      theme.horizontalPadding
-      } top no-repeat`,
+    background:
+      appInst === 'uio' || appInst === undefined
+        ? `url('/uio-app-uio-sickle-medium.png') left ${theme.horizontalPadding} top no-repeat`
+        : 'none',
     height: 'fit-content',
     maxWidth: theme.appMaxWidth,
     margin: '0 auto',
@@ -27,9 +29,10 @@ const styles = (theme: any) => ({
     [theme.breakpoints.mdQuery]: {
       minHeight: '8rem',
       padding: `0rem ${theme.horizontalMdPadding}`,
-      background: `url('/uio-app-uio-sickle-medium.png') left ${
-        theme.horizontalMdPadding
-        } top no-repeat`,
+      background:
+        appInst === 'uio' || appInst === undefined
+          ? `url('/uio-app-uio-sickle-medium.png') left ${theme.horizontalMdPadding} top no-repeat`
+          : 'none',
     },
   },
   logoOffsetContainer: {
@@ -38,12 +41,12 @@ const styles = (theme: any) => ({
   contentContainer: {
     width: 'fit-content',
     margin: '0 auto',
-    color: 'white',
+    color: theme.footerTextColor,
     [theme.breakpoints.mdQuery]: {
       display: 'flex',
       width: 'initial',
       flexWrap: 'nowrap',
-      justifyContent: 'flex-end',
+      justifyContent: theme.footerJustifyContent,
       paddingRight: '5rem',
       margin: 0,
     },
@@ -73,18 +76,15 @@ const styles = (theme: any) => ({
       },
     },
   },
-});
+}));
 
-interface IProps {
-  classes: any;
-}
-
-const Footer: React.FunctionComponent<IProps> = (props: IProps) => {
-  const { classes } = props;
+const Footer: React.FunctionComponent = () => {
   const { i18n, t } = useTranslation();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   return (
-    <React.Fragment>
+    <>
       <footer className={classes.wrapper}>
         <div className={classes.footer}>
           <div className={classes.logoOffsetContainer}>
@@ -157,15 +157,17 @@ const Footer: React.FunctionComponent<IProps> = (props: IProps) => {
           <Trans
             components={[
               <a href="https://valg2.uio.no">text</a>,
-              <a href="https://www.uio.no/tjenester/it/adm-app/e-valg/evalg3.html">text</a>
+              <a href="https://www.uio.no/tjenester/it/adm-app/e-valg/evalg3.html">
+                text
+              </a>,
             ]}
           >
             footer.pilotMessage
           </Trans>
         </div>
       )}
-    </React.Fragment>
+    </>
   );
 };
 
-export default injectSheet(styles)(Footer);
+export default Footer;
