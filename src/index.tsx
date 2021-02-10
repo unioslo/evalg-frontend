@@ -133,11 +133,14 @@ const constructApolloClient = () => {
 
 const protector = makeAuthenticator({ userManager });
 
+const faviconPath =
+  appInst !== undefined ? `favicons/${appInst}.ico` : `favicons/uio.ico`;
+
 const appRoot = () => {
   return (
     <>
       <Helmet>
-        <link rel="icon" href={`favicons/${appInst}.ico`} />
+        <link rel="icon" href={faviconPath} />
         <title>eValg</title>
       </Helmet>
       <BrowserRouter>
