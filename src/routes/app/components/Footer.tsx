@@ -14,7 +14,7 @@ import Link from 'components/link';
 
 const useStyles = createUseStyles((theme: any) => ({
   wrapper: {
-    background: theme.colors.black,
+    background: theme.footerBackgroundColor,
     padding: '4rem 0',
   },
   footer: {
