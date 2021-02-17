@@ -1,4 +1,5 @@
-FROM harbor.uio.no/library/nginx:latest
+FROM harbor.uio.no/library/docker.io-nginx:latest
+
 MAINTAINER USITINT <bnt-int@usit.uio.no>
 LABEL no.uio.contact=bnt-int@usit.uio.no
 
