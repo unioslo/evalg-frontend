@@ -501,12 +501,12 @@
   },
   "pollElec": {
     "ballot": {
-      "selectChoice": "Velg alternativ {{alternative}}",
-      "removeChoice": "Fjern valgt alternativ {{alternative}}"
+      "selectChoice": "Vel alternativ {{alternative}}",
+      "removeChoice": "Fjern valt alternativ {{alternative}}"
     },
     "chosenAlternative": "Valt alternativ",
     "voteHelpHeader": "Vel eit alternativ",
-    "voteHelpDesc": "Velg alternativet du vil røyste på.",
+    "voteHelpDesc": "Vel alternativet du vil røyste på.",
     "voteHelpYouMaySelectOnlyOne": "Dette er et avrøysting, og du kan kun vel eit alternativ."
   },
   "prefElec": {
