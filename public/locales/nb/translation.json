@@ -498,6 +498,16 @@
   "person": {
     "loading": "Laster brukerdata…"
   },
+  "pollElec": {
+    "ballot": {
+      "selectChoice": "Velg alternativ {{alternative}}",
+      "removeChoice": "Fjern valgt alternativ {{alternative}}"
+    },
+    "chosenAlternative": "Valgt alternativ",
+    "voteHelpHeader": "Velg et alternativ",
+    "voteHelpDesc": "Velg alternativet du vil stemme på.",
+    "voteHelpYouMaySelectOnlyOne": "Dette er et avstemning, og du kan kun velge et alternativ."
+  },
   "prefElec": {
     "candPageDesc": "Legg til kandidater som stiller for de ulike velgergruppene.<0></0>\nValget må ha minst like mange kandidater per gruppe som angitt under <1>valginnstillinger</1>.",
     "ballot": {

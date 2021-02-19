@@ -295,6 +295,7 @@ export type ElectionMetaData = {
   ballotRules: {
     votes: BallotRulesVotes;
     voting: BallotRulesVoting;
+    allowBlank?: boolean;
   };
   candidateRules: {
     candidateGender: boolean;

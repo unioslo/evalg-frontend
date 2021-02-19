@@ -498,6 +498,16 @@
   "person": {
     "loading": "Loading user information…"
   },
+  "pollElec": {
+    "ballot": {
+      "selectChoice": "Chosen alternative {{alternative}}",
+      "removeChoice": "Remove selected alternative {{alternative}}"
+    },
+    "chosenAlternative": "Chosen alternative",
+    "voteHelpHeader": "Choose one alternative",
+    "voteHelpDesc": "Choose the alternative you want to vote for.",
+    "voteHelpYouMaySelectOnlyOne": "This is poll, so you can only select one alternative."
+  },
   "prefElec": {
     "candPageDesc": "Here you can add candidates that are electable for the various voter groups.<0></0>\nThe election must have at least as many candidates per voter group as stated in <1>election information</1>.",
     "ballot": {

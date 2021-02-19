@@ -13,6 +13,7 @@ import { BallotStep } from './utils';
 
 import PrefElecVote from './PrefElecVote';
 import MajorityVote from './MajorityVote';
+import PollVote from './PollVote';
 import Receipt from './components/Receipt';
 import Error from './components/Error';
 import VotingStepper, { VotingStep } from './components/VotingStepper';
@@ -180,7 +181,6 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
         : BallotStep.FillOutBallot;
 
     const currentStepText = this.props.t(votingStepTranslateKey[currentStep]);
-
     return (
       <Query
         query={getElectionGroupVotingData}
@@ -223,9 +223,11 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
             } else if (voting === 'list') {
               return <div>List election voting not implemented</div>;
             } else if (voting === 'no_rank') {
-              if (countingRules.method === 'mv') {
+              if (countingRules.method === 'mntv') {
                 VotingComponent = MajorityVote;
               }
+            } else if (voting === 'poll') {
+              VotingComponent = PollVote;
             } else {
               return <div>Unknown meta.ballotRules.voting type: {voting}</div>;
             }

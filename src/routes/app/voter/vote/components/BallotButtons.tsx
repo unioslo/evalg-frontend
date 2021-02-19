@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import { ScreenSizeConsumer } from 'providers/ScreenSize';
 import Button, { ButtonContainer } from 'components/button';
@@ -9,38 +9,42 @@ interface IProps {
   onBlankVote: () => void;
   onReviewBallot: () => void;
   reviewBallotEnabled: boolean;
+  showBlankVoteButton?: boolean;
 }
 
-const BallotButtons: React.SFC<IProps> = ({
+const BallotButtons: React.FunctionComponent<IProps> = ({
   onGoBackToSelectVoterGroup,
   onBlankVote,
+  showBlankVoteButton,
   reviewBallotEnabled,
   onReviewBallot,
 }) => {
+  const { t } = useTranslation();
+
   const backButton = (
     <Button
-      text={<Trans>general.back</Trans>}
+      text={t('general.back')}
       action={onGoBackToSelectVoterGroup}
       secondary
     />
   );
+
   const blankVoteButtonForScreenSize = (screenSize: string) => (
     <Button
-      text={<Trans>election.blankVote</Trans>}
+      text={t('election.blankVote')}
       action={onBlankVote}
       secondary
       fillWidth={screenSize === 'mobile'}
       centerContent={screenSize === 'mobile'}
     />
   );
+
   const reviewBallotButtonForScreenSize = (screenSize: string) => (
     <Button
       text={
-        screenSize === 'mobile' || screenSize === 'sm' ? (
-          <Trans>voter.reviewBallotMobile</Trans>
-        ) : (
-          <Trans>voter.reviewBallot</Trans>
-        )
+        screenSize === 'mobile' || screenSize === 'sm'
+          ? t('voter.reviewBallotMobile')
+          : t('voter.reviewBallot')
       }
       disabled={!reviewBallotEnabled}
       action={onReviewBallot}
@@ -52,9 +56,11 @@ const BallotButtons: React.SFC<IProps> = ({
       {({ screenSize }) =>
         screenSize === 'mobile' ? (
           <>
-            <ButtonContainer>
-              {blankVoteButtonForScreenSize(screenSize)}
-            </ButtonContainer>
+            {showBlankVoteButton && (
+              <ButtonContainer>
+                {blankVoteButtonForScreenSize(screenSize)}
+              </ButtonContainer>
+            )}
             <ButtonContainer>
               {backButton}
               {reviewBallotButtonForScreenSize(screenSize)}
@@ -63,7 +69,7 @@ const BallotButtons: React.SFC<IProps> = ({
         ) : (
           <ButtonContainer alignLeft>
             {backButton}
-            {blankVoteButtonForScreenSize(screenSize)}
+            {showBlankVoteButton && blankVoteButtonForScreenSize(screenSize)}
             {reviewBallotButtonForScreenSize(screenSize)}
           </ButtonContainer>
         )
