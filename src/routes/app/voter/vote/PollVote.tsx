@@ -73,7 +73,7 @@ const PollVote: React.FunctionComponent<IProps &
     onSubmitVote({
       voteType: 'pollVote',
       isBlankVote,
-      selectedAlternativeId: isBlankVote ? null : selectedAlternative?.id,
+      rankedCandidateIds: isBlankVote ? [] : [selectedAlternative?.id],
     });
   };
 
