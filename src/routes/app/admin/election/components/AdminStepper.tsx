@@ -3,8 +3,7 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import { Stepper, StepperItem } from 'components/stepper';
 
@@ -13,11 +12,12 @@ const electionGroupNameQuery = gql`
     electionGroup(id: $id) {
       id
       name
+      meta
     }
   }
 `;
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   electionGroupName: {
     marginBottom: '2rem',
     marginLeft: '1rem',
@@ -25,21 +25,30 @@ const styles = (theme: any) => ({
     color: theme.contentPageHeaderColor,
     fontStyle: 'italic',
   },
-});
+}));
 
 const calculatePath = (groupId: string | number) => (
   subRoute: string | number
 ) => `/admin/elections/${groupId}/${subRoute}`;
 
+const getGroupCandidateHeader = (meta: any) => {
+  if (meta.candidateType === 'poll') {
+    return 'admin.pollElec.alternatives';
+  }
+  return 'election.candidates';
+};
+
 interface IProps {
   groupId: number | string;
   path: string;
-  classes: Classes;
 }
 
 const AdminStepper: React.FunctionComponent<IProps> = (props: IProps) => {
-  const { groupId, path, classes } = props;
+  const { groupId, path } = props;
   const { t, i18n } = useTranslation();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+
   const activeSection = path.split('/').pop();
   const linkGenerator = calculatePath(groupId);
   return (
@@ -48,6 +57,8 @@ const AdminStepper: React.FunctionComponent<IProps> = (props: IProps) => {
         {({ data }: { data: any }) => {
           if (data && data.electionGroup) {
             const electionGroupName = data.electionGroup.name[i18n.language];
+
+            const { meta } = data.electionGroup;
             return (
               <>
                 <div className={classes.electionGroupName}>
@@ -68,7 +79,7 @@ const AdminStepper: React.FunctionComponent<IProps> = (props: IProps) => {
                       translateX={234}
                       translateY={3}
                       number={2}
-                      itemText={t('election.candidates')}
+                      itemText={t(getGroupCandidateHeader(meta))}
                       active={activeSection === 'candidates'}
                     />
                   </Link>
@@ -101,4 +112,4 @@ const AdminStepper: React.FunctionComponent<IProps> = (props: IProps) => {
   );
 };
 
-export default injectSheet(styles)(AdminStepper);
+export default AdminStepper;
