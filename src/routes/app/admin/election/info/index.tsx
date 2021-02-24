@@ -76,7 +76,8 @@ class InfoPage extends React.Component<PropsInternal> {
   }
 
   render() {
-    const { id: groupId } = this.props.electionGroupData;
+    const { electionGroupData } = this.props;
+    const { id: groupId, meta } = electionGroupData;
 
     const { t, i18n, history } = this.props;
     const lang = i18n.language;
@@ -94,12 +95,12 @@ class InfoPage extends React.Component<PropsInternal> {
         }: any) => (
           <Page header={t('election.electionInfo')}>
             <PageSection header={<Trans>election.electionType</Trans>}>
-              <Text>{this.props.electionGroupData.name[lang]}</Text>
+              <Text>{electionGroupData.name[lang]}</Text>
             </PageSection>
 
             <SettingsSectionsGroup
               settingsSectionsContents={this.settingsSectionsContents}
-              electionGroupData={this.props.electionGroupData}
+              electionGroupData={electionGroupData}
               startWithDirectedFlowActive={isCreatingNewElection}
               onSettingsWasSaved={this.handleSettingsWasSaved}
             />
@@ -109,14 +110,17 @@ class InfoPage extends React.Component<PropsInternal> {
                 text={
                   <span>
                     <Trans>election.goTo</Trans>&nbsp;
-                    <Trans>election.candidates</Trans>
+                    {meta.candidateType === 'poll' ? (
+                      <Trans>admin.pollElec.alternatives</Trans>
+                    ) : (
+                      <Trans>election.candidates</Trans>
+                    )}
                   </span>
                 }
                 action={proceedToCandiates}
                 disabled={
-                  this.props.electionGroupData.elections.filter(
-                    (e: any) => e.active
-                  ).length === 0
+                  electionGroupData.elections.filter((e: any) => e.active)
+                    .length === 0
                 }
                 iconRight="mainArrow"
               />
