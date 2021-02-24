@@ -3,36 +3,21 @@ import { ApolloConsumer } from 'react-apollo';
 import { useTranslation } from 'react-i18next';
 import { Route, Switch } from 'react-router';
 import { History } from 'history';
-import injectSheet from 'react-jss';
 import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
+import { getSignedInPersonDisplayName } from 'queries';
+import ApolloClient from 'apollo-client';
 
 import { appHelpLink } from 'appConfig';
 import Link from 'components/link';
 import { H1 } from 'components/text';
 import { UserContext } from 'providers/UserContext';
-
 import LanguageSelector, { MobileLanguageSelector } from './LanguageSelector';
 import { DesktopMenu, DesktopMenuItem } from './DesktopMenu';
 import { MobileMenu, MobileMenuItem } from './MobileMenu';
-import { getSignedInPersonDisplayName } from 'queries';
-import ApolloClient from 'apollo-client';
+import LogoBar from './logoBar';
 
-const styles = (theme: any) => ({
-  logoBar: {
-    margin: '0 auto',
-    maxWidth: theme.appMaxWidth,
-    padding: `0 ${theme.horizontalPadding}`,
-    [theme.breakpoints.mdQuery]: {
-      padding: `0 ${theme.horizontalMdPadding}`,
-    },
-  },
-  logoBarWrapper: {
-    backgroundColor: theme.colors.black,
-  },
-  logo: {
-    background: 'url("/uio-app-logo-nb.png") left center no-repeat',
-    height: '4rem',
-  },
+const useStyles = createUseStyles((theme: any) => ({
   mainWrapper: {
     backgroundColor: theme.headerMainAreaColor,
   },
@@ -40,13 +25,9 @@ const styles = (theme: any) => ({
     margin: '0 auto',
     maxWidth: theme.appMaxWidth,
     height: '12rem',
-    padding: `2.5rem ${theme.horizontalPadding} 3rem ${
-      theme.horizontalPadding
-    }`,
+    padding: `2.5rem ${theme.horizontalPadding} 3rem ${theme.horizontalPadding}`,
     [theme.breakpoints.mdQuery]: {
-      padding: `2.5rem ${theme.horizontalMdPadding} 3rem ${
-        theme.horizontalMdPadding
-      }`,
+      padding: `2.5rem ${theme.horizontalMdPadding} 3rem ${theme.horizontalMdPadding}`,
     },
   },
   mainRow: {
@@ -54,12 +35,12 @@ const styles = (theme: any) => ({
     justifyContent: 'space-between',
   },
   title: {
-    color: theme.colors.white,
+    color: theme.headerTitleColor,
   },
   desc: {
     fontSize: '1.7rem',
     lineHeight: '1.5',
-    color: theme.colors.eggWhite,
+    color: theme.headerDescColor,
     marginTop: '0.5rem',
     [theme.breakpoints.mdQuery]: {
       fontSize: '2rem',
@@ -72,24 +53,24 @@ const styles = (theme: any) => ({
       display: 'none',
     },
   },
-});
+  link: {
+    color: theme.linkColor,
+  },
+}));
 
 interface IProps {
   history: History;
-  classes: Classes;
 }
 
 const Header: React.FunctionComponent<IProps> = (props: IProps) => {
-  const { history, classes } = props;
+  const { history } = props;
   const { t } = useTranslation();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   return (
     <header>
-      <div className={classes.logoBarWrapper}>
-        <div className={classes.logoBar}>
-          <div className={classes.logo} />
-        </div>
-      </div>
+      <LogoBar />
       <div className={classes.mainWrapper}>
         <div className={classes.main}>
           <div className={classes.mainRow}>
@@ -98,17 +79,21 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
                 <Route
                   path="/admin"
                   render={() => (
-                    <Link to="/admin" inheritColor noUnderline>
-                      <H1>eValg</H1>
-                    </Link>
+                    <div className={classes.link}>
+                      <Link to="/admin" inheritColor noUnderline>
+                        <H1>eValg</H1>
+                      </Link>
+                    </div>
                   )}
                 />
                 <Route
                   path="/"
                   render={() => (
-                    <Link to="/" inheritColor noUnderline>
-                      <H1>eValg</H1>
-                    </Link>
+                    <div className={classes.link}>
+                      <Link to="/" inheritColor noUnderline>
+                        <H1>eValg</H1>
+                      </Link>
+                    </div>
                   )}
                 />
               </Switch>
@@ -119,28 +104,36 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
                   <Route
                     path="/admin"
                     render={() => (
-                      <Link to="/" inheritColor>
-                        {t('general.frontPage')}
-                      </Link>
+                      <div className={classes.link}>
+                        <Link to="/" inheritColor>
+                          {t('general.frontPage')}
+                        </Link>
+                      </div>
                     )}
                   />
                   <Route
                     path="/"
                     render={() => (
-                      <Link to="/admin" inheritColor>
-                        {t('general.administerElections')}
-                      </Link>
+                      <div className={classes.link}>
+                        <Link to="/admin" inheritColor>
+                          {t('general.administerElections')}
+                        </Link>
+                      </div>
                     )}
                   />
                 </Switch>
               </MobileMenuItem>
               <MobileMenuItem>
-                <Link inheritColor external noExternalIcon to={appHelpLink}>
-                  {t('general.help')}
-                </Link>
+                <div className={classes.link}>
+                  <Link inheritColor external noExternalIcon to={appHelpLink}>
+                    {t('general.help')}
+                  </Link>
+                </div>
               </MobileMenuItem>
               <MobileMenuItem>
-                <MobileLogout history={history} />
+                <div className={classes.link}>
+                  <MobileLogout history={history} />
+                </div>
               </MobileMenuItem>
             </MobileMenu>
             <DesktopMenu>
@@ -149,28 +142,36 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
                   <Route
                     path="/admin"
                     render={() => (
-                      <Link to="/" inheritColor>
-                        {t('general.frontPage')}
-                      </Link>
+                      <div className={classes.link}>
+                        <Link to="/" inheritColor>
+                          {t('general.frontPage')}
+                        </Link>
+                      </div>
                     )}
                   />
                   <Route
                     path="/"
                     render={() => (
-                      <Link to="/admin" inheritColor>
-                        {t('general.administerElections')}
-                      </Link>
+                      <div className={classes.link}>
+                        <Link to="/admin" inheritColor>
+                          {t('general.administerElections')}
+                        </Link>
+                      </div>
                     )}
                   />
                 </Switch>
               </DesktopMenuItem>
               <DesktopMenuItem>
-                <Link inheritColor external noExternalIcon to={appHelpLink}>
-                  {t('general.help')}
-                </Link>
+                <div className={classes.link}>
+                  <Link inheritColor external noExternalIcon to={appHelpLink}>
+                    {t('general.help')}
+                  </Link>
+                </div>
               </DesktopMenuItem>
               <DesktopMenuItem>
-                <LanguageSelector />
+                <div className={classes.link}>
+                  <LanguageSelector />
+                </div>
               </DesktopMenuItem>
             </DesktopMenu>
           </div>
@@ -196,11 +197,15 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
             <DesktopMenu>
               <ApolloConsumer>
                 {client => (
-                  <UserNameAndLogout history={history} apolloClient={client} />
+                  <UserNameAndLogout
+                    history={history}
+                    classes={classes}
+                    apolloClient={client}
+                  />
                 )}
               </ApolloConsumer>
             </DesktopMenu>
-            <MobileLanguageSelector/>   
+            <MobileLanguageSelector />
           </div>
         </div>
       </div>
@@ -223,16 +228,16 @@ const MobileLogout: React.FunctionComponent<{ history: History }> = ({
         {context => {
           if (context.user) {
             return (
-                <a
-                  style={{color: 'inherit'}}
-                  onClick={e => {
-                    e.preventDefault();
-                    navigateToLogout(history);
-                  }}
-                  href="/"
-                >
-                  {t('general.logout')}
-                </a>
+              <a
+                style={{ color: 'inherit' }}
+                onClick={e => {
+                  e.preventDefault();
+                  navigateToLogout(history);
+                }}
+                href="/"
+              >
+                {t('general.logout')}
+              </a>
             );
           }
           return null;
@@ -244,11 +249,12 @@ const MobileLogout: React.FunctionComponent<{ history: History }> = ({
 
 const UserNameAndLogout: React.FunctionComponent<{
   apolloClient: ApolloClient<any>;
+  classes: Classes;
   history: History;
-}> = ({ apolloClient, history }) => {
+}> = ({ apolloClient, classes, history }) => {
   const { t } = useTranslation();
   const [userDisplayName, setUserDisplayName] = useState('');
-  const userContext = useContext(UserContext)
+  const userContext = useContext(UserContext);
 
   useEffect(() => {
     const getDisplayName = async () => {
@@ -275,11 +281,11 @@ const UserNameAndLogout: React.FunctionComponent<{
                 return (
                   <>
                     <DesktopMenuItem>
-                      {userDisplayName}
+                      <div className={classes.link}>{userDisplayName}</div>
                     </DesktopMenuItem>
                     <DesktopMenuItem>
                       <a
-                        style={{ color: 'inherit' }}
+                        className={classes.link}
                         onClick={e => {
                           e.preventDefault();
                           navigateToLogout(history);
@@ -292,7 +298,7 @@ const UserNameAndLogout: React.FunctionComponent<{
                   </>
                 );
               }
-                return null;
+              return null;
             }}
           </UserContext.Consumer>
         );
@@ -301,4 +307,4 @@ const UserNameAndLogout: React.FunctionComponent<{
   );
 };
 
-export default injectSheet(styles)(Header);
+export default Header;
