@@ -1,12 +1,12 @@
 import React from 'react';
 import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 import { useTranslation } from 'react-i18next';
-import injectSheet from 'react-jss';
 
 import { ElectionResult, Candidate } from 'interfaces';
-import { H4, H5 } from 'components/text';
+import { H4 } from 'components/text';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   sectionLevel1: {
     marginBottom: '2rem',
   },
@@ -27,26 +27,24 @@ const styles = (theme: any) => ({
   errorText: {
     color: theme.errorTextColor,
   },
-});
+}));
 
 interface IProps {
   electionResult: ElectionResult;
-  classes: Classes;
 }
 
 const PollResultAndBallotStats: React.FunctionComponent<IProps> = ({
   electionResult,
-  classes,
 }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
 
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+
   const { election } = electionResult;
   const { pollbooks } = election;
   const { result } = electionResult;
-
-  console.info(result.alternatives);
-  console.info(result.alternatives.size);
 
   return (
     <>
@@ -54,23 +52,16 @@ const PollResultAndBallotStats: React.FunctionComponent<IProps> = ({
         <H4>{t('admin.countingDetails.electionResult.electionResult')}</H4>
         <>
           <div className={classes.sectionLevel2}>
-            <H5>
-              {Object.keys(result['alternatives']).length === 1
-                ? t('admin.countingDetails.electionResult.electedCandidate')
-                : t('admin.countingDetails.electionResult.electedCandidates')}
-            </H5>
             {Object.keys(result['alternatives']).length > 0 ? (
               <ul className={classes.candidatesList}>
                 <PollResultList
-                  electedCandidateIds={result['alternatives']}
+                  alternatives={result['alternatives']}
                   candidates={election.lists[0].candidates}
                   classes={classes}
                 />
               </ul>
             ) : (
-              <em>
-                {t('admin.countingDetails.electionResult.noElectedCandidates')}
-              </em>
+              <em>{t('admin.pollElec.noResults')}</em>
             )}
           </div>
         </>
@@ -122,14 +113,14 @@ const PollResultAndBallotStats: React.FunctionComponent<IProps> = ({
   );
 };
 
-interface ElectedCandidatesListProps {
-  electedCandidateIds: string[];
+interface PollResultProps {
+  alternatives: string[];
   candidates: Candidate[];
   classes: Classes;
 }
 
-const PollResultList: React.FunctionComponent<ElectedCandidatesListProps> = ({
-  electedCandidateIds,
+const PollResultList: React.FunctionComponent<PollResultProps> = ({
+  alternatives,
   candidates,
   classes,
 }) => {
@@ -137,25 +128,25 @@ const PollResultList: React.FunctionComponent<ElectedCandidatesListProps> = ({
 
   return (
     <>
-      {electedCandidateIds.map(electedCandidateId => {
+      {Object.entries(alternatives).map(alternative => {
         const electedCandidate = candidates.find(
-          candidate => candidate.id === electedCandidateId
+          candidate => candidate.id === alternative[0]
         );
         if (electedCandidate) {
           return (
-            <li key={electedCandidateId} className={classes.candidateListItem}>
-              {electedCandidate.name}
+            <li key={alternative[0]} className={classes.candidateListItem}>
+              {alternative[1]}% - {electedCandidate.name}
             </li>
           );
         }
         return (
-          <li key={electedCandidateId}>
+          <li key={alternative[0]}>
             <span className={classes.errortext}>
               {t(
                 'admin.countingDetails.electionResult.errors.candidateNameNotFound'
               )}
             </span>{' '}
-            ({electedCandidateId})
+            ({alternative[0]})
           </li>
         );
       })}
@@ -163,4 +154,4 @@ const PollResultList: React.FunctionComponent<ElectedCandidatesListProps> = ({
   );
 };
 
-export default injectSheet(styles)(PollResultAndBallotStats);
+export default PollResultAndBallotStats;
