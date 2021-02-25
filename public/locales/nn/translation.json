@@ -507,7 +507,7 @@
     "chosenAlternative": "Valt alternativ",
     "voteHelpHeader": "Vel eit alternativ",
     "voteHelpDesc": "Vel alternativet du vil røyste på.",
-    "voteHelpYouMaySelectOnlyOne": "Dette er et avrøysting, og du kan kun vel eit alternativ."
+    "voteHelpYouMaySelectOnlyOne": "Du kan kun vel eit alternativ."
   },
   "prefElec": {
     "candPageDesc": "Legg til kandidatar som stiller for dei ulike veljargruppene.<0></0>\nValet må ha minst like mange kandidatar per gruppe som førd opp under <1>valoppsettet</1>.",
