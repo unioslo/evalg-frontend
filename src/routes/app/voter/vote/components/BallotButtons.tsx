@@ -78,4 +78,8 @@ const BallotButtons: React.FunctionComponent<IProps> = ({
   );
 };
 
+BallotButtons.defaultProps = {
+  showBlankVoteButton: true,
+};
+
 export default BallotButtons;
