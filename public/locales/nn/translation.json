@@ -98,8 +98,8 @@
     },
     "pollElec": {
       "addAlternativ": "Legg til alternativ",
-      "alternative": "Alternativer",
-      "alternatives": "Alternativene",
+      "alternative": "Alternativ",
+      "alternatives": "Alternativ",
       "deleteAlternative": "Slett alternativ",
       "editAlternative": "Endre alternativ",
       "header": "Administrer alternativ for urneval.",
