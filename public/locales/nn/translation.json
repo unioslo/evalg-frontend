@@ -99,12 +99,12 @@
     "pollElec": {
       "addAlternativ": "Legg til alternativ",
       "alternative": "Alternativ",
-      "alternatives": "Alternativa",
+      "alternatives": "Alternativ",
       "deleteAlternative": "Slett alternativ",
       "editAlternative": "Endre alternativ",
       "header": "Administrer alternativ for urneval.",
-      "noAlternative": "Ingen alternativer i lista",
-      "noResults": "Ingen resultater"
+      "noAlternative": "Ingen alternativ i lista",
+      "noResults": "Ingen resultat"
     },
     "electionKey": {
       "create": "Opprett valnøkkel",
