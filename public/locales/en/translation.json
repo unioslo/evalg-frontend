@@ -96,6 +96,16 @@
       "addNewElectionAdmin": "Add election admin",
       "addedElectionAdminByIdentifier": "Added {{ idType }} {{ idValue }} as election admin"
     },
+    "pollElec": {
+      "addAlternativ": "Add alternative",
+      "alternative": "Alternative",
+      "alternatives": "Alternatives",
+      "deleteAlternative": "Delete alternative",
+      "editAlternative": "Change alternative",
+      "header": "Administer poll alternatives",
+      "noAlternative": "No alternatives in list",
+      "noResults": "No results"
+    },
     "electionKey": {
       "create": "Create election key",
       "createNew": "Create new election key",
