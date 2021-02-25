@@ -103,7 +103,8 @@
       "deleteAlternative": "Slett alternativ",
       "editAlternative": "Endre alternativ",
       "header": "Administrer alternativer for urnevalg.",
-      "noAlternative": "Ingen alternativer i lista"
+      "noAlternative": "Ingen alternativer i lista",
+      "noResults": "Ingen resultater"
     },
     "electionKey": {
       "create": "Opprett valgnøkkel",
