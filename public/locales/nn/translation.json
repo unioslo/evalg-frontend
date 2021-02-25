@@ -98,13 +98,13 @@
     },
     "pollElec": {
       "addAlternativ": "Legg til alternativ",
-      "alternative": "Alternativ",
-      "alternatives": "Alternativa",
+      "alternative": "Alternativer",
+      "alternatives": "Alternativene",
       "deleteAlternative": "Slett alternativ",
       "editAlternative": "Endre alternativ",
       "header": "Administrer alternativ for urneval.",
-      "noAlternative": "Ingen alternativer i lista",
-      "noResults": "Ingen resultater"
+      "noAlternative": "Ingen alternativ i lista",
+      "noResults": "Ingen resultat"
     },
     "electionKey": {
       "create": "Opprett valnøkkel",
