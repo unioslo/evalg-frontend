@@ -96,6 +96,16 @@
       "addNewElectionAdmin": "Legg til valgansvarlig",
       "addedElectionAdminByIdentifier": "La til {{ idType }} {{ idValue }} som valgansvarlig"
     },
+    "pollElec": {
+      "addAlternativ": "Legg til alternativ",
+      "alternative": "Alternativ",
+      "alternatives": "Alternativer",
+      "deleteAlternative": "Slett alternativ",
+      "editAlternative": "Endre alternativ",
+      "header": "Administrer alternativer for urnevalg.",
+      "noAlternative": "Ingen alternativer i lista",
+      "noResults": "Ingen resultater"
+    },
     "electionKey": {
       "create": "Opprett valgnøkkel",
       "createNew": "Opprett ny valgnøkkel",

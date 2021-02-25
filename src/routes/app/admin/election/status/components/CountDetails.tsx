@@ -14,6 +14,7 @@ import { H3 } from 'components/text';
 import { orderElectionResults } from 'utils/processGraphQLData';
 
 import ElectionResultAndBallotStats from './ElectionResultAndBallotStats';
+import PollResultAndBallotStats from './PollResultAndBallotStats';
 
 const countingProtocolDownloadQuery = gql`
   query countingProtocolDownload($id: UUID!) {
@@ -157,22 +158,27 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
       )}
 
       {electionResults
-        .filter((electionResult) => electionResult.election.active)
-        .map((electionResult) => {
+        .filter(electionResult => electionResult.election.active)
+        .map(electionResult => {
           const { election } = electionResult;
           const electionName = election.name[lang];
+
+          console.info(electionResult);
 
           return (
             <div key={electionResult.id} className={classes.electionSection}>
               {election.electionGroup.type === 'multiple_elections' && (
                 <H3>{electionName}</H3>
               )}
-
-              <ElectionResultAndBallotStats electionResult={electionResult} />
+              {electionResult.result.meta.election_type === 'poll' ? (
+                <PollResultAndBallotStats electionResult={electionResult} />
+              ) : (
+                <ElectionResultAndBallotStats electionResult={electionResult} />
+              )}
               <div className={classes.electionResultFileDownloads}>
                 <ButtonContainer>
                   <Button
-                    action={(e) => {
+                    action={e => {
                       e.preventDefault();
                       handleDownloadCountingProtocol(
                         apolloClient,
@@ -188,7 +194,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
                     secondary
                   />
                   <Button
-                    action={(e) => {
+                    action={e => {
                       e.preventDefault();
                       handleDownloadBallots(apolloClient, electionResult.id);
                     }}
