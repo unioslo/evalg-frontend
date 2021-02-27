@@ -17,7 +17,7 @@ export const appVersion: string = process.env.REACT_APP_VERSION as string;
 export const appName: string = process.env.REACT_APP_NAME as string;
 
 /* Institution */
-export const appInst: string = process.env.REACT_APP_INST as string;
+export const appInst: string = env.REACT_APP_INST as string;
 
 /* Sentry */
 const sentryPublicKey: string = env.REACT_APP_SENTRY_PUBLIC_KEY as string;
