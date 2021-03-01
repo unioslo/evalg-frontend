@@ -1,3 +1,5 @@
+import { appInst } from 'appConfig'
+import { Candidate } from 'interfaces';
 /* @flow */
 
 export const isObjEmpty = (obj: any): boolean => {
@@ -126,4 +128,13 @@ export const shuffleArray = <T>(array: T[]): T[] => {
     shuffledArray[j] = temp;
   }
   return shuffledArray;
-}
+};
+
+export const getCandidateArray = (candidates: Candidate[]) => {
+  switch (appInst) {
+    case 'khio':
+      return candidates.sort((a, b) => a.name.localeCompare(b.name));
+    default:
+      return shuffleArray(candidates);
+  }
+};
