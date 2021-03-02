@@ -94,7 +94,7 @@ const styles = (theme: any) => ({
   dropDownDesktopMenu: {
     width: 'fit-content',
     display: 'inline-block',
-    color: theme.colors.white,
+    color: theme.dropDownDesktopMenuColor,
     background: 'url("/dropdownarrow.svg") no-repeat right 7px top 50%',
     fontFamily: 'inherit',
     fontSize: 'inherit',
@@ -265,11 +265,11 @@ class DropDown extends DropDownBase<IProps> {
     const listItemClassNames = classNames({
       [classes.listItem]: true,
       [classes.listItemDesktopMenu]: onDesktopMenu,
-    })
+    });
 
     const itemTextClassNames = classNames({
       [classes.itemTextDesktopMenu]: onDesktopMenu,
-    })
+    });
 
     const listId = id + '-list';
     const inputId = id + '-input';
@@ -288,7 +288,7 @@ class DropDown extends DropDownBase<IProps> {
         onFocus={this.handleOnFocus.bind(this)}
         tabIndex={0}
       >
-        {(inline || onDesktopMenu) ? (
+        {inline || onDesktopMenu ? (
           <div>
             <div className={'inlineOptionNameText'}>
               {placeholder

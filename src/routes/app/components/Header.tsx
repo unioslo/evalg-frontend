@@ -8,7 +8,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { getSignedInPersonDisplayName } from 'queries';
 import ApolloClient from 'apollo-client';
 
-import { appHelpLink } from 'appConfig';
+import { appHelpLink, appInst } from 'appConfig';
 import Link from 'components/link';
 import { H1 } from 'components/text';
 import { UserContext } from 'providers/UserContext';
@@ -55,6 +55,9 @@ const useStyles = createUseStyles((theme: any) => ({
   },
   link: {
     color: theme.linkColor,
+  },
+  divider: {
+    borderTop: `1px solid ${theme.headerTitleColor}`,
   },
 }));
 
@@ -209,6 +212,7 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
           </div>
         </div>
       </div>
+      {appInst === 'khio' && <hr className={classes.divider} />}
     </header>
   );
 };

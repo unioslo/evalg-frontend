@@ -91,6 +91,7 @@ const theme = {
   dropDownArrowColor: darkTurquoise,
   dropDownBorderColor: darkEggWhite,
   dropDownBorderColorActive: darkTurquoise,
+  dropDownDesktopMenuColor: white,
   dropDownListItemBorderColor: darkWhite,
   dropDownTextColor: greyishBrown,
   dropDownSecondaryLineColor: gray,

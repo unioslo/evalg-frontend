@@ -10,8 +10,9 @@ const useStyles = createUseStyles((theme: any) => ({
     width: '100%',
     boxSizing: 'boarder-box',
     position: 'relative',
+    padding: `2.5rem ${theme.horizontalPadding} 3rem ${theme.horizontalPadding}`,
     [theme.breakpoints.mdQuery]: {
-      padding: `0 ${theme.horizontalMdPadding}`,
+      padding: `2.5rem ${theme.horizontalMdPadding} 3rem ${theme.horizontalMdPadding}`,
     },
   },
   logoBarWrapper: {
@@ -20,7 +21,10 @@ const useStyles = createUseStyles((theme: any) => ({
     marginTop: '1rem',
   },
   logo: {
-    width: '50%',
+    width: '100%',
+    [theme.breakpoints.notMobileQuery]: {
+      width: '50%',
+    },
   },
   name: {
     color: '#37424a',

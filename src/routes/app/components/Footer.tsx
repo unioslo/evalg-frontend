@@ -51,6 +51,9 @@ const useStyles = createUseStyles((theme: any) => ({
       margin: 0,
     },
   },
+  divider: {
+    borderTop: `1px solid ${theme.headerTitleColor}`,
+  },
   footerSection: {
     '&:not(:last-child)': {
       marginBottom: '3rem',
@@ -85,6 +88,7 @@ const Footer: React.FunctionComponent = () => {
 
   return (
     <>
+      {appInst === 'khio' && <hr className={classes.divider} />}
       <footer className={classes.wrapper}>
         <div className={classes.footer}>
           <div className={classes.logoOffsetContainer}>
