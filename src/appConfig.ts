@@ -69,6 +69,7 @@ export const appCookiesInformationLink = {
 };
 
 /* Feature toggles */
+export const appCandOrder: string = env.REACT_APP_CANDIDATE_ORDERING as string;
 export const appMobileVotingStepperVariant: 'simple' | 'circles' = 'circles';
 export const sectionBottomBorderStyle: 'original' | 'stylish' = 'stylish';
 export const showGenerateVotesTestingComponent = false;

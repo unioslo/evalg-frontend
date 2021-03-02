@@ -1,4 +1,4 @@
-import { appInst } from 'appConfig'
+import { appCandOrder } from 'appConfig'
 import { Candidate } from 'interfaces';
 /* @flow */
 
@@ -131,9 +131,11 @@ export const shuffleArray = <T>(array: T[]): T[] => {
 };
 
 export const getCandidateArray = (candidates: Candidate[]) => {
-  switch (appInst) {
-    case 'khio':
+  switch (appCandOrder) {
+    case 'sorted':
       return candidates.sort((a, b) => a.name.localeCompare(b.name));
+    case 'random':
+      return shuffleArray(candidates);
     default:
       return shuffleArray(candidates);
   }
