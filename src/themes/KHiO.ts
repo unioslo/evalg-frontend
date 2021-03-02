@@ -4,6 +4,7 @@ const khioGrey = '#37424a';
 
 const KHiOTheme = {
   actionTextColor: khioGrey,
+  dropDownDesktopMenuColor: khioGrey,
   footerBackgroundColor: white,
   footerJustifyContent: 'flex-center',
   footerPaddingRight: '0rem',

@@ -212,7 +212,7 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
           </div>
         </div>
       </div>
-      {appInst === 'khio' && <hr className={classes.divider}/>}
+      {appInst === 'khio' && <hr className={classes.divider} />}
     </header>
   );
 };
