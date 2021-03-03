@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { Election, Candidate } from 'interfaces';
-import { shuffleArray } from 'utils/helpers';
+import { getCandidateArray } from 'utils/helpers';
 
 import { BallotStep } from './utils';
 import PrefElecBallot from './components/PrefElecBallot';
@@ -33,7 +33,7 @@ interface IProps {
 
 interface IState {
   selectedCandidates: Candidate[];
-  shuffledCandidates: Candidate[];
+  candidateArray: Candidate[];
   isBlankVote: boolean;
 }
 
@@ -44,14 +44,14 @@ class PrefElecVote extends React.Component<
   constructor(props: IProps & RouteComponentProps) {
     super(props);
     this.state = {
-      shuffledCandidates: shuffleArray(props.election.lists[0].candidates),
+      candidateArray: getCandidateArray(props.election.lists[0].candidates),
       selectedCandidates: [],
       isBlankVote: false,
     };
   }
 
   public render() {
-    const unselectedCandidates = this.state.shuffledCandidates.filter(
+    const unselectedCandidates = this.state.candidateArray.filter(
       c => this.state.selectedCandidates.indexOf(c) === -1
     );
 

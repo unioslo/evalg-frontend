@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 import { Candidate, Election } from 'interfaces';
-import { shuffleArray } from 'utils/helpers';
+import { getCandidateArray } from 'utils/helpers';
 
 import { BallotStep } from './utils';
 import MajorityVoteReview from './components/MajorityVoteReview';
@@ -36,8 +36,8 @@ const MajorityVote: React.FunctionComponent<IProps &
     onProceedToReview,
     onSubmitVote,
   } = props;
-  const shuffledCandidatesRef = useRef(
-    shuffleArray(election.lists[0].candidates)
+  const candidatesRef = useRef(
+    getCandidateArray(election.lists[0].candidates)
   );
 
   useEffect(() => {
@@ -120,7 +120,7 @@ const MajorityVote: React.FunctionComponent<IProps &
     <>
       {ballotStep === BallotStep.FillOutBallot && (
         <MajorityVoteBallot
-          candidates={shuffledCandidatesRef.current}
+          candidates={candidatesRef.current}
           selectedCandidates={selectedCandidates}
           election={election}
           errorMsg={errorMsg}
