@@ -115,14 +115,12 @@ const PollElecAlternativeTable: React.FunctionComponent<IProps> = props => {
   const candidates = candidateList.candidates.map((candidate: any) => ({
     id: candidate.id,
     name: candidate.name,
-    coCandidates: candidate.meta.coCandidates
-      ? candidate.meta.coCandidates
-      : [],
+    coCandidates: [],
     informationUrl: candidate.informationUrl,
     listId: candidate.listId,
   }));
   const newCandidateValues = {
-    coCandidates: [{ name: '' }],
+    coCandidates: [],
     listId: candidateList.id,
   };
   return (
