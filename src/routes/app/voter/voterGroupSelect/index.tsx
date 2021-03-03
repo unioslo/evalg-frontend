@@ -4,6 +4,8 @@ import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
 import { WithApolloClient, withApollo } from 'react-apollo';
 
+import { Redirect } from 'react-router';
+import { getCurInstNameWithCase } from 'utils/i18n';
 import {
   Election,
   IPollBook,
@@ -20,7 +22,6 @@ import MandatePeriodText from '../vote/components/MandatePeriodText';
 import { Date, Time } from '../../../../components/i18n';
 import Loading from '../../../../components/loading';
 import ErrorPageSection from '../../../../components/errors/ErrorPageSection';
-import { Redirect } from 'react-router';
 
 const votersForPersonQuery = gql`
   query votersForPerson($id: UUID!) {
@@ -307,8 +308,9 @@ class VoterGroupSelectPage extends React.Component<
             voterGroupSelect.notRegisteredInSelectedGroupBeforeDropdownText
           </Trans>
         );
-        additionalInformation = (
-          <Trans>voterGroupSelect.notRegisteredInSelectedGroupInfoText</Trans>
+        additionalInformation = t(
+          'voterGroupSelect.notRegisteredInSelectedGroupInfoText',
+          { inst: getCurInstNameWithCase() }
         );
         extraElements = (
           <>

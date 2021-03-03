@@ -584,7 +584,7 @@
     "moreAboutTheElection": "Mer om valget",
     "notRegisteredInSelectedGroupHeading": "Har du valgt riktig manntall?",
     "notRegisteredInSelectedGroupBeforeDropdownText": "Du er ikke i manntallet for",
-    "notRegisteredInSelectedGroupInfoText": "Du er ikke registrert i dette manntallet. Du kan likevel gå videre og stemme.\nValgstyret for valget avgjør om din stemme telles med, basert på din tilknytning til UiO.\nDu kan oppgi din stillingskode eller annen relevant informasjon under.",
+    "notRegisteredInSelectedGroupInfoText": "Du er ikke registrert i dette manntallet. Du kan likevel gå videre og stemme.\nValgstyret for valget avgjør om din stemme telles med, basert på din tilknytning til {{inst}}.\nDu kan oppgi din stillingskode eller annen relevant informasjon under.",
     "opens": "åpner",
     "registeredInSelectedGroupHeading": "Du har stemmerett",
     "registeredInSelectedGroupBeforeDropdownText": "Du er i manntallet for",
