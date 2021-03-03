@@ -2,6 +2,7 @@ import camelCase from 'lodash/camelCase';
 import { TFunction, TOptions, StringMap } from 'i18next';
 
 import { PersonIdType } from 'interfaces';
+import { appInst } from 'appConfig';
 
 export const getSupportedLanguages = (): string[] => {
   return ['nb', 'en', 'nn'];
@@ -59,4 +60,22 @@ export const getPersonIdTypeDisplayName = (
     translationsForPersonIdType = getTranslationsForPersonIdType(t);
   }
   return translationsForPersonIdType[personIdType] || personIdType;
+};
+
+export const getInstNameWithCase = (inst: string) => {
+  switch (inst.toLowerCase()) {
+    case 'uio':
+      return 'UiO';
+    case 'khio':
+      return 'KHiO';
+    default:
+      throw new TypeError(`Unknown institution ${inst}`);
+  }
+};
+
+export const getCurInstNameWithCase = () => {
+  if (appInst === undefined) {
+    return getInstNameWithCase('uio');
+  }
+  return getInstNameWithCase(appInst);
 };

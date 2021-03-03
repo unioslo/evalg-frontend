@@ -584,7 +584,7 @@
     "moreAboutTheElection": "More about the election",
     "notRegisteredInSelectedGroupHeading": "Have you chosen the correct voter group?",
     "notRegisteredInSelectedGroupBeforeDropdownText": "You are not on the electoral roll for the voter group",
-    "notRegisteredInSelectedGroupInfoText": "You are not on the electoral roll for this voter group, but you still may vote. \nThe elections' board decides if your vote will count, based on your affiliation with UiO. \nYou may provide your job code («stillingskode») or other relevant information below.",
+    "notRegisteredInSelectedGroupInfoText": "You are not on the electoral roll for this voter group, but you still may vote. \nThe elections' board decides if your vote will count, based on your affiliation with {{inst}}. \nYou may provide your job code («stillingskode») or other relevant information below.",
     "opens": "opens",
     "registeredInSelectedGroupHeading": "You have the right to vote",
     "registeredInSelectedGroupBeforeDropdownText": "You are on the electoral roll for the voter group",

@@ -585,7 +585,7 @@
     "moreAboutTheElection": "Meir om valet",
     "notRegisteredInSelectedGroupHeading": "Har du vald riktig manntal?",
     "notRegisteredInSelectedGroupBeforeDropdownText": "Du er ikkje i manntalet for",
-    "notRegisteredInSelectedGroupInfoText": "Du er ikkje registrert i dette manntalet, men du kan likevel røyste.\nValstyret for valet avgjer då om din røystesetel skal teljast med, basert på di tilknytting til UiO.\nDu kan oppgje din stillingskode eller anna relevant informasjon under.",
+    "notRegisteredInSelectedGroupInfoText": "Du er ikkje registrert i dette manntalet, men du kan likevel røyste.\nValstyret for valet avgjer då om din røystesetel skal teljast med, basert på di tilknytting til {{inst}}.\nDu kan oppgje din stillingskode eller anna relevant informasjon under.",
     "opens": "opnar",
     "registeredInSelectedGroupHeading": "Du har røysterett",
     "registeredInSelectedGroupBeforeDropdownText": "Du er i manntalet for",
