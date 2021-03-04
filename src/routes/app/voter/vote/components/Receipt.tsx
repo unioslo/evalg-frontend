@@ -3,6 +3,8 @@ import injectSheet from 'react-jss';
 import { Classes } from 'jss';
 import { useTranslation } from 'react-i18next';
 
+import { feedbackUrl } from 'appConfig';
+
 import Link from 'components/link';
 import { PageSection } from 'components/page';
 
@@ -29,15 +31,19 @@ const Receipt: React.FunctionComponent<IProps> = (props: IProps) => {
         <br />
         {t('voter.receiptVotingAgainInfo')}
         <br />
+        {feedbackUrl && (
+          <>
+            <br />
+            <Link external to={feedbackUrl}>
+              {t('voter.feedback')}
+            </Link>
+            <br />
+          </>
+        )}
         <br />
-        <Link external={true} to={'https://nettskjema.no/a/valg3'}>
-          {t('voter.feedback')}
-        </Link>
-        <br />
-        <br />
-        <Link to={'/'}>{t('voter.receiptGoToFrontpage')}</Link>{' '}
+        <Link to="/">{t('voter.receiptGoToFrontpage')}</Link>{' '}
         {t('voter.receiptOr')}{' '}
-        <Link to={'/logout'}>{t('voter.receiptLogout')}</Link>.
+        <Link to="/logout">{t('voter.receiptLogout')}</Link>.
       </div>
     </PageSection>
   );

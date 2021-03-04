@@ -51,8 +51,10 @@ export const appStagingWarning: boolean =
 /* Footer content */
 export const appHelpLink: string =
   'https://www.uio.no/for-ansatte/arbeidsstotte/arrangere-valg/';
-export const appTechnicalSupportLink: string =
-  'https://www.uio.no/for-ansatte/arbeidsstotte/arrangere-valg/kontakt.html';
+
+export const appTechnicalSupportLink: string = env.REACT_APP_SUPPORT_URL as string;
+export const appTechnicalSupportMail: string = env.REACT_APP_SUPPORT_MAIL as string;
+
 export const appServiceOwnerLink: string =
   'https://www.usit.uio.no/om/organisasjon/bnt/usitint/';
 export const appPrivacyPolicylink = {
@@ -67,6 +69,9 @@ export const appCookiesInformationLink = {
   en:
     'https://www.uio.no/english/services/it/adm-services/evalg/privacy/cookies.html',
 };
+
+/* User feedback url */
+export const feedbackUrl: string = env.REACT_APP_FEEDBACK_URL as string;
 
 /* Feature toggles */
 export const appCandOrder: string = env.REACT_APP_CANDIDATE_ORDERING as string;
