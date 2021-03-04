@@ -68,6 +68,9 @@ export const appCookiesInformationLink = {
     'https://www.uio.no/english/services/it/adm-services/evalg/privacy/cookies.html',
 };
 
+/* User feedback url */
+export const feedbackUrl: string = env.REACT_APP_FEEDBACK_URL as string;
+
 /* Feature toggles */
 export const appCandOrder: string = env.REACT_APP_CANDIDATE_ORDERING as string;
 export const appMobileVotingStepperVariant: 'simple' | 'circles' = 'circles';
