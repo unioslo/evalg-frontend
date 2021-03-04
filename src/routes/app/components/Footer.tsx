@@ -7,6 +7,7 @@ import {
   appStagingWarning,
   appServiceOwnerLink,
   appTechnicalSupportLink,
+  appTechnicalSupportMail,
   appPrivacyPolicylink,
   appCookiesInformationLink,
 } from 'appConfig';
@@ -125,14 +126,25 @@ const Footer: React.FunctionComponent = () => {
                 <header>{t('footer.contactSectionHeader')}</header>
                 <div className="content">
                   <div>
-                    <Link
-                      external
-                      to={appTechnicalSupportLink}
-                      inheritColor
-                      underline
-                    >
-                      {t('footer.contactHelp')}
-                    </Link>
+                    {appTechnicalSupportLink ? (
+                      <Link
+                        external
+                        to={appTechnicalSupportLink}
+                        inheritColor
+                        underline
+                      >
+                        {t('footer.contactHelp')}
+                      </Link>
+                    ) : (
+                      <Link
+                        mail
+                        to={appTechnicalSupportMail}
+                        inheritColor
+                        underline
+                      >
+                        {t('footer.contactHelpMail')}
+                      </Link>
+                    )}
                   </div>
                 </div>
               </section>
