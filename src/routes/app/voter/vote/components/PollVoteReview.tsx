@@ -36,6 +36,7 @@ interface IReviewProps {
   onGoBackToBallot: () => void;
   onSubmitVote: () => void;
   isSubmittingVote: boolean;
+  candidatePoll: boolean;
 }
 
 const PollVoteReview: React.FunctionComponent<IReviewProps> = props => {
@@ -45,6 +46,7 @@ const PollVoteReview: React.FunctionComponent<IReviewProps> = props => {
     onGoBackToBallot,
     onSubmitVote,
     isSubmittingVote,
+    candidatePoll,
   } = props;
 
   const theme = useTheme();
@@ -84,7 +86,10 @@ const PollVoteReview: React.FunctionComponent<IReviewProps> = props => {
         {!isBlankVote && selectedAlternative && (
           <>
             <p className={classes.chosenCandidateText}>
-              {t('pollElec.chosenAlternative')}:
+              {candidatePoll
+                ? t('voter.chosenCandidate')
+                : t('pollElec.chosenAlternative')}
+              :
             </p>
             <div className={classes.chosenCandidateContainer}>
               <CandidateInfo
