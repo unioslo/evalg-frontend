@@ -106,6 +106,7 @@ const PollVote: React.FunctionComponent<IProps &
           onGoBackToBallot={onGoBackToBallot}
           onSubmitVote={handleSubmitVote}
           isSubmittingVote={isSubmittingVote}
+          candidatePoll={election.meta.candidateType === 'candidate'}
         />
       )}
     </>

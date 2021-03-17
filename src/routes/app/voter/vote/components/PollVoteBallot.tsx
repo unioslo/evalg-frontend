@@ -66,10 +66,19 @@ const PollVoteBallot: React.FunctionComponent<IProps> = props => {
       ? true
       : election.meta.ballotRules.allowBlank;
 
-  const helpTextTags = ['pollElect.voteHelpYouMaySelectOnlyOne'];
-  const helpHeader = t('pollElec.voteHelpHeader');
-  const helpDesc = t('pollElec.voteHelpDesc');
-  const helpText = [t('pollElec.voteHelpYouMaySelectOnlyOne')];
+  const candidatePoll = election.meta.candidateType === 'candidate';
+
+  let helpTextTags = ['pollElect.voteHelpYouMaySelectOnlyOne'];
+  let helpHeader = t('pollElec.voteHelpHeader');
+  let helpDesc = t('pollElec.voteHelpDesc');
+  let helpText = [t('pollElec.voteHelpYouMaySelectOnlyOne')];
+
+  if (candidatePoll) {
+    helpTextTags = ['voter.majorityVoteHelpYouMaySelectOnlyOne'];
+    helpHeader = t('voter.majorityVoteHelpHeader');
+    helpDesc = t('voter.majorityVoteHelpDesc');
+    helpText = [t('voter.majorityVoteHelpYouMaySelectOnlyOne')];
+  }
 
   if (showBlankButton) {
     helpTextTags.push('voter.canVoteBlank');
