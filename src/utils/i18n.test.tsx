@@ -10,6 +10,9 @@ describe('getInstNameWithCase', () => {
     ['khio', 'KHiO'],
     ['KHiO', 'KHiO'],
     ['Khio', 'KHiO'],
+    ['hiof', 'HiOF'],
+    ['HiOF', 'HiOF'],
+    ['Hiof', 'HiOF'],
   ])('given %p as input, expect %p', (a, expected) => {
     expect(getInstNameWithCase(a)).toBe(expected);
   });

@@ -15,6 +15,7 @@ const styles = (theme: any) => ({
   logoBarWrapper: {
     backgroundColor: theme.colors.black,
   },
+  // TODO: Add english logo
   logo: {
     background: 'url("/uio-app-logo-nb.png") left center no-repeat',
     height: '4rem',

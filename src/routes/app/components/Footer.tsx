@@ -55,6 +55,13 @@ const useStyles = createUseStyles((theme: any) => ({
   divider: {
     borderTop: `1px solid ${theme.headerTitleColor}`,
   },
+  footerBackground: {
+    backgroundImage: 'url("hiof/footer.svg")',
+    backgroundSize: 'cover',
+    backgroundColor: theme.footerBackgroundColor,
+    width: '100%',
+    paddingTop: '34.7%',
+  },
   footerSection: {
     '&:not(:last-child)': {
       marginBottom: '3rem',
@@ -168,6 +175,7 @@ const Footer: React.FunctionComponent = () => {
           </div>
         </div>
       </footer>
+      {appInst === 'hiof' && <div className={classes.footerBackground}/>}
       {appStagingWarning && (
         <div className="alert">
           <Trans
