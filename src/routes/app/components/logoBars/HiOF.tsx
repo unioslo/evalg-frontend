@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { Classes } from 'jss';
-import injectSheet from 'react-jss';
+import { useTranslation } from 'react-i18next';
+import { createUseStyles, useTheme } from 'react-jss';
 
-const styles = (theme: any) => ({
+
+const useStyles = createUseStyles((theme: any) => ({
     logoBar: {
         margin: '0 auto',
         maxWidth: theme.appMaxWidth,
@@ -15,27 +16,31 @@ const styles = (theme: any) => ({
     logoBarWrapper: {
         backgroundColor: theme.headerMainAreaColor,
     },
-    // TODO: Add english logo
-    logo: {
+    logoNo: {
         background: 'url("/hiof/logo-no.svg") left center no-repeat',
         height: '6rem',
     },
-});
+    logoEn: {
+        background: 'url("/hiof/logo-en.svg") left center no-repeat',
+        height: '6rem',
+    },
+}));
 
-interface IProps {
-    classes: Classes;
-}
 
-const HiOFLogoBar: React.FunctionComponent<IProps> = props => {
-    const { classes } = props;
+const HiOFLogoBar: React.FunctionComponent = () => {
+    const theme = useTheme();
+    const classes = useStyles({ theme })
+    const { i18n } = useTranslation();
 
     return (
         <div className={classes.logoBarWrapper}>
             <div className={classes.logoBar}>
-                <div className={classes.logo} />
+                <div className={i18n.language === 'en'
+                              ? classes.logoEn
+                              : classes.logoNo}/>
             </div>
         </div>
     );
 };
 
-export default injectSheet(styles)(HiOFLogoBar);
+export default HiOFLogoBar;

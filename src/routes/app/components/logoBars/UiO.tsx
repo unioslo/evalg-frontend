@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { Classes } from 'jss';
-import injectSheet from 'react-jss';
+import { useTranslation } from 'react-i18next';
+import { createUseStyles, useTheme } from 'react-jss';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   logoBar: {
     margin: '0 auto',
     maxWidth: theme.appMaxWidth,
@@ -15,27 +15,31 @@ const styles = (theme: any) => ({
   logoBarWrapper: {
     backgroundColor: theme.colors.black,
   },
-  // TODO: Add english logo
-  logo: {
+  logoNo: {
     background: 'url("/uio-app-logo-nb.png") left center no-repeat',
     height: '4rem',
   },
-});
+  logoEn: {
+    background: 'url("/uio-app-logo-en.png") left center no-repeat',
+    height: '4rem',
+  },
+}));
 
-interface IProps {
-  classes: Classes;
-}
 
-const UiOLogoBar: React.FunctionComponent<IProps> = props => {
-  const { classes } = props;
+const UiOLogoBar: React.FunctionComponent = () => {
+  const theme = useTheme();
+  const classes = useStyles({ theme })
+  const { i18n } = useTranslation();
 
   return (
     <div className={classes.logoBarWrapper}>
       <div className={classes.logoBar}>
-        <div className={classes.logo} />
+        <div className={i18n.language === 'en'
+                      ? classes.logoEn
+                      : classes.logoNo}/>
       </div>
     </div>
   );
 };
 
-export default injectSheet(styles)(UiOLogoBar);
+export default UiOLogoBar;
