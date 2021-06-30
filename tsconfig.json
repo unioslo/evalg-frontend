@@ -11,7 +11,7 @@
     "rootDir": "src",
     "module": "esnext",
     "moduleResolution": "node",
-    "jsx": "preserve",
+    "jsx": "react",
     "sourceMap": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
@@ -26,7 +26,8 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true
   },
   "exclude": [
     "src/setupTests.ts",
