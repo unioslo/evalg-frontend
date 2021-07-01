@@ -57,12 +57,9 @@ const MajorityVoteBallot: React.FunctionComponent<IProps> = props => {
   let helpText: string[] | undefined;
   let helpHeader = t('voter.majorityVoteHelpHeader');
   let helpDesc = t('voter.majorityVoteHelpDesc');
-  if (
-    typeof election.meta.ballotRules.votes === 'number' &&
-    election.meta.ballotRules.votes > 1
-  ) {
+  if (election.meta.ballotRules.votes === 'nr_of_seats') {
     helpHeader = t('voter.majorityVoteHelpHeaderMultiple', {
-      nr: election.meta.ballotRules.votes,
+      nr: election.meta.candidateRules.seats,
     });
 
     helpDesc = t('voter.majorityVoteHelpDescMultiple');
