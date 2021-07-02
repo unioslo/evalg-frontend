@@ -310,7 +310,7 @@ export type ElectionMetaData = {
 };
 
 // TODO: Specify all possible options and delete string from union types.
-export type BallotRulesVotes = 'all' | number;
+export type BallotRulesVotes = 'all' | 'nr_of_seats' | number;
 export type BallotRulesVoting = 'rank_candidates' | string;
 export type CandidateType = 'single' | string;
 export type CountingRulesAffirmationAction = ('gender_40' | string)[];

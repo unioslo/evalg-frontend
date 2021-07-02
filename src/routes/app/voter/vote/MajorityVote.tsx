@@ -50,12 +50,12 @@ const MajorityVote: React.FunctionComponent<IProps &
 
   useEffect(() => {
     if (
-      typeof election.meta.ballotRules.votes === 'number' &&
-      selectedCandidates.length > election.meta.ballotRules.votes
+      election.meta.ballotRules.votes === 'nr_of_seats' &&
+      selectedCandidates.length > election.meta.candidateRules.seats
     ) {
       setErrorMsg(
         t('voter.majorityVoteToManyVotesError', {
-          nrValid: election.meta.ballotRules.votes,
+          nrValid: election.meta.candidateRules.seats,
           nrSelected: selectedCandidates.length,
         })
       );
@@ -67,7 +67,7 @@ const MajorityVote: React.FunctionComponent<IProps &
   const handleSelectCandidate = (candidate: Candidate) => {
     if (
       election.meta.ballotRules.votes === 'all' ||
-      election.meta.ballotRules.votes === 1
+      election.meta.candidateRules.seats === 1
     ) {
       // We can only vote for 1 candidate. Flip the selection.
       setSelectedCandidates([candidate]);
@@ -109,7 +109,7 @@ const MajorityVote: React.FunctionComponent<IProps &
       return true;
     } else if (
       selectedCandidates.length >= 1 &&
-      selectedCandidates.length <= election.meta.ballotRules.votes
+      selectedCandidates.length <= election.meta.candidateRules.seats
     ) {
       return true;
     }
