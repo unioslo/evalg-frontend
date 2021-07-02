@@ -227,7 +227,11 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
                 VotingComponent = MajorityVote;
               }
             } else if (voting === 'poll') {
-              VotingComponent = PollVote;
+              if (candidateType === 'single_team') {
+                VotingComponent = MajorityVote;
+              } else {
+                VotingComponent = PollVote;
+              }
             } else {
               return <div>Unknown meta.ballotRules.voting type: {voting}</div>;
             }
