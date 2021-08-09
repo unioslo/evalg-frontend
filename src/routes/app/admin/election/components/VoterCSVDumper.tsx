@@ -58,15 +58,15 @@ const VoterCSVDumper: React.FunctionComponent<PollbookDumperProps> = ({
               </>
             );
           }
-          const csv_data = data.electionGroup.elections
+          const csvData = data.electionGroup.elections
             .flatMap((e: Election) => e.pollbooks)
             .flatMap((p: IPollBook) =>
-              p.voterDump.map((v) => [p.name[i18n.language], [...v]])
+              p.voterDump.map((v) => [p.name[i18n.language], [...v]].flat())
             )
             .map((v: string[]) => v.join(';'))
             .join('\r\n');
 
-          const blob = new Blob([csv_data], {
+          const blob = new Blob([csvData], {
             type: 'text/csv;charset=utf-8',
           });
 
