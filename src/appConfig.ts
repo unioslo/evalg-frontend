@@ -50,6 +50,7 @@ export const appStagingWarning: boolean =
 
 /* Footer content */
 export const appHelpLink: string =
+  env.REACT_APP_HELP_LINK ? env.REACT_APP_HELP_LINK as string :
   'https://www.uio.no/for-ansatte/arbeidsstotte/arrangere-valg/';
 
 export const appTechnicalSupportLink: string = env.REACT_APP_SUPPORT_URL as string;
