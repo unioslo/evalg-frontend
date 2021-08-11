@@ -235,7 +235,7 @@ class AdminRolesForm extends React.Component<IProps, IState> {
                 } = formProps;
 
                 const showValidationErrorFeedback =
-                  !pristine && errors._errors && touched && touched.idValue;
+                  !pristine && errors && errors._errors && touched && touched.idValue;
 
                 const handleSubmitAndReset = async (e: any) => {
                   e.preventDefault();
@@ -282,7 +282,7 @@ class AdminRolesForm extends React.Component<IProps, IState> {
                         })}
                       >
                         {showValidationErrorFeedback
-                          ? errors._errors.idValue
+                          ? errors ? errors._errors.idValue : ''
                           : feedback.text}
                       </div>
                     </TableRowForm>

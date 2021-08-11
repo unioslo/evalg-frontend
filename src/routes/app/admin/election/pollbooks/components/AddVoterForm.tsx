@@ -133,7 +133,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = (props) => {
 
                     const showValidationErrorFeedback =
                       !pristine &&
-                      errors._errors &&
+                      errors && errors._errors &&
                       touched &&
                       touched['idValue'];
 
@@ -193,7 +193,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = (props) => {
                             })}
                           >
                             {showValidationErrorFeedback
-                              ? errors._errors.idValue
+                              ? errors ? errors._errors.idValue : ''
                               : feedback.text}
                           </div>
                           <ButtonContainer noTopMargin>
