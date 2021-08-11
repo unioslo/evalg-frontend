@@ -9,9 +9,7 @@
   "extends": [
     "react-app",
     "airbnb-typescript",
-    "prettier",
-    "prettier/@typescript-eslint",
-    "prettier/react"
+    "prettier"
   ],
   "rules": {
     "no-underscore-dangle": [
