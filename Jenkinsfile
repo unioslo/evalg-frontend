@@ -18,9 +18,9 @@ pipeline {
             steps {
 
                 script {
-                    sh('scl enable rh-nodejs8 "npm config set proxy http://software-proxy.uio.no:3128"')
-                    sh('scl enable rh-nodejs8 "npm config set https-proxy http://software-proxy.uio.no:3128"')
-                    sh('scl enable rh-nodejs8 "npm install"')
+                    sh('scl enable rh-nodejs14 "npm config set proxy http://software-proxy.uio.no:3128"')
+                    sh('scl enable rh-nodejs14 "npm config set https-proxy http://software-proxy.uio.no:3128"')
+                    sh('scl enable rh-nodejs14 "npm install"')
                 }
             }
         }
@@ -31,7 +31,7 @@ pipeline {
                         script {
                             // Allow the linting to fail
                             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                                sh('scl enable rh-nodejs8 "npm run lint-report"')
+                                sh('scl enable rh-nodejs14 "npm run lint-report"')
                             }
                         }
                     }
@@ -52,7 +52,7 @@ pipeline {
                         script {
                             // Allow the test to fail for now..
                             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                                sh('scl enable rh-nodejs8 "npm run test:ci"')
+                                sh('scl enable rh-nodejs14 "npm run test:ci"')
                             }
                         }
                     }
@@ -77,7 +77,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh('scl enable rh-nodejs8 "NODE_ENV=production npm run build"')
+                    sh('scl enable rh-nodejs14 "NODE_ENV=production npm run build"')
                 }
             }
         }
