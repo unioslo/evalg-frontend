@@ -71,6 +71,10 @@ pipeline {
             }
         }
         stage('Build npm package') {
+            environment {
+                ESLINT_NO_DEV_ERRORS=true
+                SKIP_PREFLIGHT_CHECK=true
+            }
             steps {
                 script {
                     sh('scl enable rh-nodejs8 "NODE_ENV=production npm run build"')
