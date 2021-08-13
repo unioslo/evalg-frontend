@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 interface IProps {
   children?: React.ReactNode;
@@ -13,15 +12,12 @@ interface IProps {
   tall?: boolean;
   verticalPadding?: boolean;
   onClick?: (evnent: any) => void;
-  classes: Classes;
 }
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   row: {
     userSelect: 'text',
-    padding: `0 ${theme.tableHorizontalPadding} 0 ${
-      theme.tableHorizontalPadding
-      }`,
+    padding: `0 ${theme.tableHorizontalPadding} 0 ${theme.tableHorizontalPadding}`,
     height: '6rem',
     borderBottom: `1px solid ${theme.tableCandidateBottomBorderColor}`,
   },
@@ -31,7 +27,7 @@ const styles = (theme: any) => ({
       cursor: 'pointer',
     },
   },
-  actionTextOnhover: {
+  actionTextOnHover: {
     '& .actiontext': {
       visibility: 'hidden',
     },
@@ -65,20 +61,31 @@ const styles = (theme: any) => ({
       'padding-bottom': '2rem',
     },
   },
-});
+}));
 
-const TableRow = (props: IProps) => {
-  const { classes } = props;
+const TableRow: React.FunctionComponent<IProps> = (props) => {
+  const {
+    onClick,
+    dragged,
+    noHoverBg,
+    noBorderBottom,
+    thickBorder,
+    actionTextOnHover,
+    verticalPadding,
+    tall,
+  } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   const cls = classNames({
     [classes.row]: true,
-    [classes.clickable]: props.onClick,
-    [classes.isDragged]: props.dragged,
-    [classes.noHoverBg]: props.noHoverBg,
-    [classes.noBorderBottom]: props.noBorderBottom,
-    [classes.thickBorder]: props.thickBorder,
-    [classes.actionTextOnHover]: props.actionTextOnHover,
-    [classes.verticalPadding]: props.verticalPadding,
-    [classes.tall]: props.tall,
+    [classes.clickable]: onClick,
+    [classes.isDragged]: dragged,
+    [classes.noHoverBg]: noHoverBg,
+    [classes.noBorderBottom]: noBorderBottom,
+    [classes.thickBorder]: thickBorder,
+    [classes.actionTextOnHover]: actionTextOnHover,
+    [classes.verticalPadding]: verticalPadding,
+    [classes.tall]: tall,
   });
   return (
     <tr className={cls} onClick={props.onClick}>
@@ -87,4 +94,4 @@ const TableRow = (props: IProps) => {
   );
 };
 
-export default injectSheet(styles)(TableRow);
+export default TableRow;

@@ -1,14 +1,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import Button, { ButtonContainer } from 'components/button';
 import { Date, Time } from 'components/i18n';
 import Link from 'components/link';
 import { ElectionGroup } from 'interfaces';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   list: {
     width: '100%',
     listStyleType: 'none',
@@ -22,20 +21,21 @@ const styles = (theme: any) => ({
     paddingTop: '1.5rem',
     paddingBottom: '3rem',
   },
-});
+}));
 
 interface IListItemProps {
   electionGroup: ElectionGroup;
   lang: string;
   hasVotingRights: boolean;
-  classes: Classes;
 }
 
 const VoterElectionsListItem: React.FunctionComponent<IListItemProps> = (
   props: IListItemProps
 ) => {
-  const { electionGroup, lang, hasVotingRights, classes } = props;
+  const { electionGroup, lang, hasVotingRights } = props;
   const { t } = useTranslation();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   const election = electionGroup.elections[0];
 
   // We need data from the non-existing ballot-module to discern this
@@ -85,29 +85,23 @@ interface IListProps {
   electionGroups: Array<ElectionGroup>;
   votingRightsElectionGroups: string[];
   noElectionsText: React.ReactElement;
-  classes: Classes;
 }
 
 const VoterElectionsList: React.FunctionComponent<IListProps> = (
   props: IListProps
 ) => {
-  const {
-    electionGroups,
-    noElectionsText,
-    votingRightsElectionGroups,
-    classes,
-  } = props;
+  const { electionGroups, noElectionsText, votingRightsElectionGroups } = props;
   const { i18n } = useTranslation();
-
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   // const lang = props.i18n.language;
   if (electionGroups.length === 0) {
     return <p>{noElectionsText}</p>;
   }
   return (
     <ul className={classes.list}>
-      {electionGroups.map(group => (
+      {electionGroups.map((group) => (
         <VoterElectionsListItem
-          classes={classes}
           electionGroup={group}
           hasVotingRights={votingRightsElectionGroups.includes(group.id)}
           lang={i18n.language}
@@ -118,4 +112,4 @@ const VoterElectionsList: React.FunctionComponent<IListProps> = (
   );
 };
 
-export default injectSheet(styles)(VoterElectionsList);
+export default VoterElectionsList;

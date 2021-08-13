@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
-import injectSheet from 'react-jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import DropdownArrowIcon from 'components/icons/DropdownArrowIcon';
 
 interface IProps {
   children?: React.ReactNode;
-  classes: any;
   header?: React.ReactNode;
   noBorder?: boolean;
   noBtmPadding?: boolean;
@@ -14,7 +13,7 @@ interface IProps {
   desc?: React.ReactNode;
 }
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   paragraph: {
     marginBottom: '4rem',
   },
@@ -29,9 +28,7 @@ const styles = (theme: any) => ({
     padding: `${theme.contentVertPadding} ${theme.contentHorPadding}`,
     [theme.breakpoints.mdQuery]: {
       '&:not(:last-child)': {
-        borderBottom: `${theme.sectionBorderWidth} ${
-          theme.sectionBorderStyle
-        } ${theme.sectionBorderColor}`,
+        borderBottom: `${theme.sectionBorderWidth} ${theme.sectionBorderStyle} ${theme.sectionBorderColor}`,
       },
       padding: `4rem ${theme.contentHorMdPadding} 4rem`,
     },
@@ -72,10 +69,13 @@ const styles = (theme: any) => ({
       cursor: 'pointer',
     },
   },
-});
+}));
 
-const PageSection: React.SFC<IProps> = props => {
-  const { header, noBorder, noBtmPadding, noTopPadding, desc, classes } = props;
+const PageSection: React.FunctionComponent<IProps> = (props) => {
+  const { header, noBorder, noBtmPadding, noTopPadding, desc } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+
   const cls = classNames({
     [classes.section]: true,
     [classes.noBorder]: noBorder,
@@ -98,17 +98,15 @@ const PageSection: React.SFC<IProps> = props => {
   );
 };
 
-const StyledSection = injectSheet(styles)(PageSection);
-
 interface ISubProps {
-  classes: any;
   header?: React.ReactNode;
   notBoldHeader?: boolean;
   customHeader?: boolean;
 }
 
-const PageSubSection: React.SFC<ISubProps> = props => {
-  const { classes } = props;
+const PageSubSection: React.FunctionComponent<ISubProps> = (props) => {
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   const headerClassNames = classNames({
     [classes.subSectionHeader]: true,
     [classes.subSectionHeaderRegular]: props.notBoldHeader,
@@ -125,77 +123,70 @@ const PageSubSection: React.SFC<ISubProps> = props => {
   );
 };
 
-const StyledSubSection = injectSheet(styles)(PageSubSection);
-
 interface IExpandableSubSectionProps {
-  classes: any;
   header: string;
   startExpanded?: boolean;
 }
 
-const PageExpandableSubSection: React.FunctionComponent<
-  IExpandableSubSectionProps
-> = props => {
-  const { header, startExpanded, classes } = props;
-  const topBarCls = classNames({
-    [classes.pointerOnHover]: true,
-  });
+const PageExpandableSubSection: React.FunctionComponent<IExpandableSubSectionProps> =
+  (props) => {
+    const { header, startExpanded } = props;
+    const theme = useTheme();
+    const classes = useStyles({ theme });
+    const topBarCls = classNames({
+      [classes.pointerOnHover]: true,
+    });
 
-  const [isExpanded, setIsExpanded] = useState(startExpanded || false);
+    const [isExpanded, setIsExpanded] = useState(startExpanded || false);
 
-  const toggleIsExpanded = () => {
-    setIsExpanded(!isExpanded);
+    const toggleIsExpanded = () => {
+      setIsExpanded(!isExpanded);
+    };
+
+    return (
+      <div className={classes.subSection}>
+        <div className={topBarCls} onClick={toggleIsExpanded}>
+          <DropdownArrowIcon selected={isExpanded} />
+          <span className={classes.subSectionHeader}>{header}</span>
+        </div>
+        {isExpanded && props.children}
+      </div>
+    );
   };
 
-  return (
-    <div className={classes.subSection}>
-      <div className={topBarCls} onClick={toggleIsExpanded}>
-        <DropdownArrowIcon selected={isExpanded} />
-        <span className={classes.subSectionHeader}>{header}</span>
-      </div>
-      {isExpanded && props.children}
-    </div>
-  );
-};
-
-const StyledExpandableSubSection = injectSheet(styles)(
-  PageExpandableSubSection
-);
-
-interface IStatelessExpandableSubSectionProps extends IExpandableSubSectionProps {
+interface IStatelessExpandableSubSectionProps
+  extends IExpandableSubSectionProps {
   isExpanded: boolean;
   setIsExpanded: (newIsExpanded: boolean) => void;
 }
 
-const StatelessExpandableSubSection: React.FunctionComponent<
-  IStatelessExpandableSubSectionProps
-> = props => {
-  const { header, classes, isExpanded, setIsExpanded } = props;
-  const topBarCls = classNames({  
-    [classes.pointerOnHover]: true,
-  });
+const StatelessExpandableSubSection: React.FunctionComponent<IStatelessExpandableSubSectionProps> =
+  (props) => {
+    const { header, isExpanded, setIsExpanded } = props;
+    const theme = useTheme();
+    const classes = useStyles({ theme });
+    const topBarCls = classNames({
+      [classes.pointerOnHover]: true,
+    });
 
-  const toggleIsExpanded = () => {
-    setIsExpanded(!isExpanded);
+    const toggleIsExpanded = () => {
+      setIsExpanded(!isExpanded);
+    };
+
+    return (
+      <div className={classes.subSection}>
+        <div className={topBarCls} onClick={toggleIsExpanded}>
+          <DropdownArrowIcon selected={isExpanded} />
+          <span className={classes.subSectionHeader}>{header}</span>
+        </div>
+        {isExpanded && props.children}
+      </div>
+    );
   };
 
-  return (
-    <div className={classes.subSection}>
-      <div className={topBarCls} onClick={toggleIsExpanded}>
-        <DropdownArrowIcon selected={isExpanded} />
-        <span className={classes.subSectionHeader}>{header}</span>
-      </div>
-      {isExpanded && props.children}
-    </div>
-  );
-};
-
-const StyledStatelessExpandableSubSection = injectSheet(styles)(
-  StatelessExpandableSubSection
-);
-
-const PageParagraph: React.SFC<ISubProps> = props => {
-  const { classes } = props;
+const PageParagraph: React.FunctionComponent<ISubProps> = (props) => {
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   return (
     <div className={classes.paragraph}>
       {props.customHeader ? (
@@ -208,12 +199,10 @@ const PageParagraph: React.SFC<ISubProps> = props => {
   );
 };
 
-const StyledParagraph = injectSheet(styles)(PageParagraph);
-
 export {
-  StyledSection as PageSection,
-  StyledSubSection as PageSubSection,
-  StyledExpandableSubSection as PageExpandableSubSection,
-  StyledStatelessExpandableSubSection as StatelessExpandableSubSection,
-  StyledParagraph as PageParagraph,
+  PageSection,
+  PageSubSection,
+  PageExpandableSubSection,
+  StatelessExpandableSubSection,
+  PageParagraph,
 };

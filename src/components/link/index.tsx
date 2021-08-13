@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import classNames from 'classnames';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   link: {
     display: 'inline-flex',
     alignItems: 'center',
@@ -37,7 +36,7 @@ const styles = (theme: any) => ({
       textDecoration: 'none',
     },
   },
-});
+}));
 
 interface IProps {
   to: string;
@@ -49,10 +48,9 @@ interface IProps {
   inheritColor?: boolean;
   underline?: boolean;
   noUnderline?: boolean;
-  classes: Classes;
 }
 
-const Link = (props: IProps) => {
+const Link: React.FunctionComponent<IProps> = (props: IProps) => {
   const {
     to,
     external,
@@ -63,8 +61,10 @@ const Link = (props: IProps) => {
     inheritColor,
     underline,
     noUnderline,
-    classes,
   } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+
   const cls = classNames({
     [classes.internal]: !external,
     [classes.external]: external || mail,
@@ -113,4 +113,4 @@ const Link = (props: IProps) => {
   );
 };
 
-export default injectSheet(styles)(Link);
+export default Link;

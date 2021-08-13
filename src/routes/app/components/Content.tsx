@@ -1,14 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 interface IProps {
   isLoginPage?: boolean;
-  classes: Classes;
 }
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   wrapper: {
     flex: '1 0 auto',
   },
@@ -32,9 +30,15 @@ const styles = (theme: any) => ({
       padding: '4rem 0',
     },
   },
-});
+}));
 
-const Content: React.SFC<IProps> = ({ isLoginPage, classes, children }) => {
+const Content: React.FunctionComponent<IProps> = ({
+  isLoginPage,
+  children,
+}) => {
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+
   const wrapperCls = classNames({
     [classes.wrapper]: true,
     [classes.wrapperLoginPage]: isLoginPage,
@@ -53,4 +57,4 @@ const Content: React.SFC<IProps> = ({ isLoginPage, classes, children }) => {
   );
 };
 
-export default injectSheet(styles)(Content);
+export default Content;

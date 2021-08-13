@@ -1,10 +1,10 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
-import injectSheet from 'react-jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import Button, { ButtonContainer } from 'components/button';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   savingSpinner: {
     position: 'relative',
     marginLeft: 10,
@@ -22,7 +22,7 @@ const styles = (theme: any) => ({
   '@keyframes spin': {
     to: { '-webkit-transform': 'rotate(360deg)' },
   },
-});
+}));
 
 interface IProps {
   saveAction: (submitValues: any) => void;
@@ -33,10 +33,9 @@ interface IProps {
   entityAction?: any;
   entityActionDisabled?: boolean;
   entityText?: React.ReactNode | string;
-  classes: any;
 }
 
-const FormButtons = (props: IProps) => {
+const FormButtons: React.FunctionComponent<IProps> = (props) => {
   const {
     saveAction,
     closeAction,
@@ -46,6 +45,9 @@ const FormButtons = (props: IProps) => {
     entityActionDisabled,
     entityText,
   } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme })
+
   return (
     <ButtonContainer alignRight>
       {entityAction && entityText && (
@@ -67,7 +69,7 @@ const FormButtons = (props: IProps) => {
           submitting ? (
             <>
               <Trans>general.saving</Trans>
-              <div className={props.classes.savingSpinner} />
+              <div className={classes.savingSpinner} />
             </>
           ) : (
             <Trans>general.save</Trans>
@@ -84,4 +86,4 @@ FormButtons.defaultProps = {
   entityActionDisabled: false,
 };
 
-export default injectSheet(styles)(FormButtons);
+export default FormButtons;

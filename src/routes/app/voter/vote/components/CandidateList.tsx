@@ -1,6 +1,6 @@
 import React from 'react';
-import { Trans, WithTranslation, withTranslation } from 'react-i18next';
-import injectSheet from 'react-jss';
+import { Trans, useTranslation } from 'react-i18next';
+import { createUseStyles, useTheme } from 'react-jss';
 import classNames from 'classnames';
 
 import Icon from 'components/icon';
@@ -8,7 +8,7 @@ import Link from 'components/link';
 import { joinStringsWithCommaAndAnd } from 'utils';
 import { Candidate } from 'interfaces';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   button: {
     alignSelf: 'center',
     cursor: 'pointer',
@@ -88,44 +88,43 @@ const styles = (theme: any) => ({
     flex: '1 1 auto',
     justifyContent: 'flex-end',
   },
-});
+  rankIcon: {},
+  candidateInfoName: {},
+}));
 
-interface IListProps {
-  classes: any;
-}
+const CandidateList: React.FunctionComponent<{}> = (props) => {
+  const { children } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+  return <ul className={classes.candidateList}>{children}</ul>;
+};
 
-const CandidateList: React.SFC<IListProps> = props => (
-  <ul className={props.classes.candidateList}>{props.children}</ul>
-);
+const CandidateListItem: React.FunctionComponent<{}> = (props) => {
+  const { children } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+  return <li className={classes.listItem}>{children}</li>;
+};
 
-const HOCCandidateList = injectSheet(styles)(CandidateList);
-
-interface IListItemProps {
-  classes: any;
-}
-
-const CandidateListItem: React.SFC<IListItemProps> = props => (
-  <li className={props.classes.listItem}>{props.children}</li>
-);
-
-const HOCCandidateListItem = injectSheet(styles)(CandidateListItem);
-
-interface IInfoProps extends WithTranslation {
+interface IInfoProps {
   candidate: Candidate;
-  classes: any;
   infoUrl?: boolean;
   listName?: boolean;
   metaFields?: string[];
   noLeftPadding?: boolean;
 }
 
-const CandidateInfo: React.SFC<IInfoProps> = props => {
-  const lang = props.i18n ? props.i18n.language : 'nb';
-  const { classes, candidate } = props;
+const CandidateInfo: React.FunctionComponent<IInfoProps> = (props) => {
+  const { noLeftPadding, infoUrl, listName, metaFields } = props;
+  const { t, i18n } = useTranslation();
+  const lang = i18n ? i18n.language : 'nb';
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+  const { candidate } = props;
   const { coCandidates } = candidate.meta;
   const candidateInfoCls = classNames({
     [classes.candidateInfo]: true,
-    [classes.candidateInfoNoLeftPadding]: props.noLeftPadding,
+    [classes.candidateInfoNoLeftPadding]: noLeftPadding,
   });
 
   return (
@@ -136,24 +135,24 @@ const CandidateInfo: React.SFC<IInfoProps> = props => {
           <Trans>election.coCandidates</Trans>:{' '}
           {joinStringsWithCommaAndAnd(
             coCandidates.map((coCandidate: any) => coCandidate.name),
-            props.t
+            t
           )}
         </div>
       )}
-      {props.infoUrl && candidate.informationUrl ? (
+      {infoUrl && candidate.informationUrl ? (
         <div className={classes.candidateInfoSubText}>
           <Link to={candidate.informationUrl} external>
             <Trans>candidate.infoLinkText</Trans>
           </Link>
         </div>
       ) : null}
-      {props.listName ? (
+      {listName ? (
         <div className={classes.candidateInfoSubText}>
           {candidate.list.name[lang]}
         </div>
       ) : null}
-      {props.metaFields &&
-        props.metaFields.map(fieldName => (
+      {metaFields &&
+        metaFields.map((fieldName) => (
           <div className={classes.candidateInfoSubText}>
             {candidate.meta[fieldName]}
           </div>
@@ -162,49 +161,50 @@ const CandidateInfo: React.SFC<IInfoProps> = props => {
   );
 };
 
-const HOCCandidateInfo = injectSheet(styles)(withTranslation()(CandidateInfo));
-
 interface IRankProps {
-  classes: any;
   rankNr: number;
   small?: boolean;
 }
 
-const RankIcon: React.SFC<IRankProps> = props => (
-  <svg width="42px" height="42px" viewBox="0 0 50 50">
-    <g stroke="none" strokeWidth="1" fill="none">
-      <circle className={props.classes.rankIcon} cx="25" cy="25" r="25" />
-      <text
-        x="50%"
-        y="33px"
-        fontSize="24"
-        fontWeight="bold"
-        fill="#FFF"
-        textAnchor="middle"
-      >
-        {props.rankNr}
-      </text>
-      <title>{'icons.close'}</title>
-    </g>
-  </svg>
-);
-
-const HOCRankIcon = injectSheet(styles)(RankIcon);
+const RankIcon: React.FunctionComponent<IRankProps> = (props) => {
+  const { rankNr } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+  return (
+    <svg width="42px" height="42px" viewBox="0 0 50 50">
+      <g stroke="none" strokeWidth="1" fill="none">
+        <circle className={classes.rankIcon} cx="25" cy="25" r="25" />
+        <text
+          x="50%"
+          y="33px"
+          fontSize="24"
+          fontWeight="bold"
+          fill="#FFF"
+          textAnchor="middle"
+        >
+          {rankNr}
+        </text>
+        <title>{'icons.close'}</title>
+      </g>
+    </svg>
+  );
+};
 
 interface ISelectProps {
-  classes: any;
   selected: boolean;
   flexRight: boolean;
   action: () => void;
 }
 
-const ToggleSelectIcon: React.SFC<ISelectProps> = props => {
-  const { classes } = props;
+const ToggleSelectIcon: React.FunctionComponent<ISelectProps> = (props) => {
+  const { action, flexRight } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   const cls = classNames({
-    [classes.toggleSelectionIconFlexRight]: props.flexRight,
+    [classes.toggleSelectionIconFlexRight]: flexRight,
   });
   return (
-    <div className={cls} onClick={props.action}>
+    <div className={cls} onClick={action}>
       {props.selected ? (
         <svg width="51px" height="42px" viewBox="0 0 51 62" version="1.1">
           <g stroke="none" strokeWidth="1" fill="none">
@@ -222,121 +222,110 @@ const ToggleSelectIcon: React.SFC<ISelectProps> = props => {
           </g>
         </svg>
       ) : (
-          <svg width="51px" height="42px" viewBox="0 0 51 62" version="1.1">
-            <g stroke="none" strokeWidth="1" fill="none">
-              <rect fill="#F9F4FA" x="0" y="0" width="51" height="62" rx="8" />
-              <g transform="translate(12.000000, 17.000000)">
-                <circle
-                  stroke="#8ECED9"
-                  strokeWidth="3"
-                  cx="14"
-                  cy="14"
-                  r="12.5"
-                />
-              </g>
+        <svg width="51px" height="42px" viewBox="0 0 51 62" version="1.1">
+          <g stroke="none" strokeWidth="1" fill="none">
+            <rect fill="#F9F4FA" x="0" y="0" width="51" height="62" rx="8" />
+            <g transform="translate(12.000000, 17.000000)">
+              <circle
+                stroke="#8ECED9"
+                strokeWidth="3"
+                cx="14"
+                cy="14"
+                r="12.5"
+              />
             </g>
-          </svg>
-        )}
+          </g>
+        </svg>
+      )}
     </div>
   );
 };
 
-const HOCToggleSelectIcon = injectSheet(styles)(ToggleSelectIcon);
-
-interface IDesktopButtonsProps {
-  classes: any;
-}
-
-const ListItemDesktopButtons: React.SFC<IDesktopButtonsProps> = props => (
-  <div className={props.classes.desktopButtonsContainer}>
-    <div className={props.classes.desktopButtons}>{props.children}</div>
-  </div>
-);
-
-const HOCListItemDesktopButtons = injectSheet(styles)(ListItemDesktopButtons);
+const ListItemDesktopButtons: React.FunctionComponent<{}> = (props) => {
+  const { children } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+  return (
+    <div className={classes.desktopButtonsContainer}>
+      <div className={classes.desktopButtons}>{children}</div>
+    </div>
+  );
+};
 
 interface IButtonProps {
-  classes: any;
   onClick: () => void;
   title?: string;
 }
 
-const UpArrow: React.FunctionComponent<IButtonProps> = props => {
+const UpArrow: React.FunctionComponent<IButtonProps> = (props) => {
+  const { onClick, title } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+
   return (
-    <div className={props.classes.buttonUpArrow}>
-      <Icon
-        type="upArrow"
-        custom="teal"
-        onClick={props.onClick}
-        title={props.title}
-      />
+    <div className={classes.buttonUpArrow}>
+      <Icon type="upArrow" custom="teal" onClick={onClick} title={title} />
     </div>
   );
 };
 
-const HOCUpArrow = injectSheet(styles)(UpArrow);
+const DownArrow: React.FunctionComponent<IButtonProps> = (props) => {
+  const { onClick, title } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
-const DownArrow: React.FunctionComponent<IButtonProps> = props => {
   return (
-    <div className={props.classes.buttonDownArrow}>
-      <Icon
-        type="downArrow"
-        custom="teal"
-        onClick={props.onClick}
-        title={props.title}
-      />
+    <div className={classes.buttonDownArrow}>
+      <Icon type="downArrow" custom="teal" onClick={onClick} title={title} />
     </div>
   );
 };
 
-const HOCDownArrow = injectSheet(styles)(DownArrow);
+const CumulateButton: React.FunctionComponent<IButtonProps> = (props) => {
+  const { onClick, title } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
-const CumulateButton: React.FunctionComponent<IButtonProps> = props => {
   return (
-    <div className={props.classes.buttonCumulate} onClick={props.onClick}>
-      <Icon
-        type="star"
-        custom={{ color: 'teal', small: true }}
-        title={props.title}
-      />
+    <div className={classes.buttonCumulate} onClick={onClick}>
+      <Icon type="star" custom={{ color: 'teal', small: true }} title={title} />
       <Trans>voter.cumulate</Trans>
     </div>
   );
 };
 
-const HOCCumulateButton = injectSheet(styles)(CumulateButton);
-
-const RemoveButton: React.FunctionComponent<IButtonProps> = props => {
+const RemoveButton: React.FunctionComponent<IButtonProps> = (props) => {
+  const { title, onClick } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   return (
     <>
       <button
         className={classNames({
-          [props.classes.buttonRemove]: true,
+          [classes.buttonRemove]: true,
           'button-no-style': true,
         })}
-        onClick={props.onClick}
+        onClick={onClick}
       >
         <Icon
           type="remove"
           custom={{ color: 'teal', small: true }}
-          title={props.title}
+          title={title}
         />
       </button>
     </>
   );
 };
 
-const HOCRemoveButton = injectSheet(styles)(RemoveButton);
-
 export {
-  HOCCandidateInfo as CandidateInfo,
-  HOCCandidateList as CandidateList,
-  HOCCandidateListItem as CandidateListItem,
-  HOCCumulateButton as CumulateButton,
-  HOCDownArrow as DownArrow,
-  HOCListItemDesktopButtons as ListItemDesktopButtons,
-  HOCToggleSelectIcon as ToggleSelectIcon,
-  HOCRankIcon as RankIcon,
-  HOCRemoveButton as RemoveButton,
-  HOCUpArrow as UpArrow,
+  CandidateInfo,
+  CandidateList,
+  CandidateListItem,
+  CumulateButton,
+  DownArrow,
+  ListItemDesktopButtons,
+  ToggleSelectIcon,
+  RankIcon,
+  RemoveButton,
+  UpArrow,
 };

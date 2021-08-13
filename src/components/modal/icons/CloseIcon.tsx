@@ -1,28 +1,27 @@
 import React from 'react';
-import injectSheet from 'react-jss';
 import { useTranslation } from 'react-i18next';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   closeIconCircle: {
     fill: theme.closeIconColor,
   },
   closeIconLine: {
     fill: theme.colors.white,
   },
-});
+}));
 
 interface IProps {
   closeAction: (a: any) => void;
-  classes: Classes;
 }
 
-const CloseIcon = (props: IProps) => {
-  const { classes } = props;
+const CloseIcon: React.FunctionComponent<IProps> = ({ closeAction }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   return (
-    <button className="button-no-style" onClick={props.closeAction}>
+    <button className="button-no-style" onClick={closeAction}>
       <svg width="19px" height="19px" viewBox="0 0 19 19">
         <g
           stroke="none"
@@ -57,4 +56,4 @@ const CloseIcon = (props: IProps) => {
   );
 };
 
-export default injectSheet(styles)(CloseIcon);
+export default CloseIcon;

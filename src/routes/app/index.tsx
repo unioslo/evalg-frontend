@@ -1,8 +1,7 @@
 import React from 'react';
-import injectSheet from 'react-jss';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 import { Route, withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { authEnabled } from 'appConfig';
@@ -17,7 +16,7 @@ import VoterFrontPage from './voter/frontpage';
 import LoginPage from './components/LoginPage';
 import Logout from './components/Logout';
 
-const styles = {
+const useStyles = createUseStyles((theme: any) => ({
   ie11ExtraFlexContainer: {
     // https://github.com/philipwalton/flexbugs#flexbug-3
     display: 'flex',
@@ -36,15 +35,16 @@ const styles = {
   spinBox: {
     marginRight: '2rem',
   },
-};
+}));
 
 interface IAppProps {
-  classes: Classes;
   authManager: any;
 }
 
 const App: React.FunctionComponent<IAppProps & RouteComponentProps> = props => {
-  const { authManager, location, history, classes } = props;
+  const { authManager, location, history } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   const ProtectedComponent = (props: any) => {
     if (!props.userContext) {
@@ -122,5 +122,5 @@ const App: React.FunctionComponent<IAppProps & RouteComponentProps> = props => {
   );
 };
 
-const styledApp = injectSheet(styles)(withRouter(App));
+const styledApp = withRouter(App);
 export default styledApp;

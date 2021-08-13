@@ -1,7 +1,6 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import injectSheet from 'react-jss';
 import { useTranslation } from 'react-i18next';
 
 import { NotFound, ErrorPageSection } from 'components/errors';
@@ -40,27 +39,7 @@ const viewerElectionGroupsQuery = gql`
   }
 `;
 
-const styles = (theme: any) => ({
-  flexContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-  },
-
-  helpLinksBox: {
-    width: '35rem',
-    padding: '2.5rem 3.5rem',
-    border: `0.4rem solid`,
-    borderRadius: '0.4rem',
-    borderColor: theme.helpBoxBorderColor,
-    '& .title': {
-      fontSize: '2.4rem',
-      marginBottom: '1.5rem',
-    },
-  },
-});
-
-const AdminFrontPage = () => {
+const AdminFrontPage: React.FunctionComponent<{}> = () => {
   const { t } = useTranslation();
   return (
     <Query query={viewerElectionGroupsQuery} fetchPolicy="network-only">
@@ -121,4 +100,4 @@ const AdminFrontPage = () => {
   );
 };
 
-export default injectSheet(styles)(AdminFrontPage);
+export default AdminFrontPage;

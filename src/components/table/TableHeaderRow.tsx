@@ -1,21 +1,17 @@
 import React from 'react';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
-interface IProps {
-  children?: React.ReactNode;
-  classes: Classes;
-}
-
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   row: {
     userSelect: 'text',
     height: '5rem',
   },
-});
+}));
 
-const TableHeaderRow = (props: IProps) => {
-  return <tr className={props.classes.row}>{props.children}</tr>;
+const TableHeaderRow: React.FunctionComponent<{}> = (props) => {
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+  return <tr className={classes.row}>{props.children}</tr>;
 };
 
-export default injectSheet(styles)(TableHeaderRow);
+export default TableHeaderRow;

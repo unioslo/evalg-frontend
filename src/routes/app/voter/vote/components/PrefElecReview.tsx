@@ -1,7 +1,6 @@
 import React from 'react';
-import { WithTranslation, withTranslation } from 'react-i18next';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { useTranslation } from 'react-i18next';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import { Button, ButtonContainer } from 'components/button';
 import { PageSection, PageSubSection, PageParagraph } from 'components/page';
@@ -13,7 +12,7 @@ import {
   CandidateInfo,
 } from './CandidateList';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   ingress: {
     ...theme.ingress,
     maxWidth: '63rem',
@@ -27,15 +26,14 @@ const styles = (theme: any) => ({
     marginBottom: '3rem',
     fontSize: '1.8rem',
   },
-});
+}));
 
-interface IReviewProps extends WithTranslation {
+interface IReviewProps {
   selectedCandidates: Candidate[];
   isBlankVote: boolean;
   onGoBackToBallot: () => void;
   onSubmitVote: () => void;
   isSubmittingVote: boolean;
-  classes: Classes;
 }
 
 const PrefElecReview: React.SFC<IReviewProps> = ({
@@ -44,9 +42,12 @@ const PrefElecReview: React.SFC<IReviewProps> = ({
   onGoBackToBallot,
   onSubmitVote,
   isSubmittingVote,
-  classes,
-  t,
 }) => {
+
+  const { t } = useTranslation();
+  const theme = useTheme();
+  const classes = useStyles({ theme });  
+
   const ballot = (
     <CandidateList>
       {selectedCandidates.map((candidate, index) => {
@@ -97,4 +98,4 @@ const PrefElecReview: React.SFC<IReviewProps> = ({
   );
 };
 
-export default injectSheet(styles)(withTranslation()(PrefElecReview));
+export default PrefElecReview;

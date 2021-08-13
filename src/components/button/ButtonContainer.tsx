@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 interface IProps {
   alignLeft?: boolean;
@@ -9,10 +8,9 @@ interface IProps {
   smlTopMargin?: boolean;
   center?: boolean;
   alignRight?: boolean;
-  classes: Classes;
 }
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   btnContainer: {
     marginTop: '2rem',
     [theme.breakpoints.mdQuery]: {
@@ -55,20 +53,23 @@ const styles = (theme: any) => ({
   noTopMargin: {
     marginTop: 0,
   },
-});
+}));
 
-const ButtonContainer: React.SFC<IProps> = props => {
-  const { classes } = props;
+const ButtonContainer: React.FunctionComponent<IProps> = (props) => {
+  const { alignLeft, alignRight, center, children, noTopMargin, smlTopMargin } =
+    props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   const cls = classNames({
     [classes.btnContainer]: true,
-    [classes.alignLeft]: props.alignLeft,
-    [classes.center]: props.center,
-    [classes.alignRight]: props.alignRight,
-    [classes.noTopMargin]: props.noTopMargin,
-    [classes.smallTopMargin]: props.smlTopMargin,
+    [classes.alignLeft]: alignLeft,
+    [classes.center]: center,
+    [classes.alignRight]: alignRight,
+    [classes.noTopMargin]: noTopMargin,
+    [classes.smallTopMargin]: smlTopMargin,
   });
 
-  return <div className={cls}>{props.children}</div>;
+  return <div className={cls}>{children}</div>;
 };
 
-export default injectSheet(styles)(ButtonContainer);
+export default ButtonContainer;

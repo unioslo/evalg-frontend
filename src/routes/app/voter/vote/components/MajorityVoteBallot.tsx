@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import injectSheet from 'react-jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import { PageSection } from 'components/page';
 import Icon from 'components/icon';
@@ -18,6 +18,21 @@ import HelpSubSection from './HelpSubSection';
 import MandatePeriodText from './MandatePeriodText';
 import BallotButtons from './BallotButtons';
 
+const useStyles = createUseStyles((theme: any) => ({
+  mandatePeriodTextDesktop: {
+    display: 'none',
+    [theme.breakpoints.mdQuery]: {
+      display: 'inherit',
+      ...theme.ingress,
+    },
+  },
+  mandatePeriodTextMobile: {
+    [theme.breakpoints.mdQuery]: {
+      display: 'none',
+    },
+  },
+}));
+
 interface IProps {
   candidates: Candidate[];
   selectedCandidates: Candidate[];
@@ -29,7 +44,6 @@ interface IProps {
   onGoBackToSelectVoterGroup: () => void;
   onReviewBallot: () => void;
   onBlankVote: () => void;
-  classes: any;
 }
 
 const MajorityVoteBallot: React.FunctionComponent<IProps> = props => {
@@ -44,10 +58,11 @@ const MajorityVoteBallot: React.FunctionComponent<IProps> = props => {
     onReviewBallot,
     onBlankVote,
     election,
-    classes,
   } = props;
-
   const { t } = useTranslation();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+
 
   const helpTextTags = [
     'voter.majorityVoteHelpYouMaySelectOnlyOne',
@@ -151,19 +166,5 @@ const MajorityVoteBallot: React.FunctionComponent<IProps> = props => {
   );
 };
 
-const styles = (theme: any) => ({
-  mandatePeriodTextDesktop: {
-    display: 'none',
-    [theme.breakpoints.mdQuery]: {
-      display: 'inherit',
-      ...theme.ingress,
-    },
-  },
-  mandatePeriodTextMobile: {
-    [theme.breakpoints.mdQuery]: {
-      display: 'none',
-    },
-  },
-});
 
-export default injectSheet(styles)(MajorityVoteBallot);
+export default MajorityVoteBallot;

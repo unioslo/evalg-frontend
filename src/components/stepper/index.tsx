@@ -1,9 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   stepper: {
     display: 'flex',
     justifyContent: 'center',
@@ -39,7 +38,7 @@ const styles = (theme: any) => ({
       textDecoration: 'underline',
     },
   },
-});
+}));
 
 interface IStepperItemProps {
   translateX: number;
@@ -51,10 +50,9 @@ interface IStepperItemProps {
   clickable?: boolean;
   disabled?: boolean;
   onClick?: () => void;
-  classes: Classes;
 }
 
-const StepperItem: React.SFC<IStepperItemProps> = props => {
+const StepperItem: React.SFC<IStepperItemProps> = (props) => {
   const {
     translateX,
     translateY,
@@ -65,8 +63,9 @@ const StepperItem: React.SFC<IStepperItemProps> = props => {
     clickable,
     disabled,
     onClick,
-    classes,
   } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   const handleClick = () => {
     if (clickable && !disabled && onClick) {
@@ -118,11 +117,12 @@ const StepperItem: React.SFC<IStepperItemProps> = props => {
 
 interface IProps {
   title?: string;
-  classes: Classes;
 }
 
-const Stepper: React.SFC<IProps> = props => {
-  const { title, classes } = props;
+const Stepper: React.FunctionComponent<IProps> = (props) => {
+  const { title } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   return (
     <div className={classes.stepper}>
       <svg width="897px" height="56px" viewBox="0 0 897 56">
@@ -141,7 +141,4 @@ const Stepper: React.SFC<IProps> = props => {
   );
 };
 
-const StyledStepperItem = injectSheet(styles)(StepperItem);
-const StyledStepper = injectSheet(styles)(Stepper);
-
-export { StyledStepperItem as StepperItem, StyledStepper as Stepper };
+export { StepperItem, Stepper };

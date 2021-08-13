@@ -1,14 +1,13 @@
 import React from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import Link from 'components/link';
 import { MsgBox } from 'components/msgbox';
 import { showUserMsg } from 'appConfig';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   mainContainer: {
     display: 'flex',
     margin: '0 auto',
@@ -98,14 +97,12 @@ const styles = (theme: any) => ({
       marginBottom: '1rem',
     },
   },
-});
+}));
 
-interface IProps {
-  classes: Classes;
-}
-
-const FrontPage: React.FunctionComponent<IProps> = ({ classes }) => {
+const FrontPage: React.FunctionComponent<{}> = () => {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   return (
     <>
@@ -180,4 +177,4 @@ const FrontPage: React.FunctionComponent<IProps> = ({ classes }) => {
   );
 };
 
-export default injectSheet(styles)(FrontPage);
+export default FrontPage;

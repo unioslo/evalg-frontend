@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import { oidcLogoutUrl } from 'appConfig';
 import Spinner from 'components/animations/Spinner';
 import { withApollo, WithApolloClient } from 'react-apollo';
 import { IUserContext } from 'providers/UserContext';
 
-const styles = {
+const useStyles = createUseStyles((theme: any) => ({
   logout: {
     display: 'flex',
     justifyContent: 'center',
@@ -16,19 +15,19 @@ const styles = {
   spinBox: {
     marginRight: '2rem',
   },
-};
+}));
 
 interface IProps {
   context: IUserContext;
-  classes: Classes;
 }
 
 const Logout: React.FunctionComponent<WithApolloClient<IProps>> = ({
   context,
   client: apolloClient,
-  classes,
 }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
@@ -52,4 +51,4 @@ const Logout: React.FunctionComponent<WithApolloClient<IProps>> = ({
     </div>
   );
 };
-export default injectSheet(styles)(withApollo<IProps>(Logout));
+export default withApollo<IProps>(Logout);

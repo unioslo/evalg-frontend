@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import { ElectionGroupCount } from 'interfaces';
 
@@ -10,7 +9,7 @@ import { Date, Time } from 'components/i18n';
 import { PageSubSection } from 'components/page';
 import { idValueForPerson } from 'utils/processGraphQLData';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   latestResultSection: {
     marginTop: '2rem',
   },
@@ -20,18 +19,18 @@ const styles = (theme: any) => ({
     padding: '2rem',
     marginTop: '2rem',
   },
-});
+}));
 
 interface IProps {
   electionGroupCount: ElectionGroupCount;
-  classes: Classes;
 }
 
 const LatestElectionGroupCountResult: React.FunctionComponent<IProps> = ({
   electionGroupCount: count,
-  classes,
 }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   const { initiatedAt, initiatedBy } = count;
 
   return (
@@ -52,4 +51,4 @@ const LatestElectionGroupCountResult: React.FunctionComponent<IProps> = ({
   );
 };
 
-export default injectSheet(styles)(LatestElectionGroupCountResult);
+export default LatestElectionGroupCountResult;

@@ -1,7 +1,7 @@
 import React from 'react';
-import injectSheet, { WithStylesProps } from 'react-jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   menu: {
     display: 'none',
     listStyleType: 'none',
@@ -17,28 +17,24 @@ const styles = (theme: any) => ({
     color: theme.navMenuTextColor,
     marginLeft: '2rem',
   },
-});
+}));
 
-interface IProps extends WithStylesProps<typeof styles> {}
+interface IProps {};
 
 const DesktopMenu: React.FunctionComponent<IProps> = ({
   children,
-  classes,
 }) => {
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   return <ul className={classes.menu}>{children}</ul>;
 };
 
 const DesktopMenuItem: React.FunctionComponent<IProps> = ({
   children,
-  classes,
 }) => {
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   return <li className={classes.menuItem}>{children}</li>;
 };
 
-const StyledDesktopMenu = injectSheet(styles)(DesktopMenu);
-const StyledDesktopMenuItem = injectSheet(styles)(DesktopMenuItem);
-
-export {
-  StyledDesktopMenu as DesktopMenu,
-  StyledDesktopMenuItem as DesktopMenuItem,
-};
+export {DesktopMenu, DesktopMenuItem};

@@ -1,13 +1,10 @@
 import React from 'react';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
-
+import { createUseStyles, useTheme } from 'react-jss';
 interface IProps {
   text: string;
-  classes: Classes;
 }
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   boundingbox: {
     cursor: 'pointer',
   },
@@ -23,10 +20,11 @@ const styles = (theme: any) => ({
     textDecoration: 'underline',
     textDecorationColor: theme.colors.darkTurquoise,
   },
-});
+}));
 
-const ActionButton: React.SFC<IProps> = props => {
-  const { classes, text } = props;
+const ActionButton: React.FunctionComponent<IProps> = ({ text }) => {
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   return (
     <svg
       className={classes.boundingbox}
@@ -54,4 +52,4 @@ const ActionButton: React.SFC<IProps> = props => {
   );
 };
 
-export default injectSheet(styles)(ActionButton);
+export default ActionButton;

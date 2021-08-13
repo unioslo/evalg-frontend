@@ -2,8 +2,8 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { useTranslation } from 'react-i18next';
-import injectSheet from 'react-jss';
 import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import { IPollBook, Election } from 'interfaces';
 
@@ -31,7 +31,7 @@ const turnoutCountsQuery = gql`
   }
 `;
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   turnoutSubSectionContent: {
     marginTop: '2rem',
   },
@@ -43,21 +43,21 @@ const styles = (theme: any) => ({
   errorText: {
     color: theme.errorTextColor,
   },
-});
+}));
 
 interface IProps {
   electionGroupId: string;
   doPolling: boolean;
-  classes: Classes;
 }
 
 const TurnoutSubsection: React.FunctionComponent<IProps> = ({
   electionGroupId,
   doPolling,
-  classes,
 }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   return (
     <PageSubSection header={t('admin.statusSection.turnoutSubsection.header')}>
@@ -160,4 +160,4 @@ const TurnoutRow: React.FunctionComponent<ITurnoutRowProps> = ({
   );
 };
 
-export default injectSheet(styles)(TurnoutSubsection);
+export default TurnoutSubsection;

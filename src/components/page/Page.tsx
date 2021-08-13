@@ -1,13 +1,12 @@
 import React from 'react';
-import injectSheet from 'react-jss';
 import { Helmet } from 'react-helmet';
+import { createUseStyles, useTheme } from 'react-jss';
 
 interface IProps {
   header: string;
-  classes: any;
 }
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   page: {
     display: 'block',
     [theme.breakpoints.mdQuery]: {
@@ -26,10 +25,13 @@ const styles = (theme: any) => ({
       marginRight: `${theme.contentHorMdPadding}`,
     },
   },
-});
+}));
 
-const Page: React.SFC<IProps> = props => {
-  const { header, classes, children } = props;
+const Page: React.FunctionComponent<IProps> = props => {
+  const { header, children } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+
   return (
     <>
       <Helmet>
@@ -43,6 +45,5 @@ const Page: React.SFC<IProps> = props => {
   );
 };
 
-const StyledPage: any = injectSheet(styles)(Page);
-
+const StyledPage: any = Page;
 export default StyledPage;

@@ -1,33 +1,32 @@
 import React from 'react';
-import { Classes } from 'jss';
-import injectSheet from 'react-jss';
 import { useTranslation } from 'react-i18next';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import { PageSection } from 'components/page';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   body: {
     color: theme.errorTextColor,
   },
   generalInfo: {
     marginBottom: '2rem',
   },
-});
+}));
 
-interface Props {
+interface IProps {
   errorHeader?: string;
   errorGeneralInfo?: string;
   errorMessage?: string;
-  classes: Classes;
 }
 
-const ErrorPageSection: React.FunctionComponent<Props> = ({
+const ErrorPageSection: React.FunctionComponent<IProps> = ({
   errorHeader,
   errorGeneralInfo,
   errorMessage,
-  classes,
 }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   return (
     <PageSection header={errorHeader || t('errors.generalError')}>
@@ -41,4 +40,4 @@ const ErrorPageSection: React.FunctionComponent<Props> = ({
   );
 };
 
-export default injectSheet(styles)(ErrorPageSection);
+export default ErrorPageSection;

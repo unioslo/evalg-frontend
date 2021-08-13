@@ -1,15 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 interface IProps {
-  children?: React.ReactNode;
   marginTop?: string;
-  classes: Classes;
 }
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   table: {
     width: '100%',
     userSelect: 'text',
@@ -18,14 +15,17 @@ const styles = (theme: any) => ({
       paddingRight: '2rem',
     },
   },
-});
+}));
 
-const Table = (props: IProps) => {
-  const { classes } = props;
+const Table: React.FunctionComponent<IProps> = (props) => {
+  const { children } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+
   const cls = classNames({
     [classes.table]: true,
   });
-  return <table className={cls}>{props.children}</table>;
+  return <table className={cls}>{children}</table>;
 };
 
-export default injectSheet(styles)(Table);
+export default Table;

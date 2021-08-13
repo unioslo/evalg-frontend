@@ -1,12 +1,12 @@
 import React from 'react';
 import { Classes } from 'jss';
 import { useTranslation } from 'react-i18next';
-import injectSheet from 'react-jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import { ElectionResult, Candidate } from 'interfaces';
 import { H4, H5 } from 'components/text';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   sectionLevel1: {
     marginBottom: '2rem',
   },
@@ -27,16 +27,14 @@ const styles = (theme: any) => ({
   errorText: {
     color: theme.errorTextColor,
   },
-});
+}));
 
 interface IProps {
   electionResult: ElectionResult;
-  classes: Classes;
 }
 
 const ElectionResultAndBallotStats: React.FunctionComponent<IProps> = ({
   electionResult,
-  classes,
 }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
@@ -44,6 +42,8 @@ const ElectionResultAndBallotStats: React.FunctionComponent<IProps> = ({
   const { election } = electionResult;
   const { pollbooks } = election;
   const { result } = electionResult;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   return (
     <>
@@ -196,4 +196,4 @@ const ElectedCandidatesList: React.FunctionComponent<
   );
 };
 
-export default injectSheet(styles)(ElectionResultAndBallotStats);
+export default ElectionResultAndBallotStats;

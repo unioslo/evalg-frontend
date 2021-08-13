@@ -1,8 +1,8 @@
 import React from 'react';
-import injectSheet, { WithStylesProps } from 'react-jss';
 import classNames from 'classnames';
+import { createUseStyles, useTheme } from 'react-jss';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   checkBoxAndLabel: {
     position: 'relative',
     top: '3px',
@@ -58,9 +58,9 @@ const styles = (theme: any) => ({
       color: theme.colors.lightGray,
     },
   },
-});
+}));
 
-interface IProps extends WithStylesProps<typeof styles> {
+interface IProps {
   checked?: boolean;
   disabled?: boolean;
   label?: any;
@@ -71,18 +71,12 @@ interface IProps extends WithStylesProps<typeof styles> {
   value: any;
 }
 
-const CheckBox = (props: IProps) => {
-  const {
-    checked,
-    classes,
-    disabled,
-    label,
-    name,
-    onBlur,
-    onChange,
-    onFocus,
-    value,
-  } = props;
+const CheckBox: React.FunctionComponent<IProps> = (props) => {
+  const { checked, disabled, label, name, onBlur, onChange, onFocus, value } =
+    props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+
   return (
     <div className={classes.checkBoxAndLabel}>
       <div className={classes.checkBox}>
@@ -139,6 +133,4 @@ const CheckBox = (props: IProps) => {
   );
 };
 
-const StyledCheckBox = injectSheet(styles)(CheckBox);
-
-export { StyledCheckBox as CheckBox };
+export { CheckBox };

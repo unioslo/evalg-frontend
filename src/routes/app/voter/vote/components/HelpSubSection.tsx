@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import Icon from 'components/icon';
 import { InfoList, InfoListItem } from 'components/infolist';
 import { PageSubSection } from 'components/page';
 import { ScreenSizeConsumer } from 'providers/ScreenSize';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   header: theme.subSectionHeader,
   headerContainer: {
     alignItems: 'center',
@@ -22,10 +21,9 @@ const styles = (theme: any) => ({
     marginBottom: '1rem',
     marginLeft: '1rem',
   },
-});
+}));
 
 interface IHelpSubProps {
-  classes: Classes;
   header: React.ReactNode;
   helpTextTags: string[];
   helpText?: string[];
@@ -35,8 +33,11 @@ interface IHelpSubProps {
 const HelpSubSection: React.FunctionComponent<IHelpSubProps> = props => {
   const [showHelpTexts, setShowHelpTexts] = useState<boolean>(false);
 
-  const { classes, children, desc, header, helpTextTags, helpText } = props;
+  const { children, desc, header, helpTextTags, helpText } = props;
   const { t } = useTranslation();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+
 
   const toggleShowHelpTexts = () => {
     setShowHelpTexts(!showHelpTexts);
@@ -89,4 +90,4 @@ const HelpSubSection: React.FunctionComponent<IHelpSubProps> = props => {
   );
 };
 
-export default injectSheet(styles)(HelpSubSection);
+export default HelpSubSection;

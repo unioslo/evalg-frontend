@@ -1,9 +1,8 @@
 import React from 'react';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
 import classNames from 'classnames';
+import { createUseStyles, useTheme } from 'react-jss';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   mobileStepperCircles: {
     width: '100%',
     marginBottom: '2rem',
@@ -48,18 +47,19 @@ const styles = (theme: any) => ({
     strokeWidth: 1,
     r: 24.5,
   },
-});
+}));
 
 interface IProps {
   numberOfSteps: number;
   currentStepNumber: number;
   stepText: string;
   title?: string;
-  classes: Classes;
 }
 
-const MobileStepperCircles: React.SFC<IProps> = props => {
-  const { numberOfSteps, currentStepNumber, stepText, title, classes } = props;
+const MobileStepperCircles: React.FunctionComponent<IProps> = (props) => {
+  const { numberOfSteps, currentStepNumber, stepText, title } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   let stepNumbers = [];
   for (let i = 1; i <= numberOfSteps; i += 1) {
@@ -176,4 +176,4 @@ const MobileStepperCircles: React.SFC<IProps> = props => {
   );
 };
 
-export default injectSheet(styles)(MobileStepperCircles);
+export default MobileStepperCircles;

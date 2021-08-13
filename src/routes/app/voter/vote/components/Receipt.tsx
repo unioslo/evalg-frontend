@@ -1,27 +1,23 @@
 import React from 'react';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
 import { useTranslation } from 'react-i18next';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import { feedbackUrl } from 'appConfig';
-
 import Link from 'components/link';
 import { PageSection } from 'components/page';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   receiptTextBox: {
     ...theme.ingress,
     maxWidth: '63rem',
   },
-});
+}));
 
-interface IProps {
-  classes: Classes;
-}
-
-const Receipt: React.FunctionComponent<IProps> = (props: IProps) => {
-  const { classes } = props;
+const Receipt: React.FunctionComponent<{}> = () => {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+
 
   return (
     <PageSection noBorder>
@@ -49,4 +45,4 @@ const Receipt: React.FunctionComponent<IProps> = (props: IProps) => {
   );
 };
 
-export default injectSheet(styles)(Receipt);
+export default Receipt;

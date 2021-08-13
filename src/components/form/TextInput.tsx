@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 import { FieldRenderProps } from 'react-final-form';
 
 import FormErrorMsg from './FormErrorMsg';
@@ -24,7 +23,6 @@ interface IProps {
   labelClassName?: string;
   large?: boolean;
   narrow?: boolean;
-  classes: Classes;
   hasFocus?: boolean;
   hideErrors?: boolean;
   disabled?: boolean;
@@ -34,7 +32,7 @@ interface IProps {
   tabIndex?: number;
 }
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -98,9 +96,9 @@ const styles = (theme: any) => ({
     color: theme.formFieldLabelFocusedColor,
     transition: 'color 200ms ease-in',
   },
-});
+}));
 
-const TextInput = (props: IProps) => {
+const TextInput: React.FunctionComponent<IProps> = (props) => {
   const {
     value,
     error,
@@ -121,11 +119,12 @@ const TextInput = (props: IProps) => {
     tabIndex,
     narrow,
     disabled,
-    classes,
     hasFocus,
     hideErrors,
     inputRef,
   } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   const extraInputClassName = className ? className : '';
   const inputClassNames = classNames({
@@ -184,7 +183,7 @@ const TextInput = (props: IProps) => {
   );
 };
 
-const StyledTextInput = injectSheet(styles)(TextInput);
+const StyledTextInput = TextInput;
 
 export default StyledTextInput;
 

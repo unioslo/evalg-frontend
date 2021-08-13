@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import injectSheet from 'react-jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   actionText: {
     '&:hover': {
       cursor: 'pointer',
@@ -20,20 +20,21 @@ const styles = (theme: any) => ({
   baseline: {
     verticalAlign: 'inherit',
   },
-});
+}));
 
 interface IProps {
   action?: (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
   children?: React.ReactNode;
   bottom?: boolean;
   inline?: boolean;
-  classes: any;
   onBlur?: any;
   onFocus?: any;
 }
 
-const ActionText: React.SFC<IProps> = props => {
-  const { children, classes, bottom, action, inline } = props;
+const ActionText: React.FunctionComponent<IProps> = (props) => {
+  const { children, bottom, action, inline } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   const cls = classNames({
     [classes.baseline]: bottom,
     [classes.actionText]: true,
@@ -47,4 +48,4 @@ const ActionText: React.SFC<IProps> = props => {
   );
 };
 
-export default injectSheet(styles)(ActionText);
+export default ActionText;
