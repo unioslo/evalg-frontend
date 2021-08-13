@@ -20,7 +20,7 @@ pipeline {
                 script {
                     sh('scl enable rh-nodejs14 "npm config set proxy http://software-proxy.uio.no:3128"')
                     sh('scl enable rh-nodejs14 "npm config set https-proxy http://software-proxy.uio.no:3128"')
-                    sh('scl enable rh-nodejs14 "npm install"')
+                    sh('scl enable rh-nodejs14 "npm ci"')
                 }
             }
         }
@@ -71,10 +71,6 @@ pipeline {
             }
         }
         stage('Build npm package') {
-            environment {
-                ESLINT_NO_DEV_ERRORS=true
-                SKIP_PREFLIGHT_CHECK=true
-            }
             steps {
                 script {
                     sh('scl enable rh-nodejs14 "NODE_ENV=production npm run build"')
