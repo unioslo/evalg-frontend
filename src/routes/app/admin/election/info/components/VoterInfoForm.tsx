@@ -286,7 +286,7 @@ class VoterInfoForm extends React.Component<IProps> {
                   </FormFieldGroup>
                 )}
 
-                {errors._error
+                {errors && errors._error
                   ? errors._error.mandateDates.map((error: any) => {
                       const { index } = error;
                       if (
@@ -370,7 +370,7 @@ class VoterInfoForm extends React.Component<IProps> {
                     />
                   </FormField>
                 )}
-                {errors._error
+                {errors && errors._error
                   ? errors._error.contact.map((error: any) => {
                       const { msg, index } = error;
                       if (touched && touched[`elections[${index}].contact`]) {
@@ -449,7 +449,7 @@ class VoterInfoForm extends React.Component<IProps> {
                     />
                   </FormField>
                 )}
-                {errors._error
+                {errors && errors._error
                   ? errors._error.informationUrl.map((error: any) => {
                       const { index } = error;
                       if (

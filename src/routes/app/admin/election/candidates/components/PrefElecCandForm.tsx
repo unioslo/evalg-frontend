@@ -108,7 +108,7 @@ const PrefElecCandForm: React.FunctionComponent<IProps> = (props: IProps) => {
                   />
                 </FormField>
               </TableRowFormFields>
-              {!pristine &&
+              {!pristine && errors &&
                 errors._errors &&
                 Object.keys(errors._errors).map((field, index) => {
                   if (touched && touched[field]) {
