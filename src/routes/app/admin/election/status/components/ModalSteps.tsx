@@ -40,12 +40,10 @@ interface IProps {
   width?: string;
 }
 
-const ModalSteps: React.FunctionComponent<IProps> = ({
-  stepsContent,
-  stepsActiveStatus,
-}) => {
+const ModalSteps: React.FunctionComponent<IProps> = (props) => {
+  const { stepsContent, stepsActiveStatus } = props;
   const theme = useTheme();
-  const classes = useStyles({ theme });
+  const classes = useStyles({ ...props, theme });
   return (
     <div className={classes.steps}>
       {stepsContent.map((stepContent, index) => (
