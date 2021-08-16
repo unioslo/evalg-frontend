@@ -57,7 +57,6 @@ const useStyles = createUseStyles((theme: any) => ({
     display: 'block',
     '&:focus': {
       borderColor: theme.formFieldBorderActiveColor,
-      //transition: `border-color ${theme.formFieldFocusTransition}`,
     },
     '&:focus + label': {
       color: theme.formFieldLabelFocusedColor,
@@ -124,7 +123,7 @@ const TextInput: React.FunctionComponent<IProps> = (props) => {
     inputRef,
   } = props;
   const theme = useTheme();
-  const classes = useStyles({ theme });
+  const classes = useStyles({ ...props, theme });
 
   const extraInputClassName = className ? className : '';
   const inputClassNames = classNames({
