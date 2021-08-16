@@ -1,24 +1,21 @@
 import React from 'react';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 import { useTranslation } from 'react-i18next';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   errorText: {
     color: theme.errorTextColor,
   },
-});
+}));
 
 interface IProps {
   errorMessage: string;
-  classes: Classes;
 }
 
-const ErrorInline: React.FunctionComponent<IProps> = ({
-  errorMessage,
-  classes,
-}) => {
+const ErrorInline: React.FunctionComponent<IProps> = ({ errorMessage }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   return (
     <>
       <span className={classes.errorText}>{t('errors.generalError')}</span>:{' '}
@@ -27,4 +24,4 @@ const ErrorInline: React.FunctionComponent<IProps> = ({
   );
 };
 
-export default injectSheet(styles)(ErrorInline);
+export default ErrorInline;

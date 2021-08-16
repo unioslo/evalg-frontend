@@ -98,7 +98,7 @@ class ManageElectionsTable extends React.Component<IProps, IState> {
               />
               {selected &&
                 electionGroup.type === 'multiple_elections' &&
-                electionGroup.elections.map(el => {
+                electionGroup.elections.map((el) => {
                   if (!el.active) {
                     return null;
                   }

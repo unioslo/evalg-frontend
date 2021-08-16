@@ -1,9 +1,9 @@
 import React from 'react';
-import injectSheet from 'react-jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import Icon from 'components/icon';
 
-const subtaskWorkingStateIconStyles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   iconContainer: {
     width: '2.2rem',
     height: '2.2rem',
@@ -26,7 +26,7 @@ const subtaskWorkingStateIconStyles = (theme: any) => ({
   '@keyframes spin': {
     to: { '-webkit-transform': 'rotate(360deg)' },
   },
-});
+}));
 
 export enum SubtaskWorkingState {
   notStarted,
@@ -35,37 +35,36 @@ export enum SubtaskWorkingState {
   done,
 }
 
-interface IsubtaskWorkingStateIconProps {
+interface IProps {
   workingState: SubtaskWorkingState;
-  classes: any;
 }
 
-const SubtaskWorkingStateIcon = ({
-  workingState,
-  classes,
-}: IsubtaskWorkingStateIconProps) => (
-  <>
-    {workingState === SubtaskWorkingState.notStarted && (
-      <div className={classes.iconContainer} />
-    )}
-    {workingState === SubtaskWorkingState.working && (
-      <div className={classes.iconContainer}>
-        <div className={classes.generatingSpinner} />
-      </div>
-    )}
-    {workingState === SubtaskWorkingState.failed && (
-      <div className={classes.iconContainerWithOffset}>
-        <Icon type="xMark" />
-      </div>
-    )}
-    {workingState === SubtaskWorkingState.done && (
-      <div className={classes.iconContainerWithOffset}>
-        <Icon type="checkMark" />
-      </div>
-    )}
-  </>
-);
+const SubtaskWorkingStateIcon: React.FunctionComponent<IProps> = (props) => {
+  const { workingState } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+  return (
+    <>
+      {workingState === SubtaskWorkingState.notStarted && (
+        <div className={classes.iconContainer} />
+      )}
+      {workingState === SubtaskWorkingState.working && (
+        <div className={classes.iconContainer}>
+          <div className={classes.generatingSpinner} />
+        </div>
+      )}
+      {workingState === SubtaskWorkingState.failed && (
+        <div className={classes.iconContainerWithOffset}>
+          <Icon type="xMark" />
+        </div>
+      )}
+      {workingState === SubtaskWorkingState.done && (
+        <div className={classes.iconContainerWithOffset}>
+          <Icon type="checkMark" />
+        </div>
+      )}
+    </>
+  );
+};
 
-export default injectSheet(subtaskWorkingStateIconStyles as any)(
-  SubtaskWorkingStateIcon
-);
+export default SubtaskWorkingStateIcon;

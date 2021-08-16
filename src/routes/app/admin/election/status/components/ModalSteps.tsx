@@ -1,12 +1,11 @@
 import React from 'react';
-import { Classes } from 'jss';
-import injectSheet from 'react-jss';
 import classNames from 'classnames';
+import { createUseStyles, useTheme } from 'react-jss';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   steps: {
     margin: '6rem 2rem 4rem 2rem',
-    width: (props: Props) => (props.width ? props.width : 'auto'),
+    width: (props: IProps) => (props.width ? props.width : 'auto'),
   },
 
   stepRow: {
@@ -33,35 +32,37 @@ const styles = (theme: any) => ({
       color: theme.colors.darkTurquoise,
     },
   },
-});
+}));
 
-interface Props {
+interface IProps {
   stepsContent: React.ReactNode[];
   stepsActiveStatus: boolean[];
   width?: string;
-  classes: Classes;
 }
 
-const ModalSteps: React.FunctionComponent<Props> = ({
+const ModalSteps: React.FunctionComponent<IProps> = ({
   stepsContent,
   stepsActiveStatus,
-  classes,
-}) => (
-  <div className={classes.steps}>
-    {stepsContent.map((stepContent, index) => (
-      <div className={classes.stepRow} key={index}>
-        <div
-          className={classNames({
-            [classes.stepNumber]: true,
-            active: stepsActiveStatus[index],
-          })}
-        >
-          {index + 1}
+}) => {
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+  return (
+    <div className={classes.steps}>
+      {stepsContent.map((stepContent, index) => (
+        <div className={classes.stepRow} key={index}>
+          <div
+            className={classNames({
+              [classes.stepNumber]: true,
+              active: stepsActiveStatus[index],
+            })}
+          >
+            {index + 1}
+          </div>
+          <div>{stepContent}</div>
         </div>
-        <div>{stepContent}</div>
-      </div>
-    ))}
-  </div>
-);
+      ))}
+    </div>
+  );
+};
 
-export default injectSheet(styles)(ModalSteps);
+export default ModalSteps;

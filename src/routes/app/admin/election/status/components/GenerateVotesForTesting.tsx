@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import gql from 'graphql-tag';
 import { withApollo, WithApolloClient } from 'react-apollo';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import { ElectionGroup, IPollBook } from 'interfaces';
 import Button from 'components/button';
@@ -36,14 +35,14 @@ const voteMutation = gql`
   }
 `;
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   testingBox: {
     marginTop: '3rem',
     border: `2px solid #ff8936`,
     borderRadius: '2px',
     padding: '1rem',
   },
-});
+}));
 
 function getRandomString(length: number) {
   var result = '';
@@ -86,16 +85,18 @@ const generateRandomBallot = (candidateIds: string[]) => {
 
 interface IProps {
   electionGroup: ElectionGroup;
-  classes: Classes;
 }
 
 const GenerateVotesForTesting: React.FunctionComponent<WithApolloClient<
   IProps
->> = ({ electionGroup, classes, client }) => {
+>> = ({ electionGroup, client }) => {
   const [isWorking, setIsWorking] = useState(false);
   const [nVotesPerPollbook, setNVotesPerPollbook] = useState(
     DEFAULT_N_VOTES_PER_POLLBOOK
   );
+
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   const generateVotersAndVotes = async () => {
     setIsWorking(true);
@@ -171,4 +172,4 @@ const GenerateVotesForTesting: React.FunctionComponent<WithApolloClient<
   );
 };
 
-export default injectSheet(styles)(withApollo<IProps>(GenerateVotesForTesting));
+export default withApollo<IProps>(GenerateVotesForTesting);

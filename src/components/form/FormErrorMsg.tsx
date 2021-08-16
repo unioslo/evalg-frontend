@@ -1,26 +1,27 @@
 import React from 'react';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   errorMsg: {
     color: theme.formErrorTextColor,
     fontSize: '1.6rem',
     lineHeight: '2.7rem',
   }
-})
+}));
 
 interface IProps {
   msg: any,
-  classes: Classes,
 }
 
-const FormErrorMsg = (props: IProps) => {
+const FormErrorMsg: React.FunctionComponent<IProps> = (props) => {
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+
   return (
-    <div className={props.classes.errorMsg}>
+    <div className={classes.errorMsg}>
       {props.msg}
     </div>
   );
 };
 
-export default injectSheet(styles)(FormErrorMsg);
+export default FormErrorMsg;

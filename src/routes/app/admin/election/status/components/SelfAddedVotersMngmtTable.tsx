@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Trans, useTranslation } from 'react-i18next';
-import { TFunction } from 'i18next';
-import injectSheet from 'react-jss';
+import { createUseStyles, useTheme } from 'react-jss';
 import { Classes } from 'jss';
+import { TFunction } from 'i18next';
 
 import {
   Table,
@@ -33,7 +33,7 @@ const personForVoter = gql`
   }
 `;
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   reviewButtons: {
     display: 'flex',
     padding: '1.5rem 0',
@@ -48,7 +48,7 @@ const styles = (theme: any) => ({
   justification: {
     paddingBottom: '1rem',
   },
-});
+}));
 
 export enum VotersReviewTableAction {
   Review,
@@ -59,18 +59,18 @@ export enum VotersReviewTableAction {
 interface Props {
   voters: IVoter[];
   tableAction: VotersReviewTableAction;
-  classes: Classes;
 }
 
 const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
   voters,
   tableAction,
-  classes,
 }) => {
   const [selectedVoterId, setSelectedVoterId] = useState<string>('');
 
   const { i18n, t } = useTranslation();
   const lang = i18n.language;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   const handleToggleVoter = (voterId: string) => {
     if (selectedVoterId === voterId) {
@@ -335,4 +335,4 @@ const VoterDetails: React.FunctionComponent<VoterDetailsProps> = ({
   </TableRow>
 );
 
-export default injectSheet(styles)(SelfAddedVotersMngmtTable);
+export default SelfAddedVotersMngmtTable;

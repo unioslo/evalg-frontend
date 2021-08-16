@@ -1,9 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   radioButton: {
     position: 'relative',
     display: 'flex',
@@ -31,7 +30,7 @@ const styles = (theme: any) => ({
     fontSize: '1.6rem',
     paddingLeft: '0.5rem',
   },
-});
+}));
 
 interface IProps {
   name: string;
@@ -40,11 +39,13 @@ interface IProps {
   value: any;
   checked: boolean;
   label: any | string;
-  classes: Classes;
 }
 
-const RadioButton = (props: IProps) => {
-  const { name, onChange, id, value, checked, label, classes } = props;
+const RadioButton: React.FunctionComponent<IProps> = (props) => {
+  const { name, onChange, id, value, checked, label} = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
+
   const iconClassNames = classNames({
     [classes.icon]: true,
     [classes.checkedIcon]: checked,
@@ -69,8 +70,7 @@ const RadioButton = (props: IProps) => {
   );
 };
 
-const StyledRadioButton = injectSheet(styles)(RadioButton);
-export { StyledRadioButton as RadioButton };
+export { RadioButton };
 
 interface IGroupProps {
   input: any;
@@ -113,7 +113,7 @@ export class RadioButtonGroup extends React.Component<
         <legend>{this.props.legend}</legend>
         {options.map((option, index) => {
           return (
-            <StyledRadioButton
+            <RadioButton
               key={index}
               name={input.name}
               onChange={this.handleChange.bind(null, option.value)}
@@ -143,7 +143,7 @@ type RFProps = {
 export const RadioButtonRF = (props: RFProps) => {
   const { input, checked, label, id } = props;
   return (
-    <StyledRadioButton
+    <RadioButton
       id={id}
       label={label}
       checked={checked}

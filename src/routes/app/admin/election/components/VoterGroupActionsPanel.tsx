@@ -1,11 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import injectSheet from 'react-jss';
-
+import { createUseStyles, useTheme } from 'react-jss';
 import { useTranslation } from 'react-i18next';
-import { Classes } from 'jss';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   voterPanelSection: {
     display: 'flex',
     flexDirection: 'column',
@@ -78,26 +76,31 @@ const styles = (theme: any) => ({
   containerSpaceBetween: {
     justifyContent: 'space-between',
   },
-});
+  voterGroupPanelHasCompleteStatus: {},
+  counterText: {},
+}));
 
 interface IContainerProps {
-  classes: Classes;
   children: React.ReactNode[];
 }
 
-const VoterGroupActionPanelContainer: React.SFC<IContainerProps> = props => {
-  let spaceBetween = false;
-  const { children, classes } = props;
-  if (children && children.length && children.length > 2) {
-    spaceBetween = true;
-  }
-  const cls = classNames({
-    [classes.container]: true,
-    [classes.containerMargin]: !spaceBetween,
-    [classes.containerSpaceBetween]: spaceBetween,
-  });
-  return <div className={cls}>{children}</div>;
-};
+const VoterGroupActionPanelContainer: React.FunctionComponent<IContainerProps> =
+  (props) => {
+    let spaceBetween = false;
+    const { children } = props;
+    const theme = useTheme();
+    const classes = useStyles({ theme });
+
+    if (children && children.length && children.length > 2) {
+      spaceBetween = true;
+    }
+    const cls = classNames({
+      [classes.container]: true,
+      [classes.containerMargin]: !spaceBetween,
+      [classes.containerSpaceBetween]: spaceBetween,
+    });
+    return <div className={cls}>{children}</div>;
+  };
 
 interface IProps {
   voterGroupName: string;
@@ -109,7 +112,6 @@ interface IProps {
   minCount?: number;
   counterText?: string;
   active?: boolean;
-  classes: Classes;
 }
 
 const VoterGroupActionPanel = (props: IProps) => {
@@ -123,10 +125,11 @@ const VoterGroupActionPanel = (props: IProps) => {
     minCount,
     counterText,
     active,
-    classes,
   } = props;
 
   const { t } = useTranslation();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   let hasCompleteStatus = false;
 
@@ -176,10 +179,4 @@ const VoterGroupActionPanel = (props: IProps) => {
   );
 };
 
-const StyledContainer = injectSheet(styles)(VoterGroupActionPanelContainer);
-const StyledVoterGroupActionPanel = injectSheet(styles)(VoterGroupActionPanel);
-
-export {
-  StyledContainer as VoterGroupActionPanelContainer,
-  StyledVoterGroupActionPanel as VoterGroupActionPanel,
-};
+export { VoterGroupActionPanelContainer, VoterGroupActionPanel };

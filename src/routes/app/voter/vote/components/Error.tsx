@@ -1,26 +1,23 @@
 import React from 'react';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
 import { useTranslation } from 'react-i18next';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import Link from 'components/link';
 import { Page, PageSection } from 'components/page';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   receiptTextBox: {
     ...theme.ingress,
     maxWidth: '63rem',
   },
   h1: { fontSize: '10rem' },
-});
+}));
 
-interface IProps {
-  classes: Classes;
-}
 
-const Error: React.FunctionComponent<IProps> = (props: IProps) => {
+const Error: React.FunctionComponent<{}> = () => {
   const { t } = useTranslation();
-  const { classes } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   return (
     <Page header={t('voter.error')}>
@@ -38,4 +35,4 @@ const Error: React.FunctionComponent<IProps> = (props: IProps) => {
   );
 };
 
-export default injectSheet(styles)(Error);
+export default Error;

@@ -3,8 +3,7 @@ import gql from 'graphql-tag';
 import { ApolloConsumer } from 'react-apollo';
 import ApolloClient from 'apollo-client';
 import { useTranslation } from 'react-i18next';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 import classNames from 'classnames';
 
 import Button from 'components/button';
@@ -30,7 +29,7 @@ const startElectionGroupCount = gql`
   }
 `;
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   hiddenFileInput: {
     width: '0.1px',
     height: '0.1px',
@@ -74,7 +73,7 @@ const styles = (theme: any) => ({
   errorMessage: {
     color: theme.colors.darkRed,
   },
-});
+}));
 
 interface IStartElectionGroupCount {
   startElectionGroupCount: IMutationResponse;
@@ -84,29 +83,26 @@ interface Props {
   electionGroup: ElectionGroup;
   onCancelModal: () => void;
   onCloseModalAndSeeResults: () => void;
-  classes: Classes;
 }
 
 const CountingModal: React.FunctionComponent<Props> = ({
   electionGroup,
   onCancelModal,
   onCloseModalAndSeeResults,
-  classes,
 }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   const [electionKey, setElectionKey] = useState('');
   const [electionKeyFileName, setElectionKeyFileName] = useState('');
-  const [isReadingElectionKeyFile, setIsReadingElectionKeyFile] = useState(
-    false
-  );
+  const [isReadingElectionKeyFile, setIsReadingElectionKeyFile] =
+    useState(false);
   const [isElectionKeyReady, setIsElectionKeyReady] = useState(false);
   const [isElectionKeyError, setIsElectionKeyError] = useState(false);
   const [isCounting, setIsCounting] = useState(false);
   const [countingError, setCountingError] = useState('');
-  const [
-    isCountingFinnishedSuccessfully,
-    setIsCountingFinnishedSuccessfully,
-  ] = useState(false);
+  const [isCountingFinnishedSuccessfully, setIsCountingFinnishedSuccessfully] =
+    useState(false);
 
   const handleElectionKeyFileSelected = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -193,7 +189,8 @@ const CountingModal: React.FunctionComponent<Props> = ({
           htmlFor="electionKeyFileInput"
           className={classNames({
             [classes.fileInputLabelStyledAsButton]: true,
-            [classes.fileInputLabelStyledAsButtonDisabled]: isChooseElectionKeyButtonDisabled,
+            [classes.fileInputLabelStyledAsButtonDisabled]:
+              isChooseElectionKeyButtonDisabled,
           })}
         >
           {isElectionKeyReady ? (
@@ -319,4 +316,4 @@ const CountingModal: React.FunctionComponent<Props> = ({
   );
 };
 
-export default injectSheet(styles)(CountingModal);
+export default CountingModal;

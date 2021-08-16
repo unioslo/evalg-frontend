@@ -7,7 +7,7 @@ import Icon from 'components/icon';
 import { PageSection } from 'components/page';
 import { ScreenSizeConsumer } from 'providers/ScreenSize';
 import { Election, Candidate } from 'interfaces';
-import Link  from 'components/link';
+import Link from 'components/link';
 
 import CandidateButtonBar from './CandidateButtonBar';
 import {
@@ -133,12 +133,12 @@ class PrefElecBallot extends React.Component<IProps, IState> {
               <MandatePeriodText election={election} />
             </div>
             {election.informationUrl && (
-            <p>
-              <Trans>voterGroupSelect.moreAboutTheElection</Trans>:{' '}
-              <Link to={election.informationUrl} external>
-                {election.informationUrl}
-              </Link>
-            </p>
+              <p>
+                <Trans>voterGroupSelect.moreAboutTheElection</Trans>:{' '}
+                <Link to={election.informationUrl} external>
+                  {election.informationUrl}
+                </Link>
+              </p>
             )}
             <HelpSubSection
               header={<Trans>voter.chooseCandidates</Trans>}
@@ -166,7 +166,7 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                         small: screenSize !== 'mobile' && screenSize !== 'sm',
                       }}
                     />
-                    <CandidateInfo candidate={c} infoUrl/>
+                    <CandidateInfo candidate={c} infoUrl />
                     {screenSize === 'mobile' || screenSize === 'sm' ? (
                       <ToggleSelectIcon
                         flexRight
@@ -178,18 +178,26 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                         {index !== 0 ? (
                           <UpArrow
                             onClick={promoteCandidate}
-                            title={t('prefElec.ballot.promoteCandidate', {candidate: c.name, index: index})}
+                            title={t('prefElec.ballot.promoteCandidate', {
+                              candidate: c.name,
+                              index: index,
+                            })}
                           />
                         ) : null}
                         {index < selectedCandidates.length - 1 ? (
                           <DownArrow
                             onClick={demoteCandidate}
-                            title={t('prefElec.ballot.demoteCandidate', {candidate: c.name, index: index+2})}
+                            title={t('prefElec.ballot.demoteCandidate', {
+                              candidate: c.name,
+                              index: index + 2,
+                            })}
                           />
                         ) : null}
                         <RemoveButton
                           onClick={removeCandidate}
-                          title={t('prefElec.ballot.removeCandidate', {candidate: c.name})}
+                          title={t('prefElec.ballot.removeCandidate', {
+                            candidate: c.name,
+                          })}
                         />
                       </ListItemDesktopButtons>
                     )}
@@ -200,7 +208,9 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                 <CandidateListItem key={`unselected-${index}`}>
                   <Icon
                     type="addCircle"
-                    title={t('prefElec.ballot.addCandidate', {candidate: c.name})}
+                    title={t('prefElec.ballot.addCandidate', {
+                      candidate: c.name,
+                    })}
                     custom={
                       screenSize !== 'mobile' && screenSize !== 'sm'
                         ? 'small'
@@ -208,7 +218,7 @@ class PrefElecBallot extends React.Component<IProps, IState> {
                     }
                     onClick={onAddCandidate.bind(this, c)}
                   />
-                  <CandidateInfo candidate={c} infoUrl/>
+                  <CandidateInfo candidate={c} infoUrl />
                 </CandidateListItem>
               ))}
             </CandidateList>

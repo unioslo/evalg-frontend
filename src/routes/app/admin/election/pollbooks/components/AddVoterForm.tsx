@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
 import { Form, Field } from 'react-final-form';
 import classNames from 'classnames';
 import { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import { TableRow, TableCell } from 'components/table';
 import {
@@ -41,24 +40,24 @@ const addVoterByIdentifier = gql`
 
 const refetchQueries = () => ['electionGroupVoters'];
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   feedback: {
     marginTop: '1.5rem',
   },
   feedbackError: {
     color: theme.formErrorTextColor,
   },
-});
+}));
 
 interface AddVoterFormProps {
   pollbook: IPollBook;
   onClose: () => void;
-  classes: Classes;
 }
 
 const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = (props) => {
-  const { classes } = props;
-
+  const { pollbook, onClose } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   const [feedback, setFeedback] = useState({ text: '', isBackendError: false });
   const inputEl = useRef<HTMLInputElement>(null);
 
@@ -68,7 +67,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = (props) => {
   useEffect(() => {
     inputEl.current && inputEl.current.focus();
     setFeedback({ text: '', isBackendError: false });
-  }, [props.pollbook.id]);
+  }, [pollbook.id]);
 
   return (
     <>
@@ -198,7 +197,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = (props) => {
                           </div>
                           <ButtonContainer noTopMargin>
                             <Button
-                              action={props.onClose}
+                              action={onClose}
                               text={t('general.close')}
                               secondary
                             />
@@ -244,4 +243,4 @@ const validate = (lang: string, t: TFunction) => (values: object) => {
   return {};
 };
 
-export default injectSheet(styles)(AddVoterForm);
+export default AddVoterForm;

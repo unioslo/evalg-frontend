@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import injectSheet from 'react-jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import { PageSection, PageSubSection } from 'components/page';
 import Button, { ButtonContainer } from 'components/button';
@@ -8,7 +8,7 @@ import { Candidate } from 'interfaces';
 
 import { CandidateInfo } from './CandidateList';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   ingress: {
     ...theme.ingress,
     maxWidth: '63rem',
@@ -28,7 +28,7 @@ const styles = (theme: any) => ({
     marginBottom: '3rem',
     fontSize: '1.8rem',
   },
-});
+}));
 
 interface IReviewProps {
   selectedCandidates: Candidate[] | null;
@@ -36,7 +36,6 @@ interface IReviewProps {
   onGoBackToBallot: () => void;
   onSubmitVote: () => void;
   isSubmittingVote: boolean;
-  classes: any;
 }
 
 const MajorityVoteReview: React.FunctionComponent<IReviewProps> = props => {
@@ -46,10 +45,11 @@ const MajorityVoteReview: React.FunctionComponent<IReviewProps> = props => {
     onGoBackToBallot,
     onSubmitVote,
     isSubmittingVote,
-    classes,
   } = props;
 
   const { t } = useTranslation();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   const blankBallot = (
     <div className={classes.blankVoteTextContainer}>
@@ -107,4 +107,4 @@ const MajorityVoteReview: React.FunctionComponent<IReviewProps> = props => {
   );
 };
 
-export default injectSheet(styles)(MajorityVoteReview);
+export default MajorityVoteReview;

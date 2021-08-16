@@ -1,26 +1,22 @@
 import React from 'react';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles } from 'react-jss';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 
 import Spinner from 'components/animations/Spinner';
 
-const styles = {
+const useStyles = createUseStyles({
   loading: {
     display: 'flex',
     justifyContent: 'center',
   },
-};
+});
 
-type Props = {
-  classes: Classes;
-};
-
-const Loading: React.FunctionComponent<Props> = props => {
+const Loading: React.FunctionComponent<{}> = (props) => {
   const { t } = useTranslation();
+  const classes = useStyles();
   return (
-    <div className={props.classes.loading}>
+    <div className={classes.loading}>
       <Spinner darkStyle marginRight="2rem" />
       {moment().format('DD-MM') === '01-04'
         ? 'Reticulating splines…'
@@ -31,4 +27,4 @@ const Loading: React.FunctionComponent<Props> = props => {
   );
 };
 
-export default injectSheet(styles)(Loading);
+export default Loading;

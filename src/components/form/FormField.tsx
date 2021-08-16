@@ -1,18 +1,16 @@
 import React from 'react';
 import classNames from 'classnames';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles } from 'react-jss';
 
-type IProps = {
+interface IProps {
   children?: React.ReactNode;
   inline?: boolean;
   noTopMargin?: boolean;
   smallBottomMargin?: boolean;
   action?: any;
-  classes: Classes;
-};
+}
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles({
   formField: {
     marginRight: '2.5rem',
     verticalAlign: 'top',
@@ -45,24 +43,25 @@ const styles = (theme: any) => ({
   },
 });
 
-const FormField = (props: IProps) => {
-  const { classes } = props;
+const FormField: React.FunctionComponent<IProps> = (props) => {
+  const { action, children, inline, noTopMargin, smallBottomMargin } = props;
+  const classes = useStyles();
   const cls = classNames({
     [classes.formField]: true,
-    [classes.inline]: props.inline,
-    [classes.noTopMargin]: props.noTopMargin || props.inline,
-    [classes.smallBottomMargin]: props.smallBottomMargin,
-    [classes.hasAction]: props.action,
+    [classes.inline]: inline,
+    [classes.noTopMargin]: noTopMargin || inline,
+    [classes.smallBottomMargin]: smallBottomMargin,
+    [classes.hasAction]: action,
   });
-  if (!props.action) {
-    return <div className={cls}>{props.children}</div>;
+  if (!action) {
+    return <div className={cls}>{children}</div>;
   }
   return (
     <div className={cls}>
-      <div className={classes.actionField}>{props.children}</div>
-      <div className={classes.action}>{props.action}</div>
+      <div className={classes.actionField}>{children}</div>
+      <div className={classes.action}>{action}</div>
     </div>
   );
 };
 
-export default injectSheet(styles)(FormField);
+export default FormField;

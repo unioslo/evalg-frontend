@@ -4,8 +4,7 @@ import { withApollo, WithApolloClient } from 'react-apollo';
 import ApolloClient from 'apollo-client';
 import { useTranslation } from 'react-i18next';
 import FileSaver from 'file-saver';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import Button, { ButtonContainer } from 'components/button';
 import { ElectionGroupCount } from 'interfaces';
@@ -42,7 +41,7 @@ const ballotsWithMetadataDownloadQuery = gql`
   }
 `;
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   electionSection: {
     marginBottom: '2rem',
     borderBottom: `1px solid ${theme.tableCandidateBottomBorderColor}`,
@@ -67,21 +66,20 @@ const styles = (theme: any) => ({
   electedCandidatesList: {
     listStylePosition: 'inside',
   },
-});
+}));
 
 interface IProps {
   electionGroupCount: ElectionGroupCount;
-  classes: Classes;
 }
 
 const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
   electionGroupCount,
-  classes,
   client: apolloClient,
 }) => {
   const { i18n, t } = useTranslation();
   const lang = i18n.language;
-
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   const [processingFileForERId, setProcessingFileForERId] = useState('');
   const [fileDownloadError, setFileDownloadError] = useState('');
 
@@ -125,7 +123,8 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
     setProcessingFileForERId(electionResultId);
     setFileDownloadError('');
 
-    let ballotsWithMetadata, electionName;
+    let ballotsWithMetadata;
+    let electionName;
     try {
       const { data } = await apolloClient.query({
         query: ballotsWithMetadataDownloadQuery,
@@ -158,12 +157,10 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
       )}
 
       {electionResults
-        .filter(electionResult => electionResult.election.active)
-        .map(electionResult => {
+        .filter((electionResult) => electionResult.election.active)
+        .map((electionResult) => {
           const { election } = electionResult;
           const electionName = election.name[lang];
-
-          console.info(electionResult);
 
           return (
             <div key={electionResult.id} className={classes.electionSection}>
@@ -178,7 +175,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
               <div className={classes.electionResultFileDownloads}>
                 <ButtonContainer>
                   <Button
-                    action={e => {
+                    action={(e) => {
                       e.preventDefault();
                       handleDownloadCountingProtocol(
                         apolloClient,
@@ -194,7 +191,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
                     secondary
                   />
                   <Button
-                    action={e => {
+                    action={(e) => {
                       e.preventDefault();
                       handleDownloadBallots(apolloClient, electionResult.id);
                     }}
@@ -218,4 +215,4 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
   );
 };
 
-export default injectSheet(styles)(withApollo<IProps>(CountDetails));
+export default withApollo<IProps>(CountDetails);

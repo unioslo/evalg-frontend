@@ -6,8 +6,7 @@ import { Classes } from 'jss';
 const styles = (theme: any) => ({
   infoList: {
     listStyle: 'none',
-    maxWidth: (props: IListProps) =>
-      props.maxWidth ? props.maxWidth : 'none',
+    maxWidth: (props: IListProps) => (props.maxWidth ? props.maxWidth : 'none'),
   },
   infoListItem: {
     fontSize: '1.6rem',

@@ -1,11 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import injectSheet from 'react-jss';
-
+import { createUseStyles, useTheme } from 'react-jss';
 import { Trans } from 'react-i18next';
-import { Classes } from 'jss';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   button: {
     position: 'relative',
     borderRadius: '4px',
@@ -74,16 +72,19 @@ const styles = (theme: any) => ({
       display: 'flex',
     },
   },
-});
+}));
 
 interface IContainerProps {
-  classes: Classes;
   children: React.ReactNode[];
 }
 
-const ElectionButtonContainer: React.SFC<IContainerProps> = props => {
+const ElectionButtonContainer: React.FunctionComponent<IContainerProps> = (
+  props
+) => {
+  const { children } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   let spaceBetween = false;
-  const { children, classes } = props;
   if (children && children.length && children.length > 2) {
     spaceBetween = true;
   }
@@ -103,20 +104,13 @@ interface IProps {
   hoverText: any | string;
   action: (event: any) => void;
   active?: boolean;
-  classes: Classes;
 }
 
-const ElectionButton = (props: IProps) => {
-  const {
-    hoverText,
-    name,
-    count,
-    minCount,
-    counterTextTag,
-    action,
-    active,
-    classes,
-  } = props;
+const ElectionButton: React.FunctionComponent<IProps> = (props) => {
+  const { hoverText, name, count, minCount, counterTextTag, action, active } =
+    props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
   let hasCompleteStatus = false;
 
   if (minCount) {
@@ -158,10 +152,4 @@ const ElectionButton = (props: IProps) => {
   );
 };
 
-const StyledContainer = injectSheet(styles)(ElectionButtonContainer);
-const StyledElectionButton = injectSheet(styles)(ElectionButton);
-
-export {
-  StyledContainer as ElectionButtonContainer,
-  StyledElectionButton as ElectionButton,
-};
+export { ElectionButtonContainer, ElectionButton };

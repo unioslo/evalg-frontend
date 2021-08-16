@@ -1,18 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
-// import injectSheet from 'react-jss';
-
-// const styles = (theme: any) => ({
-//   container: {
-//     display: 'flex'
-//   }
-// })
 
 type IProps = {
   children?: React.ReactNode[];
 };
 
-const ElectionButtonContainer = (props: IProps) => {
+const ElectionButtonContainer: React.FunctionComponent<IProps> = (props) => {
   let spaceBetween = false;
   const { children } = props;
   if (children && children.length && children.length > 2) {

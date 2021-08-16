@@ -1,14 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 interface IProps {
   status: any;
-  classes: Classes;
 }
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   icon: {
     marginRight: '0.8rem',
   },
@@ -21,10 +19,12 @@ const styles = (theme: any) => ({
   draft: {
     fill: theme.electionStatusDraftColor,
   },
-});
+}));
 
-const ElectionStatusIcon = (props: IProps) => {
-  const { classes, status } = props;
+const ElectionStatusIcon: React.FunctionComponent<IProps> = (props) => {
+  const { status } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme })
   const className = classNames({
     [classes.active]: status === 'published' || status === 'ongoing',
     [classes.closed]: status === 'closed',
@@ -40,4 +40,4 @@ const ElectionStatusIcon = (props: IProps) => {
   );
 };
 
-export default injectSheet(styles)(ElectionStatusIcon);
+export default ElectionStatusIcon;

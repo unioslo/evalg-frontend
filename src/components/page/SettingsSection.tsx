@@ -1,14 +1,14 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
-import injectSheet from 'react-jss';
 import classNames from 'classnames';
+import { createUseStyles, useTheme } from 'react-jss';
 
 import ActionText from 'components/actiontext';
 import Text from 'components/text';
 
 import { ElectionGroup } from 'interfaces';
 
-const styles = (theme: any) => ({
+const useStyles = createUseStyles((theme: any) => ({
   section: {
     color: theme.colors.greyishBrown,
     padding: `${theme.contentVertPadding} ${theme.contentHorPadding}`,
@@ -41,14 +41,14 @@ const styles = (theme: any) => ({
     fontWeight: 'bold',
     marginRight: '2rem',
   },
-});
+}));
 
 export type SettingsSectionDisplayStatus = 'minimized' | 'active' | 'inactive';
 
 export interface ISettingsSectionContents {
   sectionName: string;
-  activeComponent: React.StatelessComponent<IActiveComponentProps>;
-  inactiveComponent: React.StatelessComponent<IInactiveComponentProps>;
+  activeComponent: React.FunctionComponent<IActiveComponentProps>;
+  inactiveComponent: React.FunctionComponent<IInactiveComponentProps>;
   header: React.ReactNode;
   description: React.ReactNode;
 }
@@ -71,10 +71,9 @@ interface IProps {
   onSetActive: (sectionIndex: number) => void;
   onSubmitSettingsSection: () => void;
   onCloseSettingsSection: () => void;
-  classes: any;
 }
 
-const SettingsSection: React.SFC<IProps> = props => {
+const SettingsSection: React.FunctionComponent<IProps> = props => {
   const {
     sectionIndex,
     settingsSectionContents: { header, description },
@@ -83,8 +82,9 @@ const SettingsSection: React.SFC<IProps> = props => {
     onSetActive,
     onSubmitSettingsSection,
     onCloseSettingsSection,
-    classes,
   } = props;
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   const handleSetActive = () => {
     onSetActive(sectionIndex);
@@ -133,4 +133,4 @@ const SettingsSection: React.SFC<IProps> = props => {
   );
 };
 
-export default injectSheet(styles)(SettingsSection);
+export default SettingsSection;
