@@ -323,6 +323,11 @@ export interface ElectionBaseSettingsInput {
   active: boolean;
 }
 
+export interface ElectionNameInput {
+  id: any;
+  name: NameFields;
+}
+
 export interface ElectionVotingPeriodInput {
   id: any;
   start: any;

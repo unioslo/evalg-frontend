@@ -14,6 +14,7 @@ import SettingsSectionsGroup from 'components/page/SettingsSectionsGroup';
 import { ElectionGroup } from 'interfaces';
 
 import BaseElectionSettingsSection from './components/BaseElectionSettings';
+import ElectionNameSettingsSection from './components/ElectionNameSettings';
 import VotingPeriodSettingsSection from './components/VotingperiodSettings';
 import VoterInfoSettingsSection from './components/VoterInfoSettings';
 import AdminRolesSettingsSection from './components/AdminRolesSettings';
@@ -28,6 +29,7 @@ const isCreatingNewElectionQuery = gql`
 
 const defaultSettingsSectionsContents: ISettingsSectionContents[] = [
   BaseElectionSettingsSection,
+  ElectionNameSettingsSection,
   VotingPeriodSettingsSection,
   VoterInfoSettingsSection,
   AdminRolesSettingsSection,
@@ -79,8 +81,7 @@ class InfoPage extends React.Component<PropsInternal> {
     const { electionGroupData } = this.props;
     const { id: groupId, meta } = electionGroupData;
 
-    const { t, i18n, history } = this.props;
-    const lang = i18n.language;
+    const { t, history } = this.props;
 
     const proceedToCandiates = () => {
       history.push(`/admin/elections/${groupId}/candidates`);
@@ -94,9 +95,6 @@ class InfoPage extends React.Component<PropsInternal> {
           },
         }: any) => (
           <Page header={t('election.electionInfo')}>
-            <PageSection header={<Trans>election.electionType</Trans>}>
-              <Text>{electionGroupData.name[lang]}</Text>
-            </PageSection>
 
             <SettingsSectionsGroup
               settingsSectionsContents={this.settingsSectionsContents}
