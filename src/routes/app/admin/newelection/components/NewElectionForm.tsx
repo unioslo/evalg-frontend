@@ -208,7 +208,6 @@ const internalSubmit = (
   if (settings.template && ou) {
     const { ouTag, ...restSettings } = settings;
 
-    console.log(name)
     restSettings.name = name
     submitAction({ ...restSettings, ouId: ou.id });
   } else if (ou && name) {
