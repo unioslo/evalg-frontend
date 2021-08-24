@@ -30,7 +30,7 @@ const VotesSection: React.FunctionComponent<Props> = props => {
         t('election.electionNotStarted')
       ) : (
         <>
-          <VotesOutsideCensusManagement 
+          <VotesOutsideCensusManagement
             selfAddedVoters={props.selfAddedVoters}
             categorizedVoters={props.categorizedVoters}
             adminAddedRejectedVoters={props.adminAddedRejectedVoters}
