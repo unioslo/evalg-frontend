@@ -70,6 +70,8 @@ export const getInstNameWithCase = (inst: string) => {
       return 'KHiO';
     case 'hiof':
       return 'HiOF';
+    case 'oslomet':
+      return 'OsloMet';
     default:
       throw new TypeError(`Unknown institution ${inst}`);
   }

@@ -13,6 +13,9 @@ describe('getInstNameWithCase', () => {
     ['hiof', 'HiOF'],
     ['HiOF', 'HiOF'],
     ['Hiof', 'HiOF'],
+    ['oslomet', 'OsloMet'],
+    ['OSLOMET', 'OsloMet'],
+    ['OsloMet', 'OsloMet'],
   ])('given %p as input, expect %p', (a, expected) => {
     expect(getInstNameWithCase(a)).toBe(expected);
   });

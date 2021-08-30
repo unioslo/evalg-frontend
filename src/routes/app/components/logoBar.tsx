@@ -5,6 +5,7 @@ import { appInst } from 'appConfig';
 import HiOFLogoBar from './logoBars/HiOF';
 import KHiOLogoBar from './logoBars/KHiO';
 import UiOLogoBar from './logoBars/UiO';
+import OsloMetLogoBar from './logoBars/OsloMet';
 
 const LogoBar: React.FunctionComponent = () => {
   switch (appInst) {
@@ -14,6 +15,8 @@ const LogoBar: React.FunctionComponent = () => {
       return <KHiOLogoBar />;
     case 'hiof':
       return <HiOFLogoBar />;
+    case 'oslomet':
+      return <OsloMetLogoBar />;
     default:
       return <UiOLogoBar />;
   }
