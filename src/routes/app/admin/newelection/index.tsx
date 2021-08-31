@@ -22,13 +22,13 @@ const createNewElectionGroupMutation = gql`
     $ouId: UUID!
     $template: Boolean!
     $templateName: String!
-    $name: [ElectionName]
+    $name: ElectionName
   ) {
     createNewElectionGroup(
       ouId: $ouId
       template: $template
       templateName: $templateName
-      nameList: $name
+      nameDict: $name
     ) {
       electionGroup {
         id

@@ -208,15 +208,7 @@ const internalSubmit = (
   if (settings.template && ou) {
     const { ouTag, ...restSettings } = settings;
 
-    if (name) {
-      // Manual election name
-      restSettings.name = Object.keys(name).map((k: string) => ({
-        language: k,
-        name: name[k],
-      }));
-    } else {
-      restSettings.name = [];
-    }
+    restSettings.name = name
     submitAction({ ...restSettings, ouId: ou.id });
   } else if (ou && name) {
     if (typeof name === 'string') {
