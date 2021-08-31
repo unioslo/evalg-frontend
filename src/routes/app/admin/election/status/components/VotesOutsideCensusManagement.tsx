@@ -51,7 +51,7 @@ class VotesOutsideCensusManagement extends React.Component<Props, State> {
       );
     }
 
-    this.props.categorizedVoters.rejectedVoters.concat(
+    const rejectedVoters = this.props.categorizedVoters.rejectedVoters.concat(
       this.props.adminAddedRejectedVoters.data.searchVoters
     );
 
@@ -63,7 +63,7 @@ class VotesOutsideCensusManagement extends React.Component<Props, State> {
     )} (${this.props.categorizedVoters.verifiedVoters.length})`;
     const rejectedVotesHeading = `${this.props.t(
       'admin.manageSelfAddedVoters.votesRejectedByTheBoard'
-    )} (${this.props.categorizedVoters.rejectedVoters.length})`;
+    )} (${rejectedVoters.length})`;
 
     return (
       <>
@@ -101,7 +101,7 @@ class VotesOutsideCensusManagement extends React.Component<Props, State> {
           header={rejectedVotesHeading}
         >
           <SelfAddedVotersMngmtTable
-            voters={this.props.categorizedVoters.rejectedVoters}
+            voters={rejectedVoters}
             tableAction={VotersReviewTableAction.UndoRejection}
           />
         </StatelessExpandableSubSection>
