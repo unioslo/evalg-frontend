@@ -199,7 +199,7 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
           const electionGroupName: string = electionGroup.name[lang];
           const activeElections = orderMultipleElections(
             electionGroup.elections
-          ).filter(e => e.active);
+          ).filter((e) => e.active);
 
           let VotingComponent: any;
           if (this.state.voteElection) {
@@ -223,7 +223,10 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
             } else if (voting === 'list') {
               return <div>List election voting not implemented</div>;
             } else if (voting === 'no_rank') {
-              if (countingRules.method === 'mntv') {
+              if (
+                countingRules.method === 'mntv' ||
+                countingRules.method === 'poll'
+              ) {
                 VotingComponent = MajorityVote;
               }
             } else if (voting === 'poll') {
