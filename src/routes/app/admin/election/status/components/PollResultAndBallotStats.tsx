@@ -69,7 +69,7 @@ const PollResultAndBallotStats: React.FunctionComponent<IProps> = ({
 
       <div className={classes.sectionLevel1}>
         <H4>{t('admin.countingDetails.electionResult.numberOfVotes')}</H4>
-        {pollbooks.map(pollbook => {
+        {pollbooks.map((pollbook) => {
           const pollbookBallotStats = result['meta']['pollbooks'].find(
             (pollbookBallotStats: any) => pollbookBallotStats.id === pollbook.id
           );
@@ -128,14 +128,24 @@ const PollResultList: React.FunctionComponent<PollResultProps> = ({
 
   return (
     <>
-      {Object.entries(alternatives).map(alternative => {
+      {Object.entries(alternatives).map((alternative) => {
         const electedCandidate = candidates.find(
-          candidate => candidate.id === alternative[0]
+          (candidate) => candidate.id === alternative[0]
         );
+        let candidateResultText = '';
         if (electedCandidate) {
+          // For backward compatibility
+          if (typeof alternative[1] === 'string') {
+            candidateResultText = `${alternative[1]}% - ${electedCandidate.name}`;
+          } else {
+            candidateResultText = `${alternative[1]['votes']} ${t(
+              'election.votes'
+            )} (${alternative[1]['percent']} %) - ${electedCandidate.name}`;
+          }
+
           return (
             <li key={alternative[0]} className={classes.candidateListItem}>
-              {alternative[1]}% - {electedCandidate.name}
+              {candidateResultText}
             </li>
           );
         }
