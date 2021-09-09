@@ -558,7 +558,7 @@
     "majorityVoteHelpDescMultiple": "Velg kandidatene du vil stemme på.",
     "majorityVoteHelpYouMaySelectOnlyOne": "Dette er et flertallsvalg, og du kan kun velge en kandidat.",
     "majorityVoteHelpYouMaySelectMultiple": "Dette er et flertallsvalg, og du kan velge inntil {{nr}} kandidater.",
-    "majorityVoteToManyVotesError": "For mange valgte kandidater. Du kan bare velge {{nrValid}}. Du har valg {{nrSelected}}.",
+    "majorityVoteToManyVotesError": "For mange valgte kandidater. Du kan bare velge {{nrValid}}. Du har valgt {{nrSelected}}.",
     "prefElecDesc": "Marker kandidatene du vil stemme på, i prioritert rekkefølge.",
     "prefElecNrOfCandidates": "Du kan stemme på så mange kandidater du vil.",
     "prefElecOnlySelectedGetVote": "Det er bare kandidatene du markerer som får din stemme.",
