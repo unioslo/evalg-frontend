@@ -82,7 +82,7 @@ const MajorityVoteBallot: React.FunctionComponent<IProps> = (props) => {
 
     helpText = [
       t('voter.majorityVoteHelpYouMaySelectMultiple', {
-        nr: election.meta.ballotRules.votes,
+        nr: votesRules,
       }),
       t('voter.canVoteBlank'),
     ];
@@ -95,7 +95,7 @@ const MajorityVoteBallot: React.FunctionComponent<IProps> = (props) => {
 
     helpText = [
       t('voter.majorityVoteHelpYouMaySelectMultiple', {
-        nr: election.meta.ballotRules.votes,
+        nr: votesRules,
       }),
       t('voter.canVoteBlank'),
     ];

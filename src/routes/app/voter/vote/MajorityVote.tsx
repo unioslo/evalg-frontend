@@ -8,7 +8,6 @@ import { getCandidateArray } from 'utils/helpers';
 import { BallotStep } from './utils';
 import MajorityVoteReview from './components/MajorityVoteReview';
 import MajorityVoteBallot from './components/MajorityVoteBallot';
-import sl from 'date-fns/esm/locale/sl/index.js';
 
 interface IProps {
   election: Election;
