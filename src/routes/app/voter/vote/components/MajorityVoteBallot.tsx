@@ -46,7 +46,7 @@ interface IProps {
   onBlankVote: () => void;
 }
 
-const MajorityVoteBallot: React.FunctionComponent<IProps> = props => {
+const MajorityVoteBallot: React.FunctionComponent<IProps> = (props) => {
   const {
     candidates,
     selectedCandidates,
@@ -63,7 +63,6 @@ const MajorityVoteBallot: React.FunctionComponent<IProps> = props => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
-
   const helpTextTags = [
     'voter.majorityVoteHelpYouMaySelectOnlyOne',
     'voter.canVoteBlank',
@@ -72,7 +71,9 @@ const MajorityVoteBallot: React.FunctionComponent<IProps> = props => {
   let helpText: string[] | undefined;
   let helpHeader = t('voter.majorityVoteHelpHeader');
   let helpDesc = t('voter.majorityVoteHelpDesc');
-  if (election.meta.ballotRules.votes === 'nr_of_seats') {
+  const votesRules = election.meta.ballotRules.votes;
+
+  if (votesRules === 'nr_of_seats') {
     helpHeader = t('voter.majorityVoteHelpHeaderMultiple', {
       nr: election.meta.candidateRules.seats,
     });
@@ -81,7 +82,20 @@ const MajorityVoteBallot: React.FunctionComponent<IProps> = props => {
 
     helpText = [
       t('voter.majorityVoteHelpYouMaySelectMultiple', {
-        nr: election.meta.ballotRules.votes,
+        nr: votesRules,
+      }),
+      t('voter.canVoteBlank'),
+    ];
+  } else if (typeof votesRules === 'number') {
+    helpHeader = t('voter.majorityVoteHelpHeaderMultiple', {
+      nr: votesRules,
+    });
+
+    helpDesc = t('voter.majorityVoteHelpDescMultiple');
+
+    helpText = [
+      t('voter.majorityVoteHelpYouMaySelectMultiple', {
+        nr: votesRules,
       }),
       t('voter.canVoteBlank'),
     ];
@@ -113,7 +127,7 @@ const MajorityVoteBallot: React.FunctionComponent<IProps> = props => {
           >
             {errorMsg && <Alert type="error">{errorMsg}</Alert>}
             <CandidateList>
-              {candidates.map(candidate => {
+              {candidates.map((candidate) => {
                 let toggleSelectAction = () => onSelectCandidate(candidate);
                 if (selectedCandidates.includes(candidate)) {
                   toggleSelectAction = () => onDeselectCandidate(candidate);
@@ -165,6 +179,5 @@ const MajorityVoteBallot: React.FunctionComponent<IProps> = props => {
     </ScreenSizeConsumer>
   );
 };
-
 
 export default MajorityVoteBallot;

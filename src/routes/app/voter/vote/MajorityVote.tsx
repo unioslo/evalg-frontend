@@ -19,8 +19,9 @@ interface IProps {
   isSubmittingVote: boolean;
 }
 
-const MajorityVote: React.FunctionComponent<IProps &
-  RouteComponentProps> = props => {
+const MajorityVote: React.FunctionComponent<IProps & RouteComponentProps> = (
+  props
+) => {
   const [selectedCandidates, setSelectedCandidates] = useState<Candidate[]>([]);
   const [isBlankVote, setIsBlankVote] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | undefined>(undefined);
@@ -36,9 +37,7 @@ const MajorityVote: React.FunctionComponent<IProps &
     onProceedToReview,
     onSubmitVote,
   } = props;
-  const candidatesRef = useRef(
-    getCandidateArray(election.lists[0].candidates)
-  );
+  const candidatesRef = useRef(getCandidateArray(election.lists[0].candidates));
 
   useEffect(() => {
     if (didMountRef.current) {
@@ -59,13 +58,29 @@ const MajorityVote: React.FunctionComponent<IProps &
           nrSelected: selectedCandidates.length,
         })
       );
+    } else if (
+      typeof election.meta.ballotRules.votes === 'number' &&
+      selectedCandidates.length > election.meta.ballotRules.votes
+    ) {
+      setErrorMsg(
+        t('voter.majorityVoteToManyVotesError', {
+          nrValid: election.meta.ballotRules.votes,
+          nrSelected: selectedCandidates.length,
+        })
+      );
     } else {
       setErrorMsg(undefined);
     }
   }, [selectedCandidates, election, t]);
 
   const handleSelectCandidate = (candidate: Candidate) => {
-    if (
+    if (typeof election.meta.ballotRules.votes === 'number') {
+      if (election.meta.ballotRules.votes === 1) {
+        setSelectedCandidates([candidate]);
+      } else {
+        setSelectedCandidates(selectedCandidates.concat([candidate]));
+      }
+    } else if (
       election.meta.ballotRules.votes === 'all' ||
       election.meta.candidateRules.seats === 1
     ) {
@@ -77,7 +92,7 @@ const MajorityVote: React.FunctionComponent<IProps &
   };
 
   const handleDeselectCandidate = (candidate: Candidate) => {
-    setSelectedCandidates(selectedCandidates.filter(c => c !== candidate));
+    setSelectedCandidates(selectedCandidates.filter((c) => c !== candidate));
   };
 
   const handleBlankVoteAndProceedToReview = () => {
@@ -96,7 +111,9 @@ const MajorityVote: React.FunctionComponent<IProps &
     onSubmitVote({
       voteType: 'majorityVote',
       isBlankVote,
-      rankedCandidateIds: isBlankVote ? [] : selectedCandidates.map(c => c.id),
+      rankedCandidateIds: isBlankVote
+        ? []
+        : selectedCandidates.map((c) => c.id),
     });
   };
 
@@ -106,6 +123,12 @@ const MajorityVote: React.FunctionComponent<IProps &
       selectedCandidates.length === 1
     ) {
       // UiO hack..
+      return true;
+    } else if (
+      typeof election.meta.ballotRules.votes === 'number' &&
+      selectedCandidates.length > 0 &&
+      selectedCandidates.length <= election.meta.ballotRules.votes
+    ) {
       return true;
     } else if (
       selectedCandidates.length >= 1 &&
