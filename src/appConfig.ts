@@ -25,14 +25,16 @@ const sentryProjectId: string = env.REACT_APP_SENTRY_PROJECT_ID as string;
 const sentryHost: string = env.REACT_APP_SENTRY_HOST as string;
 export const sentryEnabled: boolean = sentryHost !== undefined ? true : false;
 export const sentryDsn: string = `https://${sentryPublicKey}@${sentryHost}/${sentryProjectId}`;
-export const sentryEnvironment: string = env.REACT_APP_SENTRY_ENVIRONMENT as string;
+export const sentryEnvironment: string =
+  env.REACT_APP_SENTRY_ENVIRONMENT as string;
 
 /* Backend */
 export const graphqlBackend: string = env.REACT_APP_BACKEND_GRAPHQL as string;
 
 /* Authentication */
 export const authEnabled: boolean = env.REACT_APP_AUTH_ENABLED === 'true';
-export const feideGatekeeperScope: string = env.REACT_APP_FEIDE_GK_API_SCOPE as string;
+export const feideGatekeeperScope: string =
+  env.REACT_APP_FEIDE_GK_API_SCOPE as string;
 export const oidcConfig: Oidc.OidcClientSettings = {
   authority: 'https://auth.dataporten.no/',
   client_id: env.REACT_APP_FEIDE_DP_APP_ID as string,
@@ -49,26 +51,24 @@ export const appStagingWarning: boolean =
   env.REACT_APP_STAGING_WARNING === 'true';
 
 /* Footer content */
-export const appHelpLink: string =
-  env.REACT_APP_HELP_LINK ? env.REACT_APP_HELP_LINK as string :
-  'https://www.uio.no/for-ansatte/arbeidsstotte/arrangere-valg/';
+export const appHelpLink: string = env.REACT_APP_HELP_LINK
+  ? (env.REACT_APP_HELP_LINK as string)
+  : 'https://www.uio.no/for-ansatte/arbeidsstotte/arrangere-valg/';
 
-export const appTechnicalSupportLink: string = env.REACT_APP_SUPPORT_URL as string;
-export const appTechnicalSupportMail: string = env.REACT_APP_SUPPORT_MAIL as string;
+export const appTechnicalSupportLink: string =
+  env.REACT_APP_SUPPORT_URL as string;
+export const appTechnicalSupportMail: string =
+  env.REACT_APP_SUPPORT_MAIL as string;
 
 export const appServiceOwnerLink: string =
   'https://www.usit.uio.no/om/organisasjon/bnt/usitint/';
 export const appPrivacyPolicylink = {
-  nb:
-    'https://www.uio.no/tjenester/it/applikasjoner/e-valg/personvern/info.html',
-  en:
-    'https://www.uio.no/tjenester/it/applikasjoner/e-valg/personvern/info.html',
+  nb: 'https://www.uio.no/tjenester/it/applikasjoner/e-valg/personvern/info.html',
+  en: 'https://www.uio.no/tjenester/it/applikasjoner/e-valg/personvern/info.html',
 };
 export const appCookiesInformationLink = {
-  nb:
-    'https://www.uio.no/tjenester/it/applikasjoner/e-valg/personvern/cookies.html',
-  en:
-    'https://www.uio.no/english/services/it/adm-services/evalg/privacy/cookies.html',
+  nb: 'https://www.uio.no/tjenester/it/applikasjoner/e-valg/personvern/cookies.html',
+  en: 'https://www.uio.no/english/services/it/adm-services/evalg/privacy/cookies.html',
 };
 
 /* User feedback url */
@@ -82,3 +82,5 @@ export const showGenerateVotesTestingComponent = false;
 export const enableAnnounceElectionGroup = false;
 // Show the content of loginpage.message as a msgbox on the frontpage
 export const showUserMsg = false;
+export const disableGenderQuotaButton =
+  env.REACT_APP_DISABLE_GENDER_QUOTA_BUTTON === 'true';
