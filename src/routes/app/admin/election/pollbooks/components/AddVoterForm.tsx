@@ -17,7 +17,7 @@ import {
 import Button, { ButtonContainer } from 'components/button';
 import { IPollBook, PersonIdType } from 'interfaces';
 import { getPersonIdTypeDisplayName } from 'utils/i18n';
-import { validateFeideId, validateNin } from 'utils/validators';
+import { validateFeideId } from 'utils/validators';
 import Spinner from 'components/animations/Spinner';
 
 const addVoterByIdentifier = gql`
@@ -85,8 +85,6 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = (props) => {
                 let idType: PersonIdType;
                 if (validateFeideId(idValue)) {
                   idType = 'feide_id';
-                } else if (validateNin(idValue)) {
-                  idType = 'nin';
                 } else {
                   return;
                 }
@@ -132,7 +130,8 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = (props) => {
 
                     const showValidationErrorFeedback =
                       !pristine &&
-                      errors && errors._errors &&
+                      errors &&
+                      errors._errors &&
                       touched &&
                       touched['idValue'];
 
@@ -192,7 +191,9 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = (props) => {
                             })}
                           >
                             {showValidationErrorFeedback
-                              ? errors ? errors._errors.idValue : ''
+                              ? errors
+                                ? errors._errors.idValue
+                                : ''
                               : feedback.text}
                           </div>
                           <ButtonContainer noTopMargin>
@@ -226,10 +227,8 @@ const validate = (lang: string, t: TFunction) => (values: object) => {
 
   if (!idValue) {
     return {};
-  } else if (!validateNin(idValue) && !validateFeideId(idValue)) {
-    if (idValue.match(/^\d+$/) && !idValue.match(/^\d{11}$/)) {
-      errors['idValue'] = t('formErrors.birthNumberIncorrectNumberOfDigits');
-    } else if (idValue.match(/^\d+/)) {
+  } else if (!validateFeideId(idValue)) {
+    if (idValue.match(/^\d+/)) {
       errors['idValue'] = t('formErrors.feideIdCannotStartWithNumber');
     } else {
       errors['idValue'] = t('formErrors.invalidFeideId');
