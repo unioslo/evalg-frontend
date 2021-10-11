@@ -89,6 +89,7 @@ const CheckBox: React.FunctionComponent<IProps> = (props) => {
           onChange={onChange}
           onBlur={onBlur}
           onFocus={onFocus}
+          disabled={disabled}
         />
         <label
           htmlFor={name}

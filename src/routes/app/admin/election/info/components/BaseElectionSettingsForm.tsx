@@ -4,6 +4,8 @@ import { FieldArray } from 'react-final-form-arrays';
 import arrayMutators from 'final-form-arrays';
 import { withTranslation, WithTranslation } from 'react-i18next';
 
+import { disableGenderQuotaButton } from 'appConfig';
+
 import {
   Table,
   TableBody,
@@ -29,7 +31,7 @@ const validate = (values: any) => {
 };
 
 const buildInitialValues = (electionGroup: ElectionGroup) => ({
-  elections: electionGroup.elections.map(e => ({
+  elections: electionGroup.elections.map((e) => ({
     id: e.id,
     active: e.active,
     name: e.name,
@@ -156,8 +158,15 @@ class BaseElectionSettingsForm extends React.Component<IProps> {
                   name="hasGenderQuota"
                   type="checkbox"
                   label={t('election.hasGenderQuota')}
+                  disabled={disableGenderQuotaButton}
                 >
-                  {({ input, label }) => <CheckBox {...input} label={label} />}
+                  {({ input, label }) => (
+                    <CheckBox
+                      {...input}
+                      disabled={disableGenderQuotaButton}
+                      label={label}
+                    />
+                  )}
                 </Field>
               </PageSubSection>
               <FormButtons
