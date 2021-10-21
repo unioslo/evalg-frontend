@@ -39,6 +39,8 @@ export const oidcConfig: Oidc.OidcClientSettings = {
   authority: 'https://auth.dataporten.no/',
   client_id: env.REACT_APP_FEIDE_DP_APP_ID as string,
   redirect_uri: env.REACT_APP_FEIDE_DP_REDIRECT_URI as string,
+  post_logout_redirect_uri:
+    env.REACT_APP_FEIDE_DP_POST_LOGOUT_REDIRECT_URI as string,
   response_type: 'id_token token',
   scope:
     feideGatekeeperScope +
