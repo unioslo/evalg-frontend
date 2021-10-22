@@ -16,7 +16,6 @@ const DEFAULT: IUserContext = {
 const UserContext = React.createContext<IUserContext>(DEFAULT);
 
 interface IProviderState {
-  isFetchingUser: boolean;
   context: {
     signOut: () => Promise<any>;
     user: User | null;
@@ -31,13 +30,13 @@ interface IProps {
 class UserContextProvider extends React.Component<IProps, IProviderState> {
   constructor(props: IProps) {
     super(props);
+    const { userManager } = props;
     this.state = {
       context: {
         signOut: this.signOut,
         user: null,
-        userManager: this.props.userManager,
+        userManager,
       },
-      isFetchingUser: true,
     };
   }
 
@@ -46,41 +45,42 @@ class UserContextProvider extends React.Component<IProps, IProviderState> {
   }
 
   public getUser = () => {
-    this.state.context.userManager
-      .getUser()
-      .then(user => this.storeUser(user))
-      .catch(() => this.setState({ isFetchingUser: false }));
+    const { context } = this.state;
+    context.userManager.getUser().then((user) => this.storeUser(user));
   };
 
   public storeUser = (user: User | null) => {
     if (user) {
       this.setState(({ context }) => ({
         context: { ...context, user },
-        isFetchingUser: false,
       }));
     } else {
       this.setState(({ context }) => ({
         context: { ...context, user: null },
-        isFetchingUser: false,
       }));
     }
   };
 
   public signOut = async () => {
-    await this.state.context.userManager.removeUser();
-    this.getUser();
+    const { context } = this.state;
+    const { userManager } = context;
+    const idTokenHint = context.user?.id_token;
+    await userManager.removeUser();
+    await this.getUser();
+    await userManager.signoutRedirect({ id_token_hint: idTokenHint });
   };
 
   public isValid = () => {
-    const { user } = this.state.context;
+    const { context } = this.state;
+    const { user } = context;
     return !!(user && !user.expired);
   };
 
   public render() {
+    const { context } = this.state;
+    const { children } = this.props;
     return (
-      <UserContext.Provider value={this.state.context}>
-        {this.props.children}
-      </UserContext.Provider>
+      <UserContext.Provider value={context}>{children}</UserContext.Provider>
     );
   }
 }

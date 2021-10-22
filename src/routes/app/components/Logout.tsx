@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { createUseStyles, useTheme } from 'react-jss';
+import { createUseStyles } from 'react-jss';
 
-import { oidcLogoutUrl } from 'appConfig';
 import Spinner from 'components/animations/Spinner';
 import { withApollo, WithApolloClient } from 'react-apollo';
 import { IUserContext } from 'providers/UserContext';
 
-const useStyles = createUseStyles((theme: any) => ({
+const useStyles = createUseStyles({
   logout: {
     display: 'flex',
     justifyContent: 'center',
@@ -15,7 +14,7 @@ const useStyles = createUseStyles((theme: any) => ({
   spinBox: {
     marginRight: '2rem',
   },
-}));
+});
 
 interface IProps {
   context: IUserContext;
@@ -26,21 +25,19 @@ const Logout: React.FunctionComponent<WithApolloClient<IProps>> = ({
   client: apolloClient,
 }) => {
   const { t } = useTranslation();
-  const theme = useTheme();
-  const classes = useStyles({ theme });
+  const classes = useStyles();
+
+  const logout = async () => {
+    await apolloClient.resetStore();
+    await sessionStorage.clear();
+    await context.signOut();
+  };
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     logout();
   }, []);
   /* eslint-enable react-hooks/exhaustive-deps */
-
-  const logout = async () => {
-    await context.signOut();
-    await apolloClient.resetStore();
-    sessionStorage.clear();
-    window.location.href = oidcLogoutUrl;
-  };
 
   return (
     <div className={classes.logout}>
