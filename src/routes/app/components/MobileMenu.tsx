@@ -23,28 +23,13 @@ const styles = (theme: any) => ({
     alignItems: 'center',
     fontSize: '1.5rem',
   },
-  menuIcon: {
-    display: 'block',
-    marginLeft: '0.5rem',
-    width: '2rem',
-    height: '3rem',
-    cursor: 'pointer',
-    '&:after': {
-      content: '',
-      display: 'block',
-      width: '20px',
-      height: '4px',
-      background: theme.navMenuTextColor,
-      marginTop: '0.3rem',
-      boxShadow: `0px 8px 0px ${theme.white}, 0px 16px 0px ${theme.white}`,
-    },
-  },
   menuList: {
     listStyleType: 'none',
     background: theme.headerMainAreaColor,
     position: 'absolute',
     border: `1px solid ${theme.borderColor}`,
-    top: '3rem',
+    marginTop: '1rem',
+    boxShadow: '0 .5rem 1rem rgba(0,0,0, .2)',
     width: '28rem',
     right: '0',
     zIndex: '10',
@@ -125,7 +110,6 @@ class MobileMenu extends React.Component<IProps, IState> {
           aria-expanded={!this.state.open}
         >
           {placeholder ? placeholder : <Trans>general.menu</Trans>}
-          <div className={classes.menuIcon} />
           {this.state.open && (
             <ul className={classes.menuList}>{this.props.children}</ul>
           )}
