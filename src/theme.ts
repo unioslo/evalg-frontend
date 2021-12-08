@@ -1,6 +1,5 @@
 import { sectionBottomBorderStyle } from './appConfig';
 
-
 const black = '#000000';
 const white = '#FFFFFF';
 const lightBlack = '#222222';
@@ -145,7 +144,7 @@ const theme = {
   linkInternalColor: blueish,
   mainArrowColor: white,
   navFontSize: '1.5rem',
-  navMenuTextColor: black,
+  navMenuTextColor: white,
   nextBtnBgColor: darkTurquoise,
   nextBtnBorderColor: 'transparent',
   nextBtnColor: white,

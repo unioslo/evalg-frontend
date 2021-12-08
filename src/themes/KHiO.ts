@@ -1,4 +1,3 @@
-
 const white = '#FFFFFF';
 const khioGrey = '#37424a';
 
@@ -16,6 +15,7 @@ const KHiOTheme = {
   headerTitleColor: khioGrey,
   linkColor: khioGrey,
   loginPageBgColor: white,
-}
+  navMenuTextColor: 'black',
+};
 
 export default KHiOTheme;
