@@ -119,16 +119,9 @@ const FrontPage: React.FunctionComponent<{}> = () => {
         />
       )}
       <div className={classes.mainContainer}>
-        <img
-          className={classes.graphicDesktop}
-          src="/loginpage-graphic-desktop.svg"
-          alt=""
-        />
-        <img
-          className={classes.graphicMobile}
-          src="/loginpage-graphic-mobile.svg"
-          alt=""
-        />
+        <figure>
+          <img src="/evalg-loginpage-illustration.svg" alt="" />
+        </figure>
         <div className={classes.mainContentDesktop}>
           <h1 className={classes.header}>{t('loginPage.header')}</h1>
           <ul className={classes.featuresList}>
