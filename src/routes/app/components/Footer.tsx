@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { createUseStyles, useTheme } from 'react-jss';
 import { Trans, useTranslation } from 'react-i18next';
 
@@ -41,14 +42,11 @@ const useStyles = createUseStyles((theme: any) => ({
   },
   contentContainer: {
     width: 'fit-content',
-    margin: '0 auto',
     color: theme.footerTextColor,
     [theme.breakpoints.mdQuery]: {
       display: 'flex',
       width: 'initial',
       flexWrap: 'nowrap',
-      justifyContent: theme.footerJustifyContent,
-      paddingRight: '5rem',
       margin: 0,
     },
   },
@@ -67,9 +65,9 @@ const useStyles = createUseStyles((theme: any) => ({
       marginBottom: '3rem',
     },
     [theme.breakpoints.mdQuery]: {
-      width: '21rem',
+      width: '30%',
       '&:not(:first-child)': {
-        marginLeft: '5rem',
+        marginLeft: '5%',
       },
       '&:not(:last-child)': {
         marginBottom: 0,
@@ -94,12 +92,16 @@ const Footer: React.FunctionComponent = () => {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
+  const logoOffsetClass = classNames({
+    [classes.logoOffsetContainer]: appInst === 'uio',
+  });
+
   return (
     <>
       {appInst === 'khio' && <hr className={classes.divider} />}
       <footer className={classes.wrapper}>
         <div className={classes.footer}>
-          <div className={classes.logoOffsetContainer}>
+          <div className={logoOffsetClass}>
             <div className={classes.contentContainer}>
               <section className={classes.footerSection}>
                 <header>{t('footer.termsHeader')}</header>
@@ -175,7 +177,7 @@ const Footer: React.FunctionComponent = () => {
           </div>
         </div>
       </footer>
-      {appInst === 'hiof' && <div className={classes.footerBackground}/>}
+      {appInst === 'hiof' && <div className={classes.footerBackground} />}
       {appStagingWarning && (
         <div className="alert">
           <Trans

@@ -70,6 +70,7 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });
+  const userContext = useContext(UserContext);
 
   return (
     <header>
@@ -197,17 +198,19 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
                 )}
               />
             </Switch>
-            <DesktopMenu>
-              <ApolloConsumer>
-                {client => (
-                  <UserNameAndLogout
-                    history={history}
-                    classes={classes}
-                    apolloClient={client}
-                  />
-                )}
-              </ApolloConsumer>
-            </DesktopMenu>
+            {userContext.user && (
+              <DesktopMenu>
+                <ApolloConsumer>
+                  {(client) => (
+                    <UserNameAndLogout
+                      history={history}
+                      classes={classes}
+                      apolloClient={client}
+                    />
+                  )}
+                </ApolloConsumer>
+              </DesktopMenu>
+            )}
             <MobileLanguageSelector />
           </div>
         </div>
@@ -229,12 +232,12 @@ const MobileLogout: React.FunctionComponent<{ history: History }> = ({
   return (
     <>
       <UserContext.Consumer>
-        {context => {
+        {(context) => {
           if (context.user) {
             return (
               <a
                 style={{ color: 'inherit' }}
-                onClick={e => {
+                onClick={(e) => {
                   e.preventDefault();
                   navigateToLogout(history);
                 }}
@@ -277,10 +280,10 @@ const UserNameAndLogout: React.FunctionComponent<{
 
   return (
     <ApolloConsumer>
-      {client => {
+      {(client) => {
         return (
           <UserContext.Consumer>
-            {context => {
+            {(context) => {
               if (context.user) {
                 return (
                   <>
@@ -290,7 +293,7 @@ const UserNameAndLogout: React.FunctionComponent<{
                     <DesktopMenuItem>
                       <a
                         className={classes.link}
-                        onClick={e => {
+                        onClick={(e) => {
                           e.preventDefault();
                           navigateToLogout(history);
                         }}
