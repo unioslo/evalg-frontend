@@ -175,7 +175,7 @@ const Footer: React.FunctionComponent = () => {
           </div>
         </div>
       </footer>
-      {appInst === 'hiof' && <div className={classes.footerBackground}/>}
+      {appInst === 'hiof' && <div className={classes.footerBackground} />}
       {appStagingWarning && (
         <div className="alert">
           <Trans
