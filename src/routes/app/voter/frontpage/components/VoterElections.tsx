@@ -20,9 +20,6 @@ const styles = (theme: any) => ({
       cursor: 'pointer',
       textDecoration: 'none',
     },
-    '&:focus': {
-      outlineWidth: '0rem',
-    },
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -77,11 +74,11 @@ class VoterElections extends React.Component<IProps, IState> {
     };
 
     const filteredGroups = electionGroups.filter(
-      eg =>
+      (eg) =>
         statusesForFilter[filter].indexOf(eg.status) !== -1 ||
         (eg.status === 'multipleStatuses' &&
           eg.elections.filter(
-            e => statusesForFilter[filter].indexOf(e.status) !== -1
+            (e) => statusesForFilter[filter].indexOf(e.status) !== -1
           ).length > 0)
     );
 
@@ -90,14 +87,15 @@ class VoterElections extends React.Component<IProps, IState> {
         return electionGroup.elections[0].end;
       }
       return moment
-        .max(...electionGroup.elections.map(e => moment(e.end)))
+        .max(...electionGroup.elections.map((e) => moment(e.end)))
         .toISOString();
     };
 
     const sortedGroups = filteredGroups.sort(
       (a: ElectionGroup, b: ElectionGroup) => {
-        const voteA = this.props.votingRightsElectionGroups.includes(a.id);
-        const voteB = this.props.votingRightsElectionGroups.includes(b.id);
+        const { votingRightsElectionGroups } = this.props;
+        const voteA = votingRightsElectionGroups.includes(a.id);
+        const voteB = votingRightsElectionGroups.includes(b.id);
 
         if (voteA === voteB) {
           // Sort on end time if voting right is equal.
@@ -115,18 +113,19 @@ class VoterElections extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, votingRightsElectionGroups } = this.props;
+    const { electionStatusFilter } = this.state;
     return (
       <ScreenSizeConsumer>
         {({ screenSize }) => {
           const { electionGroups } = this.props;
           const groups = this.filterElectionGroups(
             electionGroups,
-            this.state.electionStatusFilter
+            electionStatusFilter
           );
 
           let noElectionsText: React.ReactElement;
-          switch (this.state.electionStatusFilter) {
+          switch (electionStatusFilter) {
             case 'ongoing':
               noElectionsText = <Trans>general.noOngoingElections</Trans>;
               break;
@@ -156,8 +155,7 @@ class VoterElections extends React.Component<IProps, IState> {
                     eventKey="ongoing"
                     tabClassName={classNames({
                       [classes.tab]: true,
-                      [classes.tabActive]:
-                        this.state.electionStatusFilter === 'ongoing',
+                      [classes.tabActive]: electionStatusFilter === 'ongoing',
                     })}
                     title={<Trans>electionStatus.ongoingElections</Trans>}
                   />
@@ -165,8 +163,7 @@ class VoterElections extends React.Component<IProps, IState> {
                     eventKey="announced"
                     tabClassName={classNames({
                       [classes.tab]: true,
-                      [classes.tabActive]:
-                        this.state.electionStatusFilter === 'announced',
+                      [classes.tabActive]: electionStatusFilter === 'announced',
                     })}
                     title={<Trans>electionStatus.upcomingElections</Trans>}
                   />
@@ -174,17 +171,14 @@ class VoterElections extends React.Component<IProps, IState> {
                     eventKey="closed"
                     tabClassName={classNames({
                       [classes.tab]: true,
-                      [classes.tabActive]:
-                        this.state.electionStatusFilter === 'closed',
+                      [classes.tabActive]: electionStatusFilter === 'closed',
                     })}
                     title={<Trans>electionStatus.closedElections</Trans>}
                   />
                 </Tabs>
                 <VoterElectionsTable
                   electionGroups={groups}
-                  votingRightsElectionGroups={
-                    this.props.votingRightsElectionGroups
-                  }
+                  votingRightsElectionGroups={votingRightsElectionGroups}
                   noElectionsText={noElectionsText}
                 />
               </div>
@@ -192,7 +186,7 @@ class VoterElections extends React.Component<IProps, IState> {
           }
 
           let dropdownText;
-          switch (this.state.electionStatusFilter) {
+          switch (electionStatusFilter) {
             case 'ongoing':
               dropdownText = <Trans>electionStatus.ongoingElections</Trans>;
               break;
@@ -218,19 +212,19 @@ class VoterElections extends React.Component<IProps, IState> {
                 }
               >
                 <MobileDropdownItem
-                  active={this.state.electionStatusFilter === 'ongoing'}
+                  active={electionStatusFilter === 'ongoing'}
                   onClick={() => this.setElectionStatusFilter('ongoing')}
                 >
                   <Trans>electionStatus.ongoingElections</Trans>
                 </MobileDropdownItem>
                 <MobileDropdownItem
-                  active={this.state.electionStatusFilter === 'announced'}
+                  active={electionStatusFilter === 'announced'}
                   onClick={() => this.setElectionStatusFilter('announced')}
                 >
                   <Trans>electionStatus.upcomingElections</Trans>
                 </MobileDropdownItem>
                 <MobileDropdownItem
-                  active={this.state.electionStatusFilter === 'closed'}
+                  active={electionStatusFilter === 'closed'}
                   onClick={() => this.setElectionStatusFilter('closed')}
                 >
                   <Trans>electionStatus.closedElections</Trans>
@@ -238,9 +232,7 @@ class VoterElections extends React.Component<IProps, IState> {
               </MobileDropDown>
               <VoterElectionsList
                 electionGroups={groups}
-                votingRightsElectionGroups={
-                  this.props.votingRightsElectionGroups
-                }
+                votingRightsElectionGroups={votingRightsElectionGroups}
                 noElectionsText={noElectionsText}
               />
             </div>
