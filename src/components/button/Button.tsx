@@ -27,6 +27,9 @@ const styles = (theme: any) => ({
       fontSize: '1.8rem',
       height: (props: IProps) => (props.height ? props.height : '5rem'),
     },
+    '&:focus': {
+      outlineOffset: '4px',
+    },
   },
   wide: {
     padding: '2rem 1.5rem',
@@ -35,9 +38,6 @@ const styles = (theme: any) => ({
     background: theme.primaryBtnBgColor,
     borderColor: theme.primaryBtnBorderColor,
     color: theme.primaryBtnColor,
-    '&:focus': {
-      borderColor: theme.primaryBtnFocusedBorderColor,
-    },
   },
   secondary: {
     background: theme.secondaryBtnBgColor,
@@ -55,7 +55,6 @@ const styles = (theme: any) => ({
       color: theme.btnDefDisabledColor,
     },
     borderColor: theme.btnDefDisabledColor,
-    // color: theme.btnDefDisabledTextColor, // this makes secondary button text dissapear when disabled
     cursor: 'not-allowed',
   },
   osx: {
@@ -92,41 +91,56 @@ interface IProps {
   classes: Classes;
 }
 
-const Button: React.SFC<IProps> = (props) => {
-  const { classes } = props;
+const Button: React.FunctionComponent<IProps> = (props) => {
+  const {
+    action,
+    centerContent,
+    classes,
+    disabled,
+    fillWidth,
+    iconLeft,
+    iconRight,
+    secondary,
+    showSpinner,
+    smallText,
+    text,
+    type,
+    wide,
+  } = props;
+
   const btnClassNames = classNames({
     [classes.button]: true,
     [classes.osx]: OSXUserAgent,
-    [classes.disabled]: props.disabled,
-    [classes.primary]: !props.secondary,
-    [classes.secondary]: props.secondary,
-    [classes.smallText]: props.smallText,
-    [classes.wide]: props.wide,
-    [classes.fillWidth]: props.fillWidth,
-    [classes.centerContent]: props.centerContent,
+    [classes.disabled]: disabled,
+    [classes.primary]: !secondary,
+    [classes.secondary]: secondary,
+    [classes.smallText]: smallText,
+    [classes.wide]: wide,
+    [classes.fillWidth]: fillWidth,
+    [classes.centerContent]: centerContent,
   });
 
   return (
     <button
-      onClick={props.action}
-      type={props.type ? props.type : 'button'}
-      disabled={props.disabled}
+      onClick={action}
+      type={type ? type : 'button'}
+      disabled={disabled}
       className={btnClassNames}
     >
-      {props.iconLeft && (
+      {iconLeft && (
         <span className={classes.icon}>
-          <Icon type={props.iconLeft} />
+          <Icon type={iconLeft} />
         </span>
       )}
-      {props.text}
+      {text}
 
-      {props.iconRight && (
+      {iconRight && (
         <span className={classes.icon}>
-          <Icon type={props.iconRight} />
+          <Icon type={iconRight} />
         </span>
       )}
 
-      {props.showSpinner && <Spinner marginLeft="1rem" size="2.3rem" />}
+      {showSpinner && <Spinner marginLeft="1rem" size="2.3rem" />}
     </button>
   );
 };

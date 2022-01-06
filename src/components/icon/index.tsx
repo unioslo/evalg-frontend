@@ -422,7 +422,7 @@ const styles = (theme: any) => ({
       stroke: theme.colors.lightTurquoise,
     },
     '& rect': {
-      fill: theme.colors.lightTurquoise,
+      fill: '#196f7e',
     },
     '&:hover': {
       cursor: 'pointer',
@@ -620,15 +620,8 @@ interface IProps extends WithStylesProps<typeof styles> {
 }
 
 const Icon = (props: IProps) => {
-  const {
-    type,
-    classes,
-    custom,
-    title,
-    onClick,
-    marginRight,
-    elementType,
-  } = props;
+  const { type, classes, custom, title, onClick, marginRight, elementType } =
+    props;
   const icon = getIcon(type, classes, custom, title);
   const cls = classNames({
     'button-no-style': onClick,

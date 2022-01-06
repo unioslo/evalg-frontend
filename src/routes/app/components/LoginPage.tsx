@@ -13,6 +13,8 @@ const useStyles = createUseStyles((theme: any) => ({
     margin: '0 auto',
     backgroundColor: '#FFFFFF',
     maxWidth: '450px',
+    height: 'auto',
+    minHeight: '450px',
     flexDirection: 'column',
     [theme.breakpoints.mdQuery]: {
       width: '740px',
@@ -20,6 +22,23 @@ const useStyles = createUseStyles((theme: any) => ({
       height: '450px',
       marginTop: '2rem',
       flexDirection: 'row',
+    },
+    '& figure': {
+      background: '#8eced9',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      [theme.breakpoints.mdQuery]: {
+        width: '45%',
+        '& img': {
+          height: '350px',
+        },
+      },
+      '@media (max-width: 767px)': {
+        '& img': {
+          height: '200px',
+        },
+      },
     },
   },
   graphicDesktop: {
@@ -43,7 +62,8 @@ const useStyles = createUseStyles((theme: any) => ({
     flexDirection: 'column',
     margin: '0 auto',
     justifyContent: 'center',
-    width: '30rem',
+    width: '40%',
+    padding: '2rem 0',
   },
   mainContentMobile: {
     display: 'flex',

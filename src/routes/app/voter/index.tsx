@@ -10,8 +10,8 @@ const renderVotingPage = ({
   return <VotingPage electionGroupId={electionGroupId} />;
 };
 
-const VoterRoute: React.SFC = () => {
-  return <Route path="/vote/:electionGroupId" render={renderVotingPage} />;
-};
+const VoterRoute: React.FunctionComponent = () => (
+  <Route path="/vote/:electionGroupId" render={renderVotingPage} />
+);
 
 export default VoterRoute;
