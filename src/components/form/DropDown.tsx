@@ -240,7 +240,7 @@ class DropDown extends DropDownBase<IProps> {
     // }
     let validOptions = options;
     if (searchable && inputValue !== '') {
-      validOptions = validOptions.filter(option => {
+      validOptions = validOptions.filter((option) => {
         return option.name.toLowerCase().includes(inputValue.toLowerCase());
       });
     }
@@ -250,7 +250,8 @@ class DropDown extends DropDownBase<IProps> {
       [classes.dropdownNormal]: !inline && !onDesktopMenu,
       [classes.dropdownInline]: inline,
       [classes.dropDownDesktopMenu]: onDesktopMenu,
-      [classes.dropDownNoRelativePositionOfListOnMobile]: noRelativePositionOfListOnMobile,
+      [classes.dropDownNoRelativePositionOfListOnMobile]:
+        noRelativePositionOfListOnMobile,
       [classes.large]: large,
     });
 
@@ -282,8 +283,7 @@ class DropDown extends DropDownBase<IProps> {
         className={dropdownClassNames}
         aria-controls={listId}
         aria-haspopup="true"
-        aria-expanded={open}
-        ref={node => (this.wrapperRef = node)}
+        ref={(node) => (this.wrapperRef = node)}
         onBlur={this.handleOnBlur.bind(this)}
         onFocus={this.handleOnFocus.bind(this)}
         tabIndex={0}
