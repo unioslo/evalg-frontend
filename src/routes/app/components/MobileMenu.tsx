@@ -107,7 +107,6 @@ class MobileMenu extends React.Component<IProps, IState> {
           tabIndex={0}
           role="button"
           aria-haspopup="true"
-          aria-expanded={!this.state.open}
         >
           {placeholder ? placeholder : <Trans>general.menu</Trans>}
           {this.state.open && (
