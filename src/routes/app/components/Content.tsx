@@ -49,11 +49,11 @@ const Content: React.FunctionComponent<IProps> = ({
   });
 
   return (
-    <div className={wrapperCls}>
+    <main className={wrapperCls}>
       <div className={containerCls}>
         <div className={classes.content}>{children}</div>
       </div>
-    </div>
+    </main>
   );
 };
 
