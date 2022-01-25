@@ -105,7 +105,7 @@ pipeline {
             }
         }
         stage('Tag image as latest/utv') {
-            when { branch 'master' }
+            when { branch 'main' }
             steps {
                 script {
                     docker_image.push('latest')
