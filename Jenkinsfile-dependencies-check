@@ -14,6 +14,12 @@ pipeline {
             string(
               name: 'gitUrl',
               value: "${GIT_URL}"),
+            string(
+              name: 'credentialsId',
+              value: 'evalg_frontend_deploy_key'),
+            string(
+              name: 'branch',
+              value: 'main')
           ]
         )
       }
