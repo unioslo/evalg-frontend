@@ -86,4 +86,4 @@ export const disableGenderQuotaButton =
   env.REACT_APP_DISABLE_GENDER_QUOTA_BUTTON === 'true';
 
 // Display "Supplied by" instead of "Maintained by" in the footer
-export const isSupplier = false;
+export const isSupplier: boolean = env.REACT_APP_IS_SUPPLIER === 'true';
