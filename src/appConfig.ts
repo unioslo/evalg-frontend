@@ -23,7 +23,7 @@ export const appInst: string = env.REACT_APP_INST as string;
 const sentryPublicKey: string = env.REACT_APP_SENTRY_PUBLIC_KEY as string;
 const sentryProjectId: string = env.REACT_APP_SENTRY_PROJECT_ID as string;
 const sentryHost: string = env.REACT_APP_SENTRY_HOST as string;
-export const sentryEnabled: boolean = sentryHost !== undefined ? true : false;
+export const sentryEnabled: boolean = sentryHost !== undefined;
 export const sentryDsn: string = `https://${sentryPublicKey}@${sentryHost}/${sentryProjectId}`;
 export const sentryEnvironment: string =
   env.REACT_APP_SENTRY_ENVIRONMENT as string;
@@ -42,9 +42,7 @@ export const oidcConfig: Oidc.OidcClientSettings = {
   post_logout_redirect_uri:
     env.REACT_APP_FEIDE_DP_POST_LOGOUT_REDIRECT_URI as string,
   response_type: 'id_token token',
-  scope:
-    feideGatekeeperScope +
-    ' openid profile email groups userid userid-feide userinfo-entitlement',
+  scope: `${feideGatekeeperScope} openid profile email groups userid userid-feide userinfo-entitlement`,
 };
 export const oidcLogoutUrl = 'https://auth.dataporten.no/logout';
 
@@ -86,3 +84,6 @@ export const enableAnnounceElectionGroup = false;
 export const showUserMsg = false;
 export const disableGenderQuotaButton =
   env.REACT_APP_DISABLE_GENDER_QUOTA_BUTTON === 'true';
+
+// Display "Supplied by" instead of "Maintained by" in the footer
+export const isSupplier = false;

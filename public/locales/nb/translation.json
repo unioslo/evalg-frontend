@@ -413,6 +413,7 @@
     "pilotMessage": "Skal du til et valg som kjøres i gammel løsning (listevalg, museumsvalg, biblioteksvalg, verneombud, LAMU)? Gå til <0>valg2.uio.no</0>. <1>Les mer om den nye løsningen</1>.",
     "privacyPolicyLink": "Personvern",
     "responsibleOrganizationHeader": "Ansvarlig for tjenesten",
+    "responsibleSupplierHeader": "Leverandør av tjenesten",
     "serviceOwnerLink": "Seksjon for integrasjon og elektroniske identiteter (INT)",
     "technicalSupport": "Teknisk støtte",
     "termsHeader": "Vilkår",
