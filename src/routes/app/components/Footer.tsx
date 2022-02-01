@@ -11,6 +11,7 @@ import {
   appTechnicalSupportMail,
   appPrivacyPolicylink,
   appCookiesInformationLink,
+  isSupplier,
 } from 'appConfig';
 import Link from 'components/link';
 
@@ -158,7 +159,11 @@ const Footer: React.FunctionComponent = () => {
                 </div>
               </section>
               <section className={classes.footerSection}>
-                <header>{t('footer.responsibleOrganizationHeader')}</header>
+                <header>
+                  {isSupplier
+                    ? t('footer.responsibleSupplierHeader')
+                    : t('footer.responsibleOrganizationHeader')}
+                </header>
                 <div className="content">
                   <div>
                     <Link
