@@ -1,6 +1,6 @@
 import React from 'react';
-import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { gql } from '@apollo/client';
+import { Query } from '@apollo/client/react/components';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
@@ -27,9 +27,9 @@ const useStyles = createUseStyles((theme: any) => ({
   },
 }));
 
-const calculatePath = (groupId: string | number) => (
-  subRoute: string | number
-) => `/admin/elections/${groupId}/${subRoute}`;
+const calculatePath =
+  (groupId: string | number) => (subRoute: string | number) =>
+    `/admin/elections/${groupId}/${subRoute}`;
 
 const getGroupCandidateHeader = (meta: any) => {
   if (meta.candidateType === 'poll') {

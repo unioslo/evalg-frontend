@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import gql from 'graphql-tag';
-import { Mutation } from 'react-apollo';
+import { gql } from '@apollo/client';
+import { Mutation } from '@apollo/client/react/components';
 import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 
 import { PageSection } from 'components/page';
@@ -18,7 +18,7 @@ import {
 } from 'components/table';
 
 import ActionText from 'components/actiontext';
-import { ElectionGroup } from '../../../../../../interfaces';
+import { ElectionGroup } from 'interfaces';
 
 import TableRowWithText from './TableRowWithText';
 import PrefElecCandForm from './PrefElecCandForm';
@@ -175,10 +175,8 @@ class PrefElecCandTable extends React.Component<IProps, IState> {
                   <PageSection noBorder desc={pageDesc}>
                     <ElectionButtonContainer>
                       {elections.map((election: any, index: any) => {
-                        const {
-                          seats,
-                          substitutes,
-                        } = election.meta.candidateRules;
+                        const { seats, substitutes } =
+                          election.meta.candidateRules;
                         // TBD: Should this be only seats?
                         const minCount = seats + substitutes;
                         return (

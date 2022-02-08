@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import gql from 'graphql-tag';
-import { Mutation } from 'react-apollo';
+import { gql } from '@apollo/client';
+import { Mutation } from '@apollo/client/react/components';
 import { Form, Field } from 'react-final-form';
 import classNames from 'classnames';
 import { TFunction } from 'i18next';
@@ -104,7 +104,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = (props) => {
                     idValue,
                   });
                   setFeedback({ text: feedback, isBackendError: false });
-                } catch (error) {
+                } catch (error: any) {
                   setFeedback({
                     text:
                       error.toString() +

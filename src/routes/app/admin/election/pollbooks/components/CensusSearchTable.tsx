@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { gql } from '@apollo/client';
+import { Query, Mutation } from '@apollo/client/react/components';
+import { useTranslation } from 'react-i18next';
+
 import { ElectionGroup, IVoter, IPollBook, DropDownOption } from 'interfaces';
-import gql from 'graphql-tag';
-import { Query, Mutation } from 'react-apollo';
 import Spinner from 'components/animations/Spinner';
 import {
   Table,
@@ -14,7 +16,6 @@ import {
 } from 'components/table';
 import Text from 'components/text';
 import ActionText from 'components/actiontext';
-import { useTranslation } from 'react-i18next';
 import {
   TextInput,
   DropDown,

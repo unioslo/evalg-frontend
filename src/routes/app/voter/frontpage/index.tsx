@@ -1,6 +1,7 @@
-import gql from 'graphql-tag';
 import React from 'react';
-import { Query, WithApolloClient, withApollo } from 'react-apollo';
+import { gql } from '@apollo/client';
+import { WithApolloClient, withApollo } from '@apollo/client/react/hoc';
+import { Query } from '@apollo/client/react/components';
 
 import { withTranslation, WithTranslation, Trans } from 'react-i18next';
 
@@ -12,9 +13,9 @@ import { ElectionGroupFields, ElectionFields } from 'fragments';
 import { getSignedInPersonId } from 'queries';
 import { electionGroupWithOrderedElections } from 'utils/processGraphQLData';
 
-import VoterElections from './components/VoterElections';
 import { MsgBox } from 'components/msgbox';
 import { showUserMsg } from 'appConfig';
+import VoterElections from './components/VoterElections';
 
 const electionGroupsQuery = gql`
   ${ElectionGroupFields}
@@ -52,25 +53,37 @@ const votersForPersonQuery = gql`
 
 interface IProps extends WithTranslation {}
 
-class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
-  state = {
-    signedInPersonId: '',
-    couldNotFetchSignedInPersonIdError: false,
-  };
+interface IState {
+  signedInPersonId: string;
+  couldNotFetchSignedInPersonIdError: boolean;
+}
+
+class VoterFrontPage extends React.Component<WithApolloClient<IProps>, IState> {
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      signedInPersonId: '',
+      couldNotFetchSignedInPersonIdError: false,
+    };
+  }
 
   async componentDidMount() {
-    try {
-      const signedInPersonId = await getSignedInPersonId(this.props.client);
-      this.setState({ signedInPersonId });
-    } catch (e) {
-      this.setState({ couldNotFetchSignedInPersonIdError: true });
+    const { client } = this.props;
+
+    if (client) {
+      try {
+        const signedInPersonId = await getSignedInPersonId(client);
+        this.setState({ signedInPersonId });
+      } catch (e) {
+        this.setState({ couldNotFetchSignedInPersonIdError: true });
+      }
     }
   }
 
   render() {
     const { t } = this.props;
-
-    if (this.state.couldNotFetchSignedInPersonIdError) {
+    const { couldNotFetchSignedInPersonIdError, signedInPersonId } = this.state;
+    if (couldNotFetchSignedInPersonIdError) {
       return (
         <ErrorInline
           errorMessage={t('voter.voterFrontPage.errors.couldNotFetchPersonId')}
@@ -89,7 +102,7 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
               </Loading>
             );
           }
-          if (this.state.signedInPersonId === '') {
+          if (signedInPersonId === '') {
             return (
               <Loading>
                 <Trans>voter.voterFrontPage.loadingUserData</Trans>
@@ -101,7 +114,7 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
             <Query
               query={votersForPersonQuery}
               variables={{
-                id: this.state.signedInPersonId,
+                id: signedInPersonId,
               }}
               fetchPolicy="network-only"
             >
@@ -122,9 +135,10 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>> {
                   return <ErrorPageSection errorMessage={error.message} />;
                 }
 
-                const userVerifiedVoters = votersForPersonData.votersForPerson.filter(
-                  (voter: IVoter) => voter.verified
-                );
+                const userVerifiedVoters =
+                  votersForPersonData.votersForPerson.filter(
+                    (voter: IVoter) => voter.verified
+                  );
                 const userVerifiedInElectionGroupIds = userVerifiedVoters.map(
                   (voter: IVoter) => voter.pollbook.election.electionGroup.id
                 );

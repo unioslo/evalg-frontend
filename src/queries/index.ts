@@ -1,5 +1,4 @@
-import gql from 'graphql-tag';
-import ApolloClient from 'apollo-client';
+import { ApolloClient, gql } from '@apollo/client';
 
 export const signedInPersonQuery = gql`
   query {
@@ -66,16 +65,26 @@ export const selfAddedVotersQuery = gql`
 `;
 
 export const searchVotersQuery = gql`
-query searchVoters($electionGroupId: UUID!, 
-  $selfAdded: Boolean, $reviewed: Boolean, $verified: Boolean, $hasVoted: Boolean) {
-    searchVoters(electionGroupId: $electionGroupId, 
-      selfAdded: $selfAdded, reviewed: $reviewed, verified: $verified, hasVoted: $hasVoted) {
+  query searchVoters(
+    $electionGroupId: UUID!
+    $selfAdded: Boolean
+    $reviewed: Boolean
+    $verified: Boolean
+    $hasVoted: Boolean
+  ) {
+    searchVoters(
+      electionGroupId: $electionGroupId
+      selfAdded: $selfAdded
+      reviewed: $reviewed
+      verified: $verified
+      hasVoted: $hasVoted
+    ) {
+      id
+      pollbook {
         id
-        pollbook {
-          id
-          name
-        }
+        name
       }
+    }
   }
 `;
 

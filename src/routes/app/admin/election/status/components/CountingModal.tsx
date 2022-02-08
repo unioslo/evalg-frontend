@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import gql from 'graphql-tag';
-import { ApolloConsumer } from 'react-apollo';
-import ApolloClient from 'apollo-client';
+import { ApolloClient, ApolloConsumer, gql } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 import classNames from 'classnames';
@@ -9,12 +7,12 @@ import classNames from 'classnames';
 import Button from 'components/button';
 import Modal from 'components/modal';
 import { InfoList, InfoListItem } from 'components/infolist';
-import ElectionKeyCreatedByInfo from './ElectionKeyCreatedByInfo';
 import Spinner from 'components/animations/Spinner';
 import AnimatedCheckmark from 'components/animations/AnimatedCheckmark';
 import { ElectionGroup, IMutationResponse } from 'interfaces';
 import { translateBackendError } from 'utils';
 
+import ElectionKeyCreatedByInfo from './ElectionKeyCreatedByInfo';
 import ModalSteps from './ModalSteps';
 
 const ELECTION_KEY_FROM_FILE_LENGTH = 44;
@@ -146,7 +144,7 @@ const CountingModal: React.FunctionComponent<Props> = ({
       });
       setIsCounting(false);
       response = result && result.data && result.data.startElectionGroupCount;
-    } catch (error) {
+    } catch (error: any) {
       setIsCounting(false);
       console.error(error.message);
       setCountingError(

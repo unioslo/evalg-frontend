@@ -1,7 +1,7 @@
 // Local state stuff
 
 export interface EvalgClientState {
-  admin: { isCreatingNewElection: boolean };
+  isCreatingNewElection: boolean;
 }
 
 // Graphql entity types

@@ -1,9 +1,9 @@
 import React from 'react';
-import { createUseStyles, useTheme } from 'react-jss';
+import { createUseStyles } from 'react-jss';
 
 import Text from 'components/text';
 
-const useStyles = createUseStyles((theme: any) => ({
+const useStyles = createUseStyles(() => ({
   form: {
     padding: '3rem 0',
   },
@@ -15,36 +15,36 @@ const useStyles = createUseStyles((theme: any) => ({
   },
 }));
 
-interface IProps {
-  children?: React.ReactNode;
-  header?: any | string;
-}
-
-const TableRowFormFields: React.FunctionComponent<IProps> = (props) => {
-  const { children } = props;
-  const theme = useTheme();
-  const classes = useStyles({ theme });
-
-  return <div className={classes.fields}>{children}</div>;
+type TableRowFormFieldsProps = {
+  children: React.ReactNode;
 };
 
-const TableRowForm: React.FunctionComponent<IProps> = (props) => {
-  const { children, header } = props;
-  const theme = useTheme();
-  const classes = useStyles({ theme });
+export function TableRowFormFields({ children }: TableRowFormFieldsProps) {
+  const classes = useStyles();
+  return <div className={classes.fields}>{children}</div>;
+}
 
+type TableRowFormProps = {
+  children: React.ReactNode;
+  header?: string;
+};
+
+export function TableRowForm({ children, header }: TableRowFormProps) {
+  const classes = useStyles();
   return (
     <div className={classes.form}>
       {header && (
         <div className={classes.header}>
           <Text bold size="large">
-            {props.header}
+            {header}
           </Text>
         </div>
       )}
       {children}
     </div>
   );
-};
+}
 
-export { TableRowFormFields, TableRowForm };
+TableRowForm.defaultProps = {
+  header: undefined,
+};

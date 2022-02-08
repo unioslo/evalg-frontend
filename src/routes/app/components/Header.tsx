@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { ApolloConsumer } from 'react-apollo';
 import { useTranslation } from 'react-i18next';
 import { Route, Switch } from 'react-router';
 import { History } from 'history';
 import { Classes } from 'jss';
 import { createUseStyles, useTheme } from 'react-jss';
-import { getSignedInPersonDisplayName } from 'queries';
-import ApolloClient from 'apollo-client';
+import { ApolloClient, ApolloConsumer } from '@apollo/client';
 
+import { getSignedInPersonDisplayName } from 'queries';
 import { appHelpLink, appInst } from 'appConfig';
 import Link from 'components/link';
 import { H1 } from 'components/text';

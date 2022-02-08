@@ -1,7 +1,9 @@
 import React from 'react';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
+import { Query } from '@apollo/client/react/components';
+import { Classes } from 'jss';
+import injectSheet from 'react-jss';
 
 import { ElectionGroup } from 'interfaces';
 import { ElectionGroupCountFields } from 'fragments';
@@ -10,8 +12,6 @@ import { PageSection } from 'components/page';
 import Button, { ButtonContainer } from 'components/button';
 import CountingModal from './CountingModal';
 import CountingSectionCounts from './CountingSectionCounts';
-import { Classes } from 'jss';
-import injectSheet from 'react-jss';
 
 export const electionGroupCountsQuery = gql`
   ${ElectionGroupCountFields}

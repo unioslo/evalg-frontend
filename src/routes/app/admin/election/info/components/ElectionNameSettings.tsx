@@ -1,6 +1,6 @@
 import React from 'react';
-import gql from 'graphql-tag';
-import { Mutation } from 'react-apollo';
+import { gql } from '@apollo/client';
+import { Mutation } from '@apollo/client/react/components';
 import { Trans } from 'react-i18next';
 
 import {
@@ -8,13 +8,12 @@ import {
   IInactiveComponentProps,
   ISettingsSectionContents,
 } from 'components/page/SettingsSection';
+import { ElectionNameInput } from 'interfaces';
 
 import ElectionNameValues from './ElectionNameValues';
 import ElectionNameForm from './ElectionNameForm';
-import { ElectionNameInput } from 'interfaces';
 
 const updateElectionName = gql`
-
   mutation UpdateElectionGroupName(
     $electionGroupId: UUID!
     $name: ElectionName!

@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 
 export const reviewVoter = gql`
   mutation reviewVoter($id: UUID!, $verify: Boolean!) {

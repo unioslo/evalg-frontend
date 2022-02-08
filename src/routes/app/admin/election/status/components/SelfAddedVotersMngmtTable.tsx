@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Mutation, Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
+import { Mutation, Query } from '@apollo/client/react/components';
 import { Trans, useTranslation } from 'react-i18next';
-import { createUseStyles, useTheme } from 'react-jss';
+import { createUseStyles } from 'react-jss';
 import { Classes } from 'jss';
 import { TFunction } from 'i18next';
 
@@ -24,6 +24,120 @@ import { IVoter } from 'interfaces';
 import { refetchVoteManagementQueries } from 'queries';
 import { undoReviewVoter, reviewVoter } from 'mutations';
 
+interface ReviewButtonProps {
+  voterId: string;
+  selectedVoterId: string;
+  setSelectedVoterId: (voterId: string) => void;
+  t: TFunction;
+  classes: Classes;
+}
+
+const ReviewButtons: React.FunctionComponent<ReviewButtonProps> = ({
+  voterId,
+  selectedVoterId,
+  setSelectedVoterId,
+  t,
+  classes,
+}) => (
+  <Mutation
+    mutation={reviewVoter}
+    refetchQueries={refetchVoteManagementQueries}
+    awaitRefetchQueries
+  >
+    {(review: any, { loading }: { loading: any }) => {
+      return (
+        <div className={classes.reviewButtons}>
+          <Button
+            text={t('admin.manageSelfAddedVoters.reject')}
+            action={async (e) => {
+              e.stopPropagation(); // avoid toggling voter
+              await review({
+                variables: {
+                  id: voterId,
+                  verify: false,
+                },
+              });
+              if (selectedVoterId === voterId) {
+                setSelectedVoterId('');
+              }
+            }}
+            disabled={loading}
+            height="4rem"
+            secondary
+          />
+          <div className={classes.buttonSeparator} />
+          <Button
+            text={t('admin.manageSelfAddedVoters.approve')}
+            action={async (e) => {
+              e.stopPropagation(); // avoid toggling voter
+              await review({
+                variables: {
+                  id: voterId,
+                  verify: true,
+                },
+              });
+              if (selectedVoterId === voterId) {
+                setSelectedVoterId('');
+              }
+            }}
+            disabled={loading}
+            height="4rem"
+          />
+          {loading && <Spinner darkStyle marginLeft="1.4rem" size="2.2rem" />}
+        </div>
+      );
+    }}
+  </Mutation>
+);
+
+interface VoterDetailsProps {
+  voter: IVoter;
+  displayNameElement: React.ReactNode;
+  t: TFunction;
+  classes: Classes;
+}
+
+const VoterDetails: React.FunctionComponent<VoterDetailsProps> = ({
+  voter,
+  displayNameElement,
+  t,
+  classes,
+}) => (
+  <TableRow>
+    <TableCell />
+    <TableCell verticalAlignTop>
+      <div className={classes.voterIdentifiers}>
+        <p>
+          <strong>
+            <Trans>admin.manageSelfAddedVoters.idRegisteredWhenVoting</Trans>
+          </strong>
+        </p>
+        <p>
+          {getPersonIdTypeDisplayName(voter.idType, t)}: {voter.idValue}
+        </p>
+      </div>
+    </TableCell>
+    <TableCell colspan={2} verticalAlignTop>
+      <div className={classes.justification}>
+        <p>
+          <strong>
+            <Trans>admin.manageSelfAddedVoters.justification</Trans>
+          </strong>
+        </p>
+        {voter.reason ? (
+          <p>{voter.reason}</p>
+        ) : (
+          <p>
+            <em>
+              <Trans>admin.manageSelfAddedVoters.noJustificationGiven</Trans>
+            </em>
+          </p>
+        )}
+      </div>
+    </TableCell>
+  </TableRow>
+);
+
 const personForVoter = gql`
   query personForVoter($voterId: UUID!) {
     personForVoter(voterId: $voterId) {
@@ -33,7 +147,7 @@ const personForVoter = gql`
   }
 `;
 
-const useStyles = createUseStyles((theme: any) => ({
+const useStyles = createUseStyles({
   reviewButtons: {
     display: 'flex',
     padding: '1.5rem 0',
@@ -48,7 +162,7 @@ const useStyles = createUseStyles((theme: any) => ({
   justification: {
     paddingBottom: '1rem',
   },
-}));
+});
 
 export enum VotersReviewTableAction {
   Review,
@@ -69,8 +183,7 @@ const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
 
   const { i18n, t } = useTranslation();
   const lang = i18n.language;
-  const theme = useTheme();
-  const classes = useStyles({ theme });
+  const classes = useStyles();
 
   const handleToggleVoter = (voterId: string) => {
     if (selectedVoterId === voterId) {
@@ -103,7 +216,7 @@ const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
             </TableCell>
           </TableRow>
         ) : (
-          voters.map(voter => {
+          voters.map((voter) => {
             const voterGroup = voter.pollbook.name[lang];
             const isSelected = voter.id === selectedVoterId;
 
@@ -175,7 +288,7 @@ const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
                                       <Spinner darkStyle size="2.2rem" />
                                     ) : (
                                       <ActionText
-                                        action={async e => {
+                                        action={async (e) => {
                                           e.stopPropagation();
                                           await undo();
                                           if (selectedVoterId === voter.id) {
@@ -220,119 +333,5 @@ const SelfAddedVotersMngmtTable: React.FunctionComponent<Props> = ({
     </Table>
   );
 };
-
-interface ReviewButtonProps {
-  voterId: string;
-  selectedVoterId: string;
-  setSelectedVoterId: (voterId: string) => void;
-  t: TFunction;
-  classes: Classes;
-}
-
-const ReviewButtons: React.FunctionComponent<ReviewButtonProps> = ({
-  voterId,
-  selectedVoterId,
-  setSelectedVoterId,
-  t,
-  classes,
-}) => (
-  <Mutation
-    mutation={reviewVoter}
-    refetchQueries={refetchVoteManagementQueries}
-    awaitRefetchQueries
-  >
-    {(review: any, { loading }: { loading: any }) => {
-      return (
-        <div className={classes.reviewButtons}>
-          <Button
-            text={t('admin.manageSelfAddedVoters.reject')}
-            action={async e => {
-              e.stopPropagation(); // avoid toggling voter
-              await review({
-                variables: {
-                  id: voterId,
-                  verify: false,
-                },
-              });
-              if (selectedVoterId === voterId) {
-                setSelectedVoterId('');
-              }
-            }}
-            disabled={loading}
-            height="4rem"
-            secondary
-          />
-          <div className={classes.buttonSeparator} />
-          <Button
-            text={t('admin.manageSelfAddedVoters.approve')}
-            action={async e => {
-              e.stopPropagation(); // avoid toggling voter
-              await review({
-                variables: {
-                  id: voterId,
-                  verify: true,
-                },
-              });
-              if (selectedVoterId === voterId) {
-                setSelectedVoterId('');
-              }
-            }}
-            disabled={loading}
-            height="4rem"
-          />
-          {loading && <Spinner darkStyle marginLeft="1.4rem" size="2.2rem" />}
-        </div>
-      );
-    }}
-  </Mutation>
-);
-
-interface VoterDetailsProps {
-  voter: IVoter;
-  displayNameElement: React.ReactNode;
-  t: TFunction;
-  classes: Classes;
-}
-
-const VoterDetails: React.FunctionComponent<VoterDetailsProps> = ({
-  voter,
-  displayNameElement,
-  t,
-  classes,
-}) => (
-  <TableRow>
-    <TableCell />
-    <TableCell verticalAlignTop>
-      <div className={classes.voterIdentifiers}>
-        <p>
-          <strong>
-            <Trans>admin.manageSelfAddedVoters.idRegisteredWhenVoting</Trans>
-          </strong>
-        </p>
-        <p>
-          {getPersonIdTypeDisplayName(voter.idType, t)}: {voter.idValue}
-        </p>
-      </div>
-    </TableCell>
-    <TableCell colspan={2} verticalAlignTop>
-      <div className={classes.justification}>
-        <p>
-          <strong>
-            <Trans>admin.manageSelfAddedVoters.justification</Trans>
-          </strong>
-        </p>
-        {voter.reason ? (
-          <p>{voter.reason}</p>
-        ) : (
-          <p>
-            <em>
-              <Trans>admin.manageSelfAddedVoters.noJustificationGiven</Trans>
-            </em>
-          </p>
-        )}
-      </div>
-    </TableCell>
-  </TableRow>
-);
 
 export default SelfAddedVotersMngmtTable;

@@ -1,29 +1,26 @@
-import React from 'react';
-import { Query, withApollo, WithApolloClient } from 'react-apollo';
-import { Trans, withTranslation, WithTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+import { gql, useQuery } from '@apollo/client';
+import { Trans, useTranslation } from 'react-i18next';
 import { History } from 'history';
-import gql from 'graphql-tag';
 
-import Page from 'components/page/Page';
-import { PageSection } from 'components/page';
-import Text from 'components/text';
-import Button, { ButtonContainer } from 'components/button';
-
-import { ISettingsSectionContents } from 'components/page/SettingsSection';
-import SettingsSectionsGroup from 'components/page/SettingsSectionsGroup';
+import { isCreatingNewElectionVar } from 'cache';
 import { ElectionGroup } from 'interfaces';
 
+import Button, { ButtonContainer } from 'components/button';
+import Page from 'components/page/Page';
+import { ISettingsSectionContents } from 'components/page/SettingsSection';
+import SettingsSectionsGroup from 'components/page/SettingsSectionsGroup';
+
+import AdminRolesSettingsSection from './components/AdminRolesSettings';
 import BaseElectionSettingsSection from './components/BaseElectionSettings';
 import ElectionNameSettingsSection from './components/ElectionNameSettings';
 import VotingPeriodSettingsSection from './components/VotingperiodSettings';
 import VoterInfoSettingsSection from './components/VoterInfoSettings';
-import AdminRolesSettingsSection from './components/AdminRolesSettings';
 
+// Get the isCreatingNewElection bool from the local state cache.
 const isCreatingNewElectionQuery = gql`
-  query {
-    admin @client {
-      isCreatingNewElection
-    }
+  query GetIsCreatingNewElection {
+    isCreatingNewElection @client
   }
 `;
 
@@ -35,99 +32,80 @@ const defaultSettingsSectionsContents: ISettingsSectionContents[] = [
   AdminRolesSettingsSection,
 ];
 
-interface IProps extends WithTranslation {
+interface IProps {
   electionGroupData: ElectionGroup;
-  isNewElection?: boolean;
-  handleUpdate?: () => Promise<any>; // TODO: Isn't used. Delete?
+  // handleUpdate?: () => Promise<any>; // TODO: Isn't used. Delete?
   history: History;
 }
 
-type PropsInternal = WithApolloClient<IProps>;
+export default function InfoPage(props: IProps) {
+  const { electionGroupData, history } = props;
+  const { t } = useTranslation();
 
-class InfoPage extends React.Component<PropsInternal> {
-  private readonly settingsSectionsContents: ISettingsSectionContents[];
+  useEffect(
+    // Set isCreatingNewElection to false after the components unmounts.
+    () => () => {
+      isCreatingNewElectionVar(false);
+    },
+    []
+  );
 
-  constructor(props: PropsInternal) {
-    super(props);
-
-    const isSingleElection =
-      this.props.electionGroupData.type === 'single_election';
-
-    if (isSingleElection) {
-      this.settingsSectionsContents = defaultSettingsSectionsContents.slice(1);
-    } else {
-      this.settingsSectionsContents = defaultSettingsSectionsContents.slice();
-    }
+  const isSingleElection = electionGroupData.type === 'single_election';
+  let settingsSectionsContents: ISettingsSectionContents[];
+  if (isSingleElection) {
+    settingsSectionsContents = defaultSettingsSectionsContents.slice(1);
+  } else {
+    settingsSectionsContents = defaultSettingsSectionsContents.slice();
   }
 
-  handleSettingsWasSaved = () => {
-    if (this.props.handleUpdate) {
-      this.props.handleUpdate().then(
-        () => null,
-        (error: string) => console.error(error)
-      );
-    }
+  const { id: groupId, meta } = electionGroupData;
+
+  const proceedToCandidates = () => {
+    history.push(`/admin/elections/${groupId}/candidates`);
   };
 
-  componentWillUnmount() {
-    const localStateData = {
-      // TODO: find out how to not need __typename here
-      admin: { isCreatingNewElection: false, __typename: 'admin' },
-    };
-    this.props.client.writeData({ data: localStateData });
-  }
+  const { data } = useQuery(isCreatingNewElectionQuery);
+  const { isCreatingNewElection } = data;
 
-  render() {
-    const { electionGroupData } = this.props;
-    const { id: groupId, meta } = electionGroupData;
+  const handleSettingsWasSaved = () => {};
+  // TODO actually do something here..
+  // if (handleUpdate) {
+  // handleUpdate().then(
+  //  () => null,
+  //   (error: string) => console.error(error)
+  // );
+  // }
+  // };
 
-    const { t, history } = this.props;
+  return (
+    <Page header={t('election.electionInfo')}>
+      <SettingsSectionsGroup
+        settingsSectionsContents={settingsSectionsContents}
+        electionGroupData={electionGroupData}
+        startWithDirectedFlowActive={isCreatingNewElection}
+        onSettingsWasSaved={handleSettingsWasSaved}
+      />
 
-    const proceedToCandiates = () => {
-      history.push(`/admin/elections/${groupId}/candidates`);
-    };
-
-    return (
-      <Query query={isCreatingNewElectionQuery}>
-        {({
-          data: {
-            admin: { isCreatingNewElection },
-          },
-        }: any) => (
-          <Page header={t('election.electionInfo')}>
-
-            <SettingsSectionsGroup
-              settingsSectionsContents={this.settingsSectionsContents}
-              electionGroupData={electionGroupData}
-              startWithDirectedFlowActive={isCreatingNewElection}
-              onSettingsWasSaved={this.handleSettingsWasSaved}
-            />
-
-            <ButtonContainer alignRight noTopMargin={false}>
-              <Button
-                text={
-                  <span>
-                    <Trans>election.goTo</Trans>&nbsp;
-                    {meta.candidateType === 'poll' ? (
-                      <Trans>admin.pollElec.alternatives</Trans>
-                    ) : (
-                      <Trans>election.candidates</Trans>
-                    )}
-                  </span>
-                }
-                action={proceedToCandiates}
-                disabled={
-                  electionGroupData.elections.filter((e: any) => e.active)
-                    .length === 0
-                }
-                iconRight="mainArrow"
-              />
-            </ButtonContainer>
-          </Page>
-        )}
-      </Query>
-    );
-  }
+      <ButtonContainer alignRight noTopMargin={false}>
+        <Button
+          text={
+            <span>
+              <Trans>election.goTo</Trans>&nbsp;
+              {meta.candidateType === 'poll' ? (
+                <Trans>admin.pollElec.alternatives</Trans>
+              ) : (
+                <Trans>election.candidates</Trans>
+              )}
+            </span>
+          }
+          action={proceedToCandidates}
+          disabled={
+            electionGroupData.elections.filter((e: any) => e.active).length ===
+            0
+          }
+          iconRight="mainArrow"
+        />
+      </ButtonContainer>
+    </Page>
+  );
 }
-
-export default withTranslation()(withApollo<IProps>(InfoPage));
