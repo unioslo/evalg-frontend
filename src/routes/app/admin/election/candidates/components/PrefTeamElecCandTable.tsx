@@ -87,7 +87,7 @@ interface IState {
 class PrefTeamElecCandTable extends React.Component<IProps, IState> {
   state: IState;
 
-  removeEmptyCoCandidates: (e: any) => any;
+  removeEmptyCoCandidates: any;
 
   constructor(props: IProps) {
     super(props);

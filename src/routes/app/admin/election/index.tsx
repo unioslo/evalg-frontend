@@ -1,6 +1,5 @@
 import { Route, useLocation, useParams } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
-import { Query } from '@apollo/client/react/components';
 
 import { NotFound, ErrorPageSection } from 'components/errors';
 import Loading from 'components/loading';

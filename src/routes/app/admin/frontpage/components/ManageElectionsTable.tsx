@@ -19,7 +19,7 @@ import { ElectionGroup } from 'interfaces';
 import ElectionGroupTableRow from './ElectionGroupTableRow';
 import ElectionTableRow from './ElectionTableRow';
 
-const styles = (theme: any) => ({
+const styles = () => ({
   votesOutsideCensusColumnHeader: {
     width: '8rem',
   },
@@ -83,7 +83,7 @@ class ManageElectionsTable extends React.Component<IProps, IState> {
             </TableHeaderCell>
           </TableHeaderRow>
         </TableHeader>
-        {electionGroups.map((electionGroup, index) => {
+        {electionGroups.map((electionGroup) => {
           const { selectedElection } = this.state;
           let selected = false;
           if (selectedElection === electionGroup.id) {

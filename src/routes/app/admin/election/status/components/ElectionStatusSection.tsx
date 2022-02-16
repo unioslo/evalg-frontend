@@ -73,12 +73,12 @@ const blockerToTranslation = {
   'no-active-election': 'blockerNoActiveElection',
 };
 
-interface publicationBlockersProps {
+interface PublicationBlockersProps {
   electionGroup: ElectionGroup;
 }
 
-const PublicationBlockers: React.FunctionComponent<publicationBlockersProps> = (
-  props: publicationBlockersProps
+const PublicationBlockers: React.FunctionComponent<PublicationBlockersProps> = (
+  props: PublicationBlockersProps
 ) => {
   const { t } = useTranslation();
   const { publicationBlockers } = props.electionGroup;
@@ -101,12 +101,12 @@ const PublicationBlockers: React.FunctionComponent<publicationBlockersProps> = (
   );
 };
 
-interface multipleStatusesInterface {
+interface MultipleStatusesInterface {
   electionGroup: ElectionGroup;
 }
 
-const MultipleStatuses: React.FunctionComponent<multipleStatusesInterface> = (
-  props: multipleStatusesInterface
+const MultipleStatuses: React.FunctionComponent<MultipleStatusesInterface> = (
+  props: MultipleStatusesInterface
 ) => {
   const { i18n } = useTranslation();
   return (

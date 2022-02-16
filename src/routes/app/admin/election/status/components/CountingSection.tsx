@@ -49,7 +49,7 @@ class CountingSection extends React.Component<Props, State> {
     this.state = { showModal: false, message: '' };
   }
 
-  componentWillUpdate(newProps: Props, newState: State) {
+  componentWillUpdate() {
     if (this.state.message !== '') {
       this.setState({ message: '' });
     }

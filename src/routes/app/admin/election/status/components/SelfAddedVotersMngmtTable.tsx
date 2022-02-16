@@ -99,7 +99,6 @@ interface VoterDetailsProps {
 
 const VoterDetails: React.FunctionComponent<VoterDetailsProps> = ({
   voter,
-  displayNameElement,
   t,
   classes,
 }) => (

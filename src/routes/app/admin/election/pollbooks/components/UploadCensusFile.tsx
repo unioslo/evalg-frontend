@@ -250,7 +250,7 @@ class UploadCensusFileModal extends React.Component<
             closeAction(status);
           }
         })
-        .catch((error) => {
+        .catch(() => {
           this.setState({ isUploading: false });
           const errorMessage = t('census.errors.backend.unknown');
           const status: IUploadCensusFileModalStatus = {

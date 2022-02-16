@@ -76,6 +76,14 @@ const deleteVoter = gql`
 
 const refetchQueries = () => ['electionGroupSearchVoters'];
 
+type SearchOptions = {
+  electionGroupId: string;
+  limit: number;
+  search: string;
+  hasVoted?: boolean;
+  pollbookId?: string;
+};
+
 interface IProps {
   electionGroup: ElectionGroup;
 }
@@ -113,7 +121,7 @@ const CensusSearchTable: React.FunctionComponent<IProps> = ({
     { name: t('general.all'), value: 'all' },
   ];
 
-  const searchOptions = {
+  const searchOptions: SearchOptions = {
     electionGroupId: electionGroup.id,
     limit: 50,
     search: searchString,
@@ -121,13 +129,13 @@ const CensusSearchTable: React.FunctionComponent<IProps> = ({
 
   // Add the hasVoted filter if set.
   if (hasVotedFilter === 'yes') {
-    searchOptions['hasVoted'] = true;
+    searchOptions.hasVoted = true;
   } else if (hasVotedFilter === 'no') {
-    searchOptions['hasVoted'] = false;
+    searchOptions.hasVoted = false;
   }
 
   if (pollbookFilter !== '' && pollbookFilter !== 'all') {
-    searchOptions['pollbookId'] = pollbookFilter;
+    searchOptions.pollbookId = pollbookFilter;
   }
 
   const handleShowUpdateVoterForm = (voterId: string) => {

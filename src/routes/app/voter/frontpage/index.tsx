@@ -121,18 +121,22 @@ class VoterFrontPage extends React.Component<WithApolloClient<IProps>, IState> {
               {(resultVotersForPerson: any) => {
                 const {
                   data: votersForPersonData,
-                  loading,
-                  error,
+                  loading: votersForPersonLoading,
+                  error: votersForPersonError,
                 } = resultVotersForPerson;
-                if (loading) {
+                if (votersForPersonLoading) {
                   return (
                     <Loading>
                       <Trans>voter.voterFrontPage.loadingUserData</Trans>
                     </Loading>
                   );
                 }
-                if (error) {
-                  return <ErrorPageSection errorMessage={error.message} />;
+                if (votersForPersonError) {
+                  return (
+                    <ErrorPageSection
+                      errorMessage={votersForPersonError.message}
+                    />
+                  );
                 }
 
                 const userVerifiedVoters =

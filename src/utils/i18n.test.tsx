@@ -1,4 +1,4 @@
-import { fireEvent, render } from 'test-utils';
+// import { fireEvent, render } from 'test-utils';
 import { getInstNameWithCase } from './i18n';
 
 describe('getInstNameWithCase', () => {

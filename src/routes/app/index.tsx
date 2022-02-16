@@ -47,11 +47,14 @@ const App: React.FunctionComponent<IAppProps & RouteComponentProps> = (
   const { authManager, location, history } = props;
   const classes = useStyles();
 
-  const ProtectedComponent = (props: any) => {
-    if (!props.userContext) {
-      sessionStorage.setItem('login_redirect', props.location.pathname);
+  const ProtectedComponent = (protectedComponentProps: any) => {
+    if (!protectedComponentProps.userContext) {
+      sessionStorage.setItem(
+        'login_redirect',
+        protectedComponentProps.location.pathname
+      );
     }
-    const Comp = props.component;
+    const Comp = protectedComponentProps.component;
     const Component = authEnabled ? authManager(Comp) : Comp;
     return <Component />;
   };
@@ -81,9 +84,9 @@ const App: React.FunctionComponent<IAppProps & RouteComponentProps> = (
 
                 <Route
                   path="/vote/:electionGroupId"
-                  render={(props: any) => (
+                  render={(renderProps: any) => (
                     <ProtectedComponent
-                      {...props}
+                      {...renderProps}
                       component={VoterRoute}
                       userContext={context.user}
                     />
@@ -92,9 +95,9 @@ const App: React.FunctionComponent<IAppProps & RouteComponentProps> = (
 
                 <Route
                   path="/admin"
-                  render={(props: any) => (
+                  render={(renderProps: any) => (
                     <ProtectedComponent
-                      {...props}
+                      {...renderProps}
                       component={AdminRoute}
                       userContext={context.user}
                     />

@@ -31,6 +31,46 @@ const turnoutCountsQuery = gql`
   }
 `;
 
+interface ITurnoutRowProps {
+  pollbookName: string;
+  votersCount: number;
+  votersWithVotesCount: number;
+  classes: Classes;
+}
+
+const TurnoutRow: React.FunctionComponent<ITurnoutRowProps> = ({
+  pollbookName,
+  votersCount,
+  votersWithVotesCount,
+  classes,
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <div className={classes.votingTurnoutRow}>
+      <strong>{pollbookName}: </strong>
+      {votersCount > 0 ? (
+        <span>
+          {t(
+            'admin.statusSection.turnoutSubsection.countPersonsHasVotedOfVotersInCensus',
+            {
+              count: votersWithVotesCount,
+              votersCount,
+            }
+          )}{' '}
+          ({Math.round((votersWithVotesCount / votersCount) * 10000) / 100} %)
+        </span>
+      ) : (
+        <em>
+          <span>
+            {t('admin.statusSection.turnoutSubsection.censusIsEmpty')}
+          </span>
+        </em>
+      )}
+    </div>
+  );
+};
+
 const useStyles = createUseStyles((theme: any) => ({
   turnoutSubSectionContent: {
     marginTop: '2rem',
@@ -117,46 +157,6 @@ const TurnoutSubsection: React.FunctionComponent<IProps> = ({
         </Query>
       </div>
     </PageSubSection>
-  );
-};
-
-interface ITurnoutRowProps {
-  pollbookName: string;
-  votersCount: number;
-  votersWithVotesCount: number;
-  classes: Classes;
-}
-
-const TurnoutRow: React.FunctionComponent<ITurnoutRowProps> = ({
-  pollbookName,
-  votersCount,
-  votersWithVotesCount,
-  classes,
-}) => {
-  const { t } = useTranslation();
-
-  return (
-    <div className={classes.votingTurnoutRow}>
-      <strong>{pollbookName}: </strong>
-      {votersCount > 0 ? (
-        <span>
-          {t(
-            'admin.statusSection.turnoutSubsection.countPersonsHasVotedOfVotersInCensus',
-            {
-              count: votersWithVotesCount,
-              votersCount,
-            }
-          )}{' '}
-          ({Math.round((votersWithVotesCount / votersCount) * 10000) / 100} %)
-        </span>
-      ) : (
-        <em>
-          <span>
-            {t('admin.statusSection.turnoutSubsection.censusIsEmpty')}
-          </span>
-        </em>
-      )}
-    </div>
   );
 };
 

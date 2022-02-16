@@ -1,12 +1,12 @@
 import React from 'react';
-import { createUseStyles, useTheme } from 'react-jss';
+import { createUseStyles } from 'react-jss';
 interface IProps {
   onChange: (event: any) => void;
   value: string;
   options: any[];
 }
 
-const useStyles = createUseStyles((theme: any) => ({
+const useStyles = createUseStyles({
   dropdownFilter: {
     //@include table-filter-box();
     '-moz-appearance': 'none',
@@ -14,12 +14,11 @@ const useStyles = createUseStyles((theme: any) => ({
     background:
       'icon(dropdownarrow, $darkTurquoise, 14, 9) right 1rem center no-repeat',
   },
-}));
+});
 
 const TableFilterBoxDropdown: React.FunctionComponent<IProps> = (props) => {
   const { onChange, value, options } = props;
-  const theme = useTheme();
-  const classes = useStyles({ theme });
+  const classes = useStyles();
 
   return (
     <select

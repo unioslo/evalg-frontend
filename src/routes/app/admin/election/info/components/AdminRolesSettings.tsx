@@ -59,13 +59,13 @@ interface IAddElectionGroupRoleByIdentifierResponse {
   addElectionGroupRoleByIdentifier: IMutationResponse;
 }
 
-interface IRemoveElectionGroupRoleByGrantVariables {
-  grantId: string;
-}
+// interface IRemoveElectionGroupRoleByGrantVariables {
+//   grantId: string;
+// }
 
-interface IRemoveElectionGroupRoleByGrantResponse {
-  removeElectionGroupRoleByGrant: IMutationResponse;
-}
+// interface IRemoveElectionGroupRoleByGrantResponse {
+//   removeElectionGroupRoleByGrant: IMutationResponse;
+// }
 
 const addElectionGroupRoleByIdentifier = async (
   client: ApolloClient<any>,

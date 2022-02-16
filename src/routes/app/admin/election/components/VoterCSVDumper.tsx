@@ -84,7 +84,7 @@ const VoterCSVDumper: React.FunctionComponent<PollbookDumperProps> = ({
     <Button
       text={t('census.download.button')}
       secondary
-      action={(event: any) => setIsGeneratingFile(true)}
+      action={() => setIsGeneratingFile(true)}
     />
   );
 };

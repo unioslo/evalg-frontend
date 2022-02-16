@@ -203,7 +203,7 @@ class AdminRolesForm extends React.Component<IProps, IState> {
                   <Trans>admin.roles.singleUsers</Trans>
                 </Text>
                 <ul className={classes.list}>
-                  {adminRoles.map((role, index) => (
+                  {adminRoles.map((role) => (
                     <li key={role.grantId}>
                       <Text inline>{this.getPrincipalDisplayName(role)}</Text>
                       <div

@@ -129,10 +129,10 @@ interface IState {
   errorMessage: string;
 }
 
-interface IElectionGroupKeyBackup {
-  masterKeyID: string;
-  encryptedPrivateKey: string;
-}
+// interface IElectionGroupKeyBackup {
+//   masterKeyID: string;
+//   encryptedPrivateKey: string;
+// }
 
 class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
   cryptoEngine: any;

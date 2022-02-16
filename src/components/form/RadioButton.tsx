@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { createUseStyles, useTheme } from 'react-jss';
+import { createUseStyles } from 'react-jss';
 
-const useStyles = createUseStyles((theme: any) => ({
+const useStyles = createUseStyles({
   radioButton: {
     position: 'relative',
     display: 'flex',
@@ -30,7 +30,7 @@ const useStyles = createUseStyles((theme: any) => ({
     fontSize: '1.6rem',
     paddingLeft: '0.5rem',
   },
-}));
+});
 
 interface IProps {
   name: string;
@@ -42,9 +42,8 @@ interface IProps {
 }
 
 const RadioButton: React.FunctionComponent<IProps> = (props) => {
-  const { name, onChange, id, value, checked, label} = props;
-  const theme = useTheme();
-  const classes = useStyles({ theme });
+  const { name, onChange, id, value, checked, label } = props;
+  const classes = useStyles();
 
   const iconClassNames = classNames({
     [classes.icon]: true,

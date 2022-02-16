@@ -40,6 +40,31 @@ const addVoterByIdentifier = gql`
 
 const refetchQueries = () => ['electionGroupVoters'];
 
+const validate = (lang: string, t: TFunction) => (values: object) => {
+  if (!values.hasOwnProperty('idValue')) {
+    return {};
+  }
+
+  const { idValue } = values as { idValue: string };
+  const errors: any = {};
+
+  if (!idValue) {
+    return {};
+  } else if (!validateFeideId(idValue)) {
+    if (idValue.match(/^\d+/)) {
+      errors.idValue = t('formErrors.feideIdCannotStartWithNumber');
+    } else {
+      errors.idValue = t('formErrors.invalidFeideId');
+    }
+  }
+
+  if (errors) {
+    // Don't display error messages within the fields themselves
+    return { _errors: errors };
+  }
+  return {};
+};
+
 const useStyles = createUseStyles((theme: any) => ({
   feedback: {
     marginTop: '1.5rem',
@@ -65,7 +90,9 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = (props) => {
   const lang = i18n.language;
 
   useEffect(() => {
-    inputEl.current && inputEl.current.focus();
+    if (inputEl.current) {
+      inputEl.current.focus();
+    }
     setFeedback({ text: '', isBackendError: false });
   }, [pollbook.id]);
 
@@ -99,11 +126,11 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = (props) => {
                       pollbookId: props.pollbook.id,
                     },
                   });
-                  const feedback = t('census.addedIdTypeWithIdValue', {
+                  const newFeedback = t('census.addedIdTypeWithIdValue', {
                     idType: idTypeDisplayName,
                     idValue,
                   });
-                  setFeedback({ text: feedback, isBackendError: false });
+                  setFeedback({ text: newFeedback, isBackendError: false });
                 } catch (error: any) {
                   setFeedback({
                     text:
@@ -133,7 +160,7 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = (props) => {
                       errors &&
                       errors._errors &&
                       touched &&
-                      touched['idValue'];
+                      touched.idValue;
 
                     const handleSubmitAndReset = async (e: any) => {
                       e.preventDefault();
@@ -215,31 +242,6 @@ const AddVoterForm: React.FunctionComponent<AddVoterFormProps> = (props) => {
       </TableRow>
     </>
   );
-};
-
-const validate = (lang: string, t: TFunction) => (values: object) => {
-  if (!values.hasOwnProperty('idValue')) {
-    return {};
-  }
-
-  const { idValue } = values as { idValue: string };
-  const errors: object = {};
-
-  if (!idValue) {
-    return {};
-  } else if (!validateFeideId(idValue)) {
-    if (idValue.match(/^\d+/)) {
-      errors['idValue'] = t('formErrors.feideIdCannotStartWithNumber');
-    } else {
-      errors['idValue'] = t('formErrors.invalidFeideId');
-    }
-  }
-
-  if (errors) {
-    // Don't display error messages within the fields themselves
-    return { _errors: errors };
-  }
-  return {};
 };
 
 export default AddVoterForm;

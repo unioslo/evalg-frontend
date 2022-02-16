@@ -4,7 +4,7 @@ import { FieldRenderProps } from 'react-final-form';
 import Select from 'react-select';
 import theme from '../../theme';
 
-const styles = (theme: any) => ({
+const styles = {
   label: {
     order: 1,
     fontSize: '2rem',
@@ -14,7 +14,7 @@ const styles = (theme: any) => ({
     marginBottom: '2rem',
     display: 'block',
   },
-});
+};
 
 const bluishLenkefarge = '#2294a8';
 const greyishBrown = '#555555';
@@ -41,14 +41,8 @@ class SelectDropDown extends React.Component<IProps> {
   }
 
   public render() {
-    const {
-      classes,
-      label,
-      options,
-      placeholder,
-      isSearchable,
-      large,
-    } = this.props;
+    const { classes, label, options, placeholder, isSearchable, large } =
+      this.props;
 
     const searchable = isSearchable ? true : false;
     const size = large ? '35rem' : '22.3rem';
@@ -81,7 +75,7 @@ class SelectDropDown extends React.Component<IProps> {
         borderRadius: '0.3rem',
         color: greyishBrown,
       }),
-      dropdownIndicator: (provided: any, state: any) => ({
+      dropdownIndicator: (provided: any) => ({
         ...provided,
         '&:hover': {
           color: bluishLenkefarge,

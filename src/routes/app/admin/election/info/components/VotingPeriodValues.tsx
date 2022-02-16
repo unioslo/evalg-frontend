@@ -114,15 +114,13 @@ const SingleVotingPeriod: React.SFC<IVotingPeriodProps> = (
   );
 };
 
-const NoActiveElections: React.SFC<IVotingPeriodProps> = (
-  props: IVotingPeriodProps
-) => {
+function NoActiveElections() {
   return (
     <p>
       <Trans>election.noActiveElections</Trans>
     </p>
   );
-};
+}
 
 const getVotingInfoComponent = (grpType: string, elections: Election[]) => {
   if (elections.length === 0) {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { gql } from '@apollo/client';
 import { withApollo, WithApolloClient } from '@apollo/client/react/hoc';
-import { createUseStyles, useTheme } from 'react-jss';
+import { createUseStyles } from 'react-jss';
 
 import { ElectionGroup, IPollBook } from 'interfaces';
 import Button from 'components/button';
@@ -35,14 +35,14 @@ const voteMutation = gql`
   }
 `;
 
-const useStyles = createUseStyles((theme: any) => ({
+const useStyles = createUseStyles({
   testingBox: {
     marginTop: '3rem',
     border: `2px solid #ff8936`,
     borderRadius: '2px',
     padding: '1rem',
   },
-}));
+});
 
 function getRandomString(length: number) {
   var result = '';
@@ -95,32 +95,7 @@ const GenerateVotesForTesting: React.FunctionComponent<
     DEFAULT_N_VOTES_PER_POLLBOOK
   );
 
-  const theme = useTheme();
-  const classes = useStyles({ theme });
-
-  const generateVotersAndVotes = async () => {
-    setIsWorking(true);
-
-    for (const election of electionGroup.elections.filter((e) => e.active)) {
-      const candidateIds = election.lists[0].candidates.map((c) => c.id);
-
-      for (const pollbook of election.pollbooks) {
-        for (let i = 0; i < nVotesPerPollbook; i += 1) {
-          if (ONE_REQUEST_AT_A_TIME) {
-            await generateOneVoterAndVote(pollbook, candidateIds);
-          } else {
-            generateOneVoterAndVote(pollbook, candidateIds);
-
-            if (i % 5 === 0) {
-              await sleep(DELAY_BETWEEN_REQUEST_BATCHES_MS);
-            }
-          }
-        }
-      }
-    }
-
-    setIsWorking(false);
-  };
+  const classes = useStyles();
 
   const generateOneVoterAndVote = async (
     pollbook: IPollBook,
@@ -154,6 +129,30 @@ const GenerateVotesForTesting: React.FunctionComponent<
         ballotData: ballotJSON,
       },
     });
+  };
+
+  const generateVotersAndVotes = async () => {
+    setIsWorking(true);
+
+    for (const election of electionGroup.elections.filter((e) => e.active)) {
+      const candidateIds = election.lists[0].candidates.map((c) => c.id);
+
+      for (const pollbook of election.pollbooks) {
+        for (let i = 0; i < nVotesPerPollbook; i += 1) {
+          if (ONE_REQUEST_AT_A_TIME) {
+            await generateOneVoterAndVote(pollbook, candidateIds);
+          } else {
+            generateOneVoterAndVote(pollbook, candidateIds);
+
+            if (i % 5 === 0) {
+              await sleep(DELAY_BETWEEN_REQUEST_BATCHES_MS);
+            }
+          }
+        }
+      }
+    }
+
+    setIsWorking(false);
   };
 
   return (

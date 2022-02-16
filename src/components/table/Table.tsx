@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import { createUseStyles, useTheme } from 'react-jss';
+import { createUseStyles } from 'react-jss';
 
 interface IProps {
   marginTop?: string;
 }
 
-const useStyles = createUseStyles((theme: any) => ({
+const useStyles = createUseStyles({
   table: {
     width: '100%',
     userSelect: 'text',
@@ -15,12 +15,11 @@ const useStyles = createUseStyles((theme: any) => ({
       paddingRight: '2rem',
     },
   },
-}));
+});
 
 const Table: React.FunctionComponent<IProps> = (props) => {
   const { children } = props;
-  const theme = useTheme();
-  const classes = useStyles({ theme });
+  const classes = useStyles();
 
   const cls = classNames({
     [classes.table]: true,
