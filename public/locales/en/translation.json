@@ -169,6 +169,78 @@
       "confirm": "Confirm",
       "person": "Person",
       "votingGroup": "Select voting group"
+    },
+    "listElec": {
+      "editListInfoHeader": "Change listinformation",
+      "fields": {
+        "url": "URL"
+      },
+      "candidateTable": {
+        "placement": "Placement",
+        "person": "Person",
+        "fieldOfStudy": "Field of Study",
+        "preAccumulated": "Pre-accumulated"
+      },
+      "noCandidatesInList": "No candidates in list",
+      "fieldErrors": {
+        "nameMissing": "List name in {{lang}} is missing",
+        "descMissing": "Description in {{lang}} is missing"
+      },
+      "newList": {
+        "header": "New election list",
+        "nameHeader": "Name of election list",
+        "description": "Short list description in {{lang}}",
+        "descriptionHeader": "Description",
+        "urlHeader": "URL",
+        "onDescription": "This information will be displayed to the user on the voting page."
+      },
+      "errors": {
+        "notListElection": {
+          "header": "The election is not a list election",
+          "msg": "The election is not a list election. It's not possible to add a list to this election"
+        },
+        "apiError": {
+          "addError": "Could not add list",
+          "deleteError": "Could not delete list",
+          "updateError": "Could not update list"
+        },
+        "listNotFound": {
+          "header": "Unknown list",
+          "msg": "List with id {{listId}} does not exist in the current election"
+        },
+        "listIdMissing": {
+          "header": "List ID missing",
+          "msg": "URL is missing a list-ID"
+        }
+      },
+      "addingList": "Adding list..",
+      "listCreated": "List {{name}} created",
+      "header": "Create and administer election lists.",
+      "add": "Create election list",
+      "showListHeader": "Show list",
+      "showList": {
+        "header": "Show list",
+        "placeholder": "Chose list"
+      },
+      "noListInElection": "No lists in election",
+      "description": "List description",
+      "delete": "Delete list",
+      "deleteModal": {
+        "header": "Confirm deletion",
+        "body": "\"Are you sure you want to delete the list \"{{name}}\"?"
+      },
+      "editList": {
+        "header": "Change listinformatil"
+      }
+    },
+    "listElct": {
+      "addList": "Add election list",
+      "errors": {
+        "notAListElection": "The election is not a list election"
+      },
+      "editList": {
+        "header": "Change listinformation"
+      }
     }
   },
   "backend": {
@@ -494,7 +566,12 @@
     "webpage": "Web page",
     "welcome": "Welcome to eValg",
     "yes": "Yes",
-    "language": "Språk"
+    "language": "Språk",
+    "lang": {
+      "nb": "Norwegian (Bokmål)",
+      "nn": "Norwegian (Nynorsk)",
+      "en": "English"
+    }
   },
   "loginPage": {
     "featureList1": "Cast your vote in electronic elections",

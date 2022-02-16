@@ -31,8 +31,8 @@ import {
 } from 'appConfig';
 
 import { cache } from 'cache';
-
 import Spinner from 'components/animations/Spinner';
+import { refetchVoteManagementQueries } from 'queries';
 import { ScreenSizeProvider } from 'providers/ScreenSize';
 import { UserContextProvider } from 'providers/UserContext';
 import App from 'routes/app';
@@ -40,7 +40,6 @@ import theme from 'theme';
 import getCurrentThemePatch from 'themes';
 
 import './i18n';
-import { refetchVoteManagementQueries } from 'queries';
 
 // Initialize sentry
 if (sentryEnabled) {
@@ -82,8 +81,15 @@ const callback = (props: any) => (
  * isCreatingNewElection exists only in the local apollo cache.
  */
 export const typeDefs = gql`
+  type ListMsg {
+    display: Boolean!
+    i18NextKey: Sting!
+    name: LangDict!
+  }
+
   extend type Query {
     isCreatingNewElection: Boolean!
+    listAddUpdateMsg: ListMsg!
   }
 `;
 
