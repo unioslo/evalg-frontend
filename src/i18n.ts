@@ -31,7 +31,7 @@ i18n
     keySeparator: '.',
 
     react: {
-      wait: true,
+      useSuspense: true,
     },
 
     detection: {
