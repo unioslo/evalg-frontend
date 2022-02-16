@@ -10,6 +10,10 @@ declare module 'react-jss' {
 }
 
 interface EvalgClientState {
+  voter: {
+    selectedPollBookID: string;
+    notInPollBookJustification: string;
+  };
   isCreatingNewElection: boolean;
 }
 
