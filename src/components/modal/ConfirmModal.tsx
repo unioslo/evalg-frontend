@@ -3,33 +3,44 @@ import React from 'react';
 import { Button } from 'components/button';
 import Modal from '.';
 
-interface IProps {
+type ConfirmModalProps = {
   closeAction: () => void;
   confirmAction: () => void;
   header: React.ReactNode;
   body: React.ReactNode;
   confirmText: React.ReactNode;
   closeText: React.ReactNode;
-}
+  danger?: boolean;
+};
 
-const ConfirmModal: React.SFC<IProps> = props => {
+export default function ConfirmModal(props: ConfirmModalProps) {
+  const {
+    body,
+    closeAction,
+    closeText,
+    confirmAction,
+    confirmText,
+    danger,
+    header,
+  } = props;
+
   const buttons = [
-    <Button key="close" action={props.closeAction} text={props.closeText} />,
+    <Button key="close" action={closeAction} text={closeText} />,
     <Button
       key="confirm"
-      action={props.confirmAction}
-      text={props.confirmText}
-      secondary
+      action={confirmAction}
+      text={confirmText}
+      secondary={!danger}
+      dangerButton={danger}
     />,
   ];
   return (
-    <Modal
-      closeAction={props.closeAction}
-      header={props.header}
-      buttons={buttons}
-    >
-      {props.body}
+    <Modal closeAction={closeAction} header={header} buttons={buttons}>
+      {body}
     </Modal>
   );
+}
+
+ConfirmModal.defaultProps = {
+  danger: false,
 };
-export default ConfirmModal;
