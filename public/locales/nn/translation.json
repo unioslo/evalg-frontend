@@ -184,24 +184,24 @@
       "noCandidatesInList": "Ingen kandidatar i lista",
       "fieldErrors": {
         "nameMissing": "Listenamn på {{lang}} manglar",
-        "descMissing": "Beskriving på {{lang}} manglar"
+        "descMissing": "Skildring på {{lang}} manglar"
       },
       "newList": {
         "header": "Ny valliste",
         "nameHeader": "Namn på valliste",
         "description": "Kort beskriving av lista på {{lang}}",
-        "descriptionHeader": "Beskriving",
+        "descriptionHeader": "Skildring",
         "urlHeader": "Nettadresse",
         "onDescription": "Desse opplysningane vil være synleg på veljars stemmeside. "
       },
       "errors": {
         "notListElection": {
           "header": "Valet er ikkje eit listeval",
-          "msg": "Valet er ikkje eit listeval. Det er ikkje mogleg å legge ein liste til valet"
+          "msg": "Valet er ikkje eit listeval. Det er ikkje mogleg å legga ein liste til valet"
         },
         "apiError": {
-          "addError": "Kunne ikkje legge til liste",
-          "deleteError": "Kunne ikkje sletta liste",
+          "addError": "Kunne ikkje legge til lista",
+          "deleteError": "Kunne ikkje sletta lista",
           "updateError": "Kunne ikkje oppdatera lista"
         },
         "listNotFound": {
@@ -228,15 +228,6 @@
       "deleteModal": {
         "header": "Stadfest sletting",
         "body": "Er du sikker på at du vil slette lista «{{name}}»?"
-      },
-      "editList": {
-        "header": "Endra listeinformasjon"
-      }
-    },
-    "listElct": {
-      "addList": "Legg til valliste",
-      "errors": {
-        "notAListElection": "Valet er ikkje eit listeval"
       },
       "editList": {
         "header": "Endra listeinformasjon"

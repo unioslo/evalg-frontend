@@ -171,7 +171,7 @@
       "votingGroup": "Select voting group"
     },
     "listElec": {
-      "editListInfoHeader": "Change listinformation",
+      "editListInfoHeader": "Change list information",
       "fields": {
         "url": "URL"
       },
@@ -192,7 +192,7 @@
         "description": "Short list description in {{lang}}",
         "descriptionHeader": "Description",
         "urlHeader": "URL",
-        "onDescription": "This information will be displayed to the user on the voting page."
+        "onDescription": "This information will be displayed to the voter."
       },
       "errors": {
         "notListElection": {
@@ -217,7 +217,6 @@
       "listCreated": "List {{name}} created",
       "header": "Create and administer election lists.",
       "add": "Create election list",
-      "showListHeader": "Show list",
       "showList": {
         "header": "Show list",
         "placeholder": "Chose list"
@@ -227,21 +226,12 @@
       "delete": "Delete list",
       "deleteModal": {
         "header": "Confirm deletion",
-        "body": "\"Are you sure you want to delete the list \"{{name}}\"?"
+        "body": "Are you sure you want to delete the list: {{name}}?"
       },
       "editList": {
-        "header": "Change listinformatil"
+        "header": "Change list information"
       }
     },
-    "listElct": {
-      "addList": "Add election list",
-      "errors": {
-        "notAListElection": "The election is not a list election"
-      },
-      "editList": {
-        "header": "Change listinformation"
-      }
-    }
   },
   "backend": {
     "errors": {
