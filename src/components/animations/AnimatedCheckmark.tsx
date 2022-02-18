@@ -1,7 +1,6 @@
-import React from 'react';
-import { createUseStyles, useTheme } from 'react-jss';
+import { createUseStyles } from 'react-jss';
 
-const useStyles = createUseStyles((theme: any) => ({
+const useStyles = createUseStyles({
   animatedCheckmarkSvg: {
     position: 'relative',
     marginLeft: '13px',
@@ -20,11 +19,10 @@ const useStyles = createUseStyles((theme: any) => ({
       strokeDashoffset: 0,
     },
   },
-}));
+});
 
-const AnimatedCheckmark: React.FunctionComponent<{}> = () => {
-  const theme = useTheme();
-  const classes = useStyles({ theme });
+export default function AnimatedCheckmark() {
+  const classes = useStyles();
   return (
     <svg
       className={classes.animatedCheckmarkSvg}
@@ -40,6 +38,4 @@ const AnimatedCheckmark: React.FunctionComponent<{}> = () => {
       />
     </svg>
   );
-};
-
-export default AnimatedCheckmark;
+}

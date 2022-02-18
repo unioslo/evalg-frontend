@@ -1,6 +1,6 @@
 import React from 'react';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
+import { Query } from '@apollo/client/react/components';
 import { useTranslation } from 'react-i18next';
 
 import { NotFound, ErrorPageSection } from 'components/errors';

@@ -14,7 +14,7 @@ interface EvalgClientState {
     selectedPollBookID: string;
     notInPollBookJustification: string;
   };
-  admin: { isCreatingNewElection: boolean };
+  isCreatingNewElection: boolean;
 }
 
 interface NameFields {

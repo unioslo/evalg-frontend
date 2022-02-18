@@ -1,10 +1,10 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
-import { createUseStyles, useTheme } from 'react-jss';
+import { useTranslation } from 'react-i18next';
+import { createUseStyles } from 'react-jss';
 
 import Button, { ButtonContainer } from 'components/button';
 
-const useStyles = createUseStyles((theme: any) => ({
+const useStyles = createUseStyles({
   savingSpinner: {
     position: 'relative',
     marginLeft: 10,
@@ -22,9 +22,9 @@ const useStyles = createUseStyles((theme: any) => ({
   '@keyframes spin': {
     to: { '-webkit-transform': 'rotate(360deg)' },
   },
-}));
+});
 
-interface IProps {
+interface FormButtonsProps {
   saveAction: (submitValues: any) => void;
   closeAction: (id: any) => void;
   submitDisabled: boolean;
@@ -33,9 +33,10 @@ interface IProps {
   entityAction?: any;
   entityActionDisabled?: boolean;
   entityText?: React.ReactNode | string;
+  entityDanger?: boolean;
 }
 
-const FormButtons: React.FunctionComponent<IProps> = (props) => {
+export default function FormButtons(props: FormButtonsProps) {
   const {
     saveAction,
     closeAction,
@@ -43,10 +44,11 @@ const FormButtons: React.FunctionComponent<IProps> = (props) => {
     submitting,
     entityAction,
     entityActionDisabled,
+    entityDanger,
     entityText,
   } = props;
-  const theme = useTheme();
-  const classes = useStyles({ theme })
+  const classes = useStyles();
+  const { t } = useTranslation();
 
   return (
     <ButtonContainer alignRight>
@@ -55,11 +57,12 @@ const FormButtons: React.FunctionComponent<IProps> = (props) => {
           text={entityText}
           action={entityAction}
           disabled={entityActionDisabled}
-          secondary
+          dangerButton={entityDanger}
+          secondary={!entityDanger}
         />
       )}
       <Button
-        text={<Trans>general.cancel</Trans>}
+        text={t('general.cancel')}
         disabled={submitting}
         action={closeAction}
         secondary
@@ -68,11 +71,11 @@ const FormButtons: React.FunctionComponent<IProps> = (props) => {
         text={
           submitting ? (
             <>
-              <Trans>general.saving</Trans>
+              {t('general.saving')}
               <div className={classes.savingSpinner} />
             </>
           ) : (
-            <Trans>general.save</Trans>
+            <>{t('general.save')}</>
           )
         }
         disabled={submitDisabled}
@@ -80,10 +83,9 @@ const FormButtons: React.FunctionComponent<IProps> = (props) => {
       />
     </ButtonContainer>
   );
-};
+}
 
 FormButtons.defaultProps = {
   entityActionDisabled: false,
+  entityDanger: false,
 };
-
-export default FormButtons;

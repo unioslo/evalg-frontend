@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import gql from 'graphql-tag';
-import { withApollo, WithApolloClient } from 'react-apollo';
-import ApolloClient from 'apollo-client';
+import { ApolloClient, gql } from '@apollo/client';
+import { withApollo, WithApolloClient } from '@apollo/client/react/hoc';
 import { useTranslation } from 'react-i18next';
 import FileSaver from 'file-saver';
 import { createUseStyles, useTheme } from 'react-jss';
@@ -87,22 +86,23 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
   electionResults = orderElectionResults(electionResults);
 
   const handleDownloadCountingProtocol = async (
-    apolloClient: ApolloClient<any>,
+    client: ApolloClient<any>,
     electionResultId: string
   ) => {
     setProcessingFileForERId(electionResultId);
     setFileDownloadError('');
 
-    let countingProtocol, electionName;
+    let countingProtocol;
+    let electionName;
     try {
-      const { data } = await apolloClient.query({
+      const { data } = await client.query({
         query: countingProtocolDownloadQuery,
         variables: { id: electionResultId },
         fetchPolicy: 'no-cache',
       });
       countingProtocol = data.electionResult.electionProtocol;
       electionName = data.electionResult.election.name[lang];
-    } catch (error) {
+    } catch (error: any) {
       setProcessingFileForERId('');
       setFileDownloadError(error.message);
       return;
@@ -117,7 +117,7 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
   };
 
   const handleDownloadBallots = async (
-    apolloClient: ApolloClient<any>,
+    client: ApolloClient<any>,
     electionResultId: string
   ) => {
     setProcessingFileForERId(electionResultId);
@@ -126,14 +126,14 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
     let ballotsWithMetadata;
     let electionName;
     try {
-      const { data } = await apolloClient.query({
+      const { data } = await client.query({
         query: ballotsWithMetadataDownloadQuery,
         variables: { id: electionResultId },
         fetchPolicy: 'no-cache',
       });
       ({ ballotsWithMetadata } = data.electionResult);
       electionName = data.electionResult.election.name[lang];
-    } catch (error) {
+    } catch (error: any) {
       setProcessingFileForERId('');
       setFileDownloadError(error.message);
       return;
@@ -145,6 +145,12 @@ const CountDetails: React.FunctionComponent<WithApolloClient<IProps>> = ({
     setProcessingFileForERId('');
     FileSaver.saveAs(blob, `ballots-${electionName}.json`);
   };
+
+  if (!apolloClient) {
+    // TODO handle better.
+    setFileDownloadError('ApolloClient missing!');
+    return <></>;
+  }
 
   return (
     <>

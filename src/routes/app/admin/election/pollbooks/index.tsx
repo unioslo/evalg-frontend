@@ -1,6 +1,6 @@
 import React from 'react';
-import gql from 'graphql-tag';
-import { Mutation, Query } from 'react-apollo';
+import { gql } from '@apollo/client';
+import { Mutation, Query } from '@apollo/client/react/components';
 import { Redirect } from 'react-router';
 import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 
@@ -13,19 +13,19 @@ import { ConfirmModal } from 'components/modal';
 import { Page, PageSection } from 'components/page';
 import { ElectionGroupFields, ElectionFields } from 'fragments';
 import { DropDownOption, Election, IPollBook } from 'interfaces';
+import { TableBody, Table } from 'components/table';
 
 import UploadCensusFileModal, {
   IUploadCensusFileModalStatus,
 } from './components/UploadCensusFile';
 import CensusSearchTable from './components/CensusSearchTable';
 import UploadedCensusFileTable from './components/UploadedCensusFileTable';
+import AddVoterForm from './components/AddVoterForm';
 import {
   VoterGroupActionPanel,
   VoterGroupActionPanelContainer,
 } from '../components/VoterGroupActionsPanel';
 import VoterCSVDumper from '../components/VoterCSVDumper';
-import AddVoterForm from './components/AddVoterForm';
-import { TableBody, Table } from 'components/table';
 
 const deleteVotersInPollbook = gql`
   mutation DeleteVotersInPollBook($id: UUID!) {

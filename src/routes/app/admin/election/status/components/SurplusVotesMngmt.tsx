@@ -1,5 +1,5 @@
 import React from 'react';
-import { WithApolloClient, withApollo } from 'react-apollo';
+import { WithApolloClient, withApollo } from '@apollo/client/react/hoc';
 import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 import { StatelessExpandableSubSection } from 'components/page/PageSection';
 import {
@@ -22,7 +22,7 @@ import { reviewVoter } from 'mutations';
 import { refetchVoteManagementQueries } from 'queries';
 import Icon from 'components/icon';
 
-const styles = (theme: any) => ({
+const styles = {
   voteSelectForm: {
     display: 'flex',
     alignItems: 'center',
@@ -47,15 +47,11 @@ const styles = (theme: any) => ({
   iconContainer: {
     marginLeft: '0.5rem',
   },
-});
+};
 
 interface IPersonWithVoters {
   person: IPerson;
   voters: IVoter[];
-}
-
-interface IReviewVoterResponse {
-  ok: boolean;
 }
 
 interface IProps extends WithTranslation {
@@ -80,6 +76,7 @@ class SurplusVotesMngmt extends React.Component<PropsInternal, IState> {
   }
 
   public rejectVote = (voterId: string) => {
+    const { client } = this.props;
     const mutationVars = {
       mutation: reviewVoter,
       variables: {
@@ -89,73 +86,81 @@ class SurplusVotesMngmt extends React.Component<PropsInternal, IState> {
       refetchQueries: refetchVoteManagementQueries,
       awaitRefetchQueries: true,
     };
-    return this.props.client.mutate(mutationVars);
+
+    if (!client) {
+      // Todo handle better
+      return undefined;
+    }
+    return client.mutate(mutationVars);
   };
 
-  public getOnSubmit = (person: IPerson, voters: IVoter[]) => async (
-    value: any
-  ) => {
-    const votersToReject = voters.filter(voter => voter.id !== value.voterId);
-    const promises = votersToReject.map((voter: IVoter) =>
-      this.rejectVote(voter.id)
-    );
-    await Promise.all(promises);
-  };
+  public getOnSubmit =
+    (person: IPerson, voters: IVoter[]) => async (value: any) => {
+      const votersToReject = voters.filter(
+        (voter) => voter.id !== value.voterId
+      );
+      const promises = votersToReject.map((voter: IVoter) =>
+        this.rejectVote(voter.id)
+      );
+      await Promise.all(promises);
+    };
 
-  public getOptions = (voters: IVoter[]) =>
-    voters.map(voter => ({
-      label: voter.pollbook.name[this.props.i18n.language],
+  public getOptions = (voters: IVoter[]) => {
+    const { i18n } = this.props;
+    return voters.map((voter) => ({
+      label: voter.pollbook.name[i18n.language],
       value: voter.id,
       id: voter.id,
     }));
+  };
 
-  public getRenderForm = (person: IPerson, voters: IVoter[]) => (
-    formRenderProps: FormRenderProps
-  ) => {
-    const { handleSubmit, pristine, invalid, submitting } = formRenderProps;
-    return (
-      <TableBody>
-        <TableRow>
-          <TableCell>{person.displayName}</TableCell>
-          <TableCell>
-            <form
-              onSubmit={(event: React.SyntheticEvent<HTMLFormElement>) => {
-                event.preventDefault();
-                handleSubmit(event);
-              }}
-            >
-              <div className={this.props.classes.voteSelectForm}>
-                <div className={this.props.classes.radioButton}>
-                  <FormField>
-                    <Field
-                      name="voterId"
-                      component={RadioButtonGroup as any}
-                      validate={(value: any) =>
-                        value ? undefined : 'Required'
-                      }
-                      options={this.getOptions(voters)}
+  public getRenderForm =
+    (person: IPerson, voters: IVoter[]) =>
+    (formRenderProps: FormRenderProps) => {
+      const { handleSubmit, pristine, invalid, submitting } = formRenderProps;
+      return (
+        <TableBody>
+          <TableRow>
+            <TableCell>{person.displayName}</TableCell>
+            <TableCell>
+              <form
+                onSubmit={(event: React.SyntheticEvent<HTMLFormElement>) => {
+                  event.preventDefault();
+                  handleSubmit(event);
+                }}
+              >
+                <div className={this.props.classes.voteSelectForm}>
+                  <div className={this.props.classes.radioButton}>
+                    <FormField>
+                      <Field
+                        name="voterId"
+                        component={RadioButtonGroup as any}
+                        validate={(value: any) =>
+                          value ? undefined : 'Required'
+                        }
+                        options={this.getOptions(voters)}
+                      />
+                    </FormField>
+                  </div>
+                  <div className={this.props.classes.buttonContainer}>
+                    <Button
+                      text={this.props.t(`admin.manageSurplusVoters.confirm`)}
+                      disabled={pristine || invalid || submitting}
+                      type="submit"
                     />
-                  </FormField>
-                </div>
-                <div className={this.props.classes.buttonContainer}>
-                  <Button
-                    text={this.props.t(`admin.manageSurplusVoters.confirm`)}
-                    disabled={pristine || invalid || submitting}
-                    type="submit"
-                  />
-                  <div className={this.props.classes.spinnerContainer}>
-                    {submitting && (
-                      <Spinner darkStyle marginLeft="1.4rem" size="2.2rem" />
-                    )}
+                    <div className={this.props.classes.spinnerContainer}>
+                      {submitting && (
+                        <Spinner darkStyle marginLeft="1.4rem" size="2.2rem" />
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </form>
-          </TableCell>
-        </TableRow>
-      </TableBody>
-    );
-  };
+              </form>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      );
+    };
 
   public render() {
     if (this.props.personsWithMultipleVerifiedVoters.error) {
@@ -187,7 +192,7 @@ class SurplusVotesMngmt extends React.Component<PropsInternal, IState> {
             personsWithMultipleVerifiedVoters.length
           })`}
           isExpanded={this.state.isExpanded}
-          setIsExpanded={newIsExpanded => {
+          setIsExpanded={(newIsExpanded) => {
             this.setState({ isExpanded: newIsExpanded });
           }}
         >

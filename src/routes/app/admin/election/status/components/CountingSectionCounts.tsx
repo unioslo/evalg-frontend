@@ -1,5 +1,5 @@
 import React from 'react';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/client/react/components';
 import { useTranslation } from 'react-i18next';
 
 import CountsTable from './CountsTable';

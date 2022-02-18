@@ -1,6 +1,7 @@
 import React from 'react';
-import gql from 'graphql-tag';
-import { Query, WithApolloClient, withApollo } from 'react-apollo';
+import { gql } from '@apollo/client';
+import { WithApolloClient, withApollo } from '@apollo/client/react/hoc';
+import { Query } from '@apollo/client/react/components';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 
@@ -84,19 +85,49 @@ interface IState {
 class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
   scrollToDivRef: React.RefObject<HTMLDivElement> = React.createRef();
 
-  readonly state: IState = {
-    currentStep: VotingStep.Step1SelectVoterGroup,
-    voteElection: null,
-    selectedPollBookId: '',
-    voter: null,
-    personId: '',
-    notInPollBookJustification: '',
-    isSubmittingVote: false,
-    errorOccurred: false,
-  };
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      currentStep: VotingStep.Step1SelectVoterGroup,
+      voteElection: null,
+      selectedPollBookId: '',
+      voter: null,
+      personId: '',
+      notInPollBookJustification: '',
+      isSubmittingVote: false,
+      errorOccurred: false,
+    };
+  }
 
   componentDidMount() {
     this.scrollToTop();
+  }
+
+  async handleSubmitVote(ballotData: object) {
+    const { client } = this.props;
+    const { notInPollBookJustification, selectedPollBookId, voter } =
+      this.state;
+    this.setState({ isSubmittingVote: true });
+
+    if (!client) {
+      this.showErrorScreen();
+      return;
+    }
+    try {
+      await submitVote(
+        ballotData,
+        client,
+        selectedPollBookId,
+        notInPollBookJustification,
+        voter
+      );
+    } catch (error: any) {
+      this.showErrorScreen();
+      if (error.message) console.error(error.message);
+      return;
+    }
+    this.goToStep4();
+    this.setState({ isSubmittingVote: false });
   }
 
   scrollToTop = () => {
@@ -152,39 +183,22 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
     );
   };
 
-  async handleSubmitVote(ballotData: object) {
-    this.setState({ isSubmittingVote: true });
-    try {
-      await submitVote(
-        ballotData,
-        this.props.client,
-        this.state.selectedPollBookId,
-        this.state.notInPollBookJustification,
-        this.state.voter
-      );
-    } catch (error) {
-      this.showErrorScreen();
-      if (error.message) console.error(error.message);
-      return;
-    }
-    this.goToStep4();
-    this.setState({ isSubmittingVote: false });
-  }
-
   render() {
-    const { currentStep } = this.state;
-    const lang = this.props.i18n ? this.props.i18n.language : 'nb';
+    const { electionGroupId, i18n, t } = this.props;
+    const { currentStep, errorOccurred, isSubmittingVote, voteElection } =
+      this.state;
+    const lang = i18n ? i18n.language : 'nb';
 
     const ballotStep: BallotStep =
       currentStep === VotingStep.Step3ReviewBallot
         ? BallotStep.ReviewBallot
         : BallotStep.FillOutBallot;
 
-    const currentStepText = this.props.t(votingStepTranslateKey[currentStep]);
+    const currentStepText = t(votingStepTranslateKey[currentStep]);
     return (
       <Query
         query={getElectionGroupVotingData}
-        variables={{ id: this.props.electionGroupId }}
+        variables={{ id: electionGroupId }}
       >
         {(result: any) => {
           const { data, loading, error } = result;
@@ -202,8 +216,7 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
           ).filter((e) => e.active);
 
           let VotingComponent: any;
-          if (this.state.voteElection) {
-            const { voteElection } = this.state;
+          if (voteElection) {
             const { candidateType, countingRules } = voteElection.meta;
             const { voting } = voteElection.meta.ballotRules;
 
@@ -240,7 +253,7 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
             }
           }
 
-          return this.state.errorOccurred ? (
+          return errorOccurred ? (
             <Error />
           ) : (
             <>
@@ -250,7 +263,7 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
                 onClickStep1={this.goToStep1}
                 onClickStep2={this.goToStep2}
                 scrollToDivRef={this.scrollToDivRef}
-                disabled={this.state.isSubmittingVote}
+                disabled={isSubmittingVote}
               />
               <Page header={electionGroupName}>
                 <Helmet>
@@ -278,15 +291,15 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
                 )}
                 {(currentStep === VotingStep.Step2FillBallot ||
                   currentStep === VotingStep.Step3ReviewBallot) &&
-                  this.state.voteElection && (
+                  voteElection && (
                     <VotingComponent
-                      election={this.state.voteElection}
+                      election={voteElection}
                       ballotStep={ballotStep}
                       onProceedToReview={this.goToStep3}
                       onGoBackToSelectVoterGroup={this.goToStep1}
                       onGoBackToBallot={this.goToStep2}
                       onSubmitVote={this.handleSubmitVote.bind(this)}
-                      isSubmittingVote={this.state.isSubmittingVote}
+                      isSubmittingVote={isSubmittingVote}
                     />
                   )}
                 {currentStep === VotingStep.Step4Receipt && <Receipt />}

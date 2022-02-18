@@ -1,6 +1,6 @@
 import React from 'react';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
+import { Query } from '@apollo/client/react/components';
 
 import { Date, Time } from 'components/i18n';
 import { idValueForPerson } from 'utils/processGraphQLData';

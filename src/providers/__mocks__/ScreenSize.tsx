@@ -10,7 +10,7 @@ interface IState {
 const ScreenSizeProvider: React.FunctionComponent<any> = (props: any) => {
   const { children } = props;
 
-  const [screenSize] = useState({ screenSize: 'lg' });
+  const [screenSize] = useState<IState>({ screenSize: 'lg' });
 
   return (
     <ScreenSizeContext.Provider value={screenSize}>

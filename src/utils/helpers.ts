@@ -1,6 +1,6 @@
+/* @flow */
 import { appCandOrder } from 'appConfig'
 import { Candidate } from 'interfaces';
-/* @flow */
 
 export const isObjEmpty = (obj: any): boolean => {
   for (const key in obj) {

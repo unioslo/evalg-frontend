@@ -6,22 +6,19 @@ const useStyles = createUseStyles((theme: any) => ({
     color: theme.formErrorTextColor,
     fontSize: '1.6rem',
     lineHeight: '2.7rem',
-  }
+  },
 }));
 
 interface IProps {
-  msg: any,
+  msg: any;
 }
 
 const FormErrorMsg: React.FunctionComponent<IProps> = (props) => {
   const theme = useTheme();
   const classes = useStyles({ theme });
+  const { msg } = props;
 
-  return (
-    <div className={classes.errorMsg}>
-      {props.msg}
-    </div>
-  );
+  return <div className={classes.errorMsg}>{msg}</div>;
 };
 
 export default FormErrorMsg;

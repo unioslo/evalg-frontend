@@ -25,7 +25,7 @@ export interface IElectionsBaseSettings {
 }
 
 // TODO: Finish implementing
-const validate = (values: any) => {
+const validate = () => {
   const errors = {};
   return errors;
 };

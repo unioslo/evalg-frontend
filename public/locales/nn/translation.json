@@ -169,6 +169,69 @@
       "confirm": "Bekreft",
       "person": "Person",
       "votingGroup": "Vel veljargruppe"
+    },
+    "listElec": {
+      "candidateTable": {
+        "placement": "Plass",
+        "person": "Person",
+        "fieldOfStudy": "Studieretning",
+        "preAccumulated": "Forhåndskumulering"
+      },
+      "editListInfoHeader": "Endre listeinformasjon",
+      "fields": {
+        "url": "Nettadresse"
+      },
+      "noCandidatesInList": "Ingen kandidatar i lista",
+      "fieldErrors": {
+        "nameMissing": "Listenamn på {{lang}} manglar",
+        "descMissing": "Skildring på {{lang}} manglar"
+      },
+      "newList": {
+        "header": "Ny valliste",
+        "nameHeader": "Namn på valliste",
+        "description": "Kort beskriving av lista på {{lang}}",
+        "descriptionHeader": "Skildring",
+        "urlHeader": "Nettadresse",
+        "onDescription": "Desse opplysningane vil være synleg på veljars stemmeside. "
+      },
+      "errors": {
+        "notListElection": {
+          "header": "Valet er ikkje eit listeval",
+          "msg": "Valet er ikkje eit listeval. Det er ikkje mogleg å legga ein liste til valet"
+        },
+        "apiError": {
+          "addError": "Kunne ikkje legge til lista",
+          "deleteError": "Kunne ikkje sletta lista",
+          "updateError": "Kunne ikkje oppdatera lista"
+        },
+        "listNotFound": {
+          "header": "Ukjend liste",
+          "msg": "Liste med id {{listeId}} finnast ikkje i valet"
+        },
+        "listIdMissing": {
+          "header": "Liste-ID manglar",
+          "msg": "URL manglar liste-ID"
+        }
+      },
+      "addingList": "Legger til liste..",
+      "listCreated": "Lista {{name}} ble oppretta",
+      "header": "Her kan du oppretta og administrera lister av kandidatar som stiller til val.",
+      "add": "Opprett valliste",
+      "showListHeader": "Vis liste",
+      "showList": {
+        "header": "Vis liste",
+        "placeholder": "Vel liste"
+      },
+      "noListInElection": "Valet har ingen listar",
+      "description": "Listeskildring",
+      "delete": "Slett liste",
+      "deleteModal": {
+        "header": "Stadfest sletting",
+        "body": "Er du sikker på at du vil slette lista «{{name}}»?"
+      },
+      "editList": {
+        "header": "Endra listeinformasjon"
+      }
     }
   },
   "backend": {
@@ -494,7 +557,12 @@
     "webpage": "Nett-adresse",
     "welcome": "Velkommen til eValg",
     "yes": "Ja",
-    "language": "Language"
+    "language": "Language",
+    "lang": {
+      "nb": "Bokmål",
+      "nn": "Nynorsk",
+      "en": "Engelsk"
+    }
   },
   "loginPage": {
     "featureList1": "Røyste i elektroniske val",

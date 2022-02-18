@@ -69,6 +69,73 @@
         }
       }
     },
+    "listElec": {
+      "add": "Opprett valgliste",
+      "candidateTable": {
+        "fieldOfStudy": "Studieretning",
+        "placement": "Plass",
+        "person": "Person",
+        "preAccumulated": "Forhåndskumulering"
+      },
+      "editListInfoHeader": "Endre listeinformasjon",
+      "fields": {
+        "url": "Nettadresse"
+      },
+      "fieldErrors": {
+        "descMissing": "Beskrivelse på {{lang}} mangler",
+        "nameMissing": "Listenavn på {{lang}} mangler"
+      },
+      "header": "Her kan du opprette og administrere lister av kandidater som stiller til valg.",
+      "lists": "Lister",
+      "newList": {
+        "header": "Ny valgliste",
+        "nameHeader": "Navn på valgliste",
+        "descriptionHeader": "Beskrivelse",
+        "description": "Kort listebeskrivelse på {{lang}}",
+        "urlHeader": "Nettadresse",
+        "onDescription": "Denne informasjonen vil vises på stemmesiden hos den enkelte velger."
+      },
+      "editList": {
+        "header": "Endre listeinformasjon"
+      },
+      "noCandidatesInList": "Ingen kandidater i listen",
+      "noListInElection": "Valget har ingen lister",
+      "errors": {
+        "notListElection": {
+          "header": "Valget er ikke et listevalg",
+          "msg": "Valget er ikke et listevalg. Det er ikke mulig å legge en liste til valget."
+        },
+        "apiError": {
+          "addError": "Kunne ikke legge til liste",
+          "deleteError": "Kunne ikke slette liste",
+          "updateError": "Kunne ikke oppdatere liste"
+        },
+        "listNotFound": {
+          "header": "Ukjent liste",
+          "msg": "Liste med id {{listeId}} finnes ikke i valget"
+        },
+        "listIdMissing": {
+          "header": "Liste-ID mangler",
+          "msg": "URL inneholder ikke liste-ID"
+        }
+      },
+      "addingList": "Legger til liste..",
+      "showList": {
+        "header": "Vis liste",
+        "placeholder": "Velg liste"
+      },
+      "statusMsg": {
+        "added": "Liste {{name}} ble opprettet",
+        "deleted": "Liste {{name}} ble slettet",
+        "updated": "Liste {{name}} ble oppdatert"
+      },
+      "description": "Listebeskrivelse",
+      "delete": "Slett liste",
+      "deleteModal": {
+        "header": "Bekreft sletting",
+        "body": "Er du sikker på at du vil slette listen «{{name}}»?"
+      }
+    },
     "statusSection": {
       "latestElectionGroupCount": {
         "countingStarted": "Opptelling startet",
@@ -461,6 +528,11 @@
     "help": "Hjelp",
     "hide": "Skjul",
     "hideDetails": "Skjul detaljer",
+    "lang": {
+      "en": "Engelsk",
+      "nb": "Bokmål",
+      "nn": "Nynorsk"
+    },
     "loading": "Laster siden",
     "login": "Logg inn",
     "logout": "Logg ut",

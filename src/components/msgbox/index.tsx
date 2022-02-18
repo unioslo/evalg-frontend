@@ -1,27 +1,27 @@
-import React from 'react';
-import injectSheet from 'react-jss';
+import React, { useEffect, useState } from 'react';
+import { createUseStyles } from 'react-jss';
 
 import Icon from 'components/icon';
 
-const defaultTimeoutSec = 10;
-
-const styles = () => ({
+const useStyles = createUseStyles({
   info: {
-    marginTop: (props: IProps) => (props.small ? '0px' : '30px'),
+    marginTop: (props: MsgBoxProps) => (props.small ? '0px' : '30px'),
     minHeight: '64px',
     display: 'flex',
     margin: '0 auto',
-    maxWidth: (props: IProps) => (props.small ? '740px' : ''),
-    backgroundColor: (props: IProps) => (props.warning ? '#f8d7da' : '#f4f9fa'),
+    maxWidth: (props: MsgBoxProps) => (props.small ? '740px' : ''),
+    backgroundColor: (props: MsgBoxProps) =>
+      props.warning ? '#f8d7da' : '#f4f9fa',
     border: '2px',
     borderStyle: 'solid',
     boxSizing: 'border-box',
     borderRadius: '4px',
-    borderColor: (props: IProps) => (props.warning ? '#f5c6cb' : '#8eced9'),
+    borderColor: (props: MsgBoxProps) =>
+      props.warning ? '#f5c6cb' : '#8eced9',
   },
   msg: {
     fontFamily: 'Arial',
-    fontSize: (props: IProps) => (props.warning ? '21px' : '16px'),
+    fontSize: (props: MsgBoxProps) => (props.warning ? '21px' : '16px'),
     fontWeight: 'normal',
     fontStyle: 'normal',
     fontStretch: 'normal',
@@ -53,81 +53,55 @@ const styles = () => ({
   },
 });
 
-interface IProps {
+type MsgBoxProps = {
   msg: string | React.ReactNode;
   timeout: boolean;
   timeoutSec?: number;
   small?: boolean;
   warning?: boolean;
-  classes: any;
-}
+};
+export function MsgBox(props: MsgBoxProps) {
+  const [display, setDisplay] = useState<boolean>(true);
+  const { msg, timeout, timeoutSec, warning } = props;
+  const classes = useStyles({ ...props });
 
-interface IState {
-  display: boolean;
-}
-
-class MsgBox extends React.Component<IProps, IState> {
-  public static defaultProps = {
-    small: false,
-    warning: false,
-  };
-
-  public timerHandle: NodeJS.Timer | null;
-
-  constructor(props: IProps) {
-    super(props);
-    this.timerHandle = null;
-    this.state = {
-      display: true,
-    };
-
-    this.closeBox = this.closeBox.bind(this);
-  }
-
-  public componentDidMount() {
-    // TODO fadeout?
-
-    if (this.props.timeout) {
-      const waitTime = (this.props.timeoutSec || defaultTimeoutSec) * 1000;
-      this.timerHandle = setTimeout(() => {
-        this.setState({ display: false });
-        this.timerHandle = null;
+  useEffect(() => {
+    let timerHandle: NodeJS.Timer | null;
+    if (timeout) {
+      const waitTime = (timeoutSec || 10) * 1000;
+      timerHandle = setTimeout(() => {
+        setDisplay(false);
+        timerHandle = null;
       }, waitTime);
     }
-  }
+    return () => {
+      if (timerHandle) {
+        clearTimeout(timerHandle);
+        timerHandle = null;
+      }
+    };
+  });
 
-  public componentWillUnmount() {
-    if (this.timerHandle) {
-      clearTimeout(this.timerHandle);
-      this.timerHandle = null;
-    }
-  }
-
-  public closeBox() {
-    this.setState({ display: false });
-  }
-
-  public render() {
-    const { classes } = this.props;
-
-    if (this.state.display) {
-      return (
-        <div className={classes.info}>
-          <div className={classes.infoIconMargins}>
-            {!this.props.warning && <Icon type="infoMsgBox" />}
-          </div>
-          <span className={classes.msg}>{this.props.msg}</span>
-          <div className={classes.closeIconMargins}>
-            {!this.props.warning && (
-              <Icon type="closeMsgBox" onClick={this.closeBox} />
-            )}
-          </div>
+  if (display) {
+    return (
+      <div className={classes.info}>
+        <div className={classes.infoIconMargins}>
+          {!warning && <Icon type="infoMsgBox" />}
         </div>
-      );
-    }
-    return null;
+        <span className={classes.msg}>{msg}</span>
+        <div className={classes.closeIconMargins}>
+          {!warning && (
+            <Icon type="closeMsgBox" onClick={() => setDisplay(false)} />
+          )}
+        </div>
+      </div>
+    );
   }
+  return null;
 }
 
-const StyledMsgBox = injectSheet(styles)(MsgBox);
-export { StyledMsgBox as MsgBox };
+MsgBox.defaultProps = {
+  timeoutSec: 10,
+  small: false,
+  warning: false,
+};

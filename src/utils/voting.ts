@@ -1,7 +1,7 @@
-import { IVoter } from '../interfaces';
-import ApolloClient from 'apollo-client';
+import { ApolloClient, gql } from '@apollo/client';
+
 import { getSignedInPersonId } from '../queries';
-import gql from 'graphql-tag';
+import { IVoter } from '../interfaces';
 
 const submitVoteMutation = gql`
   mutation submitVote($voterId: UUID!, $ballot: JSONString!) {
@@ -12,8 +12,16 @@ const submitVoteMutation = gql`
 `;
 
 const addVoterMutation = gql`
-  mutation addVoterByPersonId($personId: UUID!, $pollbookId: UUID!, $reason: String) {
-    addVoterByPersonId(personId: $personId, pollbookId: $pollbookId, reason: $reason) {
+  mutation addVoterByPersonId(
+    $personId: UUID!
+    $pollbookId: UUID!
+    $reason: String
+  ) {
+    addVoterByPersonId(
+      personId: $personId
+      pollbookId: $pollbookId
+      reason: $reason
+    ) {
       id
     }
   }

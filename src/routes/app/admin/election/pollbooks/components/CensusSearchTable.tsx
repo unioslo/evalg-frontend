@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { gql } from '@apollo/client';
+import { Query, Mutation } from '@apollo/client/react/components';
+import { useTranslation } from 'react-i18next';
+
 import { ElectionGroup, IVoter, IPollBook, DropDownOption } from 'interfaces';
-import gql from 'graphql-tag';
-import { Query, Mutation } from 'react-apollo';
 import Spinner from 'components/animations/Spinner';
 import {
   Table,
@@ -14,7 +16,6 @@ import {
 } from 'components/table';
 import Text from 'components/text';
 import ActionText from 'components/actiontext';
-import { useTranslation } from 'react-i18next';
 import {
   TextInput,
   DropDown,
@@ -75,6 +76,14 @@ const deleteVoter = gql`
 
 const refetchQueries = () => ['electionGroupSearchVoters'];
 
+type SearchOptions = {
+  electionGroupId: string;
+  limit: number;
+  search: string;
+  hasVoted?: boolean;
+  pollbookId?: string;
+};
+
 interface IProps {
   electionGroup: ElectionGroup;
 }
@@ -112,7 +121,7 @@ const CensusSearchTable: React.FunctionComponent<IProps> = ({
     { name: t('general.all'), value: 'all' },
   ];
 
-  const searchOptions = {
+  const searchOptions: SearchOptions = {
     electionGroupId: electionGroup.id,
     limit: 50,
     search: searchString,
@@ -120,13 +129,13 @@ const CensusSearchTable: React.FunctionComponent<IProps> = ({
 
   // Add the hasVoted filter if set.
   if (hasVotedFilter === 'yes') {
-    searchOptions['hasVoted'] = true;
+    searchOptions.hasVoted = true;
   } else if (hasVotedFilter === 'no') {
-    searchOptions['hasVoted'] = false;
+    searchOptions.hasVoted = false;
   }
 
   if (pollbookFilter !== '' && pollbookFilter !== 'all') {
-    searchOptions['pollbookId'] = pollbookFilter;
+    searchOptions.pollbookId = pollbookFilter;
   }
 
   const handleShowUpdateVoterForm = (voterId: string) => {

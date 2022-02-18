@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import FileSaver from 'file-saver';
-import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { gql } from '@apollo/client';
+import { Query } from '@apollo/client/react/components';
 import { useTranslation } from 'react-i18next';
 
 import Spinner from 'components/animations/Spinner';
@@ -84,7 +84,7 @@ const VoterCSVDumper: React.FunctionComponent<PollbookDumperProps> = ({
     <Button
       text={t('census.download.button')}
       secondary
-      action={(event: any) => setIsGeneratingFile(true)}
+      action={() => setIsGeneratingFile(true)}
     />
   );
 };

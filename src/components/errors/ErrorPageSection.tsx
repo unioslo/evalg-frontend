@@ -13,17 +13,18 @@ const useStyles = createUseStyles((theme: any) => ({
   },
 }));
 
-interface IProps {
+type ErrorPageSectionProps = {
   errorHeader?: string;
   errorGeneralInfo?: string;
   errorMessage?: string;
-}
+  children?: React.ReactNode;
+};
 
-const ErrorPageSection: React.FunctionComponent<IProps> = ({
+export default function ErrorPageSection({
   errorHeader,
   errorGeneralInfo,
   errorMessage,
-}) => {
+}: ErrorPageSectionProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });
@@ -38,6 +39,4 @@ const ErrorPageSection: React.FunctionComponent<IProps> = ({
       </div>
     </PageSection>
   );
-};
-
-export default ErrorPageSection;
+}

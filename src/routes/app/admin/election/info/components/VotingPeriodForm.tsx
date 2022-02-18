@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle: 0 */
 import React from 'react';
 import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 import { Form, Field, FormRenderProps } from 'react-final-form';
