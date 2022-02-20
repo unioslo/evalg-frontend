@@ -101,3 +101,98 @@ export interface DeleteElectionListData {
     ok: boolean;
   };
 }
+
+export const addListElecCandidate = gql`
+  mutation addListElecCandidate(
+    $gender: String!
+    $informationUrl: String
+    $listId: UUID!
+    $name: String!
+    $preCumulated: Boolean!
+    $priority: Int!
+  ) {
+    addListElecCandidate(
+      gender: $gender
+      informationUrl: $informationUrl
+      listId: $listId
+      name: $name
+      preCumulated: preCumulated
+      priority: $priority
+    ) {
+      ok
+    }
+  }
+`;
+
+export interface AddListElecCandidateVars {
+  gender: string;
+  informationUrl: string;
+  listId: string;
+  name: string;
+  preCumulated: boolean;
+  priority: number;
+}
+
+export interface AddListElecCandidateData {
+  updateListElecCandidate: {
+    ok: boolean;
+  };
+}
+
+export const updateListElecCandidate = gql`
+  mutation updateListElecCandidate(
+    $gender: String!
+    $id: UUID!
+    $informationUrl: String
+    $listId: UUID!
+    $name: String!
+    $preCumulated: Boolean!
+    $priority: Int!
+  ) {
+    updateListElecCandidate(
+      gender: $gender
+      id: $id
+      informationUrl: $informationUrl
+      listId: $listId
+      name: $name
+      preCumulated: preCumulated
+      priority: $priority
+    ) {
+      ok
+    }
+  }
+`;
+
+export interface UpdateListElecCandidateVars {
+  gender: string;
+  id: string;
+  informationUrl: string;
+  listId: string;
+  name: string;
+  preCumulated: boolean;
+  priority: number;
+}
+
+export interface UpdateListElecCandidateData {
+  updateListElecCandidate: {
+    ok: boolean;
+  };
+}
+
+export const deleteCandidate = gql`
+  mutation deleteCandidate($id: UUID!) {
+    deleteCandidate(id: $id) {
+      ok
+    }
+  }
+`;
+
+export interface DeleteCandidateVars {
+  id: string;
+}
+
+export interface DeleteCandidateData {
+  deleteCandidate: {
+    ok: boolean;
+  };
+}
