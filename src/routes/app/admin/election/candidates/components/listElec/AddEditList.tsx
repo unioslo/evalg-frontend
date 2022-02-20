@@ -131,7 +131,7 @@ export default function AddEditElectionList({
   const cancelAction = () => {
     // Return to candidate page
     clearListAddUpdatedMsg();
-    history.push(`candidates`);
+    history.push(`/admin/elections/${electionGroup.id}/candidates`);
   };
 
   const validate = (values: AddElectionListVars | UpdateElectionListVars) => {
