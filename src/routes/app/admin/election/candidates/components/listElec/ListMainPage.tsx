@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
-import { Field, Form } from 'react-final-form';
+import { Field, Form, FormSpy } from 'react-final-form';
 import { useHistory } from 'react-router-dom';
 
 import { clearListAddUpdatedMsg } from 'cache';
@@ -49,6 +49,7 @@ export default function ListMainPage(props: IProps) {
   const { i18n, t } = useTranslation();
   let history = useHistory();
   const classes = useStyles();
+  const [selectedList, setSelectedList] = useState<string>('');
 
   const { data, loading } = useQuery(listAddUpdatedMsgQuery);
 
@@ -122,7 +123,7 @@ export default function ListMainPage(props: IProps) {
             <Form
               onSubmit={() => {}}
               render={(formProps) => {
-                const { handleSubmit, values } = formProps;
+                const { handleSubmit } = formProps;
                 return (
                   <form onSubmit={handleSubmit}>
                     <Field
@@ -132,20 +133,24 @@ export default function ListMainPage(props: IProps) {
                       options={listsOptions}
                       large
                     />
-                    {values.list && (
-                      <ListInfo
-                        electionList={
-                          lists.filter(
-                            (list) => list.id === values.list.value
-                          )[0]
+                    <FormSpy
+                      subscription={{ values: true }}
+                      onChange={(formState: any) => {
+                        if ('list' in formState.values) {
+                          setSelectedList(formState.values.list.value);
                         }
-                      />
-                    )}
+                      }}
+                    />
                   </form>
                 );
               }}
             />
           </div>
+          {selectedList && (
+            <ListInfo
+              electionList={lists.filter((list) => list.id === selectedList)[0]}
+            />
+          )}
         </PageSection>
       ) : (
         <p>{t('admin.listElec.noListInElection')}</p>
