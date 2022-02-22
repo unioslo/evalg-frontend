@@ -104,20 +104,20 @@ export interface DeleteElectionListData {
 
 export const addListElecCandidate = gql`
   mutation addListElecCandidate(
-    $gender: String!
     $informationUrl: String
     $listId: UUID!
     $name: String!
     $preCumulated: Boolean!
     $priority: Int!
+    $fieldOfStudy: String
   ) {
     addListElecCandidate(
-      gender: $gender
       informationUrl: $informationUrl
       listId: $listId
       name: $name
       preCumulated: preCumulated
       priority: $priority
+      fieldOfStudy: $fieldOfStudy
     ) {
       ok
     }
@@ -125,12 +125,12 @@ export const addListElecCandidate = gql`
 `;
 
 export interface AddListElecCandidateVars {
-  gender: string;
   informationUrl: string;
   listId: string;
   name: string;
   preCumulated: boolean;
   priority: number;
+  fieldOfStudy: string;
 }
 
 export interface AddListElecCandidateData {
@@ -148,15 +148,16 @@ export const updateListElecCandidate = gql`
     $name: String!
     $preCumulated: Boolean!
     $priority: Int!
+    $fieldOfStudy: String
   ) {
     updateListElecCandidate(
-      gender: $gender
       id: $id
       informationUrl: $informationUrl
       listId: $listId
       name: $name
       preCumulated: preCumulated
       priority: $priority
+      fieldOfStudy: $fieldOfStudy
     ) {
       ok
     }
@@ -164,13 +165,13 @@ export const updateListElecCandidate = gql`
 `;
 
 export interface UpdateListElecCandidateVars {
-  gender: string;
   id: string;
   informationUrl: string;
   listId: string;
   name: string;
   preCumulated: boolean;
   priority: number;
+  fieldOfStudy: string;
 }
 
 export interface UpdateListElecCandidateData {
