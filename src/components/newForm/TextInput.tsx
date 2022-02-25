@@ -17,6 +17,7 @@ interface TextInputProps extends FieldRenderProps<string, any> {
   containerWidth?: string;
   noInputMaxWidth?: boolean;
   tabIndex?: number;
+  disabled?: boolean;
 }
 
 const useStyles = createUseStyles((theme: any) => ({
@@ -84,6 +85,7 @@ export default function TextInput(props: TextInputProps) {
   const {
     className,
     containerWidth,
+    disabled,
     input,
     inputRef,
     label,
@@ -140,6 +142,7 @@ export default function TextInput(props: TextInputProps) {
         autoCorrect="off"
         ref={inputRef}
         tabIndex={tabIndex}
+        disabled={disabled}
       />
       {touched && error && <FormErrorMsg msg={error} />}
     </div>
@@ -158,4 +161,5 @@ TextInput.defaultProps = {
   containerWidth: undefined,
   noInputMaxWidth: false,
   tabIndex: undefined,
+  disabled: false,
 };
