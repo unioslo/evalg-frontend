@@ -128,6 +128,17 @@ export default function AddEditElectionList({
     deleteElectionList
   );
 
+  const isLocked = electionGroup.elections[0].isLocked;
+
+  if (!editList && isLocked) {
+    return (
+      <ErrorPageSection
+        errorHeader={t('admin.listElec.errors.electionLocked.header')}
+        errorMessage={t('admin.listElec.errors.electionLocked.msg')}
+      />
+    );
+  }
+
   const cancelAction = () => {
     // Return to candidate page
     clearListAddUpdatedMsg();
@@ -425,6 +436,7 @@ export default function AddEditElectionList({
                     entityAction={() => {
                       setDisplayModal(true);
                     }}
+                    entityActionDisabled={isLocked}
                     entityText={t('admin.listElec.delete')}
                     entityDanger
                   />

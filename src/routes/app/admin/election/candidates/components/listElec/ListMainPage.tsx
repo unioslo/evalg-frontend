@@ -72,6 +72,8 @@ export default function ListMainPage(props: IProps) {
     };
   });
 
+  const isLocked = elections[0].isLocked;
+
   if (elections.length === 0) {
     return (
       <PageSection noBorder desc="No active election">
@@ -103,16 +105,24 @@ export default function ListMainPage(props: IProps) {
           />
         </div>
       )}
-      <PageSection noBorder desc={t('admin.listElec.header')}>
-        <div style={{ marginBottom: '1.2rem' }}>
-          <button
-            className="button-no-style"
-            onClick={() => history.push('addlist')}
-          >
-            <ActionButton text={t('admin.listElec.add')} />
-          </button>
-        </div>
-      </PageSection>
+      {isLocked ? (
+        <PageSection noBorder desc={t('admin.listElec.lockedElection.header')}>
+          <div style={{ marginBottom: '1.2rem' }}>
+            <p>{t('admin.listElec.lockedElection.msg')}</p>
+          </div>
+        </PageSection>
+      ) : (
+        <PageSection noBorder desc={t('admin.listElec.header')}>
+          <div style={{ marginBottom: '1.2rem' }}>
+            <button
+              className="button-no-style"
+              onClick={() => history.push('addlist')}
+            >
+              <ActionButton text={t('admin.listElec.add')} />
+            </button>
+          </div>
+        </PageSection>
+      )}
       {lists ? (
         <PageSection
           noBorder

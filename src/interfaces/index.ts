@@ -163,6 +163,7 @@ export interface Candidate {
   preCumulated: boolean;
   meta: {
     coCandidates?: CoCandidate[];
+    fieldOfStudy: string;
     gender?: 'male' | 'female';
   };
 }

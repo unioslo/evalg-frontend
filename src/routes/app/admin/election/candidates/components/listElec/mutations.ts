@@ -115,7 +115,7 @@ export const addListElecCandidate = gql`
       informationUrl: $informationUrl
       listId: $listId
       name: $name
-      preCumulated: preCumulated
+      preCumulated: $preCumulated
       priority: $priority
       fieldOfStudy: $fieldOfStudy
     ) {
@@ -141,7 +141,6 @@ export interface AddListElecCandidateData {
 
 export const updateListElecCandidate = gql`
   mutation updateListElecCandidate(
-    $gender: String!
     $id: UUID!
     $informationUrl: String
     $listId: UUID!
@@ -155,7 +154,7 @@ export const updateListElecCandidate = gql`
       informationUrl: $informationUrl
       listId: $listId
       name: $name
-      preCumulated: preCumulated
+      preCumulated: $preCumulated
       priority: $priority
       fieldOfStudy: $fieldOfStudy
     ) {

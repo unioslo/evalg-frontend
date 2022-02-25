@@ -117,6 +117,11 @@
         "listIdMissing": {
           "header": "Liste-ID mangler",
           "msg": "URL inneholder ikke liste-ID"
+        },
+        "candidateNameMissing": "Navn på kandidaten mangler",
+        "electionLocked": {
+          "msg": "Valget pågår og/eller inneholder stemmer. Det er ikke mulig å legge til nye valglister.",
+          "header": "Låst valg"
         }
       },
       "addingList": "Legger til liste..",
@@ -134,6 +139,18 @@
       "deleteModal": {
         "header": "Bekreft sletting",
         "body": "Er du sikker på at du vil slette listen «{{name}}»?"
+      },
+      "editCandidate": "Endre kandidat",
+      "addCandidate": "Legg til kandidat",
+      "candidates": {
+        "added": "Kandidat {{name}} lagt til",
+        "deleted": "Kandidat {{name}} slettet",
+        "update": "Kandidat {{name}} oppdatert"
+      },
+      "lockedElectionCandidateMsg": "Valget pågår og/eller inneholder stemmer. Det er nå kun mulig å endre navn og studieretning.",
+      "lockedElection": {
+        "header": "Administer informasjon om lister og kandidater",
+        "msg": "Valget pågår og/eller inneholder stemmer. Det er nå kun mulig å endre informasjon om lister og kandidater."
       }
     },
     "statusSection": {

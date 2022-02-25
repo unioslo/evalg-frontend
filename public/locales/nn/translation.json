@@ -211,6 +211,11 @@
         "listIdMissing": {
           "header": "Liste-ID manglar",
           "msg": "URL manglar liste-ID"
+        },
+        "candidateNameMissing": "Namn på kandidaten manglar",
+        "electionLocked": {
+          "msg": "Valet pågår og/eller inneheldt stemmar. Det er ikkje mogleg å legga til nye vallister",
+          "header": "Låst val"
         }
       },
       "addingList": "Legger til liste..",
@@ -231,6 +236,18 @@
       },
       "editList": {
         "header": "Endra listeinformasjon"
+      },
+      "editCandidate": "Endra kandidat",
+      "addCandidate": "Legg til kandidat",
+      "candidates": {
+        "added": "Kandidat {{name}} lagt til",
+        "deleted": "Kandidat {{name}} sletta",
+        "update": "Kandidat {{name}} oppdatert"
+      },
+      "lockedElectionCandidateMsg": "Valget pågår og/eller inneheld stemmar. Det er nå kun mogleg å endra namn og studieretning.",
+      "lockedElection": {
+        "header": "Administer informasjon om listar og kandidatar",
+        "msg": "Valet pågår og/eller inneheld røstar. Det er nå kun mogleg å endra informasjon om lister og kandidater."
       }
     }
   },

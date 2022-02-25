@@ -6,17 +6,10 @@ import { useTranslation } from 'react-i18next';
 import Link from 'components/link';
 import { PageSubSection } from 'components/page';
 import { PageExpandableSubSection } from 'components/page/PageSection';
-import {
-  Table,
-  TableHeader,
-  TableHeaderRow,
-  TableHeaderCell,
-  TableBody,
-  TableRow,
-  TableCell,
-} from 'components/table';
 import Text, { H4 } from 'components/text';
 import { ElectionList } from 'interfaces';
+
+import ListCandidateTable from './ListCandidateTable';
 
 type ListTableProps = {
   electionList: ElectionList;
@@ -54,40 +47,7 @@ export default function ListInfo(props: ListTableProps) {
         </PageExpandableSubSection>
       </div>
 
-      <Table>
-        <TableHeader>
-          <TableHeaderRow>
-            <TableHeaderCell>
-              {t('admin.listElec.candidateTable.placement')}
-            </TableHeaderCell>
-            <TableHeaderCell>
-              {t('admin.listElec.candidateTable.person')}
-            </TableHeaderCell>
-            <TableHeaderCell>
-              {t('admin.listElec.candidateTable.fieldOfStudy')}
-            </TableHeaderCell>
-            <TableHeaderCell>
-              {t('admin.listElec.candidateTable.preAccumulated')}
-            </TableHeaderCell>
-          </TableHeaderRow>
-        </TableHeader>
-        <TableBody>
-          {electionList.candidates.length > 0 ? (
-            <TableRow>
-              <TableCell>
-                <Text>TODO</Text>
-              </TableCell>
-            </TableRow>
-          ) : (
-            <TableRow>
-              <TableCell />
-              <TableCell>
-                <Text>{t('admin.listElec.noCandidatesInList')}</Text>
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+      <ListCandidateTable electionList={electionList} />
     </PageSubSection>
   );
 }
