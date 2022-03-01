@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
-import { Field, Form } from 'react-final-form';
+import { Field, Form, FormSpy } from 'react-final-form';
 import { useHistory } from 'react-router-dom';
 
 import { clearListAddUpdatedMsg } from 'cache';
@@ -49,6 +49,7 @@ export default function ListMainPage(props: IProps) {
   const { i18n, t } = useTranslation();
   let history = useHistory();
   const classes = useStyles();
+  const [selectedList, setSelectedList] = useState<string>('');
 
   const { data, loading } = useQuery(listAddUpdatedMsgQuery);
 
@@ -70,6 +71,8 @@ export default function ListMainPage(props: IProps) {
       value: list.id,
     };
   });
+
+  const isLocked = elections[0].isLocked;
 
   if (elections.length === 0) {
     return (
@@ -102,16 +105,24 @@ export default function ListMainPage(props: IProps) {
           />
         </div>
       )}
-      <PageSection noBorder desc={t('admin.listElec.header')}>
-        <div style={{ marginBottom: '1.2rem' }}>
-          <button
-            className="button-no-style"
-            onClick={() => history.push('addlist')}
-          >
-            <ActionButton text={t('admin.listElec.add')} />
-          </button>
-        </div>
-      </PageSection>
+      {isLocked ? (
+        <PageSection noBorder desc={t('admin.listElec.lockedElection.header')}>
+          <div style={{ marginBottom: '1.2rem' }}>
+            <p>{t('admin.listElec.lockedElection.msg')}</p>
+          </div>
+        </PageSection>
+      ) : (
+        <PageSection noBorder desc={t('admin.listElec.header')}>
+          <div style={{ marginBottom: '1.2rem' }}>
+            <button
+              className="button-no-style"
+              onClick={() => history.push('addlist')}
+            >
+              <ActionButton text={t('admin.listElec.add')} />
+            </button>
+          </div>
+        </PageSection>
+      )}
       {lists ? (
         <PageSection
           noBorder
@@ -122,7 +133,7 @@ export default function ListMainPage(props: IProps) {
             <Form
               onSubmit={() => {}}
               render={(formProps) => {
-                const { handleSubmit, values } = formProps;
+                const { handleSubmit } = formProps;
                 return (
                   <form onSubmit={handleSubmit}>
                     <Field
@@ -132,20 +143,24 @@ export default function ListMainPage(props: IProps) {
                       options={listsOptions}
                       large
                     />
-                    {values.list && (
-                      <ListInfo
-                        electionList={
-                          lists.filter(
-                            (list) => list.id === values.list.value
-                          )[0]
+                    <FormSpy
+                      subscription={{ values: true }}
+                      onChange={(formState: any) => {
+                        if ('list' in formState.values) {
+                          setSelectedList(formState.values.list.value);
                         }
-                      />
-                    )}
+                      }}
+                    />
                   </form>
                 );
               }}
             />
           </div>
+          {selectedList && (
+            <ListInfo
+              electionList={lists.filter((list) => list.id === selectedList)[0]}
+            />
+          )}
         </PageSection>
       ) : (
         <p>{t('admin.listElec.noListInElection')}</p>

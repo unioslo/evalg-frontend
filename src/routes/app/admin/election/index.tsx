@@ -37,6 +37,11 @@ const electionGroupQuery = gql`
         }
         lists {
           id
+          election {
+            id
+            active
+            isLocked
+          }
           name
           description
           informationUrl
