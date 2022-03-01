@@ -214,7 +214,7 @@
         },
         "candidateNameMissing": "Candidate name missing",
         "electionLocked": {
-          "msg": "The election is running and/or contains votes. Not possible to add new election lists.",
+          "msg": "The election is running and/or contains votes. It is not possible to add new election lists.",
           "header": "Locked election"
         }
       },
@@ -241,7 +241,7 @@
       "candidates": {
         "added": "Candidate {{name}} added",
         "deleted": "Candidate {{name}} deleted",
-        "update": "Kandidat {{name}} oppdatert"
+        "update": "Candidate {{name}} updated"
       },
       "lockedElectionCandidateMsg": "The election is ongoing and/or contains votes. You can only change name and field of study.",
       "lockedElection": {
