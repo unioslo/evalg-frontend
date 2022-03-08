@@ -665,7 +665,16 @@
     "stepperStep2": "Fyll ut røystesetel",
     "stepperStep3": "Sjå over røystesetel",
     "stepperStep4": "Kvittering",
-    "submitVote": "Lever røystesetel"
+    "submitVote": "Lever røystesetel",
+    "listVoteHelpHeader": "Listar som stillar til val",
+    "listVoteHelpDesc": "Vel eller endra på ei liste",
+    "listVote": {
+      "candidates": "Kandidatar",
+      "editList": "Gjer endringar i lista",
+      "noEdit": "Sjå røystesetel",
+      "preCumulated": "Forhåndskumulert",
+      "moreInfo": "Meir om {{list}}"
+    }
   },
   "voterGroupSelect": {
     "andCloses": "og stenger",
