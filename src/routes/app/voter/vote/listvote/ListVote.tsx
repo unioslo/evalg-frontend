@@ -100,21 +100,26 @@ export default function ListVote(props: ListVoteProps) {
   };
 
   const handleSubmitVote = () => {
-    // TODO fix
-
-    if (ballot) {
+    // TODO error handling
+    if (isBlankVote) {
+      onSubmitVote({
+        voteType: 'SPListElecVote',
+        chosenListId: '',
+        isBlankVote: true,
+        personalVotesOtherParty: [],
+        personalVotesSameParty: [],
+      });
+    } else if (ballot) {
       onSubmitVote({
         voteType: 'SPListElecVote',
         chosenListId: ballot.chosenList.id,
         isBlankVote: isBlankVote,
-        personalVotesOtherParty: isBlankVote ? [] : [], // TODO fix when adding vote edit
-        personalVotesSameParty: isBlankVote
-          ? []
-          : ballot.personalVotesSameParty.map((vote) => ({
-              candidate: vote.candidate.id,
-              cumulated: false,
-              precumulated: vote.candidate.preCumulated,
-            })),
+        personalVotesOtherParty: [], // TODO fix when adding vote edit
+        personalVotesSameParty: ballot.personalVotesSameParty.map((vote) => ({
+          candidate: vote.candidate.id,
+          cumulated: false,
+          precumulated: vote.candidate.preCumulated,
+        })),
       });
     }
   };
