@@ -1,24 +1,25 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { ScreenSizeConsumer } from 'providers/ScreenSize';
 import Button, { ButtonContainer } from 'components/button';
 
-interface IProps {
+interface BallotButtonsProps {
   onGoBackToSelectVoterGroup: () => void;
   onBlankVote: () => void;
   onReviewBallot: () => void;
   reviewBallotEnabled: boolean;
   showBlankVoteButton?: boolean;
+  showVoteButton?: boolean;
 }
 
-const BallotButtons: React.FunctionComponent<IProps> = ({
+export default function BallotButtons({
   onGoBackToSelectVoterGroup,
   onBlankVote,
   showBlankVoteButton,
+  showVoteButton,
   reviewBallotEnabled,
   onReviewBallot,
-}) => {
+}: BallotButtonsProps) {
   const { t } = useTranslation();
 
   const backButton = (
@@ -63,23 +64,22 @@ const BallotButtons: React.FunctionComponent<IProps> = ({
             )}
             <ButtonContainer>
               {backButton}
-              {reviewBallotButtonForScreenSize(screenSize)}
+              {showVoteButton && reviewBallotButtonForScreenSize(screenSize)}
             </ButtonContainer>
           </>
         ) : (
           <ButtonContainer alignLeft>
             {backButton}
             {showBlankVoteButton && blankVoteButtonForScreenSize(screenSize)}
-            {reviewBallotButtonForScreenSize(screenSize)}
+            {showVoteButton && reviewBallotButtonForScreenSize(screenSize)}
           </ButtonContainer>
         )
       }
     </ScreenSizeConsumer>
   );
-};
+}
 
 BallotButtons.defaultProps = {
   showBlankVoteButton: true,
+  showVoteButton: true,
 };
-
-export default BallotButtons;
