@@ -8,6 +8,8 @@ import { Classes } from 'jss';
 import DropDownBase from 'components/baseComponents/DropDownBase';
 import TextInput from './TextInput';
 
+import { appInst } from 'appConfig';
+
 const styles = (theme: any) => ({
   dropdown: {
     position: 'relative',
@@ -86,7 +88,10 @@ const styles = (theme: any) => ({
     color: theme.dropDownSecondaryLineColor,
   },
   input: {
-    backgroundImage: 'url("/dropdownarrow.svg")',
+    backgroundImage:
+      appInst === 'uio' || appInst === undefined
+        ? 'url("/dropdownarrow.svg")'
+        : 'url("/dropdownarrow_white.svg")',
     backgroundPosition: 'right 13px top 50%',
     backgroundRepeat: 'no-repeat',
     backgroundSize: '14px 9px',
@@ -95,7 +100,10 @@ const styles = (theme: any) => ({
     width: 'fit-content',
     display: 'inline-block',
     color: theme.dropDownDesktopMenuColor,
-    background: 'url("/dropdownarrow.svg") no-repeat right 7px top 50%',
+    background:
+      appInst === 'uio' || appInst === undefined
+        ? 'url("/dropdownarrow.svg") no-repeat right 7px top 50%'
+        : 'url("/dropdownarrow_white.svg") no-repeat right 7px top 50%',
     fontFamily: 'inherit',
     fontSize: 'inherit',
     '& .inlineOptionNameText': {
