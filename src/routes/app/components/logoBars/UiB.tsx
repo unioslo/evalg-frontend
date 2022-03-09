@@ -16,7 +16,8 @@ const useStyles = createUseStyles((theme: any) => ({
   },
   logo: {
     marginTop: '2rem',
-    height: '8rem',
+    maxHeight: '8rem',
+    maxWidth: '100%',
     backgroundSize: 'contain',
   },
 }));
