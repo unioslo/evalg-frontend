@@ -664,7 +664,16 @@
     "stepperStep2": "Fill out ballot",
     "stepperStep3": "Review ballot",
     "stepperStep4": "Receipt",
-    "submitVote": "Submit vote"
+    "submitVote": "Submit vote",
+    "listVoteHelpHeader": "Lists running for election",
+    "listVoteHelpDesc": "Choose or edit a list.",
+    "listVote": {
+      "candidates": "Candidates",
+      "editList": "Edit list",
+      "noEdit": "See ballot",
+      "preCumulated": "Precumulated",
+      "moreInfo": "More on {{list}}"
+    }
   },
   "voterGroupSelect": {
     "andCloses": "and closes",

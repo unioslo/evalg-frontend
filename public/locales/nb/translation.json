@@ -669,7 +669,16 @@
     "stepperStep2": "Fyll ut stemmeseddel",
     "stepperStep3": "Se over stemmeseddel",
     "stepperStep4": "Kvittering",
-    "submitVote": "Lever stemmeseddel"
+    "submitVote": "Lever stemmeseddel",
+    "listVoteHelpHeader": "Lister som stiller til valg",
+    "listVoteHelpDesc": "Velg eller endre på en liste",
+    "listVote": {
+      "candidates": "Kandidater",
+      "editList": "Gjør endringer i listen",
+      "noEdit": "Se stemmeseddel",
+      "preCumulated": "Forhåndskumulert",
+      "moreInfo": "Mer om {{list}}"
+    }
   },
   "voterGroupSelect": {
     "andCloses": "og stenger",

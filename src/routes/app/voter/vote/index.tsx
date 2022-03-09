@@ -12,6 +12,7 @@ import { submitVote } from 'utils/voting';
 import { Election, IVoter } from 'interfaces';
 import { BallotStep } from './utils';
 
+import ListVote from './listvote';
 import PrefElecVote from './PrefElecVote';
 import MajorityVote from './MajorityVote';
 import PollVote from './PollVote';
@@ -234,7 +235,7 @@ class VotingPage extends React.Component<WithApolloClient<IProps>, IState> {
                 return <div>Unknown meta.candidateType: {candidateType}</div>;
               }
             } else if (voting === 'list') {
-              return <div>List election voting not implemented</div>;
+              VotingComponent = ListVote;
             } else if (voting === 'no_rank') {
               if (
                 countingRules.method === 'mntv' ||

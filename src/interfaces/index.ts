@@ -342,3 +342,21 @@ export interface ElectionVoterInfoInput {
   contact: string;
   informationUrl: string;
 }
+
+/**
+ * Interface for the ballot of a list election vote
+ */
+export interface ListBallotData {
+  voteType: 'SPListElecVote';
+  chosenListId: string;
+  blankVote: boolean;
+  personalVotesOtherParty: {
+    candidate: string;
+    list: string;
+  }[];
+  personalVotesSameParty: {
+    candidate: string;
+    cumulated: boolean;
+    precumulated: boolean;
+  }[];
+}
