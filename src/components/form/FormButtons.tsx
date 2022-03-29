@@ -25,15 +25,17 @@ const useStyles = createUseStyles({
 });
 
 interface FormButtonsProps {
-  saveAction: (submitValues: any) => void;
-  closeAction: (id: any) => void;
-  submitDisabled: boolean;
   cancelDisabled?: boolean;
-  submitting?: boolean;
+  closeAction?: (id: any) => void;
+  customButtonText?: React.ReactNode | string;
+  customButtonTextSubmitting?: React.ReactNode | string;
   entityAction?: any;
   entityActionDisabled?: boolean;
   entityText?: React.ReactNode | string;
   entityDanger?: boolean;
+  submitDisabled: boolean;
+  saveAction: (submitValues: any) => void;
+  submitting?: boolean;
 }
 
 export default function FormButtons(props: FormButtonsProps) {
@@ -46,6 +48,8 @@ export default function FormButtons(props: FormButtonsProps) {
     entityActionDisabled,
     entityDanger,
     entityText,
+    customButtonText,
+    customButtonTextSubmitting,
   } = props;
   const classes = useStyles();
   const { t } = useTranslation();
@@ -61,21 +65,25 @@ export default function FormButtons(props: FormButtonsProps) {
           secondary={!entityDanger}
         />
       )}
-      <Button
-        text={t('general.cancel')}
-        disabled={submitting}
-        action={closeAction}
-        secondary
-      />
+      {closeAction && (
+        <Button
+          text={t('general.cancel')}
+          disabled={submitting}
+          action={closeAction}
+          secondary
+        />
+      )}
       <Button
         text={
           submitting ? (
             <>
-              {t('general.saving')}
+              {customButtonTextSubmitting
+                ? customButtonTextSubmitting
+                : t('general.saving')}
               <div className={classes.savingSpinner} />
             </>
           ) : (
-            <>{t('general.save')}</>
+            <>{customButtonText ? customButtonText : t('general.save')}</>
           )
         }
         disabled={submitDisabled}
