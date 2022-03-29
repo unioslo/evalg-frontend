@@ -156,8 +156,8 @@ export interface IVoteCount {
 export interface Candidate {
   id: string;
   name: string;
-  listId?: string;
-  list?: ElectionList;
+  listId: string;
+  list: ElectionList;
   informationUrl: string;
   priority: number;
   preCumulated: boolean;
@@ -174,7 +174,7 @@ export interface CoCandidate {
 
 export interface ElectionList {
   id: string;
-  election?: Election;
+  election: Election;
   name: NameFields;
   description: NameFields;
   informationUrl?: string;
@@ -186,17 +186,17 @@ export interface Election {
   name: NameFields;
   start: string;
   end: string;
-  voteCount?: IVoteCount;
+  voteCount: IVoteCount;
   status: ElectionStatusType;
   pollbooks: IPollBook[];
   meta: ElectionMetaData;
-  electionGroup?: ElectionGroup;
+  electionGroup: ElectionGroup;
   active: boolean;
   mandatePeriodStart: string;
   mandatePeriodEnd: string;
   contact?: string;
   informationUrl: string;
-  isLocked?: boolean;
+  isLocked: boolean;
   tz?: string;
   lists: ElectionList[];
 }
