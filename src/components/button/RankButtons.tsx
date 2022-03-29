@@ -31,7 +31,8 @@ const useStyles = createUseStyles({
 interface RankButtonsProps {
   onRankUp: () => void;
   onRankDown: () => void;
-  title: string;
+  titleDown: string;
+  titleUp: string;
   buttonText?: string;
   first: boolean;
   last: boolean;
@@ -40,7 +41,8 @@ interface RankButtonsProps {
 export default function RankButtons({
   onRankDown,
   onRankUp,
-  title,
+  titleDown,
+  titleUp,
   buttonText,
   first,
   last,
@@ -61,7 +63,7 @@ export default function RankButtons({
         disabled={first}
       >
         <div className={classes.buttonContent}>
-          <UpArrowIcon title={title} disabled={first} />
+          <UpArrowIcon title={titleUp} disabled={first} />
           {buttonText && <div className={classes.buttonText}>{buttonText}</div>}
         </div>
       </button>
@@ -77,7 +79,7 @@ export default function RankButtons({
         disabled={last}
       >
         <div className={classes.buttonContent}>
-          <DownArrowIcon title={title} disabled={last} />
+          <DownArrowIcon title={titleDown} disabled={last} />
           {buttonText && <div className={classes.buttonText}>{buttonText}</div>}
         </div>
       </button>

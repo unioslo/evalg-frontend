@@ -620,7 +620,8 @@
       "addCandidate": "Legg til kandidat {{candidate}}",
       "demoteCandidate": "Flytt kandidat {{candidate}} ned til plass {{index}}",
       "promoteCandidate": "Flytt kandidat {{candidate}} opp til plass {{index}}",
-      "removeCandidate": "Fjern kandidat {{candidate}}"
+      "removeCandidate": "Fjern kandidat {{candidate}}",
+      "cumulateCandidate": "Kumuler {{candidate}}"
     }
   },
   "voter": {
@@ -677,8 +678,35 @@
       "editList": "Gjør endringer i listen",
       "noEdit": "Se stemmeseddel",
       "preCumulated": "Forhåndskumulert",
-      "moreInfo": "Mer om {{list}}"
-    }
+      "moreInfo": "Mer om {{list}}",
+      "changeList": "Endre listen",
+      "addOtherListHeader": "Legg til kandidat fra en annen liste",
+      "findCandidate": "Finn kandidat",
+      "candidate": "Kandidat",
+      "otherList": "Velg list",
+      "addOtherVoterButtonText": "Legg til",
+      "addOtherVoterSubmittingText": "Legger til",
+      "deleteOtherCandidate": "Fjern slenger {{candidate}}",
+      "otherListCandidates": "Kandidater fra andre lister (slengere)",
+      "otherListCandidatesMissing": "Kandidat mangler",
+      "deletedCandidateHeader": "Strøket fra opprinnelig liste",
+      "deletedCandidateText": "",
+      "cumulate": "Kumuler",
+      "selectedList": "Listenavn: {{name}}",
+      "editListHelp": {
+        "cumulate": "Du kan gi kandidater tilleggstemmer (kumulere)",
+        "changeOrder": "Du kan endre rekkefølgen på kandidatene",
+        "remove": "Du kan stryke kandidater fra listen",
+        "others": "Du kan også gi stemmer til kandidater på andre lister (slengere)"
+      },
+      "moveCandidate": "Flytt kandidat {{name}} til plass {{priority}}",
+      "helpTextTags": {
+        "choseList": "Du velger først hvilken liste du vil stemme på.",
+        "noEdits": "Du kan levere listen som den er ved å trykke på «Vis stemmeseddel».",
+        "edits": "Det er også mulighet for å gjøre endringer på listen."
+      }
+    },
+    "dnd": "Dra og slipp kandidat {{name}}"
   },
   "voterGroupSelect": {
     "andCloses": "og stenger",
@@ -720,5 +748,19 @@
   },
   "icons": {
     "close": "Lukk"
+  },
+  "listElec": {
+    "ballot": {
+      "reAddCandidate": "Legg strøket kandidat {{candidate}} tilbake i listen",
+      "Add": "Legg til",
+      "remove": "Stryk",
+      "removeCumulation": "Fjern kumulering av {{candidate}}",
+      "cumulate": "Ekstra stemme",
+      "preCumulated": "Forhåndskumulert",
+      "removeOtherCandidate": "Fjern"
+    },
+    "review": {
+      "userCumulated": "Kandidat {{candidate}} er kumulert"
+    }
   }
 }

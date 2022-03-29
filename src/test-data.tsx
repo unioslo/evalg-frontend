@@ -1,6 +1,4 @@
-import { Election, ElectionList } from 'interfaces';
-
-export const electionListA: ElectionList = {
+export const electionListA = {
   id: '1d51ad81-3a28-4a72-afcd-4da0716b9370',
   name: {
     nb: 'Ventelista',
@@ -134,7 +132,7 @@ export const electionListB = {
   ],
 };
 
-export const mockListElection: Election = {
+export const mockListElection = {
   id: '9454b310-c589-408c-8978-a441e5e5e7e3',
   name: {
     nb: 'Studentparlament ved UiO',
@@ -171,6 +169,7 @@ export const mockListElection: Election = {
   mandatePeriodStart: '2022-07-01',
   mandatePeriodEnd: '2023-07-01',
   informationUrl: '',
+  isLocked: true,
   pollbooks: [],
   lists: [electionListA, electionListB],
 };

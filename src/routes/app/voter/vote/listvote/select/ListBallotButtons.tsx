@@ -7,9 +7,8 @@
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 
-import Button from 'components/button';
 import ActionItem from 'components/actionitem';
-import Icon from 'components/icon';
+import Button from 'components/button';
 
 const useStyles = createUseStyles((theme: any) => ({
   buttonContainer: {

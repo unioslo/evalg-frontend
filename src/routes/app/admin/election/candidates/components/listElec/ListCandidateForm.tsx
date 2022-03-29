@@ -38,8 +38,6 @@ export default function ListCandidateForm(props: ListCandidateFormProps) {
     return errors;
   };
 
-  console.info(isLocked);
-
   return (
     <Form
       onSubmit={props.handleSubmit}

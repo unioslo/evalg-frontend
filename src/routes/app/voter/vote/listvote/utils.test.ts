@@ -1,4 +1,4 @@
-import { EditListCandidate } from 'interfaces';
+import { Candidate, EditListCandidate, ElectionList } from 'interfaces';
 
 import { electionListA, electionListB } from 'test-data';
 import {
@@ -20,7 +20,7 @@ it('creates valid clean ballot', () => {
     .sort((a, b) => a.priority - b.priority)
     .map((candidate) => ({ candidate: candidate.id, cumulated: false }));
 
-  const cleanBallot = createCleanListBallot(electionListA);
+  const cleanBallot = createCleanListBallot(electionListA as ElectionList);
   expect(cleanBallot.isBlankVote).toEqual(false);
   expect(cleanBallot.chosenListId).toEqual(electionListA.id);
   expect(cleanBallot.personalVotesOtherParty).toEqual([]);
@@ -47,14 +47,14 @@ it('creates valid edited ballot', () => {
 
   const otherCandidates: EditListCandidate[] = [
     {
-      candidate: electionListB.candidates[1],
-      sourceList: electionListB,
+      candidate: electionListB.candidates[1] as Candidate,
+      sourceList: electionListB as ElectionList,
       userCumulated: false,
       userDeleted: false,
     },
     {
-      candidate: electionListB.candidates[3],
-      sourceList: electionListB,
+      candidate: electionListB.candidates[3] as Candidate,
+      sourceList: electionListB as ElectionList,
       userCumulated: false,
       userDeleted: false,
     },
@@ -66,8 +66,8 @@ it('creates valid edited ballot', () => {
   }));
 
   const editedBallot = createEditListBallot(
-    electionListA,
-    editedCandidateList,
+    electionListA as ElectionList,
+    editedCandidateList as any,
     otherCandidates
   );
   expect(editedBallot.isBlankVote).toEqual(false);
