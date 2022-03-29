@@ -194,19 +194,24 @@ interface ISelectProps {
   selected: boolean;
   flexRight: boolean;
   action: () => void;
+  large?: boolean;
 }
 
 const ToggleSelectIcon: React.FunctionComponent<ISelectProps> = (props) => {
-  const { action, flexRight } = props;
+  const { action, flexRight, large = false } = props;
   const theme = useTheme();
   const classes = useStyles({ theme });
   const cls = classNames({
     [classes.toggleSelectionIconFlexRight]: flexRight,
   });
+
+  const width = large ? '61px' : '51px';
+  const height = large ? '60px' : '42px';
+
   return (
     <div className={cls} onClick={action}>
       {props.selected ? (
-        <svg width="51px" height="42px" viewBox="0 0 51 62" version="1.1">
+        <svg width={width} height={height} viewBox="0 0 51 62" version="1.1">
           <g stroke="none" strokeWidth="1" fill="none">
             <rect fill="#D5EBEF" x="0" y="0" width="51" height="62" rx="8" />
             <g transform="translate(12.000000, 17.000000)">
@@ -222,7 +227,7 @@ const ToggleSelectIcon: React.FunctionComponent<ISelectProps> = (props) => {
           </g>
         </svg>
       ) : (
-        <svg width="51px" height="42px" viewBox="0 0 51 62" version="1.1">
+        <svg width={width} height={height} viewBox="0 0 51 62" version="1.1">
           <g stroke="none" strokeWidth="1" fill="none">
             <rect fill="#F9F4FA" x="0" y="0" width="51" height="62" rx="8" />
             <g transform="translate(12.000000, 17.000000)">
