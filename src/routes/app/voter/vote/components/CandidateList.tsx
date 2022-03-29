@@ -205,8 +205,8 @@ const ToggleSelectIcon: React.FunctionComponent<ISelectProps> = (props) => {
     [classes.toggleSelectionIconFlexRight]: flexRight,
   });
 
-  const width = large ? '61px' : '51px';
-  const height = large ? '60px' : '42px';
+  const width = large ? '55px' : '51px';
+  const height = large ? '70px' : '42px';
 
   return (
     <div className={cls} onClick={action}>
