@@ -693,7 +693,7 @@
         "remove": "You can remove candidates from the list",
         "others": "You can give votes to candidates on other lists."
       },
-      "moveCandidate": "Move candidate {{name}} to possition {{priority",
+      "moveCandidate": "Move candidate {{name}} to position {{priority}}",
       "helpTextTags": {
         "choseList": "You first choose the list you want to vote for.",
         "noEdits": "You can cast a vote without any changes by pressing \"Show ballot\".",
