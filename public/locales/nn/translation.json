@@ -709,7 +709,9 @@
         "choseList": "Du velgar fyrst kva for ein liste du vil stemma på.",
         "noEdits": "Du kan levera lista utan endringar ved å trykka på «Sjå røystesetel».",
         "edits": "Det er også mogleg å gjera endringar på lista."
-      }
+      },
+      "maxOtherVotes": "Du har lagt til så mange slengara som mogeleg ({{number}})",
+      "addOtherIconTitle": "Legg til slengar {{name}}"
     }
   },
   "voterGroupSelect": {

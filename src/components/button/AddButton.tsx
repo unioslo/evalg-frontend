@@ -7,7 +7,6 @@ const useStyles = createUseStyles((theme: any) => ({
   buttonAdd: {
     composes: '$button $buttonText',
     gridArea: 'add',
-    fill: 'hotpink',
     '&:hover': {
       '& circle': {
         fill: theme.colors.lightTurquoise,
@@ -27,6 +26,7 @@ const useStyles = createUseStyles((theme: any) => ({
 interface AddButtonProps {
   buttonText?: string;
   checkMark?: boolean;
+  disabled?: boolean;
   large?: boolean;
   onClick: () => void;
   title: string;
@@ -35,6 +35,7 @@ interface AddButtonProps {
 export default function AddButton({
   buttonText,
   checkMark = false,
+  disabled = false,
   large = false,
   onClick,
   title,
@@ -57,8 +58,9 @@ export default function AddButton({
         {checkMark ? (
           <CheckMarkIcon title={title} large={large} />
         ) : (
-          <AddIcon title={title} large={large} />
+          <AddIcon disabled={disabled} title={title} large={large} />
         )}
+
         {buttonText && <div className={classes.buttonText}>{buttonText}</div>}
       </div>
     </button>

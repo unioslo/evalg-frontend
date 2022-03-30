@@ -704,7 +704,9 @@
         "choseList": "Du velger først hvilken liste du vil stemme på.",
         "noEdits": "Du kan levere listen som den er ved å trykke på «Vis stemmeseddel».",
         "edits": "Det er også mulighet for å gjøre endringer på listen."
-      }
+      },
+      "maxOtherVotes": "Du har lagt til så mange slengere som mulig ({{number}})",
+      "addOtherIconTitle": "Legg til slengre {{name}}"
     },
     "dnd": "Dra og slipp kandidat {{name}}"
   },

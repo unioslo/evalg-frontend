@@ -233,9 +233,10 @@ export default function EditVote(props: EditVoteProps) {
           </HelpSubSection>
           {ballotRules.otherListCandidateVotes && (
             <OtherCandidates
+              electionLists={election.lists}
+              maxOtherCandidates={election.meta.candidateRules.seats}
               otherListCandidates={otherListCandidates}
               selectedList={selectedList}
-              electionLists={election.lists}
               setOtherListCandidates={setOtherListCandidates}
             />
           )}

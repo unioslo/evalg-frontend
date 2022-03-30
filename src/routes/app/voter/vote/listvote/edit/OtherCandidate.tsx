@@ -15,6 +15,7 @@ import {
 import { ScreenSizeConsumer } from 'providers/ScreenSize';
 
 import { ListCandidateEditItem } from '../listCandidateItem';
+import { MsgBox } from 'components/msgbox';
 
 const useOtherCandidatesMobilItemStyles = createUseStyles({
   candidate: {
@@ -37,16 +38,27 @@ const useOtherCandidatesMobilItemStyles = createUseStyles({
 interface OtherCandidateMobilItem {
   added: boolean;
   candidate: Candidate;
+  disabled?: boolean;
   toggleAdded: () => void;
 }
 
 function OtherCandidateMobileItem(props: OtherCandidateMobilItem) {
-  const { added, candidate, toggleAdded } = props;
+  const { added, candidate, disabled = false, toggleAdded } = props;
   const classes = useOtherCandidatesMobilItemStyles();
+  const { t } = useTranslation();
 
   return (
     <li key={candidate.id} className={classes.listItem}>
-      <AddButton onClick={toggleAdded} title={'add'} checkMark={added} />
+      <AddButton
+        disabled={disabled}
+        onClick={toggleAdded}
+        title={
+          disabled
+            ? ''
+            : t('voter.listVote.addOtherIconTitle', { name: candidate.name })
+        }
+        checkMark={added}
+      />
       <div className={classes.candidate}>{candidate.name}</div>
     </li>
   );
@@ -67,6 +79,7 @@ const useOtherCandidatesStyles = createUseStyles((theme: any) => ({
 
 interface OtherCandidatesProps {
   electionLists: ElectionList[];
+  maxOtherCandidates: number;
   otherListCandidates: EditListCandidate[];
   selectedList: ElectionList;
   setOtherListCandidates: (candidates: EditListCandidate[]) => void;
@@ -75,6 +88,7 @@ interface OtherCandidatesProps {
 export default function OtherCandidates(props: OtherCandidatesProps) {
   const {
     electionLists,
+    maxOtherCandidates,
     otherListCandidates,
     selectedList,
     setOtherListCandidates,
@@ -128,7 +142,8 @@ export default function OtherCandidates(props: OtherCandidatesProps) {
     candidate: Candidate
   ) => {
     if (
-      !otherListCandidates.map((c) => c.candidate.id).includes(candidate.id)
+      !otherListCandidates.map((c) => c.candidate.id).includes(candidate.id) &&
+      otherListCandidates.length < maxOtherCandidates
     ) {
       setOtherListCandidates([
         ...otherListCandidates,
@@ -174,19 +189,19 @@ export default function OtherCandidates(props: OtherCandidatesProps) {
         )
       );
     } else {
-      setOtherListCandidates([
-        ...otherListCandidates,
-        {
-          sourceList: electionList,
-          candidate: otherCandidate,
-          userCumulated: false,
-          userDeleted: false,
-        },
-      ]);
+      if (otherListCandidates.length < maxOtherCandidates) {
+        setOtherListCandidates([
+          ...otherListCandidates,
+          {
+            sourceList: electionList,
+            candidate: otherCandidate,
+            userCumulated: false,
+            userDeleted: false,
+          },
+        ]);
+      }
     }
   };
-
-  // TODO mobil variant!
 
   return (
     <ScreenSizeConsumer>
@@ -211,12 +226,25 @@ export default function OtherCandidates(props: OtherCandidatesProps) {
                       header={electionList.name[i18n.language]}
                     >
                       <>
+                        {otherListCandidates.length === maxOtherCandidates && (
+                          <MsgBox
+                            disableClose
+                            msg={t('voter.listVote.maxOtherVotes', {
+                              number: maxOtherCandidates,
+                            })}
+                            timeout={false}
+                          />
+                        )}
                         {electionList.candidates.map((candidate) => (
                           <OtherCandidateMobileItem
-                            candidate={candidate}
                             added={otherListCandidates
                               .map((c) => c.candidate)
                               .includes(candidate)}
+                            candidate={candidate}
+                            disabled={
+                              otherListCandidates.length === maxOtherCandidates
+                            }
+                            key={candidate.id}
                             toggleAdded={() =>
                               toggleOtherCandidate(candidate, electionList)
                             }
@@ -254,68 +282,78 @@ export default function OtherCandidates(props: OtherCandidatesProps) {
               )}
 
               <PageSubSection header={t('voter.listVote.addOtherListHeader')}>
-                <Form
-                  onSubmit={(values, form) => {
-                    addOtherCandidate(
-                      values.otherList.value,
-                      values.selectedCandidate.value
-                    );
-                    /**
-                     * Reset the selected candidate from the options after adding.
-                     * This removes the previously selected candidate from the field.
-                     */
-                    form.change('selectedCandidate', undefined);
-                  }}
-                  validate={validate}
-                  render={(formProps) => {
-                    const { handleSubmit, pristine, valid } = formProps;
-                    return (
-                      <form onSubmit={handleSubmit}>
-                        <FormField inline>
-                          <FormSpy
-                            subscription={{ values: true }}
-                            onChange={(formState: any) => {
-                              if ('otherList' in formState.values) {
-                                setSelectedOtherList(
-                                  formState.values.otherList.value
-                                );
-                              }
-                            }}
-                          />
-                          <Field
-                            label={t('voter.listVote.otherList')}
-                            name="otherList"
-                            placeholder={t('general.select')}
-                            component={DropDown}
-                            options={otherListsOptionsRef.current}
-                          />
-                        </FormField>
-                        {otherListCandidatesOptions && (
+                {otherListCandidates.length === maxOtherCandidates ? (
+                  <MsgBox
+                    disableClose
+                    msg={t('voter.listVote.maxOtherVotes', {
+                      number: maxOtherCandidates,
+                    })}
+                    timeout={false}
+                  />
+                ) : (
+                  <Form
+                    onSubmit={(values, form) => {
+                      addOtherCandidate(
+                        values.otherList.value,
+                        values.selectedCandidate.value
+                      );
+                      /**
+                       * Reset the selected candidate from the options after adding.
+                       * This removes the previously selected candidate from the field.
+                       */
+                      form.change('selectedCandidate', undefined);
+                    }}
+                    validate={validate}
+                    render={(formProps) => {
+                      const { handleSubmit, pristine, valid } = formProps;
+                      return (
+                        <form onSubmit={handleSubmit}>
                           <FormField inline>
+                            <FormSpy
+                              subscription={{ values: true }}
+                              onChange={(formState: any) => {
+                                if ('otherList' in formState.values) {
+                                  setSelectedOtherList(
+                                    formState.values.otherList.value
+                                  );
+                                }
+                              }}
+                            />
                             <Field
-                              label={t('voter.listVote.candidate')}
-                              name="selectedCandidate"
-                              placeholder={t('voter.listVote.findCandidate')}
+                              label={t('voter.listVote.otherList')}
+                              name="otherList"
+                              placeholder={t('general.select')}
                               component={DropDown}
-                              isSearchable
-                              options={otherListCandidatesOptions}
+                              options={otherListsOptionsRef.current}
                             />
                           </FormField>
-                        )}
-                        <FormButtons
-                          saveAction={handleSubmit}
-                          submitDisabled={pristine || !valid}
-                          customButtonText={t(
-                            'voter.listVote.addOtherVoterButtonText'
+                          {otherListCandidatesOptions && (
+                            <FormField inline>
+                              <Field
+                                label={t('voter.listVote.candidate')}
+                                name="selectedCandidate"
+                                placeholder={t('voter.listVote.findCandidate')}
+                                component={DropDown}
+                                isSearchable
+                                options={otherListCandidatesOptions}
+                              />
+                            </FormField>
                           )}
-                          customButtonTextSubmitting={t(
-                            'voter.listVote.addOtherVoterSubmittingText'
-                          )}
-                        />
-                      </form>
-                    );
-                  }}
-                />
+                          <FormButtons
+                            saveAction={handleSubmit}
+                            submitDisabled={pristine || !valid}
+                            customButtonText={t(
+                              'voter.listVote.addOtherVoterButtonText'
+                            )}
+                            customButtonTextSubmitting={t(
+                              'voter.listVote.addOtherVoterSubmittingText'
+                            )}
+                          />
+                        </form>
+                      );
+                    }}
+                  />
+                )}
               </PageSubSection>
             </div>
           )}

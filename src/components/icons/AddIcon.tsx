@@ -1,6 +1,7 @@
 import { createUseStyles, useTheme } from 'react-jss';
 
 interface AddIconProps {
+  disabled?: boolean;
   large: boolean;
   title: string;
 }
@@ -10,10 +11,12 @@ const useStyles = createUseStyles((theme: any) => ({
     height: (props: AddIconProps) => (props.large ? '46px' : '36px'),
     width: (props: AddIconProps) => (props.large ? '46px' : '35px'),
     '& circle': {
-      stroke: theme.colors.lightTurquoise,
+      stroke: (props: AddIconProps) =>
+        props.disabled ? theme.colors.gray : theme.colors.lightTurquoise,
     },
     '& rect': {
-      fill: '#196f7e',
+      fill: (props: AddIconProps) =>
+        props.disabled ? theme.colors.gray : '#196f7e',
     },
     '&:hover': {
       cursor: 'pointer',
