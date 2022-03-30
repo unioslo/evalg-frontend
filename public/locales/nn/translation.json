@@ -201,7 +201,7 @@
         "description": "Kort beskriving av lista på {{lang}}",
         "descriptionHeader": "Skildring",
         "urlHeader": "Nettadresse",
-        "onDescription": "Desse opplysningane vil være synleg på veljars stemmeside. "
+        "onDescription": "Desse opplysningane vil være synleg på veljars røysteside. "
       },
       "errors": {
         "notListElection": {
@@ -214,8 +214,8 @@
           "updateError": "Kunne ikkje oppdatera lista"
         },
         "listNotFound": {
-          "header": "Ukjend liste",
-          "msg": "Liste med id {{listeId}} finnast ikkje i valet"
+          "header": "Ukjend lista",
+          "msg": "Lista med id {{listeId}} finnast ikkje i valet"
         },
         "listIdMissing": {
           "header": "Liste-ID manglar",
@@ -223,13 +223,13 @@
         },
         "candidateNameMissing": "Namn på kandidaten manglar",
         "electionLocked": {
-          "msg": "Valet pågår og/eller inneheldt stemmar. Det er ikkje mogleg å legga til nye vallister",
+          "msg": "Valet pågår og/eller inneheldt røyster. Det er ikkje mogleg å legga til nye vallister",
           "header": "Låst val"
         }
       },
       "addingList": "Legger til liste..",
       "listCreated": "Lista {{name}} ble oppretta",
-      "header": "Her kan du oppretta og administrera lister av kandidatar som stiller til val.",
+      "header": "Her kan du oppretta og administrera listar av kandidatar som stiller til val.",
       "add": "Opprett valliste",
       "showListHeader": "Vis liste",
       "showList": {
