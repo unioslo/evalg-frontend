@@ -224,7 +224,7 @@
       "add": "Create election list",
       "showList": {
         "header": "Show list",
-        "placeholder": "Chose list"
+        "placeholder": "Choose list"
       },
       "noListInElection": "No lists in election",
       "description": "List description",
