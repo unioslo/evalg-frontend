@@ -54,6 +54,7 @@ const useStyles = createUseStyles({
 });
 
 type MsgBoxProps = {
+  disableClose?: boolean;
   msg: string | React.ReactNode;
   timeout: boolean;
   timeoutSec?: number;
@@ -62,7 +63,7 @@ type MsgBoxProps = {
 };
 export function MsgBox(props: MsgBoxProps) {
   const [display, setDisplay] = useState<boolean>(true);
-  const { msg, timeout, timeoutSec, warning } = props;
+  const { disableClose = false, msg, timeout, timeoutSec, warning } = props;
   const classes = useStyles({ ...props });
 
   useEffect(() => {
@@ -90,7 +91,7 @@ export function MsgBox(props: MsgBoxProps) {
         </div>
         <span className={classes.msg}>{msg}</span>
         <div className={classes.closeIconMargins}>
-          {!warning && (
+          {!warning && !disableClose && (
             <Icon type="closeMsgBox" onClick={() => setDisplay(false)} />
           )}
         </div>

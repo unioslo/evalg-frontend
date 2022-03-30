@@ -1,28 +1,20 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 
-import { PageSection } from 'components/page';
-import Icon from 'components/icon';
-import { ScreenSizeConsumer } from 'providers/ScreenSize';
-import { Election, ElectionList } from 'interfaces';
 import Link from 'components/link';
+import { PageSection } from 'components/page';
 import {
   StatelessExpandableSubSection,
   PageExpandableSubSection,
 } from 'components/page/PageSection';
+import { Election, ElectionList } from 'interfaces';
+import { ScreenSizeConsumer } from 'providers/ScreenSize';
 
 import ListBallotButtons from './ListBallotButtons';
-
-import {
-  CandidateList,
-  ElectionListList,
-  ElectionListItem,
-} from './ElectionListList';
-
-import HelpSubSection from '../components/HelpSubSection';
-import MandatePeriodText from '../components/MandatePeriodText';
-import BallotButtons from '../components/BallotButtons';
+import HelpSubSection from '../../components/HelpSubSection';
+import MandatePeriodText from '../../components/MandatePeriodText';
+import BallotButtons from '../../components/BallotButtons';
+import ListCandidateItem from '../listCandidateItem/Item';
 
 const useStyles = createUseStyles((theme: any) => ({
   mandatePeriodTextDesktop: {
@@ -37,7 +29,28 @@ const useStyles = createUseStyles((theme: any) => ({
       display: 'none',
     },
   },
-
+  list: {
+    marginTop: '1.5rem',
+    marginRight: '2rem',
+    [theme.breakpoints.notMobileQuery]: {
+      marginTop: '3rem',
+    },
+  },
+  listItem: {
+    alignItems: 'center',
+    borderBottom: '2px solid #CCC',
+    display: 'flex',
+    padding: '1.2rem 0',
+    paddingLeft: '2rem',
+    paddingTop: '2rem',
+    paddingBottom: '2rem',
+    [theme.breakpoints.notMobileQuery]: {
+      borderBottom: '1px solid #CCC',
+      '&:first-child': {
+        borderTop: '1px solid #CCC',
+      },
+    },
+  },
   listContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -73,37 +86,39 @@ const useStyles = createUseStyles((theme: any) => ({
 interface ListVoteBallotProps {
   lists: ElectionList[];
   election: Election;
+  expandedList: string;
   onGoBackToSelectVoterGroup: () => void;
   onBlankVote: () => void;
   onCleanVote: (list: ElectionList) => void;
   onEditVote: (list: ElectionList) => void;
+  setExpandedList: (list: string) => void;
 }
 
-export default function ListVoteBallot(props: ListVoteBallotProps) {
+export default function SelectElectionList(props: ListVoteBallotProps) {
   const {
     election,
+    expandedList,
     lists,
     onGoBackToSelectVoterGroup,
     onBlankVote,
     onCleanVote,
     onEditVote,
+    setExpandedList,
   } = props;
 
   const { i18n, t } = useTranslation();
   const theme = useTheme();
   const classes = useStyles({ theme });
-  const [expandedList, setExpandedList] = useState<string>('');
 
   const helpTextTags = [
-    'voter.majorityVoteHelpYouMaySelectOnlyOne',
-    'voter.canVoteBlank',
+    t('voter.listVote.helpTextTags.choseList'),
+    t('voter.listVote.helpTextTags.noEdits'),
+    t('voter.listVote.helpTextTags.edits'),
+    t('voter.canVoteBlank'),
   ];
 
-  let helpText: string[] | undefined;
   let helpHeader = t('voter.listVoteHelpHeader');
   let helpDesc = t('voter.listVoteHelpDesc');
-
-  // TODO sjekk a11y på knapper osv. Labels
 
   return (
     <ScreenSizeConsumer>
@@ -127,12 +142,16 @@ export default function ListVoteBallot(props: ListVoteBallotProps) {
             header={helpHeader}
             desc={helpDesc}
             helpTextTags={helpTextTags}
-            helpText={helpText}
           >
-            <ElectionListList>
+            <ul className={classes.list}>
               {lists.map((list) => {
+                // The candidates in a list are not sorted by priority
+                const listCandidatesSorted = [...list.candidates].sort(
+                  (a, b) => a.priority - b.priority
+                );
+
                 return (
-                  <ElectionListItem key={list.id}>
+                  <li className={classes.listItem} key={list.id}>
                     <StatelessExpandableSubSection
                       noMargin
                       header={list.name[i18n.language]}
@@ -173,10 +192,19 @@ export default function ListVoteBallot(props: ListVoteBallotProps) {
                             <PageExpandableSubSection
                               header={t('voter.listVote.candidates')}
                             >
-                              <CandidateList
-                                noHeader
-                                candidates={list.candidates}
-                              />
+                              <ul className={classes.list}>
+                                {listCandidatesSorted.map(
+                                  (candidate, index) => {
+                                    return (
+                                      <ListCandidateItem
+                                        candidate={candidate}
+                                        priority={index}
+                                        key={candidate.id}
+                                      />
+                                    );
+                                  }
+                                )}
+                              </ul>
                             </PageExpandableSubSection>
                             <ListBallotButtons
                               onEditList={() => onEditVote(list)}
@@ -184,14 +212,24 @@ export default function ListVoteBallot(props: ListVoteBallotProps) {
                             />
                           </>
                         ) : (
-                          <CandidateList candidates={list.candidates} />
+                          <ul className={classes.list}>
+                            {listCandidatesSorted.map((candidate, index) => {
+                              return (
+                                <ListCandidateItem
+                                  candidate={candidate}
+                                  priority={index}
+                                  key={candidate.id}
+                                />
+                              );
+                            })}
+                          </ul>
                         )}
                       </div>
                     </StatelessExpandableSubSection>
-                  </ElectionListItem>
+                  </li>
                 );
               })}
-            </ElectionListList>
+            </ul>
           </HelpSubSection>
           <BallotButtons
             onGoBackToSelectVoterGroup={onGoBackToSelectVoterGroup}

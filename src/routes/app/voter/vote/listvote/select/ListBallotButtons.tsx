@@ -7,9 +7,9 @@
 import { useTranslation } from 'react-i18next';
 import { createUseStyles, useTheme } from 'react-jss';
 
-import Button from 'components/button';
 import ActionItem from 'components/actionitem';
-import Icon from 'components/icon';
+import Button from 'components/button';
+import { EditIcon } from 'components/icons';
 
 const useStyles = createUseStyles((theme: any) => ({
   buttonContainer: {
@@ -31,6 +31,13 @@ const useStyles = createUseStyles((theme: any) => ({
       marginRight: '1rem',
       marginLeft: '2rem',
     },
+  },
+  editContainer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  editIcon: {
+    marginRight: '1rem',
   },
 }));
 
@@ -57,10 +64,12 @@ export default function ListBallotButtons({
     <div className={classes.buttonContainer}>
       <div className={classes.buttonItem}>
         <ActionItem action={onEditList}>
-          <>
-            {/*<Icon type="edit" /> */}
+          <div className={classes.editContainer}>
+            <div className={classes.editIcon}>
+              <EditIcon title={'Test'} large={false} />
+            </div>
             {t('voter.listVote.editList')}
-          </>
+          </div>
         </ActionItem>
       </div>
       <div className={classes.buttonItem}>

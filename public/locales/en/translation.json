@@ -615,7 +615,8 @@
       "addCandidate": "Add candidate {{candidate}} to ballot",
       "demoteCandidate": "Move candidate {{candidate}} down to rank {{index}}",
       "promoteCandidate": "Move candidate {{candidate}} up to rank {{index}}",
-      "removeCandidate": "Remove candidate {{candidate}} from ballot"
+      "removeCandidate": "Remove candidate {{candidate}} from ballot",
+      "cumulateCandidate": "Cumulate {{candidate}}"
     }
   },
   "voter": {
@@ -672,8 +673,36 @@
       "editList": "Edit list",
       "noEdit": "See ballot",
       "preCumulated": "Precumulated",
-      "moreInfo": "More on {{list}}"
-    }
+      "moreInfo": "More on {{list}}",
+      "changeList": "Edit list",
+      "addOtherListHeader": "Add a candidate from another list",
+      "findCandidate": "Find candidate",
+      "candidate": "Candidate",
+      "otherList": "Choose list",
+      "addOtherVoterButtonText": "Add",
+      "addOtherVoterSubmittingText": "Adding",
+      "deleteOtherCandidate": "Remove candidate {{candidate}} from other list",
+      "otherListCandidates": "Candidates from other lists",
+      "otherListCandidatesMissing": "Candidate missing",
+      "deletedCandidateHeader": "Candidates removed from the original list",
+      "cumulate": "Cumulate",
+      "selectedList": "List name: {{name}}",
+      "editListHelp": {
+        "cumulate": "You can give candidates extra votes (cumulation)",
+        "changeOrder": "You can change the candidate order",
+        "remove": "You can remove candidates from the list",
+        "others": "You can give votes to candidates on other lists."
+      },
+      "moveCandidate": "Move candidate {{name}} to position {{priority}}",
+      "helpTextTags": {
+        "choseList": "You first choose the list you want to vote for.",
+        "noEdits": "You can cast a vote without any changes by pressing \"Show ballot\".",
+        "edits": "You can also make changes to a list."
+      },
+      "maxOtherVotes": "You have added the maximum number of other votes ({{number}}",
+      "addOtherIconTitle": "Add {{name}} to ballot"
+    },
+    "dnd": "Drag and drop candidate {{name}}"
   },
   "voterGroupSelect": {
     "andCloses": "and closes",
@@ -715,5 +744,19 @@
   },
   "icons": {
     "close": "Close"
+  },
+  "listElec": {
+    "ballot": {
+      "reAddCandidate": "Add the deleted candidate {{candidate}} back in the list",
+      "Add": "Add",
+      "remove": "Remove",
+      "removeCumulation": "Remove cumulation of {{candidate}}",
+      "cumulate": "Extra vote",
+      "preCumulated": "Pre cumulated",
+      "removeOtherCandidate": "Remove"
+    },
+    "review": {
+      "userCumulated": "Candidate {{candidate}} is cumulated"
+    }
   }
 }

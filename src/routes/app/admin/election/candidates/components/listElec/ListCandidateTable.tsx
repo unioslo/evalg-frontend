@@ -74,8 +74,6 @@ export default function ListCandidateTable(props: ListCandidateTableProps) {
 
   const electionIsLocked = electionList.election.isLocked;
 
-  console.info(electionList.election);
-
   const onAdd = (values: AddListElecCandidateVars) => {
     values.listId = electionList.id;
     addCand({

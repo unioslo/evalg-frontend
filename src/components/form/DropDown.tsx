@@ -192,7 +192,7 @@ class DropDown extends DropDownBase<IProps> {
     }
   }
 
-  componentWillReceiveProps(nextProps: IProps) {
+  UNSAFE_componentWillReceiveProps(nextProps: IProps) {
     if (nextProps.value === '') {
       this.setState({ inputValue: '' });
     }
