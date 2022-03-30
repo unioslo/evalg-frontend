@@ -699,7 +699,7 @@
         "noEdits": "You can cast a vote without any changes by pressing \"Show ballot\".",
         "edits": "You can also make changes to a list."
       },
-      "maxOtherVotes": "You have added the maximum number of other votes ({{number}}",
+      "maxOtherVotes": "You have added the maximum number of candidates from other lists ({{number}}",
       "addOtherIconTitle": "Add {{name}} to ballot"
     },
     "dnd": "Drag and drop candidate {{name}}"
@@ -747,7 +747,7 @@
   },
   "listElec": {
     "ballot": {
-      "reAddCandidate": "Add the deleted candidate {{candidate}} back in the list",
+      "reAddCandidate": "Add the deleted candidate {{candidate}} back to the list",
       "Add": "Add",
       "remove": "Remove",
       "removeCumulation": "Remove cumulation of {{candidate}}",
