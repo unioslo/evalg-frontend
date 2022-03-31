@@ -109,19 +109,19 @@ class ManageElectionsTable extends React.Component<IProps, IState> {
                   <TableCell greyBg />
                   <TableCell colspan={5} greyBg alignRight>
                     <Link
-                      to={`/admin/elections/${electionGroup.id}/status`}
+                      to={`/admin/elections/${electionGroup.id}/info`}
                       marginRight
                     >
                       <Icon type="forwardArrow" marginRight />
                       <Trans>election.goTo</Trans>
                       &nbsp;
-                      <Trans>election.status</Trans>
+                      <Trans>election.settings</Trans>
                     </Link>
-                    <Link to={`/admin/elections/${electionGroup.id}/info`}>
+                    <Link to={`/admin/elections/${electionGroup.id}/status`}>
                       <Icon type="forwardArrow" marginRight />
                       <Trans>election.goTo</Trans>
                       &nbsp;
-                      <Trans>election.settings</Trans>
+                      <Trans>election.status</Trans>
                     </Link>
                   </TableCell>
                 </TableRow>
