@@ -7,7 +7,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import { ApolloClient, ApolloConsumer } from '@apollo/client';
 
 import { getSignedInPersonDisplayName } from 'queries';
-import { appHelpLink, appInst } from 'appConfig';
+import { appHelpLink, appHelpMail, appInst } from 'appConfig';
 import Link from 'components/link';
 import { H1 } from 'components/text';
 import { UserContext } from 'providers/UserContext';
@@ -222,9 +222,15 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
               </MobileMenuItem>
               <MobileMenuItem>
                 <div className={classes.link}>
-                  <Link inheritColor external noExternalIcon to={appHelpLink}>
-                    {t('general.help')}
-                  </Link>
+                  {appHelpMail ? (
+                    <Link mail noExternalIcon to={appHelpMail} inheritColor>
+                      {t('general.help')}
+                    </Link>
+                  ) : (
+                    <Link external noExternalIcon to={appHelpLink} inheritColor>
+                      {t('general.help')}
+                    </Link>
+                  )}
                 </div>
               </MobileMenuItem>
               <MobileMenuItem>
@@ -260,9 +266,15 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
               </DesktopMenuItem>
               <DesktopMenuItem>
                 <div className={classes.link}>
-                  <Link inheritColor external noExternalIcon to={appHelpLink}>
-                    {t('general.help')}
-                  </Link>
+                  {appHelpMail ? (
+                    <Link mail noExternalIcon to={appHelpMail} inheritColor>
+                      {t('general.help')}
+                    </Link>
+                  ) : (
+                    <Link external noExternalIcon to={appHelpLink} inheritColor>
+                      {t('general.help')}
+                    </Link>
+                  )}
                 </div>
               </DesktopMenuItem>
               <DesktopMenuItem>

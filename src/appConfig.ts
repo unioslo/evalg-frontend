@@ -50,11 +50,13 @@ export const oidcLogoutUrl = 'https://auth.dataporten.no/logout';
 export const appStagingWarning: boolean =
   env.REACT_APP_STAGING_WARNING === 'true';
 
-/* Footer content */
+/* Header content */
 export const appHelpLink: string = env.REACT_APP_HELP_LINK
   ? (env.REACT_APP_HELP_LINK as string)
   : 'https://www.uio.no/for-ansatte/arbeidsstotte/arrangere-valg/';
+export const appHelpMail: string = env.REACT_APP_HELP_MAIL as string;
 
+/* Footer content */
 export const appTechnicalSupportLink: string =
   env.REACT_APP_SUPPORT_URL as string;
 export const appTechnicalSupportMail: string =
