@@ -1,25 +1,26 @@
 import { makeElObj, makeElObjData } from './makeElectionObjects';
 import moment from 'moment-timezone';
-import { appTimezone } from '../appConfig';
 
 import { buttonize } from './a11y';
+import { appTimezone } from '../appConfig';
 
 import {
+  allEqual,
+  allEqualForAttrs,
+  findObjIndex,
   isObjEmpty,
   isObject,
   objPropsToSnakeCase,
   objPropsToCamelCase,
   objPropsToArray,
-  allEqual,
-  allEqualForAttrs,
-  findObjIndex,
   objsEqual,
+  reorderArray,
 } from './helpers';
 
 import { translateBackendError, joinStringsWithCommaAndAnd } from './i18n';
 
 const sleep = async (ms: number) => {
-  await new Promise(resolve => setTimeout(resolve, ms));
+  await new Promise((resolve) => setTimeout(resolve, ms));
 };
 
 const ISODateTimeToTimeZoneAdjustedISODate = (dateTime: string) =>
@@ -32,22 +33,23 @@ const DateAndTimeToISODTWithTimeZonedOffset = (date: string, time: string) =>
   moment.tz(`${date}T${time}`, appTimezone).toISOString();
 
 export {
-  buttonize,
-  sleep,
-  translateBackendError,
-  joinStringsWithCommaAndAnd,
-  objPropsToArray,
-  isObjEmpty,
-  isObject,
-  makeElObj,
-  makeElObjData,
-  objPropsToSnakeCase,
-  objPropsToCamelCase,
   allEqual,
   allEqualForAttrs,
+  buttonize,
+  DateAndTimeToISODTWithTimeZonedOffset,
   findObjIndex,
-  objsEqual,
+  isObjEmpty,
+  isObject,
   ISODateTimeToTimeZoneAdjustedISODate,
   ISODateTimeToTimeZoneAdjustedTime,
-  DateAndTimeToISODTWithTimeZonedOffset,
+  joinStringsWithCommaAndAnd,
+  makeElObj,
+  makeElObjData,
+  objsEqual,
+  objPropsToArray,
+  objPropsToCamelCase,
+  objPropsToSnakeCase,
+  translateBackendError,
+  reorderArray,
+  sleep,
 };

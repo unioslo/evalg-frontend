@@ -169,6 +169,95 @@
       "confirm": "Bekreft",
       "person": "Person",
       "votingGroup": "Vel veljargruppe"
+    },
+    "listElec": {
+      "ballot": {
+        "removeCumulation": "Fjern kumulering av {{candidate}}",
+        "cumulate": "Ekstra røyst",
+        "preCumulated": "Forhandskumulert",
+        "removeOtherCandidate": "Fjern"
+      },
+      "review": {
+        "userCumulated": "Kandidat {{candidate}} er kumulert"
+      },
+      "candidateTable": {
+        "placement": "Plass",
+        "person": "Person",
+        "fieldOfStudy": "Studieretning",
+        "preAccumulated": "Forhåndskumulering"
+      },
+      "editListInfoHeader": "Endre listeinformasjon",
+      "fields": {
+        "url": "Nettadresse"
+      },
+      "noCandidatesInList": "Ingen kandidatar i lista",
+      "fieldErrors": {
+        "nameMissing": "Listenamn på {{lang}} manglar",
+        "descMissing": "Skildring på {{lang}} manglar"
+      },
+      "newList": {
+        "header": "Ny valliste",
+        "nameHeader": "Namn på valliste",
+        "description": "Kort beskriving av lista på {{lang}}",
+        "descriptionHeader": "Skildring",
+        "urlHeader": "Nettadresse",
+        "onDescription": "Desse opplysningane vil være synleg på veljars røysteside. "
+      },
+      "errors": {
+        "notListElection": {
+          "header": "Valet er ikkje eit listeval",
+          "msg": "Valet er ikkje eit listeval. Det er ikkje mogleg å legga ein liste til valet"
+        },
+        "apiError": {
+          "addError": "Kunne ikkje legge til lista",
+          "deleteError": "Kunne ikkje sletta lista",
+          "updateError": "Kunne ikkje oppdatera lista"
+        },
+        "listNotFound": {
+          "header": "Ukjend lista",
+          "msg": "Lista med id {{listeId}} finnast ikkje i valet"
+        },
+        "listIdMissing": {
+          "header": "Liste-ID manglar",
+          "msg": "URL manglar liste-ID"
+        },
+        "candidateNameMissing": "Namn på kandidaten manglar",
+        "electionLocked": {
+          "msg": "Valet pågår og/eller inneheldt røyster. Det er ikkje mogleg å legga til nye vallister",
+          "header": "Låst val"
+        }
+      },
+      "addingList": "Legger til liste..",
+      "listCreated": "Lista {{name}} ble oppretta",
+      "header": "Her kan du oppretta og administrera listar av kandidatar som stiller til val.",
+      "add": "Opprett valliste",
+      "showListHeader": "Vis liste",
+      "showList": {
+        "header": "Vis liste",
+        "placeholder": "Vel liste"
+      },
+      "noListInElection": "Valet har ingen listar",
+      "description": "Listeskildring",
+      "delete": "Slett liste",
+      "deleteModal": {
+        "header": "Stadfest sletting",
+        "body": "Er du sikker på at du vil slette lista «{{name}}»?"
+      },
+      "editList": {
+        "header": "Endra listeinformasjon"
+      },
+      "editCandidate": "Endra kandidat",
+      "addCandidate": "Legg til kandidat",
+      "candidates": {
+        "added": "Kandidat {{name}} lagt til",
+        "deleted": "Kandidat {{name}} sletta",
+        "update": "Kandidat {{name}} oppdatert"
+      },
+      "lockedElectionCandidateMsg": "Valget pågår og/eller inneheld stemmar. Det er nå kun mogleg å endra namn og studieretning.",
+      "lockedElection": {
+        "header": "Administer informasjon om listar og kandidatar",
+        "msg": "Valet pågår og/eller inneheld røstar. Det er nå kun mogleg å endra informasjon om lister og kandidater."
+      }
     }
   },
   "backend": {
@@ -494,7 +583,12 @@
     "webpage": "Nett-adresse",
     "welcome": "Velkommen til eValg",
     "yes": "Ja",
-    "language": "Language"
+    "language": "Language",
+    "lang": {
+      "nb": "Bokmål",
+      "nn": "Nynorsk",
+      "en": "Engelsk"
+    }
   },
   "loginPage": {
     "featureList1": "Røyste i elektroniske val",
@@ -529,6 +623,7 @@
     "candPageDesc": "Legg til kandidatar som stiller for dei ulike veljargruppene.<0></0>\nValet må ha minst like mange kandidatar per gruppe som førd opp under <1>valoppsettet</1>.",
     "ballot": {
       "addCandidate": "Legg til kandidat {{candidate}}",
+      "cumulateCandidate": "Kumuler {{candidate}}",
       "demoteCandidate": "Flytt kandidat {{candidate}} ned til plass {{index}}",
       "promoteCandidate": "Flytt kandidat {{candidate}} opp til plass {{index}}",
       "removeCandidate": "Fjern kandidat {{candidate}}"
@@ -580,7 +675,44 @@
     "stepperStep2": "Fyll ut røystesetel",
     "stepperStep3": "Sjå over røystesetel",
     "stepperStep4": "Kvittering",
-    "submitVote": "Lever røystesetel"
+    "submitVote": "Lever røystesetel",
+    "listVoteHelpHeader": "Listar som stillar til val",
+    "listVoteHelpDesc": "Vel eller endra på ei liste",
+    "dnd": "Dra og slepp kandidat {{name}}",
+    "listVote": {
+      "candidates": "Kandidatar",
+      "editList": "Gjer endringar i lista",
+      "noEdit": "Sjå røystesetel",
+      "preCumulated": "Forhåndskumulert",
+      "moreInfo": "Meir om {{list}}",
+      "changeList": "Endre lista",
+      "addOtherListHeader": "Legg til kandidat fra ein annan liste",
+      "findCandidate": "Finn kandidat",
+      "candidate": "Kandidat",
+      "otherList": "Vel lista",
+      "addOtherVoterButtonText": "Legg til",
+      "addOtherVoterSubmittingText": "Legg til",
+      "deleteOtherCandidate": "Fjern slengar {{candidate}}",
+      "otherListCandidates": "Kandidatar fra andre lister (slengare)",
+      "otherListCandidatesMissing": "Kandidat manglar",
+      "deletedCandidateHeader": "Strokne kandidatar",
+      "cumulate": "Kumuler",
+      "selectedList": "Listenamn: {{name}}",
+      "editListHelp": {
+        "cumulate": "Du kan gje kandidatar tilleggsrøyster (kumulere)",
+        "changeOrder": "Du kan endra rekkefølga på kandidatane",
+        "remove": "Du kan stryka kandidatar fra lista",
+        "others": "Du kan også gje røyster til kandidater på andre listar (slengare)"
+      },
+      "moveCandidate": "Flytt kandidat {{name}} til plass {{priority}}",
+      "helpTextTags": {
+        "choseList": "Du velgar fyrst kva for ein liste du vil stemma på.",
+        "noEdits": "Du kan levera lista utan endringar ved å trykka på «Sjå røystesetel».",
+        "edits": "Det er også mogleg å gjera endringar på lista."
+      },
+      "maxOtherVotes": "Du har lagt til så mange slengara som mogeleg ({{number}})",
+      "addOtherIconTitle": "Legg til slengar {{name}}"
+    }
   },
   "voterGroupSelect": {
     "andCloses": "og stenger",

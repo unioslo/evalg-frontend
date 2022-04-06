@@ -1,26 +1,27 @@
-import React, { useState } from 'react';
-import { Redirect } from 'react-router';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Redirect } from 'react-router';
 
-import Page from 'components/page/Page';
 import Button, { ButtonContainer } from 'components/button';
+import Page from 'components/page/Page';
 import { ElectionGroup } from 'interfaces';
 
+import ListMainPage from './components/listElec/ListMainPage';
+import PollElecAlternativeTable from './components/PollElecAlternativeTable';
 import PrefElecCandTable from './components/PrefElecCandTable';
 import PrefTeamElecCandTable from './components/PrefTeamElecCandTable';
-import PollElecAlternativeTable from './components/PollElecAlternativeTable';
 
-const determineCandidatePage = (grpType: string, metaData: any) => {
-  console.info(grpType);
-  console.info(metaData.candidateType);
-  if (metaData.candidateType === 'single_team') {
+const determineCandidatePage = (grpType: string, meta: any) => {
+  if (meta.candidateType === 'single_team') {
     return PrefTeamElecCandTable;
-  } else if (metaData.candidateType === 'single') {
+  } else if (meta.candidateType === 'single') {
     if (grpType === 'multiple_elections') {
       return PrefElecCandTable;
     }
-  } else if (metaData.candidateType === 'poll') {
+  } else if (meta.candidateType === 'poll') {
     return PollElecAlternativeTable;
+  } else if (meta.candidateType === 'party_list') {
+    return ListMainPage;
   }
   return PrefTeamElecCandTable;
 };
@@ -31,20 +32,22 @@ const determineHeader = (type: string, meta: any) => {
   }
   return 'election.candidates';
 };
-interface IProps {
+
+export default function CandidatesPage({
+  electionGroup,
+}: {
   electionGroup: ElectionGroup;
-}
-
-const CandidatesPage: React.FunctionComponent<IProps> = props => {
+}) {
   const [proceed, setProceed] = useState<boolean>(false);
-
   const { t } = useTranslation();
-
-  const { electionGroup } = props;
   const { elections, id: groupId } = electionGroup;
 
   if (elections.length === 0) {
-    return <p>No active elections.</p>;
+    return (
+      <Page>
+        <p>No active elections.</p>;
+      </Page>
+    );
   }
 
   const { type, meta } = electionGroup;
@@ -70,6 +73,4 @@ const CandidatesPage: React.FunctionComponent<IProps> = props => {
       ) : null}
     </Page>
   );
-};
-
-export default CandidatesPage;
+}

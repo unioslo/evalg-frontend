@@ -1,7 +1,7 @@
 // Local state stuff
 
 export interface EvalgClientState {
-  admin: { isCreatingNewElection: boolean };
+  isCreatingNewElection: boolean;
 }
 
 // Graphql entity types
@@ -163,6 +163,7 @@ export interface Candidate {
   preCumulated: boolean;
   meta: {
     coCandidates?: CoCandidate[];
+    fieldOfStudy: string;
     gender?: 'male' | 'female';
   };
 }
@@ -176,7 +177,7 @@ export interface ElectionList {
   election: Election;
   name: NameFields;
   description: NameFields;
-  informationUrl: string;
+  informationUrl?: string;
   candidates: Candidate[];
 }
 
@@ -193,10 +194,10 @@ export interface Election {
   active: boolean;
   mandatePeriodStart: string;
   mandatePeriodEnd: string;
-  contact: string;
+  contact?: string;
   informationUrl: string;
   isLocked: boolean;
-  tz: string;
+  tz?: string;
   lists: ElectionList[];
 }
 
@@ -293,9 +294,13 @@ export interface ElectionResult {
 // TODO: Make sure underneath meta structure and rest of type definitions here is correct to some specification.
 export type ElectionMetaData = {
   ballotRules: {
+    allowBlank?: boolean;
+    alterPriority?: boolean;
+    cumulate?: boolean;
+    deleteCandidate?: boolean;
+    otherListCandidateVotes: boolean;
     votes: BallotRulesVotes;
     voting: BallotRulesVoting;
-    allowBlank?: boolean;
   };
   candidateRules: {
     candidateGender: boolean;
@@ -304,8 +309,12 @@ export type ElectionMetaData = {
   };
   candidateType: CandidateType;
   countingRules: {
-    affirmativeAction: CountingRulesAffirmationAction;
+    affirmativeAction?: CountingRulesAffirmationAction;
+    firstDivisor?: number;
+    listVotes?: 'seats' | 'all' | string;
     method: CountingRulesMethod;
+    otherListCandidateVotes?: boolean;
+    precumulate?: number;
   };
 };
 
@@ -340,4 +349,33 @@ export interface ElectionVoterInfoInput {
   mandatePeriodEnd: any;
   contact: string;
   informationUrl: string;
+}
+
+/**
+ * Interface for the ballot of a list election vote
+ */
+export interface ListBallotData {
+  voteType: 'SPListElecVote';
+  chosenListId: string;
+  blankVote: boolean;
+  personalVotesOtherParty: {
+    candidate: string;
+    list: string;
+  }[];
+  personalVotesSameParty: {
+    candidate: string;
+    cumulated: boolean;
+    precumulated: boolean;
+  }[];
+}
+
+/**
+ * Interface used to store the changes added to a list
+ * by a user.
+ */
+export interface EditListCandidate {
+  sourceList: ElectionList;
+  candidate: Candidate;
+  userCumulated: boolean;
+  userDeleted: boolean;
 }

@@ -12,7 +12,7 @@ import { PageSubSection } from 'components/page';
 import { ElectionNameInput, ElectionGroup } from 'interfaces';
 
 // TODO: Finish implementing
-const validate = (values: any) => {
+const validate = () => {
   const errors = {};
   return errors;
 };

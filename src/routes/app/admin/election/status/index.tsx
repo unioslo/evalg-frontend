@@ -1,20 +1,20 @@
 import React from 'react';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { Query } from '@apollo/client/react/components';
 
 import { Page } from 'components/page';
 import { ElectionGroup, IVoter } from 'interfaces';
+import {
+  searchVotersQuery,
+  selfAddedVotersQuery,
+  personsWithMultipleVerifiedVotersQuery,
+} from 'queries';
 
 import ElectionStatusSection from './components/ElectionStatusSection';
 import VotesSection from './components/VotesSection';
 import ElectionKeySection from './components/ElectionKeySection';
 import CountingSection from './components/CountingSection';
 import SurplusVotesSection from './components/SurplusVotesSection';
-import { Query } from 'react-apollo';
-import {
-  searchVotersQuery,
-  selfAddedVotersQuery,
-  personsWithMultipleVerifiedVotersQuery,
-} from 'queries';
 
 interface IProps extends WithTranslation {
   electionGroup: ElectionGroup;
@@ -48,10 +48,10 @@ const StatusPage: React.FunctionComponent<IProps> = ({
     };
 
     electionGroupData.elections
-      .filter(e => e.active)
-      .forEach(election => {
-        election.pollbooks.forEach(pollbook => {
-          pollbook.selfAddedVoters.forEach(selfAddedVoter => {
+      .filter((e) => e.active)
+      .forEach((election) => {
+        election.pollbooks.forEach((pollbook) => {
+          pollbook.selfAddedVoters.forEach((selfAddedVoter) => {
             switch (selfAddedVoter.verifiedStatus) {
               case 'SELF_ADDED_NOT_REVIEWED':
                 categorizedVoters.notReviewedVoters.push(selfAddedVoter);

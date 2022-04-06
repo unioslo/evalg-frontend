@@ -1,8 +1,12 @@
-import { fireEvent, render } from 'test-utils';
+// import { fireEvent, render } from 'test-utils';
 import { getInstNameWithCase } from './i18n';
 
 describe('getInstNameWithCase', () => {
   test.each([
+    ['uib', 'UiB'],
+    ['uiB', 'UiB'],
+    ['UIb', 'UiB'],
+    ['UiB', 'UiB'],
     ['uio', 'UiO'],
     ['uiO', 'UiO'],
     ['UIo', 'UiO'],

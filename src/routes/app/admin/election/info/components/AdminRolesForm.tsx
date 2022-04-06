@@ -156,7 +156,7 @@ class AdminRolesForm extends React.Component<IProps, IState> {
         });
         this.setFeedback({ text: feedback, isError: true });
       }
-    } catch (error) {
+    } catch (error: any) {
       this.setFeedback({
         text: error.toString(),
         isError: true,
@@ -203,7 +203,7 @@ class AdminRolesForm extends React.Component<IProps, IState> {
                   <Trans>admin.roles.singleUsers</Trans>
                 </Text>
                 <ul className={classes.list}>
-                  {adminRoles.map((role, index) => (
+                  {adminRoles.map((role) => (
                     <li key={role.grantId}>
                       <Text inline>{this.getPrincipalDisplayName(role)}</Text>
                       <div
@@ -223,7 +223,7 @@ class AdminRolesForm extends React.Component<IProps, IState> {
             <Form
               onSubmit={this.addRoleAndSetFeedback}
               validate={this.validateAddRoleForm}
-              render={formProps => {
+              render={(formProps) => {
                 const {
                   handleSubmit,
                   errors,
@@ -235,7 +235,11 @@ class AdminRolesForm extends React.Component<IProps, IState> {
                 } = formProps;
 
                 const showValidationErrorFeedback =
-                  !pristine && errors && errors._errors && touched && touched.idValue;
+                  !pristine &&
+                  errors &&
+                  errors._errors &&
+                  touched &&
+                  touched.idValue;
 
                 const handleSubmitAndReset = async (e: any) => {
                   e.preventDefault();
@@ -282,7 +286,9 @@ class AdminRolesForm extends React.Component<IProps, IState> {
                         })}
                       >
                         {showValidationErrorFeedback
-                          ? errors ? errors._errors.idValue : ''
+                          ? errors
+                            ? errors._errors.idValue
+                            : ''
                           : feedback.text}
                       </div>
                     </TableRowForm>

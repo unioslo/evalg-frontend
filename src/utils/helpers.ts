@@ -1,6 +1,5 @@
-import { appCandOrder } from 'appConfig'
+import { appCandOrder } from 'appConfig';
 import { Candidate } from 'interfaces';
-/* @flow */
 
 export const isObjEmpty = (obj: any): boolean => {
   for (const key in obj) {
@@ -29,11 +28,11 @@ const isArrayOfObjects = (val: any[]) => {
 };
 
 const camelToSnake = (str: string) => {
-  return str.replace(/([A-Z])/g, m => '_' + m.toLowerCase());
+  return str.replace(/([A-Z])/g, (m) => '_' + m.toLowerCase());
 };
 
 const snakeToCamel = (str: string) => {
-  return str.replace(/(_\w)/g, m => m[1].toUpperCase());
+  return str.replace(/(_\w)/g, (m) => m[1].toUpperCase());
 };
 
 const convertObjProps = (obj: any, func: (arg: any) => any): object => {
@@ -65,7 +64,7 @@ export const objPropsToCamelCase = (obj: object): object => {
 };
 
 export const objPropsToArray = (obj: any): any[] => {
-  return Object.keys(obj).map(key => obj[key]);
+  return Object.keys(obj).map((key) => obj[key]);
 };
 
 export const allEqual = (array: any[]) => {
@@ -88,7 +87,7 @@ export const allEqualForAttrs = (array: any[], attrs: string[]) => {
     return true;
   }
   for (const attr of attrs) {
-    if (!allEqual(array.map(item => item[attr]))) {
+    if (!allEqual(array.map((item) => item[attr]))) {
       return false;
     }
   }
@@ -139,4 +138,23 @@ export const getCandidateArray = (candidates: Candidate[]) => {
     default:
       return shuffleArray(candidates);
   }
+};
+
+/**
+ * Swaps the positions of two elements in a list
+ *
+ * @param list {T[]} List to reorder
+ * @param startIndex {number} Index of element to move.
+ * @param endIndex {number} Index to move the element to.
+ * @returns New reordered copy of the list.
+ */
+export const reorderArray = <T>(
+  list: T[],
+  startIndex: number,
+  endIndex: number
+) => {
+  const result: T[] = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+  return result;
 };

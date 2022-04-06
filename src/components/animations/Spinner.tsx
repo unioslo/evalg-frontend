@@ -1,8 +1,7 @@
-import React from 'react';
 import classNames from 'classnames';
-import injectSheet from 'react-jss';
+import { createUseStyles } from 'react-jss';
 
-const styles = () => ({
+const useStyles = createUseStyles({
   spinner: {
     position: 'relative',
     display: 'inline-block',
@@ -33,15 +32,14 @@ interface IProps {
   marginLeft?: string;
   marginRight?: string;
   marginTop?: string;
-  classes: any;
 }
 
-const Spinner = ({ classes, darkStyle }: IProps) => {
+export default function Spinner(props: IProps) {
+  const { darkStyle } = props;
+  const classes = useStyles({ ...props });
   const cls = classNames({
     [classes.spinner]: true,
     [classes.darkStyle]: darkStyle,
   });
   return <div className={cls} />;
-};
-
-export default injectSheet(styles)(Spinner);
+}

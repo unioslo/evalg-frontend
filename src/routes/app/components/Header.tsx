@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { ApolloConsumer } from 'react-apollo';
 import { useTranslation } from 'react-i18next';
 import { Route, Switch } from 'react-router';
 import { History } from 'history';
 import { Classes } from 'jss';
 import { createUseStyles, useTheme } from 'react-jss';
-import { getSignedInPersonDisplayName } from 'queries';
-import ApolloClient from 'apollo-client';
+import { ApolloClient, ApolloConsumer } from '@apollo/client';
 
-import { appHelpLink, appInst } from 'appConfig';
+import { getSignedInPersonDisplayName } from 'queries';
+import { appHelpLink, appHelpMail, appInst } from 'appConfig';
 import Link from 'components/link';
 import { H1 } from 'components/text';
 import { UserContext } from 'providers/UserContext';
@@ -16,6 +15,100 @@ import LanguageSelector, { MobileLanguageSelector } from './LanguageSelector';
 import { DesktopMenu, DesktopMenuItem } from './DesktopMenu';
 import { MobileMenu, MobileMenuItem } from './MobileMenu';
 import LogoBar from './logoBar';
+
+const navigateToLogout = (history: History) => {
+  history.push('/logout');
+};
+
+const MobileLogout: React.FunctionComponent<{ history: History }> = ({
+  history,
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <>
+      <UserContext.Consumer>
+        {(context) => {
+          if (context.user) {
+            return (
+              <a
+                style={{ color: 'inherit' }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateToLogout(history);
+                }}
+                href="/"
+              >
+                {t('general.logout')}
+              </a>
+            );
+          }
+          return null;
+        }}
+      </UserContext.Consumer>
+    </>
+  );
+};
+
+const UserNameAndLogout: React.FunctionComponent<{
+  apolloClient: ApolloClient<any>;
+  classes: Classes;
+  history: History;
+}> = ({ apolloClient, classes, history }) => {
+  const { t } = useTranslation();
+  const [userDisplayName, setUserDisplayName] = useState('');
+  const userContext = useContext(UserContext);
+
+  useEffect(() => {
+    const getDisplayName = async () => {
+      let displayName;
+      if (userContext.user) {
+        try {
+          displayName = await getSignedInPersonDisplayName(apolloClient);
+          setUserDisplayName(displayName);
+        } catch (error) {
+          console.error('Could not get ID of signed in user.');
+        }
+      }
+    };
+    getDisplayName();
+  }, [userContext, apolloClient]);
+
+  return (
+    <ApolloConsumer>
+      {() => {
+        return (
+          <UserContext.Consumer>
+            {(context) => {
+              if (context.user) {
+                return (
+                  <>
+                    <DesktopMenuItem>
+                      <div className={classes.link}>{userDisplayName}</div>
+                    </DesktopMenuItem>
+                    <DesktopMenuItem>
+                      <a
+                        className={classes.link}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          navigateToLogout(history);
+                        }}
+                        href="/"
+                      >
+                        {t('general.logout')}
+                      </a>
+                    </DesktopMenuItem>
+                  </>
+                );
+              }
+              return null;
+            }}
+          </UserContext.Consumer>
+        );
+      }}
+    </ApolloConsumer>
+  );
+};
 
 const useStyles = createUseStyles((theme: any) => ({
   mainWrapper: {
@@ -129,9 +222,15 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
               </MobileMenuItem>
               <MobileMenuItem>
                 <div className={classes.link}>
-                  <Link inheritColor external noExternalIcon to={appHelpLink}>
-                    {t('general.help')}
-                  </Link>
+                  {appHelpMail ? (
+                    <Link mail noExternalIcon to={appHelpMail} inheritColor>
+                      {t('general.help')}
+                    </Link>
+                  ) : (
+                    <Link external noExternalIcon to={appHelpLink} inheritColor>
+                      {t('general.help')}
+                    </Link>
+                  )}
                 </div>
               </MobileMenuItem>
               <MobileMenuItem>
@@ -167,9 +266,15 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
               </DesktopMenuItem>
               <DesktopMenuItem>
                 <div className={classes.link}>
-                  <Link inheritColor external noExternalIcon to={appHelpLink}>
-                    {t('general.help')}
-                  </Link>
+                  {appHelpMail ? (
+                    <Link mail noExternalIcon to={appHelpMail} inheritColor>
+                      {t('general.help')}
+                    </Link>
+                  ) : (
+                    <Link external noExternalIcon to={appHelpLink} inheritColor>
+                      {t('general.help')}
+                    </Link>
+                  )}
                 </div>
               </DesktopMenuItem>
               <DesktopMenuItem>
@@ -217,100 +322,6 @@ const Header: React.FunctionComponent<IProps> = (props: IProps) => {
       </div>
       {appInst === 'khio' && <hr className={classes.divider} />}
     </header>
-  );
-};
-
-const navigateToLogout = (history: History) => {
-  history.push('/logout');
-};
-
-const MobileLogout: React.FunctionComponent<{ history: History }> = ({
-  history,
-}) => {
-  const { t } = useTranslation();
-
-  return (
-    <>
-      <UserContext.Consumer>
-        {(context) => {
-          if (context.user) {
-            return (
-              <a
-                style={{ color: 'inherit' }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigateToLogout(history);
-                }}
-                href="/"
-              >
-                {t('general.logout')}
-              </a>
-            );
-          }
-          return null;
-        }}
-      </UserContext.Consumer>
-    </>
-  );
-};
-
-const UserNameAndLogout: React.FunctionComponent<{
-  apolloClient: ApolloClient<any>;
-  classes: Classes;
-  history: History;
-}> = ({ apolloClient, classes, history }) => {
-  const { t } = useTranslation();
-  const [userDisplayName, setUserDisplayName] = useState('');
-  const userContext = useContext(UserContext);
-
-  useEffect(() => {
-    const getDisplayName = async () => {
-      let displayName;
-      if (userContext.user) {
-        try {
-          displayName = await getSignedInPersonDisplayName(apolloClient);
-          setUserDisplayName(displayName);
-        } catch (error) {
-          console.error('Could not get ID of signed in user.');
-        }
-      }
-    };
-    getDisplayName();
-  }, [userContext, apolloClient]);
-
-  return (
-    <ApolloConsumer>
-      {(client) => {
-        return (
-          <UserContext.Consumer>
-            {(context) => {
-              if (context.user) {
-                return (
-                  <>
-                    <DesktopMenuItem>
-                      <div className={classes.link}>{userDisplayName}</div>
-                    </DesktopMenuItem>
-                    <DesktopMenuItem>
-                      <a
-                        className={classes.link}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          navigateToLogout(history);
-                        }}
-                        href="/"
-                      >
-                        {t('general.logout')}
-                      </a>
-                    </DesktopMenuItem>
-                  </>
-                );
-              }
-              return null;
-            }}
-          </UserContext.Consumer>
-        );
-      }}
-    </ApolloConsumer>
   );
 };
 

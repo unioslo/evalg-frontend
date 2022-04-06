@@ -1,9 +1,9 @@
 import React from 'react';
-import { createUseStyles, useTheme } from 'react-jss';
+import { createUseStyles } from 'react-jss';
 
 import Icon from 'components/icon';
 
-const useStyles = createUseStyles((theme: any) => ({
+const useStyles = createUseStyles({
   iconContainer: {
     width: '2.2rem',
     height: '2.2rem',
@@ -26,7 +26,7 @@ const useStyles = createUseStyles((theme: any) => ({
   '@keyframes spin': {
     to: { '-webkit-transform': 'rotate(360deg)' },
   },
-}));
+});
 
 export enum SubtaskWorkingState {
   notStarted,
@@ -41,8 +41,7 @@ interface IProps {
 
 const SubtaskWorkingStateIcon: React.FunctionComponent<IProps> = (props) => {
   const { workingState } = props;
-  const theme = useTheme();
-  const classes = useStyles({ theme });
+  const classes = useStyles();
   return (
     <>
       {workingState === SubtaskWorkingState.notStarted && (

@@ -1,15 +1,14 @@
 import React from 'react';
+// eslint-disable-next-line
 import { render } from '@testing-library/react';
 import { ThemeProvider } from 'react-jss';
-import { I18nextProvider} from 'react-i18next';
+import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18n-test';
 
 import { ScreenSizeProvider } from 'providers/ScreenSize';
 import theme from 'theme';
 
 jest.mock('providers/ScreenSize');
-
-
 
 // Providers used in test rendering
 const AllTheProviders = ({ children }: any) => {
@@ -27,6 +26,7 @@ const customRender = (ui: React.ReactElement, options?: any) =>
   render(ui, { wrapper: AllTheProviders, ...options });
 
 // re-export everything
+// eslint-disable-next-line
 export * from '@testing-library/react';
 
 // override render method

@@ -1,7 +1,5 @@
 import React from 'react';
-import { ApolloConsumer } from 'react-apollo';
-import ApolloClient from 'apollo-client';
-import gql from 'graphql-tag';
+import { ApolloClient, ApolloConsumer, gql } from '@apollo/client';
 import { Trans } from 'react-i18next';
 
 import {
@@ -61,13 +59,13 @@ interface IAddElectionGroupRoleByIdentifierResponse {
   addElectionGroupRoleByIdentifier: IMutationResponse;
 }
 
-interface IRemoveElectionGroupRoleByGrantVariables {
-  grantId: string;
-}
+// interface IRemoveElectionGroupRoleByGrantVariables {
+//   grantId: string;
+// }
 
-interface IRemoveElectionGroupRoleByGrantResponse {
-  removeElectionGroupRoleByGrant: IMutationResponse;
-}
+// interface IRemoveElectionGroupRoleByGrantResponse {
+//   removeElectionGroupRoleByGrant: IMutationResponse;
+// }
 
 const addElectionGroupRoleByIdentifier = async (
   client: ApolloClient<any>,
@@ -118,17 +116,17 @@ const removeElectionGroupRoleByGrant = async (
   );
 };
 
-const ActiveComponent: React.FunctionComponent<
-  IActiveComponentProps
-> = props => {
+const ActiveComponent: React.FunctionComponent<IActiveComponentProps> = (
+  props
+) => {
   const { electionGroupData } = props;
   const adminRoles: IElectionGroupRole[] = electionGroupData.roles.filter(
-    role => role.name === 'admin'
+    (role) => role.name === 'admin'
   );
 
   return (
     <ApolloConsumer>
-      {client => {
+      {(client) => {
         const addAdmin = (
           role: ElectionGroupRoleType,
           idType: PersonIdType,
@@ -160,7 +158,7 @@ const ActiveComponent: React.FunctionComponent<
   );
 };
 
-const InactiveComponent: React.SFC<IInactiveComponentProps> = props => (
+const InactiveComponent: React.SFC<IInactiveComponentProps> = (props) => (
   <AdminRolesValues roles={props.electionGroupData.roles} />
 );
 

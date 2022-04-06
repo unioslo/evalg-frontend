@@ -44,6 +44,11 @@ const styles = (theme: any) => ({
     borderColor: theme.secondaryBtnBorderColor,
     color: theme.secondaryBtnColor,
   },
+  danger: {
+    color: '#fff',
+    backgroundColor: '#d9534f',
+    borderColor: '#d43f3a',
+  },
   smallText: {
     fontSize: '1.4rem',
   },
@@ -89,6 +94,7 @@ interface IProps {
   height?: string;
   text: string | any;
   classes: Classes;
+  dangerButton?: boolean;
 }
 
 const Button: React.FunctionComponent<IProps> = (props) => {
@@ -96,6 +102,7 @@ const Button: React.FunctionComponent<IProps> = (props) => {
     action,
     centerContent,
     classes,
+    dangerButton,
     disabled,
     fillWidth,
     iconLeft,
@@ -118,6 +125,7 @@ const Button: React.FunctionComponent<IProps> = (props) => {
     [classes.wide]: wide,
     [classes.fillWidth]: fillWidth,
     [classes.centerContent]: centerContent,
+    [classes.danger]: dangerButton,
   });
 
   return (
@@ -143,6 +151,10 @@ const Button: React.FunctionComponent<IProps> = (props) => {
       {showSpinner && <Spinner marginLeft="1rem" size="2.3rem" />}
     </button>
   );
+};
+
+Button.defaultProps = {
+  dangerButton: false,
 };
 
 export default injectSheet(styles)(Button);

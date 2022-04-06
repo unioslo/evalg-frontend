@@ -1,13 +1,12 @@
 import React from 'react';
-import { Query, Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
 import { Trans, WithTranslation, withTranslation } from 'react-i18next';
-import { ApolloClient } from 'apollo-client';
+import { gql } from '@apollo/client';
+import { Query, Mutation } from '@apollo/client/react/components';
 import { History } from 'history';
 
 import Page from 'components/page/Page';
 import { PageSection } from 'components/page';
-import { EvalgClientState } from 'interfaces';
+import { isCreatingNewElectionVar } from 'cache';
 
 import NewElectionForm from './components/NewElectionForm';
 
@@ -86,31 +85,33 @@ class NewElection extends React.Component<IProps, IState> {
     this.onCreateCompleted = this.onCreateCompleted.bind(this);
   }
 
-  public onCreateCompleted(data: any, client: ApolloClient<EvalgClientState>) {
-    const localStateData = {
-      // TODO: find out how to not need __typename here
-      admin: { isCreatingNewElection: true, __typename: 'admin' },
-    };
-    client.writeData({ data: localStateData });
+  public onCreateCompleted(data: any) {
+    const { history } = this.props;
+
+    // Update the local apollo state
+    isCreatingNewElectionVar(true);
 
     const { electionGroup } = data.createNewElectionGroup;
-    this.props.history.push(`/admin/elections/${electionGroup.id}/info`);
+    history.push(`/admin/elections/${electionGroup.id}/info`);
   }
 
   public updateValues(newVals: any) {
     this.setState({ currentValues: { ...newVals } });
   }
 
-  // tslint:disable:jsx-no-lambda
   public render() {
+    const { history, t } = this.props;
+    const { currentValues } = this.state;
     return (
       <Query query={electionTemplateQuery}>
         {(result: any) => {
-          const { data, loading, error, client } = result;
+          const { data, loading, error } = result;
           return (
             <Mutation
               mutation={createNewElectionGroupMutation}
-              onCompleted={(data: any) => this.onCreateCompleted(data, client)}
+              onCompleted={(newElectionData: any) =>
+                this.onCreateCompleted(newElectionData)
+              }
             >
               {(createNewElectionGroup: any) => {
                 if (loading) {
@@ -120,16 +121,16 @@ class NewElection extends React.Component<IProps, IState> {
                   return <div>Error!</div>;
                 }
                 return (
-                  <Page header={this.props.t('election.createNewElection')}>
+                  <Page header={t('election.createNewElection')}>
                     <PageSection header={<Trans>election.selectType</Trans>}>
                       <NewElectionForm
-                        initialValues={this.state.currentValues}
+                        initialValues={currentValues}
                         updateValues={this.updateValues}
                         electionTemplate={data.electionTemplate}
                         submitAction={(values: any) =>
                           createNewElectionGroup({ variables: values })
                         }
-                        cancelAction={() => this.props.history.push('/admin')}
+                        cancelAction={() => history.push('/admin')}
                       />
                     </PageSection>
                   </Page>

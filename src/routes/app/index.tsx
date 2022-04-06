@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
-import { createUseStyles, useTheme } from 'react-jss';
+import { createUseStyles } from 'react-jss';
 import { Route, withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { authEnabled } from 'appConfig';
@@ -16,7 +16,7 @@ import VoterFrontPage from './voter/frontpage';
 import LoginPage from './components/LoginPage';
 import Logout from './components/Logout';
 
-const useStyles = createUseStyles((theme: any) => ({
+const useStyles = createUseStyles({
   ie11ExtraFlexContainer: {
     // https://github.com/philipwalton/flexbugs#flexbug-3
     display: 'flex',
@@ -35,22 +35,26 @@ const useStyles = createUseStyles((theme: any) => ({
   spinBox: {
     marginRight: '2rem',
   },
-}));
+});
 
 interface IAppProps {
   authManager: any;
 }
 
-const App: React.FunctionComponent<IAppProps & RouteComponentProps> = props => {
+const App: React.FunctionComponent<IAppProps & RouteComponentProps> = (
+  props
+) => {
   const { authManager, location, history } = props;
-  const theme = useTheme();
-  const classes = useStyles({ theme });
+  const classes = useStyles();
 
-  const ProtectedComponent = (props: any) => {
-    if (!props.userContext) {
-      sessionStorage.setItem('login_redirect', props.location.pathname);
+  const ProtectedComponent = (protectedComponentProps: any) => {
+    if (!protectedComponentProps.userContext) {
+      sessionStorage.setItem(
+        'login_redirect',
+        protectedComponentProps.location.pathname
+      );
     }
-    const Comp = props.component;
+    const Comp = protectedComponentProps.component;
     const Component = authEnabled ? authManager(Comp) : Comp;
     return <Component />;
   };
@@ -80,9 +84,9 @@ const App: React.FunctionComponent<IAppProps & RouteComponentProps> = props => {
 
                 <Route
                   path="/vote/:electionGroupId"
-                  render={(props: any) => (
+                  render={(renderProps: any) => (
                     <ProtectedComponent
-                      {...props}
+                      {...renderProps}
                       component={VoterRoute}
                       userContext={context.user}
                     />
@@ -91,9 +95,9 @@ const App: React.FunctionComponent<IAppProps & RouteComponentProps> = props => {
 
                 <Route
                   path="/admin"
-                  render={(props: any) => (
+                  render={(renderProps: any) => (
                     <ProtectedComponent
-                      {...props}
+                      {...renderProps}
                       component={AdminRoute}
                       userContext={context.user}
                     />

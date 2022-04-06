@@ -158,15 +158,20 @@ interface IStatelessExpandableSubSectionProps
   extends IExpandableSubSectionProps {
   isExpanded: boolean;
   setIsExpanded: (newIsExpanded: boolean) => void;
+  noMargin?: boolean;
 }
 
 const StatelessExpandableSubSection: React.FunctionComponent<IStatelessExpandableSubSectionProps> =
   (props) => {
-    const { header, isExpanded, setIsExpanded } = props;
+    const { header, isExpanded, noMargin, setIsExpanded } = props;
     const theme = useTheme();
     const classes = useStyles({ theme });
     const topBarCls = classNames({
       [classes.pointerOnHover]: true,
+    });
+
+    const subSectionCls = classNames({
+      [classes.subSection]: !noMargin,
     });
 
     const toggleIsExpanded = () => {
@@ -174,7 +179,7 @@ const StatelessExpandableSubSection: React.FunctionComponent<IStatelessExpandabl
     };
 
     return (
-      <div className={classes.subSection}>
+      <div className={subSectionCls}>
         <div className={topBarCls} onClick={toggleIsExpanded}>
           <DropdownArrowIcon selected={isExpanded} />
           <span className={classes.subSectionHeader}>{header}</span>
@@ -183,6 +188,10 @@ const StatelessExpandableSubSection: React.FunctionComponent<IStatelessExpandabl
       </div>
     );
   };
+
+StatelessExpandableSubSection.defaultProps = {
+  noMargin: false,
+};
 
 const PageParagraph: React.FunctionComponent<ISubProps> = (props) => {
   const theme = useTheme();

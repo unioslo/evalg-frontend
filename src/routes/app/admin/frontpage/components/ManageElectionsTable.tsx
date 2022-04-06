@@ -19,7 +19,7 @@ import { ElectionGroup } from 'interfaces';
 import ElectionGroupTableRow from './ElectionGroupTableRow';
 import ElectionTableRow from './ElectionTableRow';
 
-const styles = (theme: any) => ({
+const styles = () => ({
   votesOutsideCensusColumnHeader: {
     width: '8rem',
   },
@@ -83,7 +83,7 @@ class ManageElectionsTable extends React.Component<IProps, IState> {
             </TableHeaderCell>
           </TableHeaderRow>
         </TableHeader>
-        {electionGroups.map((electionGroup, index) => {
+        {electionGroups.map((electionGroup) => {
           const { selectedElection } = this.state;
           let selected = false;
           if (selectedElection === electionGroup.id) {
@@ -109,19 +109,19 @@ class ManageElectionsTable extends React.Component<IProps, IState> {
                   <TableCell greyBg />
                   <TableCell colspan={5} greyBg alignRight>
                     <Link
-                      to={`/admin/elections/${electionGroup.id}/status`}
+                      to={`/admin/elections/${electionGroup.id}/info`}
                       marginRight
                     >
                       <Icon type="forwardArrow" marginRight />
                       <Trans>election.goTo</Trans>
                       &nbsp;
-                      <Trans>election.status</Trans>
+                      <Trans>election.settings</Trans>
                     </Link>
-                    <Link to={`/admin/elections/${electionGroup.id}/info`}>
+                    <Link to={`/admin/elections/${electionGroup.id}/status`}>
                       <Icon type="forwardArrow" marginRight />
                       <Trans>election.goTo</Trans>
                       &nbsp;
-                      <Trans>election.settings</Trans>
+                      <Trans>election.status</Trans>
                     </Link>
                   </TableCell>
                 </TableRow>

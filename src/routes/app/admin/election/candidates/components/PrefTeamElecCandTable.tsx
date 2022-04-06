@@ -1,7 +1,7 @@
 import React from 'react';
 import { Trans, withTranslation, WithTranslation } from 'react-i18next';
-import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
+import { Mutation } from '@apollo/client/react/components';
 
 import Text from 'components/text';
 import Link from 'components/link';
@@ -87,7 +87,7 @@ interface IState {
 class PrefTeamElecCandTable extends React.Component<IProps, IState> {
   state: IState;
 
-  removeEmptyCoCandidates: (e: any) => any;
+  removeEmptyCoCandidates: any;
 
   constructor(props: IProps) {
     super(props);
@@ -100,9 +100,8 @@ class PrefTeamElecCandTable extends React.Component<IProps, IState> {
     this.setNewFormTopActive = this.setNewFormTopActive.bind(this);
     this.setNewFormBottomActive = this.setNewFormBottomActive.bind(this);
     this.setEditId = this.setEditId.bind(this);
-    this.removeEmptyCoCandidates = this.removeCoCandidatesWithoutName.bind(
-      this
-    );
+    this.removeEmptyCoCandidates =
+      this.removeCoCandidatesWithoutName.bind(this);
   }
 
   setNewFormTopActive() {
@@ -188,7 +187,7 @@ class PrefTeamElecCandTable extends React.Component<IProps, IState> {
                     <TableCell colspan={3}>
                       <PrefTeamElecCandForm
                         initialValues={newCandidateValues}
-                        handleSubmit={values => {
+                        handleSubmit={(values) => {
                           values = this.removeCoCandidatesWithoutName(values);
                           addCand({ variables: values });
                           this.setNewFormsInactive();
@@ -231,9 +230,10 @@ class PrefTeamElecCandTable extends React.Component<IProps, IState> {
                                     }
                                     initialValues={{ ...candidate }}
                                     handleSubmit={(values: any) => {
-                                      values = this.removeCoCandidatesWithoutName(
-                                        values
-                                      );
+                                      values =
+                                        this.removeCoCandidatesWithoutName(
+                                          values
+                                        );
                                       updCand({ variables: values });
                                       this.setEditId('');
                                     }}

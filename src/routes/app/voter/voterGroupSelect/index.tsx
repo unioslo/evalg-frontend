@@ -1,8 +1,8 @@
-import gql from 'graphql-tag';
 import React from 'react';
 import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 import injectSheet from 'react-jss';
-import { WithApolloClient, withApollo } from 'react-apollo';
+import { gql } from '@apollo/client';
+import { WithApolloClient, withApollo } from '@apollo/client/react/hoc';
 
 import { Redirect } from 'react-router';
 import { getCurInstNameWithCase } from 'utils/i18n';
@@ -136,56 +136,20 @@ class VoterGroupSelectPage extends React.Component<
   WithApolloClient<IProps>,
   IState
 > {
-  readonly state = {
-    selectedPollBookIndex: 0,
-    notInPollBookJustification: '',
-    voters: [],
-    fetchingVoters: true,
-    error: '',
-    redirectBack: false,
-  };
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      selectedPollBookIndex: 0,
+      notInPollBookJustification: '',
+      voters: [],
+      fetchingVoters: true,
+      error: '',
+      redirectBack: false,
+    };
+  }
 
   componentDidMount() {
     this.fetchVotersForPerson();
-  }
-
-  async fetchVotersForPerson() {
-    let personId = '';
-
-    try {
-      personId = await getSignedInPersonId(this.props.client);
-    } catch (error) {
-      this.setState({ error: "Can't resolve logged in person ID." });
-      return;
-    }
-
-    let voters: IVoter[] = [];
-    try {
-      const res = await this.props.client.query<VotersForPersonResponse>({
-        query: votersForPersonQuery,
-        variables: { id: personId },
-      });
-
-      voters = res.data.votersForPerson;
-    } catch (error) {
-      this.setState({ error: "Can't find voters for person." });
-      return;
-    }
-
-    // Find and set the the first census the voter is in as selected.
-    const { EGPollbooks } = this.getCommonVars();
-    const pollbookIdsForVerifiedVoters = voters
-      .filter(voter => voter.verified)
-      .map(voter => voter.pollbook.id);
-
-    const initiallySelectIndex: number = EGPollbooks.findIndex(EGPollbook =>
-      pollbookIdsForVerifiedVoters.includes(EGPollbook.id)
-    );
-    if (initiallySelectIndex >= 0) {
-      this.setState({ selectedPollBookIndex: initiallySelectIndex });
-    }
-
-    this.setState({ voters, fetchingVoters: false });
   }
 
   getMaybeVoterForSelectedPollbook = (
@@ -203,46 +167,23 @@ class VoterGroupSelectPage extends React.Component<
     return null;
   };
 
-  hasRightToVote = (
-    selectedPollBookIndex: number,
-    EGPollbooks: IPollBook[]
-  ): boolean => {
-    const voters: IVoter[] = this.state.voters.filter(
-      (voter: IVoter) => voter.verified === true
-    );
-
-    return voters
-      .map(x => x.pollbook.id)
-      .includes(EGPollbooks[selectedPollBookIndex].id);
-  };
-
-  handleSelectVoterGroup = (selectedPollBookIndex: number) => {
-    this.setState({ selectedPollBookIndex });
-  };
-
-  handlenotInPollBookJustificationChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    this.setState({ notInPollBookJustification: event.target.value });
-  };
-
   private getCommonVars() {
     const { electionGroupType, activeElections } = this.props;
+    const { selectedPollBookIndex } = this.state;
 
     let EGPollbooks: IPollBook[];
-    let voteElection: Election;
     let voteElectionIndex: number;
     let electionIsOngoing = true;
 
     if (electionGroupType === 'multiple_elections') {
-      EGPollbooks = activeElections.map(election => election.pollbooks[0]);
-      voteElectionIndex = this.state.selectedPollBookIndex;
+      EGPollbooks = activeElections.map((election) => election.pollbooks[0]);
+      voteElectionIndex = selectedPollBookIndex;
     } else {
       EGPollbooks = activeElections[0].pollbooks;
       voteElectionIndex = 0;
     }
 
-    voteElection = activeElections[voteElectionIndex];
+    const voteElection = activeElections[voteElectionIndex];
 
     if (voteElection.status !== 'ongoing') {
       electionIsOngoing = false;
@@ -256,16 +197,85 @@ class VoterGroupSelectPage extends React.Component<
     };
   }
 
-  public render() {
-    const lang = this.props.i18n.language;
-    const { classes, t } = this.props;
+  hasRightToVote = (
+    selectedPollBookIndex: number,
+    EGPollbooks: IPollBook[]
+  ): boolean => {
+    const { voters } = this.state;
+    return voters
+      .filter((voter: IVoter) => voter.verified === true)
+      .map((x: IVoter) => x.pollbook.id)
+      .includes(EGPollbooks[selectedPollBookIndex].id);
+  };
 
+  handleSelectVoterGroup = (selectedPollBookIndex: number) => {
+    this.setState({ selectedPollBookIndex });
+  };
+
+  handlenotInPollBookJustificationChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    this.setState({ notInPollBookJustification: event.target.value });
+  };
+
+  async fetchVotersForPerson() {
+    const { client } = this.props;
+    let personId = '';
+
+    if (!client) {
+      this.setState({ error: "Can't resolve logged in person ID." });
+      return;
+    }
+
+    try {
+      personId = await getSignedInPersonId(client);
+    } catch (error) {
+      this.setState({ error: "Can't resolve logged in person ID." });
+      return;
+    }
+
+    let voters: IVoter[] = [];
+    try {
+      const res = await client.query<VotersForPersonResponse>({
+        query: votersForPersonQuery,
+        variables: { id: personId },
+      });
+
+      voters = res.data.votersForPerson;
+    } catch (error) {
+      this.setState({ error: "Can't find voters for person." });
+      return;
+    }
+
+    // Find and set the the first census the voter is in as selected.
+    const { EGPollbooks } = this.getCommonVars();
+    const pollbookIdsForVerifiedVoters = voters
+      .filter((voter) => voter.verified)
+      .map((voter) => voter.pollbook.id);
+
+    const initiallySelectIndex: number = EGPollbooks.findIndex((EGPollbook) =>
+      pollbookIdsForVerifiedVoters.includes(EGPollbook.id)
+    );
+    if (initiallySelectIndex >= 0) {
+      this.setState({ selectedPollBookIndex: initiallySelectIndex });
+    }
+
+    this.setState({ voters, fetchingVoters: false });
+  }
+
+  public render() {
+    const { classes, i18n, onProceed, t } = this.props;
     const {
-      EGPollbooks,
-      voteElection,
-      voteElectionIndex,
-      electionIsOngoing,
-    } = this.getCommonVars();
+      error,
+      fetchingVoters,
+      notInPollBookJustification,
+      redirectBack,
+      selectedPollBookIndex,
+    } = this.state;
+    const lang = i18n.language;
+
+    const { EGPollbooks, voteElection, voteElectionIndex, electionIsOngoing } =
+      this.getCommonVars();
 
     const dropdown = (
       <DropDown
@@ -276,7 +286,7 @@ class VoterGroupSelectPage extends React.Component<
             ? t('voterGroupSelect.youAreOnTheElectoralRoll')
             : null,
         }))}
-        value={this.state.selectedPollBookIndex}
+        value={selectedPollBookIndex}
         onChange={this.handleSelectVoterGroup}
         inline
         noRelativePositionOfListOnMobile
@@ -290,7 +300,7 @@ class VoterGroupSelectPage extends React.Component<
     let extraElements: React.ReactNode = null;
 
     if (electionIsOngoing) {
-      if (this.hasRightToVote(this.state.selectedPollBookIndex, EGPollbooks)) {
+      if (this.hasRightToVote(selectedPollBookIndex, EGPollbooks)) {
         subheading = (
           <Trans>voterGroupSelect.registeredInSelectedGroupHeading</Trans>
         );
@@ -319,7 +329,7 @@ class VoterGroupSelectPage extends React.Component<
             </label>
             <textarea
               id="censusJustification"
-              value={this.state.notInPollBookJustification}
+              value={notInPollBookJustification}
               onChange={this.handlenotInPollBookJustificationChange}
               className={classes.notInPollBookJustificationTextArea}
               rows={6}
@@ -327,57 +337,53 @@ class VoterGroupSelectPage extends React.Component<
           </>
         );
       }
+    } else if (voteElection.status === 'published') {
+      subheading = <Trans>voterGroupSelect.electionNotYetOpen</Trans>;
+      beforeDropDownText = <Trans>voterGroupSelect.theElectionFor</Trans>;
+      afterDropDownText = (
+        <>
+          <Trans>voterGroupSelect.opens</Trans>{' '}
+          <Date dateTime={voteElection.start} longDate />{' '}
+          <Time dateTime={voteElection.start} />.
+        </>
+      );
+      additionalInformation = (
+        <>
+          <Trans>voterGroupSelect.theElectionFor</Trans>{' '}
+          {EGPollbooks[selectedPollBookIndex].name[lang].toLowerCase()}{' '}
+          <Trans>voterGroupSelect.opens</Trans>{' '}
+          <Date dateTime={voteElection.start} longDate />{' '}
+          <Time dateTime={voteElection.start} />{' '}
+          <Trans>voterGroupSelect.andCloses</Trans>{' '}
+          <Date dateTime={voteElection.end} longDate />{' '}
+          <Time dateTime={voteElection.end} />.
+        </>
+      );
+    } else if (voteElection.status === 'closed') {
+      subheading = <Trans>voterGroupSelect.electionClosed</Trans>;
+      beforeDropDownText = <Trans>voterGroupSelect.theElectionFor</Trans>;
+      afterDropDownText = (
+        <>
+          <Trans>voterGroupSelect.wasClosed</Trans>{' '}
+          <Date dateTime={voteElection.end} longDate />{' '}
+          <Time dateTime={voteElection.end} />.
+        </>
+      );
     } else {
-      if (voteElection.status === 'published') {
-        subheading = <Trans>voterGroupSelect.electionNotYetOpen</Trans>;
-        beforeDropDownText = <Trans>voterGroupSelect.theElectionFor</Trans>;
-        afterDropDownText = (
-          <>
-            <Trans>voterGroupSelect.opens</Trans>{' '}
-            <Date dateTime={voteElection.start} longDate />{' '}
-            <Time dateTime={voteElection.start} />.
-          </>
-        );
-        additionalInformation = (
-          <>
-            <Trans>voterGroupSelect.theElectionFor</Trans>{' '}
-            {EGPollbooks[this.state.selectedPollBookIndex].name[
-              lang
-            ].toLowerCase()}{' '}
-            <Trans>voterGroupSelect.opens</Trans>{' '}
-            <Date dateTime={voteElection.start} longDate />{' '}
-            <Time dateTime={voteElection.start} />{' '}
-            <Trans>voterGroupSelect.andCloses</Trans>{' '}
-            <Date dateTime={voteElection.end} longDate />{' '}
-            <Time dateTime={voteElection.end} />.
-          </>
-        );
-      } else if (voteElection.status === 'closed') {
-        subheading = <Trans>voterGroupSelect.electionClosed</Trans>;
-        beforeDropDownText = <Trans>voterGroupSelect.theElectionFor</Trans>;
-        afterDropDownText = (
-          <>
-            <Trans>voterGroupSelect.wasClosed</Trans>{' '}
-            <Date dateTime={voteElection.end} longDate />{' '}
-            <Time dateTime={voteElection.end} />.
-          </>
-        );
-      } else {
-        subheading = <Trans>voterGroupSelect.electionNotOpen</Trans>;
-        beforeDropDownText = <Trans>voterGroupSelect.theElectionFor</Trans>;
-        afterDropDownText = (
-          <>
-            <Trans>voterGroupSelect.isNotOpen</Trans>.
-          </>
-        );
-      }
+      subheading = <Trans>voterGroupSelect.electionNotOpen</Trans>;
+      beforeDropDownText = <Trans>voterGroupSelect.theElectionFor</Trans>;
+      afterDropDownText = (
+        <>
+          <Trans>voterGroupSelect.isNotOpen</Trans>.
+        </>
+      );
     }
 
-    if (this.state.error) {
-      return <ErrorPageSection errorMessage={this.state.error} />;
+    if (error) {
+      return <ErrorPageSection errorMessage={error} />;
     }
 
-    if (this.state.fetchingVoters) {
+    if (fetchingVoters) {
       return (
         <PageSection noBorder>
           <Loading>
@@ -431,30 +437,30 @@ class VoterGroupSelectPage extends React.Component<
           <Button
             text={<Trans>general.proceed</Trans>}
             action={() => {
-              const selectedPollbookId =
-                EGPollbooks[this.state.selectedPollBookIndex].id;
-              const notInPollBookJustification = this.hasRightToVote(
-                this.state.selectedPollBookIndex,
+              const selectedPollbookId = EGPollbooks[selectedPollBookIndex].id;
+              const tmpNotInPollBookJustification = this.hasRightToVote(
+                selectedPollBookIndex,
                 EGPollbooks
               )
                 ? ''
-                : this.state.notInPollBookJustification;
-              const maybeVoterForSelectedPollbook = this.getMaybeVoterForSelectedPollbook(
-                this.state.selectedPollBookIndex,
-                EGPollbooks
-              );
+                : notInPollBookJustification;
+              const maybeVoterForSelectedPollbook =
+                this.getMaybeVoterForSelectedPollbook(
+                  selectedPollBookIndex,
+                  EGPollbooks
+                );
 
-              this.props.onProceed(
+              onProceed(
                 voteElectionIndex,
                 selectedPollbookId,
                 maybeVoterForSelectedPollbook,
-                notInPollBookJustification
+                tmpNotInPollBookJustification
               );
             }}
             disabled={!electionIsOngoing}
           />
         </ButtonContainer>
-        {this.state.redirectBack && <Redirect push to="/" />}
+        {redirectBack && <Redirect push to="/" />}
       </PageSection>
     );
   }

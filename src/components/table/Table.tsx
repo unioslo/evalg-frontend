@@ -1,31 +1,30 @@
 import React from 'react';
 import classNames from 'classnames';
-import { createUseStyles, useTheme } from 'react-jss';
+import { createUseStyles } from 'react-jss';
 
-interface IProps {
+type TableProps = {
   marginTop?: string;
-}
+  children?: React.ReactNode;
+};
 
-const useStyles = createUseStyles((theme: any) => ({
+const useStyles = createUseStyles({
   table: {
     width: '100%',
     userSelect: 'text',
-    marginTop: (props: IProps) => (props.marginTop ? props.marginTop : '4rem'),
+    marginTop: (props: TableProps) =>
+      props.marginTop ? props.marginTop : '4rem',
     '& th:not(:last-child), & td:not(:last-child)': {
       paddingRight: '2rem',
     },
   },
-}));
+});
 
-const Table: React.FunctionComponent<IProps> = (props) => {
+export default function Table(props: TableProps) {
   const { children } = props;
-  const theme = useTheme();
-  const classes = useStyles({ theme });
+  const classes = useStyles({ ...props });
 
   const cls = classNames({
     [classes.table]: true,
   });
   return <table className={cls}>{children}</table>;
-};
-
-export default Table;
+}

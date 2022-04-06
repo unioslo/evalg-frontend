@@ -1,12 +1,14 @@
 import React from 'react';
-import { Mutation, Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
+import { Mutation, Query } from '@apollo/client/react/components';
 import { Trans, useTranslation } from 'react-i18next';
 
-import { enableAnnounceElectionGroup } from 'appConfig';
 import Spinner from 'components/animations/Spinner';
 import { ElectionGroup, IElectionGroupRole } from 'interfaces';
-import { showGenerateVotesTestingComponent } from 'appConfig';
+import {
+  enableAnnounceElectionGroup,
+  showGenerateVotesTestingComponent,
+} from 'appConfig';
 import Text from 'components/text';
 import { PageSection, PageSubSection } from 'components/page';
 import { InfoList, InfoListItem } from 'components/infolist';
@@ -71,12 +73,12 @@ const blockerToTranslation = {
   'no-active-election': 'blockerNoActiveElection',
 };
 
-interface publicationBlockersProps {
+interface PublicationBlockersProps {
   electionGroup: ElectionGroup;
 }
 
-const PublicationBlockers: React.FunctionComponent<publicationBlockersProps> = (
-  props: publicationBlockersProps
+const PublicationBlockers: React.FunctionComponent<PublicationBlockersProps> = (
+  props: PublicationBlockersProps
 ) => {
   const { t } = useTranslation();
   const { publicationBlockers } = props.electionGroup;
@@ -99,12 +101,12 @@ const PublicationBlockers: React.FunctionComponent<publicationBlockersProps> = (
   );
 };
 
-interface multipleStatusesInterface {
+interface MultipleStatusesInterface {
   electionGroup: ElectionGroup;
 }
 
-const MultipleStatuses: React.FunctionComponent<multipleStatusesInterface> = (
-  props: multipleStatusesInterface
+const MultipleStatuses: React.FunctionComponent<MultipleStatusesInterface> = (
+  props: MultipleStatusesInterface
 ) => {
   const { i18n } = useTranslation();
   return (
@@ -157,13 +159,12 @@ const ElectionStatusSection: React.FunctionComponent<IProps> = (
           }
           let canPublish: boolean = false;
           if (!error && data.viewer.roles !== undefined) {
-            const publishRoles: Array<IElectionGroupRole> = data.viewer.roles.filter(
-              (x: IElectionGroupRole) => {
+            const publishRoles: Array<IElectionGroupRole> =
+              data.viewer.roles.filter((x: IElectionGroupRole) => {
                 return (
                   x.globalRole && x.name === 'publisher' && x.groupId === null
                 );
-              }
-            );
+              });
             canPublish = publishRoles.length >= 1;
           }
 

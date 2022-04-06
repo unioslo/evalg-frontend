@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import injectSheet from 'react-jss';
 
-const styles = () => ({
+const styles = (theme: any) => ({
   actionItem: {
     '&:hover': {
       cursor: 'pointer',
@@ -10,6 +10,7 @@ const styles = () => ({
     alignItems: 'center',
     display: 'inline-flex',
     height: '100%',
+    color: theme.actionTextColor,
   },
   alignCenter: {
     justifyContent: 'center',
@@ -26,7 +27,7 @@ interface IProps {
   classes: any;
 }
 
-const ActionItem: React.FunctionComponent<IProps> = props => {
+const ActionItem: React.FunctionComponent<IProps> = (props) => {
   const { classes, alignCenter, alignRight, action, children } = props;
   const cls = classNames({
     'button-no-style': true,

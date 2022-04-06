@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle: 0 */
 import React from 'react';
 import arrayMutators from 'final-form-arrays';
 import { Field, Form, FormRenderProps } from 'react-final-form';
@@ -29,7 +30,7 @@ import { ElectionGroup } from 'interfaces';
 
 const validate = (lang: string) => (values: any) => {
   const elecErrors: any[] = [];
-  values.elections.forEach((e: any) => elecErrors.push({}));
+  values.elections.forEach(() => elecErrors.push({}));
   const formErrors: any = {
     mandateDates: [],
     contact: [],

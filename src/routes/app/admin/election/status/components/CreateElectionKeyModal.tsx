@@ -1,6 +1,6 @@
 import React from 'react';
-import gql from 'graphql-tag';
-import { withApollo, WithApolloClient } from 'react-apollo';
+import { gql } from '@apollo/client';
+import { withApollo, WithApolloClient } from '@apollo/client/react/hoc';
 import { Trans, WithTranslation, withTranslation } from 'react-i18next';
 import FileSaver from 'file-saver';
 import moment from 'moment-timezone';
@@ -129,10 +129,10 @@ interface IState {
   errorMessage: string;
 }
 
-interface IElectionGroupKeyBackup {
-  masterKeyID: string;
-  encryptedPrivateKey: string;
-}
+// interface IElectionGroupKeyBackup {
+//   masterKeyID: string;
+//   encryptedPrivateKey: string;
+// }
 
 class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
   cryptoEngine: any;
@@ -168,7 +168,7 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
   };
 
   checkIfAllowedToActivateKey = () => {
-    this.setState(currState => ({
+    this.setState((currState) => ({
       isAllowedToActivateKey:
         currState.hasDownloadedKey && currState.isCheckboxChecked,
     }));
@@ -176,26 +176,28 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
 
   fetchMasterKeys = async () => {
     let result;
-    const { t } = this.props;
+    const { client, t } = this.props;
+
+    if (!client) {
+      this.showError(t('admin.electionKey.errors.backend.unknown'));
+      return;
+    }
+
     try {
-      result = await this.props.client.query({
+      result = await client.query({
         query: masterKeysQuery,
       });
-
-      console.debug(result.data.masterKeys);
     } catch (error) {
       this.showError(t('admin.electionKey.errors.backend.unknown'));
       return;
     }
     if (!result || !result.data || !result.data.masterKeys) {
-      let errorMessage = t('admin.electionKey.errors.backend.unknown');
-      this.showError(errorMessage);
+      this.showError(t('admin.electionKey.errors.backend.unknown'));
     } else {
       this.setState({
         masterKeys: result.data.masterKeys,
         hasFetchedMasterKeys: true,
       });
-      console.debug(this.state);
     }
   };
 
@@ -224,19 +226,22 @@ class CreateElectionKeyModal extends React.Component<PropsInternal, IState> {
   };
 
   downloadKeyFile = () => {
-    const lang = this.props.i18n.language;
+    const { electionGroup, i18n } = this.props;
+    const { publicKey, secretKey } = this.state;
+
+    const lang = i18n.language;
 
     const electionKeyFileContents = `
-${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
+${secretKey}\r\nOffentlig nøkkel / Public key: ${
       // Using \r\n to make file look nice if opened in Notepad on Windows
-      this.state.publicKey
+      publicKey
     }`.trim();
 
     const blob = new Blob([electionKeyFileContents], {
       type: 'text/plain;charset=utf-8',
     });
 
-    const electionGroupNameTruncated = this.props.electionGroup.name[lang]
+    const electionGroupNameTruncated = electionGroup.name[lang]
       .slice(0, 20)
       .replace(/\s/g, '_');
     const dateTimeStamp = moment
@@ -252,8 +257,13 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
   };
 
   activateKey = async () => {
-    const { t } = this.props;
-    const { secretKey, masterKeys } = this.state;
+    const { client, electionGroup, t } = this.props;
+    const { masterKeys, publicKey, secretKey } = this.state;
+
+    if (!client) {
+      this.showError(t('admin.electionKey.errors.backend.unknown'));
+      return;
+    }
 
     this.setState({
       isActivatingKey: true,
@@ -266,18 +276,16 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
           secretKey,
           masterKey.publicKey
         );
-        console.info(encryptedPrivateKey);
         try {
-          const result = await this.props.client.mutate<
-            IAddElectionGroupKeyBackupResponse
-          >({
-            mutation: addElectionGroupKeyBackupMutation,
-            variables: {
-              electionGroupId: this.props.electionGroup.id,
-              encryptedPrivKey: encryptedPrivateKey,
-              masterKeyId: masterKey.id,
-            },
-          });
+          const result =
+            await client.mutate<IAddElectionGroupKeyBackupResponse>({
+              mutation: addElectionGroupKeyBackupMutation,
+              variables: {
+                electionGroupId: electionGroup.id,
+                encryptedPrivKey: encryptedPrivateKey,
+                masterKeyId: masterKey.id,
+              },
+            });
           const response =
             result && result.data && result.data.addElectionGroupKeyBackup;
           if (!response || response.success === false) {
@@ -289,7 +297,7 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
       })
     );
 
-    //const { couldNotBackupKey } = this.state;
+    // const { couldNotBackupKey } = this.state;
     if (couldNotBackupKey) {
       this.setState({ isActivatingKey: false });
       this.showError(
@@ -300,13 +308,11 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
 
     let response;
     try {
-      const result = await this.props.client.mutate<
-        ISetElectionGroupKeyResponse
-      >({
+      const result = await client.mutate<ISetElectionGroupKeyResponse>({
         mutation: setElectionGroupKeyMutation,
         variables: {
-          id: this.props.electionGroup.id,
-          publicKey: this.state.publicKey,
+          id: electionGroup.id,
+          publicKey,
         },
       });
 
@@ -322,7 +328,7 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
       if (response && response.code) {
         errorMessage = translateBackendError({
           errorCode: response.code,
-          t: this.props.t,
+          t,
           codePrefix: 'admin.electionKey.errors.backend',
         });
       }
@@ -334,6 +340,7 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
   };
 
   keyActivated = async () => {
+    const { onCloseModal } = this.props;
     this.setState({
       secretKey: '',
       isActivatingKey: false,
@@ -341,7 +348,7 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
     });
     // Sleep while playing checkmark animation
     await sleep(1300);
-    this.props.onCloseModal();
+    onCloseModal();
   };
 
   render() {
@@ -409,7 +416,7 @@ ${this.state.secretKey}\r\nOffentlig nøkkel / Public key: ${
         onClick={() => {
           if (hasDownloadedKey) {
             this.setState(
-              currState => ({
+              (currState) => ({
                 isCheckboxChecked: !currState.isCheckboxChecked,
               }),
               this.checkIfAllowedToActivateKey

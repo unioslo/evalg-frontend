@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
+import { withApollo, WithApolloClient } from '@apollo/client/react/hoc';
 
 import Spinner from 'components/animations/Spinner';
-import { withApollo, WithApolloClient } from 'react-apollo';
 import { IUserContext } from 'providers/UserContext';
 
 const useStyles = createUseStyles({
@@ -28,7 +28,9 @@ const Logout: React.FunctionComponent<WithApolloClient<IProps>> = ({
   const classes = useStyles();
 
   const logout = async () => {
-    await apolloClient.resetStore();
+    if (apolloClient) {
+      await apolloClient.resetStore();
+    }
     await sessionStorage.clear();
     await context.signOut();
   };

@@ -1,6 +1,4 @@
 import React from 'react';
-import injectSheet from 'react-jss';
-import { Classes } from 'jss';
 
 import { ElectionGroup } from 'interfaces';
 import {
@@ -8,8 +6,6 @@ import {
   ISettingsSectionContents,
 } from './SettingsSection';
 import { SettingsSection } from '.';
-
-const styles = (theme: any) => ({});
 
 const buildInitialDisplayStatuses = (
   useDirectedFlow: boolean,
@@ -33,7 +29,6 @@ interface IProps {
   startWithDirectedFlowActive: boolean;
   initialDisplayStatuses?: SettingsSectionDisplayStatus[];
   onSettingsWasSaved: () => void;
-  classes: Classes;
 }
 
 interface IState {
@@ -138,4 +133,4 @@ class SettingsSectionsGroup extends React.Component<IProps, IState> {
   }
 }
 
-export default injectSheet(styles)(SettingsSectionsGroup);
+export default SettingsSectionsGroup;

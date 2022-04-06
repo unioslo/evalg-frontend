@@ -169,6 +169,85 @@
       "confirm": "Confirm",
       "person": "Person",
       "votingGroup": "Select voting group"
+    },
+    "listElec": {
+      "editListInfoHeader": "Change list information",
+      "fields": {
+        "url": "URL"
+      },
+      "candidateTable": {
+        "placement": "Placement",
+        "person": "Person",
+        "fieldOfStudy": "Field of Study",
+        "preAccumulated": "Pre-accumulated"
+      },
+      "noCandidatesInList": "No candidates in list",
+      "fieldErrors": {
+        "nameMissing": "List name in {{lang}} is missing",
+        "descMissing": "Description in {{lang}} is missing"
+      },
+      "newList": {
+        "header": "New election list",
+        "nameHeader": "Name of election list",
+        "description": "Short list description in {{lang}}",
+        "descriptionHeader": "Description",
+        "urlHeader": "URL",
+        "onDescription": "This information will be displayed to the voter."
+      },
+      "errors": {
+        "notListElection": {
+          "header": "The election is not a list election",
+          "msg": "The election is not a list election. It's not possible to add a list to this election"
+        },
+        "apiError": {
+          "addError": "Could not add list",
+          "deleteError": "Could not delete list",
+          "updateError": "Could not update list"
+        },
+        "listNotFound": {
+          "header": "Unknown list",
+          "msg": "List with id {{listId}} does not exist in the current election"
+        },
+        "listIdMissing": {
+          "header": "List ID missing",
+          "msg": "URL is missing a list-ID"
+        },
+        "candidateNameMissing": "Candidate name missing",
+        "electionLocked": {
+          "msg": "The election is running and/or contains votes. It is not possible to add new election lists.",
+          "header": "Locked election"
+        }
+      },
+      "addingList": "Adding list..",
+      "listCreated": "List {{name}} created",
+      "header": "Create and administer election lists.",
+      "add": "Create election list",
+      "showList": {
+        "header": "Show list",
+        "placeholder": "Choose list"
+      },
+      "noListInElection": "No lists in election",
+      "description": "List description",
+      "delete": "Delete list",
+      "deleteModal": {
+        "header": "Confirm deletion",
+        "body": "Are you sure you want to delete the list: {{name}}?"
+      },
+      "editList": {
+        "header": "Change list information"
+      },
+      "editCandidate": "Edit candidate",
+      "addCandidate": "Add candidate",
+      "candidates": {
+        "added": "Candidate {{name}} added",
+        "deleted": "Candidate {{name}} deleted",
+        "update": "Candidate {{name}} updated"
+      },
+      "lockedElectionCandidateMsg": "The election is ongoing and/or contains votes. You can only change name and field of study.",
+      "lockedElection": {
+        "header": "Administer information about lists and candidates",
+        "msg": "The election is ongoing and/or contains votes. Only information about the lists and candidates can be changed."
+      }
     }
   },
   "backend": {
@@ -494,7 +573,12 @@
     "webpage": "Web page",
     "welcome": "Welcome to eValg",
     "yes": "Yes",
-    "language": "Språk"
+    "language": "Språk",
+    "lang": {
+      "nb": "Norwegian (Bokmål)",
+      "nn": "Norwegian (Nynorsk)",
+      "en": "English"
+    }
   },
   "loginPage": {
     "featureList1": "Cast your vote in electronic elections",
@@ -531,7 +615,8 @@
       "addCandidate": "Add candidate {{candidate}} to ballot",
       "demoteCandidate": "Move candidate {{candidate}} down to rank {{index}}",
       "promoteCandidate": "Move candidate {{candidate}} up to rank {{index}}",
-      "removeCandidate": "Remove candidate {{candidate}} from ballot"
+      "removeCandidate": "Remove candidate {{candidate}} from ballot",
+      "cumulateCandidate": "Cumulate {{candidate}}"
     }
   },
   "voter": {
@@ -580,7 +665,44 @@
     "stepperStep2": "Fill out ballot",
     "stepperStep3": "Review ballot",
     "stepperStep4": "Receipt",
-    "submitVote": "Submit vote"
+    "submitVote": "Submit vote",
+    "listVoteHelpHeader": "Lists running for election",
+    "listVoteHelpDesc": "Choose or edit a list.",
+    "listVote": {
+      "candidates": "Candidates",
+      "editList": "Edit list",
+      "noEdit": "See ballot",
+      "preCumulated": "Precumulated",
+      "moreInfo": "More on {{list}}",
+      "changeList": "Edit list",
+      "addOtherListHeader": "Add a candidate from another list",
+      "findCandidate": "Find candidate",
+      "candidate": "Candidate",
+      "otherList": "Choose list",
+      "addOtherVoterButtonText": "Add",
+      "addOtherVoterSubmittingText": "Adding",
+      "deleteOtherCandidate": "Remove candidate {{candidate}} from other list",
+      "otherListCandidates": "Candidates from other lists",
+      "otherListCandidatesMissing": "Candidate missing",
+      "deletedCandidateHeader": "Candidates removed from the original list",
+      "cumulate": "Cumulate",
+      "selectedList": "List name: {{name}}",
+      "editListHelp": {
+        "cumulate": "You can give candidates extra votes (cumulation)",
+        "changeOrder": "You can change the candidate order",
+        "remove": "You can remove candidates from the list",
+        "others": "You can give votes to candidates on other lists."
+      },
+      "moveCandidate": "Move candidate {{name}} to position {{priority}}",
+      "helpTextTags": {
+        "choseList": "You first choose the list you want to vote for.",
+        "noEdits": "You can cast a vote without any changes by pressing \"Show ballot\".",
+        "edits": "You can also make changes to a list."
+      },
+      "maxOtherVotes": "You have added the maximum number of candidates from other lists ({{number}}",
+      "addOtherIconTitle": "Add {{name}} to ballot"
+    },
+    "dnd": "Drag and drop candidate {{name}}"
   },
   "voterGroupSelect": {
     "andCloses": "and closes",
@@ -622,5 +744,19 @@
   },
   "icons": {
     "close": "Close"
+  },
+  "listElec": {
+    "ballot": {
+      "reAddCandidate": "Add the deleted candidate {{candidate}} back to the list",
+      "Add": "Add",
+      "remove": "Remove",
+      "removeCumulation": "Remove cumulation of {{candidate}}",
+      "cumulate": "Extra vote",
+      "preCumulated": "Pre cumulated",
+      "removeOtherCandidate": "Remove"
+    },
+    "review": {
+      "userCumulated": "Candidate {{candidate}} is cumulated"
+    }
   }
 }

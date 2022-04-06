@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
+import { Mutation } from '@apollo/client/react/components';
 
 import Text from 'components/text';
 import ActionText from 'components/actiontext';
@@ -73,7 +73,7 @@ interface IProps {
   electionGroup: ElectionGroup;
 }
 
-const PollElecAlternativeTable: React.FunctionComponent<IProps> = props => {
+const PollElecAlternativeTable: React.FunctionComponent<IProps> = (props) => {
   const [bottomActive, setBottomActive] = useState<boolean>(false);
   const [topActive, setTopActive] = useState<boolean>(false);
   const [editCandidateId, setEditCandidateId] = useState(-1);
@@ -150,7 +150,7 @@ const PollElecAlternativeTable: React.FunctionComponent<IProps> = props => {
                   <TableCell colspan={3}>
                     <PollElecAlternativeForm
                       initialValues={newCandidateValues}
-                      onSubmit={values => {
+                      onSubmit={(values) => {
                         addCand({
                           variables: values,
                         });

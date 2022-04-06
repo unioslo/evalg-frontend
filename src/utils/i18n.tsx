@@ -64,12 +64,14 @@ export const getPersonIdTypeDisplayName = (
 
 export const getInstNameWithCase = (inst: string) => {
   switch (inst.toLowerCase()) {
-    case 'uio':
-      return 'UiO';
     case 'khio':
       return 'KHiO';
     case 'hiof':
       return 'HiOF';
+    case 'uib':
+      return 'UiB';
+    case 'uio':
+      return 'UiO';
     case 'oslomet':
       return 'OsloMet';
     default:
